@@ -13,14 +13,23 @@ const registry = inspectMechanismFamilyRegistry({
 });
 ```
 
-Each entry supplies its exact pack reference, parameter ranges/defaults/units and
+Each entry supplies candidate variant references, its default pack reference, parameter ranges/defaults/units and
 help, strict generator input/parameter schema names, a minimal default example,
 control IDs/types and complete asset metadata. That metadata includes illustrative
 factual variant and evidence, dimensions, bounds, parts, mesh identities/counts,
 material slots, anchors, relationships, teaching shapes, camera targets, diagnostic
 views, thumbnail recipe and compatibility. It contains no mesh buffers. The
 registry validates the parameter schema digest against the immutable pack receipt;
-entries are frozen. The exported `TapeHookPackInputSchema`,
+entries are frozen. Tape-hook includes an additional `slotted-retention` example and
+reference; its default metadata remains the original `floating-hook` definition.
+Inspect the selected variant through `inspectTapeHookPack("slotted-retention")`.
+Clothespeg includes a `notched-line` example/reference with the selected
+`notched-line-parameters` schema. Its default cloth metadata remains unchanged.
+Use `inspectClothespegPack("notched-line")` for the new candidate's metadata.
+Cable-tie includes an `inside-release` example and the distinct
+`inside-serrated-extended-trigger-cutaway` reference; its default non-releasable
+metadata remains unchanged.
+The exported `TapeHookPackInputSchema`,
 `CableTiePackInputSchema` and `ClothespegPackInputSchema` are the same schemas used
 by their generators. Their `expectedPack` references retain existing strict
 revision/variant/detail checks.

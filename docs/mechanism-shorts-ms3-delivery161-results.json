@@ -1,0 +1,46 @@
+{
+  "schemaVersion": "ms3-current-delivery161-1",
+  "capturedUtc": "2026-10-15T23:43:41.670064+00:00",
+  "snapshot": {
+    "status": "retained-exact-current151-data-and-verified-package-not-another-executed-relocation",
+    "fileCount": 19555,
+    "logicalBytes": 15662571517,
+    "uniqueContentBytes": 4359019374,
+    "uniqueFiles": 8216,
+    "allFilesIndependentOfOriginalInodes": true,
+    "archive": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-project161/still-shift-0.1.1.tgz",
+      "bytes": 5469414,
+      "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
+    }
+  },
+  "snapshotIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-project161/index.json",
+    "bytes": 7816057,
+    "sha256": "sha256:7bce4a9c46462fb340987ffa49723cb79fcc35cf463ad4b236fde2f1f97fa551"
+  },
+  "reviewIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-review161/index.json",
+    "bytes": 8571,
+    "sha256": "sha256:7582dcbd751af852109423989e6fc51ae761814fac4fde600090205d87ab38bb"
+  },
+  "reviewMarkdown": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-review161/index.md",
+    "bytes": 3303,
+    "sha256": "sha256:38085030ae83efee3006a8f9f341401b70c3e39464a920c21402bfe4db8d392d"
+  },
+  "episodes": 10,
+  "frames": 6181,
+  "allEncodedMoviesByteExactToPriorFinal": true,
+  "wholeReviewOrOwnerApproval": false,
+  "runtimeClosure": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/docs/mechanism-shorts-ms3-current160-results.json",
+    "bytes": 120127,
+    "sha256": "sha256:77ff56fd87ce65b8f96edc6957f2069c71bc0fd632c39de73e957ee9f6f915f6"
+  },
+  "method": {
+    "path": "/private/tmp/still-shift-ms3-deliver161.py",
+    "bytes": 6936,
+    "sha256": "sha256:e9aaf8e91b9cb671e4e2f0065880e47b2c99e0a3298702e1aca00fe9040879c2"
+  }
+}

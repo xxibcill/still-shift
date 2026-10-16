@@ -9,6 +9,9 @@ import {
 } from "./family-authoring.ts";
 import { z } from "zod";
 import {
+  MechanismStaticMomentModelSchema,
+  MechanismStaticMomentInputSchema,
+  MechanismStaticMomentResultSchema,
   MechanismPackDocumentSchema,
   MechanismPackTimelineSchema,
   MechanismNarratedCycleSchema,
@@ -24,17 +27,21 @@ import {
 import {
   inspectTapeHookPack,
   TapeHookPackInputSchema,
+  TapeHookPackVariantSchema,
   TapeHookPackParametersSchema,
 } from "./tape-hook-pack.ts";
 import {
   inspectCableTiePack,
   CableTiePackInputSchema,
   CableTiePackParametersSchema,
+  CableTiePackVariantSchema,
 } from "./cable-tie-pack.ts";
 import {
   inspectClothespegPack,
   ClothespegPackInputSchema,
   ClothespegPackParametersSchema,
+  NotchedLinePackParametersSchema,
+  ClothespegPackVariantSchema,
 } from "./clothespeg-pack.ts";
 import { freezeMechanismPack, mechanismPackHash } from "./pack-support.ts";
 import {
@@ -76,6 +83,9 @@ export const MechanismFamilyRegistrySelectionSchema = z
   .strict();
 /** Used by both generated schema files and CLI schema export. */
 export const mechanismFamilySchemas = {
+  "static-moment-model": MechanismStaticMomentModelSchema,
+  "static-moment-input": MechanismStaticMomentInputSchema,
+  "static-moment-result": MechanismStaticMomentResultSchema,
   "text-weight-treatments": TextWeightTreatmentReportSchema,
   "cue-compilation": MechanismCueCompilationSchema,
   "cue-native-plates": MechanismCueNativePlatesSchema,
@@ -90,6 +100,7 @@ export const mechanismFamilySchemas = {
   "cable-tie-parameters": CableTiePackParametersSchema,
   "clothespeg-input": ClothespegPackInputSchema,
   "clothespeg-parameters": ClothespegPackParametersSchema,
+  "notched-line-parameters": NotchedLinePackParametersSchema,
   pack: MechanismPackDocumentSchema,
   "pack-timeline": MechanismPackTimelineSchema,
   "narrated-cycle": MechanismNarratedCycleSchema,
@@ -138,7 +149,121 @@ export function inspectMechanismFamilyRegistry(
       parameterSchema: `${id}-parameters`,
       parameterSchemaSha256: metadata.pack.generator.parameterSchemaSha256,
       parameters: metadata.pack.parameters,
-      examples: [{ id: "default", input: entry.input.parse({}) }],
+      examples: [
+        { id: "default", input: entry.input.parse({}) },
+        ...(id === "cable-tie"
+          ? [
+              {
+                id: "inside-release",
+                input: CableTiePackInputSchema.parse({
+                  variant: "inside-serrated-extended-trigger-cutaway",
+                }),
+              },
+              {
+                id: "load-stop",
+                input: CableTiePackInputSchema.parse({
+                  variant: "hinged-pawl-frame-stop",
+                }),
+              },
+            ]
+          : []),
+        ...(id === "clothespeg"
+          ? [
+              {
+                id: "notched-line",
+                input: ClothespegPackInputSchema.parse({
+                  variant: "notched-line",
+                }),
+              },
+              {
+                id: "ideal-lever",
+                input: ClothespegPackInputSchema.parse({
+                  variant: "ideal-lever-press-points",
+                }),
+              },
+            ]
+          : []),
+        ...(id === "tape-hook"
+          ? [
+              {
+                id: "slotted-retention",
+                input: TapeHookPackInputSchema.parse({
+                  variant: "slotted-retention",
+                }),
+              },
+            ]
+          : []),
+      ],
+      variants:
+        id === "tape-hook"
+          ? TapeHookPackVariantSchema.options.map((variant) => {
+              const receipt = inspectTapeHookPack(variant);
+              return {
+                id: variant,
+                reference: {
+                  id: receipt.pack.id,
+                  version: receipt.pack.version,
+                  sha256: receipt.sha256,
+                  variant,
+                  detail: "teaching",
+                },
+              };
+            })
+          : id === "clothespeg"
+            ? ClothespegPackVariantSchema.options.map((variant) => {
+                const receipt = inspectClothespegPack(variant),
+                  schema =
+                    variant === "notched-line"
+                      ? NotchedLinePackParametersSchema
+                      : ClothespegPackParametersSchema;
+                if (
+                  mechanismPackHash(z.toJSONSchema(schema)) !==
+                  receipt.pack.generator.parameterSchemaSha256
+                )
+                  throw Error(
+                    "Variant parameter schema differs from immutable metadata",
+                  );
+                return {
+                  id: variant,
+                  parameterSchema:
+                    variant === "notched-line"
+                      ? "notched-line-parameters"
+                      : "clothespeg-parameters",
+                  reference: {
+                    id: receipt.pack.id,
+                    version: receipt.pack.version,
+                    sha256: receipt.sha256,
+                    variant,
+                    detail: "teaching",
+                  },
+                };
+              })
+            : id === "cable-tie"
+              ? CableTiePackVariantSchema.options.map((variant) => {
+                  const receipt = inspectCableTiePack(variant);
+                  return {
+                    id: variant,
+                    reference: {
+                      id: receipt.pack.id,
+                      version: receipt.pack.version,
+                      sha256: receipt.sha256,
+                      variant,
+                      detail: "teaching",
+                    },
+                  };
+                })
+              : [
+                  {
+                    id: metadata.pack.factualVariant.id,
+                    reference: {
+                      id: metadata.pack.id,
+                      version: metadata.pack.version,
+                      sha256: metadata.sha256,
+                      variant: metadata.pack.factualVariant.id,
+                      detail: "teaching",
+                    },
+                  },
+                ],
       metadata,
       controls: metadata.pack.rigs.map((rig) => ({
         id: rig.id,

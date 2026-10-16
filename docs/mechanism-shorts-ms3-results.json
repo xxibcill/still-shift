@@ -1,0 +1,1349 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "date": "2026-10-16",
+  "branch": "codex/mechanism-ms3",
+  "status": "technical-implementation-delivered-current-pilot-products-verified-whole-and-owner-acceptance-pending",
+  "baseMain": "57967fa6497249d75e740ba837b8e2687cc81a98",
+  "ms2Prerequisite": {
+    "commit": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
+    "pullRequest": "https://github.com/xxibcill/still-shift/pull/57",
+    "state": "open-draft"
+  },
+  "prerequisiteMerge": "76dd8971f29a0a09afa6003318392642381ea001",
+  "integration": {
+    "changedRelativeToMS2": ["ROADMAP.md", "docs/dev-log.md"],
+    "runtimeSourceChanges": 0,
+    "ms0OwnerMerge": "57967fa6497249d75e740ba837b8e2687cc81a98",
+    "retainedOwnerLogEntry": "2026-10-12 \u2014 Resolve MS0 PR #51 conflicts",
+    "failedPREdit": "gh pr edit used deprecated projectCards GraphQL query; REST body PATCH actually succeeded."
+  },
+  "frozenSelection": {
+    "id": "ms3-pilot-2026-10-12-v1",
+    "selectedEpisodeIds": [
+      "E01",
+      "E02",
+      "E03",
+      "E04",
+      "E05",
+      "E06",
+      "E07",
+      "E08",
+      "E09",
+      "E10"
+    ],
+    "sha256": "sha256:0d68b0e03e6e4df482328af097c81b54aa8cdee1f7d1fbc028778760bdba7367"
+  },
+  "requiredNewAssets": {
+    "count": 5,
+    "ids": ["E02", "E05", "E06", "E09", "E10"]
+  },
+  "requiredNewBehaviors": {
+    "count": 2,
+    "ids": ["E06", "E10"]
+  },
+  "candidateRouting": {
+    "existing-pack-rig": 5,
+    "new-asset-existing-rig": 3,
+    "new-behavior": 2
+  },
+  "coverage": {
+    "validated": 0,
+    "denominator": 10,
+    "acceptedPilot": 0,
+    "admittedAssets": 0,
+    "admittedBehaviors": 0
+  },
+  "verification": [
+    {
+      "id": "report-foundation1",
+      "status": "scoped-passed-in-stages",
+      "baseCommit": "76dd8971f29a0a09afa6003318392642381ea001",
+      "owningSession": 89086,
+      "actualExitCode": 0,
+      "commands": [
+        "pnpm exec vitest run tests/unit/mechanism-production-report.test.ts",
+        "pnpm build",
+        "pnpm exec eslint owning report/test/index files",
+        "pnpm build:package"
+      ],
+      "focusedTests": 22,
+      "scope": "Data contracts/pure summaries only; no durable runner, QA execution, registered assertions, real episode renders, pilot metrics or production review claimed.",
+      "sourceSnapshot": [
+        {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-report.ts",
+          "bytes": 14957,
+          "sha256": "sha256:6c2a1bc963283b339f278c56454bfe0c72ddec67343e2c69a61ea996eaa249a2"
+        },
+        {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+          "bytes": 3997,
+          "sha256": "sha256:4c76004f7d1e89582b8bd50dd0d2ebee354a5bf86ebe12441f25107cc3033aa6"
+        },
+        {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-report.test.ts",
+          "bytes": 8759,
+          "sha256": "sha256:78b796e5b965b2ec2346c2e4b77763f727ebf893bfcf4b142ac1bb0def57d8da"
+        }
+      ],
+      "logs": [
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-unit1.log",
+          "bytes": 320,
+          "sha256": "sha256:87c6b268349f8dd92f8bf574fbd62b4c21a54e315376fb6fe1203e07deec06d5"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-unit2.log",
+          "bytes": 7476,
+          "sha256": "sha256:6ede3759170b7fae91f645b8b5198075bd73c52f4310edd36a62de3faa247750"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-unit3.log",
+          "bytes": 320,
+          "sha256": "sha256:69014e479a7b33b224a49d72d09b806b6f78206a16fc97ef31b3e2aba32f903a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-unit4.log",
+          "bytes": 322,
+          "sha256": "sha256:cd40e1cd750505f455a5af33246b346b8d6ed80f6a0301a25764e1acf6324a48"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-build1.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-build3.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-build4.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-package-build1.log",
+          "bytes": 208,
+          "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-package-build2.log",
+          "bytes": 208,
+          "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-lint1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-lint2.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      ],
+      "retainedFailure": {
+        "attempt": "unit2",
+        "actualExitCode": 1,
+        "passed": 13,
+        "failed": 8,
+        "total": 21,
+        "reason": "After adding clock/partial-scope guards, the fixture incorrectly declared listening in output frames. Corrected the fixture to source-sample units; production guard remains. Unit3 passes21 and final normalized-question guard unit4 passes22. Build2 was not run because unit2 failed."
+      },
+      "delivered": [
+        "Six QA dimensions with method/interval/artifact/reviewer and input/output/code/profile binding. Unreviewed intervals/evidence remain absent. Automated checks cannot pass continuous playback/listening/factual review.",
+        "Current intervals cannot exceed artifact clocks. Partial whole-artifact reviews and stale bindings remain unreviewed for readiness, retaining original raw evidence. Mechanical failure counts prevent readiness.",
+        "Cohort summaries retain original attempt order, failure/repeated/cancelled/interrupted counts, individual rows and selected/attempted denominators. Normalized literal duplicate questions are rejected; semantic distinctness and frozen-selection validation still belong to pilot admission.",
+        "p50/p95 use declared linear interpolation; missing timing/token data staysnull. Savings requires retained comparable paired evidence for every selected task. No fixture value is a pilot measurement."
+      ],
+      "committedSource": "5b70cbd7b758519a949ffeb04800d3b88e088e04"
+    },
+    {
+      "id": "report-foundation1-fast",
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "owningSession": 88224,
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "sourceCommit": "5b70cbd7b758519a949ffeb04800d3b88e088e04",
+      "unitTests": 4385,
+      "unitFiles": 430,
+      "unitDurationSeconds": 78.31,
+      "heldInputFiles": 2646,
+      "heldInputBytes": 120886395,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-fast1-receipt.json",
+          "bytes": 360,
+          "sha256": "sha256:0c594d1762548543c8cc7912b04d4b00a860beed7c700edd9ec1dbde20301d46"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-fast1.log",
+          "bytes": 43865,
+          "sha256": "sha256:7282376d8fa2cae3d2e98cc1160700c338bfd06139ba25eb5e11c206c83c5b76"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-report1-inputs1.json",
+          "bytes": 451326,
+          "sha256": "sha256:4e42c14ae430c882428e03ee4b4c8c75f90e10b01b82d298c7f3509f4a4aee29"
+        }
+      ],
+      "qualification": "Complete fast tier on the report-foundation checkpoint only. No MS3 full/final package/installed/durable runner/QA execution/pilot or human acceptance claim."
+    },
+    {
+      "id": "durable-queue2",
+      "status": "durable-controller-mechanics-verified-native-adapter-pending",
+      "record": "docs/mechanism-shorts-ms3-queue-results.json",
+      "owningTests": 39,
+      "nativeAdapter": "not-implemented",
+      "actualSIGKILLFixture": true
+    },
+    {
+      "id": "queue2-fast2",
+      "command": "pnpm check:fast",
+      "status": "passed",
+      "session": 46751,
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "sourceCommit": "468797dad1ccdf7ab3e3b871f4dc6da1d9b42fdc",
+      "units": 4401,
+      "files": 431,
+      "unitDurationSeconds": 69.09,
+      "heldInputFiles": 2653,
+      "heldInputBytes": 120944490,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-fast2-receipt.json",
+          "bytes": 359,
+          "sha256": "sha256:daa0a8ab1989db3fd666be88b9c48237eb8217bf3b6fced81f67120b91c9f72d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-fast2.log",
+          "bytes": 41957,
+          "sha256": "sha256:2d31c1fdfe006f48b0e5eb311c38ff8e8a2151db3268585932daa98e0e5d9f3a"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-inputs2.json",
+          "bytes": 452572,
+          "sha256": "sha256:811add767128bf891667651186a86a6fdf563718cb992059a11908eb53142542"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-owning4.log",
+          "bytes": 625,
+          "sha256": "sha256:e604e110b8d5dee80ad86df90d5b08b2bc7300492b7366376cf7ddd2b1aa5652"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-boundaries2.log",
+          "bytes": 186,
+          "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-build6.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-queue2-package-build3.log",
+          "bytes": 208,
+          "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+        }
+      ],
+      "qualification": "Complete fast tier and current public-entry declaration build on468797da; no actual native execution, QA, final full/archive/installed, pilot or human acceptance."
+    },
+    {
+      "id": "native-executor3",
+      "status": "native-executor-scoped-proof-passed-in-stages",
+      "record": "docs/mechanism-shorts-ms3-native-executor-results.json",
+      "outputs": 4,
+      "decodedFrames": 240,
+      "owningTests": 42,
+      "qualification": "Engineering adapter proof only. No genuine narration, whole glyph, mechanical, factual, continuous-motion, listening, human or pilot acceptance; no spending/publishing/merging/Actions."
+    },
+    {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "sourceCommit": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
+      "startedUtc": "2026-10-12T20:27:45.981591+00:00",
+      "pid": 58655,
+      "inventory": "/private/tmp/still-shift-ms3-native3-inputs1.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T20:29:59.513348+00:00",
+      "id": "native3-fast1",
+      "session": 51688,
+      "unitTests": 4404,
+      "unitFiles": 432,
+      "unitDurationSeconds": 68.04,
+      "heldInputFiles": 2659,
+      "heldInputBytes": 120986008,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-fast1.log",
+          "bytes": 41715,
+          "sha256": "sha256:c52594ecd7c274ae3630c9be5e1aa9e16d9a63347c4fce9bcf24a8bbb677fadd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-fast1-receipt.json",
+          "bytes": 360,
+          "sha256": "sha256:b45c6a659f3e48b2736ea3efa8ca113329d5eb387d64f61af887272aa4376aba"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-inputs1.json",
+          "bytes": 453669,
+          "sha256": "sha256:4b7bf4d88967f1536d6870eafccc4c8f2473a9dc5b3c8b2dc7d6c89860b4a19e"
+        }
+      ],
+      "qualification": "Complete fast tier on efa50574; earlier browser2 has its own retained exact runtime/artifact bindings. Final MS3 full/archive/installed and pilot remain open."
+    },
+    {
+      "id": "semantic-warning4",
+      "status": "scoped-semantic-and-warning-foundation-verified",
+      "record": "docs/mechanism-shorts-ms3-semantic-results.json",
+      "focusedTests": 21,
+      "actualNativeSamples": 180,
+      "seededControls": 3,
+      "qualification": "Scoped QA engineering layer and actual sample evidence only. No whole mechanical, collision, human, factual, listening, pilot acceptance or newly achieved production target."
+    },
+    {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "sourceCommit": "114f8df89d2d77aa6c2ae5af292fd2190b6bb8fc",
+      "startedUtc": "2026-10-12T20:44:15.067366+00:00",
+      "pid": 85158,
+      "inventory": "/private/tmp/still-shift-ms3-semantic4-inputs1.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T20:46:22.009136+00:00",
+      "id": "semantic4-fast1",
+      "session": 51338,
+      "unitTests": 4418,
+      "unitFiles": 434,
+      "unitDurationSeconds": 63.52,
+      "heldInputFiles": 2663,
+      "heldInputBytes": 121017359,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-semantic4-fast1.log",
+          "bytes": 41652,
+          "sha256": "sha256:327aeb7d26e7d033f55e5ea5c41791c465517e40c0c981550ba75d323bc4e89c"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-semantic4-fast1-receipt.json",
+          "bytes": 362,
+          "sha256": "sha256:92420e53ff6228680e346a91fba03f4e12dfb0c6ec35064fdb748bfe14e70544"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-semantic4-inputs1.json",
+          "bytes": 454374,
+          "sha256": "sha256:4a4dc429bec60981399c7fc3551621c5b76c3f6721e3c7dd7fb2652df127ff1f"
+        }
+      ],
+      "qualification": "Complete fast tier on114f8df8. Scoped native/render and sample proofs keep their separate code/artifact bindings. All final full/archive/installed/pilot and human review gates remain open."
+    },
+    {
+      "id": "report-command5",
+      "status": "scoped-api-cli-verified-native-browser-pending",
+      "record": "docs/mechanism-shorts-ms3-report-command-results.json",
+      "focusedTests": 54,
+      "qualification": "Scoped controller/report/CLI checks only at this checkpoint. No current actual report-on-native-output, pilot, human or newly achieved production target is claimed before the separate actual browser proof."
+    },
+    {
+      "id": "report-command5-actual-gates",
+      "status": "actual-native-report-and-complete-fast-runtime-tiers-verified",
+      "sourceCommit": "eec1954a1357aa88c8b7f113e425805d7b272f49",
+      "record": "docs/mechanism-shorts-ms3-report-command-results.json",
+      "unitTests": 4426,
+      "runtimeTests": 247,
+      "integrationTests": 322,
+      "depthTests": 14,
+      "outputs": 4,
+      "decodedFrames": 240,
+      "defaultCLIResponseBytes": 3611,
+      "qualification": "Actual three-family queue/native report/API/separate CLI proof, independent complete decode/report audit, and complete fast/runtime tiers on eec1954a with2676 inputs held exact. Final full/archive/installed and all original pilot extensions/genuine inputs/reviews remain open; no pilot/human acceptance or newly achieved target."
+    },
+    {
+      "id": "review-evidence6",
+      "status": "actual-native-evidence-fresh-handoff-and-complete-fast-runtime-tiers-verified",
+      "record": "docs/mechanism-shorts-ms3-evidence-results.json",
+      "focusedTests": 57,
+      "scopedImages": 81,
+      "qualification": "Actual three-family native queue/API/report/separate CLI handoff, independent strict image/projection/full-decode/PCM checks and complete held fast/runtime tiers passed in retained stages. A separate authored camera-cut fixture adds60 actual frames/27 images with independent before/after pixels and hashed native matrices. These engineering proofs do not supply whole glyph/mechanical/continuous/listening/factual/human review, final full/archive/installed verification or pilot acceptance.",
+      "outputs": 4,
+      "decodedFrames": 240,
+      "images": 108,
+      "independentPins": 188,
+      "unitTests": 4431,
+      "runtimeTests": 247,
+      "integrationTests": 322,
+      "depthTests": 14,
+      "actualCameraCut": {
+        "decodedFrames": 60,
+        "images": 27,
+        "cutFrames": [14, 15],
+        "independentPins": 46,
+        "actualExitCode": 0,
+        "qualification": "Single two-second engineering tape cut. This verifies actual cut extraction and observed camera choice, not pilot distinctness or physical/glyph/factual/listening/human acceptance."
+      }
+    },
+    {
+      "id": "operational-qa7",
+      "status": "actual-operational-native-qa-fast-runtime-and-independent-audit-verified",
+      "record": "docs/mechanism-shorts-ms3-qa-results.json",
+      "focusedTests": 87,
+      "qualification": "Current6080b8df complete fast/runtime/native and independent230-pin artifact/history/report audit pass. Both native failures and runtime1 failure remain retained. This engineering proof grants no pilot or whole mechanical/glyph/factual/continuous/listening/human acceptance. All original remaining MS3 work is open.",
+      "historyRepair": "Immutable original program retention implemented; latest native/local-tier proof pending",
+      "completeFast": {
+        "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+        "unitTests": 4445,
+        "heldInputFiles": 2692,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0
+      },
+      "currentNativeProof": {
+        "status": "passed",
+        "session": 1042,
+        "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+        "directory": "/private/tmp/still-shift-ms3-production-native-xoLXjI",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "executions": 5,
+        "outputs": 5,
+        "decodedFrames": 300
+      },
+      "failedRunArtifactAudit": {
+        "products": 5,
+        "decodedFrames": 300,
+        "images": 135,
+        "pins": 221,
+        "scope": "failed lifecycle, independent artifact audit only"
+      },
+      "affectedRuntimeTests": 6,
+      "runtimeAttempt1": {
+        "sourceCommit": "f981166d80e89a5e85f355a3133a48d02e02f72d",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "runtimePassed": 244,
+        "runtimeFailed": 3
+      },
+      "completeRuntime": {
+        "sourceCommit": "6080b8dff1bf3f31712ee890839602a5934479a0",
+        "runtimeTests": 247,
+        "integrationTests": 322,
+        "depthTests": 14,
+        "browserSmoke": "completed",
+        "heldInputFiles": 2692,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0
+      },
+      "independentAudit": {
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "products": 5,
+        "decodedFrames": 300,
+        "images": 135,
+        "actualScalarSamples": 300,
+        "pins": 230
+      }
+    },
+    {
+      "id": "declarative-execution8",
+      "record": "docs/mechanism-shorts-ms3-execution-results.json",
+      "status": "complete-fast-runtime-passed-actual-native-cli-recovery-pending",
+      "focusedTests": 37,
+      "qualification": "Three actual family inputs and current native identity are inspected by CLI creation without capture. Run/resume/failure/signal controls use an explicitly declared fixture adapter and owned callback invocation; no actual native CLI execution/OS interruption/cancellation/recovery acceptance is claimed. Earlier QA7 current source6080 has its separate native/independent proof. New source needs current complete tiers and actual native CLI fault/recovery evidence.",
+      "completeFast": {
+        "sourceCommit": "79f3c3f20205ef64c892acf36077d81bd666ac02",
+        "unitTests": 4448,
+        "heldInputFiles": 2698,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0
+      },
+      "currentRuntime": {
+        "status": "passed",
+        "session": 9677,
+        "sourceCommit": "79f3c3f20205ef64c892acf36077d81bd666ac02",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "runtimeTests": 252,
+        "integrationTests": 322,
+        "depthTests": 14,
+        "browserSmoke": "completed",
+        "heldInputFiles": 2698
+      }
+    },
+    {
+      "id": "targeted-retry9",
+      "status": "complete-current-fast-runtime-passed-real-native-recovery-pending",
+      "record": "docs/mechanism-shorts-ms3-retry-results.json",
+      "focusedTests": 48,
+      "owningSourceHoldExitCode": 0,
+      "qualification": "Targeted authorization verified through strict source-held owning/fixture lifecycle and CLI controls only. Earlier79f3 complete fast/runtime and6080 native/independent evidence remain separately bound. No current real native CLI recovery or whole review/pilot acceptance.",
+      "completeFast": {
+        "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+        "unitTests": 4458,
+        "heldInputFiles": 2702,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0
+      },
+      "currentRuntime": {
+        "status": "passed",
+        "session": 65430,
+        "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "runtimeTests": 253,
+        "integrationTests": 322,
+        "depthTests": 14,
+        "browserSmoke": "completed",
+        "heldInputFiles": 2702
+      }
+    },
+    {
+      "id": "native-cli-recovery10",
+      "status": "actual-native-cli-os-recovery-and-independent-audit-passed",
+      "record": "docs/mechanism-shorts-ms3-native-recovery-results.json",
+      "qualification": "Actual CLI/OS interruption/cancellation/input corruption/missing audio/export collision/targeted retries/relocation and independent complete artifact/history/current-report audit pass on held c474c9c5. Ten retained sealed products are engineering executions, not ten pilot episodes. Synthetic engineering PCM; whole mechanical/glyph/factual/continuous/listening/human and pilot acceptance remain unreviewed.",
+      "currentNative": {
+        "status": "passed",
+        "command": "pnpm test:browser:mechanism-production-recovery",
+        "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
+        "startedUtc": "2026-10-13T02:14:26.395640+00:00",
+        "pid": 13770,
+        "inventory": "/private/tmp/still-shift-ms3-native10-browser1-inputs.json",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T02:38:18.096339+00:00",
+        "session": 3926,
+        "root": "/private/tmp/still-shift-ms3-native-relocated-YkvFDd",
+        "products": 10,
+        "freshNativeSubmissions": 360
+      },
+      "independentAudit": {
+        "attempt": 2,
+        "sourceCommit": "c474c9c5c976b4c249163c0749d80f7e11e370f4",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "products": 10,
+        "decodedFrames": 600,
+        "images": 270,
+        "actualScalarSamples": 600,
+        "pins": 473,
+        "firstAuditFailureRetained": true
+      }
+    },
+    {
+      "id": "slotted-retention11",
+      "record": "docs/mechanism-shorts-ms3-retention-results.json",
+      "status": "factory-candidate-fast-native-independent-audit-passed",
+      "owningTests": 30,
+      "defaultIdentitiesPreserved": true,
+      "qualification": "Distinct factory/software/native engineering candidate on exact9e4ccce1 with complete fast,180 fresh native submissions and149-pin independent audit; all180 final decoded frames/81 images/180 native scalar samples verify and default all-frame pixels/audio match priorc474 cold product. Seven sampled visual errors remain per product; whole/factual/design/continuous/listening/genuine narration/pilot acceptance remains open. No newly accepted asset/episode, ElevenLabs spending or publication.",
+      "completeFast": {
+        "status": "passed",
+        "command": "pnpm check:fast",
+        "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+        "startedUtc": "2026-10-13T03:02:06.861480+00:00",
+        "pid": 30110,
+        "inventory": "/private/tmp/still-shift-ms3-retention11-fast1-inputs.json",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T03:04:23.266064+00:00",
+        "unitTests": 4462,
+        "testFiles": 441,
+        "heldInputFiles": 2705,
+        "heldInputBytes": 121426284,
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-retention11-fast1-receipt.json",
+          "bytes": 369,
+          "sha256": "sha256:040844e6669a5a1c1ac3dc787b8158a7856aa4be90c753985d4509806080ceeb"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-retention11-fast1.log",
+          "bytes": 44325,
+          "sha256": "sha256:c4a7e8f4db779077ef259aa0be42817f09a5f6be7d9bc883f76cffca234f392d"
+        },
+        "inventoryFile": {
+          "path": "/private/tmp/still-shift-ms3-retention11-fast1-inputs.json",
+          "bytes": 461793,
+          "sha256": "sha256:a6da92427f5151f59cad45cf0b2550c658d1c51f4bca125f73753247cf65c795"
+        }
+      },
+      "native": {
+        "status": "passed",
+        "command": "node --import tsx /private/tmp/still-shift-ms3-retention11-native2.mts",
+        "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+        "startedUtc": "2026-10-13T03:07:46.051164+00:00",
+        "pid": 47263,
+        "inventory": "/private/tmp/still-shift-ms3-retention11-native2-inputs.json",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "endedUtc": "2026-10-13T03:25:09.640104+00:00"
+      },
+      "nativeAdmissionFailureRetained": true,
+      "independentAudit": {
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "products": 3,
+        "decodedFrames": 180,
+        "images": 81,
+        "actualScalarSamples": 180,
+        "pins": 149,
+        "defaultDecodedFrameAndAudioParity": true
+      }
+    },
+    {
+      "id": "notched-line12",
+      "record": "docs/mechanism-shorts-ms3-line-results.json",
+      "status": "factory-candidate-fast-native-independent-audit-passed",
+      "owningTests": 37,
+      "sampledJawStates": 666,
+      "defaultIdentitiesPreserved": true,
+      "qualification": "Factory/software/native engineering candidate on exact2cf64882 with complete fast4,467/442,180 fresh native submissions and149-pin independent audit. All180 final decoded frames/81 exact images/180 native scalars verify; default peg all-frame decoded pixels/audio match priorc474 capture. Visual findings remain P0:6/L1:10/L2:10. Whole/factual/design/continuous/genuine speech/listening/pilot acceptance remains open; no holding-force simulation, spending or publication.",
+      "completeFast": {
+        "sourceCommit": "2cf64882d6750601e79f6fff173aa8590a068463",
+        "unitTests": 4467,
+        "testFiles": 442,
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "heldInputFiles": 2708
+      },
+      "native": {
+        "sourceCommit": "2cf64882d6750601e79f6fff173aa8590a068463",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "products": 3
+      },
+      "independentAudit": {
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "decodedFrames": 180,
+        "images": 81,
+        "actualScalarSamples": 180,
+        "pins": 149,
+        "defaultDecodedFrameAndAudioParity": true
+      }
+    },
+    {
+      "id": "release-trigger13",
+      "record": "docs/mechanism-shorts-ms3-trigger-results.json",
+      "status": "factory-candidate-current-tiers-native-independent-passed",
+      "owningTests": 42,
+      "closedSurfaceSamples": 21,
+      "defaultIdentitiesPreserved": true,
+      "qualification": "Current E05 factory/software/native sampled trigger/default engineering proof only. Sourcee9ad9f71 binds180 fresh submissions/180 decoded frames/81 images/120 trigger position hashes/149 pins. Original default all-frame decoded picture/audio parity passes. No whole mechanical/continuous/factual/design/genuine speech/listening/pilot acceptance, physical force claim, spending or publication.",
+      "previousCompleteTiers": "e1fa27bf fast4471/runtime253/integration322/depth14/smoke passed, retained separately",
+      "failedNativeRun": "T0 sealed; E1/E2 exact landmark inventory rejected; retained",
+      "sourceCommit": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+      "unitTests": 4472,
+      "products": 3,
+      "freshNativeSubmissions": 180,
+      "decodedFrames": 180,
+      "images": 81,
+      "independentPins": 149,
+      "usedTriggerPositionHashes": 120,
+      "defaultDecodedPictureAudioExact": true,
+      "completeTiers": "fast4472/runtime253/integration322/depth14/smoke on exacte9ad9f71"
+    },
+    {
+      "id": "static-moment15",
+      "record": "docs/mechanism-shorts-ms3-moment-results.json",
+      "status": "reusable-behavior-foundation-current-fast-scoped-passed-asset-native-pending",
+      "owningTests": 24,
+      "scopedTests": 30,
+      "qualification": "Reusable expected-state behavior foundation and software evidence only. Original five assets/two behaviors/ten questions remain required; no native observed force, real peg force, E10/whole/pilot acceptance, spending, merge or publication.",
+      "sourceCommit": "5ad2695d7cd690d998df22e5db9a87318e702705",
+      "unitTests": 4496,
+      "unitFiles": 444
+    },
+    {
+      "id": "ideal-lever16",
+      "record": "docs/mechanism-shorts-ms3-lever-results.json",
+      "status": "factory-candidate-current-tiers-native-independent-passed",
+      "owningTests": 11,
+      "scopedUnitTests": 80,
+      "scopedUnitFiles": 7,
+      "scopedCLITests": 4,
+      "defaultAndLineIdentitiesPreserved": true,
+      "qualification": "Current E10 factory/observed ideal-force engineering proof:180 native frames/81 images/900 scalar values including720 ideal moment quantities/151 pins on9ba. Fixed prescribed10Nmm near/far comparison holds in120 frames; default decoded picture/audio parity passes. Force is idealized, not measured product force. Whole mechanical/factual/design/continuous/genuine speech/listening/pilot remains unreviewed; accepted0/10. No spending, merge or publication.",
+      "sourceCommit": "9ba870d26cb0cf283f8ceabe5010ac55f112fab3",
+      "freshNativeSubmissions": 180,
+      "decodedFrames": 180,
+      "images": 81,
+      "scalarValues": 900,
+      "momentValues": 720,
+      "independentPins": 151,
+      "currentTierSource": "e4a01a420e2b5c36fc66a4d8bcdc137be32ffa68",
+      "completeTiers": "fast4507/runtime253/integration322/depth14/smoke"
+    },
+    {
+      "id": "load-seat18",
+      "record": "docs/mechanism-shorts-ms3-load-results.json",
+      "status": "load-foundation-current-tiers-generic-native-audit-passed-e06-asset-pending",
+      "owningTests": 11,
+      "scopedTests": 67,
+      "cliTests": 4,
+      "qualification": "Reusable force-driven behavior foundation verified on7425e734 by current software tiers and a four-frame generic native fixture/independent numeric audit. Virtual point contact is verified; E06 physical tooth/web/stop geometry, surface contact/nonpenetration, continuous motion, factual/design/genuine speech/listening/whole/pilot acceptance remain pending. Frozen ten questions and accepted0/10 unchanged; no spending, merge or publication.",
+      "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7",
+      "completeTiers": "fast4518/runtime253/integration322/depth14/smoke",
+      "freshGenericNativeSubmissions": 4,
+      "genericDecodedFrames": 4,
+      "genericMatrixScalarComparisons": 292,
+      "physicalE06AssetProof": false
+    },
+    {
+      "id": "load-asset19",
+      "record": "docs/mechanism-shorts-ms3-load-asset-results.json",
+      "status": "physical-candidate-native-audit-current-tiers-passed-source-alignment-episode-pending",
+      "owningTests": 10,
+      "scopedTests": 73,
+      "cliTests": 4,
+      "qualification": "Separate illustrative E06 candidate passes current software tiers and actual126-frame native/independent packed-stream/contact audit onae70d735. Known hinge-placement source alignment and clearer explanation views remain asset work. Selected-plane/triangle tests are sampled; no continuous/all-pair collision, measured product force/material, factual/design/genuine narration/listening/whole/pilot acceptance. Accepted0/10 and frozen questions remain unchanged; no spending, merge or publication.",
+      "sourceCommit": "ae70d735cd263c424113de6d8ba430226bc33c7e",
+      "freshNativeSubmissions": 126,
+      "decodedFrames": 126,
+      "usedWebStreams": 252,
+      "scalarComparisons": 15750,
+      "currentTiers": "fast4528/runtime253/integration322/depth14/smoke",
+      "sourceAlignment": "repair-required"
+    },
+    {
+      "id": "load-alignment20",
+      "record": "docs/mechanism-shorts-ms3-load-alignment-results.json",
+      "status": "rear-hinge-repair-native-audit-current-tiers-passed-original-episode-review-pending",
+      "scopedTests": 75,
+      "cliTests": 4,
+      "qualification": "Qualitative lower-rear hinge/stop-ledged anatomy repair verified on8c34b461 with current local tiers,126 normal native/decoded frames,252 packed web streams and sampled shortening/selected-solid clearance. Connected terminal Float32 seams are bounded independently; unrelated geometry retains the strict area gate. Whole factual/design/continuous/genuine narration/listening/pilot admission remains pending; accepted0/10 and frozen questions unchanged. No measured force/material claim, spending, merge or publication.",
+      "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+      "freshNativeSubmissions": 126,
+      "decodedFrames": 126,
+      "usedWebStreams": 252,
+      "scalarComparisons": 17262,
+      "webSolidTrianglePairChecks": 2483712,
+      "currentTiers": "fast4530/runtime253/integration322/depth14/smoke",
+      "sourceAlignment": "identified-attachment-repair-verified"
+    }
+  ],
+  "targets": {
+    "routineMedianAuthoringTokenReduction": {
+      "target": 0.5,
+      "actual": null,
+      "status": "unverified-missing-comparable-telemetry"
+    },
+    "firstPassTechnical": {
+      "target": 0.9,
+      "actual": 0.1,
+      "status": "measured-target-not-achieved",
+      "completed": 10,
+      "passed": 1,
+      "failedAttemptsRetained": 9,
+      "measurementSource": "Original producer3df/runtime1090. Receiving current-installed validation cannot reset this first-pass denominator."
+    },
+    "perEpisodeServerCaptureCode": {
+      "target": 0,
+      "actual": null
+    },
+    "guiSetupRecovery": {
+      "target": 0,
+      "actual": null
+    },
+    "unresolvedMechanicalFailuresInReviewedReady": {
+      "target": 0,
+      "actual": null
+    }
+  },
+  "remaining": [
+    "Whole factual/design, mechanical, encoded-glyph/readability, normal-speed motion/listening and owner review on exact delivered161 videos. Reviewed-ready/supported/accepted remain0.",
+    "Original90% first-pass target was not achieved:1/10,with nine failures retained. Comparable50% authoring-token savings remain unverified/null; receiving151 never rewrites that denominator.",
+    "Six older selected MS1/MS1N raw paths unavailable;19 existing timing deferrals, candidate packs and finer Thai adoption limits remain declared. MS4 scale/diversity/sound extensions are future scope."
+  ],
+  "qualification": "Current technical implementation is delivered with complete historical full119 and appropriate current0da scoped PR followups143/146/144/package145/actual151-154-160. No fresh entire full gate, whole review, owner approval, merge or publication is inferred. Finite162 reconciliation supersedes older dated live-state pointers.",
+  "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
+  "pullRequest": {
+    "url": "https://github.com/xxibcill/still-shift/pull/58",
+    "number": 58,
+    "state": "open",
+    "base": "main",
+    "purpose": "MS3 in-progress review of actual Everyday Unlocked EU001-EU010; former engineering cohort retained as history.",
+    "draft": false
+  },
+  "libraryExtensionProgress": {
+    "requiredAssets": ["E02", "E05", "E06", "E09", "E10"],
+    "engineeringImplementedAssets": ["E02", "E05", "E06", "E09", "E10"],
+    "requiredBehaviors": ["E06", "E10"],
+    "engineeringImplementedBehaviors": ["E06", "E10"],
+    "remainingAssetBehavior": null,
+    "qualification": "Source-bound software/native sampled engineering evidence only; asset/behavior/pilot product admission remains separate. Frozen ten questions and accepted0/10 stay unchanged.",
+    "provisionalE06Candidate": "Five required engineering assets/two behaviors now have source-bound implementation/native evidence. The identified E06 hinge anatomy repair is verified; original factual/design/explanation/whole/pilot admission remains separate."
+  },
+  "currentPilotSelection": {
+    "record": "docs/mechanism-shorts-ms3-pilot-selection.json",
+    "selection": {
+      "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+      "selectedEpisodeIds": [
+        "EU-001",
+        "EU-002",
+        "EU-003",
+        "EU-004",
+        "EU-005",
+        "EU-006",
+        "EU-007",
+        "EU-008",
+        "EU-009",
+        "EU-010"
+      ],
+      "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+    },
+    "summary": {
+      "selected": 10,
+      "recordingsLocated": 10,
+      "audioDecodesPassed": 10,
+      "wordTimingFilesLocated": 10,
+      "wordTimingBoundsPassed": 10,
+      "nativeAssetPinsMatched": 10,
+      "existingSoftwareFamilyCandidates": 3,
+      "existingBlenderAssetsNeedingBinding": 7,
+      "validated": 0,
+      "accepted": 0,
+      "routineTokenMeasurements": null
+    },
+    "previousFrozenSelectionStatus": "historical; exact former selection/evidence retained",
+    "newElevenLabsCalls": 0
+  },
+  "frozenSelectionStatus": "Historical three-family engineering cohort; active owner-selected pilot is currentPilotSelection",
+  "requiredNewAssetsScope": "Historical extension plan and proofs retained; current pilot uses the native assets declared in currentPilotSelection",
+  "requiredNewBehaviorsScope": "Historical extension plan and proofs retained; current pilot bindings are tracked separately",
+  "historicalRemainingAtPriorIndex": [
+    "Actual CLI/OS interruption/cancellation/input corruption/missing audio/export collision/targeted retries/relocation and independent473-pin audit now pass on c474c9c5; retain exact bindings and any remaining worker/managed integration requirements.",
+    "Operational registered assertions/MS2 timeline/grouped warnings/report/handoff integration passes scoped controls, exact local tiers and actual native independent audits. Broader faults, analytic/continuous collision and actual whole reviews remain.",
+    "Original ten-pilot review artifacts; scoped/stale repairs/affected rerender and automatic MS1 overlap recovery preserving plates. Three-family evidence derivation, actual camera-cut extraction and fresh-session handoff are verified separately.",
+    "Original ten distinct question fixtures with actual factual/design/genuine speech/visual proof; five assets and two behaviors remain required and unadmitted.",
+    "One actual bounded episode/cohort report command and generated production schema/limit agreement are verified. Broader import/preview/export capability reconciliation, actual pilot measurements, final full/archive/installed and MS3 PR remain.",
+    "Retain candidate/owner reviews and finer Thai limits; no ElevenLabs spend without explicit project/batch/model/voice/takes/credits approval."
+  ],
+  "historicalTargetMeasurementsAtPriorIndex": {
+    "routineMedianAuthoringTokenReduction": {
+      "target": 0.5,
+      "actual": null,
+      "status": "unverified-missing-comparable-telemetry"
+    },
+    "firstPassTechnical": {
+      "target": 0.9,
+      "actual": null,
+      "status": "unmeasured"
+    },
+    "perEpisodeServerCaptureCode": {
+      "target": 0,
+      "actual": null
+    },
+    "guiSetupRecovery": {
+      "target": 0,
+      "actual": null
+    },
+    "unresolvedMechanicalFailuresInReviewedReady": {
+      "target": 0,
+      "actual": null
+    }
+  },
+  "resultsIndexReconciliation": {
+    "record": "./mechanism-shorts-requirement-inventory99-results.json",
+    "historicalScope": "frozenSelection/requiredNewAssets/requiredNewBehaviors/candidateRouting/libraryExtensionProgress keep former engineering bindings; currentPilotSelection/currentPilotProduction describe the active actual-first-ten pilot.",
+    "originalEvidenceRelabeled": false
+  },
+  "currentPhysicalFaultWorkAllowance": "./mechanism-shorts-ms3-work-allowance103-results.json",
+  "completedPhysicalFaultImages": "./mechanism-shorts-ms3-physical-fault104-results.json",
+  "verificationHistoryScope": "The verification array retains dated historical checkpoints and their exact code/artifact bindings; old pending statements are not current implementation status. ActiveRequiredFullPreparation/currentPilotProduction/current completed proof pointers state the present gates.",
+  "currentFaultScenarioCoverage": "./mechanism-shorts-ms3-fault-coverage111-results.json",
+  "latestCompleteFull": {
+    "record": "./mechanism-shorts-ms3-full125-terminal-results.json",
+    "session": 71989,
+    "actualExitCode": 0,
+    "seconds": 24311.279254041146,
+    "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+    "sourceHold": 0,
+    "selectedInputsExact": 2793,
+    "scriptInvocationsIncludingAliases": 116,
+    "unitTests": 4594,
+    "runtimeTests": 346,
+    "integrationTests": 324,
+    "pythonTests": 14,
+    "frozenBaselines": 176,
+    "frozenBaselineFrames": 36061,
+    "benchmark": {
+      "raw": "   \u00b7 deterministic end-to-end request  1,180.39  0.7135  3.0461  0.8472  0.8551  1.1768  1.9948  3.0461  \u00b11.50%      591",
+      "hz": 1180.39,
+      "minimumMs": 0.7135,
+      "maximumMs": 3.0461,
+      "meanMs": 0.8472,
+      "p75Ms": 0.8551,
+      "p99Ms": 1.1768,
+      "p995Ms": 1.9948,
+      "p999Ms": 3.0461,
+      "relativeMarginPercent": 1.5,
+      "samples": 591
+    },
+    "benchmarkScope": "Unmodified benchmarks/noop.bench.ts > v0.1 no-op engine dispatch benchmark. Positive measured samples do not establish full3D/pilot throughput, costs or token savings.",
+    "existingWebglTimingDeferrals": 19,
+    "wholeOrPilotAcceptance": false
+  },
+  "currentOwningStory118": {
+    "record": "./mechanism-shorts-ms3-story118-results.json",
+    "actualSession": 86006,
+    "actualExitCode": 0,
+    "sourceHold": 0,
+    "cases": 69,
+    "frames": 14086,
+    "repeatedExportPairs": 14,
+    "maximumTimingRatio": 1.2245349816930802,
+    "unchangedLimit": 1.25,
+    "maximumPixelDelta": 2,
+    "sourceChanges": 0,
+    "scope": "Profiled complete owning matrix; no full-gate or cause-closure claim."
+  },
+  "currentOwnerDecisions120": "./mechanism-shorts-ms3-owner-decisions120-results.json",
+  "previousCompleteFull113": {
+    "record": "./mechanism-shorts-ms3-final113-full-gate-results.json",
+    "session": 8967,
+    "actualExitCode": 1,
+    "seconds": 4984.338336915942,
+    "sourceHold": 0,
+    "failedScript": "test:browser:composition-story-fixtures",
+    "failedCase": "story/calibration-pan",
+    "timingRatio": 1.251626897572802,
+    "unchangedLimit": 1.25,
+    "pixelFailures": 0,
+    "maxDelta": 1,
+    "cause": "unproven"
+  },
+  "currentPackage": {
+    "status": "passed-current-private-package-scoped-upstream-followup",
+    "record": "./mechanism-shorts-ms3-package145-results.json",
+    "sourceCommit": "ef9db6e50f83745624af51c43c7abe583b162759",
+    "archive": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-package145/still-shift-0.1.1.tgz",
+      "bytes": 5469414,
+      "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
+    },
+    "historicalCompleteFullSource": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+    "currentFullScope": "fast143, recorded runtime146, eight owning browser144, unchanged package145; no fresh complete full gate"
+  },
+  "currentInstalledCapabilities": {
+    "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
+    "actualExitCode": 0,
+    "productionAndMediaDiscoveryExact": true,
+    "formattedGeneratedReferenceExact": true,
+    "productionSchemaReferences": 25,
+    "proseGuidesExact": 3,
+    "schemaReferenceLocation": "held source checkout, not bundled archive members",
+    "retainedFailedProbe130": true,
+    "completeSource107PayloadByteExact": true,
+    "completeReportBytes": 14140,
+    "compactItems": 32,
+    "compactTruncated": false
+  },
+  "currentProjectSnapshot150": {
+    "record": "./mechanism-shorts-ms3-project150-results.json",
+    "fileCount": 20889,
+    "logicalBytes": 16909710619,
+    "uniqueContentBytes": 4385935468,
+    "independentOriginalInodes": true,
+    "isAnotherExecutedRelocationProof": false
+  },
+  "previousCompletePackage126": {
+    "record": "./mechanism-shorts-ms3-package126-results.json",
+    "actualSession": 52914,
+    "actualExitCode": 0,
+    "sourceCommit": "1dbee06a67813ad14c06315798782dcc9318e3ff",
+    "standardChecks": 27,
+    "members": 2573,
+    "correspondingSources": 1051,
+    "nativeDiagnosticControls": 13,
+    "retryControls": 4,
+    "nativeClosureFiles": 5223,
+    "inputFiles": 115,
+    "copiedBytes": 2207274134,
+    "allCopiedHashesVerified": true
+  },
+  "historical_currentPilotProduction": {
+    "selection": {
+      "id": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+      "selectedEpisodeIds": [
+        "EU-001",
+        "EU-002",
+        "EU-003",
+        "EU-004",
+        "EU-005",
+        "EU-006",
+        "EU-007",
+        "EU-008",
+        "EU-009",
+        "EU-010"
+      ],
+      "sha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471"
+    },
+    "episodes": [
+      {
+        "id": "EU-001",
+        "object": "Tape-measure end hook",
+        "question": "Why does the hook on a tape measure move?"
+      },
+      {
+        "id": "EU-002",
+        "object": "Cable tie",
+        "question": "Why does a cable tie tighten but resist pulling backward?"
+      },
+      {
+        "id": "EU-003",
+        "object": "Spring clothespeg",
+        "question": "Why does squeezing one end of a clothespeg open the other?"
+      },
+      {
+        "id": "EU-004",
+        "object": "Metal-tooth zipper",
+        "question": "How does a zipper join its teeth?"
+      },
+      {
+        "id": "EU-005",
+        "object": "Keyhole mounting slot",
+        "question": "How does a keyhole mounting slot hold a screw?"
+      },
+      {
+        "id": "EU-006",
+        "object": "Binder clip",
+        "question": "Why do binder-clip handles make the jaws open?"
+      },
+      {
+        "id": "EU-007",
+        "object": "Side-release buckle",
+        "question": "How does a side-release buckle lock and release?"
+      },
+      {
+        "id": "EU-008",
+        "object": "Door spring latch",
+        "question": "Why does a door latch retract and spring back?"
+      },
+      {
+        "id": "EU-009",
+        "object": "Curved tape-measure blade",
+        "question": "Why is a tape-measure blade curved?"
+      },
+      {
+        "id": "EU-010",
+        "object": "Stay-on can tab",
+        "question": "How does a soda-can tab open the scored panel?"
+      }
+    ],
+    "sourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+    "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "lifecycleStagesPassed": 13,
+    "independentHandoffPacketAudits": 10,
+    "frames": 6181,
+    "rootArtifacts": 130,
+    "reviewImages": 1084,
+    "nativePins": 24724,
+    "narration": "Existing complete Alden Eleven v4 recordings at original1x; no synthesis, stretching or inserted filler.",
+    "reviewCounts": {
+      "technical": {
+        "passed": 10,
+        "failed": 0,
+        "unreviewed": 0,
+        "notApplicable": 0
+      },
+      "mechanical": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 10,
+        "notApplicable": 0
+      },
+      "sampled-visual": {
+        "passed": 10,
+        "failed": 0,
+        "unreviewed": 0,
+        "notApplicable": 0
+      },
+      "continuous-motion": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 10,
+        "notApplicable": 0
+      },
+      "listening": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 10,
+        "notApplicable": 0
+      },
+      "factual": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 10,
+        "notApplicable": 0
+      }
+    },
+    "firstPassTechnical": {
+      "completed": 10,
+      "passed": 1,
+      "rate": 0.1,
+      "unverified": 0,
+      "targetSatisfied": false
+    },
+    "failures": {
+      "failedAttempts": 9,
+      "repeatedFailureEpisodes": 0,
+      "cancelled": 0,
+      "interrupted": 0,
+      "origins": {
+        "transient": 0,
+        "authored": 0,
+        "unknown": 9
+      }
+    },
+    "renderSeconds": {
+      "available": 10,
+      "p50": 474.63485874950004,
+      "p95": 574.8377828831498
+    },
+    "authoring": {
+      "comparablePairedTasks": 0,
+      "routineMedianTokens": null,
+      "baselineMedianTokens": null,
+      "savings": null,
+      "targetSatisfied": null
+    },
+    "routing": {
+      "existing-pack-rig": 8,
+      "new-asset-existing-rig": 2
+    },
+    "newRigTypes": 0,
+    "supported": 0,
+    "reviewedReady": 0,
+    "accepted": 0,
+    "currentIntegratedSourceQualification": "Original products retain3df/runtime1090 and original1/10/nine failures/null paired tokens/accepted0. Current full119, exact package121, full closure copy and independent all10/6181 final-product audits now pass on the integrated source. Main56598 final report/resume/ten-handoff terminal and whole/owner review remain pending; current review135 videos include the scoped EU008 label repair.",
+    "records": [
+      "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+      "./mechanism-shorts-ms3-current-first-ten-recovery-results.json",
+      "./mechanism-shorts-ms3-native-coverage-board.json",
+      "./mechanism-shorts-ms3-current-installed-scope92-results.json"
+    ],
+    "factualInputPreflight": {
+      "record": "./mechanism-shorts-ms3-factual-input100-results.json",
+      "episodes": 10,
+      "scope": "Actual pinned speech/callout input consistency with primary descriptions and explicit selected-construction/inference limits; whole artifact factual/mechanical reviews remain unreviewed."
+    },
+    "phoneSampleReview": {
+      "record": "./mechanism-shorts-ms3-phone101-review-results.json",
+      "episodesInspected": 10,
+      "existingPhoneFramesInspected": 60,
+      "copyClarityRepairsPrepared": 1,
+      "repairsExecuted": 0,
+      "wholeReviewsPromoted": false
+    },
+    "activeInstalledPreparation": "./mechanism-shorts-ms3-installed121-preparation-results.json"
+  },
+  "historical_activeStagedRepair": "./mechanism-shorts-ms3-repair110-results.json",
+  "historical_activeInstalledPreparation": "./mechanism-shorts-ms3-installed121-preparation-results.json",
+  "historical_remainingBeforeRequiredFull107": [
+    "Complete current final integrated-source pnpm check:all session42543 on held3749618d. Retain failed full90/cache diagnosis and existing WebGL timing deferrals; a live prefix is not a pass.",
+    "After actual full0, run the prepared standard offline package matrix, audit/install its exact archive, copy the complete independently hashed native closure, and execute a fresh current-installed queue/run/report/resume/ten-handoff lifecycle for all10 actual episodes. Original3df products and archive85/prepared86 are historical bindings.",
+    "Independently audit current ten receiving packets and complete encoded picture/original narration closure. Fresh receiving validation must not reset original first-pass1/10 or nine failed attempts, manufacture comparable paired tokens, or infer review acceptance.",
+    "Completed104: two actual EU001 diagnostic assets/four native phone images captured, selector failures located64/159/266 and all4 images agent-inspected within approved total50/200M. Sparse witnesses do not promote whole pilot QA. No further diagnostic asset work or ElevenLabs spending.",
+    "After the initial current all-ten installed run checkpoint, execute and inspect the prepared EU008 two-label Spring assembly copy revision through the supported CAS revision lifecycle before final report/resume/ten handoffs. Prove actual native reuse, exact complete original narration and affected encoded picture; preserve original products, neighbors, first-pass1/10 and review boundaries.",
+    "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
+    "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
+  ],
+  "historical_activeRequiredFullPreparation": "./mechanism-shorts-ms3-final119-full-gate-results.json",
+  "historical_currentPackageGate": "Complete full119, standard package121, full closure copy and all10 final-product audits pass. Main56598 final lifecycle/report/resume/ten-handoff terminal remains pending. Original1/10 first-pass/nine failures/null paired tokens and whole/owner gates unchanged.",
+  "historical_acceptanceReconciliation114": {
+    "record": "./mechanism-shorts-acceptance-audit114-results.json",
+    "rows": 49,
+    "crossCuttingClauses": 26,
+    "traceabilityRows": 21,
+    "status": "reconciled-final-gates-open",
+    "freshMS0": {
+      "originalDependencies": 27,
+      "archivePayloadMembers": 25,
+      "archiveManifestAdditional": 1,
+      "sourceCopyPairs": 13
+    },
+    "retainedRawPins": {
+      "presentExact": 24,
+      "unavailableOlderTemporaryPaths": 6,
+      "historicalRecordsRemain": true
+    },
+    "architectureDecision": "Owner120 explicitly allows Blender for the actual first-ten pilot, with saved masters directly; core/default route remains Blender-free.",
+    "actualCompleteFull": {
+      "session": 71989,
+      "status": "passed-actual-exit0-existing-deferrals-retained",
+      "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+      "record": "./mechanism-shorts-ms3-full125-terminal-results.json"
+    },
+    "allTenCurrentInstalledRequired": true,
+    "goalComplete": false,
+    "architectureDecisionAtCapture": "pending-human-clarification; original no-Blender-runtime boundary not amended",
+    "ownerResolution120": "./mechanism-shorts-ms3-owner-decisions120-results.json",
+    "actualCompleteFullAtCapture": {
+      "session": 8967,
+      "status": "live-unpassed",
+      "sourceCommit": "1b21c86ed957d7aa5bae3bb581040711a01eef7d"
+    }
+  },
+  "historical_activeOwningDiagnostic": null,
+  "historical_currentActiveFull": {
+    "record": "./mechanism-shorts-ms3-final119-full-gate-results.json",
+    "session": 71989,
+    "status": "completed-actual-terminal0",
+    "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+    "sourceFiles": 2793,
+    "sourceBytes": 122415742,
+    "toolchainPreflight": 0,
+    "latestStoryCheckpoint": "./mechanism-shorts-ms3-story123-checkpoint-results.json",
+    "storyCasesPassed": 69,
+    "completeGatePassed": true,
+    "latestBaselineCheckpoint": "./mechanism-shorts-ms3-baseline124-checkpoint-results.json",
+    "frozenBaselineItemsPassed": 176,
+    "frozenBaselineFramesPassed": 36061,
+    "actualExitCode": 0,
+    "sourceHold": 0,
+    "terminalRecord": "./mechanism-shorts-ms3-full125-terminal-results.json"
+  },
+  "historical_currentInstalledLifecycle": {
+    "status": "all16-cli0-and-corrected-postflight0-in-recorded-stages-original-wrapper1",
+    "record": "./mechanism-shorts-ms3-complete-installed149-results.json",
+    "originalMainActualToolExitCode": 1,
+    "postflightActualToolExitCode": 0,
+    "allTenFinalHandoffPacketsVerified": true,
+    "wholeReviewOrHumanAcceptance": false
+  },
+  "historical_currentReviewVideos": {
+    "index": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-current-installed-review135/index.md",
+    "episodes": 10,
+    "source": "current installed final products including EU008 two-label repair",
+    "wholeReviewOrOwnerApproval": false
+  },
+  "historical_remainingBeforeFinalProductAudits139": [
+    "Complete current installed all10/6181/EU008 repair lifecycle56598, then independently audit the final ten packet/native/decoded picture/original narration closures. Complete full119, standard package121 and full closure copy now pass; preserve19 existing timing deferrals and all prior failures.",
+    "After actual full0, run the prepared standard offline package matrix, audit/install its exact archive, copy the complete independently hashed native closure, and execute a fresh current-installed queue/run/report/resume/ten-handoff lifecycle for all10 actual episodes. Original3df products and archive85/prepared86 are historical bindings.",
+    "Independently audit current ten receiving packets and complete encoded picture/original narration closure. Fresh receiving validation must not reset original first-pass1/10 or nine failed attempts, manufacture comparable paired tokens, or infer review acceptance.",
+    "After the initial current all-ten installed run checkpoint, execute and inspect the prepared EU008 two-label Spring assembly copy revision through the supported CAS revision lifecycle before final report/resume/ten handoffs. Prove actual native reuse, exact complete original narration and affected encoded picture; preserve original products, neighbors, first-pass1/10 and review boundaries.",
+    "Complete whole factual/design, mechanical, encoded glyph/readability, normal-speed continuous motion and listening review; keep unsupported, unreviewed and human acceptance explicit. Current reviewed-ready/supported/accepted0/10.",
+    "Reconcile all49 MS0-MS3 deliverables and their acceptance clauses against their exact source/evidence identities, current installed capability discovery and guides. Preserve candidate pack/finer Thai limits, prior failures and open upstream PRs; no routine merge, publishing or inferred human acceptance."
+  ],
+  "historical_remainingBeforeComplete149": [
+    "Finish actual main56598 final repair-command closure/report/resume/all ten current CLI handoffs and its real terminal on the verified archive/source. Independent final-product audits now actually pass all10/6181 and do not substitute for that lifecycle terminal.",
+    "After those commands complete, independently reconcile all ten current CLI handoff packets against the final manifest, current product/artifact bindings and refreshed receiving resume paths. Sealed product/evidence/audio/native audits are already complete.",
+    "Complete or retain genuine whole factual/design, mechanical, encoded-glyph, normal-speed motion/listening and owner review. Ten current videos, including revised EU008, are available in review135; feedback requested. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged.",
+    "Reconcile all49 deliverables/26 cross-cutting clauses/21 traceability rows with final full125/package126/capability131+136/product139/current lifecycle evidence, preserving old staged/failed qualifications, unavailable six older raw paths, existing19 timing deferrals and unmet/unmeasured pilot targets."
+  ],
+  "historical_currentIdentityPilot151": {
+    "status": "running",
+    "record": "./mechanism-shorts-ms3-current151-preparation-results.json",
+    "actualSession": 14257,
+    "currentQueueActualExitCode": 0,
+    "sourcePackage": "ef9db6e50f83745624af51c43c7abe583b162759"
+  },
+  "historical_remainingBeforeFresh151": [
+    "Finish isolated newer-prerequisite candidate143 affected browser/package and updated installed-runtime follow-up before delivering its source to PR58. Original full119 remains earlier-source evidence; retain scoped follow-up qualifications.",
+    "Reconcile49 deliverables/26 cross-cutting clauses/21 traceability rows against final evidence, preserving original56598 bookkeeping1/corrected1490, staged runtime146, six older raw-path gaps,19 timing deferrals and unmet/unmeasured targets.",
+    "Whole factual/design/mechanical/encoded-glyph/normal-speed/listening and owner review remain open on review135. Original first-pass1/10/nine failures/null paired tokens and reviewed-ready/supported/accepted0 remain unchanged."
+  ],
+  "currentPackageGate": "Current package145 actual0 and current151-154-160 runtime/product closure pass in their declared scopes. Complete historical full119 retains1c binding; current0da scoped followups143/146/144 apply. Whole and owner review remain pending.",
+  "currentPilotProduction": {
+    "record": "./mechanism-shorts-ms3-current160-results.json",
+    "runtimeIdentity": {
+      "codeSha256": "sha256:6ec6096e62ac78fe326bd895e15d222597f83abf9b4d7a910de6e5fdb54e37b1",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "profile": {
+        "backend": "blender-native",
+        "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+        "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+        "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+        "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      }
+    },
+    "currentReceivingPhase": {
+      "completed": 10,
+      "passed": 10,
+      "rate": 1,
+      "unverified": 0,
+      "targetSatisfied": true
+    },
+    "originalPilotMetrics": {
+      "firstPassPassed": 1,
+      "denominator": 10,
+      "failedAttempts": 9,
+      "pairedTokens": null,
+      "accepted": 0
+    },
+    "wholeReviewOrHumanAcceptance": false
+  },
+  "currentInstalledLifecycle": {
+    "record": "./mechanism-shorts-ms3-current160-results.json",
+    "actualSession": 14257,
+    "actualExitCode": 0,
+    "episodes": 10,
+    "frames": 6181,
+    "cliCalls": 5,
+    "currentCliHandoffs": 1,
+    "independentlyVerifiedSealedSnapshots": 10,
+    "currentRuntimeIdentity": {
+      "codeSha256": "sha256:6ec6096e62ac78fe326bd895e15d222597f83abf9b4d7a910de6e5fdb54e37b1",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "profile": {
+        "backend": "blender-native",
+        "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+        "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+        "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+        "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      }
+    },
+    "wholeReviewOrHumanAcceptance": false
+  },
+  "currentReviewVideos": {
+    "record": "./mechanism-shorts-ms3-delivery161-results.json",
+    "index": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-review161/index.md",
+    "episodes": 10,
+    "source": "Exact actual current151 outputs in independently copied snapshot161",
+    "wholeReviewOrOwnerApproval": false
+  },
+  "currentIdentityPilot151": {
+    "status": "passed-separate-current-identity-receiving-phase",
+    "record": "./mechanism-shorts-ms3-current160-results.json",
+    "actualSession": 14257,
+    "actualExitCode": 0,
+    "sourcePackage": "ef9db6e50f83745624af51c43c7abe583b162759",
+    "doesNotResetOriginalPilotMetrics": true
+  },
+  "currentAcceptanceReconciliation": {
+    "record": "./mechanism-shorts-acceptance-reconciliation162-results.json",
+    "deliverables": 49,
+    "acceptanceClauses": 26,
+    "traceabilityRows": 21,
+    "technicalImplementationDelivered": true,
+    "pilotProductAcceptance": false
+  },
+  "currentProjectSnapshot": {
+    "record": "./mechanism-shorts-ms3-delivery161-results.json",
+    "status": "retained-exact-current151-data-and-verified-package-not-another-executed-relocation",
+    "fileCount": 19555,
+    "logicalBytes": 15662571517,
+    "uniqueContentBytes": 4359019374,
+    "uniqueFiles": 8216,
+    "allFilesIndependentOfOriginalInodes": true,
+    "archive": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current-project161/still-shift-0.1.1.tgz",
+      "bytes": 5469414,
+      "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
+    },
+    "isAnotherExecutedRelocationProof": false
+  },
+  "finalPublicDelivery": {
+    "record": "./mechanism-shorts-ms3-delivery165-results.json",
+    "verifiedTechnicalCheckpoint": "276e76f69d73352fc9e027e3c72fea0435836eb7",
+    "verifiedReceiptCheckpoint": "145c348e65fdea4ed1d426a853d53fe6ef2d11fd",
+    "allFivePullRequestsAttached": true,
+    "actionsEnabled": false,
+    "approvedDescriptionUnchanged": true,
+    "laterChanges": "Documentation-only reconciliation pointers; code/package/products remain exact."
+  }
+}

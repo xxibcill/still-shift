@@ -1,0 +1,949 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "episode": "E05",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "ba6f59d799c34a774c3abc78a03c3ae169970453",
+  "status": "factory-candidate-current-tiers-native-independent-passed",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/cable-tie-input.schema.json",
+      "bytes": 3610,
+      "sha256": "sha256:495b2b96dbedf816618b50c8a4a1997019fb972800abbc8f68a06bf8360cd65b"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/family-authoring.schema.json",
+      "bytes": 28511,
+      "sha256": "sha256:0ed073b2f531f66058c84f1532ce074811d3d12829c3465abcb186e7b71f3588"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/frame-2.schema.json",
+      "bytes": 15493,
+      "sha256": "sha256:f5400c168a8224b2395144991173cce59780a18d56f848069975cc6a81f9f197"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/native-frame-3.schema.json",
+      "bytes": 24850,
+      "sha256": "sha256:d510424b8af2abf4618f30709650a6b1b32fe9b56d478e85a0e4c715da05d4a5"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/pack.schema.json",
+      "bytes": 41685,
+      "sha256": "sha256:aaba829df2debb5b1854a472f8aab884eb20ebb99d1474184177303f435de802"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/prepared-native3d-3.schema.json",
+      "bytes": 252188,
+      "sha256": "sha256:e8bb0b78375c7e4e2f48279579146db2b88a70f775c797f4b55a741186b1a394"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/scene-2.schema.json",
+      "bytes": 49542,
+      "sha256": "sha256:f6eb39fc490f7f3e5f41532fa9c2f8390ed1be514447535396188aea0701aeb7"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/scene-3.schema.json",
+      "bytes": 55024,
+      "sha256": "sha256:b50ec342a1d702568e2fed260d79b2b20d9ea6cc7a4abce7339369ed7fa50c1e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/teaching-shape.schema.json",
+      "bytes": 11781,
+      "sha256": "sha256:be5903af5f2502b68b8cd9ceb7b7f4060bc6ffc6aee5e04643c0c8f49901c776"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cable-tie-pack.ts",
+      "bytes": 12693,
+      "sha256": "sha256:ecb763bfeefc4ab085d53fb9b05aa2e0dfb349e132ce3eae0c58d20954d3e74a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/camera-descriptions.ts",
+      "bytes": 6455,
+      "sha256": "sha256:da01f94b95b07b549aaf50e9cb96dc4a1427d40800c361814207336fec4f4115"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/family-registry.ts",
+      "bytes": 9485,
+      "sha256": "sha256:5a118379b1005fccf888e1a3c2d305e9504d6502d0cb077cac3adca586c2b4aa"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/teaching-pawl.ts",
+      "bytes": 2848,
+      "sha256": "sha256:5965f533076f5af493343ab14e27edf6aeb037492011a3d7031110c3b6b86bb6"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/renderer-core/src/mechanism/teaching-topology.ts",
+      "bytes": 4047,
+      "sha256": "sha256:e8939cb1e952eec24040baed2d18656b258f5debbe9f8a3281c1a8285afb7ae9"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/frame-v2.ts",
+      "bytes": 9606,
+      "sha256": "sha256:3590f39c24cc9b81892447672e574edbf65e5c4ffcf9fea8a8e8fc978ce73c66"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/pack-document.ts",
+      "bytes": 24493,
+      "sha256": "sha256:f4a5a53a2ffcbcb7f0c7bec1ae01997cee7685def6b291d460ad049262ea6691"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/scene-contract/src/mechanism/teaching-shapes.ts",
+      "bytes": 7785,
+      "sha256": "sha256:739a29ccad412aab422e024b6feacce80e3c003e52988b098b45f8c781bb92bf"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cable-tie-release.ts",
+      "bytes": 4378,
+      "sha256": "sha256:2361187f168cf4a929193911d9e3c37187eebd0d08276b598e102c36977385fc"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-release-trigger.test.ts",
+      "bytes": 7872,
+      "sha256": "sha256:e953feb02f84e7de39cff46edb8cfa5dc8c8b629cedecf89bf7a0c03a81b4dae"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-family-registry-cli.test.ts",
+      "bytes": 4642,
+      "sha256": "sha256:008d3d46b3871b13e5287c8357f407536fe98df360647f5eaa2a7c5b3e93306a"
+    }
+  ],
+  "primarySource": {
+    "url": "https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202",
+    "catalogue": "https://www.hellermanntyton.com/shared/assets/PDP_PS_RELK_Series_com.pdf",
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-E05-RELK-catalogue.pdf",
+        "bytes": 200006,
+        "sha256": "sha256:247096721b350c37b3b24e7a9465231e26002e254d749730a35d39d72a1ba97d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-E05-RELK-catalogue-page.png",
+        "bytes": 380975,
+        "sha256": "sha256:dea72a627c4a25df591afe9a36de72355c544c9c8e44c4efabef23941ef0eb98"
+      }
+    ],
+    "qualification": "Manufacturer photo/closure diagram inspected. Exact internal geometry and dimensions remain illustrative/unreviewed."
+  },
+  "implementation": [
+    "Optional bounded trigger section continues the fixed-root pawl tangent, flares to a wider paddle and preserves one closed mesh/shared driver.",
+    "Required root/tip landmarks remain; trigger landmark exists only for the optional section. Strict frame/metadata inventories updated without relaxing base required landmarks.",
+    "Inside-serrated source mesh and reflected head place the pawl below the tail, with a protruding trigger and separated reference cables on the bundle side.",
+    "Only the new immutable factual variant admits teaching-release; original T50SOS-style non-releasable guard and original source/metadata remain exact.",
+    "Schema/registry/camera/saved-family/CAS integration uses existing ratchet and pawl scalar; E06/E10 required behaviors remain separate."
+  ],
+  "identity": {
+    "defaultSource": "sha256:3a59ce85a880bf2f92d90b4cdbbbe9336b44d607b40c13836b8f6888f9f5af5d",
+    "defaultMetadata": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+    "candidateSource": "sha256:4067278bc9a3b9815a1325fe83b4e776fc6b0859d6f4afd8090bc891290dc4d5",
+    "candidateMetadata": "sha256:877a7b778a7f2daa5232e6be6ac934fe12f55326ed349969b7de75b7202fb191",
+    "metadataBytes": 14042,
+    "meshes": 16,
+    "parts": 6
+  },
+  "owningTests": 42,
+  "actualTestFiles": 5,
+  "closedSurfaceSamples": 21,
+  "preflight": {
+    "receipt": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:50:54.703653+00:00",
+        "endedUtc": "2026-10-13T04:51:06.973443+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/scene-contract/src/mechanism/teaching-shapes.ts",
+          "packages/scene-contract/src/mechanism/frame-v2.ts",
+          "packages/scene-contract/src/mechanism/pack-document.ts",
+          "packages/renderer-core/src/mechanism/teaching-pawl.ts",
+          "packages/renderer-core/src/mechanism/teaching-topology.ts",
+          "packages/animation-engine/src/mechanism/cable-tie-release.ts",
+          "packages/animation-engine/src/mechanism/cable-tie-pack.ts",
+          "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+          "packages/animation-engine/src/mechanism/family-registry.ts",
+          "tests/unit/mechanism-release-trigger.test.ts"
+        ],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:51:06.974825+00:00",
+        "endedUtc": "2026-10-13T04:51:07.831752+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-1.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:51:07.832104+00:00",
+        "endedUtc": "2026-10-13T04:51:11.337762+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-2.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:51:11.338067+00:00",
+        "endedUtc": "2026-10-13T04:51:12.247107+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-3.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-release-trigger.test.ts",
+          "tests/unit/mechanism-family-packs.test.ts",
+          "tests/unit/mechanism-family-authoring.test.ts",
+          "tests/unit/mechanism-family-registry.test.ts",
+          "tests/unit/mechanism-v2-posed-shapes.test.ts",
+          "tests/unit/mechanism-teaching-shapes.test.ts"
+        ],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T04:51:12.247529+00:00",
+        "endedUtc": "2026-10-13T04:51:18.671133+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-preflight2-4.log"
+      }
+    ],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-0.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-2.log",
+        "bytes": 502,
+        "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-3.log",
+        "bytes": 186,
+        "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-4.log",
+        "bytes": 1784,
+        "sha256": "sha256:00e0ecfd8f0c88f321ab05f85d204e93cf31064df983739c5c5287467bcd65c7"
+      }
+    ],
+    "sourceHoldExitCode": 0,
+    "qualification": "Final compile/lint/schema/boundary and42 actual owning tests in5 files pass. Requested mechanism-teaching-shapes.test.ts pattern matched no file; no sixth-file execution claimed."
+  },
+  "packageDeclarations": {
+    "receipt": {
+      "command": ["pnpm", "build:package"],
+      "actualExitCode": 0,
+      "startedUtc": "2026-10-13T04:52:50.418824+00:00",
+      "endedUtc": "2026-10-13T04:53:02.798735+00:00",
+      "log": "/private/tmp/still-shift-ms3-trigger13-package1.log"
+    },
+    "file": {
+      "path": "/private/tmp/still-shift-ms3-trigger13-package1.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    "qualification": "Declaration build only; no archive/installed/release pass."
+  },
+  "earlierChecks": [
+    {
+      "name": "preflight1",
+      "actualExitCode": 0,
+      "file": {
+        "path": "/private/tmp/still-shift-ms3-trigger13-preflight1.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      "qualification": "Preliminary compile before final frame/metadata inventory and wrapper release/camera/registry edits."
+    },
+    {
+      "name": "inspect1",
+      "actualExitCode": 1,
+      "file": {
+        "path": "/private/tmp/still-shift-ms3-trigger13-inspect1.log",
+        "bytes": 1662,
+        "sha256": "sha256:e9c857937d8f5d98c70a8d32fe98a050cb531f753a8ca9074b6bed0158c670ce"
+      },
+      "failure": "Frame landmark key regex excluded optional trigger; no factory pass."
+    },
+    {
+      "name": "inspect2",
+      "actualExitCode": 1,
+      "file": {
+        "path": "/private/tmp/still-shift-ms3-trigger13-inspect2.log",
+        "bytes": 1254,
+        "sha256": "sha256:330a243c50ce3fbe07e92c978e71590032f0baad4264ae43b3e5dc50126d4ba9"
+      },
+      "failure": "Pawl metadata summary allowed only two landmarks; no factory pass."
+    },
+    {
+      "name": "inspect3",
+      "actualExitCode": 0,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-inspect3.log",
+          "bytes": 414,
+          "sha256": "sha256:9ed2f29a65a444c28c96df51b2cebd8e9e1c9cefadb17cde942ac622769349a8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-inspect1.json",
+          "bytes": 443,
+          "sha256": "sha256:a2371943d8f21119a59ded661efb739d57f184e66094f8cfb8e6065bac2371dc"
+        }
+      ],
+      "scope": "Default old capture identity match plus candidate released reverse poses only."
+    }
+  ],
+  "heldInputs": {
+    "files": 2710,
+    "bytes": 121484911,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-trigger13-preflight2-inputs.json",
+      "bytes": 462666,
+      "sha256": "sha256:d514814985fb4cae5be0e769cca38e4fdab193bd8153dc316dd5be7a0454ec2d"
+    }
+  },
+  "qualification": "Current E05 factory/software/native sampled trigger/default engineering proof only. Sourcee9ad9f71 binds180 fresh submissions/180 decoded frames/81 images/120 trigger position hashes/149 pins. Original default all-frame decoded picture/audio parity passes. No whole mechanical/continuous/factual/design/genuine speech/listening/pilot acceptance, physical force claim, spending or publication.",
+  "remaining": [
+    "Resolve visual findings T0:7/E1:8/E2:8 and final explanation views with genuine narration/whole/factual/design reviews.",
+    "E06/E10 assets/behaviors and original MS3 pilot/repair/capability/final gates."
+  ],
+  "committedSource": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
+  "currentTiers": {
+    "status": "passed",
+    "sourceCommit": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+    "startedUtc": "2026-10-13T05:38:49.032927+00:00",
+    "pid": 32809,
+    "inventory": "/private/tmp/still-shift-ms3-trigger14-tiers3-inputs.json",
+    "steps": [
+      {
+        "command": ["pnpm", "check:fast"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T05:38:49.033497+00:00",
+        "endedUtc": "2026-10-13T05:42:03.237054+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger14-tiers3-0.log"
+      },
+      {
+        "command": ["pnpm", "check:runtime"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T05:42:03.237701+00:00",
+        "endedUtc": "2026-10-13T05:50:55.074462+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger14-tiers3-1.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "endedUtc": "2026-10-13T05:50:55.074959+00:00",
+    "counts": {
+      "unitTests": 4472,
+      "unitFiles": 443,
+      "runtimeTests": 253,
+      "runtimeFiles": 45,
+      "integrationTests": 322,
+      "integrationFiles": 57,
+      "depthTests": 14,
+      "browserSmoke": "completed"
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-tiers3.py",
+        "bytes": 1852,
+        "sha256": "sha256:8e1586af1674e4a2b7c2ba465455077fb72c186be07a9b02effcbb6415fb5990"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-tiers3.log",
+        "bytes": 1771,
+        "sha256": "sha256:79e724a7cb7ca68a0c97c06fa63f36f5ac9307ba7d815d5f370db507076ae936"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-tiers3-receipt.json",
+        "bytes": 960,
+        "sha256": "sha256:56c81747f745936d180cc50e876a6f5d3e98691b69d0cb00b32c06c61abc87e7"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-tiers3-inputs.json",
+        "bytes": 462666,
+        "sha256": "sha256:3edf5d25b0033f274c9b70600eb46417c3b3787379d723dae5fe1ba4a96f81e5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-tiers3-0.log",
+        "bytes": 50791,
+        "sha256": "sha256:f3b9db193be27cb8b7db555488264ba5c3d8c09df21607e510cd0bbc45901f79"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-tiers3-1.log",
+        "bytes": 41926,
+        "sha256": "sha256:d43db9eec5e6ddb360806aca57c0c23af0c081e62ff3b56026a82ab103274720"
+      }
+    ]
+  },
+  "completeFast": {
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "sourceCommit": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
+    "unitTests": 4471,
+    "testFiles": 443,
+    "heldInputFiles": 2710,
+    "heldInputBytes": 121484911
+  },
+  "runtimeFailure": {
+    "actualExitCode": 1,
+    "runtimeTests": 253,
+    "passed": 251,
+    "failed": 2,
+    "files": 45,
+    "sourceHoldExitCode": 0,
+    "remainingGroups": "integration/depth/smoke unstarted",
+    "reason": "CLI checks assumed3 examples and flat root strict-object schema. Updated variant discovery has6 examples; peg input uses two independently strict branches."
+  },
+  "failedTierRuns": [
+    {
+      "status": "failed",
+      "sourceCommit": "e39cbfe3e87b83cc27d3ff0d33ed1e2b211c85b0",
+      "startedUtc": "2026-10-13T04:56:08.836543+00:00",
+      "pid": 2625,
+      "inventory": "/private/tmp/still-shift-ms3-trigger13-tiers1-inputs.json",
+      "steps": [
+        {
+          "command": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T04:56:08.837275+00:00",
+          "endedUtc": "2026-10-13T04:58:26.901550+00:00",
+          "log": "/private/tmp/still-shift-ms3-trigger13-tiers1-0.log"
+        },
+        {
+          "command": ["pnpm", "check:runtime"],
+          "actualExitCode": 1,
+          "sourceHoldCheckExitCode": 0,
+          "startedUtc": "2026-10-13T04:58:26.901875+00:00",
+          "endedUtc": "2026-10-13T05:00:50.447838+00:00",
+          "log": "/private/tmp/still-shift-ms3-trigger13-tiers1-1.log"
+        }
+      ],
+      "actualExitCode": 1,
+      "endedUtc": "2026-10-13T05:00:50.448146+00:00",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1.py",
+          "bytes": 1852,
+          "sha256": "sha256:6e31ca3e920c847cf0b7a5e7157df4b400d4e9e626f5d11b64d9f85b4a8772a1"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1.log",
+          "bytes": 972,
+          "sha256": "sha256:55aa6d08fb7bd815200b5b67222620aebf6d83a2dc159e55a19c213ac3f12df0"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1-receipt.json",
+          "bytes": 959,
+          "sha256": "sha256:40866d927ce53f33762ae2106aa7edbc1bfec989f7b5d67775f7ec49f4192b11"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1-inputs.json",
+          "bytes": 462666,
+          "sha256": "sha256:259585ff7f5f51c03578e6961213137fa57d529bc746fb44881230e1bfea0d7d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1-0.log",
+          "bytes": 43785,
+          "sha256": "sha256:e65b16c28b216beb71bfae0c095fcc81c045a409c4b0da551006a67969423b6e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-tiers1-1.log",
+          "bytes": 17448,
+          "sha256": "sha256:897e1efbfb864fa5afb45bf71978cd8b2ceec3a30b40de97a4e37894a9741c3a"
+        }
+      ]
+    }
+  ],
+  "cliRepair": {
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-cli-scope1.log",
+        "bytes": 446,
+        "sha256": "sha256:74940afc6e7f385b52f01fe85c6b0790c48cbc0bd083a0eb300b29c990aab00d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-cli-scope2.log",
+        "bytes": 446,
+        "sha256": "sha256:f01f9744907fc589daae7926142c8d1b515d7b33dfb4a026f56d072b02d15ea5"
+      }
+    ],
+    "tests": 4,
+    "actualExitCode": 0,
+    "scope": "Six exact family/variant examples and strict branch schemas; original32KiB response bound retained."
+  },
+  "completeFast2": {
+    "sourceCommit": "e1fa27bf3b7587ce65b1e69ca677c73e297fc1a6",
+    "unitTests": 4471,
+    "testFiles": 443,
+    "actualExitCode": 0,
+    "sourceHoldExitCode": 0,
+    "step": {
+      "command": ["pnpm", "check:fast"],
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "startedUtc": "2026-10-13T05:11:08.592847+00:00",
+      "endedUtc": "2026-10-13T05:13:24.349992+00:00",
+      "log": "/private/tmp/still-shift-ms3-trigger13-tiers2-0.log"
+    }
+  },
+  "preparedNativeInputs": {
+    "status": "admitted-no-render",
+    "root": "/private/tmp/still-shift-ms3-trigger-native-jxs7yy",
+    "actualExitCode": 0,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-seed1.mts",
+        "bytes": 4002,
+        "sha256": "sha256:1623b17d48e4535a74f83ef4830d2468f67eaebd7390717dae5910a586895112"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-seed1.log",
+        "bytes": 176,
+        "sha256": "sha256:3eeae58d999c52e57f44f50a9bcfd1b0a5cc7f9b1c446902a27eac2e6883ec3e"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger-native-jxs7yy/seed.json",
+        "bytes": 819,
+        "sha256": "sha256:f6e39204867e3b1de1194501e4bb17c8c4f99c1ff1f46c79a39189dfa7f224ae"
+      }
+    ],
+    "scope": "Three saved-family/cue controls including release/withdrawal/relatch and changed dimensions. No queue/native execution yet."
+  },
+  "failedNativeRuns": [
+    {
+      "status": "failed",
+      "command": "node --import tsx /private/tmp/still-shift-ms3-trigger13-native1.mts",
+      "sourceCommit": "e10b307b8e05487e432ab9170e34a691d69e6e7b",
+      "startedUtc": "2026-10-13T05:24:05.100993+00:00",
+      "pid": 92407,
+      "inventory": "/private/tmp/still-shift-ms3-trigger13-native1-inputs.json",
+      "actualExitCode": 1,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T05:24:44.307173+00:00",
+      "root": "/private/tmp/still-shift-ms3-trigger-native-uO5NB5",
+      "failure": "Default T0 sealed; E1/E2 rejected in native observation because the sealed association permitted only root/tip. No complete native-run pass.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-native1.py",
+          "bytes": 1452,
+          "sha256": "sha256:cd35fb2f566eca9ff77c06db90466f64eab2331bfbef14b74072e01b83f46414"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-native1.mts",
+          "bytes": 4863,
+          "sha256": "sha256:3b9a2d447286ea82ee529f5c555f425f4abf22d755efe124c5b60d064bc91554"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-native1.log",
+          "bytes": 4136,
+          "sha256": "sha256:6def6d80a1f59efb9db87d4b467bda320c9252e82cb3793f0a3c985beaa1997e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-native1-receipt.json",
+          "bytes": 422,
+          "sha256": "sha256:194b8d552f4a2f326a0525351f05409200a7180a28d8d3c17fb60e65d36315e6"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger13-native1-inputs.json",
+          "bytes": 462666,
+          "sha256": "sha256:41d0a63bf9a0c432117f9edee97834ba915910ded620b493701dbc2a98c00fea"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger-native-uO5NB5/failure.json",
+          "bytes": 1289,
+          "sha256": "sha256:c0d9a156de36334e100790c1a6e08c9eb6eaa1670eac9745258efe6b72321616"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger-native-uO5NB5/native-run-state.json",
+          "bytes": 3462,
+          "sha256": "sha256:512edb8cfc89684325adc5727dc72e24927b4d342e09fb31c33750c88cdf4783"
+        }
+      ]
+    }
+  ],
+  "observationRepair": {
+    "status": "scoped-passed",
+    "scope": "Seal optional triggerLandmark only from the actual pawl declaration. Drawn observations require the exact corresponding root/tip/trigger inventory; springs reject the flag. Structural schema tests do not establish actual GPU coordinates.",
+    "steps": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T05:30:11.859564+00:00",
+        "endedUtc": "2026-10-13T05:30:22.333088+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger14-preflight1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/scene-contract/src/native3d/shape-observation.ts",
+          "packages/renderer-core/src/native3d/shape-associations.ts",
+          "tests/unit/native3d-v2-gpu-observation.test.ts"
+        ],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T05:30:22.333918+00:00",
+        "endedUtc": "2026-10-13T05:30:23.033673+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger14-preflight1-1.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T05:30:23.035991+00:00",
+        "endedUtc": "2026-10-13T05:30:26.451057+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger14-preflight1-2.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/native3d-v2-gpu-observation.test.ts",
+          "tests/unit/mechanism-release-trigger.test.ts"
+        ],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T05:30:26.451665+00:00",
+        "endedUtc": "2026-10-13T05:30:29.233238+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger14-preflight1-3.log"
+      }
+    ],
+    "tests": 17,
+    "testFiles": 2,
+    "sourceHoldExitCode": 0,
+    "heldInputFiles": 2710,
+    "heldInputBytes": 121488798,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-preflight1-receipt.json",
+        "bytes": 1397,
+        "sha256": "sha256:e440b060425810208e8158715ab912416f7f2ce6f08cc8f8c63aa45ebded3cd8"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-preflight1-inputs.json",
+        "bytes": 462666,
+        "sha256": "sha256:937202304913fa39f474c4e18f45c7285b6f91aaeabf3f3b14bfae2bc4c9d177"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-preflight1-0.log",
+        "bytes": 98,
+        "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-preflight1-1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-preflight1-2.log",
+        "bytes": 502,
+        "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-preflight1-3.log",
+        "bytes": 390,
+        "sha256": "sha256:124ea4b613a0c33349675d2a2c42535fae0715352b1062a62989c071032a84f3"
+      }
+    ],
+    "committedSource": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632"
+  },
+  "completeTiers2": {
+    "status": "passed",
+    "sourceCommit": "e1fa27bf3b7587ce65b1e69ca677c73e297fc1a6",
+    "startedUtc": "2026-10-13T05:11:08.592310+00:00",
+    "pid": 25968,
+    "inventory": "/private/tmp/still-shift-ms3-trigger13-tiers2-inputs.json",
+    "steps": [
+      {
+        "command": ["pnpm", "check:fast"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T05:11:08.592847+00:00",
+        "endedUtc": "2026-10-13T05:13:24.349992+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-tiers2-0.log"
+      },
+      {
+        "command": ["pnpm", "check:runtime"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T05:13:24.350320+00:00",
+        "endedUtc": "2026-10-13T05:22:15.538226+00:00",
+        "log": "/private/tmp/still-shift-ms3-trigger13-tiers2-1.log"
+      }
+    ],
+    "actualExitCode": 0,
+    "endedUtc": "2026-10-13T05:22:15.538711+00:00",
+    "counts": {
+      "unitTests": 4471,
+      "unitFiles": 443,
+      "runtimeTests": 253,
+      "runtimeFiles": 45,
+      "integrationTests": 322,
+      "integrationFiles": 57,
+      "depthTests": 14,
+      "browserSmoke": "completed"
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-tiers2.py",
+        "bytes": 1852,
+        "sha256": "sha256:c48789e4984917917eead3fc9e9629e8565d11cd372859115d944c9afac8ecb5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-tiers2.log",
+        "bytes": 1771,
+        "sha256": "sha256:c1a326743ec7a5440a9d148d2a92979361bc81f3c9195d5d33f4b6897f6e2e71"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-tiers2-receipt.json",
+        "bytes": 960,
+        "sha256": "sha256:0e960025548a1dd9717407aeb52e22bd42592efe89dd266873e00dd2e90c5d6d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-tiers2-inputs.json",
+        "bytes": 462666,
+        "sha256": "sha256:c7f9bf699b6a2029c18110866e49b44e4781a344cd2a1ed1b88fe621239efdb1"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-tiers2-0.log",
+        "bytes": 43755,
+        "sha256": "sha256:a001e00320e0ae3d13249ec378d39b728eebff50a357cc732eedb3dc33bf4326"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger13-tiers2-1.log",
+        "bytes": 42051,
+        "sha256": "sha256:d1a0d8c11069d995d958f5c221ddf9e7252e3f1e36b329a51643c26e4a368b2e"
+      }
+    ]
+  },
+  "completeFast3": {
+    "sourceCommit": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+    "actualExitCode": 0,
+    "sourceHoldExitCode": 0,
+    "unitTests": 4472,
+    "testFiles": 443,
+    "heldInputFiles": 2710,
+    "heldInputBytes": 121488798
+  },
+  "native2": {
+    "status": "passed",
+    "command": "node --import tsx /private/tmp/still-shift-ms3-trigger14-native2.mts",
+    "sourceCommit": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+    "startedUtc": "2026-10-13T05:35:21.863316+00:00",
+    "pid": 12905,
+    "inventory": "/private/tmp/still-shift-ms3-trigger14-native2-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T05:37:39.255962+00:00",
+    "root": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR",
+    "products": 3,
+    "freshNativeSubmissions": 180,
+    "controls": [
+      "T0 unchanged default",
+      "E1 pitch.5/width1/count8",
+      "E2 pitch.6/width1.4/count12"
+    ],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-native2.py",
+        "bytes": 1452,
+        "sha256": "sha256:ef0061f75388949a40896c19360bc7fd5d07aa07363469b37489cfb66d0585c8"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-native2.mts",
+        "bytes": 4863,
+        "sha256": "sha256:3b9a2d447286ea82ee529f5c555f425f4abf22d755efe124c5b60d064bc91554"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-native2.log",
+        "bytes": 1418,
+        "sha256": "sha256:bd567c68b403a53f9d238ddcc47ee050b13c513995f6286092d17012f298c6d4"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-native2-receipt.json",
+        "bytes": 422,
+        "sha256": "sha256:e708a4be212b0cd24a254e409b64e9aba733b5aff8965e0929f10e369b8f5771"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-native2-inputs.json",
+        "bytes": 462666,
+        "sha256": "sha256:3edf5d25b0033f274c9b70600eb46417c3b3787379d723dae5fe1ba4a96f81e5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR/run.json",
+        "bytes": 486,
+        "sha256": "sha256:ba242474cda9b285274350ebf35515040f8e1008ef50d7dd872b0c8b92452743"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR/native-run-state.json",
+        "bytes": 3344,
+        "sha256": "sha256:29e67842545435bd284daa5d720cc387f14588acbdabcbc9a6f250f11345e078"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR/current-report.json",
+        "bytes": 44940,
+        "sha256": "sha256:08bd718314903adf1942579c45cea84516889c6b152b813a27a2bf6df467e3b4"
+      }
+    ]
+  },
+  "independentAudit2": {
+    "status": "passed",
+    "startedUtc": "2026-10-13T05:38:36.039851+00:00",
+    "pid": 31363,
+    "sourceCommit": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+    "documentationHead": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+    "nativeRun": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T05:38:38.865312+00:00",
+    "decodedFrames": 180,
+    "images": 81,
+    "actualScalarSamples": 180,
+    "pins": 149,
+    "usedTriggerPositionHashes": 120,
+    "triggerLandmarkFrames": 120,
+    "releasedWithdrawalFrames": 30,
+    "defaultDecodedPictureAudioExact": true,
+    "defaultReference": "c474 native10 cold S2/1 retained product",
+    "findings": [
+      {
+        "id": "E1",
+        "failures": {
+          "mechanical": 0,
+          "sampledVisual": 8
+        },
+        "triggerProof": {
+          "usedPositionHashes": 60,
+          "landmarkFrames": 60,
+          "releasedWithdrawalFrames": 15,
+          "fixedRoot": true,
+          "tipAndTriggerCoupled": true,
+          "releasedMeshWorldMaxYBelow": -0.4,
+          "qualification": "Sampled rendered stream and declared illustrative geometry; no continuous, product-force or whole factual/design acceptance."
+        }
+      },
+      {
+        "id": "E2",
+        "failures": {
+          "mechanical": 0,
+          "sampledVisual": 8
+        },
+        "triggerProof": {
+          "usedPositionHashes": 60,
+          "landmarkFrames": 60,
+          "releasedWithdrawalFrames": 15,
+          "fixedRoot": true,
+          "tipAndTriggerCoupled": true,
+          "releasedMeshWorldMaxYBelow": -0.4,
+          "qualification": "Sampled rendered stream and declared illustrative geometry; no continuous, product-force or whole factual/design acceptance."
+        }
+      },
+      {
+        "id": "T0",
+        "failures": {
+          "mechanical": 0,
+          "sampledVisual": 7
+        },
+        "triggerProof": null
+      }
+    ],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-audit2.py",
+        "bytes": 16049,
+        "sha256": "sha256:2c7a218bb24be88457798b683e4f21c8ba2db58799fef2d7f578eb1c5d130a36"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-audit2-wrapper.py",
+        "bytes": 1365,
+        "sha256": "sha256:c7847ca5f09a6fa9d7baddfacd0af950c0e212cdf6fe9f1c71c5b753b125ec60"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-audit2.log",
+        "bytes": 925,
+        "sha256": "sha256:c17531d7c01137565a7d19a598eaa08c47d4f665c996e65bee18ffe04b178c92"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-audit2-receipt.json",
+        "bytes": 396,
+        "sha256": "sha256:f350e9af334fd35ce22433d4d5367d80d131179791c77358642e4be2de0543ec"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger14-audit2.json",
+        "bytes": 65624,
+        "sha256": "sha256:d8ee713b0b2ef6f4d0734be42974a2099abf925c599ee9bc08efb94621103680"
+      }
+    ],
+    "qualification": "Current engineering software/native/decoded evidence only. 120 used-position hashes and landmark frames independently checked, including30 released withdrawal frames. No continuous contact, readable release/factual/design/whole/listening/genuine speech/pilot acceptance."
+  },
+  "failedAudits": [
+    {
+      "status": "failed",
+      "startedUtc": "2026-10-13T05:38:03.074952+00:00",
+      "pid": 28182,
+      "sourceCommit": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+      "documentationHead": "e9ad9f715c0dbf0af383d5a882daae9c06ac5632",
+      "nativeRun": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR",
+      "actualExitCode": 1,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T05:38:06.123263+00:00",
+      "reason": "Auditor used family.parameters instead of the saved family.input.parameters field; no audit pass. Source/native artifacts unchanged; rerun uses corrected field.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger14-audit1.py",
+          "bytes": 16040,
+          "sha256": "sha256:e0a95602b5049ef52ae038d89a05d0b2342ce73a53c5e14aa8ec409a65b8acf8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger14-audit1-wrapper.py",
+          "bytes": 1365,
+          "sha256": "sha256:d953334dde8194f9ec1e7cb34c9eced1eba4934c7e74d4ef156a1b95d45da7cb"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger14-audit1.log",
+          "bytes": 1206,
+          "sha256": "sha256:3decaf42901607893cf2543b964c59eaa56acae4174b35b36af13f95f5fb09fd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-trigger14-audit1-receipt.json",
+          "bytes": 396,
+          "sha256": "sha256:24d48c3648bbe1f76212ac66db6a247448d623fbfd2fa77c74ec26c5d838ff40"
+        }
+      ]
+    }
+  ],
+  "sampledVisualInspection": {
+    "method": "Agent read three decoded final still images only",
+    "episodeControl": "E1",
+    "outputFrames": [0, 30, 37],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR/output/items/E1/1/review/frame-000000.png",
+        "bytes": 20431,
+        "sha256": "sha256:f156cec3c61486d23930bc18e63debeb1013baffe1ee114538aff8d3e3cfd531"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR/output/items/E1/1/review/frame-000007.png",
+        "bytes": 28605,
+        "sha256": "sha256:a3848df60f2b86fddd309fa467fb43ec965995d29bc254fa5fc385b1746bc062"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-trigger-native-4r0xNR/output/items/E1/1/review/frame-000009.png",
+        "bytes": 28123,
+        "sha256": "sha256:05d4fbfad952559de40268369a7a99744f9bd7d11e8a15410ab05ad6da4d5641"
+      }
+    ],
+    "finding": "Trigger flex/withdrawal appear in retained wide engineering controls. Mechanism remains small; final explanation views and labels require work. No continuous playback, listening, glyph/whole/factual/design/pilot pass."
+  }
+}

@@ -227,6 +227,9 @@ export async function previewNativeMechanismEpisode(
     {
       ...(options.signal ? { signal: options.signal } : {}),
       route: "native3d",
+      ...(options.cacheDirectory
+        ? { cacheDirectory: options.cacheDirectory }
+        : {}),
     },
   );
   const binding: NativeMechanismPreviewResult["binding"] = {

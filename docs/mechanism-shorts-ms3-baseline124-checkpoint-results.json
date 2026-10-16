@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "ms3-live-full119-baseline-checkpoint124-1",
+  "recordedUtc": "2026-10-15T14:56:30.237989+00:00",
+  "status": "frozen-baseline-checkpoint-passed-inside-still-live-full",
+  "session": 71989,
+  "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+  "documentationHeadAtCapture": "d0836524cb1474a9fdbd46f9bf2580a0d38c4265",
+  "expectedScriptInvocations": 116,
+  "observedScriptHeaders": 100,
+  "exactRequiredPreorderPrefix": true,
+  "latestStartedScript": "test:browser:mechanism-cue-edits",
+  "headerCountQualification": "Aliases are included; not a completion percentage or passed-suite count.",
+  "vitestPrefixSummaries": [
+    {
+      "files": 455,
+      "passedTests": 4594,
+      "totalTests": 4594
+    },
+    {
+      "files": 60,
+      "passedTests": 346,
+      "totalTests": 346
+    },
+    {
+      "files": 59,
+      "passedTests": 324,
+      "totalTests": 324
+    }
+  ],
+  "baselines": {
+    "items": 176,
+    "frames": 36061,
+    "failedBaselineTextPresent": false,
+    "completionEvidence": "All176 frozen rows report ok, totaling36061frames; the next required &&-chained mechanism-packs script has started. No baseline regeneration or threshold change."
+  },
+  "retainedTimingDeferrals": [
+    {
+      "case": "cinematic/threshold-push",
+      "ratio": 2.0570537405969147
+    },
+    {
+      "case": "cinematic/threshold-push/effects-grain",
+      "ratio": 2.117727966042248
+    },
+    {
+      "case": "cinematic/threshold-push/effects-glow",
+      "ratio": 2.432872830926334
+    },
+    {
+      "case": "cinematic/threshold-push/effects-directional",
+      "ratio": 2.190201397877707
+    },
+    {
+      "case": "cinematic/threshold-push/effects-focus",
+      "ratio": 2.54674922736658
+    },
+    {
+      "case": "cinematic/threshold-push/effects-sweep",
+      "ratio": 1.7028329148726844
+    },
+    {
+      "case": "cinematic/threshold-push/effects-active-stack",
+      "ratio": 1.6749131944114026
+    },
+    {
+      "case": "cinematic/threshold-push-alternate",
+      "ratio": 2.0212212577752937
+    },
+    {
+      "case": "cinematic/lateral-track",
+      "ratio": 2.0785070813409523
+    },
+    {
+      "case": "cinematic/lateral-track-alternate",
+      "ratio": 2.1097182809686976
+    },
+    {
+      "case": "cinematic/rising-vista",
+      "ratio": 1.7555445037248325
+    },
+    {
+      "case": "cinematic/detail-to-world",
+      "ratio": 1.6468310333400435
+    },
+    {
+      "case": "cinematic/curved-approach",
+      "ratio": 1.8653093209161054
+    },
+    {
+      "case": "cinematic/dolly-zoom-tension",
+      "ratio": 1.322321340176556
+    },
+    {
+      "case": "cinematic/dolly-zoom-tension-alternate",
+      "ratio": 1.3453680717215373
+    },
+    {
+      "case": "cinematic/layered-parallax",
+      "ratio": 2.1437827832948586
+    },
+    {
+      "case": "cinematic/layered-parallax-alternate",
+      "ratio": 2.093914421515326
+    },
+    {
+      "case": "cinematic/vertical-rising-vista",
+      "ratio": 1.7451073540910873
+    },
+    {
+      "case": "legacy/crisis-fracture",
+      "ratio": 1.5416282226674916
+    }
+  ],
+  "timingDeferralsQualification": "19 explicitly reported existing CE6-P WebGL timing deferrals are retained, not timing-acceptance passes or new waivers.",
+  "actualLiveObservation": {
+    "path": "/private/tmp/still-shift-ms3-full119-baseline124-live.json",
+    "bytes": 440,
+    "sha256": "sha256:5b42b56ba0430b661ac9a796fead5ef0f3481b80af83da9b8ebc6754acc6b742"
+  },
+  "retainedCopies": [
+    {
+      "originalPath": "/private/tmp/still-shift-ms3-final119-full1.log",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/full119-prefix-baseline124.log",
+        "bytes": 3431146,
+        "sha256": "sha256:46ef13232004c4b7816aadd0efd85d7705a14b7bc426e4adfd9c42d7a2ec4ed2"
+      },
+      "exactCapturedBytes": true
+    },
+    {
+      "originalPath": "/private/tmp/still-shift-ms3-final119-full1.json",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/full119-running-baseline124.json",
+        "bytes": 4151,
+        "sha256": "sha256:3d3d1ce05d73d4513c131ca6b0a1d43a8d3d20b709f3cce725950d29cf5f86df"
+      },
+      "exactCapturedBytes": true
+    },
+    {
+      "originalPath": "/private/tmp/still-shift-ms3-full119-baseline124-live.json",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/full119-actual-live124.json",
+        "bytes": 440,
+        "sha256": "sha256:5b42b56ba0430b661ac9a796fead5ef0f3481b80af83da9b8ebc6754acc6b742"
+      },
+      "exactCapturedBytes": true
+    },
+    {
+      "originalPath": "/private/tmp/still-shift-ms3-retain-baseline124.py",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/retain-baseline124.py",
+        "bytes": 9375,
+        "sha256": "sha256:214d604b19849c29bf7d2aac79b7295f136958d8f94f95b61d764bcefec0aa04"
+      },
+      "exactCapturedBytes": true
+    }
+  ],
+  "sourceHoldBefore": {
+    "actualExitCode": 0,
+    "output": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2793,
+      "bytes": 122415742
+    }
+  },
+  "sourceHoldAfter": {
+    "actualExitCode": 0,
+    "output": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2793,
+      "bytes": 122415742
+    }
+  },
+  "sourceFiles": 2793,
+  "sourceBytes": 122415742,
+  "sourceGuard": {
+    "path": "/private/tmp/still-shift-ms3-final119-hold.py",
+    "bytes": 1398,
+    "sha256": "sha256:e74c259aea3edc613e16c998e3364b740045aca0adc744a99018873e40d1f7de"
+  },
+  "durableSourceSelection": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/source-selection-seed.json",
+    "bytes": 477326,
+    "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+  },
+  "fullActualExitCode": null,
+  "completeGatePassed": false,
+  "benchmarkPackageAndInstalledExecutionPassed": false,
+  "wholePilotOrHumanAcceptance": false,
+  "originalPilotFirstPass": {
+    "passed": 1,
+    "denominator": 10,
+    "pairedTokens": null,
+    "accepted": 0
+  },
+  "newSourceTestsThresholdsBaselinesOrAssets": false,
+  "next": "Continue actual full71989 through every remaining group and benchmark. Only real complete terminal0/sourcehold0 admits standard package and all10/6181/EU008 repair121.",
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/baseline-checkpoint124-index.json",
+    "bytes": 24932,
+    "sha256": "sha256:3491c19ccb1ae1b59c6eac954245a08d05de3349de8334deee028bc77d3aaff2"
+  }
+}

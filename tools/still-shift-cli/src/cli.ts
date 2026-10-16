@@ -1,6 +1,7 @@
 #!/usr/bin/env node
 import { readFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
+import { runProductionCli } from "./production.ts";
 import { runEpisodeCli } from "./episode.ts";
 import { runSoundtrackCli } from "./soundtrack-cli.ts";
 import { prepareCommerceFile } from "../../../packages/animation-engine/src/commerce-preparation.ts";
@@ -60,6 +61,12 @@ const DEFAULT_IO: CliIo = {
 const HELP = `Still Shift v${ENGINE_VERSION}
 
 Usage:
+  pnpm still-shift production queue --projects <projects.json> --manifest <new-queue.json> [--backend three-native|blender-native] [--blender-executable <host-path>]
+  pnpm still-shift production retry --manifest <queue.json> --output-dir <queue-output> --request <retry.json>
+  pnpm still-shift production run --manifest <queue.json> --output-dir <queue-output> [--blender-executable <host-path>] [--report <new-state.json>]
+  pnpm still-shift production discover
+  pnpm still-shift production schema --kind <kind>
+  pnpm still-shift production report --manifest <queue.json> --output-dir <queue-output> [--blender-executable <host-path>] [--report <fresh.json>]
   pnpm still-shift episode discover|schema
   pnpm still-shift episode inspect|validate|deps|summary --input <episode.json>
   pnpm still-shift episode init-tape-hook --output-dir <fresh-dir> --font <font.ttf> [--font-license <OFL.txt>] [--audio <audio.wav>] [--captions <captions.json>]
@@ -68,6 +75,7 @@ Usage:
   pnpm still-shift episode preview --input <episode.json> --frame <integer> --output-dir <fresh-dir>
   pnpm still-shift episode check --input <episode.json> [--prepared-dir <dir>] [--final-output <video.mp4>]
   pnpm still-shift episode package --input <episode.json> --output-dir <fresh-dir>
+  pnpm still-shift production handoff --manifest <queue.json> --output-dir <queue-output> --episode <id> [--report <fresh.json>]
   pnpm --silent still-shift animate --input <path> --output <path> [options]
   pnpm still-shift animate-scene --scene <prepared.json> --output <path> [--format landscape|vertical]
   pnpm still-shift soundtrack validate|inspect --project <project.json> [--json]
@@ -227,6 +235,7 @@ export const runCli = async (
   args: string[],
   io: CliIo = DEFAULT_IO,
 ): Promise<number> => {
+  if (args[0] === "production") return runProductionCli(args.slice(1), io);
   if (args[0] === "episode") return runEpisodeCli(args.slice(1), io);
   if (args[0] === "soundtrack" && !args.includes("--help"))
     return runSoundtrackCli(args.slice(1), io);

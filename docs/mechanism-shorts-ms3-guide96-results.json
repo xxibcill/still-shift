@@ -1,0 +1,200 @@
+{
+  "schemaVersion": "ms3-production-guide-source-reconciliation-1",
+  "capturedUtc": "2026-10-15T02:25:22.954403+00:00",
+  "status": "passed-prose-source-reconciliation-and-static-checks-final-installed-and-whole-gates-open",
+  "sourceCommit": "3da6370800cbc98bddbb96af0ee5425197d4815e",
+  "heldRuntimeSource": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+  "activeFullSession": 42543,
+  "files": [
+    {
+      "path": "docs/mechanism-production-queue.md",
+      "before": {
+        "bytes": 10837,
+        "sha256": "sha256:857d4b6831fc6987247e76032406f174db75ce4f5da73a9fd1c1fed977cfea7a"
+      },
+      "after": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-production-queue.md",
+        "bytes": 12295,
+        "sha256": "sha256:19528a0aae28822329ef1adcb5963d21f9e104dc49f76dbd1c940f6159d556a1"
+      }
+    },
+    {
+      "path": "docs/mechanism-production-report-command.md",
+      "before": {
+        "bytes": 3568,
+        "sha256": "sha256:b94f6ea92961590797c9d06c1f65cbaf6a613bfe5c3aedc1433607c357c524f9"
+      },
+      "after": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-production-report-command.md",
+        "bytes": 4139,
+        "sha256": "sha256:e0ad57f825e353165bcd97b608b37ff0d2816853f10233a01f300c559a53eb1e"
+      }
+    },
+    {
+      "path": "docs/mechanism-blender-episode.md",
+      "before": {
+        "bytes": 17983,
+        "sha256": "sha256:da77ee51f6a2acaba9b69e7ad2fd76fa067d43348bddc88c54f4e953a82ecdf2"
+      },
+      "after": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-blender-episode.md",
+        "bytes": 18750,
+        "sha256": "sha256:20411f08fb0e3be5e75f02c0584958b2731bd54d6fdae13d778c8b93f4fe216e"
+      }
+    }
+  ],
+  "beforeCopies": {
+    "path": "/private/tmp/still-shift-ms3-guide96-before.json",
+    "bytes": 637,
+    "sha256": "sha256:fd0bac80a7f25bec144802527868b1a71400ecba2d17a5471173e7fc591ce1d0"
+  },
+  "sourceAndTestPins": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production.ts",
+      "bytes": 14774,
+      "sha256": "sha256:09b63fe51a2a40d20c483ed1060ad80b3598af99c81982f4dfea0ae78e6aa076"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production-backend.ts",
+      "bytes": 2809,
+      "sha256": "sha256:519d8b69c23ec37f91b5ab85a065f8f6f848fe9f6095bcdc9ddc47d9eda2c3b3"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production-execution.ts",
+      "bytes": 6002,
+      "sha256": "sha256:79f69f95afe93190a04e6cf3bad622eac9363e385577d56fc98fa1816bcbb87e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue.ts",
+      "bytes": 22297,
+      "sha256": "sha256:639f7be674fec806a445e260cfa868503f4a910e5d90be36b311dd031738402a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-retry.ts",
+      "bytes": 7307,
+      "sha256": "sha256:22f1a244d6d2034a5b52542179076f62dca8b6c50e5691c9ffc24072a6760c23"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-native-executor.ts",
+      "bytes": 23874,
+      "sha256": "sha256:a4eccb65cc6ba9a7104476665a0f83e66abe22e53274c85ad9a229e0c521076d"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-production-executor.ts",
+      "bytes": 24645,
+      "sha256": "sha256:0c064b9c5aa7c81649937dc591cb426891bde7f3caf14fd9cc8a11a93b4cbe8b"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-production-handoff.ts",
+      "bytes": 7654,
+      "sha256": "sha256:649d1d373d25809284d2445d6e9b85c05b093f30739c0484c9bee3e7b8dd992a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-episode-plates.ts",
+      "bytes": 22614,
+      "sha256": "sha256:834ca4655dcbbe2462e487b18ce2fe89cf5716ed69f49280a6c4224a905f0fee"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-recovery.ts",
+      "bytes": 16736,
+      "sha256": "sha256:de7b879b160f38ed487efc525d80d29aec37107e5dcddcfc6939b2bc6783fae2"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-queue.test.ts",
+      "bytes": 22133,
+      "sha256": "sha256:d29101d2bdf0c01c64bdd12779228d2bc4e9be75e177fbeda0650487e2513c49"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-retry.test.ts",
+      "bytes": 19357,
+      "sha256": "sha256:5acabf640c57d6af2fc51953710dc78bed1fc1d9cc2ed5867dd25a02f8882ad7"
+    }
+  ],
+  "corrections": [
+    {
+      "topic": "Command execution",
+      "before": "Queue execution described as API-only",
+      "now": "CLI queue/run/retry/report/handoff support agrees with current production command parser/backend/execution"
+    },
+    {
+      "topic": "Native QA/review package/handoff",
+      "before": "Implemented numeric/grouped/evidence/handoff artifacts described as future work",
+      "now": "Document existing version2 artifact/binding support while preserving mechanical/factual/encoded-glyph/continuous/listening review and pilot gates"
+    },
+    {
+      "topic": "Relocation",
+      "before": "Generic rejection/open statements omitted actual Three-native recovery and Blender resume refresh",
+      "now": "Retain Three absolute-receipt stale rejection and describe bounded run recovery; Blender handoffs refresh from current receiving manifest after verification"
+    },
+    {
+      "topic": "Native plate reuse",
+      "before": "Runtime changes broadly described as invalidating captures",
+      "now": "Changed runtime requires current product/QA validation; matching capture keys/profile may reuse sealed plates, as final all-ten validation requires"
+    },
+    {
+      "topic": "Pilot evidence scope",
+      "before": "Early320x568 draft/scouts implied no subsequent whole products",
+      "now": "Preserve original draft/scout identities and link original all-ten lifecycle completion; no transfer to final integrated package or whole acceptance"
+    },
+    {
+      "topic": "First-pass provenance",
+      "before": "Planned-edit boundary lacked changed-request condition",
+      "now": "Only actual changed requests start planned work; unchanged declarations cannot mask recovery, targeted retries clear revision-specific declarations while archives retain history"
+    },
+    {
+      "topic": "Report command",
+      "before": "Default example omitted required explicit executable for native Blender queues",
+      "now": "Add separate version2 report example and explain manifest routing/executable/profile verification"
+    }
+  ],
+  "checks": {
+    "formatAndWhitespace": [
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "prettier",
+          "--check",
+          "docs/mechanism-production-queue.md",
+          "docs/mechanism-production-report-command.md",
+          "docs/mechanism-blender-episode.md"
+        ],
+        "actualExitCode": 0,
+        "seconds": 0.2671264170203358
+      },
+      {
+        "command": ["git", "diff", "--check"],
+        "actualExitCode": 0,
+        "seconds": 0.058192667085677385
+      }
+    ],
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-guide96-check1.log",
+      "bytes": 66,
+      "sha256": "sha256:17aa973d3f004560237d9a95171210b0671deff23d61628eecf7322ff5938f20"
+    },
+    "staticAudit": {
+      "path": "/private/tmp/still-shift-ms3-guide96-static1.json",
+      "bytes": 5196,
+      "sha256": "sha256:107e83819c9225ae7e0075ec5d9f9ec47b4dc9b5f12efd8ff83ae96660c59909"
+    },
+    "localLinks": 15,
+    "documentedCLIExamples": 13,
+    "actualCLIOrRenderExecutions": 0
+  },
+  "qualification": [
+    "Three non-generated guides are excluded from the active held runtime inventory",
+    "No production code, schema, generated capability doc, policy, threshold or baseline changed",
+    "Static link/flag checks and source/test inspection only; no fresh software/export/installed/whole review pass",
+    "The existing required full command remains live; source-hold and current final package/discovery comparisons remain required",
+    "All original pilot failures/10% first-pass/null token measurements/accepted0 remain unchanged"
+  ],
+  "currentInstalledParity131": {
+    "record": "./mechanism-shorts-ms3-installed131-capability-results.json",
+    "actualExitCode": 0,
+    "generatedCapabilitiesAndDiscoveryExact": true,
+    "productionSchemasMatched": 25,
+    "reviewedGuidesMatched": 3,
+    "qualification": "Original96 capture and static-only results retain their historical bindings. New131 uses actual current installed public registry and source-held schema references; it does not complete all-ten or whole review."
+  }
+}

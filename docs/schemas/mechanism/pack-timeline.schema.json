@@ -104,6 +104,52 @@
           {
             "type": "object",
             "properties": {
+              "type": { "type": "string", "const": "load-seat" },
+              "loadNewtons": {
+                "type": "object",
+                "properties": {
+                  "value": {
+                    "type": "number",
+                    "minimum": -1000000,
+                    "maximum": 1000000
+                  },
+                  "keys": {
+                    "minItems": 1,
+                    "maxItems": 2000,
+                    "type": "array",
+                    "items": {
+                      "type": "object",
+                      "properties": {
+                        "frame": {
+                          "type": "number",
+                          "minimum": 0,
+                          "maximum": 108000
+                        },
+                        "value": {
+                          "type": "number",
+                          "minimum": -1000000,
+                          "maximum": 1000000
+                        },
+                        "easing": {
+                          "default": "linear",
+                          "type": "string",
+                          "enum": ["linear", "smoothstep", "hold"]
+                        }
+                      },
+                      "required": ["frame", "value", "easing"],
+                      "additionalProperties": false
+                    }
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "required": ["type", "loadNewtons"],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
               "type": { "type": "string", "const": "spring-return" },
               "states": {
                 "minItems": 1,

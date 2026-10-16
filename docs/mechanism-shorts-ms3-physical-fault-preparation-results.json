@@ -1,0 +1,441 @@
+{
+  "schemaVersion": "ms3-actual-physical-fault-preparation-results-1",
+  "date": "2026-10-15",
+  "status": "passed-actual-geometry-preparation-image-proof-pending",
+  "producerRuntimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+  "sourceUnchanged": true,
+  "scope": "Disposable selected-EU001 fault derivatives only; production assets, sources, pointers, current products and old receipts unchanged. No fresh renders or pilot acceptance.",
+  "checks": [
+    {
+      "name": "source-object-inspection",
+      "actualExitCode": 0,
+      "helper": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/inspect.py",
+        "bytes": 2462,
+        "sha256": "sha256:ecf9f1ec14425185bf9063de758756147cff14f1b985bc9f66c7737ebc0624ba"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/inspect1.log",
+        "bytes": 2415,
+        "sha256": "sha256:805fda2f6b07ec57e93552da38cf0a92de54147cafab2d801db2d0e55ee1ec43"
+      },
+      "result": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/inspect1.json",
+        "bytes": 6977,
+        "sha256": "sha256:210e8b2da983f73c29dd03148dbb16e5b7602e8c2fb375394806e8341529893a"
+      }
+    },
+    {
+      "name": "first-geometry-preparation",
+      "actualCommandExitCode": 0,
+      "logicalStatus": "failed",
+      "helper": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/build.py",
+        "bytes": 6673,
+        "sha256": "sha256:b993b6db46c2017d3dcc71835b16f3d50d2e49c73e35e86d0839cfa47a5842b8"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/build1.log",
+        "bytes": 3039,
+        "sha256": "sha256:dc70ee78ed41fd32504911eb38cc3c8e8f9ab943e321c82470299312e4968160"
+      },
+      "reason": "Evaluated bevel mesh is not exactly convex: maximum convex-plane violation 0.0000582551583647728 exceeds unchanged tolerance 0.000001. Blender returned 0 without a python-exit-code override despite the Python assertion. Moving-mount derivative saved before this failure is retained. No convex tolerance relaxed."
+    },
+    {
+      "name": "revised-geometry-preparation",
+      "actualExitCode": 0,
+      "helper": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/build2.py",
+        "bytes": 8211,
+        "sha256": "sha256:9c671b477c14219fc82ecd21b71bed9e42e78d0db875978718a30dc184f7a202"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/build2.log",
+        "bytes": 2449,
+        "sha256": "sha256:85421992c2917c1cdbcf3e42f955f4b20a77b9ccc04d5ee0bb294ec331005568"
+      },
+      "result": {
+        "status": "passed-actual-geometry-fault-preparation",
+        "version": "5.2.2 LTS",
+        "originalAsset": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/portable-first-ten-current72/files/2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62.blend",
+          "bytes": 207253,
+          "sha256": "sha256:2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62"
+        },
+        "worker": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/blender-capture-worker.py",
+          "bytes": 18441,
+          "sha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733"
+        },
+        "sourceUnchanged": true,
+        "records": [
+          {
+            "kind": "moving-mount",
+            "asset": {
+              "path": "/private/tmp/still-shift-ms3-physical-faults76/moving-mount.blend",
+              "bytes": 206490,
+              "sha256": "sha256:1de4199d1272456cb64bb45baac92f8d983429b5dfb5ee422c680973948fa9fe"
+            },
+            "source": {
+              "path": "/private/tmp/still-shift-ms3-physical-faults76/moving-mount-source.json",
+              "bytes": 2490,
+              "sha256": "sha256:ab95910558238d656abdd2630ceb2ec8031d6e97a10ecd73e4a30108223ef28e"
+            },
+            "freshReloadPassed": true,
+            "witness": {
+              "baseline": {
+                "name": "context.pullBoard",
+                "visible": true,
+                "editorial": false,
+                "vertices": 96,
+                "triangles": 188,
+                "positionsSha256": "sha256:4c59a547f7edd183851cb74136d3281b70eb584a8f1167272686c3a6f0cfc98b",
+                "triangleIndicesSha256": "sha256:678209de7677551d3cdad546413805d6aa01b5a54e23f0a2d3884bbb5ea950e0",
+                "worldMatrix": [
+                  1.0, 0.0, 0.0, 4.5, 0.0, 1.0, 0.0, 0.0, 0.0, 0.0, 1.0, 0.75,
+                  0.0, 0.0, 0.0, 1.0
+                ],
+                "worldBounds": {
+                  "min": [0.0, -1.600000023841858, -0.3500000238418579],
+                  "max": [9.0, 1.600000023841858, 1.850000023841858]
+                }
+              },
+              "fault": {
+                "name": "context.pullBoard",
+                "visible": true,
+                "editorial": false,
+                "vertices": 96,
+                "triangles": 188,
+                "positionsSha256": "sha256:4c59a547f7edd183851cb74136d3281b70eb584a8f1167272686c3a6f0cfc98b",
+                "triangleIndicesSha256": "sha256:678209de7677551d3cdad546413805d6aa01b5a54e23f0a2d3884bbb5ea950e0",
+                "worldMatrix": [
+                  1.0, 0.0, 0.0, 4.5, 0.0, 1.0, 0.0, 0.29999998211860657, 0.0,
+                  0.0, 1.0, 0.75, 0.0, 0.0, 0.0, 1.0
+                ],
+                "worldBounds": {
+                  "min": [0.0, -1.3000000715255737, -0.3500000238418579],
+                  "max": [9.0, 1.899999976158142, 1.850000023841858]
+                }
+              },
+              "matrixDrift": 0.29999998211860657,
+              "tolerance": 1e-6,
+              "failsFixedMount": true,
+              "absoluteFinalEpisodeWitnesses": [0, 64, 159]
+            },
+            "newRenders": 0,
+            "productionQualified": false
+          },
+          {
+            "kind": "intersection",
+            "asset": {
+              "path": "/private/tmp/still-shift-ms3-physical-faults76/intersection.blend",
+              "bytes": 205863,
+              "sha256": "sha256:fc3e9496b6b8b1a2780c929597925642c05c39dec896cf2bc36bbc9f3439e7fe"
+            },
+            "source": {
+              "path": "/private/tmp/still-shift-ms3-physical-faults76/intersection-source.json",
+              "bytes": 2490,
+              "sha256": "sha256:4693e1f426f29eb53638d4e44597547f8047a62ac74b3adaf1416eb7e2d8963d"
+            },
+            "mutation": "context.pushWall X location +=0.09",
+            "witness": {
+              "parts": ["context.pushWall", "hook.contactFace"],
+              "controls": {
+                "measurement_mode": 1,
+                "slide_fraction": 0
+              },
+              "wallShiftX": 0.09,
+              "independentlyKnownCubeAndTorusPredicatesPassed": true,
+              "originalPointTests": [
+                {
+                  "part": "context.pushWall",
+                  "evaluatedVertices": 96,
+                  "evaluatedTriangles": 188,
+                  "closedOrientedEdges": 282,
+                  "point": [0.045, 0, 1.1],
+                  "windingNumber": 1.4862349505838082e-8,
+                  "distanceToEvaluatedSurface": 0.04500000178813934,
+                  "strictlyInside": false
+                },
+                {
+                  "part": "hook.contactFace",
+                  "evaluatedVertices": 96,
+                  "evaluatedTriangles": 188,
+                  "closedOrientedEdges": 282,
+                  "point": [0.045, 0, 1.1],
+                  "windingNumber": 1.0000000299012952,
+                  "distanceToEvaluatedSurface": 0.04500000178813934,
+                  "strictlyInside": true
+                }
+              ],
+              "faultPointTests": [
+                {
+                  "part": "context.pushWall",
+                  "evaluatedVertices": 96,
+                  "evaluatedTriangles": 188,
+                  "closedOrientedEdges": 282,
+                  "point": [0.045, 0, 1.1],
+                  "windingNumber": 1.0000000317784867,
+                  "distanceToEvaluatedSurface": 0.044999971985816956,
+                  "strictlyInside": true
+                },
+                {
+                  "part": "hook.contactFace",
+                  "evaluatedVertices": 96,
+                  "evaluatedTriangles": 188,
+                  "closedOrientedEdges": 282,
+                  "point": [0.045, 0, 1.1],
+                  "windingNumber": 1.0000000299012952,
+                  "distanceToEvaluatedSurface": 0.04500000178813934,
+                  "strictlyInside": true
+                }
+              ],
+              "nativeBoundsSeparationX": -0.0899999737739563,
+              "actualEvaluatedClosedOrientedSolidsShareStrictInteriorPoint": true,
+              "absoluteFinalEpisodeWitnesses": [266],
+              "scope": "Actual shared strict interior point in two independently checked closed oriented evaluated meshes proves positive-volume penetration for this fixture. Native bounds selector supplies scoped broad-phase finding; no general collision-completeness claim."
+            },
+            "sceneSavingOnly": true,
+            "newRenders": 0,
+            "productionQualified": false
+          }
+        ],
+        "imagesAndNativeProductionQA": "pending-primary-render-terminal",
+        "scope": "Disposable intentionally faulty derivatives; actual evaluated matrix and closed-surface winding penetration evidence, no render or final product acceptance."
+      },
+      "resultFile": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/build2.json",
+        "bytes": 6990,
+        "sha256": "sha256:0468b30226d48d37685f6a90a0b69784684137b584fb8e1facb0e01a81d5d703"
+      },
+      "strategy": "Use closed oriented surface winding and nearest actual surface distance. Independent cube interior/exterior and torus tube/hole controls pass. Moving mount saved source verifies after fresh reload; original source bytes unchanged."
+    },
+    {
+      "name": "native-job-and-registered-semantic-admission",
+      "actualExitCode": 0,
+      "helper": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/prepare-jobs1.mts",
+        "bytes": 5155,
+        "sha256": "sha256:cf32a4c28143ac4678124fed0d8fb3fdb25367a5ade5e46ce8cac8d91282f6ae"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/prepare-jobs1.log",
+        "bytes": 135,
+        "sha256": "sha256:414b8becf386996626bda7a7c767dbbc9ce46fed23e37e15d696ed17900024d6"
+      },
+      "result": {
+        "status": "passed-actual-fault-geometry-and-capture-admission",
+        "results": [
+          {
+            "kind": "moving-mount",
+            "job": {
+              "path": "/private/tmp/still-shift-ms3-physical-faults76/moving-mount-job1.json",
+              "bytes": 1994,
+              "sha256": "sha256:959289438bc42167cee2454af76a950612bdc776b673e9f0548a909b135a105c"
+            },
+            "finalEpisodeFrameForCaptureIndex": [0, 64, 159],
+            "actualGeometryFinding": {
+              "schemaVersion": "mechanism-semantic-execution-1",
+              "registrySha256": "sha256:541380cab1b9b8689ff12408d46c36b086a2b6dd0c0cb13956141921d1e25e4f",
+              "binding": {
+                "inputSha256": "sha256:1de4199d1272456cb64bb45baac92f8d983429b5dfb5ee422c680973948fa9fe",
+                "outputSha256": "sha256:0468b30226d48d37685f6a90a0b69784684137b584fb8e1facb0e01a81d5d703",
+                "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+                "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+              },
+              "interval": {
+                "start": 0,
+                "endExclusive": 610
+              },
+              "comparisons": 1,
+              "rawSamples": [
+                {
+                  "frame": 159,
+                  "measurements": {
+                    "fixed-mount": 0.29999998211860657
+                  },
+                  "evidence": {
+                    "path": "/private/tmp/still-shift-ms3-physical-faults76/build2.json",
+                    "sha256": "sha256:0468b30226d48d37685f6a90a0b69784684137b584fb8e1facb0e01a81d5d703"
+                  }
+                }
+              ],
+              "assertions": [
+                {
+                  "id": "actual-moving-mount",
+                  "domain": "mechanical",
+                  "method": "sampled-numeric-range",
+                  "status": "failed",
+                  "checkedSamples": 1,
+                  "completeOutputFrameCoverage": false,
+                  "findings": [
+                    {
+                      "code": "semantic-range-failed",
+                      "assertion": "actual-moving-mount",
+                      "frame": 159,
+                      "rig": "control.EU-001",
+                      "parts": ["context.pullBoard"],
+                      "relationship": "fixed-reference",
+                      "measurement": "fixed-mount",
+                      "measured": 0.29999998211860657,
+                      "expectedRange": [0, 1e-6],
+                      "unit": "matrix-component",
+                      "sampleIndex": 0
+                    }
+                  ]
+                }
+              ],
+              "continuousCollision": "unreviewed",
+              "qualification": "Registered scalar rules evaluate only supplied evidence samples. Even every output frame does not prove between-frame collision, factual truth or playback acceptance."
+            },
+            "images": "pending-primary-render-terminal",
+            "scope": "Prepared native capture job and generic semantic execution on real evaluated derivative geometry. Binding output identifies geometry JSON, not an encoded movie or production product."
+          },
+          {
+            "kind": "intersection",
+            "job": {
+              "path": "/private/tmp/still-shift-ms3-physical-faults76/intersection-job1.json",
+              "bytes": 1394,
+              "sha256": "sha256:8ee5c71b8a40366d9a91bed665bc64ea43cc59884e3b6f765109bfd221727ee8"
+            },
+            "finalEpisodeFrameForCaptureIndex": [266],
+            "actualGeometryFinding": {
+              "schemaVersion": "mechanism-semantic-execution-1",
+              "registrySha256": "sha256:b896fcff5075f7be121ae1eb67ddbc609e951eb861f71970c1be8a8fd8b24705",
+              "binding": {
+                "inputSha256": "sha256:fc3e9496b6b8b1a2780c929597925642c05c39dec896cf2bc36bbc9f3439e7fe",
+                "outputSha256": "sha256:0468b30226d48d37685f6a90a0b69784684137b584fb8e1facb0e01a81d5d703",
+                "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+                "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+              },
+              "interval": {
+                "start": 0,
+                "endExclusive": 610
+              },
+              "comparisons": 1,
+              "rawSamples": [
+                {
+                  "frame": 266,
+                  "measurements": {
+                    "wall-hook-x-gap": -0.0899999737739563
+                  },
+                  "evidence": {
+                    "path": "/private/tmp/still-shift-ms3-physical-faults76/build2.json",
+                    "sha256": "sha256:0468b30226d48d37685f6a90a0b69784684137b584fb8e1facb0e01a81d5d703"
+                  }
+                }
+              ],
+              "assertions": [
+                {
+                  "id": "actual-intersection",
+                  "domain": "collision",
+                  "method": "sampled-numeric-range",
+                  "status": "failed",
+                  "checkedSamples": 1,
+                  "completeOutputFrameCoverage": false,
+                  "findings": [
+                    {
+                      "code": "semantic-range-failed",
+                      "assertion": "actual-intersection",
+                      "frame": 266,
+                      "rig": "control.EU-001",
+                      "parts": ["context.pushWall", "hook.contactFace"],
+                      "relationship": "forbidden-penetration",
+                      "measurement": "wall-hook-x-gap",
+                      "measured": -0.0899999737739563,
+                      "expectedRange": [0, 1000000],
+                      "unit": "native-unit",
+                      "sampleIndex": 0
+                    }
+                  ]
+                }
+              ],
+              "continuousCollision": "unreviewed",
+              "qualification": "Registered scalar rules evaluate only supplied evidence samples. Even every output frame does not prove between-frame collision, factual truth or playback acceptance."
+            },
+            "images": "pending-primary-render-terminal",
+            "scope": "Prepared native capture job and generic semantic execution on real evaluated derivative geometry. Binding output identifies geometry JSON, not an encoded movie or production product."
+          }
+        ]
+      },
+      "resultFile": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/prepare-jobs1.json",
+        "bytes": 6003,
+        "sha256": "sha256:da557e12a85b53e1de8fe34af686c95e23823d6281d6161c79dd9330b83b939c"
+      }
+    },
+    {
+      "name": "no-parallel-render-admission",
+      "actualExitCode": 0,
+      "expectedRejection": true,
+      "runner": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/capture-and-audit1.mts",
+        "bytes": 6057,
+        "sha256": "sha256:978f904a50a7f811266885bb4e26b0cabbafab78bc4948f85958891f54a735b3"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-physical-faults76/capture-admission-block2.log",
+        "bytes": 120,
+        "sha256": "sha256:f4091f121cf7e3b4ef7730eb14ffd82746444a9a71cda5e1dfc7ba6991517d3d"
+      },
+      "condition": "Primary production wrapper lacks successful terminal receipt; rejects before any native capture."
+    }
+  ],
+  "budget": {
+    "ledger": {
+      "path": "/private/tmp/still-shift-ms3-physical-faults76/usage-budget.json",
+      "bytes": 1114,
+      "sha256": "sha256:030ddcc0ecf0fe3455dc273ae5f55dd669d98fe3f140f467c50a822116747767"
+    },
+    "scopeAttribution": {
+      "path": "/private/tmp/still-shift-ms3-physical-faults76/handoff.md",
+      "bytes": 3027,
+      "sha256": "sha256:017b6f83626c8ca4a7e2f290e80162e87ea26b22f33d59e2a74639063f14f6ff"
+    },
+    "limits": {
+      "standardEquivalentUSD": 5,
+      "totalTokens": 5000000
+    },
+    "providerBillingCap": false
+  },
+  "pending": {
+    "actualFaultImageCapturesAndImageReview": true,
+    "nativeCapturedObservationSelectorReplay": true,
+    "primaryLiveSession": 58827,
+    "captureCommand": "python3 /Users/jjae/Documents/obsidian/ai-business/tools/blender_budget.py guarded-run --budget /private/tmp/still-shift-ms3-physical-faults76/usage-budget.json -- node --import tsx /private/tmp/still-shift-ms3-physical-faults76/capture-and-audit1.mts",
+    "preconditions": "Confirm unified session 58827 terminal; validate main source hold; same persistent asset budget must admit work. Four phone native captures, serial, no new paid generation."
+  },
+  "wholeReviews": "unreviewed",
+  "acceptedPilot": 0,
+  "budgetCheckpoint80": {
+    "actualExitCode": 2,
+    "status": "blocked-by-existing-operational-asset-budget",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-physical-faults76/budget-check80.json",
+      "bytes": 870,
+      "sha256": "sha256:3b9ee35d0599f30c8fae6dccb6337ab95618b5cfd8ee1eef253aa68b771ff0a9"
+    },
+    "reportedTotalTokens": 29759702,
+    "reportedStandardEquivalentUSD": 6.861364,
+    "currentTokenCap": 5000000,
+    "currentStandardEquivalentUSDCap": 5,
+    "attributionLimit": "Ledger counts the same root session after asset preparation, including later unrelated package/MS1N work. These conservative raw totals are not a precise asset-only cost or invoice. No reset, exclusions or ceiling increase applied.",
+    "remaining": "Four sparse native phone captures, actual captured-selector replay and image inspection on the two already prepared disposable fault assets.",
+    "creatorRequest": "Explicit revised total $10 API-equivalent /35 million tokens requested; no reply received, existing cap remains in force.",
+    "rule": "Operations/Blender/Work Budget.md: Raising a ceiling requires the Creator's explicit revised amount; at100% stop substantive model work.",
+    "dependentCommandsStarted": false
+  },
+  "budgetCheckpoint98": {
+    "record": "./mechanism-shorts-ms3-work-allowance98-results.json",
+    "explicitApprovedTotalUSD": 10,
+    "explicitApprovedTotalTokens": 35000000,
+    "priorUsageRetained": true,
+    "liveStatus": "BLOCKED",
+    "liveTotalTokens": 155609754,
+    "liveStandardEquivalentUSD": 36.328462,
+    "imagesCaptured": 0,
+    "revisedRequest": "Total50 USD-equivalent /200 million tokens asked; reply pending. Same four-frame scope, no ElevenLabs spending."
+  },
+  "currentWorkAllowance": "./mechanism-shorts-ms3-work-allowance103-results.json",
+  "completedNativeImages": "./mechanism-shorts-ms3-physical-fault104-results.json"
+}

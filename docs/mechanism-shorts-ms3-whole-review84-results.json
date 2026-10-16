@@ -1,0 +1,397 @@
+{
+  "schemaVersion": "ms3-whole-review-results-1",
+  "capturedUtc": "2026-10-14T23:24:56.728135+00:00",
+  "review": {
+    "base": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
+    "head": "9f43a67a4632c30474ced8214d10bac8fe0095a2",
+    "standards": {
+      "findings": 1,
+      "priority": "P2",
+      "issue": "Five newly added unit suites invoke real Python process-identity locks, contrary to documented tier prerequisites/concurrency.",
+      "status": "repaired-isolated-scoped-runtime-passed"
+    },
+    "spec": {
+      "findings": 1,
+      "priority": "P2",
+      "issue": "Retry-only manifests copy revisionChanges; a stale planned-edit on an unchanged neighbor can mask subsequent cache recovery in first-pass metrics.",
+      "status": "repaired-isolated-runtime-and-fast-passed"
+    },
+    "limits": "Read-only two-axis source/test review; no renderer, asset work, paid generation or whole-review acceptance."
+  },
+  "runtimeTierRepair": {
+    "moves": [
+      {
+        "from": "tests/unit/mechanism-production-queue.test.ts",
+        "to": "tests/runtime/mechanism-production-queue.test.ts",
+        "sha256": "156f96b6a47e2bdb921cabec874088d9251be8a93545562122fef90e9530b440"
+      },
+      {
+        "from": "tests/unit/mechanism-production-retry.test.ts",
+        "to": "tests/runtime/mechanism-production-retry.test.ts",
+        "sha256": "ee47beda0cec24bb673148c96771bb62f6398fdf312c7cb0ff9c6ca4b970da82"
+      },
+      {
+        "from": "tests/unit/mechanism-production-report-io.test.ts",
+        "to": "tests/runtime/mechanism-production-report-io.test.ts",
+        "sha256": "b030fe5661e933aedf2696c47f556c77df1d96768412ac10dc3e3e449e48f952"
+      },
+      {
+        "from": "tests/unit/mechanism-production-failure.test.ts",
+        "to": "tests/runtime/mechanism-production-failure.test.ts",
+        "sha256": "2d1c09ab52c5e82317e2b881bbc16a9782a1e919ee30e9f34f4cf028014d87eb"
+      },
+      {
+        "from": "tests/unit/blender-production-versions.test.ts",
+        "to": "tests/runtime/blender-production-versions.test.ts",
+        "sha256": "7b9ad766103c1cf5aa405e854bbff292f610f1fffcaeb228c8c7740870e50b49"
+      }
+    ],
+    "sourceBytesUnchanged": true,
+    "test": {
+      "command": "pnpm exec vitest run tests/runtime/mechanism-production-queue.test.ts tests/runtime/mechanism-production-retry.test.ts tests/runtime/mechanism-production-report-io.test.ts tests/runtime/mechanism-production-failure.test.ts tests/runtime/blender-production-versions.test.ts --maxWorkers=2 --no-file-parallelism",
+      "actualExitCode": 0,
+      "filesPassed": 5,
+      "testsPassed": 52,
+      "seconds": 17.05,
+      "log": "/private/tmp/still-shift-ms3-review84-runtime-tier1.log"
+    },
+    "commit": "10cb84a4"
+  },
+  "open": [
+    "Final current MS3 complete software/benchmark attempt91 with fresh isolated cache, then archive/installed gates",
+    "Whole factual/mechanical/glyph/continuous/listening/human review and budget-gated fault proofs"
+  ],
+  "retryProvenanceRepair": {
+    "behavior": [
+      "Targeted retry publication clears revision-specific change declarations",
+      "Unchanged-request planned edits introduce no new intervention boundary",
+      "Same-request repair/manual recovery and genuine changed-request planned edits remain retained"
+    ],
+    "regressions": [
+      "Admit journal through actual cancellation with E01 unattempted; edit inputs, succeed E01/fail E02, corrupt E01 cache, then retry E02 only",
+      "Declare planned edit without changing request and corrupt cached output; preserve recovery and failed first-pass classification"
+    ],
+    "red1": {
+      "actualExitCode": 1,
+      "testsFailed": 2,
+      "testsPassed": 32,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-provenance-red1.log",
+        "bytes": 6447,
+        "sha256": "sha256:53c12c9c9ed8d9fefb0e422fb05180da714ba27025fdc4843e7885a5bd86269e"
+      },
+      "fixtureFailure": "One fixture attempted revision1 without its required prior journal. No source fix applied; corrected via real cancellation admission."
+    },
+    "red2": {
+      "actualExitCode": 1,
+      "testsFailed": 2,
+      "testsPassed": 32,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-provenance-red2.log",
+        "bytes": 6492,
+        "sha256": "sha256:4d557476ce5dc2ded0608c6c35044287cfa1a4b635f7205ce7dcf8674fd91a8f"
+      },
+      "actualDefect": "Both real recovery cases reported firstPass passed before the fix"
+    },
+    "green1": {
+      "actualExitCode": 0,
+      "testsPassed": 54,
+      "filesPassed": 5,
+      "seconds": 16.39,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-provenance-green1.log",
+        "bytes": 1212,
+        "sha256": "sha256:cd9c98a4b0175d7fffa37b184d7db32e9667de91850b698e740879fb4d2c1c1e"
+      }
+    },
+    "fast1": {
+      "command": "pnpm check:fast",
+      "actualExitCode": 0,
+      "testsPassed": 4582,
+      "filesPassed": 455,
+      "unitStageSeconds": 86.94,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-fast1.log",
+        "bytes": 47662,
+        "sha256": "sha256:a6347bcd6f513c90d2938e37420b793548a9720b249e560638e99ad18626099b"
+      },
+      "scope": "All fast stages on unchanged final source/test tree. Runtime scenarios are checked separately, not removed."
+    },
+    "repairReview": {
+      "standards": {
+        "actionableFindings": 0,
+        "method": "Independent read-only review of exact100% moves and final four-file working diff"
+      },
+      "spec": {
+        "actionableFindings": 0,
+        "method": "Independent read-only review of exact final four-file diff and both regressions; history, genuine edits and manual recovery preserved"
+      }
+    },
+    "commit": "e231440e"
+  },
+  "sourceBeforeIntegration": "Live producer1090 remains frozen; latest repair changes its future identity. Archive81 and prepared installed82 retain their earlier8e11 snapshot and do not prove this new repair.",
+  "delivery": {
+    "isolatedBranch": "codex/ms3-review-fixes",
+    "isolatedHead": "452b8194",
+    "isolatedPushActualExitCode": 0,
+    "mainEvidenceHead": "0f5c3638baf9d14a83c51a645a262ded608346da",
+    "firstMainPush": {
+      "actualExitCode": 1,
+      "reportedReason": "remote rejected codex/mechanism-ms3 -> codex/mechanism-ms3 (failed)",
+      "cause": "Not established; no non-fast-forward diagnostic",
+      "remoteVerifiedUnchanged": "c911ca034f0436f14ccba42e4441302770a99408"
+    },
+    "identicalNonForcedRetry": {
+      "actualExitCode": 0,
+      "remoteExact": "0f5c3638baf9d14a83c51a645a262ded608346da",
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review84-main-push2.log",
+        "bytes": 113,
+        "sha256": "sha256:8f22569d2475ba2bfb1c8a8e2c78fc46658daeba79e38e6fe8a23ec2f6473c5c"
+      }
+    }
+  },
+  "latestInstalledRepairProof": {
+    "archive": {
+      "path": "/private/tmp/still-shift-ms3-package85/still-shift-0.1.1.tgz",
+      "bytes": 5438377,
+      "sha256": "sha256:62706c09c60929fdd8f1855a3cf5cc89a4020e6f6b0ccacb95845fffee07539b"
+    },
+    "identity": {
+      "codeSha256": "sha256:89697163351852f877b47e300aff9f29f4c899b4e40f7275da61e95e2ec7c8f7",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "profile": {
+        "backend": "blender-native",
+        "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+        "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+        "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+        "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      }
+    },
+    "sourceControlsPassed": 13,
+    "retryControlsPassed": 4,
+    "strictPublicTypesActualExitCode": 0,
+    "discoveryActualExitCode": 0,
+    "originalProducerAndPythonFileReadsDenied": true,
+    "fixedSystemPsExceptionDisclosed": true,
+    "evidence": "docs/mechanism-shorts-ms3-package-portability-results.json",
+    "freshInstalledLifecycle86": "prepared-not-run",
+    "fullCurrentSoftwareAndPackageGate": "open"
+  },
+  "currentCpu87Qualification": {
+    "sourceCommit": "26c4a074ef5d635cceb439de8394a71a70b8524d",
+    "cpuPython": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-cpu87-python1.json",
+        "bytes": 2155,
+        "sha256": "sha256:a4035d389de7805c828be5a9cf105f9a48c43ec32ca19aac34fea859539c797a"
+      },
+      "stages": [
+        {
+          "stage": "setup",
+          "actualExitCode": 0,
+          "seconds": 0.7967621251009405,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-setup1.log",
+            "bytes": 1283,
+            "sha256": "sha256:e5ef253a7db00a6df0f8ff6f622938abe8a8c712bf1ab33569cb29968d6e23ad"
+          }
+        },
+        {
+          "stage": "depth",
+          "actualExitCode": 0,
+          "seconds": 17.37950291694142,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-depth1.log",
+            "bytes": 297,
+            "sha256": "sha256:3ff8ce90fd1224ea461af523eefdd6d652d423e38e0f61abefa01e397c61acc9"
+          }
+        },
+        {
+          "stage": "python-format",
+          "actualExitCode": 0,
+          "seconds": 0.8431730410084128,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-python-format1.log",
+            "bytes": 27,
+            "sha256": "sha256:5b9f70ad96522f492ef846065642c069b5627379aff2ab3f74acd2e3b9ecfe34"
+          }
+        },
+        {
+          "stage": "python-lint",
+          "actualExitCode": 0,
+          "seconds": 0.019237583968788385,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-python-lint1.log",
+            "bytes": 19,
+            "sha256": "sha256:82b3e6a6c090a57601d22943bd23fca9218d1031dbe5a7b754092f9a156b4f18"
+          }
+        },
+        {
+          "stage": "soundtrack-lint",
+          "actualExitCode": 0,
+          "seconds": 0.17451533395797014,
+          "log": {
+            "path": "/private/tmp/still-shift-ms3-cpu87-soundtrack-lint1.log",
+            "bytes": 351,
+            "sha256": "sha256:1d175ee3e66cae58da5765042a812eb3b50258a298c22551e2bf4430c8d58b43"
+          }
+        }
+      ],
+      "depthTestsPassed": 14,
+      "editableSource": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/services/depth-worker/src",
+      "otherVenvFilesProtected": 12,
+      "otherVenvFilesExact": true
+    },
+    "sourceIntegrationPreflight": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-integration87-preflight1.json",
+        "bytes": 5529,
+        "sha256": "sha256:25b6544e0337e348bbba88c6a2f1ef593068509310404535b2df8a255fd95758"
+      },
+      "reviewedSourceCommits": ["20e1afe2", "8e11e6b8", "10cb84a4", "e231440e"],
+      "changedPathCount": 19,
+      "retainedTargetFiles": 14,
+      "privateCopyMatchesReviewedTarget": true,
+      "mainSourceAndIndexUntouched": true
+    },
+    "deferred": {
+      "fullToolchainCheck": "Actually launches Chromium; not run while primary58827 is live",
+      "fullRuntimeTier": "Includes actual browser captures/exports; not run while primary58827 is live",
+      "liveSourceIntegration": "Wait for primary58827 actual terminal, then preserve newer docs while integrating exactly the four source repair commits",
+      "otherFullSoftwarePackageRenderGates": "open"
+    },
+    "qualification": "CPU-only setup/depth14/Python formatting+lint/soundtrack lint and private source-only integration rehearsal pass. No browser/native/render group, live integration, spending, publishing or whole pilot acceptance."
+  },
+  "preparedUpstreamMaskProbe88": {
+    "status": "prepared-not-rendered",
+    "sourceWorktree": "/Users/jjae/.codex/worktrees/ms1n-review-fixes/still-shift",
+    "expectedSourceHead": "40330672",
+    "script": {
+      "path": "/private/tmp/still-shift-ms1n-review88-mask-browser1.mts",
+      "bytes": 6496,
+      "sha256": "sha256:4b66ac96c6e523a36aae6ca443c96f0dbb45a592aab893abddabe6dbec2c6caa"
+    },
+    "cases": 4,
+    "dimensions": [128, 128],
+    "expectedVisibility": ["occluded", "occluded", "occluded", "visible"],
+    "actualPixelImagesExpected": 4,
+    "completeRgbaControls": [
+      "equal-cutoff",
+      "rounded-opacity-equals-control",
+      "rounded-cutoff-equals-control",
+      "discarded-case-differs-and-is-all-white"
+    ],
+    "failureEvidence": "Write all4 PNGs and result before asserting outcome; browser cleanup also covers launch failure.",
+    "syntax": {
+      "actualExitCode": 0,
+      "receipt": "/private/tmp/still-shift-ms1n-review88-mask-parse2.json"
+    },
+    "admissionGuard": {
+      "actualExitCode": 1,
+      "expected": true,
+      "log": "/private/tmp/still-shift-ms1n-review88-mask-admission-block1.log",
+      "phase": "Before Vite server/browser/output-directory creation"
+    },
+    "scope": "Prepared software regression fixture only; actual fresh GPU proof remains open. No Blender asset work, episode render, paid generation, source change or human acceptance."
+  },
+  "currentPrerequisiteMergeQualification": {
+    "record": "./mechanism-shorts-ms3-prerequisite-integration89-results.json",
+    "source": "a88abccbf8b66514252025ac985a458454547455",
+    "status": "integrated-fast-forward-after-actual-terminal; fresh-full-integrated-gates-open",
+    "olderInstalledEvidence": "Package85 and prepared86 retain source452b/codee231 bindings; no earlier archive evidence transfers to this merge."
+  },
+  "originalProducerTerminal": {
+    "record": "./mechanism-shorts-ms3-first-ten-terminal90-results.json",
+    "actualExitCode": 0,
+    "stages": 13,
+    "handoffsVerified": 10
+  },
+  "currentUpstreamMaskProbe90": {
+    "firstAttempt": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser1-run.json",
+      "bytes": 622,
+      "sha256": "sha256:474410d8c0b7ad933f55d3f58ba31317b382a94112759f90659b0cd9c35ae273"
+    },
+    "firstFailure": "Incorrect all-white fixture assumption; all four actual visibility cases and complete-pixel relationships passed. All images retained.",
+    "correctedRun": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2-run.json",
+      "bytes": 1006,
+      "sha256": "sha256:0bc81890c05fcba3319e093ccde1940d8056a9a475db1fc89e1fc40428f21441"
+    },
+    "actualExitCode": 0,
+    "actualResult": {
+      "path": "/private/tmp/still-shift-ms1n-review90-mask-browser2/result.json",
+      "bytes": 73712,
+      "sha256": "sha256:e6c9d3821164cb9e7f9932bacdb4e9e9ac29f03a75e89009b86823b87147ffc8"
+    },
+    "sourceCommit": "40330672db000720b551abd0f7157f4a6751736b",
+    "visibility": ["occluded", "occluded", "occluded", "visible"],
+    "nonBackgroundPixels": [1056, 1056, 1056, 0],
+    "scope": "Four128x128 native WebGL2 frames and complete RGBA controls; upstream runtime/depth continuation27428 actually exits0, retained separately."
+  },
+  "currentUpstreamRuntime90": {
+    "record": "./pr-56-current-runtime90-results.json",
+    "verifiedSource": "40330672db000720b551abd0f7157f4a6751736b",
+    "deliveredHead": "796375b79b1709c1cad30837a5603f91d33d7697",
+    "runtime": 191,
+    "distinctIntegration": 321,
+    "depth": 14,
+    "smoke": "passed",
+    "nativeDepth": 14,
+    "compositionIntegration": 5,
+    "mask": 4,
+    "initialAggregateExitCode": 1,
+    "continuationActualExitCode": 0,
+    "delivery": {
+      "actualExitCode": 0,
+      "publicPushAlreadySucceeded": true,
+      "head": "796375b79b1709c1cad30837a5603f91d33d7697",
+      "localAliasFrom": "bf30a2533c516bec0dcbfa3fd2c1c676babf477f",
+      "retainedBookkeepingFailure": "Initial wrapper exited1 only after actual atomic remote push0 and both remote refs verified; local update-ref CAS expected remote-oldc158 but actual local alias was olderbf30. Corrected only local alias after ancestry/no-checkout/remote validation. No second remote push or force used.",
+      "pr": "https://github.com/xxibcill/still-shift/pull/56",
+      "state": "open"
+    },
+    "scope": "Current affected upstream repair gates complete in stages. Original MS3 products and upcoming MS3 full gates retain separate bindings."
+  },
+  "currentUpstreamMs2Runtime90": {
+    "record": "./mechanism-shorts-ms2-current-prerequisite-repair90-results.json",
+    "testedSource": "c926e467e627db61ed5ac891fbf12cedacb318e8",
+    "deliveredHead": "e44b40deff31355ddf100b4aa604803224bba402",
+    "runtime": 260,
+    "distinctIntegration": 322,
+    "depth": 14,
+    "smoke": "passed",
+    "nativeDepth": 14,
+    "nativeCompositionIntegration": 5,
+    "mask": 4,
+    "initialAggregateExitCode": 1,
+    "unchangedOwningFileTests": 5,
+    "continuationActualExitCode": 0,
+    "delivery": {
+      "actualExitCode": 0,
+      "head": "e44b40deff31355ddf100b4aa604803224bba402",
+      "from": "495fb2c03d81ff9c751740f357ff199bfb6e0a6e",
+      "nativePrerequisite": "796375b79b1709c1cad30837a5603f91d33d7697",
+      "atomicNonForcedPush": 0,
+      "pr": "https://github.com/xxibcill/still-shift/pull/57",
+      "draft": true,
+      "currentPackageQualification": "open",
+      "retainedInitialReadRace": "Atomic git push succeeded0 and local alias advanced; immediate PATCH response still exposed old PR head495. Initial wrapper assertion1 retained, no repush/body rewrite. Later no-cache GET and both git refs verify exact e44."
+    },
+    "sourceMergeScope": "All source/test bytes already match reviewed pilot repair; this merge changes documentation only.",
+    "currentMs2Package": "Affected package91 passed on e44, evidence delivery8b7374ed; no fresh full installed render matrix."
+  },
+  "currentUpstreamMs2Package91": {
+    "record": "./mechanism-shorts-ms2-current-package91-results.json",
+    "evidenceHead": "8b7374ed218536ba15e531da6a61ce0cf0ff9395",
+    "archiveSource": "e44b40deff31355ddf100b4aa604803224bba402",
+    "actualExitCode": 0,
+    "members": 2368,
+    "correspondingSources": 971,
+    "installedCases": 13,
+    "scope": "Affected private installed APIs/types/discovery; historical full installed render proofs remain separately bound."
+  }
+}

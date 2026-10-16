@@ -1,0 +1,315 @@
+{
+  "schemaVersion": "ms3-first-ten-hd-progress-results-1",
+  "date": "2026-10-14",
+  "status": "EU001-complete-and-independently-checked-nine-item-stages-remain",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "heldSource": {
+    "status": "exact",
+    "files": 2777,
+    "bytes": 122189105
+  },
+  "queue": {
+    "id": "actual-first-ten-full-HD47",
+    "revision": 0,
+    "snapshotUpdatedUtc": "2026-10-14T07:28:55.585Z",
+    "snapshotRows": [
+      {
+        "id": "EU-001",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-001-00c45963c001ab77-1.json",
+          "bytes": 9125,
+          "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+        }
+      },
+      {
+        "id": "EU-002",
+        "status": "running",
+        "lastStage": "native-blender-composition-export",
+        "product": null
+      },
+      {
+        "id": "EU-003",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-004",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-005",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-006",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-007",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-008",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-009",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-010",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      }
+    ]
+  },
+  "nativeAudit": {
+    "pin": {
+      "path": "/private/tmp/still-shift-ms3-blender48-EU001-native-audit.json",
+      "bytes": 1843,
+      "sha256": "sha256:798139b6291db2ca04561e87c4572b4ccdcb6c7584c8d1a2f9cb377e77539381"
+    },
+    "result": {
+      "status": "passed-available-inputs",
+      "queueId": "actual-first-ten-full-HD47",
+      "queueRevision": 0,
+      "skipped": [
+        {
+          "id": "EU-002",
+          "status": "running",
+          "reason": "complete capture and composition not available"
+        },
+        {
+          "id": "EU-003",
+          "status": "pending",
+          "reason": "complete capture and composition not available"
+        },
+        {
+          "id": "EU-004",
+          "status": "pending",
+          "reason": "complete capture and composition not available"
+        },
+        {
+          "id": "EU-005",
+          "status": "pending",
+          "reason": "complete capture and composition not available"
+        },
+        {
+          "id": "EU-006",
+          "status": "pending",
+          "reason": "complete capture and composition not available"
+        },
+        {
+          "id": "EU-007",
+          "status": "pending",
+          "reason": "complete capture and composition not available"
+        },
+        {
+          "id": "EU-008",
+          "status": "pending",
+          "reason": "complete capture and composition not available"
+        },
+        {
+          "id": "EU-009",
+          "status": "pending",
+          "reason": "complete capture and composition not available"
+        },
+        {
+          "id": "EU-010",
+          "status": "pending",
+          "reason": "complete capture and composition not available"
+        }
+      ],
+      "mappedPinChecks": 2440,
+      "activeLabelSamples": 529,
+      "rows": [
+        {
+          "id": "EU-001",
+          "frames": 610,
+          "labels": 4,
+          "originalAssetAndAudioExact": true,
+          "freshNativeRenders": 113,
+          "reusedNativeFrames": 497,
+          "completeProjectionPhaseAndLeaderChecks": true,
+          "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+        }
+      ],
+      "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+    }
+  },
+  "encodedAudit": {
+    "pin": {
+      "path": "/private/tmp/still-shift-ms3-blender48-EU001-encoded-audit.json",
+      "bytes": 5378,
+      "sha256": "sha256:2a24299ff5145db4684de550b4063c7264d063ac4058171dff76006ec7801476"
+    },
+    "result": {
+      "status": "passed-completed-products",
+      "queueId": "actual-first-ten-full-HD47",
+      "skipped": [],
+      "scope": "Complete encoded stream facts, original whole narration at 1x versus an independent pinned AAC reference, selected encoded phone images. This is not listening, continuous viewing or all-frame encoded glyph approval.",
+      "rows": [
+        {
+          "id": "EU-001",
+          "question": "Why does the hook on a tape measure move?",
+          "product": {
+            "path": "products/EU-001-00c45963c001ab77-1.json",
+            "bytes": 9125,
+            "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+          },
+          "movie": {
+            "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-001/1/output.mp4",
+            "bytes": 1321056,
+            "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+          },
+          "frames": 610,
+          "wholeSourceSamples": 975360,
+          "mixedVideoClockSamples": 976000,
+          "frameQuantizationTailSamples": 640,
+          "independentWholeAACDecodedParity": true,
+          "decoded": [
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/encoded.f32",
+              "bytes": 7815168,
+              "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+            },
+            {
+              "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/reference.f32",
+              "bytes": 7815168,
+              "sha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989"
+            }
+          ],
+          "images": [
+            {
+              "sourceFrame": 66,
+              "seconds": 2.2,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/native-00.png",
+                "bytes": 373107,
+                "sha256": "sha256:b885e88089ffbdd37cd1e03a70f7825a2244f15c498106075f06e1d06714e537"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/phone-000066.png",
+                "bytes": 65665,
+                "sha256": "sha256:1969cf288e239931a39f50f7d10b2d5a627c8584d1c1aaead166ecda9d6b33cc"
+              }
+            },
+            {
+              "sourceFrame": 185,
+              "seconds": 6.166666666666667,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/native-01.png",
+                "bytes": 507560,
+                "sha256": "sha256:4319f78e38379b6ce5d455d1c06da8c35602e07eb176ea9249c2e11eebbebcab"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/phone-000185.png",
+                "bytes": 96047,
+                "sha256": "sha256:b8aa0c715a377c3aa4d00ac6011872692fd0e6f3cdaf5615a82f094e4ee61541"
+              }
+            },
+            {
+              "sourceFrame": 289,
+              "seconds": 9.633333333333333,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/native-02.png",
+                "bytes": 646127,
+                "sha256": "sha256:2a4dc12b7b5e05438067f5b8023203482e9cf84f83107399df5514878b7627f0"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/phone-000289.png",
+                "bytes": 83521,
+                "sha256": "sha256:6d6644dd7ded5297ad9940e105fc1bebaf4ca62cf8b7f0afd48b5b742fdeca0e"
+              }
+            },
+            {
+              "sourceFrame": 420,
+              "seconds": 14.0,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/native-03.png",
+                "bytes": 270949,
+                "sha256": "sha256:0038c15667f02c66ebd29b966310f93b9441cde8b18763b30d83e1ea65071a7a"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/phone-000420.png",
+                "bytes": 61247,
+                "sha256": "sha256:e484ee4d89a00959a46252f06981ba61d30b1a1e4ab1b0c404d4f55065e26e00"
+              }
+            },
+            {
+              "sourceFrame": 555,
+              "seconds": 18.5,
+              "native": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/native-04.png",
+                "bytes": 237967,
+                "sha256": "sha256:dfef5e42cfdb3debf80446b4775209bcd184282ed1f170b8854ab828c17a178c"
+              },
+              "phone": {
+                "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/phone-000555.png",
+                "bytes": 59599,
+                "sha256": "sha256:f86dc9e3313a6af6b85ab3c2dc0a2be66d91443633b385b9b2f17018d6dd8026"
+              }
+            }
+          ],
+          "wholeGlyphContinuousListeningReview": "UNREVIEWED"
+        }
+      ]
+    }
+  },
+  "phoneInspection": {
+    "episode": "EU-001",
+    "sheet": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/midpoints.png",
+      "bytes": 371685,
+      "sha256": "sha256:2ab3f460478776bca61c4cc1f70fe41b9eac5947a7478ed516471fa3f9596159"
+    },
+    "selectedFrames": [66, 185, 289, 420, 555],
+    "inspected": true,
+    "scope": "Five encoded whole-episode midpoint frames inspected at 360x640; readable sampled face/flange/rivet labels and pointers. This does not establish all-frame encoded glyphs, whole physical contact, continuous playback or listening approval."
+  },
+  "qa": {
+    "pin": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-001/1/qa-rendered-visual.json",
+      "bytes": 66042,
+      "sha256": "sha256:2e2bf6320b5698eb739be7075809e948a93b7a9f4db4d4df64b583bb0f750397"
+    },
+    "status": "failed",
+    "frozenPixelErrors": 21,
+    "readingTimeWarnings": 11,
+    "outsideSafeAreaWarnings": 5,
+    "encodedImages": 59,
+    "disposition": "unresolved; completed queue transaction is separate from failed QA"
+  },
+  "retainedHelperFailure": {
+    "description": "Private metadata read incorrectly treated speech cue list as an object; raised TypeError after printing QA counts. No source or production data changed; held source check still passed."
+  },
+  "acceptedPilot": 0,
+  "pilotDenominator": 10,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "remaining": [
+    "Complete remaining nine episode stages and full queue/report/resume.",
+    "Independent full native and encoded audio/image audits for remaining episodes.",
+    "Resolve authored static holds and staging; complete whole factual/mechanical/encoded-glyph/continuous/listening reviews and handoff.",
+    "Broader faults/coverage/effort and final software/benchmark/archive/installed-package gates."
+  ]
+}

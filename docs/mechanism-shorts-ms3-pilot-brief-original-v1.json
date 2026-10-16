@@ -1,0 +1,616 @@
+{
+  "version": "mechanism-shorts-ms3-pilot-brief-1",
+  "date": "2026-10-13",
+  "selection": "ms3-pilot-2026-10-12-v1",
+  "boardRawSha256": "sha256:e6fbe4ca81771b482be89dc28d8cebe0f35df394b1913f12c8f876f8cf963dd5",
+  "originalDenominator": 10,
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "normalDurationSeconds": [20, 40],
+    "master": "supplied narration and word/cue timings; normal range does not authorize padding"
+  },
+  "style": "Procedural 3D mechanism explanation views requested by the approved plan; generic naturalistic-shot preference does not replace that explicit style.",
+  "scope": "Three supplied recordings plus seven draft recording scripts/visual briefs. No synthesis, paid generation, private transcript/media redistribution or pilot admission.",
+  "episodes": [
+    {
+      "id": "E01",
+      "question": "Why does a tape measure hook move?",
+      "answer": "Equal hook travel and hook thickness align the selected inside and outside measuring contacts.",
+      "route": "existing-pack-rig",
+      "frozenDesignVariant": "floating-hook",
+      "implementedDesignVariant": "floating-hook",
+      "input": {
+        "parameters": {
+          "hookThickness": 0.18,
+          "bladeLength": 10,
+          "bladeWidth": 2
+        }
+      },
+      "pack": {
+        "id": "tape-hook",
+        "version": "1.0.0",
+        "sha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+        "variant": "floating-hook",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:0a2db1877fe83eb7ee348b6c658b2396dd4a781b3a5c3ffaa413392e182245bc",
+      "narrationStatus": "supplied-whole-recording",
+      "explanationViews": [
+        "aligned inside/outside comparison at exposed contact edges",
+        "macro thickness and travel witnesses"
+      ],
+      "requiredCapabilities": [
+        "Thickness/travel equality and active contact-plane witness",
+        "Readable aligned comparison throughout contact hold"
+      ],
+      "scriptStatus": "whole-supplied-recording-preserved-private",
+      "takeId": "EU-001",
+      "scriptBeats": null,
+      "copyReadyScript": null,
+      "measuredAudio": "Exact supplied source/time facts retained in private pilot row; original spoken text is not copied into public repository docs."
+    },
+    {
+      "id": "E02",
+      "question": "How can a loose tape hook slide without falling off?",
+      "answer": "Rivet heads retain the hook while elongated slots permit bounded longitudinal travel.",
+      "route": "new-asset-existing-rig",
+      "frozenDesignVariant": "three-rivet-slotted-hook",
+      "implementedDesignVariant": "slotted-retention",
+      "input": {
+        "variant": "slotted-retention",
+        "parameters": {
+          "hookThickness": 0.18,
+          "bladeLength": 10,
+          "bladeWidth": 2
+        }
+      },
+      "pack": {
+        "id": "tape-hook",
+        "version": "1.0.0",
+        "sha256": "sha256:26d9b9d6ff920a8daee8c86e301e5e739532b72f9f703e74616fa49291a8da0e",
+        "variant": "slotted-retention",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:8219d2a9189269cb8ab41ddac59ee70aca81eb6cc6ce9d742c5bb11ee4813dd0",
+      "narrationStatus": "matching-audio-and-timing-missing",
+      "explanationViews": [
+        "authored top/side slot section with visible heads and slot ends",
+        "bounded travel close-up"
+      ],
+      "requiredCapabilities": [
+        "Closed authored slot geometry and rivet-head overlap throughout travel",
+        "Slider hard-stop and retention witnesses"
+      ],
+      "scriptStatus": "new-recording-draft-not-approved",
+      "scriptBeats": [
+        {
+          "id": "B1",
+          "spoken": "The tape hook can slide, so what keeps it attached? Look underneath the rivet heads.",
+          "visibleEvidence": "Reveal rivet head and elongated slot; hold a top/side cutaway.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B2",
+          "spoken": "Each rivet passes through a long slot in the hook. Its wider head overlaps the edges, keeping the hook on the blade.",
+          "visibleEvidence": "Show the cap overlapping both slot edges; hold the frame.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B3",
+          "spoken": "The narrow shaft has room to move along the slot, but only until it reaches an end.",
+          "visibleEvidence": "Slide the hook between stops; hold the rivet reference.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B4",
+          "spoken": "The slots allow the travel. The heads provide the retention. Those are two different jobs in the same connection.",
+          "visibleEvidence": "Compare head retention with permitted longitudinal travel; return to recognition.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        }
+      ],
+      "copyReadyScript": "The tape hook can slide, so what keeps it attached? Look underneath the rivet heads. Each rivet passes through a long slot in the hook. Its wider head overlaps the edges, keeping the hook on the blade. The narrow shaft has room to move along the slot, but only until it reaches an end. The slots allow the travel. The heads provide the retention. Those are two different jobs in the same connection.",
+      "scriptSha256": "sha256:4249f193bbc598c9d961b508ecdc1df18438b7ff62b5ab8574a4bee3ab909174",
+      "wordCount": 73,
+      "estimatedDurationSeconds": [22.81, 26.07],
+      "estimateMethod": "Provisional English cadence bracket informed by existing recordings; actual audio controls the edit, no padding/stretching.",
+      "sources": ["https://patents.google.com/patent/US4930227A/en"],
+      "measuredAudio": null
+    },
+    {
+      "id": "E03",
+      "question": "Why does this cable tie tighten but resist pulling back?",
+      "answer": "Tooth ramps lift the integral pawl during forward feed; engagement obstructs reverse feed in this non-releasable variant.",
+      "route": "existing-pack-rig",
+      "frozenDesignVariant": "outside-serrated-integral-pawl-cutaway",
+      "implementedDesignVariant": "outside-serrated-integral-pawl-cutaway",
+      "input": {
+        "parameters": {
+          "pitch": 0.5,
+          "strapWidth": 1,
+          "toothCount": 8
+        }
+      },
+      "pack": {
+        "id": "cable-tie",
+        "version": "1.0.0",
+        "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+        "variant": "outside-serrated-integral-pawl-cutaway",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:3a59ce85a880bf2f92d90b4cdbbbe9336b44d607b40c13836b8f6888f9f5af5d",
+      "narrationStatus": "supplied-whole-recording",
+      "explanationViews": [
+        "declared authored head cutaway showing strap/pawl overlap",
+        "forward feed and held reverse-request comparison"
+      ],
+      "requiredCapabilities": [
+        "No-release family guard and seated tooth/pawl witnesses",
+        "Visible contact throughout forward tooth crossing and held state"
+      ],
+      "scriptStatus": "whole-supplied-recording-preserved-private",
+      "takeId": "EU-002",
+      "scriptBeats": null,
+      "copyReadyScript": null,
+      "measuredAudio": "Exact supplied source/time facts retained in private pilot row; original spoken text is not copied into public repository docs."
+    },
+    {
+      "id": "E04",
+      "question": "Why does the modeled tie latch in steps rather than at any position?",
+      "answer": "Repeated tooth spacing sets the separation between neighboring seated positions in the illustrative ratchet.",
+      "route": "existing-pack-rig",
+      "frozenDesignVariant": "outside-serrated-integral-pawl-cutaway",
+      "implementedDesignVariant": "outside-serrated-integral-pawl-cutaway",
+      "input": {
+        "parameters": {
+          "pitch": 0.5,
+          "strapWidth": 1,
+          "toothCount": 8
+        }
+      },
+      "pack": {
+        "id": "cable-tie",
+        "version": "1.0.0",
+        "sha256": "sha256:c4243b4d3f4ae14561f955eff5874d1954adabf944d4daf96ca27d48b22b7a7c",
+        "variant": "outside-serrated-integral-pawl-cutaway",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:3a59ce85a880bf2f92d90b4cdbbbe9336b44d607b40c13836b8f6888f9f5af5d",
+      "narrationStatus": "matching-audio-and-timing-missing",
+      "explanationViews": [
+        "macro successive tooth seats with dimension witness",
+        "aligned pitch comparison with fixed world scale"
+      ],
+      "requiredCapabilities": [
+        "Analytic pitch-to-seat displacement across multiple teeth and parameter variants",
+        "Readable interval witness with genuine unit qualification"
+      ],
+      "scriptStatus": "new-recording-draft-not-approved",
+      "scriptBeats": [
+        {
+          "id": "B1",
+          "spoken": "Why does this modeled tie settle in steps? Follow the row of teeth past the flexible catch.",
+          "visibleEvidence": "Show adjacent teeth and the catch; hold a macro.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B2",
+          "spoken": "A tooth pushes the catch aside. After it passes, the catch returns into the next gap.",
+          "visibleEvidence": "Feed one tooth through and settle; hold the catch reference.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B3",
+          "spoken": "The spacing between neighboring teeth sets the distance between those seated positions. Change that spacing, and the step changes too.",
+          "visibleEvidence": "Mark successive seats, then compare two pitches at fixed world scale; cut between aligned views.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B4",
+          "spoken": "The model is repeating the same tooth-and-gap pattern. It is not choosing a new resting place at every possible position.",
+          "visibleEvidence": "Hold neighboring seated positions and the interval witness; return to recognition.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        }
+      ],
+      "copyReadyScript": "Why does this modeled tie settle in steps? Follow the row of teeth past the flexible catch. A tooth pushes the catch aside. After it passes, the catch returns into the next gap. The spacing between neighboring teeth sets the distance between those seated positions. Change that spacing, and the step changes too. The model is repeating the same tooth-and-gap pattern. It is not choosing a new resting place at every possible position.",
+      "scriptSha256": "sha256:31fdad9ebb38fd61c67f86611f8272518f5d57d802ef93a7473fad4f250a6268",
+      "wordCount": 73,
+      "estimatedDurationSeconds": [22.81, 26.07],
+      "estimateMethod": "Provisional English cadence bracket informed by existing recordings; actual audio controls the edit, no padding/stretching.",
+      "sources": [
+        "docs/mechanism-topic-family-coverage.json",
+        "packages/animation-engine/src/mechanism/cable-tie-pack.ts"
+      ],
+      "measuredAudio": null
+    },
+    {
+      "id": "E05",
+      "question": "Why can a releasable cable tie back out when its trigger is pressed?",
+      "answer": "The release trigger lifts the pawl clear so the strap can withdraw before engagement is restored.",
+      "route": "new-asset-existing-rig",
+      "frozenDesignVariant": "inside-serrated-trigger-release",
+      "implementedDesignVariant": "inside-serrated-extended-trigger-cutaway",
+      "input": {
+        "variant": "inside-serrated-extended-trigger-cutaway",
+        "parameters": {
+          "pitch": 0.5,
+          "strapWidth": 1,
+          "toothCount": 8
+        }
+      },
+      "pack": {
+        "id": "cable-tie",
+        "version": "1.0.0",
+        "sha256": "sha256:877a7b778a7f2daa5232e6be6ac934fe12f55326ed349969b7de75b7202fb191",
+        "variant": "inside-serrated-extended-trigger-cutaway",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:4067278bc9a3b9815a1325fe83b4e776fc6b0859d6f4afd8090bc891290dc4d5",
+      "narrationStatus": "matching-audio-and-timing-missing",
+      "explanationViews": [
+        "authored release-trigger cutaway",
+        "engaged/released/back-out/reengaged cycle"
+      ],
+      "requiredCapabilities": [
+        "New release asset conforms to existing generic ratchet teaching-release contract",
+        "Trigger motion, pawl clearance and reverse path match the factual variant"
+      ],
+      "scriptStatus": "new-recording-draft-not-approved",
+      "scriptBeats": [
+        {
+          "id": "B1",
+          "spoken": "This tie has a release trigger. Press it, and the strap can come back out.",
+          "visibleEvidence": "Show the extended trigger and engaged catch; hold a cutaway.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B2",
+          "spoken": "The trigger is part of the flexible catch. Pressing it moves that catch away from the teeth instead of forcing a tooth backward through it.",
+          "visibleEvidence": "Press the trigger with the catch/trigger geometry moving together; hold the camera.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B3",
+          "spoken": "With the catch clear, there is a path for the strap to withdraw.",
+          "visibleEvidence": "Withdraw the released strap through the cleared path; hold a side view.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B4",
+          "spoken": "Let the trigger return, and the catch can meet the teeth again. Release works by clearing the obstacle, then restoring it.",
+          "visibleEvidence": "Restore engagement and hold the seated state; return to recognition.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        }
+      ],
+      "copyReadyScript": "This tie has a release trigger. Press it, and the strap can come back out. The trigger is part of the flexible catch. Pressing it moves that catch away from the teeth instead of forcing a tooth backward through it. With the catch clear, there is a path for the strap to withdraw. Let the trigger return, and the catch can meet the teeth again. Release works by clearing the obstacle, then restoring it.",
+      "scriptSha256": "sha256:b44c7b69fca14bfa246c86415db13052f6711d4144757e3a0d88a11d4103d544",
+      "wordCount": 74,
+      "estimatedDurationSeconds": [23.12, 26.43],
+      "estimateMethod": "Provisional English cadence bracket informed by existing recordings; actual audio controls the edit, no padding/stretching.",
+      "sources": [
+        "https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202"
+      ],
+      "measuredAudio": null
+    },
+    {
+      "id": "E06",
+      "question": "How can reverse tension seat a pawl more firmly against a tie head?",
+      "answer": "In the cited load-responsive design, reverse tension shifts the hinged pawl toward strap/frame gripping and stops bound further shifting.",
+      "route": "new-behavior",
+      "frozenDesignVariant": "hinged-pawl-frame-stop",
+      "implementedDesignVariant": "hinged-pawl-frame-stop",
+      "input": {
+        "variant": "hinged-pawl-frame-stop",
+        "parameters": {
+          "pitch": 0.5,
+          "strapWidth": 1,
+          "toothCount": 8
+        }
+      },
+      "pack": {
+        "id": "cable-tie",
+        "version": "1.0.0",
+        "sha256": "sha256:195ca45a7c763c7e049e98b492a617d6ecb6f4e30ca884c1c655ebc88d48bcbb",
+        "variant": "hinged-pawl-frame-stop",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:7d41eac2d578ecf5b592c6670ec7d366f9566be79d351e3da2065542ebcff07b",
+      "narrationStatus": "matching-audio-and-timing-missing",
+      "explanationViews": [
+        "authored pawl/frame/stop cutaway",
+        "explicit qualitative load-path arrows and stop witness"
+      ],
+      "requiredCapabilities": [
+        "Variant-specific load-response or an explicitly declared analytic teaching model",
+        "Pawl/frame stop contact and source-supported limits with no unverified force numbers"
+      ],
+      "scriptStatus": "new-recording-draft-not-approved",
+      "scriptBeats": [
+        {
+          "id": "B1",
+          "spoken": "Can pulling backward make a tie seat more firmly? In this load-responsive design, the pawl can shift a little inside the head.",
+          "visibleEvidence": "Show the pawl inside the frame and lower rear hinge; hold the cutaway.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B2",
+          "spoken": "The strap already meets its first tooth. Further loading shifts and turns the pawl while the thin hinge deforms.",
+          "visibleEvidence": "Apply the declared qualitative load and show hinge/pawl shifting; hold the reference.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B3",
+          "spoken": "A second tooth moves into contact, and the rounded stop reaches the frame.",
+          "visibleEvidence": "Show second-tooth and frame-stop contact together; cut to the stop macro.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B4",
+          "spoken": "That stop bounds the movement. The shape turns reverse tension into additional contact at the teeth and the frame.",
+          "visibleEvidence": "Increase the model control beyond the stop with unchanged poses; hold the stop witness.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        }
+      ],
+      "copyReadyScript": "Can pulling backward make a tie seat more firmly? In this load-responsive design, the pawl can shift a little inside the head. The strap already meets its first tooth. Further loading shifts and turns the pawl while the thin hinge deforms. A second tooth moves into contact, and the rounded stop reaches the frame. That stop bounds the movement. The shape turns reverse tension into additional contact at the teeth and the frame.",
+      "scriptSha256": "sha256:b8dcbd31f39e1f6aabaaeccf80711addb67d03dca0ca8e97dd99cab01752eabc",
+      "wordCount": 73,
+      "estimatedDurationSeconds": [22.81, 26.07],
+      "estimateMethod": "Provisional English cadence bracket informed by existing recordings; actual audio controls the edit, no padding/stretching.",
+      "sources": [
+        "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/3872547",
+        "docs/mechanism-shorts-ms3-load-alignment-results.json"
+      ],
+      "measuredAudio": null
+    },
+    {
+      "id": "E07",
+      "question": "Why does squeezing a clothespeg handle open its jaws?",
+      "answer": "Handles and jaws lie on opposite sides of the shared pivot, so bringing handles together separates the jaws.",
+      "route": "existing-pack-rig",
+      "frozenDesignVariant": "wood-arms-central-spring-cloth",
+      "implementedDesignVariant": "wood-arms-central-spring-cloth",
+      "input": {
+        "parameters": {
+          "armLength": 6,
+          "armWidth": 0.8,
+          "clothThickness": 0.16
+        }
+      },
+      "pack": {
+        "id": "clothespeg",
+        "version": "1.0.0",
+        "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+        "variant": "wood-arms-central-spring-cloth",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:f2d265adfc6d94480063abfb7a82a4cbec36111299025bd49156e1281143939e",
+      "narrationStatus": "matching-audio-and-timing-missing",
+      "explanationViews": [
+        "side view with common pivot and both tips visible",
+        "handle/jaw displacement witnesses"
+      ],
+      "requiredCapabilities": [
+        "Common-axis two-arm kinematics and approach/hold/return continuity",
+        "Handle and jaw witnesses remain attached under camera changes"
+      ],
+      "scriptStatus": "new-recording-draft-not-approved",
+      "scriptBeats": [
+        {
+          "id": "B1",
+          "spoken": "Why do the jaws open when you squeeze these handles? Watch the middle of the peg.",
+          "visibleEvidence": "Show both handles, jaws and common pivot; hold a side view.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B2",
+          "spoken": "Each wooden arm turns around that region. Its handle is on one side; its jaw is on the other.",
+          "visibleEvidence": "Identify ends on opposite sides; hold the pivot reference.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B3",
+          "spoken": "Bring the handles together, and the jaw ends move apart. The two ends of each arm move in opposite directions around the same turning point.",
+          "visibleEvidence": "Squeeze and open with attached displacement witnesses; hold the frame.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B4",
+          "spoken": "The handles and jaws share that rotation around the middle. Bringing the handles together changes the spacing between the jaw ends.",
+          "visibleEvidence": "Return to the starting pose around the same pivot; hold the side view.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        }
+      ],
+      "copyReadyScript": "Why do the jaws open when you squeeze these handles? Watch the middle of the peg. Each wooden arm turns around that region. Its handle is on one side; its jaw is on the other. Bring the handles together, and the jaw ends move apart. The two ends of each arm move in opposite directions around the same turning point. The handles and jaws share that rotation around the middle. Bringing the handles together changes the spacing between the jaw ends.",
+      "scriptSha256": "sha256:57abacc18f28810c9b34a4bf5626e2e691e2a14455c4b0e50e410a99e116308e",
+      "wordCount": 81,
+      "estimatedDurationSeconds": [25.31, 28.93],
+      "estimateMethod": "Provisional English cadence bracket informed by existing recordings; actual audio controls the edit, no padding/stretching.",
+      "sources": ["https://patents.google.com/patent/US2590881A/en"],
+      "measuredAudio": null
+    },
+    {
+      "id": "E08",
+      "question": "Why does a clothespeg close again after the handles are released?",
+      "answer": "The torsion spring biases the arms toward closure; the selected cloth stops the authored return before the unloaded closed pose.",
+      "route": "existing-pack-rig",
+      "frozenDesignVariant": "wood-arms-central-spring-cloth",
+      "implementedDesignVariant": "wood-arms-central-spring-cloth",
+      "input": {
+        "parameters": {
+          "armLength": 6,
+          "armWidth": 0.8,
+          "clothThickness": 0.16
+        }
+      },
+      "pack": {
+        "id": "clothespeg",
+        "version": "1.0.0",
+        "sha256": "sha256:1d6050d5ac18a16722e3766bf8da86a4f0c418012d50e3a15a6eeadd1b7ac281",
+        "variant": "wood-arms-central-spring-cloth",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:f2d265adfc6d94480063abfb7a82a4cbec36111299025bd49156e1281143939e",
+      "narrationStatus": "supplied-whole-recording",
+      "explanationViews": [
+        "spring coil and leg-seat macro",
+        "continuous release/return/contact-stop side view"
+      ],
+      "requiredCapabilities": [
+        "Spring leg attachment and qualitative return direction",
+        "Held/released/contact-stop continuity without a stiffness or measured-force claim"
+      ],
+      "scriptStatus": "whole-supplied-recording-preserved-private",
+      "takeId": "EU-003",
+      "scriptBeats": null,
+      "copyReadyScript": null,
+      "measuredAudio": "Exact supplied source/time facts retained in private pilot row; original spoken text is not copied into public repository docs."
+    },
+    {
+      "id": "E09",
+      "question": "What do the opposing jaw notches do when a clothespeg grips a line?",
+      "answer": "Opposing jaw notches provide a shaped seat around the selected line while the spring biases the arms closed.",
+      "route": "new-asset-existing-rig",
+      "frozenDesignVariant": "notched-jaws-line-contact",
+      "implementedDesignVariant": "notched-line",
+      "input": {
+        "variant": "notched-line",
+        "parameters": {
+          "armLength": 6,
+          "armWidth": 0.8,
+          "lineRadius": 0.16
+        }
+      },
+      "pack": {
+        "id": "clothespeg",
+        "version": "1.0.0",
+        "sha256": "sha256:7698b6a3f64781495f27fc0358b8c24b87213845d0da4033e111ad69acb7723f",
+        "variant": "notched-line",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:1937a914b366842ed133932040dc4fd041a98854d7b6626bfea489a7a67daf90",
+      "narrationStatus": "matching-audio-and-timing-missing",
+      "explanationViews": [
+        "authored jaw/line contact section",
+        "notch versus flat contact geometry comparison"
+      ],
+      "requiredCapabilities": [
+        "New notch/line geometry and compatible contact anchors",
+        "Declared closure stop and visible line seat; no friction simulation"
+      ],
+      "scriptStatus": "new-recording-draft-not-approved",
+      "scriptBeats": [
+        {
+          "id": "B1",
+          "spoken": "What are these matching recesses in the jaws for? Put a round line between them.",
+          "visibleEvidence": "Place the round line at the opposing notches; hold a front/side cutaway.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B2",
+          "spoken": "As the jaws close, the two notches form a shaped seat around the line.",
+          "visibleEvidence": "Close into the declared line stop; hold the seat.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B3",
+          "spoken": "The spring keeps the arms biased toward closure, while the recesses make room for the round shape.",
+          "visibleEvidence": "Show spring and notch roles; cut to the spring detail.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B4",
+          "spoken": "Those are separate roles: the spring supplies the closing bias, and the notches define where the line sits. The opening motion lets the line enter; the shaped seat is where the jaws meet it.",
+          "visibleEvidence": "Return to the line seat with no friction/strength claim; hold the contact view.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        }
+      ],
+      "copyReadyScript": "What are these matching recesses in the jaws for? Put a round line between them. As the jaws close, the two notches form a shaped seat around the line. The spring keeps the arms biased toward closure, while the recesses make room for the round shape. Those are separate roles: the spring supplies the closing bias, and the notches define where the line sits. The opening motion lets the line enter; the shaped seat is where the jaws meet it.",
+      "scriptSha256": "sha256:eaf79bdb954364ea12f62001a12b84b8c948e108dbd0d8a76d0084c497be38c7",
+      "wordCount": 80,
+      "estimatedDurationSeconds": [25.0, 28.57],
+      "estimateMethod": "Provisional English cadence bracket informed by existing recordings; actual audio controls the edit, no padding/stretching.",
+      "sources": [
+        "https://patents.google.com/patent/US2590881A/en",
+        "docs/mechanism-shorts-ms3-line-results.json"
+      ],
+      "measuredAudio": null
+    },
+    {
+      "id": "E10",
+      "question": "How does pressing farther from the pivot change the force needed in an idealized clothespeg?",
+      "answer": "For a declared resisting torque, a greater perpendicular handle moment arm reduces the required ideal input force; a real peg also depends on spring/contact geometry.",
+      "route": "new-behavior",
+      "frozenDesignVariant": "idealized-moment-arm-comparison",
+      "implementedDesignVariant": "ideal-lever-press-points",
+      "input": {
+        "variant": "ideal-lever-press-points",
+        "parameters": {
+          "armLength": 6,
+          "armWidth": 0.8,
+          "clothThickness": 0.16
+        }
+      },
+      "pack": {
+        "id": "clothespeg",
+        "version": "1.0.0",
+        "sha256": "sha256:232ab247b3139293cb3b283b2c34d7c948c0e2b0b77df8b758479f8ec4bc2c25",
+        "variant": "ideal-lever-press-points",
+        "detail": "teaching"
+      },
+      "sceneCanonicalSha256": "sha256:d00f6cf8e6605d1d88356a0562b9b82388ce999bb5fab26129b28e833e13991b",
+      "narrationStatus": "matching-audio-and-timing-missing",
+      "explanationViews": [
+        "side free-body diagram with force lines and perpendicular moment arms",
+        "aligned near/far press-point comparison at fixed resistance"
+      ],
+      "requiredCapabilities": [
+        "Explicit static moment model and independent dimensional oracle",
+        "Separate spring torque/contact assumptions and declared idealization"
+      ],
+      "scriptStatus": "new-recording-draft-not-approved",
+      "scriptBeats": [
+        {
+          "id": "B1",
+          "spoken": "Why can pressing farther from the pivot take less force? Compare the two push points while keeping the resisting twist the same.",
+          "visibleEvidence": "Show near/far pads on one unchanged arm and shared pivot; hold a side view.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B2",
+          "spoken": "In this ideal balance, force times its perpendicular distance from the pivot must match that twist.",
+          "visibleEvidence": "Show push lines and perpendicular moment arms with fixed declared resistance; hold a diagram.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B3",
+          "spoken": "A push line farther from the pivot needs less force for the same balance.",
+          "visibleEvidence": "Compare computed forces from original posed anchors; cut between aligned views.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        },
+        {
+          "id": "B4",
+          "spoken": "Real pegs also have changing spring and contact geometry. This comparison isolates the leverage: same resistance, different distance from the pivot.",
+          "visibleEvidence": "Hold the idealization and comparison result; return to recognition.",
+          "timing": "measure supplied word/cue timing; no authored timestamp yet"
+        }
+      ],
+      "copyReadyScript": "Why can pressing farther from the pivot take less force? Compare the two push points while keeping the resisting twist the same. In this ideal balance, force times its perpendicular distance from the pivot must match that twist. A push line farther from the pivot needs less force for the same balance. Real pegs also have changing spring and contact geometry. This comparison isolates the leverage: same resistance, different distance from the pivot.",
+      "scriptSha256": "sha256:b8cb0b29f3f7076851a6db2e4aea60ca03ff8921094637f880233ef4ab870d15",
+      "wordCount": 73,
+      "estimatedDurationSeconds": [22.81, 26.07],
+      "estimateMethod": "Provisional English cadence bracket informed by existing recordings; actual audio controls the edit, no padding/stretching.",
+      "sources": [
+        "https://openstax.org/books/college-physics-ap-courses/pages/9-5-simple-machines",
+        "docs/mechanism-shorts-ms3-lever-results.json"
+      ],
+      "measuredAudio": null
+    }
+  ],
+  "revision": 2,
+  "supersedesDraft": {
+    "path": "still-shift-ms3-pilot21-brief1.json",
+    "sha256": "sha256:ae7b0f5aafd5a53846b7f0d79f20cc5254bbd8c55755a2257b9414236bfc3dfe",
+    "reason": "Remove an unprovided click sound claim and unnecessary contrast/strength wording; preserve all original questions and semantic evidence."
+  }
+}

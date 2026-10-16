@@ -1,0 +1,285 @@
+{
+  "version": "mechanism-ms3-caption-repair-results-1",
+  "date": "2026-10-13",
+  "sourceGitBase": "03edf64caaa2f396213879babf11a884eea8fa25",
+  "sourceWorkingTreeAtGateStart": " M packages/animation-engine/src/mechanism/cue-layout.ts\n M packages/animation-engine/src/mechanism/narrated-cycle.ts\n M tests/unit/mechanism-narrated-cycle.test.ts\n?? packages/animation-engine/src/mechanism/cue-caption.ts\n",
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-pilot24-checks1-inputs.json",
+    "bytes": 465418,
+    "sha256": "sha256:9d81489df32c4a04f6f0e87069cd2d686e23b2e23773677563739a4021eef702"
+  },
+  "implementationCommit": "b5f8fbaeafa52d24d5e93e36427868589b4a7d52",
+  "status": "software-and-synthetic-browser-verified",
+  "problem": "Original portrait products used20% height caption backings ending at99% frame height. Four standard viewport regressions reproduce violation of the5% safe inset.",
+  "change": "One shared caption geometry function gives compiled text/backing and annotation exclusions the same rectangle, fits three lines plus font-relative padding inside5% inset and reduces1080x1920 backing height384 to207 pixels. Existing annotation font sizing and narration clocks remain unchanged.",
+  "implementationFiles": [
+    "packages/animation-engine/src/mechanism/cue-caption.ts",
+    "packages/animation-engine/src/mechanism/cue-layout.ts",
+    "packages/animation-engine/src/mechanism/narrated-cycle.ts"
+  ],
+  "tests": {
+    "addedRegressions": 5,
+    "owningTests": 25,
+    "owningFiles": 2,
+    "redStartup": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-pilot24-red.log",
+        "bytes": 2027,
+        "sha256": "sha256:38247c34c42ab300a4b637648a82ffdab01c6b7054d4fe6f7440881c0319cd08"
+      },
+      "reason": "No Vitest project named unit; corrected to actual repository runner. No tests ran in this attempt."
+    },
+    "redBehavior": {
+      "actualExitCode": 1,
+      "failedTests": 5,
+      "passedExistingTests": 13,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-pilot24-red2.log",
+        "bytes": 6981,
+        "sha256": "sha256:a78aee9a26c97c17ed2de811dc31bed8d98781788138624c6bafa7fc4cfbbdba"
+      }
+    },
+    "greenOwning": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-pilot24-green1.log",
+        "bytes": 1311,
+        "sha256": "sha256:8592a0782c4874137cfdad41c9b47700b9ad366366b5a7afb2a483193578fcbd"
+      }
+    },
+    "isolatedCaptionPositive": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-pilot24-caption-positive.log",
+        "bytes": 311,
+        "sha256": "sha256:db13c476d0566dffb4d0799d1aac0d73c7fcf3b2fb855a3978d8391882ad0693"
+      }
+    }
+  },
+  "verification": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-pilot24-checks1-receipt.json",
+      "bytes": 1610,
+      "sha256": "sha256:1aedcfd8fbfca2142a9be89cf27dd49ff3710b1bc70cc6fef8adebda46c77d94"
+    },
+    "steps": [
+      {
+        "command": ["pnpm", "check:fast"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T12:21:47.572271+00:00",
+        "endedUtc": "2026-10-13T12:24:06.867555+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot24-checks1-0.log"
+      },
+      {
+        "command": ["pnpm", "test:browser:mechanism-cue-layout"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T12:24:06.867848+00:00",
+        "endedUtc": "2026-10-13T12:31:25.513533+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot24-checks1-1.log"
+      },
+      {
+        "command": ["pnpm", "test:browser:mechanism-narrated-cycles"],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T12:31:25.514057+00:00",
+        "endedUtc": "2026-10-13T12:36:30.482593+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot24-checks1-2.log"
+      }
+    ],
+    "fast": {
+      "tests": 4535,
+      "files": 448,
+      "schemaBoundaryFormatLintBuild": "passed"
+    },
+    "cueLayoutBrowser": {
+      "root": "/private/tmp/still-shift-ms2-cue-layout-7ZLp73",
+      "families": 3,
+      "exports": 12,
+      "observedOutputFrames": 720,
+      "allFrameMeasuredGlyphBoundsAndSeekPixels": true,
+      "syntheticAudio": true
+    },
+    "narratedCyclesBrowser": {
+      "root": "/private/tmp/still-shift-ms2-narrated-cycles-CcouOQ",
+      "families": 3,
+      "takesPerFamily": 2,
+      "exports": 12,
+      "observedOutputFrames": 900,
+      "syntheticAudio": true
+    }
+  },
+  "portraitRepair": {
+    "episode": "E03",
+    "compiled": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/compiled",
+    "compileActualExitCode": 0,
+    "compileLog": {
+      "path": "/private/tmp/still-shift-ms3-pilot24-E03-compile1.log",
+      "bytes": 1703,
+      "sha256": "sha256:ac85998b6a946de690efba1241008b295325e96ef4b64396f41b02849b67ed12"
+    },
+    "status": "passed-named-caption-repair-scope",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-pilot24-E03-export1-receipt.json",
+      "bytes": 3955,
+      "sha256": "sha256:8e00562a0bd6cfc2a8be53618cbbc8ecc46668b34d7a04ced68b32bf1feaea6b"
+    },
+    "sourceCommit": "b5f8fbaeafa52d24d5e93e36427868589b4a7d52",
+    "steps": [
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "episode",
+          "check",
+          "--authoring",
+          "cue",
+          "--family-input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/EU-002/family.json",
+          "--input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/EU-002/cues-portrait.json",
+          "--prepared-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/compiled",
+          "--plates-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/production1/native-cache/0187ab8a229cec51299245d8511a515e2d35cf5e94ffbd3267b0bc0ed2e5a8c9",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/original-plates-check.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "allOriginalNativeFilesUnchanged": true,
+        "startedUtc": "2026-10-13T12:42:46.930937+00:00",
+        "endedUtc": "2026-10-13T12:42:53.251772+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot24-E03-export1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "episode",
+          "render",
+          "--authoring",
+          "cue",
+          "--family-input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/EU-002/family.json",
+          "--input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/EU-002/cues-portrait.json",
+          "--prepared-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/compiled",
+          "--plates-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/production1/native-cache/0187ab8a229cec51299245d8511a515e2d35cf5e94ffbd3267b0bc0ed2e5a8c9",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/rendered",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/render-report.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "allOriginalNativeFilesUnchanged": true,
+        "startedUtc": "2026-10-13T12:42:53.252076+00:00",
+        "endedUtc": "2026-10-13T12:49:17.135007+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot24-E03-export1-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "episode",
+          "check",
+          "--authoring",
+          "cue",
+          "--family-input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/EU-002/family.json",
+          "--input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/EU-002/cues-portrait.json",
+          "--prepared-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/compiled",
+          "--plates-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/production1/native-cache/0187ab8a229cec51299245d8511a515e2d35cf5e94ffbd3267b0bc0ed2e5a8c9",
+          "--final-output",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/rendered/output.mp4",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/final-check.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "allOriginalNativeFilesUnchanged": true,
+        "startedUtc": "2026-10-13T12:49:17.135465+00:00",
+        "endedUtc": "2026-10-13T12:49:29.524070+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot24-E03-export1-2.log"
+      }
+    ],
+    "finalCheck": {
+      "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/final-check.json",
+      "bytes": 928,
+      "sha256": "sha256:61aa2ddb4ea910e7766d2ee2517f11ae03c66cf7b626ab512b982b2017ef6182"
+    },
+    "independentAudit": {
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-caption25-E03-audit2.json",
+        "bytes": 109904,
+        "sha256": "sha256:c776ba0da7de975458a3f1fac259334f16ae7298ea76aa1c2435042cbfe54ba4"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-caption25-E03-audit2.log",
+        "bytes": 190,
+        "sha256": "sha256:cc0288e177a3f800144ae5ff202b73cbb934f655a8da6d54bf0f69f804d59cb8"
+      },
+      "decodedFramesPerOutput": 646,
+      "changedDecodedFrames": 646,
+      "allDecodedAudioBytesIdentical": true,
+      "originalNativeFilesUnchanged": 656,
+      "nativePictureSha256": "sha256:0fa50a3750f3dc2628b4c616cbedc3eed677de8dcf6a40fae15b39503eb0dae5",
+      "freshNativeSubmissionCalls": 0,
+      "reusedPlateFrames": 646,
+      "qualification": "Independent complete decoded picture/audio and original file identities only. No whole mechanics/glyph/continuous/listening/factual/human/pilot acceptance."
+    },
+    "phoneStillsActuallyViewed": [80, 228, 378, 553],
+    "stateQA": {
+      "actualExitCode": 0,
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-caption25-E03-state-qa2.json",
+        "bytes": 567330,
+        "sha256": "sha256:8498eea5b469bba43c0d719be34ae3fd45eae39a5d104755a1299c776adb313a"
+      },
+      "oldOutsideSafeArea": 4,
+      "newOutsideSafeArea": 0,
+      "oldErrors": 4,
+      "newErrors": 4,
+      "method": "current-composition-state-lint-no-rendered-glyph-acceptance",
+      "qualification": "Pure state QA for the current compiled caption repair. It is not a new production reviewed-ready report or full encoded glyph/whole acceptance."
+    },
+    "retainedFailures": [
+      {
+        "attempt": "audit1",
+        "actualExitCode": 1,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-caption25-E03-audit1.log",
+          "bytes": 4453,
+          "sha256": "sha256:d7bd935b3200b11ae2d171a2dcf2e3416297c23ed862379881f4d415c75c917e"
+        },
+        "reason": "A string path reached a Path-only JSON loader; corrected loader accepts Path/string before complete rerun."
+      },
+      {
+        "attempt": "stateQA1",
+        "actualExitCode": 1,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-caption25-E03-state-qa1.log",
+          "bytes": 3174,
+          "sha256": "sha256:43f5515138f7079ed4982158e2613d9f7a0f654df39c8d473ccb7b94f2f3e167"
+        },
+        "reason": "Default sandbox denied existing cache-lock ps inspection. The same state method passed with authorized read-only process inspection."
+      }
+    ]
+  },
+  "remaining": [
+    "Rebind current unified production/QA/handoff for E03 as required; the standalone caption export/check/independent identity scope is complete, with four raw frozen-run errors and whole reviews still open.",
+    "Repair original E01 aligned comparison and E08 jaw/cloth framing and rerender affected native pictures.",
+    "Current production reports/QA/handoff must rebind after code changes; old59ce0e5f products retain historical proof.",
+    "Automatic bridge repair, seven matching narration inputs, original ten whole/pilot reviews, broader QA/capability/metrics and final full/archive/installed gates remain."
+  ],
+  "qualification": "Named software and synthetic browser checks only. Original pilot acceptance remains0/10; no whole factual/continuous/listening/human acceptance or paid generation."
+}

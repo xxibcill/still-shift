@@ -1,0 +1,125 @@
+{
+  "schemaVersion": "ms3-required-complete-full-and-package-prerequisite-preparation-1",
+  "capturedUtc": "2026-10-15T07:42:36.434354+00:00",
+  "status": "owning105-pass-recovery-benchmark-pending-required-complete-full107-prepared-not-started",
+  "sourceBeforeDocs": "7b85a7ab",
+  "previousGoalTurnClassification": "progress: completed/rendered/inspected four physical fault images, retained actual full91 failure, corrected assertion and launched source-held owning/suffix run.",
+  "requiredPlanClause": {
+    "path": "./mechanism-shorts-production-plan.md",
+    "line": 1398,
+    "quote": "Each implementation milestone retains its required complete `pnpm check` gate.",
+    "effect": "Staged105 qualification cannot replace a complete passing final milestone gate. Keep original aggregate failures; after actual53131 terminal0 run complete pnpm check:all again before package/installed work.",
+    "expectedCompute": "Prior actual full91 took21672.060231375042 seconds, about6h. Current full107 has no promised ETA."
+  },
+  "fullRunner": {
+    "path": "/private/tmp/still-shift-ms3-final107-full1.py",
+    "bytes": 4066,
+    "sha256": "sha256:4e46f592b29e1faabdf697bf342721f8f59216a422dcc1041b74b1dc8f020dd9"
+  },
+  "fullCommand": [
+    "python3",
+    "/private/tmp/still-shift-ms3-final107-full1.py",
+    "--staged-admission",
+    "<genuine-observed53131-terminal0-admission.json>"
+  ],
+  "fullPrerequisites": "Genuine actual53131 terminal0/all6 stages0/exact one-test delta, clean checkout, held current source equal to105; pinned toolchain preflight before full command; fresh isolated media cache; no parallel render/export/benchmark group.",
+  "currentObservedQualification": {
+    "owningNativeActualExitCode": 0,
+    "owningNativeSeconds": 1092.5932495000307,
+    "owningNativeLog": {
+      "path": "/private/tmp/still-shift-ms3-repair105-owning-native-production1.log",
+      "bytes": 387,
+      "sha256": "sha256:a1e6bb409bc4dabbff1e5e82d0f0f665d1e4d6295bec3c66ecc146a7ef2d5d40"
+    },
+    "sourceInputsExact": true,
+    "recoveryAndBenchmark": "live/pending",
+    "stagedActualTerminalObserved": false
+  },
+  "currentSourceDiscovery": {
+    "sessionId": 53894,
+    "actualObservedExitCode": 0,
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "tools/still-shift-cli/src/cli.ts",
+      "production",
+      "discover",
+      "--report",
+      "/private/tmp/still-shift-ms3-current107-discovery1.json"
+    ],
+    "completeReport": {
+      "path": "/private/tmp/still-shift-ms3-current107-discovery1.json",
+      "bytes": 14140,
+      "sha256": "sha256:1944bb99a6a7be0e3c76dc8f675163477118668012a2a58125b2633d1a3afc5a"
+    },
+    "compactItems": 32,
+    "compactTruncated": false,
+    "queueItems": 300,
+    "responseBytes": 32768,
+    "responseItems": 100,
+    "importRoute": "Node-only rigid glTF/GLB; CLI import false",
+    "productionWorkers": 1,
+    "packDisposition": "candidate",
+    "guideAndSourcePinsExact": 15,
+    "installedCapabilityParity": "pending actual current package"
+  },
+  "activePackagePreparation": {
+    "status": "syntax-prepared-required-complete-full-package-copy-all-ten-successors-not-executed",
+    "pins": [
+      {
+        "path": "/private/tmp/still-shift-ms3-complete107-admission.py",
+        "bytes": 2898,
+        "sha256": "sha256:6f7f416476c2aeba61ff6904ad8a696aa3e8c6a03a6be6b24cfcbae5a04de993"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-package108-run1.py",
+        "bytes": 12703,
+        "sha256": "sha256:1677f2e65db9c45c8911929349575c7ab02bf3ed409d3b63c12fcf0122338289"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-postgate108-cache-copy1.py",
+        "bytes": 9104,
+        "sha256": "sha256:035158935cc412e6fc0792d47551f2d63b2e2fd6fba025fcf15d28c4307a5ca8"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-package108-lifecycle-base1.py",
+        "bytes": 11177,
+        "sha256": "sha256:61045bd18c0d7f1dada690bc9c8baf7609863b9b6ae99c534ee2cdfdec836fcb"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-package108-lifecycle1.py",
+        "bytes": 18464,
+        "sha256": "sha256:6c0285324dda9dfaf4be60cebaf121795865b442335e78d0a1cfeb55a74b42eb"
+      }
+    ],
+    "qualification": "Staged1050 alone cannot start package108: complete full107 observed terminal0/source hold0/all116 scripts/176 baselines/36061frames/measured benchmark also required. Original full90/91 failures retained. Same93 consumer and full ten/6181/16-command scope.",
+    "executionStarted": false
+  },
+  "activePackageCommands": {
+    "package": "/private/tmp/still-shift-ms3-package108-run1.py",
+    "cacheCopy": "/private/tmp/still-shift-ms3-postgate108-cache-copy1.py",
+    "allTenLifecycle": "/private/tmp/still-shift-ms3-package108-lifecycle1.py"
+  },
+  "packageGate": "Require genuine focused1050 AND genuine complete full1070 with source hold0/all116 script invocations/176 frozen baselines/36061 frames/measured benchmark. Same93 destinations/full10 episodes/6181 frames/16 CLI commands/EU008 two-label repair/isolation/cache/history obligations. No execution started.",
+  "supersededPreparation": "106 is retained unchanged/unexecuted but is not the execution path: its staged-only admission is insufficient for the required complete milestone gate.108 adds that missing full requirement.",
+  "package108RawPreparation": {
+    "path": "/private/tmp/still-shift-ms3-package108-preparation1.json",
+    "bytes": 1404,
+    "sha256": "sha256:7b7973c31c1e4b6f8c47532e09ef5d55b88cafff76e5d37d96208558cb077d85"
+  },
+  "retainedPreparationFailure": {
+    "attempt": 1,
+    "actualExitCode": 1,
+    "error": "KeyError bytes: guide96 files use nested after pins; source pins are flat. Failed before any docs write or test/package launch. Corrected extraction and repeated the same check.",
+    "originalHelper": {
+      "path": "/private/tmp/still-shift-ms3-final107-docs-initial1.py",
+      "bytes": 9107,
+      "sha256": "sha256:69365a0a36e9fa7e1af01459faf0e97573b449428262ed94ae5940333e823794"
+    }
+  },
+  "fullOrPackageOrPilotPassClaimed": false,
+  "acceptedPilot": 0,
+  "laterDisposition": "Superseded without execution after actual53131 recovery1. Do not use its107/108 admission path requiring1050. Repair110 retains the second failure and prepares focused checks before a new complete required full.",
+  "currentFollowup": "./mechanism-shorts-ms3-repair110-results.json"
+}

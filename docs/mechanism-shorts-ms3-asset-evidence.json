@@ -1,0 +1,446 @@
+{
+  "version": 1,
+  "status": "primary-research-and-scoped-drafts-only",
+  "assets": [
+    {
+      "status": "primary-text-and-drawing-pages-inspected",
+      "episode": "E02",
+      "source": "https://patentimages.storage.googleapis.com/49/10/78/60a2fdbc72d1a9/US4930227.pdf",
+      "viewedPDFPages": [2, 3],
+      "viewedFigures": "1-12, focusing1-8",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-E02-US4930227.pdf",
+          "bytes": 633660,
+          "sha256": "sha256:ca613d2e4b04b1cb4bd609779cec3eb318982edc882102ba79f16e73fd1f694b"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-E02-US4930227-figure-2.png",
+          "bytes": 113813,
+          "sha256": "sha256:c1fdc5e6e32951ab96af50cbfc2db54c2868e2b466b6fc329f5ba68f662f45f8"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-E02-US4930227-figure-3.png",
+          "bytes": 124113,
+          "sha256": "sha256:6eb83402f2bbb56ef1a9646ca1e108d161dec11ce03cd3a33d393b1426bcc5f2"
+        }
+      ],
+      "factualScope": "Three axial rivets through hook slots and smaller blade holes; larger upper shanks guide travel; enlarged heads retain the hook. Tapered elongated body follows curved blade cross-section. Figures6/8 show the sliding assembly at opposite travel ends.",
+      "implementationWitnesses": [
+        "Three distinct slots and three fixed stepped rivets, including top and bottom heads.",
+        "Head diameter exceeds slot width; upper-shank diameter fits the slot while lower shank fits the smaller blade hole.",
+        "Independent all-frame checks of each rivet-to-slot axial clearance over existing slider travel, with endpoint witnesses.",
+        "Tapered/curved slotted-body geometry and readable retention view, rather than an extra decorative rivet on the old two-rivet model."
+      ],
+      "qualification": "Primary geometry research only. Dimensions remain illustrative; no asset, physical-force, factual/design/pilot or human admission yet.",
+      "date": "2026-10-13",
+      "frozenSelection": "ms3-pilot-2026-10-12-v1",
+      "admittedAssets": 0
+    },
+    {
+      "episode": "E05",
+      "status": "primary-manufacturer-text-inspected",
+      "source": "https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202",
+      "factualScope": "RELK2R is inside serrated, uses a plastic pawl, and has an extended trigger. The manufacturer describes pressing the extended pawl down to release the strap.",
+      "implementationWitnesses": [
+        "Separate inside-serrated mesh, actual extended trigger/pawl linkage and backward clearance while released.",
+        "Keep the T50SOS non-releasable factory guard; admit this different factual asset through existing generic teaching-release rig only after geometry checks."
+      ],
+      "qualification": "Text only; detailed trigger topology, dimensions and actual asset remain unreviewed.",
+      "diagramCapture": {
+        "date": "2026-10-13",
+        "source": "https://www.hellermanntyton.com/shared/assets/PDP_PS_RELK_Series_com.pdf",
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-E05-RELK-catalogue.pdf",
+            "bytes": 200006,
+            "sha256": "sha256:247096721b350c37b3b24e7a9465231e26002e254d749730a35d39d72a1ba97d"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-E05-RELK-catalogue-page.png",
+            "bytes": 380975,
+            "sha256": "sha256:dea72a627c4a25df591afe9a36de72355c544c9c8e44c4efabef23941ef0eb98"
+          }
+        ],
+        "viewedPages": [1],
+        "scope": "Manufacturer photo and closure diagram show the extended pawl alongside the tail and finger release away from the serrated strap. Text states inside serrated/releasable plastic pawl. Dimensions remain illustrative for implementation; exact internal topology/asset still unreviewed.",
+        "retrievalNotes": "Catalogue PDF downloaded/rendered/viewed. Technical datasheet and embedded video web fetches returned cache misses; neither was inspected."
+      },
+      "implementation": {
+        "record": "docs/mechanism-shorts-ms3-trigger-results.json",
+        "status": "factory-candidate-current-tiers-native-independent-passed",
+        "qualification": "Current E05 factory/software/native sampled trigger/default engineering proof only. Sourcee9ad9f71 binds180 fresh submissions/180 decoded frames/81 images/120 trigger position hashes/149 pins. Original default all-frame decoded picture/audio parity passes. No whole mechanical/continuous/factual/design/genuine speech/listening/pilot acceptance, physical force claim, spending or publication."
+      }
+    },
+    {
+      "episode": "E06",
+      "status": "supplemental-primary-figures-description-inspected-asset-behavior-pending",
+      "sourceRecord": "docs/mechanism-shorts-ms2-e06-primary-admission-results.json",
+      "source": "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/3872547",
+      "currentRead": {
+        "date": "2026-10-13",
+        "exactRetainedPDFVerified": true,
+        "pdfPagesViewed": [3, 11],
+        "scope": "Figures8-11 and printed columns9/10 only; no new full22-page/OCR claim.",
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms2-e06-primary65-page3.png",
+            "bytes": 209805,
+            "sha256": "sha256:96af3c3083c04eeb28598e440bc805ef2ef909c3b013fcbc76029863a6a81c49"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms2-e06-primary65-page11.png",
+            "bytes": 339009,
+            "sha256": "sha256:4a1644c7aed98de8b57434b2ac5b6c133eab7148c3b8e993ad01937a5da50857"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-E06-source-review17.md",
+            "bytes": 1273,
+            "sha256": "sha256:6f07a3a6df7e9a5d95df39bf0dcb2c48ff2f0e688ae713e1a9d03c8377dbd8ea"
+          }
+        ]
+      },
+      "implementationWitnesses": [
+        "Separate hinged-pawl/frame-stop asset with the first and protected second teeth, hinge/web and inside-frame stop.",
+        "Explicit load-to-pose/contact/stop response with a declared illustrative law and independent oracle; arrows/authored reverse poses alone are insufficient.",
+        "Preserve the standard non-releasable pack; verify contact, saturation, nonpenetration and actual native observations."
+      ],
+      "qualification": "Documentary supplement only. No load law, asset, native, factual/design/whole/pilot or physical rating admission; frozen question/selection remains exact.",
+      "behaviorFoundation": {
+        "record": "docs/mechanism-shorts-ms3-load-results.json",
+        "status": "load-foundation-current-tiers-generic-native-audit-passed-e06-asset-pending",
+        "qualification": "Reusable force-driven behavior foundation verified on7425e734 by current software tiers and a four-frame generic native fixture/independent numeric audit. Virtual point contact is verified; E06 physical tooth/web/stop geometry, surface contact/nonpenetration, continuous motion, factual/design/genuine speech/listening/whole/pilot acceptance remain pending. Frozen ten questions and accepted0/10 unchanged; no spending, merge or publication.",
+        "sourceCommit": "7425e734b263ecf7342e44f20b5fa47db94e5ca7"
+      },
+      "sourceClarification": "Printed column8: Fig10 is normal locking with second tooth not engaged; Fig11 is ultimate load with stop and second tooth engagement. This supersedes vague figure10-stop wording in earlier notes.",
+      "physicalCandidate": {
+        "record": "docs/mechanism-shorts-ms3-load-asset-results.json",
+        "status": "physical-candidate-native-audit-current-tiers-passed-source-alignment-episode-pending",
+        "qualification": "Separate illustrative E06 candidate passes current software tiers and actual126-frame native/independent packed-stream/contact audit onae70d735. Known hinge-placement source alignment and clearer explanation views remain asset work. Selected-plane/triangle tests are sampled; no continuous/all-pair collision, measured product force/material, factual/design/genuine narration/listening/whole/pilot acceptance. Accepted0/10 and frozen questions remain unchanged; no spending, merge or publication.",
+        "sourceCommit": "ae70d735cd263c424113de6d8ba430226bc33c7e"
+      },
+      "hingeAlignment": {
+        "record": "docs/mechanism-shorts-ms3-load-alignment-results.json",
+        "status": "rear-hinge-repair-native-audit-current-tiers-passed-original-episode-review-pending",
+        "qualification": "Qualitative lower-rear hinge/stop-ledged anatomy repair verified on8c34b461 with current local tiers,126 normal native/decoded frames,252 packed web streams and sampled shortening/selected-solid clearance. Connected terminal Float32 seams are bounded independently; unrelated geometry retains the strict area gate. Whole factual/design/continuous/genuine narration/listening/pilot admission remains pending; accepted0/10 and frozen questions unchanged. No measured force/material claim, spending, merge or publication.",
+        "sourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb"
+      }
+    },
+    {
+      "episode": "E09",
+      "status": "primary-text-and-drawing-page-inspected",
+      "source": "https://patents.google.com/patent/US2590881A/en",
+      "pdfSource": "https://patentimages.storage.googleapis.com/60/4f/28/963cbea474bddb/US2590881.pdf",
+      "viewedPDFPages": [1],
+      "viewedFigures": [1, 2, 3, 4],
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-E09-US2590881.pdf",
+          "bytes": 487309,
+          "sha256": "sha256:4e061821489f657ed5de07b8cef2faf6691acdf389235e3493d3003fc69438fc"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-E09-US2590881-figures.png",
+          "bytes": 131461,
+          "sha256": "sha256:832e8cfc55c2599df1fde94194640fce0d50fb8dbe662c6752374a589e9e03e6"
+        }
+      ],
+      "factualScope": "Conventional opposing arms rock about the torsion coil; facing jaw notches13 seat a clothesline. The spring wings bias jaws together and handles open them.",
+      "implementationWitnesses": [
+        "Create actual opposing concave notch profiles and separate round line, with line-to-jaw contact anchors and a nonpenetrating closure stop.",
+        "Limit line seat to the front jaw notches; the deep gullet placement in Fig3 illustrates a displacement problem, not the intended line seating position.",
+        "Exclude the patent-specific slot19/tongue24/ledge22 restraint improvement from the conventional asset."
+      ],
+      "qualification": "Illustrative conventional geometry only; no dimensions, friction, holding-force, new asset or factual/design/pilot acceptance.",
+      "implementation": {
+        "record": "docs/mechanism-shorts-ms3-line-results.json",
+        "status": "factory-candidate-fast-native-independent-audit-passed",
+        "qualification": "Factory/software/native engineering candidate on exact2cf64882 with complete fast4,467/442,180 fresh native submissions and149-pin independent audit. All180 final decoded frames/81 exact images/180 native scalars verify; default peg all-frame decoded pixels/audio match priorc474 capture. Visual findings remain P0:6/L1:10/L2:10. Whole/factual/design/continuous/genuine speech/listening/pilot acceptance remains open; no holding-force simulation, spending or publication."
+      }
+    },
+    {
+      "episode": "E10",
+      "status": "primary-educational-text-inspected",
+      "source": "https://openstax.org/books/college-physics-ap-courses/pages/9-5-simple-machines",
+      "factualScope": "For static ideal equilibrium, torque about the fixed pivot balances using perpendicular input/output force moment arms.",
+      "implementationWitnesses": [
+        "Unit-aware resistance torque N\u00b7m and perpendicular arm m yield ideal input force N.",
+        "Compute moment arm from force-line direction and press-point displacement, reject zero/degenerate arm; compare near/far press points at fixed geometry and resistance.",
+        "Separately declare spring/contact/loss assumptions; whole-arm scaling or force-arrow sizing is insufficient."
+      ],
+      "qualification": "Primary theory only. No quantitative real peg force, new behavior, asset or pilot admission.",
+      "implementation": {
+        "record": "docs/mechanism-shorts-ms3-lever-results.json",
+        "status": "factory-candidate-current-tiers-native-independent-passed",
+        "qualification": "Current E10 factory/observed ideal-force engineering proof:180 native frames/81 images/900 scalar values including720 ideal moment quantities/151 pins on9ba. Fixed prescribed10Nmm near/far comparison holds in120 frames; default decoded picture/audio parity passes. Force is idealized, not measured product force. Whole mechanical/factual/design/continuous/genuine speech/listening/pilot remains unreviewed; accepted0/10. No spending, merge or publication."
+      },
+      "behaviorFoundation": {
+        "record": "docs/mechanism-shorts-ms3-moment-results.json",
+        "status": "reusable-behavior-foundation-current-fast-scoped-passed-asset-native-pending",
+        "qualification": "Reusable expected-state behavior foundation and software evidence only. Original five assets/two behaviors/ten questions remain required; no native observed force, real peg force, E10/whole/pilot acceptance, spending, merge or publication."
+      }
+    }
+  ],
+  "qualification": "Original five required assets/two behaviors/ten questions remain unadmitted. This capture does not change the frozen board or denominator.",
+  "theoryDraft": {
+    "episode": "E10",
+    "status": "scoped-draft-only-not-integrated",
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-static-moment-draft.mts",
+        "bytes": 2720,
+        "sha256": "sha256:30ea3d29093ed85680d596fa0c1c038126ee58f953dec98cd5182dd58d0ca8ea"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-static-moment-scope1.mts",
+        "bytes": 1379,
+        "sha256": "sha256:3df08a85bb4cc7305dfd2c27b7e82572b9454d6a0df6d3366f9bcb75b776bf74"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-static-moment-scope1.log",
+        "bytes": 728,
+        "sha256": "sha256:3ff0b2cd21e9d818c1e50cc7de5bda5dbe9b0d578eb2c6d7c0100b1f305aaf58"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-static-moment-scope1-receipt.json",
+        "bytes": 327,
+        "sha256": "sha256:8f9e13b9756960dbbd280637b2ccfe54b8aacb2477d5230278d575e357a2282d"
+      }
+    ],
+    "actualExitCode": 0,
+    "scope": "Dimensional N\u00b7m/N\u00b7mm and m/cm/mm oracle, near/far points, normalized/translated vectors and degenerate/wrong-direction rejection; no scene/behavior/native/asset/pilot admission.",
+    "verification": "Direct Node run prints success; explicit terminal recheck returns0 and reproduces the original log byte-for-byte. No admitted behavior.",
+    "frameBoundCheck": {
+      "status": "pure-expected-frame-draft-passed-not-integrated",
+      "actualExitCode": 0,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-static-moment-frame-draft.mts",
+          "bytes": 2715,
+          "sha256": "sha256:41ffe2e58edb120927d686a5b02cf56265c73fc678566b3dee89cc5ea767c3ee"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-static-moment-frame-draft.json",
+          "bytes": 2778,
+          "sha256": "sha256:b2c2c60c7663c735384b9f779eca0069d18b030470c195a73ac90c1f8425b0b3"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-static-moment-frame-draft.log",
+          "bytes": 243,
+          "sha256": "sha256:2c35f9fc9e8454b73b38eea357afe7b3bce2d0767c5d790f1e03326384ec4550"
+        }
+      ],
+      "scope": "Three posed anchor near/far comparisons use calibrated illustrative scale. Fixed N\u00b7m resistance yields force N; source draft only, no new press geometry, reusable behavior, observed native force or asset/episode admission."
+    }
+  },
+  "captureNotes": [
+    "E09 web PDF cache miss; direct primary PDF download succeeded. First local render command used an incorrect bundle binary path and exited127; corrected bundled Poppler render completed0 and figures1-4 were inspected."
+  ],
+  "geometryDraft": {
+    "episode": "E02",
+    "status": "scoped-draft-only-not-integrated",
+    "currentBuilder": {
+      "path": "/private/tmp/still-shift-ms3-retention-geometry-draft2.mts",
+      "bytes": 6176,
+      "sha256": "sha256:f845cfdb7ad31662941164f1ce86f85b3c315f6a920a203bc01f9c85f80f1bcd"
+    },
+    "scene": {
+      "path": "/private/tmp/still-shift-ms3-retention-scene-draft2.json",
+      "bytes": 5339771,
+      "sha256": "sha256:791cee9903895194f04cbb9071705b191f4e3269172c3edf6d3fe12eea4f080e"
+    },
+    "attempts": [
+      {
+        "name": "scope1",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-scope1.mts"
+          ],
+          "actualExitCode": 1,
+          "endedUtc": "2026-10-13T02:29:39.762307+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-scope1.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope1.mts",
+            "bytes": 2677,
+            "sha256": "sha256:6982018bce5daabecf4e5839ed49f080bb0d7042f2c46ea06e53989f8957c9a3"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope1.log",
+            "bytes": 1257,
+            "sha256": "sha256:c487c3558f28db94f0ac2e0933574e44b8d46318d2502423470e17397cae1978"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope1-receipt.json",
+            "bytes": 315,
+            "sha256": "sha256:d4c5093f6a4d087b0eb521e26bdbe3e959b5f2548915d8e2d05b81a0e5910497"
+          }
+        ],
+        "scope": "Failed frame-request fields; corrected probe retained separately."
+      },
+      {
+        "name": "scope2",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-scope2.mts"
+          ],
+          "actualExitCode": 0,
+          "endedUtc": "2026-10-13T02:34:45.035636+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-scope2.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope2.mts",
+            "bytes": 2670,
+            "sha256": "sha256:8475f1e73fc15ea8c33479b246273805d0376d8cd0cf734393c89352462ade65"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope2.log",
+            "bytes": 436,
+            "sha256": "sha256:5ceceb0043f4cee24207bb9e3bbc64e4f4bf27d5266d168ef40deacf74fbde34"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope2-receipt.json",
+            "bytes": 315,
+            "sha256": "sha256:875de76c307468002566c3e672557ed3288e2c7a1b5922aaf9f9d772409c883f"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope2.json",
+            "bytes": 948,
+            "sha256": "sha256:480b0f206bbb10be385b5f30bc4cbe3f4a0e4568e44eeeb1ce06ce9ab30d01ef"
+          }
+        ],
+        "scope": "Original draft analytic capsule and relationship checks only."
+      },
+      {
+        "name": "ray1",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-ray1.mts"
+          ],
+          "actualExitCode": 1,
+          "endedUtc": "2026-10-13T02:42:55.889206+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-ray1.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray1.mts",
+            "bytes": 3708,
+            "sha256": "sha256:8f43bed416d0f52a40856d0be9a00b2bcd19e3bbae87c0bfc248ebeb5d84820c"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray1.log",
+            "bytes": 613,
+            "sha256": "sha256:9a6fd133fd436673f1d6abcd13ed1b8e96d76ddf3ce37dc395a5c2ce9f3b86dc"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray1-receipt.json",
+            "bytes": 311,
+            "sha256": "sha256:fd625c8d342397c84cd3cbc0783dc8e20afc9aa0809cef442ca606ddb8c9a3f4"
+          }
+        ],
+        "scope": "Independent actual triangle ray failed0.0113996 clearance under facets; no mesh pass."
+      },
+      {
+        "name": "scope3",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-scope3.mts"
+          ],
+          "actualExitCode": 0,
+          "endedUtc": "2026-10-13T02:43:46.563335+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-scope3.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope3.mts",
+            "bytes": 2672,
+            "sha256": "sha256:c028e58566e62fd71e181fa7bfff9dea1d0022bef03c2c602217f3bb1d40ed3f"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope3.log",
+            "bytes": 436,
+            "sha256": "sha256:5ceceb0043f4cee24207bb9e3bbc64e4f4bf27d5266d168ef40deacf74fbde34"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope3-receipt.json",
+            "bytes": 315,
+            "sha256": "sha256:f4ce057760926b8d421ed0f59fd23a97339993c18c7bb33e93ade16ea16aa4f4"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-scope3.json",
+            "bytes": 948,
+            "sha256": "sha256:480b0f206bbb10be385b5f30bc4cbe3f4a0e4568e44eeeb1ce06ce9ab30d01ef"
+          }
+        ],
+        "scope": "Corrected circumscribed slot facets; pure expected/analytic checks pass."
+      },
+      {
+        "name": "ray2",
+        "receipt": {
+          "command": [
+            "/Users/jjae/.nvm/versions/node/v22.23.1/bin/node",
+            "--import",
+            "tsx",
+            "/private/tmp/still-shift-ms3-retention-geometry-ray2.mts"
+          ],
+          "actualExitCode": 0,
+          "endedUtc": "2026-10-13T02:43:49.410184+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention-geometry-ray2.log"
+        },
+        "files": [
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray2.mts",
+            "bytes": 3713,
+            "sha256": "sha256:b30c543f87fe1202ffd3efe508edd5aa8dba4105227bcd831559876d7b6b3c62"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray2.log",
+            "bytes": 140,
+            "sha256": "sha256:817bc94690f934dc1e59c304746601a569b17458ce5159735fc74c5ffa432124"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray2-receipt.json",
+            "bytes": 311,
+            "sha256": "sha256:126ec925376027d73e94432bfb4b846d0193bf8acfcfb2b9eededfe40f7048c2"
+          },
+          {
+            "path": "/private/tmp/still-shift-ms3-retention-geometry-ray2.json",
+            "bytes": 2164,
+            "sha256": "sha256:04134d7bb06d8f2ea454e595b655fb2ab443dbe76654959b4bb5191e7cc25732"
+          }
+        ],
+        "scope": "Corrected geometry passes44928 actual double-sided triangle rays at9 parameter combinations/13 travel states/64 angles/3 rivets/2 sections; min upper0.01212268625 and lower0.00448666707. Sampled, not continuous/native."
+      }
+    ],
+    "qualification": "New three-slot curved tapered neck, drilled blade and three stepped rivets with upper/lower stems and both retaining heads. Illustrative dimensions; no factory/native/factual/design/asset/pilot admission.",
+    "originalBuilder": {
+      "path": "/private/tmp/still-shift-ms3-retention-geometry-draft.mts",
+      "bytes": 6153,
+      "sha256": "sha256:61260376ebd0eb10bac7e3f152da617a2b22eca990d6731ad468efe21964e0bb"
+    },
+    "remaining": [
+      "Integrate a distinct immutable factual candidate variant through existing family/factory/timeline/import/capability contracts.",
+      "Preserve default floating-hook source/metadata/pixels; add truthful actual slot width/bounds and full-blade parameter support.",
+      "Actual native observed geometry and clear retention view; independent factual/design/mechanics review and eventual E02 pilot admission."
+    ],
+    "supersedingIntegration": {
+      "record": "docs/mechanism-shorts-ms3-retention-results.json",
+      "status": "factory-candidate-fast-native-independent-audit-passed",
+      "qualification": "Distinct factory/software/native engineering candidate on exact9e4ccce1 with complete fast,180 fresh native submissions and149-pin independent audit; all180 final decoded frames/81 images/180 native scalar samples verify and default all-frame pixels/audio match priorc474 cold product. Seven sampled visual errors remain per product; whole/factual/design/continuous/listening/genuine narration/pilot acceptance remains open. No newly accepted asset/episode, ElevenLabs spending or publication."
+    }
+  }
+}

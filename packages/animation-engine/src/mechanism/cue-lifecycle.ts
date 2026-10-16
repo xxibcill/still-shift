@@ -104,12 +104,15 @@ export async function compileMechanismCueProject(
   familyPath: string,
   cuePath: string,
   outputDirectory: string,
-  options: { signal?: AbortSignal | undefined } = {},
+  options: {
+    signal?: AbortSignal | undefined;
+    nodeMemory?: CompositionNodeMemory;
+  } = {},
 ) {
   options.signal?.throwIfAborted();
   const value = await current(familyPath, cuePath, options.signal),
     scratch = await mkdtemp(join(tmpdir(), "still-shift-cue-compile-")),
-    memory = new CompositionNodeMemory();
+    memory = new CompositionNodeMemory(options.nodeMemory);
   try {
     const temporary = join(scratch, "composition.json");
     await writeMechanismJson(temporary, value.composition);

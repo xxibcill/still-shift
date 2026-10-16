@@ -1,0 +1,177 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-native-coverage-board-2"
+    },
+    "revision": { "type": "integer", "exclusiveMinimum": 0, "maximum": 1000 },
+    "selectionFile": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 4194304
+        },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "selection": {
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string",
+          "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+        },
+        "selectedEpisodeIds": {
+          "minItems": 1,
+          "maxItems": 300,
+          "type": "array",
+          "items": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          }
+        },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["id", "selectedEpisodeIds", "sha256"],
+      "additionalProperties": false
+    },
+    "registry": {
+      "minItems": 1,
+      "maxItems": 300,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "family": {
+            "type": "string",
+            "pattern": "^[A-Za-z][A-Za-z0-9.-]{0,127}$"
+          },
+          "designVariant": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 2048
+          },
+          "selectedAssetSha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "currentAssetSha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "controllerSha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          }
+        },
+        "required": [
+          "id",
+          "family",
+          "designVariant",
+          "selectedAssetSha256",
+          "currentAssetSha256",
+          "controllerSha256"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "episodes": {
+      "minItems": 1,
+      "maxItems": 300,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "registryId": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+          },
+          "route": {
+            "type": "string",
+            "enum": [
+              "existing-pack-rig",
+              "new-asset-existing-rig",
+              "new-behavior"
+            ]
+          },
+          "assetWork": {
+            "maxItems": 16,
+            "type": "array",
+            "items": { "type": "string", "minLength": 1, "maxLength": 2048 }
+          },
+          "rigWork": {
+            "maxItems": 16,
+            "type": "array",
+            "items": { "type": "string", "minLength": 1, "maxLength": 2048 }
+          },
+          "newRigType": {
+            "anyOf": [
+              {
+                "type": "string",
+                "pattern": "^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$"
+              },
+              { "type": "null" }
+            ]
+          },
+          "workEvidence": {
+            "maxItems": 16,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "exclusiveMinimum": 0,
+                  "maximum": 4194304
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "registryId",
+          "route",
+          "assetWork",
+          "rigWork",
+          "newRigType",
+          "workEvidence"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "qualification": { "type": "string", "minLength": 1, "maxLength": 2048 }
+  },
+  "required": [
+    "schemaVersion",
+    "revision",
+    "selectionFile",
+    "selection",
+    "registry",
+    "episodes",
+    "qualification"
+  ],
+  "additionalProperties": false
+}

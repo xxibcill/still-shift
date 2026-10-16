@@ -1,3 +1,5 @@
+import { createLoadResponsiveCableScene } from "./cable-tie-load.ts";
+import { createReleasableCableScene } from "./cable-tie-release.ts";
 import { describeMechanismPackCameras } from "./camera-descriptions.ts";
 import { z } from "zod";
 import {
@@ -26,9 +28,16 @@ export const CableTiePackParametersSchema = z
     toothCount: z.number().int().min(6).max(12).default(8),
   })
   .strict();
+export const CableTiePackVariantSchema = z.enum([
+  "outside-serrated-integral-pawl-cutaway",
+  "inside-serrated-extended-trigger-cutaway",
+  "hinged-pawl-frame-stop",
+]);
+export type CableTiePackVariant = z.infer<typeof CableTiePackVariantSchema>;
 export const CableTiePackInputSchema = z
   .object({
     ...mechanismPackOptions,
+    variant: CableTiePackVariantSchema.optional(),
     parameters: CableTiePackParametersSchema.default({
       pitch: 0.5,
       strapWidth: 1,
@@ -239,34 +248,96 @@ function cableScene(
     },
   });
 }
-let metadata: MechanismPackMetadataReceipt | undefined;
-export function inspectCableTiePack() {
-  if (metadata) return metadata;
-  const scene = cableScene(CableTiePackInputSchema.parse({}));
-  metadata = createPackMetadata(
+function variantScene(options: z.infer<typeof CableTiePackInputSchema>) {
+  const release =
+    options.variant === "inside-serrated-extended-trigger-cutaway";
+  const base = cableScene(
+    release
+      ? { ...options, style: { color: "#d7cfb4", ...options.style } }
+      : options,
+  );
+  return options.variant === "hinged-pawl-frame-stop"
+    ? createLoadResponsiveCableScene(base, options.parameters)
+    : release
+      ? createReleasableCableScene(base, options.parameters)
+      : base;
+}
+const metadataByVariant = new Map<
+  CableTiePackVariant,
+  MechanismPackMetadataReceipt
+>();
+export function inspectCableTiePack(
+  variant: CableTiePackVariant = "outside-serrated-integral-pawl-cutaway",
+) {
+  variant = CableTiePackVariantSchema.parse(variant);
+  const saved = metadataByVariant.get(variant);
+  if (saved) return saved;
+  const release = variant === "inside-serrated-extended-trigger-cutaway",
+    load = variant === "hinged-pawl-frame-stop",
+    scene = variantScene(
+      CableTiePackInputSchema.parse(release || load ? { variant } : {}),
+    );
+  const metadata = createPackMetadata(
     scene,
     {
       id: "cable-tie",
       family: "cable-tie",
-      generatorId: "outside-serrated-tie-solid",
-      factualVariant: {
-        id: "outside-serrated-integral-pawl-cutaway",
-        dimensionBasis: "illustrative",
-        description:
-          "Outside-serrated one-piece nylon tie, integral fixed-root pawl, exposed head cutaway and straight toothed tail. The front head wall and roof are omitted to show engagement. This standard non-releasable variant has no release lever; dimensions, tooth lift and material appearance are illustrative, not manufacturer geometry or a force simulation.",
-        sources: [
-          {
-            url: "https://www.hellermanntyton.com/products/cable-ties-outside-serrated/t50sos/118-00062",
-            claim:
-              "OS-series outside-serrated PA66 tie, plastic pawl closure and no releasable closure.",
-          },
-          {
-            url: "https://www.hellermanntyton.com/competences/cable-ties-and-fixings",
-            claim:
-              "One-piece plastic cable ties use an integral pawl locking against strap serrations.",
-          },
-        ],
-      },
+      generatorId: load
+        ? "hinged-load-stop-tie-solid"
+        : release
+          ? "inside-serrated-release-trigger-solid"
+          : "outside-serrated-tie-solid",
+      factualVariant: load
+        ? {
+            id: variant,
+            dimensionBasis: "illustrative",
+            description:
+              "Hinged two-tooth pawl within a cutaway frame: primary tooth contact is constrained, the protected second tooth closes its gap as the pawl seats, and a semicylindrical stop reaches a fixed frame ledge. A separate closed flexible web joins the rear underside of the pawl to the stop-bearing frame ledge and shortens as the pawl seats. Patent3,872,547 Figures10/11 support the qualitative load path; geometry, SI compliance, prescribed contact and force values are illustrative. This models loading after normal locking, without insertion, measured stiffness, friction, stress, product rating or manufacturer dimensions.",
+            sources: [
+              {
+                url: "https://image-ppubs.uspto.gov/dirsearch-public/print/downloadPdf/3872547",
+                claim:
+                  "Figures10/11 and printed column8 distinguish normal primary-tooth locking from ultimate-load second-tooth and frame-stop engagement, with hinge deformation and bounded pawl shifting.",
+              },
+            ],
+          }
+        : release
+          ? {
+              id: variant,
+              dimensionBasis: "illustrative",
+              description:
+                "Inside-serrated cutaway tie with a fixed-root flexible pawl and wider extended trigger beyond the locking tip. The trigger and catch bend from one shared scalar; pressing away from the tail permits backward withdrawal. Three separated reference cables identify the bundle side. Exposed straight tail and omitted front/roof simplify the demonstration; dimensions and release curvature are illustrative, with no force/manufacturer dimension claim.",
+              sources: [
+                {
+                  url: "https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202",
+                  claim:
+                    "RELK2R is inside serrated, uses a plastic pawl and extended trigger; pressing the extended pawl down releases the strap.",
+                },
+                {
+                  url: "https://www.hellermanntyton.com/shared/assets/PDP_PS_RELK_Series_com.pdf",
+                  claim:
+                    "The manufacturer's closure diagram shows a protruding extended pawl alongside the tail, with finger-operated release.",
+                },
+              ],
+            }
+          : {
+              id: "outside-serrated-integral-pawl-cutaway",
+              dimensionBasis: "illustrative",
+              description:
+                "Outside-serrated one-piece nylon tie, integral fixed-root pawl, exposed head cutaway and straight toothed tail. The front head wall and roof are omitted to show engagement. This standard non-releasable variant has no release lever; dimensions, tooth lift and material appearance are illustrative, not manufacturer geometry or a force simulation.",
+              sources: [
+                {
+                  url: "https://www.hellermanntyton.com/products/cable-ties-outside-serrated/t50sos/118-00062",
+                  claim:
+                    "OS-series outside-serrated PA66 tie, plastic pawl closure and no releasable closure.",
+                },
+                {
+                  url: "https://www.hellermanntyton.com/competences/cable-ties-and-fixings",
+                  claim:
+                    "One-piece plastic cable ties use an integral pawl locking against strap serrations.",
+                },
+              ],
+            },
       parameters: [
         {
           id: "pitch",
@@ -294,27 +365,46 @@ export function inspectCableTiePack() {
         },
       ],
       cameraTargets: describeMechanismPackCameras(scene, "cable-tie"),
-      neutralPose: [{ rig: "ratchet", value: 0 }],
-      diagnosticViews: [
-        {
-          id: "seated",
-          cameraTarget: "macro",
-          rigValues: [{ rig: "ratchet", value: 0 }],
-        },
-        {
-          id: "advancing",
-          cameraTarget: "macro",
-          rigValues: [{ rig: "ratchet", value: 0.25 }],
-        },
-        {
-          id: "next-seat",
-          cameraTarget: "approach",
-          rigValues: [{ rig: "ratchet", value: 0.5 }],
-        },
-      ],
+      neutralPose: [{ rig: load ? "load" : "ratchet", value: 0 }],
+      diagnosticViews: load
+        ? [
+            {
+              id: "normal-lock",
+              cameraTarget: "macro",
+              rigValues: [{ rig: "load", value: 0 }],
+            },
+            {
+              id: "seating",
+              cameraTarget: "macro",
+              rigValues: [{ rig: "load", value: 4 }],
+            },
+            {
+              id: "stop-hold",
+              cameraTarget: "approach",
+              rigValues: [{ rig: "load", value: 8 }],
+            },
+          ]
+        : [
+            {
+              id: "seated",
+              cameraTarget: "macro",
+              rigValues: [{ rig: "ratchet", value: 0 }],
+            },
+            {
+              id: "advancing",
+              cameraTarget: "macro",
+              rigValues: [{ rig: "ratchet", value: 0.25 }],
+            },
+            {
+              id: "next-seat",
+              cameraTarget: "approach",
+              rigValues: [{ rig: "ratchet", value: 0.5 }],
+            },
+          ],
     },
     z.toJSONSchema(CableTiePackParametersSchema),
   );
+  metadataByVariant.set(variant, metadata);
   return metadata;
 }
 export function createCableTiePack(
@@ -322,8 +412,8 @@ export function createCableTiePack(
 ) {
   const options = CableTiePackInputSchema.parse(input);
   return createPackInstance(
-    cableScene(options),
-    inspectCableTiePack(),
+    variantScene(options),
+    inspectCableTiePack(options.variant),
     options.parameters,
     options.expectedPack,
   );
@@ -336,6 +426,7 @@ export function evaluateCableTiePackFrame(
 ) {
   const control = request.rigControls?.ratchet;
   if (
+    instance.pack.variant !== "inside-serrated-extended-trigger-cutaway" &&
     control?.type === "ratchet" &&
     control.latchKeys.some((key) => key.state === "released")
   )

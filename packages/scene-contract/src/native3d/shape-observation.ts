@@ -57,7 +57,12 @@ export const NativeShapeAssociationSchema = z
     shape: MechanismIdSchema,
     mesh: MechanismIdSchema,
     ownerPart: MechanismIdSchema,
-    generator: z.enum(["fixed-root-pawl-curve-1", "seated-torsion-spring-1"]),
+    generator: z.enum([
+      "fixed-root-pawl-curve-1",
+      "seated-torsion-spring-1",
+      "seated-flexible-web-1",
+    ]),
+    triggerLandmark: z.literal(true).optional(),
     declarationSha256: MechanismHashSchema,
     templateSha256: MechanismHashSchema,
     topologySha256: MechanismHashSchema,
@@ -76,6 +81,12 @@ export const NativeShapeAssociationSchema = z
   })
   .strict()
   .superRefine((shape, context) => {
+    if (shape.triggerLandmark && shape.generator !== "fixed-root-pawl-curve-1")
+      context.addIssue({
+        code: "custom",
+        message: "Only a pawl association can seal a trigger landmark",
+        path: ["triggerLandmark"],
+      });
     let end = 0;
     for (const [index, group] of shape.groups.entries()) {
       if (group.groupIndex !== index || group.start !== end)
@@ -145,8 +156,12 @@ const drawn = z
       });
     const expectedLandmarks =
       shape.association.generator === "fixed-root-pawl-curve-1"
-        ? ["root", "tip"]
-        : ["seat-a", "seat-b", "coil-a", "coil-b"];
+        ? shape.association.triggerLandmark
+          ? ["root", "tip", "trigger"]
+          : ["root", "tip"]
+        : shape.association.generator === "seated-flexible-web-1"
+          ? ["seat-a", "seat-b"]
+          : ["seat-a", "seat-b", "coil-a", "coil-b"];
     if (
       Object.keys(shape.landmarks).length !== expectedLandmarks.length ||
       expectedLandmarks.some((id) => !Object.hasOwn(shape.landmarks, id))

@@ -1,0 +1,213 @@
+{
+  "version": "mechanism-ms3-blender-native-capture-results-1",
+  "date": "2026-10-14",
+  "sourceCommit": "6c7cd6c9925a66013949276f0f1f25ab427c0066",
+  "baseCommit": "9d30db873f943c454cdeb7b2aa0938842436b0ea",
+  "runtime": {
+    "codeSha256": "sha256:19681627200c522c3cbc46dd57d7cf3a1254c3234e76b8c2e4b281df4d29ed4d",
+    "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b",
+    "runtimeFiles": 694,
+    "runtimeFormat": "source-ts",
+    "nativeAppearanceCodeSha256": "sha256:53d07cba1e91332e91992d5e512e1992e979428cf91cf34ddbdb949745e7dc3e",
+    "profile": {
+      "backend": "webgl2",
+      "transport": "raw_rgba",
+      "workers": 1,
+      "nodeVersion": "22.23.1",
+      "ffmpegVersion": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+      "toolchainSha256": "sha256:4329ec000367b7c96c18900dffd57aee4651136ff8f3f8008f508ec43b77aaf5"
+    }
+  },
+  "implementation": [
+    "One shared data-only Node/Python capture producer preserves native Blender evaluated geometry and source material graphs; it does not convert to the current rigid glTF subset.",
+    "Strict bounded job contract requires complete absolute manual controls, declared finite ranges, owned frame paths and captured file hashes. Fixed child Node admission is released on parse/filesystem/process errors, preserving foreign owners.",
+    "Frozen worker/job identities, immutable source hash, actual Blender build/engine/color, native evaluated part streams/matrices/bounds and successful render count are retained. Blender is a host executable separate from asset content.",
+    "Public candidate engine exports include captureBlenderAsset, job schema/parser/types and limits. Full Python lint/format commands include the worker; package runtime-asset copying includes Python source. No new composition .blend format, automatic rig/shader transfer or whole QA acceptance is claimed."
+  ],
+  "verification": {
+    "gate": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-blender36-gate1-receipt.json",
+        "bytes": 1154,
+        "sha256": "sha256:868c4a69d3d7bb1c88c9ba082b90d9f7a4a6eef170a72b1027de3fe115dc46b1"
+      },
+      "actualExitCode": 0,
+      "passedFastTests": 4549,
+      "passedFastFiles": 451,
+      "passedRuntimeTests": 1,
+      "pythonLintExitCode": 0,
+      "pythonFormatExitCode": 0
+    },
+    "sourceHold": {
+      "inventory": {
+        "path": "/private/tmp/still-shift-ms3-blender36-inputs3.json",
+        "bytes": 468558,
+        "sha256": "sha256:4014eb5156d0d7392870a4c6c5c61ddc248ed035a55a7a9aa3b94a9c1bbb6bc2"
+      },
+      "files": 2744,
+      "bytes": 121816073,
+      "allStepHoldExitCodes": 0
+    },
+    "probe": {
+      "actualExitCode": 0,
+      "runtime": "Blender 5.2.2 LTS d13f752e3b9c",
+      "root": "/private/tmp/still-shift-ms3-blender36-probe1",
+      "run": {
+        "path": "/private/tmp/still-shift-ms3-blender36-probe1/run.json",
+        "bytes": 62654,
+        "sha256": "sha256:e26df099ffaa43267406e00277ee49c629a4b05498adcf82d2323ba60632d727"
+      },
+      "analysis": {
+        "path": "/private/tmp/still-shift-ms3-blender36-probe-analysis.json",
+        "bytes": 3428,
+        "sha256": "sha256:694b4e1c5ba9e9da75b318ae22e2ab5098e13890a5433ae73ecf191fde52ade2"
+      },
+      "assets": 10,
+      "sampledUniqueStatesPerAsset": 3,
+      "stateEvaluationsPerAsset": 5,
+      "allRepeatedShuffledStatesEqual": true,
+      "allOriginalAssetBytesUnchanged": true,
+      "method": "Evaluated mesh/control discovery only; not contact, surface visibility, full action or episode qualification. Editorial section prefixes were corrected in derived analysis without rewriting original probe; triangle-index differences do not prove polygon-connectivity changes."
+    },
+    "nativeCapture": {
+      "actualExitCode": 0,
+      "root": "/private/tmp/still-shift-ms3-blender36-actual-6IsiqJ",
+      "caller": {
+        "path": "/private/tmp/still-shift-ms3-blender36-actual1.json",
+        "bytes": 1057,
+        "sha256": "sha256:5db9277ef64ce3f9c4a30dac5a5b96cf76beb492c1b517b341db239a5806f15b"
+      },
+      "captureReceipt": {
+        "path": "/private/tmp/still-shift-ms3-blender36-actual-6IsiqJ/capture/capture.json",
+        "bytes": 2993,
+        "sha256": "sha256:9d5733db94caaea3bf29982b61f12e0543ffd0734d207806ff24d7ad45466229"
+      },
+      "assetId": "EU-004",
+      "assetSha256": "sha256:668cc570be38d9fb933b89be70191887be1fd43720b5c384f03a11a6c749bbd3",
+      "nativeBlenderRenders": 4,
+      "sourceRebuilds": 0,
+      "physicalVerticesByFrame": [129768, 129768, 129768, 129768],
+      "repeatedControlGeometryAndDecodedPixelsEqual": true,
+      "decodedPixelEquality": {
+        "path": "/private/tmp/still-shift-ms3-blender36-repeated-pixels.json",
+        "bytes": 196,
+        "sha256": "sha256:e7db09103a10d4601563e1b3d3da640537fc1b25dcca977e4db2a5aa1b95d0eb"
+      },
+      "capturedFilePinsMatched": 8,
+      "callerForeignOwnerPreserved": true,
+      "workerBytesMatchCurrent": true,
+      "audit": {
+        "path": "/private/tmp/still-shift-ms3-blender36-audit1.json",
+        "bytes": 307,
+        "sha256": "sha256:782be90319aa7ab2b425e1ba044cb4ce79e1d5f50a5066ca635cf86bf3982ff2"
+      }
+    },
+    "receiver": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-blender36-receiver3.json",
+        "bytes": 60501,
+        "sha256": "sha256:8923d0f78e1e1eb11b27681342fb0ba3a2c8eae662c6ae10ddc1bd441c47e128"
+      },
+      "outputs": 2,
+      "format": "png8",
+      "fullyDecodedFrames": 8,
+      "changedPixels": 5928,
+      "outsideTextAreaPixelsExactlyEqual": true,
+      "capturedImageAndObservationPinsUnchanged": 8,
+      "additionalBlenderCallsForTextEdit": 0,
+      "sourceClock": "four data-only states, 30fps; no narration/episode timing",
+      "nativeStillsViewed": [
+        "capture/frames/frame-000000.png",
+        "capture/frames/frame-000001.png",
+        "capture/frames/frame-000002.png"
+      ],
+      "receiverInspections": [
+        "receiver3/frame-0.png",
+        "receiver3/edited-inspection.jpg"
+      ],
+      "scope": "Real native zipper control capture to Still Shift sequence/text load-save-reload/lossless PNG export. No transferred mesh rig, whole source facts/contact/continuous/listening or narrated pilot acceptance."
+    }
+  },
+  "retainedFailures": [
+    {
+      "run": "sandboxed-blender-probe1",
+      "actualExitCode": 139,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-blender36-probe1.log",
+        "bytes": 375,
+        "sha256": "sha256:6f52303645199863c646666954f70c2243e385316e83483138ae0575209d9c5e"
+      },
+      "reason": "Blender background startup crashes before the script. Identical read-only command with host execution succeeds; no host approval denial occurred."
+    },
+    {
+      "run": "python-lint1-and-2",
+      "reason": "Union isinstance and long scope-string formatting errors are corrected; initial TypeScript builds remain their own successful checks. Python lint success is not inferred from the following shell command exit."
+    },
+    {
+      "run": "receiver1",
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-blender36-receiver1.log",
+        "bytes": 1033,
+        "sha256": "sha256:ffd116398958082818856cbc2d118f40b6c6e0ca9d7d3cc5273257b3c228b2e9"
+      },
+      "reason": "Private fixture supplied unsupported font asset family field; strict schema rejects before export."
+    },
+    {
+      "run": "receiver2",
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-blender36-receiver2.log",
+        "bytes": 375,
+        "sha256": "sha256:3831e0d1fe7b4257546552a4f3939e6bf7cbc500d301140fcab70e6f5bfc701b"
+      },
+      "reason": "H.264 decoded pixels outside edited text are not byte-identical due to lossy coding; the strict byte assertion fails. Original outputs retained; no source-image corruption inferred. Lossless PNG verification follows separately.",
+      "measuredOutsideDifferences": [
+        {
+          "frame": 0,
+          "changedPixels": 0,
+          "maxChannelDelta": 0,
+          "rmse": 0.0
+        },
+        {
+          "frame": 1,
+          "changedPixels": 23,
+          "maxChannelDelta": 5,
+          "rmse": 0.024282146558931603
+        },
+        {
+          "frame": 2,
+          "changedPixels": 9820,
+          "maxChannelDelta": 25,
+          "rmse": 0.6271347191591634
+        },
+        {
+          "frame": 3,
+          "changedPixels": 3397,
+          "maxChannelDelta": 16,
+          "rmse": 0.34186538680804524
+        }
+      ]
+    }
+  ],
+  "pilotSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "remaining": [
+    "Integrate generic native capture observations and cache/report/QA contracts with all ten actual episodes, cue/control/camera planning and whole supplied Alden recordings.",
+    "Actual channel first-ten production/broader coverage and whole factual/design/mechanical/encoded/continuous/listening reviews; zipper prototype does not count as a narrated accepted pilot episode.",
+    "Broader original seeded fault/capability/paired metrics and final full/benchmark/archive/checksum/isolated-installed requirements."
+  ],
+  "acceptedEpisodes": 0,
+  "denominator": 10,
+  "routineTokenMeasurements": null,
+  "newElevenLabsCalls": 0,
+  "qualification": "Shared native capture foundation and actual full zipper content/receiver prototype. Editable native source/controls stay in Blender; receiving scope is cached sequence/text. No reduced model, transferred editable mesh rig, all-ten production, whole review or public package adoption is claimed.",
+  "committedSourceVerification": {
+    "actualExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-blender36-committed-source.json",
+      "bytes": 190,
+      "sha256": "sha256:27a7ca1972671870cd3e654b99427336e131405802441046468f2826c696378c"
+    }
+  }
+}

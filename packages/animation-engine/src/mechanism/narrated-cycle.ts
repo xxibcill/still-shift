@@ -1,3 +1,8 @@
+import {
+  mechanismCueSpeechCaption,
+  mechanismCueSpeechSourceHash,
+} from "./cue-speech-caption.ts";
+import { mechanismCueCaptionLayout } from "./cue-caption.ts";
 import { resolveCueSurfaceMarking } from "./cue-surface-markings.ts";
 import { compileCueWorldText } from "./cue-world-annotations.ts";
 import { compileCueAnnotation } from "./cue-annotations.ts";
@@ -84,6 +89,8 @@ export function compileMechanismNarratedCycle(
     );
   }
   const document = parsed.data!;
+  const sourceDocumentSha256 = mechanismPackHash(document);
+  const speechSourceSha256 = mechanismCueSpeechSourceHash(document);
   const { width, height, fps } = document.output;
   const frameCount = outputFrame(document.narration.sampleCount, fps);
   if (frameCount > 108000)
@@ -339,35 +346,44 @@ export function compileMechanismNarratedCycle(
     controls[entry.rig] =
       control.type === "slider" || control.type === "hinge"
         ? { type: control.type, ...scalar(control, [...path, "control"]) }
-        : control.type === "ratchet"
+        : control.type === "load-seat"
           ? {
-              type: "ratchet",
-              position: scalar(control.position, [
+              type: control.type,
+              loadNewtons: scalar(control.loadNewtons, [
                 ...path,
                 "control",
-                "position",
+                "loadNewtons",
               ]),
-              latchKeys: control.latchKeys.map((key, i) => ({
-                frame: resolve(key.at, [
+            }
+          : control.type === "ratchet"
+            ? {
+                type: "ratchet",
+                position: scalar(control.position, [
                   ...path,
                   "control",
-                  "latchKeys",
-                  i,
-                  "at",
+                  "position",
                 ]),
-                state: key.state,
-              })),
-            }
-          : {
-              type: "spring-return",
-              states: control.states.map((state, i) => {
-                const { at, ...rest } = state;
-                return {
-                  ...rest,
-                  frame: resolve(at, [...path, "control", "states", i, "at"]),
-                };
-              }),
-            };
+                latchKeys: control.latchKeys.map((key, i) => ({
+                  frame: resolve(key.at, [
+                    ...path,
+                    "control",
+                    "latchKeys",
+                    i,
+                    "at",
+                  ]),
+                  state: key.state,
+                })),
+              }
+            : {
+                type: "spring-return",
+                states: control.states.map((state, i) => {
+                  const { at, ...rest } = state;
+                  return {
+                    ...rest,
+                    frame: resolve(at, [...path, "control", "states", i, "at"]),
+                  };
+                }),
+              };
   }
   const timeline = compileMechanismPackTimeline(instance, {
     schemaVersion: "mechanism-pack-timeline-1",
@@ -416,6 +432,7 @@ export function compileMechanismNarratedCycle(
   let camera = instance.scene.camera;
   const controller = "mechanism-cycle-world";
   const fontSize = Math.max(8, Math.min(width / 24, height / 13));
+  const caption = mechanismCueCaptionLayout(width, height);
   const textLayer = (
     id: string,
     text: string,
@@ -423,13 +440,13 @@ export function compileMechanismNarratedCycle(
     end: number,
     position: [number, number],
     size: [number, number],
-  ): CompositionLayer => ({
+  ): Extract<CompositionLayer, { type: "text" }> => ({
     id,
     type: "text",
     text,
     fontAsset: fontId,
     style: fontId,
-    fontSize,
+    fontSize: caption.fontSize,
     color: "#ffffff",
     align: "center",
     anchor: "top",
@@ -437,7 +454,11 @@ export function compileMechanismNarratedCycle(
     outPoint: end,
     transform: { anchor: [0, 0], position },
     size,
-    textBox: { locale: document.locale, maxLines: 3, lineHeight: 1.2 },
+    textBox: {
+      locale: document.locale,
+      maxLines: caption.maxLines,
+      lineHeight: caption.lineHeight,
+    },
   });
   const panel = (
     id: string,
@@ -509,20 +530,27 @@ export function compileMechanismNarratedCycle(
         cue.text,
         timing.startFrame,
         timing.endFrameExclusive,
-        [width * 0.08, height * 0.8],
-        [width * 0.84, height * 0.18],
+        caption.textPosition,
+        caption.textSize,
       ),
+      textRole: "body",
       metadata: {
         cue: cue.id,
         track: "caption",
         sourceSamples: [cue.startSample, cue.endSampleExclusive],
+        speechCue: mechanismCueSpeechCaption(
+          document,
+          index,
+          trackId("caption", cue.id),
+          speechSourceSha256,
+        ),
       },
     });
     layers.push({
       ...panel(
         trackId("caption-panel", cue.id),
-        [width * 0.5, height * 0.89],
-        [width * 0.9, height * 0.2],
+        caption.panelPosition,
+        caption.panelSize,
         timing.startFrame,
         timing.endFrameExclusive,
       ),
@@ -723,7 +751,7 @@ export function compileMechanismNarratedCycle(
   return freezeMechanismPack({
     version: "compiled-mechanism-narrated-cycle-1" as const,
     revision: document.revision,
-    sourceDocumentSha256: mechanismPackHash(document),
+    sourceDocumentSha256,
     timeline,
     composition: validation.composition!,
     cueMap: frames,

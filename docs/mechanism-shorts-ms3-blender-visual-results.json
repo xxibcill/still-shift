@@ -1,0 +1,942 @@
+{
+  "schemaVersion": "ms3-blender-rendered-qa-results-1",
+  "date": "2026-10-14",
+  "status": "candidate-native-rendered-qa-verified-with-draft-findings",
+  "implementationCommit": "d4f7e2475ffda827623a8a90558b6ecb7d8296e2",
+  "runtimeCodeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+  "nativeProfileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-blender41-inputs2.json",
+    "files": 2773,
+    "bytes": 122130025,
+    "postCommitHold": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2773,
+      "bytes": 122130025
+    }
+  },
+  "implementation": {
+    "defaultScope": "every-native-Blender-product-with-or-without-a-numeric-QA-plan",
+    "sourcePolicy": "original-pinned-episode-caption-copy-sample-boundaries-audio-and-native-shot-cuts",
+    "sourceFindings": "located-wrong-copy-body-role-boundary-and-missing-authored-audio-samples",
+    "renderedMeasurement": "all-output-frame-cached-sequence-preview-pixels-and-measured-glyph-bounds",
+    "images": "exact-RGBA-PNGs-from-bound-encoded-video-at-every-warning-endpoint",
+    "groups": "original-diagnostics-intervals-units-composition-controller-raw-peak-ownership-and-actual-image-pins",
+    "freshReplay": "current-source-map-video-image-pins-and-derived-artifact-equality",
+    "stableStatistics": "wall-time-render-statistics-excluded",
+    "factsLink": "optional-numeric-facts-warnings.rendered-or-direct-report-qualityEvidence",
+    "admission": {
+      "layerFrames": 100000,
+      "prospectiveCapacityBytes": 268435456,
+      "reportBytes": 8388608,
+      "warningRows": 2048,
+      "images": 512
+    }
+  },
+  "softwareVerification": {
+    "receipt": "/private/tmp/still-shift-ms3-blender41-gate1-receipt.json",
+    "result": {
+      "steps": [
+        {
+          "name": "python",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "check",
+            "packages/animation-engine/src/blender-capture-worker.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.22213204205036163
+        },
+        {
+          "name": "python-format",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "format",
+            "--check",
+            "packages/animation-engine/src/blender-capture-worker.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.1526104579679668
+        },
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 151.00505754095502
+        },
+        {
+          "name": "runtime",
+          "argv": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/runtime/blender-production-cli.test.ts",
+            "tests/runtime/blender-episode-inputs.test.ts",
+            "tests/runtime/blender-production-backend-admission.test.ts",
+            "tests/runtime/blender-capture-admission.test.ts",
+            "tests/runtime/mechanism-production-queue-cli.test.ts",
+            "tests/runtime/mechanism-production-run-cli.test.ts",
+            "tests/runtime/mechanism-production-report-cli.test.ts",
+            "tests/runtime/mechanism-production-retry-cli.test.ts",
+            "tests/runtime/mechanism-production-queue-recovery.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 14.26155808311887
+        }
+      ],
+      "actualExitCode": 0
+    },
+    "fastTests": 4578,
+    "fastFiles": 456,
+    "affectedRuntimeTests": 22,
+    "affectedRuntimeFiles": 9,
+    "focusedTests": 32,
+    "focusedFiles": 6,
+    "focusedReceipt": "/private/tmp/still-shift-ms3-blender41-focused2.log",
+    "buildReceipt": "/private/tmp/still-shift-ms3-blender41-build5.log"
+  },
+  "actualNativeProducts": {
+    "receipt": "/private/tmp/still-shift-ms3-blender41-native1-receipt.json",
+    "result": {
+      "steps": [
+        {
+          "name": "visual-default1-queue",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 2.2824501669965684
+        },
+        {
+          "name": "visual-default1-run",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 51.64252620819025
+        },
+        {
+          "name": "visual-default1-report",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 10.700228750007227
+        },
+        {
+          "name": "visual-default1-resume",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 11.691277500009164
+        },
+        {
+          "name": "visual-numeric1-queue",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 2.4214831250719726
+        },
+        {
+          "name": "visual-numeric1-run",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 61.5304392920807
+        },
+        {
+          "name": "visual-numeric1-report",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 13.366652458906174
+        },
+        {
+          "name": "visual-numeric1-resume",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 11.345830416074023
+        }
+      ],
+      "visual-default1": {
+        "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/visual-default1-queue.json",
+        "state": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/visual-default1-state.json",
+        "report": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/visual-default1-report.json",
+        "product": {
+          "path": "products/EU-004-e578696eca0327fd-10.json",
+          "bytes": 11765,
+          "sha256": "sha256:120e78bf82c6d4ecf321433f6d3eab08e093d4efe684afaa574d2197092d2691"
+        },
+        "visual": {
+          "path": "items/EU-004/10/qa-rendered-visual.json",
+          "bytes": 59465,
+          "sha256": "sha256:a65946f3486720f6d5ad071cbf303a9078c9e606293db03a9e841e55d9360049"
+        },
+        "warnings": 28,
+        "errors": 13,
+        "images": 47,
+        "glyphStates": 13,
+        "frameCount": 653,
+        "wholeEncodedGlyphReview": "unreviewed",
+        "freshNativeRenders": 0,
+        "nativeVisualSubmissionCalls": 0,
+        "completeDecodedPictureAudioEqual": true
+      },
+      "visual-numeric1": {
+        "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/visual-numeric1-queue.json",
+        "state": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/visual-numeric1-state.json",
+        "report": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/visual-numeric1-report.json",
+        "product": {
+          "path": "products/EU-004-0b79ed51d869ca1a-11.json",
+          "bytes": 12761,
+          "sha256": "sha256:69c16671c1ac417bea0f24e9592962434b764b6a329728ad1dc7b7028d33290a"
+        },
+        "visual": {
+          "path": "items/EU-004/11/qa-rendered-visual.json",
+          "bytes": 59465,
+          "sha256": "sha256:572b97975e1ab0f608fa4c3cbdf41572aa8907e28b69d642b772de4b386651b1"
+        },
+        "warnings": 28,
+        "errors": 13,
+        "images": 47,
+        "glyphStates": 13,
+        "frameCount": 653,
+        "wholeEncodedGlyphReview": "unreviewed",
+        "freshNativeRenders": 0,
+        "nativeVisualSubmissionCalls": 0,
+        "completeDecodedPictureAudioEqual": true
+      },
+      "actualExitCode": 0,
+      "unchangedCaptureFiles": 664
+    },
+    "defaultCase": "visual-default1",
+    "numericCase": "visual-numeric1",
+    "distinctActualEpisodes": 1,
+    "wholeTakeSeconds": 21.76,
+    "outputFrames": 653,
+    "engineeringDimensions": [320, 568],
+    "nativeCapturedStates": 328,
+    "unchangedOriginalCaptureFiles": 664,
+    "freshNativeRenders": 0,
+    "completeDecodedPictureAudioEqual": true,
+    "currentSampledVisualStatus": "failed",
+    "currentFrozenPixelErrors": 13,
+    "currentVisualRows": 28,
+    "currentWarningEndpointImages": 47,
+    "glyphStates": 13,
+    "currentMechanical": "unreviewed-with-zero-registered-numeric-failures",
+    "otherWholeDimensions": "factual-continuous-listening-unreviewed",
+    "qualification": "The frozen-image runs follow the authored provisional control/shot timeline. Their purpose/duration and staging need review; generic frame/layer warnings do not establish physical defects. No whole approval is inferred."
+  },
+  "seededRenderedEvidence": {
+    "firstHelperReceipt": "/private/tmp/still-shift-ms3-blender41-seeds1-receipt.json",
+    "firstHelperActualExitCode": 1,
+    "completionReceipt": "/private/tmp/still-shift-ms3-blender41-seeds-complete2.log",
+    "completionActualExitCode": 0,
+    "result": {
+      "status": "passed",
+      "cases": [
+        {
+          "name": "clipped",
+          "binding": {
+            "inputSha256": "sha256:154fa530d46189ab80e5607471ee16f9e60c50667b271d8fe37956009b80f7be",
+            "outputSha256": "sha256:5592d8df2df258021cf86a35501521f199d44f37583145f659db4b3a506dd648",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "composition": {
+            "path": "visual-seeds1/clipped/composition.json",
+            "bytes": 26054,
+            "sha256": "sha256:c35ee6cbe56898d4909fedb70fec0cf5d89e189bfcf2f0bbc4bf5fa005c7487f"
+          },
+          "video": {
+            "path": "visual-seeds1/clipped/output.mp4",
+            "bytes": 1370367,
+            "sha256": "sha256:5592d8df2df258021cf86a35501521f199d44f37583145f659db4b3a506dd648"
+          },
+          "visual": {
+            "path": "visual-seeds1/clipped/qa-rendered-visual.json",
+            "bytes": 60564,
+            "sha256": "sha256:78ce1fdb23c0b6181ded673ed2c35587763eb3b7c06a914b36cc0a146607ea7b"
+          },
+          "grouped": {
+            "path": "visual-seeds1/clipped/qa-visual-warning-groups.json",
+            "bytes": 66037,
+            "sha256": "sha256:385330eff675d8fca5df217982fd5a3b3891ae7da9ea6a33d3dcc2646eef6c0a"
+          },
+          "errors": 14,
+          "warnings": 30,
+          "images": 47,
+          "located": [
+            {
+              "code": "off-canvas",
+              "severity": "warning",
+              "frames": [0, 37],
+              "nodes": ["speech-sentence-00"],
+              "measured": 1
+            },
+            {
+              "code": "reading-time",
+              "severity": "error",
+              "frames": [0, 37],
+              "nodes": ["speech-sentence-00"],
+              "measured": 0
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [98, 135],
+              "nodes": ["speech-sentence-02"],
+              "measured": 1.2666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [136, 154],
+              "nodes": ["speech-sentence-03"],
+              "measured": 0.6333333333333333
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [165, 209],
+              "nodes": ["speech-sentence-04"],
+              "measured": 1.5
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [235, 277],
+              "nodes": ["speech-sentence-05"],
+              "measured": 1.4333333333333333
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [292, 335],
+              "nodes": ["speech-sentence-06"],
+              "measured": 1.4666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [344, 399],
+              "nodes": ["speech-sentence-07"],
+              "measured": 1.8666666666666667
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [400, 443],
+              "nodes": ["speech-sentence-08"],
+              "measured": 1.4666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [459, 509],
+              "nodes": ["speech-sentence-09"],
+              "measured": 1.7
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [510, 559],
+              "nodes": ["speech-sentence-10"],
+              "measured": 1.6666666666666667
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [560, 579],
+              "nodes": ["speech-sentence-11"],
+              "measured": 0.6666666666666666
+            }
+          ],
+          "completeDecodedAudioEqual": true,
+          "missingAudioDecodeFailure": null,
+          "actualRenderedReplayEqual": true,
+          "nativeSubmissionCalls": 0,
+          "seconds": 71.079899959
+        },
+        {
+          "name": "short-hold",
+          "binding": {
+            "inputSha256": "sha256:f20356643cb60f07174d817cd7406c46056db1af6f594af7857e926539b45aaa",
+            "outputSha256": "sha256:26f8513b0df5f053cc44218ced76452b67a3ae1e652b4654bf006d975dcb023a",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "composition": {
+            "path": "visual-seeds1/short-hold/composition.json",
+            "bytes": 26069,
+            "sha256": "sha256:c6b45027ef6555f915f5462d3927e43997f7c96daef446d84b108de3a168b638"
+          },
+          "video": {
+            "path": "visual-seeds1/short-hold/output.mp4",
+            "bytes": 1371028,
+            "sha256": "sha256:26f8513b0df5f053cc44218ced76452b67a3ae1e652b4654bf006d975dcb023a"
+          },
+          "visual": {
+            "path": "visual-seeds1/short-hold/qa-rendered-visual.json",
+            "bytes": 60050,
+            "sha256": "sha256:28c522c68552ee9da9e5157b3d4c7e486b406d4067cf824e6b8e9777dfa36be3"
+          },
+          "grouped": {
+            "path": "visual-seeds1/short-hold/qa-visual-warning-groups.json",
+            "bytes": 66496,
+            "sha256": "sha256:8209e79e6c23bd506c37d57db27a4477394f94439fec905d7263482c2fbaffce"
+          },
+          "errors": 15,
+          "warnings": 30,
+          "images": 48,
+          "located": [
+            {
+              "code": "native-speech-source-mismatch",
+              "severity": "error",
+              "frames": [0, 37],
+              "nodes": ["speech-sentence-00"],
+              "measured": 1
+            },
+            {
+              "code": "reading-time",
+              "severity": "error",
+              "frames": [0, 1],
+              "nodes": ["speech-sentence-00"],
+              "measured": 0.06666666666666667
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [98, 135],
+              "nodes": ["speech-sentence-02"],
+              "measured": 1.2666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [136, 154],
+              "nodes": ["speech-sentence-03"],
+              "measured": 0.6333333333333333
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [165, 209],
+              "nodes": ["speech-sentence-04"],
+              "measured": 1.5
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [235, 277],
+              "nodes": ["speech-sentence-05"],
+              "measured": 1.4333333333333333
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [292, 335],
+              "nodes": ["speech-sentence-06"],
+              "measured": 1.4666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [344, 399],
+              "nodes": ["speech-sentence-07"],
+              "measured": 1.8666666666666667
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [400, 443],
+              "nodes": ["speech-sentence-08"],
+              "measured": 1.4666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [459, 509],
+              "nodes": ["speech-sentence-09"],
+              "measured": 1.7
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [510, 559],
+              "nodes": ["speech-sentence-10"],
+              "measured": 1.6666666666666667
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [560, 579],
+              "nodes": ["speech-sentence-11"],
+              "measured": 0.6666666666666666
+            }
+          ],
+          "completeDecodedAudioEqual": true,
+          "missingAudioDecodeFailure": null,
+          "actualRenderedReplayEqual": true,
+          "nativeSubmissionCalls": 0,
+          "seconds": 71.692312542
+        },
+        {
+          "name": "wrong-copy",
+          "binding": {
+            "inputSha256": "sha256:f04015c221d558bb933cd08f8a3178d3e62522242808d6c8dcf7b1575c3c0423",
+            "outputSha256": "sha256:03143b4af5f1dea85a31681c70d84baaafc831174d7fc375e949efcb0c3ba330",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "composition": {
+            "path": "visual-seeds1/wrong-copy/composition.json",
+            "bytes": 26072,
+            "sha256": "sha256:a1c5c369c7a35ba7ca314a9a557b2a0fa1cc004ae4c91abdbcf5fbb2d34cef83"
+          },
+          "video": {
+            "path": "visual-seeds1/wrong-copy/output.mp4",
+            "bytes": 1371204,
+            "sha256": "sha256:03143b4af5f1dea85a31681c70d84baaafc831174d7fc375e949efcb0c3ba330"
+          },
+          "visual": {
+            "path": "visual-seeds1/wrong-copy/qa-rendered-visual.json",
+            "bytes": 59707,
+            "sha256": "sha256:0394622b8252a8ef4d6ebbf18e9799dd988621078f003f9b63e082d9624e4c20"
+          },
+          "grouped": {
+            "path": "visual-seeds1/wrong-copy/qa-visual-warning-groups.json",
+            "bytes": 66496,
+            "sha256": "sha256:ea88027497e6a9a6387760a1835eab3942dfdb045dd631fff05c1ba5633c3a09"
+          },
+          "errors": 15,
+          "warnings": 30,
+          "images": 47,
+          "located": [
+            {
+              "code": "native-speech-source-mismatch",
+              "severity": "error",
+              "frames": [0, 37],
+              "nodes": ["speech-sentence-00"],
+              "measured": 1
+            },
+            {
+              "code": "reading-time",
+              "severity": "error",
+              "frames": [0, 37],
+              "nodes": ["speech-sentence-00"],
+              "measured": 1.2666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [98, 135],
+              "nodes": ["speech-sentence-02"],
+              "measured": 1.2666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [136, 154],
+              "nodes": ["speech-sentence-03"],
+              "measured": 0.6333333333333333
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [165, 209],
+              "nodes": ["speech-sentence-04"],
+              "measured": 1.5
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [235, 277],
+              "nodes": ["speech-sentence-05"],
+              "measured": 1.4333333333333333
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [292, 335],
+              "nodes": ["speech-sentence-06"],
+              "measured": 1.4666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [344, 399],
+              "nodes": ["speech-sentence-07"],
+              "measured": 1.8666666666666667
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [400, 443],
+              "nodes": ["speech-sentence-08"],
+              "measured": 1.4666666666666666
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [459, 509],
+              "nodes": ["speech-sentence-09"],
+              "measured": 1.7
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [510, 559],
+              "nodes": ["speech-sentence-10"],
+              "measured": 1.6666666666666667
+            },
+            {
+              "code": "reading-time",
+              "severity": "warning",
+              "frames": [560, 579],
+              "nodes": ["speech-sentence-11"],
+              "measured": 0.6666666666666666
+            }
+          ],
+          "completeDecodedAudioEqual": true,
+          "missingAudioDecodeFailure": null,
+          "actualRenderedReplayEqual": true,
+          "nativeSubmissionCalls": 0,
+          "seconds": 72.55331224999999
+        },
+        {
+          "name": "missing-audio",
+          "binding": {
+            "inputSha256": "sha256:e86afeb90db2ef48727ffe7defa0cbca35232a502dd647c021bc8b279105c6db",
+            "outputSha256": "sha256:7284c489289828b531b411a8b527a8c429415441dc3b62ecb90b347b367c700d",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "composition": {
+            "path": "visual-seeds1/missing-audio/composition.json",
+            "bytes": 25845,
+            "sha256": "sha256:3a1a37f9e9e3749a1459a4bfcb8cb21a7b0aefb538c3824062fb934777bfc13c"
+          },
+          "video": {
+            "path": "visual-seeds1/missing-audio/output.mp4",
+            "bytes": 856135,
+            "sha256": "sha256:7284c489289828b531b411a8b527a8c429415441dc3b62ecb90b347b367c700d"
+          },
+          "visual": {
+            "path": "visual-seeds1/missing-audio/qa-rendered-visual.json",
+            "bytes": 48782,
+            "sha256": "sha256:30900843b870b542a7f037ed2812633ccf31e0d389a74ef0a56b19bbafb46db5"
+          },
+          "grouped": {
+            "path": "visual-seeds1/missing-audio/qa-visual-warning-groups.json",
+            "bytes": 88556,
+            "sha256": "sha256:8e6c0730e27f3160b9d9717426e135550d639c74a764143a8a63b6044476808d"
+          },
+          "errors": 37,
+          "warnings": 42,
+          "images": 49,
+          "located": [
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [0, 37],
+              "nodes": ["speech-sentence-00", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [52, 86],
+              "nodes": ["speech-sentence-01", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [98, 135],
+              "nodes": ["speech-sentence-02", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [136, 154],
+              "nodes": ["speech-sentence-03", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [165, 209],
+              "nodes": ["speech-sentence-04", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [235, 277],
+              "nodes": ["speech-sentence-05", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [292, 335],
+              "nodes": ["speech-sentence-06", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [344, 399],
+              "nodes": ["speech-sentence-07", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [400, 443],
+              "nodes": ["speech-sentence-08", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [459, 509],
+              "nodes": ["speech-sentence-09", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [510, 559],
+              "nodes": ["speech-sentence-10", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [560, 579],
+              "nodes": ["speech-sentence-11", "narration"],
+              "measured": 1
+            },
+            {
+              "code": "native-speech-audio-missing",
+              "severity": "error",
+              "frames": [599, 643],
+              "nodes": ["speech-sentence-12", "narration"],
+              "measured": 1
+            }
+          ],
+          "completeDecodedAudioEqual": false,
+          "decodedAudio": {
+            "bytes": 8364032,
+            "sha256": "sha256:2367bbdaebc1a59a816612a2214cfbf046ad592c1e6428046dacf68cdffaf372",
+            "samples": 1045504,
+            "channels": 2,
+            "sampleRate": 48000
+          },
+          "missingAudioFinding": "The renderer supplies a placeholder audio stream; source narration is absent, the PCM differs from the original take, and all13 cue intervals remain failed.",
+          "actualRenderedReplayEqual": true,
+          "nativeSubmissionCalls": 0,
+          "qualification": "Completes verification of the already rendered missing-source-audio fixture; the first helper failure is retained."
+        }
+      ],
+      "wholeReview": "unreviewed",
+      "failedHelperReceipt": "/private/tmp/still-shift-ms3-blender41-seeds1-receipt.json"
+    },
+    "scope": "Standalone current native visual evaluator with actual full exports and exact original capture mapping. Clipping/short hold/wrong copy/missing source narration are verified; source-copy mismatch is not proof of wrong physical label-state semantics.",
+    "missingAudioSilenceReceipt": "/private/tmp/still-shift-ms3-blender41-missing-audio-silence1.json",
+    "missingAudioSilenceResult": {
+      "status": "passed",
+      "decodedPCMBytes": 8364032,
+      "decodedPCMSha256": "sha256:2367bbdaebc1a59a816612a2214cfbf046ad592c1e6428046dacf68cdffaf372",
+      "absolutePeak": 0.0,
+      "interpretation": "Renderer placeholder is exact silence; native source QA correctly reports all13 missing narration intervals. This is not genuine narration or listening acceptance."
+    }
+  },
+  "independentAudit": {
+    "receipt": "/private/tmp/still-shift-ms3-blender41-audit1.json",
+    "result": {
+      "status": "passed",
+      "cases": [
+        {
+          "label": "default",
+          "binding": {
+            "inputSha256": "sha256:e578696eca0327fd8eb490ac63b159f5b6d175158df1c22e3b23b9e315b4c4dc",
+            "outputSha256": "sha256:f754c261362752939d33fc53351263ec5dba6152b2ed3d7594ba1fc8466acc95",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "outputFrames": 653,
+          "glyphStates": 13,
+          "warningRows": 28,
+          "errors": 13,
+          "warningGroups": 28,
+          "actualPNGAndEncodedPixelHashes": 47,
+          "sourceFindings": 0
+        },
+        {
+          "label": "numeric",
+          "binding": {
+            "inputSha256": "sha256:0b79ed51d869ca1aa69b9b4317d41e74a5d350c08d719b940cf7a40ffd794bbd",
+            "outputSha256": "sha256:f754c261362752939d33fc53351263ec5dba6152b2ed3d7594ba1fc8466acc95",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "outputFrames": 653,
+          "glyphStates": 13,
+          "warningRows": 28,
+          "errors": 13,
+          "warningGroups": 28,
+          "actualPNGAndEncodedPixelHashes": 47,
+          "sourceFindings": 0
+        },
+        {
+          "label": "clipped",
+          "binding": {
+            "inputSha256": "sha256:154fa530d46189ab80e5607471ee16f9e60c50667b271d8fe37956009b80f7be",
+            "outputSha256": "sha256:5592d8df2df258021cf86a35501521f199d44f37583145f659db4b3a506dd648",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "outputFrames": 653,
+          "glyphStates": 13,
+          "warningRows": 30,
+          "errors": 14,
+          "warningGroups": 30,
+          "actualPNGAndEncodedPixelHashes": 47,
+          "sourceFindings": 0
+        },
+        {
+          "label": "short-hold",
+          "binding": {
+            "inputSha256": "sha256:f20356643cb60f07174d817cd7406c46056db1af6f594af7857e926539b45aaa",
+            "outputSha256": "sha256:26f8513b0df5f053cc44218ced76452b67a3ae1e652b4654bf006d975dcb023a",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "outputFrames": 653,
+          "glyphStates": 13,
+          "warningRows": 30,
+          "errors": 15,
+          "warningGroups": 30,
+          "actualPNGAndEncodedPixelHashes": 48,
+          "sourceFindings": 1
+        },
+        {
+          "label": "wrong-copy",
+          "binding": {
+            "inputSha256": "sha256:f04015c221d558bb933cd08f8a3178d3e62522242808d6c8dcf7b1575c3c0423",
+            "outputSha256": "sha256:03143b4af5f1dea85a31681c70d84baaafc831174d7fc375e949efcb0c3ba330",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "outputFrames": 653,
+          "glyphStates": 13,
+          "warningRows": 30,
+          "errors": 15,
+          "warningGroups": 30,
+          "actualPNGAndEncodedPixelHashes": 47,
+          "sourceFindings": 1
+        },
+        {
+          "label": "missing-audio",
+          "binding": {
+            "inputSha256": "sha256:e86afeb90db2ef48727ffe7defa0cbca35232a502dd647c021bc8b279105c6db",
+            "outputSha256": "sha256:7284c489289828b531b411a8b527a8c429415441dc3b62ecb90b347b367c700d",
+            "codeSha256": "sha256:2695bac89002d152922f8dd1e254d9e9fd9268ce43ed967ab73221644e3d7a10",
+            "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1"
+          },
+          "outputFrames": 653,
+          "glyphStates": 13,
+          "warningRows": 42,
+          "errors": 37,
+          "warningGroups": 42,
+          "actualPNGAndEncodedPixelHashes": 49,
+          "sourceFindings": 13
+        }
+      ],
+      "uniquePinnedFiles": 319,
+      "PNGAndEncodedFrameHashes": 285,
+      "wholeEncodedGlyphReview": "unreviewed",
+      "acceptedPilot": 0
+    },
+    "method": "Pinned Python independently checks file pins, PNG CRC/unfilter RGBA pixels, selected encoded frame hashes, original-plan caption/sample declarations, source findings and grouped raw peak ownership.",
+    "PNGAndEncodedFrameHashes": 285,
+    "uniquePinnedFiles": 319,
+    "actualAllFrameCaseEvaluations": 3918
+  },
+  "viewedEvidence": {
+    "sampledEncodedPNGs": 3,
+    "cases": ["baseline-frame0", "clipped-frame0", "wrong-copy-frame0"],
+    "findings": "The normal source caption is visible; the clipped caption is absent from the frame; the changed copy appears on the same native image. Opening recognition is clear, while native staging/hold purpose and whole review remain separate.",
+    "fullAVOrListeningReview": false
+  },
+  "retainedFailures": [
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender41-build1.log",
+      "actualExitCode": 2,
+      "reason": "Generated capability template referenced the new renderedQA fields before their object insertion; repaired."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender41-speech.py",
+      "actualExitCode": 2,
+      "scope": "formatter-after-local-edit",
+      "reason": "An import insertion also matched a function argument; corrected before compilation."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender41-build3.log",
+      "actualExitCode": 2,
+      "reason": "Internal speech-caption schema was not exported; replaced by the existing public quality-policy schema element."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender41-schema1.log",
+      "actualExitCode": 1,
+      "reason": "The same non-exported schema blocked schema generation; schema2 passes after repair."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender41-focused1.log",
+      "actualExitCode": 1,
+      "reason": "Three source-finding tests reached the non-exported schema; focused2 passes."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender41-build4.log",
+      "actualExitCode": 2,
+      "reason": "Test text-layer union and JSON metadata were not narrowed; fixed in the fixture and build5 passes."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender41-seeds1-receipt.json",
+      "actualExitCode": 1,
+      "scope": "helper-after-four-correct-rendered-source-checks",
+      "reason": "Helper expected missing narration to remove the container audio stream. The renderer emits exact placeholder silence. Completion2 verifies the already rendered fixture and all13 source-audio findings without rerendering."
+    }
+  ],
+  "pilot": {
+    "selected": 10,
+    "distinctEngineeringEpisode": 1,
+    "accepted": 0,
+    "routineTokenTelemetry": null
+  },
+  "remaining": [
+    "Native phone overviews, shot entry/mid/exit/contact/crops, review PCM and compact fresh-session handoff",
+    "Purposeful native holds/motion declarations and staging review; whole encoded glyph/factual/mechanical/continuous/listening reviews",
+    "HD whole plans/products and factual/control/cue bindings for all actual EU-001\u2013EU-010 episodes",
+    "Broader native intersection/moving-mount/physical-label-state/event/transition/order/export/worker/corruption/cancel/stale/relocation controls and coverage admission",
+    "Original E06/E10 explanation/whole reviews",
+    "Comparable routine-token telemetry",
+    "Final full software/benchmark/archive/checksum/isolated installed-package gates"
+  ],
+  "authority": {
+    "ElevenLabsSpend": 0,
+    "published": false,
+    "merged": false,
+    "GitHubActionsEnabled": false
+  }
+}

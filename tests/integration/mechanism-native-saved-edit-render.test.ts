@@ -225,11 +225,28 @@ it("renders the refreshed saved camera at the same prepared subdirectory without
     preparedChecked: true,
     actualExecutionVerified: true,
   });
+  const nativeOptions = {
+    signal: verifierOptions.signal,
+    route: verifierOptions.route,
+    cacheDirectory: join(root, "native-verifier-cache"),
+  };
+  for (const key of [
+    "preparedDirectory",
+    "finalOutput",
+    "relocation",
+    "cache",
+    "verifyCode",
+    "pixels",
+  ])
+    Object.defineProperty(nativeOptions, key, {
+      enumerable: true,
+      get() {
+        unexpectedReads.push(key);
+        throw Error(`Unexpected native package verifier field read: ${key}`);
+      },
+    });
   expect(
-    await verifyNativeMechanismPackageArtifacts(
-      movedDirectory,
-      verifierOptions,
-    ),
+    await verifyNativeMechanismPackageArtifacts(movedDirectory, nativeOptions),
   ).toEqual(publicVerification);
   expect(unexpectedReads).toEqual([]);
   const manifest = JSON.parse(

@@ -81,6 +81,14 @@
       "required": ["id", "version", "sha256", "variant", "detail"],
       "additionalProperties": false
     },
+    "variant": {
+      "type": "string",
+      "enum": [
+        "outside-serrated-integral-pawl-cutaway",
+        "inside-serrated-extended-trigger-cutaway",
+        "hinged-pawl-frame-stop"
+      ]
+    },
     "parameters": {
       "default": { "pitch": 0.5, "strapWidth": 1, "toothCount": 8 },
       "type": "object",

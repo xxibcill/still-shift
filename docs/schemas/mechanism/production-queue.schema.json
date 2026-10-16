@@ -1,0 +1,139 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-production-queue-1"
+    },
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$" },
+    "revision": { "type": "integer", "minimum": 0, "maximum": 31 },
+    "baseHash": {
+      "anyOf": [
+        { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        { "type": "null" }
+      ]
+    },
+    "codeSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "profileSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "maximumAttempts": { "type": "integer", "minimum": 1, "maximum": 3 },
+    "retryFailedIds": {
+      "minItems": 1,
+      "maxItems": 32,
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$"
+      }
+    },
+    "revisionChanges": {
+      "minItems": 1,
+      "maxItems": 300,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$"
+          },
+          "kind": {
+            "type": "string",
+            "enum": ["planned-edit", "repair", "manual-recovery"]
+          },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 512 }
+        },
+        "required": ["id", "kind", "reason"],
+        "additionalProperties": false
+      }
+    },
+    "items": {
+      "minItems": 1,
+      "maxItems": 300,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$"
+          },
+          "question": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "family": {
+            "type": "string",
+            "enum": ["tape-hook", "cable-tie", "clothespeg"]
+          },
+          "designVariant": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "familyPath": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "cuePath": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "qaPath": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "clock": {
+            "type": "object",
+            "properties": {
+              "outputFrames": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 108000
+              },
+              "sourceSamples": {
+                "type": "integer",
+                "exclusiveMinimum": 0,
+                "maximum": 172800000
+              }
+            },
+            "required": ["outputFrames", "sourceSamples"],
+            "additionalProperties": false
+          },
+          "inputs": {
+            "minItems": 2,
+            "maxItems": 128,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "bytes": {
+                  "type": "integer",
+                  "minimum": 0,
+                  "maximum": 536870912
+                },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "bytes", "sha256"],
+              "additionalProperties": false
+            }
+          }
+        },
+        "required": [
+          "id",
+          "question",
+          "family",
+          "designVariant",
+          "familyPath",
+          "cuePath",
+          "clock",
+          "inputs"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "revision",
+    "baseHash",
+    "codeSha256",
+    "profileSha256",
+    "maximumAttempts",
+    "items"
+  ],
+  "additionalProperties": false
+}

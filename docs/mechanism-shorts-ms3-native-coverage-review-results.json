@@ -1,0 +1,225 @@
+{
+  "schemaVersion": "ms3-native-coverage-review-results-1",
+  "date": "2026-10-15",
+  "branch": "codex/ms3-review-fixes",
+  "baseCommit": "87dbe002",
+  "status": "implemented-independent-reviewed-current-fast-and-actual-ten-auditor-passed",
+  "requirement": "MS3 broader registry/coverage admission and revised selected routing/asset/rig/library-extension totals.",
+  "changes": [
+    "Strict generic native version2 registry/board preserves historical three-family v1",
+    "Exact frozen selected content, channel order and denominator; all native source/controller/plan/work JSON pins authenticated",
+    "Selected whole WAV identity, original1x sample/duration ratio and output format bound before support admission",
+    "Declared per-row asset/rig routes reconcile to distinct content identities and new rig types",
+    "Fresh existing production verifier supplies current products; actual pilot support requires all six complete passed dimensions",
+    "Fresh immutable report publication, existing-input collision preflight, small success receipt and bounded diagnostics"
+  ],
+  "checks": {
+    "fixtureGreen1": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-green1.log",
+        "bytes": 39622,
+        "sha256": "sha256:cd012ecad2278eebece9d8b8d2aa0cce5647aa1b7210f3aa6ee1c911ea69cc9a"
+      },
+      "failed": 6,
+      "passed": 7,
+      "reason": "Synthetic family used underscore explanation key instead of native family name"
+    },
+    "fixtureGreen2": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-green2.log",
+        "bytes": 5764,
+        "sha256": "sha256:ea377d52c9a9ad95e94f6b2ed2b2c6c202b897f6c415a11a7922db5bd70c0561"
+      },
+      "failed": 6,
+      "passed": 7,
+      "reason": "Fixture native-family index not supplied"
+    },
+    "green3": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-green3.log",
+        "bytes": 538,
+        "sha256": "sha256:ad8cba6d60e9eaf2b0ccaa9d3844a69b0bb30a92f93348318ffd0334baaf5618"
+      },
+      "tests": 13,
+      "files": 2
+    },
+    "channelOrderRed": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-green4.log",
+        "bytes": 2267,
+        "sha256": "sha256:098e5124ec0b46cbba32d22fae101df353aa5825317bcaa3fea99808f10d6880"
+      },
+      "failed": 1,
+      "passed": 13,
+      "reason": "Selected channel-order guard missing; inserted before equality checks"
+    },
+    "green5": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-green5.log",
+        "bytes": 538,
+        "sha256": "sha256:214de7a012ef27bf4ce6a33de163c78795e00498000268df00f12f8ec10d2ca9"
+      },
+      "tests": 14,
+      "files": 2
+    },
+    "green6": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-green6.log",
+        "bytes": 711,
+        "sha256": "sha256:33acfd4f35e9a45c62823fbe5e63f6776433fb2da3013e3f400934bda2190beb"
+      },
+      "tests": 15,
+      "files": 3
+    },
+    "reviewRed1": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-review-red1.log",
+        "bytes": 3653,
+        "sha256": "sha256:45ada35d59809d2bbdfb6b227e1b38d6f93c7ec91619762c54fd39cc5b0ff9b1"
+      },
+      "failed": 2,
+      "passed": 7,
+      "reason": "Reordered board emitted reverse rows; unbound narration/format helper admitted substituted take"
+    },
+    "green7": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-green7.log",
+        "bytes": 806,
+        "sha256": "sha256:140d2034b9b91ab58d61bfe4af8dc8a3d3f23498449185e764ae7c1e1f8708e1"
+      },
+      "tests": 18,
+      "files": 3,
+      "seconds": 2.89
+    },
+    "types5": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-types5.log",
+        "bytes": 101,
+        "sha256": "sha256:28157f22c7c4323340b13c65bb0d104629fe513917fa25e5a06300d5256f1029"
+      }
+    },
+    "fast1": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-fast1.log",
+        "bytes": 46348,
+        "sha256": "sha256:a434cc2b3d6c3efeb3cd21b87b1b194a1b1f39dee7b82a4d32c49ce2b1cc9316"
+      },
+      "tests": 4626,
+      "files": 460,
+      "seconds": 78.56,
+      "scope": "Earlier stage before final plan/publication/order repairs; not final current gate"
+    },
+    "fast2": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-fast2.log",
+        "bytes": 46230,
+        "sha256": "sha256:8c8cfd823badf33d5983f29decb6685acfe480b3d01189c356070a1344ba0644"
+      },
+      "tests": 4628,
+      "files": 460,
+      "seconds": 77.52,
+      "scope": "Final current source including all independent review repairs"
+    }
+  },
+  "independentReview": {
+    "standards": {
+      "initial": [
+        {
+          "severity": "P2",
+          "finding": "Mutable report could replace audited input/history"
+        },
+        {
+          "severity": "P3",
+          "finding": "Board order changed advertised frozen report order"
+        }
+      ],
+      "followup": "Both repaired: destination preflight/immutable publish and selected-ID-driven rows. No remaining concrete defect. Read-only inspection."
+    },
+    "spec": {
+      "initial": [
+        {
+          "severity": "P2",
+          "finding": "Frozen narration identity/full1x clock/format not bound to cue plan"
+        },
+        {
+          "severity": "P2",
+          "finding": "Report publication could overwrite audit inputs"
+        }
+      ],
+      "followup": "Both repaired with authenticated selected plan bindings and immutable publication; no remaining concrete repair gap. Read-only inspection."
+    }
+  },
+  "actual": {
+    "failedPermissionProbe": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-actual1.log",
+        "bytes": 1490,
+        "sha256": "sha256:a6adf58604a94a0e5de1be4c0e64aa47d44c44e4e7861532965b1f9edf08badf"
+      },
+      "reason": "OS ps denied in default sandbox during existing lock-helper process identity inspection; no report published"
+    },
+    "currentFailedCohortAudit": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-actual2.json",
+        "bytes": 8838,
+        "sha256": "sha256:bfe085d98201d51fabf8923a0107a26895ba713bf3582a5ac8cdc0935b11d3e3"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review73-coverage-actual2.log",
+        "bytes": 145,
+        "sha256": "sha256:8c127209724758a23f3b0d73cd88e2d766f0046cdfa0099f831a50453fcb3d68"
+      },
+      "selected": 10,
+      "supported": 0,
+      "routes": {
+        "existing-pack-rig": 8,
+        "new-asset-existing-rig": 2,
+        "new-behavior": 0
+      },
+      "library": {
+        "registeredEntries": 10,
+        "registeredNativeAssets": 10,
+        "distinctNativeFamilies": 10,
+        "declaredNewAssetVersions": {
+          "count": 2,
+          "ids": [
+            "sha256:322587868049c245052635eb0c58db3a09e5dbf16ff8fe34efca6d1ffe2de593",
+            "sha256:bc7ffbe4b8e629c80f5714a7b87ad679235d553d82f8b292c07da27307eb16b7"
+          ]
+        },
+        "declaredNewRigTypes": {
+          "count": 0,
+          "ids": []
+        },
+        "admittedNewAssetVersions": 0,
+        "admittedNewRigTypes": 0
+      },
+      "sourceRuntimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+      "failedJournalAndManifestByteExact": true,
+      "scope": "Actual ten source/controller/plan/selected-narration and work pins plus fresh current production reports: one sealed E1 reverified, nine retained failed rows unavailable. No jobs executed/repaired. This qualifies actual auditor behavior, not successful complete production."
+    }
+  },
+  "qualification": {
+    "actualPilotAccepted": 0,
+    "wholeFactualMechanicalGlyphMotionListening": "unreviewed",
+    "declaredAssetRevisions": 2,
+    "declaredNewRigTypes": 0,
+    "positiveLibraryAdmission": 0,
+    "runtimePackagesWorkerAndProducerCodeUnchanged": true,
+    "completeCurrentProductionReceivingInstalledSoftwareFaultGates": "open",
+    "newSpending": false
+  }
+}

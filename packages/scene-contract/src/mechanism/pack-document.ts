@@ -125,12 +125,23 @@ const shapeMetadata = z.discriminatedUnion("generator", [
         .array(
           z
             .object({
-              id: z.enum(["root", "tip"]),
+              id: z.enum(["root", "tip", "trigger"]),
               vertices: z.number().int().min(1).max(16),
             })
             .strict(),
         )
-        .length(2),
+        .min(2)
+        .max(3)
+        .refine(
+          (landmarks) =>
+            landmarks.some((l) => l.id === "root") &&
+            landmarks.some((l) => l.id === "tip") &&
+            (landmarks.length === 2 ||
+              landmarks.some((l) => l.id === "trigger")),
+          {
+            message: "Pawl metadata requires root/tip and an optional trigger",
+          },
+        ),
       driver: z
         .object({
           rig: MechanismIdSchema,
@@ -157,6 +168,27 @@ const shapeMetadata = z.discriminatedUnion("generator", [
             .strict(),
         )
         .length(4),
+      seats: z.tuple([MechanismIdSchema, MechanismIdSchema]),
+    })
+    .strict(),
+  z
+    .object({
+      id: MechanismIdSchema,
+      generator: z.literal("seated-flexible-web-1"),
+      mesh: MechanismIdSchema,
+      ownerPart: MechanismIdSchema,
+      topologySha256: MechanismHashSchema,
+      declarationSha256: MechanismHashSchema,
+      landmarks: z
+        .array(
+          z
+            .object({
+              id: z.enum(["seat-a", "seat-b"]),
+              vertices: z.literal(4),
+            })
+            .strict(),
+        )
+        .length(2),
       seats: z.tuple([MechanismIdSchema, MechanismIdSchema]),
     })
     .strict(),
@@ -469,6 +501,17 @@ export const MechanismPackDocumentSchema = z
             [...path, "movingPart"],
           );
         driven.add(rig.movingPart);
+        if (rig.type === "load-seat") {
+          requireId(parts, rig.reactionPart, [...path, "reactionPart"]);
+          if (driven.has(rig.reactionPart))
+            mechanismIssue(
+              context,
+              "mechanism-pack-reference",
+              "Duplicate physical writer",
+              [...path, "reactionPart"],
+            );
+          driven.add(rig.reactionPart);
+        }
         if (rig.type === "ratchet") {
           requireId(shapes, rig.pawlShape, [...path, "pawlShape"]);
           requireId(anchors, rig.pawlTipAnchor, [...path, "pawlTipAnchor"]);
@@ -676,7 +719,12 @@ export const MechanismPackDocumentSchema = z
         );
         return;
       }
-      const range = rig.type === "hinge" ? rig.angleRange : rig.range;
+      const range: readonly [number, number] =
+        rig.type === "hinge"
+          ? rig.angleRange
+          : rig.type === "load-seat"
+            ? [0, rig.maxForceNewtons]
+            : rig.range;
       if (pose.value < range[0] || pose.value > range[1])
         mechanismIssue(
           context,
@@ -703,7 +751,9 @@ export const MechanismPackDocumentSchema = z
             ? rig.neutralAngle
             : rig.type === "slider"
               ? rig.neutral
-              : rig.range[0] + rig.neutralTooth * rig.pitch;
+              : rig.type === "load-seat"
+                ? 0
+                : rig.range[0] + rig.neutralTooth * rig.pitch;
         if (pose.value !== neutral)
           mechanismIssue(
             context,

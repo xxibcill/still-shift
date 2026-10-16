@@ -1,0 +1,421 @@
+{
+  "schemaVersion": "mechanism-shorts-retained-acceptance-evidence-revalidation114-1",
+  "capturedUtc": "2026-10-15T09:15:17.244138+00:00",
+  "status": "partial-availability; all24-available-pins-exact; six-historical-temporary-paths-unavailable",
+  "method": "Authenticate selected retained receipts for their exact historical source/archive scopes. Missing paths remain unavailable; no data is reconstructed or relabeled as a current execution. No renders executed.",
+  "pinChecks": [
+    {
+      "status": "unavailable-at-recorded-path",
+      "expected": {
+        "path": "/private/tmp/still-shift-ms1-archive-b4f0119d.tgz",
+        "installedCopy": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/still-shift-ms1-archive-b4f0119d.tgz",
+        "sha256": "sha256:78fb7016080e371955e4c5b39266a8c1a71e4a4c3b78298aa9b6e4a7b5735309",
+        "bytes": 2926256,
+        "postExportsUnchanged": true,
+        "buildMetadata": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/archive-identity.json",
+        "buildMetadataStatusIsHistoricalSetupSnapshot": true
+      }
+    },
+    {
+      "status": "unavailable-at-recorded-path",
+      "expected": {
+        "path": "/private/tmp/still-shift-ms1-installed-e01-semantic-38sbbne2/installed-e01-proof.json",
+        "sha256": "sha256:6c7baf0e0483451a2a3db58ac2bdd49f4dd602e197d2cec614dceca5abc58ee9",
+        "bytes": 69826
+      }
+    },
+    {
+      "status": "unavailable-at-recorded-path",
+      "expected": {
+        "path": "/private/tmp/still-shift-ms1n-required-suffix-1/run.json",
+        "bytes": 268557,
+        "sha256": "sha256:82809d336ce1463312f295d44713c16bc1b20e5aed84efbaff93e3b0d7036421"
+      }
+    },
+    {
+      "status": "unavailable-at-recorded-path",
+      "expected": {
+        "path": "/private/tmp/mechanism-ms1n-required-suffix-final-audit-1.json",
+        "bytes": 79676,
+        "sha256": "sha256:ee7eab505de02bc2e7fd57e4ccf66964aa44c5641ad32708ef186a1edd4c9616"
+      }
+    },
+    {
+      "status": "unavailable-at-recorded-path",
+      "expected": {
+        "path": "/private/tmp/still-shift-ms1n-required-suffix-1/source-before.json",
+        "bytes": 397183,
+        "sha256": "sha256:356728403bd5b8cf38579c80ae7afd7833bfffed61955caeeeeb704388f7086c"
+      }
+    },
+    {
+      "status": "unavailable-at-recorded-path",
+      "expected": {
+        "path": "/private/tmp/still-shift-ms1n-required-suffix-1/source-after.json",
+        "bytes": 397183,
+        "sha256": "sha256:356728403bd5b8cf38579c80ae7afd7833bfffed61955caeeeeb704388f7086c"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms2-final70-full1-receipt.json",
+        "bytes": 418,
+        "sha256": "sha256:8856d0cb0d8523ea6b02fd8cca028d76e2aba6e2774ea0008a817215bec8c743"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms2-final70-full1.log",
+        "bytes": 3425856,
+        "sha256": "sha256:f1933788b45717935baa1749262af27b50de35fe4a8b164c59f8479df4fc1e0e"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms2-final70-inputs1.json",
+        "bytes": 450977,
+        "sha256": "sha256:c51954ad2881163b0817599838c59afb65856c58bf416d9d42f5a889c24231dd"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms2-package91/still-shift-0.1.1.tgz",
+        "bytes": 5037480,
+        "sha256": "sha256:06748df2364a30a2bea0c5b89d081415e6cdbf16d353b06cf0862a4bef087185"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery74-whole1-receipt.json",
+        "bytes": 3634,
+        "sha256": "sha256:9ff95089f3715a697f999db95de01ab1f05e7b5ab056903af329968c3bc8a256"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery84-handoff-follower1.json",
+        "bytes": 14560,
+        "sha256": "sha256:676fbbeb1c8440a6dc4edf6c423fa5dbf229f34d7d05495564b27aecfde41116"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-001-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:25572b2c892e7f9de1a911c5c583d3d34006e8b239661b7a05e6373e54db6886"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-002-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:e4edfc2b6402a3f63ff40d75bcd1c3fa639e4f3f5f08c282118f6efe42455352"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-003-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:d0938b15c11cb9773e736d32943e807e694b5505a21d0667bff92c9201756f23"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-004-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:322caff7f47c7b132ed2be8fd7e3c8b27cc5a06d6ec048346328e14d93e08fa1"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-005-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:d5b2f80b89e428684d19c5fe95efd9372f0add09e01b9b8e2c5837351d27b71f"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-006-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:b8263da680153cbdc149b8bb5ebce5c7b7763de9d6ee482271001d3a90ac213b"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-007-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:66ab68e44a89401dc2b3f3ede2654b4f01ae1034a2e12cb71b5a3c47ea978ecc"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-008-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:cb74c6f85c1d64f87245b619085364153f0b9b5baac06fa2b0ac07bd197e9af2"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-009-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:a8b93c45ea36d9220f358db20b52bde795239bfd21f081360f43777d3f3c314f"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-recovery83-handoff-010-audit1.json",
+        "bytes": 1301,
+        "sha256": "sha256:8596a490ab58290b4c019f76855b4b9d54ac946b20870e043577ada62114fee8"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-overlap30-recovery1-receipt.json",
+        "bytes": 3821,
+        "sha256": "sha256:a0c38ebbdd31791e7c783822a210c7a24bdc37a60a74a22c2aee27966c4c9124"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/recovery30/recovery-result.json",
+        "bytes": 1374,
+        "sha256": "sha256:11aab6d9ddc7d3e6c8c33bdc7f79a07be75e3a0f53d7026fc2a6b9f6d6a35047"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-overlap30-independent-audit1.json",
+        "bytes": 326955,
+        "sha256": "sha256:e8e666a37345fcf28354b8d6007ac2b30345131ad41e7fd063be094da9abe4da"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-overlap30-fresh-summary1.json",
+        "bytes": 6862,
+        "sha256": "sha256:eb5b156252bbf18fd70f960e085421dc93299f2a56e0d49d4a50cd8e746e8ade"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-auto-overlap-1y226be1/recovery30/handoff.json",
+        "bytes": 3035,
+        "sha256": "sha256:e6aed1ad032730cd71667e1e515767d2a3a2894c8e7e5a0b2a752e3a612cf6c9"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-overlap30-fresh-check1.json",
+        "bytes": 62110,
+        "sha256": "sha256:779c0a6616e8a364bd3e7d8dc188a21d2e56c7532a46422fd3f063c2170630f3"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-overlap30-stale1.json",
+        "bytes": 437,
+        "sha256": "sha256:d2dbf78990e78d4d049b74332feadb16ca7a32e6dc33773a05afaa5157a0f9bc"
+      }
+    },
+    {
+      "status": "present-exact",
+      "actual": {
+        "path": "/private/tmp/still-shift-ms3-report5-audit1.json",
+        "bytes": 40079,
+        "sha256": "sha256:c14bac316053fb540f13b1d1d71ae59bdcdca47d41d7e263f49365e4f9b3c32e"
+      }
+    }
+  ],
+  "presentExact": 24,
+  "unavailable": 6,
+  "committedHistoricalRecords": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms1-staged-exit-receipt.json",
+      "bytes": 1626,
+      "sha256": "sha256:a4c68fb8eae5b221bad6b721a9467cc738bb9935ec226ce11e0703671e747291"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms1-required-groups-coverage.json",
+      "bytes": 287286,
+      "sha256": "sha256:2bdb4af2ba21e7ebaf0576f0d636094843860215c098ec716261859d47e3add0"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms1-installed-e01-results.json",
+      "bytes": 56774,
+      "sha256": "sha256:ccecfc2b26cba8739d3c5db43c181193fff19ee2ae90301e39d5d8a885c1eb55"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms1n-results.json",
+      "bytes": 785697,
+      "sha256": "sha256:ccca6a83bda15fef80b5ef53158734710c2dc9b75b572f6b6a6cc6503ad43e68"
+    }
+  ],
+  "missingCopySearch": {
+    "roots": [
+      "/private/tmp",
+      "/Users/jjae/.codex/worktrees",
+      "/Users/jjae/Documents/playground/still-shift/benchmarks/results"
+    ],
+    "method": "rg --files including ignored and hidden files, restricted to archives and original receipt basenames; SHA references separately searched in current docs.",
+    "originalMs1InstalledArchiveCopyExists": false,
+    "matchingAlternativeFound": false,
+    "causeOfRemoval": "unknown",
+    "rawBytesRestored": false
+  },
+  "retainedInitialAuditFailure": {
+    "actualExitCode": 1,
+    "cause": "Initial strict pin collector stopped at the unavailable MS1 archive. Follow-up availability audit reports missing paths explicitly instead of replacing them."
+  },
+  "MS1": {
+    "scope": "Committed historical b4f installed and staged09ce results; original raw archive/proof unavailable at recorded paths",
+    "archiveSource": "b4f0119d4a2734a47d97aa05f25593b257e50a6b",
+    "requiredGroups": 76,
+    "completeAggregatePassed": false,
+    "final": {
+      "width": 1080,
+      "height": 1920,
+      "fps": 30,
+      "frameCount": 696,
+      "durationSeconds": 23.2,
+      "nativeAndNestedAndPreparedAndSummaryReportClosure": true,
+      "preparedReferencesCheckedPerExport": 723,
+      "currentSourceAssetsCheckedPerExport": 11,
+      "quality": "passed",
+      "retainedFindings": {
+        "declared-physical-proof-hold": 10,
+        "outside-safe-area": 29,
+        "speech-following-caption": 11
+      },
+      "overlayFindings": 0,
+      "travelReadableFrames": 69,
+      "travelRequiredFrames": 30,
+      "audio": {
+        "valid": true,
+        "sampleRate": 48000,
+        "channels": 2,
+        "authoredSampleCount": 1113600,
+        "decodedSampleCount": 1114112,
+        "paddingSamples": 512,
+        "paddingAllowanceSamples": 1023,
+        "alignmentMaxLagSamples": 0,
+        "alignmentCorrelation": 0.99939897716988,
+        "tailPreserved": true
+      },
+      "semantic": {
+        "version": "composition-semantic-context-1",
+        "status": "unassessed",
+        "profile": "legacy",
+        "associations": [],
+        "policy": {
+          "version": "composition-semantic-context-policy-1",
+          "profile": "legacy",
+          "readingOpacity": 0.9,
+          "readingReveal": 0.95,
+          "associations": []
+        },
+        "method": "declared-copy-and-measured-layer-context",
+        "factualTruth": "unassessed",
+        "renderedGlyphReadability": "requires-encoded-review"
+      }
+    }
+  },
+  "MS1N": {
+    "scope": "Committed historical a387 staged77 results; selected raw receipt/audit/inventories unavailable at recorded paths; current review repairs separate",
+    "sourceCommit": "a38754aef7562c1b3431e2aca3dab09f77d4a3b2",
+    "completedRequiredGroups": 77,
+    "ordinaryCheckAllPassed": false,
+    "baselines": {
+      "items": 176,
+      "frames": 36061,
+      "reportedSeconds": 280.91
+    }
+  },
+  "MS2": {
+    "scope": "Historical full70 exact pins present; current affected archive e44 separate",
+    "fullActualExitCode": 0,
+    "benchmark": {
+      "hz": 1093.0,
+      "minMs": 0.7321,
+      "maxMs": 2.2503,
+      "meanMs": 0.9149,
+      "p75Ms": 0.9566,
+      "p99Ms": 1.4606,
+      "p995Ms": 1.7769,
+      "p999Ms": 2.2503,
+      "rmePercent": 1.35,
+      "samples": 547
+    },
+    "currentAffectedPackageSource": "e44b40deff31355ddf100b4aa604803224bba402",
+    "currentAffectedPackageActualExitCode": 0
+  },
+  "MS3": {
+    "scope": "Original3df/runtime1090 actual-first-ten and historical bridge recovery, not current installed replay",
+    "steps": 13,
+    "actualTerminalExitCode": 0,
+    "handoffAudits": 10,
+    "qualification": {
+      "accepted": 0,
+      "reviewedReady": 0,
+      "firstPass": {
+        "passed": 1,
+        "total": 10,
+        "rate": 0.1,
+        "target": 0.9,
+        "status": "not-achieved"
+      },
+      "comparablePairedTokens": null,
+      "wholeReviews": "Factual/mechanical/glyph/continuous-motion/listening/human remain open",
+      "sourceBinding": "This terminal evidence qualifies original3df/runtime1090 only. Integrated repairs/current-main require fresh full software/package/installed gates.",
+      "spending": false
+    },
+    "automaticBridgeRepair": {
+      "patches": 1,
+      "exports": 1,
+      "freshNative": 0,
+      "plates": 696,
+      "readableFrames": 69,
+      "required": 30,
+      "staleRequestExitCode": 2,
+      "independentChangedDecodedFrames": 82,
+      "unchangedOutsideShot": 614,
+      "wholeDecodedAudioExact": true
+    },
+    "reportControl": {
+      "episodes": 3,
+      "cohortRows": 3,
+      "originalAttemptCount": 4,
+      "currentDurationRows": 3,
+      "percentiles": "independently recomputed",
+      "CLIPageRows": 4,
+      "CLICompleteRows": 15,
+      "reviewCounts": "independently recomputed",
+      "pilotAdmission": "not-established"
+    }
+  },
+  "actualRenderOrPaidGenerationCount": 0,
+  "currentFull113Status": "live-unpassed",
+  "allMilestoneOrProductAcceptanceClaim": false
+}

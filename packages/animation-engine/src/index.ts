@@ -35,6 +35,7 @@ export { importNarrationFile } from "./narration-import.ts";
 export {
   lintCompositionFile,
   type CompositionLintReport,
+  type CompositionLintOptions,
 } from "./composition-lint.ts";
 
 export {
@@ -138,3 +139,62 @@ export type {
   MechanismCuePlateExport,
   MechanismCuePlateOptions,
 } from "./mechanism/cue-plate-lifecycle.ts";
+export * from "./mechanism/production-report.ts";
+export * from "./mechanism/production-failure.ts";
+export * from "./mechanism/production-queue.ts";
+export * from "./mechanism/production-native-identity.ts";
+export * from "./mechanism/production-native-inputs.ts";
+export * from "./mechanism/production-native-executor.ts";
+export * from "./mechanism/production-output-check.ts";
+
+export * from "./mechanism/production-semantic.ts";
+export * from "./mechanism/production-warnings.ts";
+
+export * from "./mechanism/production-report-io.ts";
+
+export * from "./mechanism/production-registry.ts";
+
+export * from "./mechanism/production-evidence-contract.ts";
+export * from "./mechanism/production-handoff.ts";
+export * from "./mechanism/production-qa-contract.ts";
+export * from "./mechanism/production-qa-sampling.ts";
+
+export {
+  MechanismProductionProjectsSchema,
+  createMechanismProductionQueueFile,
+  type MechanismProductionQueueFactory,
+} from "./mechanism/production-projects.ts";
+
+export {
+  MechanismProductionRetrySchema,
+  retryMechanismProductionQueue,
+} from "./mechanism/production-retry.ts";
+
+export { captureBlenderAsset } from "./mechanism/blender-capture.ts";
+export {
+  BlenderCaptureJobSchema,
+  BlenderCameraFramingSchema,
+  BlenderHighlightsSchema,
+  parseBlenderCaptureJob,
+  BLENDER_CAPTURE_LIMITS,
+  type BlenderCaptureJob,
+} from "./mechanism/blender-capture-contract.ts";
+
+export * from "./mechanism/blender-episode-contract.ts";
+export * from "./mechanism/blender-episode-compile.ts";
+export * from "./mechanism/blender-episode-inputs.ts";
+export * from "./mechanism/blender-episode-plates.ts";
+export * from "./mechanism/blender-production-identity.ts";
+export { createBlenderProductionExecutor } from "./mechanism/blender-production-executor.ts";
+
+export * from "./mechanism/blender-production-qa-contract.ts";
+export * from "./mechanism/blender-production-qa.ts";
+
+export * from "./mechanism/blender-production-visual.ts";
+
+export {
+  readBlenderEpisodeAnchorFrames,
+  type BlenderAnchorFrames,
+} from "./mechanism/blender-episode-annotations.ts";
+
+export * from "./mechanism/blender-production-review-contract.ts";

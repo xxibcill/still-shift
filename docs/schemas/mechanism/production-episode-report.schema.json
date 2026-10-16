@@ -1,0 +1,436 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-production-episode-report-1"
+    },
+    "id": {
+      "type": "string",
+      "maxLength": 128,
+      "pattern": "^[A-Za-z][\\w.-]*$"
+    },
+    "question": { "type": "string", "minLength": 1, "maxLength": 512 },
+    "family": {
+      "type": "string",
+      "enum": ["tape-hook", "cable-tie", "clothespeg"]
+    },
+    "designVariant": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "binding": {
+      "type": "object",
+      "properties": {
+        "inputSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "outputSha256": {
+          "anyOf": [
+            { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            { "type": "null" }
+          ]
+        },
+        "codeSha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+        "profileSha256": {
+          "type": "string",
+          "pattern": "^sha256:[a-f0-9]{64}$"
+        }
+      },
+      "required": [
+        "inputSha256",
+        "outputSha256",
+        "codeSha256",
+        "profileSha256"
+      ],
+      "additionalProperties": false
+    },
+    "clock": {
+      "type": "object",
+      "properties": {
+        "outputFrames": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 108000
+        },
+        "sourceSamples": {
+          "type": "integer",
+          "exclusiveMinimum": 0,
+          "maximum": 172800000
+        }
+      },
+      "required": ["outputFrames", "sourceSamples"],
+      "additionalProperties": false
+    },
+    "attempts": {
+      "maxItems": 96,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "number": { "type": "integer", "minimum": 1, "maximum": 96 },
+          "inputSha256": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["running", "passed", "failed", "cancelled", "interrupted"]
+          },
+          "stage": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "seconds": {
+            "anyOf": [
+              { "type": "number", "minimum": 0, "maximum": 86400 },
+              { "type": "null" }
+            ]
+          },
+          "diagnostic": {
+            "anyOf": [
+              { "type": "string", "maxLength": 2048 },
+              { "type": "null" }
+            ]
+          },
+          "finding": {
+            "type": "object",
+            "properties": {
+              "code": { "type": "string", "minLength": 1, "maxLength": 128 },
+              "message": { "type": "string", "maxLength": 1024 },
+              "path": {
+                "maxItems": 64,
+                "type": "array",
+                "items": {
+                  "anyOf": [
+                    { "type": "string", "maxLength": 128 },
+                    {
+                      "type": "integer",
+                      "minimum": -9007199254740991,
+                      "maximum": 9007199254740991
+                    }
+                  ]
+                }
+              },
+              "frame": { "type": "number" },
+              "interval": {
+                "type": "object",
+                "properties": {
+                  "startFrame": { "type": "number" },
+                  "endFrameExclusive": { "type": "number" }
+                },
+                "required": ["startFrame", "endFrameExclusive"],
+                "additionalProperties": false
+              },
+              "rig": { "type": "string", "maxLength": 128 },
+              "parts": {
+                "maxItems": 128,
+                "type": "array",
+                "items": { "type": "string", "maxLength": 128 }
+              },
+              "relationship": { "type": "string", "maxLength": 128 },
+              "pack": {
+                "type": "object",
+                "properties": {
+                  "id": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "version": {
+                    "type": "string",
+                    "maxLength": 64,
+                    "pattern": "^\\d+\\.\\d+\\.\\d+$"
+                  },
+                  "sha256": {
+                    "type": "string",
+                    "pattern": "^sha256:[a-f0-9]{64}$"
+                  },
+                  "variant": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  "detail": {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                },
+                "required": ["id", "version", "sha256", "variant", "detail"],
+                "additionalProperties": false
+              }
+            },
+            "required": ["code", "message", "path"],
+            "additionalProperties": false
+          },
+          "provenance": {
+            "type": "object",
+            "properties": {
+              "kind": {
+                "type": "string",
+                "enum": [
+                  "initial",
+                  "retry",
+                  "planned-edit",
+                  "repair",
+                  "manual-recovery",
+                  "recovery",
+                  "unknown"
+                ]
+              },
+              "reason": { "type": "string", "minLength": 1, "maxLength": 512 },
+              "failureOrigin": {
+                "type": "string",
+                "enum": ["transient", "authored", "unknown"]
+              }
+            },
+            "required": ["kind", "reason"],
+            "additionalProperties": false
+          }
+        },
+        "required": [
+          "number",
+          "inputSha256",
+          "status",
+          "stage",
+          "seconds",
+          "diagnostic"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "interventions": {
+      "maxItems": 64,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "afterAttempt": { "type": "integer", "minimum": 1, "maximum": 96 },
+          "kind": {
+            "type": "string",
+            "enum": [
+              "planned-edit",
+              "repair",
+              "manual-recovery",
+              "recovery",
+              "unknown"
+            ]
+          },
+          "reason": { "type": "string", "minLength": 1, "maxLength": 512 }
+        },
+        "required": ["afterAttempt", "kind", "reason"],
+        "additionalProperties": false
+      }
+    },
+    "qa": {
+      "minItems": 6,
+      "maxItems": 6,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "dimension": {
+            "type": "string",
+            "enum": [
+              "technical",
+              "mechanical",
+              "sampled-visual",
+              "continuous-motion",
+              "listening",
+              "factual"
+            ]
+          },
+          "status": {
+            "type": "string",
+            "enum": ["passed", "failed", "unreviewed", "not-applicable"]
+          },
+          "binding": {
+            "type": "object",
+            "properties": {
+              "inputSha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "outputSha256": {
+                "anyOf": [
+                  { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+                  { "type": "null" }
+                ]
+              },
+              "codeSha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "profileSha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              }
+            },
+            "required": [
+              "inputSha256",
+              "outputSha256",
+              "codeSha256",
+              "profileSha256"
+            ],
+            "additionalProperties": false
+          },
+          "method": { "type": "string", "minLength": 1, "maxLength": 256 },
+          "evaluatedInterval": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "unit": {
+                    "type": "string",
+                    "enum": ["output-frame", "source-sample"]
+                  },
+                  "start": {
+                    "type": "integer",
+                    "minimum": 0,
+                    "maximum": 172800000
+                  },
+                  "endExclusive": {
+                    "type": "integer",
+                    "exclusiveMinimum": 0,
+                    "maximum": 172800000
+                  }
+                },
+                "required": ["unit", "start", "endExclusive"],
+                "additionalProperties": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "evidence": {
+            "maxItems": 4,
+            "type": "array",
+            "items": {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "sha256"],
+              "additionalProperties": false
+            }
+          },
+          "reviewer": {
+            "anyOf": [
+              {
+                "type": "object",
+                "properties": {
+                  "kind": {
+                    "type": "string",
+                    "enum": ["automated", "agent", "human"]
+                  },
+                  "id": { "type": "string", "minLength": 1, "maxLength": 128 }
+                },
+                "required": ["kind", "id"],
+                "additionalProperties": false
+              },
+              { "type": "null" }
+            ]
+          },
+          "explanation": { "type": "string", "minLength": 1, "maxLength": 2048 }
+        },
+        "required": [
+          "dimension",
+          "status",
+          "binding",
+          "method",
+          "evaluatedInterval",
+          "evidence",
+          "reviewer",
+          "explanation"
+        ],
+        "additionalProperties": false
+      }
+    },
+    "unresolvedMechanicalFailures": {
+      "type": "integer",
+      "minimum": 0,
+      "maximum": 100000
+    },
+    "durations": {
+      "type": "object",
+      "properties": {
+        "setupSeconds": {
+          "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+        },
+        "routineSeconds": {
+          "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+        },
+        "renderSeconds": {
+          "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+        }
+      },
+      "required": ["setupSeconds", "routineSeconds", "renderSeconds"],
+      "additionalProperties": false
+    },
+    "authoring": {
+      "type": "object",
+      "properties": {
+        "setupTokens": {
+          "anyOf": [
+            { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+            { "type": "null" }
+          ]
+        },
+        "routineTokens": {
+          "anyOf": [
+            { "type": "integer", "minimum": 0, "maximum": 9007199254740991 },
+            { "type": "null" }
+          ]
+        },
+        "baselineRoutineTokens": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "exclusiveMinimum": 0,
+              "maximum": 9007199254740991
+            },
+            { "type": "null" }
+          ]
+        },
+        "comparable": { "type": "boolean" },
+        "measurementEvidence": {
+          "anyOf": [
+            {
+              "type": "object",
+              "properties": {
+                "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+                "sha256": {
+                  "type": "string",
+                  "pattern": "^sha256:[a-f0-9]{64}$"
+                }
+              },
+              "required": ["path", "sha256"],
+              "additionalProperties": false
+            },
+            { "type": "null" }
+          ]
+        }
+      },
+      "required": [
+        "setupTokens",
+        "routineTokens",
+        "baselineRoutineTokens",
+        "comparable",
+        "measurementEvidence"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "id",
+    "question",
+    "family",
+    "designVariant",
+    "binding",
+    "clock",
+    "attempts",
+    "qa",
+    "unresolvedMechanicalFailures",
+    "durations",
+    "authoring"
+  ],
+  "additionalProperties": false
+}

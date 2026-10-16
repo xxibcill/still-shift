@@ -1,0 +1,232 @@
+{
+  "version": "mechanism-shorts-ms3-current-native-results-1",
+  "date": "2026-10-14",
+  "sourceCommit": "b9b1bd4217fcf0c7597edc06bba1eb1672b99613",
+  "runtime": {
+    "codeSha256": "sha256:042a3d5f23ba9fce707d682548c23dbce09c34ac4c92de1a711243ec3cc8f66e",
+    "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b",
+    "runtimeFiles": 688,
+    "runtimeFormat": "source-ts",
+    "nativeAppearanceCodeSha256": "sha256:53d07cba1e91332e91992d5e512e1992e979428cf91cf34ddbdb949745e7dc3e",
+    "profile": {
+      "backend": "webgl2",
+      "transport": "raw_rgba",
+      "workers": 1,
+      "nodeVersion": "22.23.1",
+      "ffmpegVersion": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+      "toolchainSha256": "sha256:4329ec000367b7c96c18900dffd57aee4651136ff8f3f8008f508ec43b77aaf5"
+    }
+  },
+  "sourceInputs": 2733,
+  "sourceBytes": 121749373,
+  "originalDenominator": 10,
+  "acceptedEpisodes": 0,
+  "checks": {
+    "status": "passed",
+    "actualCliChecks": 3,
+    "actualCompilations": 3,
+    "allCliExitCodes": 0,
+    "wrapperExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-native31-owner-check2-receipt.json",
+      "bytes": 7591,
+      "sha256": "sha256:ecfa0a29a5a7f73125ef8f01ea83cc6b53deb0ad84484d47add6caa89add16e8"
+    },
+    "rows": [
+      {
+        "id": "E01",
+        "frames": 587,
+        "check": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E01/final-check.json",
+          "bytes": 948,
+          "sha256": "sha256:d0cd85372fd327775abc09772746c6fb70e1dc84894b36d53645cb08ed0c31eb"
+        },
+        "output": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/items/E01/2/rendered/output.mp4",
+          "bytes": 1107255,
+          "sha256": "sha256:ef1e3923d320353ef60881c4c419c22aba28e7c81e6b639fcf04cdac8f7f8fd9"
+        },
+        "freshComposition": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E01/compiled/composition.json",
+          "bytes": 29472,
+          "sha256": "sha256:47316c4267330bb57dfc1ab8a432a98ad6f326a15540329a06ef7582655933a9"
+        },
+        "exportComposition": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/items/E01/2/compiled/composition.json",
+          "bytes": 29472,
+          "sha256": "sha256:47316c4267330bb57dfc1ab8a432a98ad6f326a15540329a06ef7582655933a9"
+        },
+        "freshCompositionBytesExact": true,
+        "freshNativeSubmissionCalls": 0,
+        "scope": "current-overlays-final-video-and-measured-zero-new-native-submissions-with-original-capture-proof",
+        "restartCommand": [
+          "pnpm",
+          "still-shift",
+          "episode",
+          "check",
+          "--authoring",
+          "cue",
+          "--family-input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair2/E01-attempt2/family.json",
+          "--input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair2/E01-attempt2/cues-portrait.json",
+          "--prepared-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/items/E01/2/compiled",
+          "--plates-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/native-cache/6b2335a9505b5c2198a50a1c8085c9cad7baafbbdc88d7ed0efc9e5dd78f664e",
+          "--final-output",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/items/E01/2/rendered/output.mp4",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E01/final-check.json"
+        ]
+      },
+      {
+        "id": "E03",
+        "frames": 646,
+        "check": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E03/final-check.json",
+          "bytes": 928,
+          "sha256": "sha256:61aa2ddb4ea910e7766d2ee2517f11ae03c66cf7b626ab512b982b2017ef6182"
+        },
+        "output": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/rendered/output.mp4",
+          "bytes": 1160854,
+          "sha256": "sha256:719f5e918ed3e1308e2d96cbae247285831a98b5fae59f5af7a699f2ae61792b"
+        },
+        "freshComposition": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E03/compiled/composition.json",
+          "bytes": 24109,
+          "sha256": "sha256:541f838a4985301fbf80aa44523a9f55617bcf68fb515d72605c235c900aaa37"
+        },
+        "exportComposition": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/compiled/composition.json",
+          "bytes": 24109,
+          "sha256": "sha256:541f838a4985301fbf80aa44523a9f55617bcf68fb515d72605c235c900aaa37"
+        },
+        "freshCompositionBytesExact": true,
+        "freshNativeSubmissionCalls": 0,
+        "scope": "current-overlays-final-video-and-measured-zero-new-native-submissions-with-original-capture-proof",
+        "restartCommand": [
+          "pnpm",
+          "still-shift",
+          "episode",
+          "check",
+          "--authoring",
+          "cue",
+          "--family-input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/EU-002/family.json",
+          "--input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/EU-002/cues-portrait.json",
+          "--prepared-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/compiled",
+          "--plates-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/production1/native-cache/0187ab8a229cec51299245d8511a515e2d35cf5e94ffbd3267b0bc0ed2e5a8c9",
+          "--final-output",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/caption-repair1/E03/rendered/output.mp4",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E03/final-check.json"
+        ]
+      },
+      {
+        "id": "E08",
+        "frames": 643,
+        "check": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E08/final-check.json",
+          "bytes": 948,
+          "sha256": "sha256:ccdb0647e205effb2d8692f2b8fcd369deb006084958b513c107e426ca536642"
+        },
+        "output": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/items/E08/1/rendered/output.mp4",
+          "bytes": 929031,
+          "sha256": "sha256:f3801d11eaa7f5b005d7e557de63be6784a5cfb74d151b178c96c633b5ccb64a"
+        },
+        "freshComposition": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E08/compiled/composition.json",
+          "bytes": 29641,
+          "sha256": "sha256:2790f5ba4a7028448d4fcbb22340a3ae23f84867922442effedc91e37a661245"
+        },
+        "exportComposition": {
+          "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/items/E08/1/compiled/composition.json",
+          "bytes": 29641,
+          "sha256": "sha256:2790f5ba4a7028448d4fcbb22340a3ae23f84867922442effedc91e37a661245"
+        },
+        "freshCompositionBytesExact": true,
+        "freshNativeSubmissionCalls": 0,
+        "scope": "current-overlays-final-video-and-measured-zero-new-native-submissions-with-original-capture-proof",
+        "restartCommand": [
+          "pnpm",
+          "still-shift",
+          "episode",
+          "check",
+          "--authoring",
+          "cue",
+          "--family-input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/E08/family.json",
+          "--input",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/E08/cues-portrait.json",
+          "--prepared-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/items/E08/1/compiled",
+          "--plates-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/native-cache/9740dc99390b792565a0d6d506e67059f31b9ad315d678f175747e218b08b1b0",
+          "--final-output",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/framing-repair1/production1/items/E08/1/rendered/output.mp4",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/E08/final-check.json"
+        ]
+      }
+    ],
+    "frameTotal": 1876,
+    "freshNativeSubmissionCalls": 0,
+    "protectedFiles": 1934,
+    "protectedFilesUnchanged": true,
+    "independentByteAudit": {
+      "path": "/private/tmp/still-shift-ms3-native31-audit1.json",
+      "bytes": 9172,
+      "sha256": "sha256:6d6a8f8b2ed0fe5f583c49e01536b6504a63e583c43e5d3bee6a7ff151fd5aee"
+    },
+    "freshTechnicalHandoff": {
+      "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/current-runtime31-ownercheck2/technical-handoff.json",
+      "bytes": 6297,
+      "sha256": "sha256:4efe9a0ae926f3ae62b6e615b56cce02febfeb005386965bef0d5bf0136c443c"
+    }
+  },
+  "retainedFailure": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-native31-current-check1-receipt.json",
+      "bytes": 2933,
+      "sha256": "sha256:3b8aa15de31f5fdd454031dd1a7d741eb8b87b47dffa8a94cd6020f6ec72881c"
+    },
+    "actualCliExitCode": 2,
+    "wrapperExitCode": 2,
+    "sourceHoldCheckExitCode": 0,
+    "protectedFilesUnchanged": true,
+    "diagnosticCode": "mechanism-cue-plate-export-identity",
+    "path": "currentCompilation",
+    "reason": "Fresh compilation directory cannot be paired with an old export receipt naming its original owning compilation. Correct continuation reads the original recorded path without altering the receipt or exported video.",
+    "fullDiagnostic": {
+      "path": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-episode-report-oGT0Fc/report.json",
+      "bytes": 1571,
+      "sha256": "sha256:500f31234f023cdb94e5cf4e779d112484a8b3851c71835196905eaec04e1897"
+    }
+  },
+  "audioReferenceLookup": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-native31-audio-lookup1.json",
+      "bytes": 3453,
+      "sha256": "sha256:28c0f3c036fe7838163544837af62945f94435f49c8e77a4ce207dc16e555781"
+    },
+    "providedPath": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/02 Operations/Reusable 3D Asset Plan",
+    "planHasAudioOrTimingFiles": false,
+    "linkedChannelLibrary": "Newer EU-001\u2013EU-300 Alden recordings retain the channel topic set, distinct from seven frozen MS3 questions. No question changes or clip extraction inferred.",
+    "missing": ["E02", "E04", "E05", "E06", "E07", "E09", "E10"],
+    "clarification": "Missing input path versus requested pilot-topic change; pending."
+  },
+  "remaining": [
+    "Current unified production seals/cohort reports retain historical runtime bindings and need their own refresh. These fresh technical checks do not relabel old products.",
+    "Seven matching supplied narration/timing inputs; all ten whole factual/design/mechanical/visual/continuous/listening reviews.",
+    "Broader seeded QA and clearer E06/E10 explanation views.",
+    "Comparable paired routine token measurements and final full/benchmark/archive/isolated-installed verification."
+  ],
+  "qualification": "Independent byte/hash and fresh-source equality audit of current public CLI checks. Current checks replay original capture evidence and verify existing final videos; historical sealed production reports retain their old runtime bindings. No new export/current production seal, independent new full-decode audit, whole/factual/continuous/listening/human/pilot acceptance inferred."
+}

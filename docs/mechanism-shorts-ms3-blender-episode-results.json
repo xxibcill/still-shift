@@ -1,0 +1,335 @@
+{
+  "schemaVersion": "ms3-blender-episode-results-1",
+  "date": "2026-10-14",
+  "status": "candidate-native-episode-executor-verified",
+  "implementationCommit": "310a7e8b3ddd11e57003f6bae02d9aae50ed3002",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "selectionSha256": "8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471",
+  "runtimeIdentity": {
+    "codeSha256": "sha256:92ffa74a3579da2c46b4f02fe5f565a8f6dc29e8446394138699947b346c15a9",
+    "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+    "profile": {
+      "backend": "blender-native",
+      "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+      "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+      "workerSha256": "sha256:16ec3e0630c7cb26072b73cf4a6a84c4fe00aecb22c33dbbd64a19ecfcf25817",
+      "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+    }
+  },
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-blender38-inputs2.json",
+    "files": 2756,
+    "bytes": 121935718,
+    "postCommitHold": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2756,
+      "bytes": 121935718
+    }
+  },
+  "softwareVerification": {
+    "currentReceipt": "/private/tmp/still-shift-ms3-blender38-gate2-receipt.json",
+    "result": {
+      "steps": [
+        {
+          "name": "python",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "check",
+            "packages/animation-engine/src/blender-capture-worker.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.21326429210603237
+        },
+        {
+          "name": "python-format",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "format",
+            "--check",
+            "packages/animation-engine/src/blender-capture-worker.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.15781000000424683
+        },
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 132.8715759580955
+        },
+        {
+          "name": "runtime",
+          "argv": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/runtime/blender-episode-inputs.test.ts",
+            "tests/runtime/blender-production-backend-admission.test.ts",
+            "tests/runtime/blender-capture-admission.test.ts",
+            "tests/runtime/mechanism-production-queue-cli.test.ts",
+            "tests/runtime/mechanism-production-run-cli.test.ts",
+            "tests/runtime/mechanism-production-report-cli.test.ts",
+            "tests/runtime/mechanism-production-retry-cli.test.ts",
+            "tests/runtime/mechanism-production-queue-recovery.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 11.497656540945172
+        }
+      ],
+      "actualExitCode": 0
+    },
+    "fastTests": 4567,
+    "fastFiles": 454,
+    "affectedRuntimeTests": 16,
+    "affectedRuntimeFiles": 8,
+    "focusedPriorCheckpoint": {
+      "path": "/private/tmp/still-shift-ms3-blender38-focused3.log",
+      "passedTests": 23,
+      "files": 4
+    }
+  },
+  "actualDraft": {
+    "episode": "EU-004",
+    "root": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b",
+    "dimensions": [320, 568],
+    "fps": 30,
+    "wholeOriginalAldenSeconds": 21.76,
+    "originalAudioClock": {
+      "sampleRate": 44100,
+      "samples": 959616,
+      "channels": 1
+    },
+    "decodedSourceClock": {
+      "sampleRate": 48000,
+      "samples": 1044480
+    },
+    "outputFrames": 653,
+    "sourceNativeAssetSha256": "668cc570be38d9fb933b89be70191887be1fd43720b5c384f03a11a6c749bbd3",
+    "sourceBytesUnchanged": true,
+    "newModelBuilds": 0,
+    "scout": {
+      "sampledEpisodeFrames": [0, 124, 190, 235, 344, 429, 520, 580, 635],
+      "actualNativeRenders": 7,
+      "reusedOutputFrames": 2,
+      "foreignOwnerPreserved": true,
+      "receipt": "/private/tmp/still-shift-ms3-blender38-scout2.log"
+    },
+    "firstWholeRun": {
+      "receipt": "/private/tmp/still-shift-ms3-blender38-full1-receipt.json",
+      "result": {
+        "steps": [
+          {
+            "name": "native",
+            "argv": [
+              "node",
+              "--import",
+              "tsx",
+              "/private/tmp/still-shift-ms3-blender38-full1.mts"
+            ],
+            "actualExitCode": 0,
+            "holdExitCode": 0,
+            "seconds": 205.38369649997912
+          }
+        ],
+        "actualExitCode": 0
+      },
+      "freshNativeRenders": 321,
+      "retainedCodeSha256": "2499a7e3448a0424cc4b6ccda3c42d5c002d7177f47ad5e4687fd2f18dbd0176"
+    },
+    "fontRevision": {
+      "receipt": "/private/tmp/still-shift-ms3-blender38-warm2-receipt.json",
+      "result": {
+        "status": "passed",
+        "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b",
+        "frames": 653,
+        "actualExtraBlenderRenders": 0,
+        "nativeFrameImageAndObservationPinsUnchanged": 653,
+        "completeDecodedAudioEqual": true,
+        "completeDecodedVideoChanged": true,
+        "priorProductPreserved": 1,
+        "validation": "verified",
+        "reviewedReady": 0,
+        "seconds": 61.084564332999996
+      }
+    },
+    "captionRepair": {
+      "receipt": "/private/tmp/still-shift-ms3-blender38-caption-repair1-receipt.json",
+      "result": {
+        "status": "passed",
+        "root": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b",
+        "speechCues": 13,
+        "exactWholeScriptCopy": true,
+        "frames": 653,
+        "extraBlenderRenders": 0,
+        "completeDecodedAudioEqual": true,
+        "decodedPictureChanged": true,
+        "preservedPriorProducts": 2,
+        "seconds": 61.647158915999995,
+        "repair": "Sentence-boundary captions prevent opposing join/reverse wording from sharing one cue. Macro staging and full readability/continuous/listening/factual review remain open."
+      }
+    },
+    "currentFreshProduct": {
+      "receipt": "/private/tmp/still-shift-ms3-blender38-refresh1-receipt.json",
+      "result": {
+        "status": "passed",
+        "root": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b",
+        "frames": 653,
+        "newBlenderRenders": 0,
+        "decodedPictureAndAudioUnchanged": true,
+        "canonicalManifestOpenVerified": true,
+        "preservedPriorProducts": 3,
+        "codeSha256": "sha256:92ffa74a3579da2c46b4f02fe5f565a8f6dc29e8446394138699947b346c15a9",
+        "profileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+        "reviewedReady": 0,
+        "seconds": 34.663266334
+      },
+      "qualification": "Fresh export/decode after canonical-locator source repair; prior seals retain the older code and are not relabeled."
+    }
+  },
+  "independentAudit": {
+    "path": "/private/tmp/still-shift-ms3-blender38-audit2.json",
+    "result": {
+      "status": "passed",
+      "root": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b",
+      "products": [
+        {
+          "schemaVersion": "mechanism-production-queue-product-2",
+          "work": {
+            "freshNativeSubmissions": 321,
+            "reusedNativePlates": true
+          },
+          "outputSha256": "sha256:30c4a787a5079c2832a50592ee821c53f5fb50694b6518bbf8662d103ac86cf6",
+          "frames": 653
+        },
+        {
+          "schemaVersion": "mechanism-production-queue-product-2",
+          "work": {
+            "freshNativeSubmissions": 0,
+            "reusedNativePlates": true
+          },
+          "outputSha256": "sha256:ed68eb96135132ad376dbfc6b61c14f553573f1a92485a10ccc24909d13b2a79",
+          "frames": 653
+        },
+        {
+          "schemaVersion": "mechanism-production-queue-product-2",
+          "work": {
+            "freshNativeSubmissions": 0,
+            "reusedNativePlates": true
+          },
+          "outputSha256": "sha256:f754c261362752939d33fc53351263ec5dba6152b2ed3d7594ba1fc8466acc95",
+          "frames": 653
+        },
+        {
+          "schemaVersion": "mechanism-production-queue-product-2",
+          "work": {
+            "freshNativeSubmissions": 0,
+            "reusedNativePlates": true
+          },
+          "outputSha256": "sha256:f754c261362752939d33fc53351263ec5dba6152b2ed3d7594ba1fc8466acc95",
+          "frames": 653
+        }
+      ],
+      "mappedFrameStatesIndependentlyChecked": 2612,
+      "uniqueNativeObservations": 328,
+      "verifiedUniqueFilePins": 3296,
+      "nativePhysicalVerticesMaximum": 129768,
+      "currentInputPinsVerified": 8,
+      "scope": "Independent file pins, original capture origins, absolute controls/cameras/hidden states and retained unreviewed QA. No contact/collision, whole glyph, continuous playback, listening or factual approval."
+    }
+  },
+  "inspections": {
+    "nativeViewsInspected": 3,
+    "encodedFontRevisionViewsInspected": 6,
+    "repairedNativeSizeEncodedViewsInspected": 3,
+    "encodedSampleTimesSeconds": [0.5, 4.7, 11.6, 14.4, 17.4, 20.8],
+    "method": "view_image of original native PNGs and FFmpeg look.py decoded samples; no GUI automation",
+    "findings": [
+      "Two six-word cues combined opposing joining/reversing wording. Thirteen sentence-boundary cues preserve the exact whole script and fix inspected samples at4.7/11.6/20.8s.",
+      "Macro needs stronger isolated bump/hollow proof; opening/payoff scale/context and transition continuity require further staging review."
+    ],
+    "qualification": "Sample observations only. All-frame encoded glyph, mechanism/contact, factual, continuous-motion and listening remain unreviewed.",
+    "ffmpegSkillDoctor": {
+      "path": "/private/tmp/still-shift-ms3-blender38-ffmpeg-doctor1.json",
+      "actualExitCode": 1,
+      "qualification": "Optional filters/fonts are unavailable on pinned8.0.1. Required look.py operations with --no-timecode succeed; no subtitle/stabilization/HDR capability or installation is inferred."
+    }
+  },
+  "retainedFailures": [
+    {
+      "path": "/private/tmp/still-shift-ms3-blender38-build1.log",
+      "actualExitCode": 2,
+      "cause": "A sequence asset type is not exported; compiler now derives its type from Composition."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-blender38-build2.log",
+      "actualExitCode": 2,
+      "cause": "Unsupported signal lock option and untyped artifact array; corrected."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-blender38-focused2.log",
+      "status": "failed",
+      "failedTests": 4,
+      "passedTests": 19,
+      "cause": "Native cache root ownership used the macOS temporary-directory alias; canonicalized before owned-path checks."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-blender38-lint1.log",
+      "status": "failed",
+      "cause": "Type-only imports and unused locator import; corrected."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-blender38-scout1.log",
+      "actualExitCode": 1,
+      "cause": "Private scout used a nonexistent export module path; corrected before native execution."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-blender38-warm1-receipt.json",
+      "actualExitCode": 1,
+      "holdExitCode": 0,
+      "cause": "Private revision script imported an internal hash from the public index. It now uses the public report canonical manifest hash; no execution occurred in the failed script."
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-blender38-audit1.py",
+      "status": "failed",
+      "cause": "Independent canonical-root audit found external input pins derived from the logical temporary-path alias. Source now canonicalizes the manifest and documents before pinning; a real external-font regression and fresh current product prove the repair."
+    }
+  ],
+  "limits": {
+    "newElevenLabsCalls": 0,
+    "newASRCalls": 0,
+    "wholeNarratedEngineeringEpisodes": 1,
+    "distinctSelectedPilotEpisodes": 10,
+    "acceptedPilotEpisodes": 0,
+    "pairedRoutineTokens": null,
+    "nativeModelOrShaderTransferToThreeJS": false,
+    "fullSoftwareBenchmarkArchiveInstalledRefresh": false
+  },
+  "remaining": [
+    "native semantic/registered QA and grouped warning/evidence/handoff integration",
+    "Blender CLI routing and machine/generated capabilities",
+    "HD staging and remaining nine actual whole Alden episode plans/products",
+    "broader fault seeds and current pilot coverage admission",
+    "all-frame encoded/readability, mechanical/contact, factual, continuous-motion and listening reviews",
+    "relocated/isolated receiving lifecycle",
+    "comparable paired routine-token measurements and final software/benchmark/archive/installed verification"
+  ],
+  "receiverRuntimeIdentity": {
+    "runtimeFiles": 700,
+    "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b",
+    "nativeAppearanceCodeSha256": "sha256:53d07cba1e91332e91992d5e512e1992e979428cf91cf34ddbdb949745e7dc3e"
+  }
+}

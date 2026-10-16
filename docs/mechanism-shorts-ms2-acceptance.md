@@ -1,5 +1,17 @@
 # MS2 acceptance reconciliation
 
+Current qualification (2026-10-15): the matrix below describes the original
+963d3991/6e3ed5ca software/archive checkpoints. Its dated evidence retains those
+bindings. Later review repairs and current-main prerequisites are delivered in
+PR57 at8b7374ed: focused73/6, fast4,381/429, staged runtime260/distinct integration322/
+depth14/smoke, native depth14/composition5/mask4, and affected private package91
+qualify the later code. Package91 binds committede44 and verifies2,368 installed
+files/971 corresponding sources/13 native controls, strict types and discovery.
+This refresh does not relabel historical full/render proof or admit candidate packs;
+whole factual/material/listening/human acceptance remains open.
+[Current repair](./mechanism-shorts-ms2-current-prerequisite-repair90-results.json),
+[current affected package](./mechanism-shorts-ms2-current-package91-results.json).
+
 2026-10-13. MS2 reaches its software checkpoint on `codex/mechanism-ms2`. This is the finite
 14-row implementation matrix from the [approved plan](./mechanism-shorts-production-plan.md#ms2-reusable-mechanism-families-and-authoring),
 originally read against `aa58eddf` and now refreshed against implementation

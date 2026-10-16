@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "ms3-final-installed-delivery-scope-1",
+  "capturedUtc": "2026-10-15T01:39:57.232705+00:00",
+  "status": "all-ten-post-gate-scope-and-cache-only-controls-prepared-not-production-passed",
+  "heldSourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+  "activeFullSession": 42543,
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "selectionSha256": "8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471",
+  "bindingAudit": {
+    "sourceFiles": [
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue.ts",
+        "bytes": 22297,
+        "sha256": "sha256:639f7be674fec806a445e260cfa868503f4a910e5d90be36b311dd031738402a"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-production-visual.ts",
+        "bytes": 22338,
+        "sha256": "sha256:c3ea5044aca7eef0a06c82f91a482e371adb7865e8585352fc0e873ebb2b28e7"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-native-identity.ts",
+        "bytes": 4178,
+        "sha256": "sha256:343e4052e683d26c12275c9e916c4f43443a0f3b0782add47156436fe4f1d178"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-episode-plates.ts",
+        "bytes": 22614,
+        "sha256": "sha256:834ca4655dcbbe2462e487b18ce2fe89cf5716ed69f49280a6c4224a905f0fee"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-capture.ts",
+        "bytes": 5629,
+        "sha256": "sha256:22a2a9afbfd84402c31e3e320911d7c8d213f53d698e4d245278554a51b7b487"
+      }
+    ],
+    "queueGate": "production-queue.ts requires queue.codeSha256/profileSha256 equal the actual executor identity before running.",
+    "visualGate": "blender-production-visual.ts requires actual product/output/current-producer binding.",
+    "identityScope": "production-native-identity.ts conservatively hashes all owned runtime code plus appearance, lock and profile. Later runtime repairs cannot be relabeled as original3df/1090.",
+    "decision": "Final current installed validation must produce/verify all ten selected episodes under the actual new installed runtime, not stop at prepared86 one-episode scope. Preserve original3df products and history separately."
+  },
+  "earlierPreparation86": {
+    "status": "unexecuted-earlier-source-one-episode-only",
+    "runtime": "89697163351852f877b47e300aff9f29f4c899b4e40f7275da61e95e2ec7c8f7",
+    "scope": "Historical preparation only; will not qualify the final current ten."
+  },
+  "nativePlateReuseEvidence": {
+    "compiler": {
+      "path": "/private/tmp/still-shift-ms3-postgate92-compiler-equivalence1.json",
+      "bytes": 2987,
+      "sha256": "sha256:3470b49a63e78eb2ff4f7aabd44ed9b317321cb0700dfc146461c73222e85edc"
+    },
+    "compilerJavascriptBytes": 9487,
+    "unchangedNativeDependencies": 11,
+    "scope": "Compiler erasure and native capture/key/profile definitions only. No current movie/QA equivalence inferred."
+  },
+  "allTenCacheMetadata": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-postgate92-all-ten-cache-metadata1.json",
+      "bytes": 1313998,
+      "sha256": "sha256:4de46b0b54278523ae6f03c2ebd23656ec0742b7729269feb7c03ec93ca6a08c"
+    },
+    "frames": 6181,
+    "distinctKeys": 1571,
+    "captures": 34,
+    "producerSeals": 34,
+    "smallMetadataPinsHashed": 1707,
+    "imageObservationExpectedSizeChecks": 3142,
+    "rows": [
+      {
+        "id": "EU-001",
+        "frames": 610,
+        "requestedDistinctKeys": 122,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-002",
+        "frames": 588,
+        "requestedDistinctKeys": 240,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-003",
+        "frames": 588,
+        "requestedDistinctKeys": 66,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-004",
+        "frames": 653,
+        "requestedDistinctKeys": 328,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-005",
+        "frames": 598,
+        "requestedDistinctKeys": 170,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-006",
+        "frames": 634,
+        "requestedDistinctKeys": 103,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-007",
+        "frames": 708,
+        "requestedDistinctKeys": 215,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-008",
+        "frames": 579,
+        "requestedDistinctKeys": 110,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-009",
+        "frames": 596,
+        "requestedDistinctKeys": 103,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      },
+      {
+        "id": "EU-010",
+        "frames": 627,
+        "requestedDistinctKeys": 114,
+        "producerProfile": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+      }
+    ],
+    "scope": "Existing expected metadata and file presence/size only. Full binary hashes and independent complete capture-directory copies remain required after the current matrix. Current installed profile must be checked first."
+  },
+  "cacheOnlyGuard": {
+    "profile": {
+      "path": "/private/tmp/still-shift-ms3-postgate92-cache-only.sb",
+      "bytes": 260,
+      "sha256": "sha256:979c0032517070cbb6932447688141a2e211ae6c1eac35ffe2c5b925a07ed35e"
+    },
+    "probe": {
+      "path": "/private/tmp/still-shift-ms3-postgate92-cache-only-probe.json",
+      "bytes": 756,
+      "sha256": "sha256:414becf2a2f289aab32a6bcdfd2fa1bb8330a4e205d1df38cff5bb76d3500bbf"
+    },
+    "result": {
+      "status": "passed-cache-only-worker-staging-guard",
+      "directory": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-cache-only-guard-fQS9XX",
+      "scratch": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/blender-capture-job-7y7sjD",
+      "blockedExactProductionWorkerStage": true,
+      "descendantRestrictionInherited": true,
+      "cachedWorkerReadable": true,
+      "ordinaryScratchCopyAllowed": true,
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "nativeBlenderLaunched": false,
+      "newNativeCaptures": 0,
+      "scope": "OS sandbox controls only. Blocks the exact scratch-worker copy performed before Blender capture launch. It does not prove cached plate integrity or execute a production lifecycle."
+    },
+    "initialNestedSandboxAttempt": {
+      "actualExitCode": 71,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-postgate92-cache-only-probe.log",
+        "bytes": 53,
+        "sha256": "sha256:d34a4e4359a4dc36526cf5b363da32f7b7594a3a09eea17cbdfd6425b052d93e"
+      },
+      "reason": "Tool parent sandbox could not apply a nested sandbox; no probe/Blender launch occurred."
+    },
+    "correctedOutsideParentSandbox": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-postgate92-cache-only-probe2.log",
+        "bytes": 711,
+        "sha256": "sha256:8d2699b0cc4bb0c923f33f77546cdba8a5ce8868c810f05bbc05f7bf4627b30f"
+      }
+    },
+    "mechanism": "OS denial of the exact scratch worker.py copy that captureBlenderAsset performs before executing Blender. Existing cached workers/normal scratch allowed; Node descendant denial verified.",
+    "limits": "This preparatory guard is tested by real file copies, not a production lifecycle. It must be combined and revalidated with final original-root denials/strict fixed-ps exception. Stop on missing/rejected native data instead of fresh captures."
+  },
+  "postFullRequirements": [
+    "Actual42543 terminal0 and final held-input check before package build or any other render group",
+    "Build private current archive, audit all members/corresponding source and clean installed exports/types/capabilities",
+    "Copy ten exact whole-narration/source inputs and all required native cache capture closures into an independent consumer; hash all referenced bytes, deny all original roots",
+    "Admit all ten declarations using actual installed code/profile; require original profile-compatible cached plates and enforce zero fresh native captures",
+    "Run all ten current installed episodes, report, resume and compact handoffs serially; audit current clocks/code/product/artifact closure and complete encoded/audio outputs",
+    "Keep current receiving-validation results distinct from original production cohort metrics; retain original nine failures/first-pass1-of10 and null paired tokens",
+    "Complete remaining fault/whole-review gates or retain genuine Creator decisions; no reviewed-ready/acceptance from encoding alone"
+  ],
+  "metricsQualification": {
+    "originalFirstPass": {
+      "passed": 1,
+      "total": 10,
+      "rate": 0.1,
+      "target": 0.9,
+      "achieved": false
+    },
+    "pairedRoutineTokens": null,
+    "acceptedPilot": 0,
+    "rule": "A new installed validation phase cannot reset original pilot first-pass history or establish authoring savings."
+  },
+  "renderWorkNow": {
+    "newNativeCaptures": 0,
+    "newEpisodeExports": 0,
+    "newVoiceGeneration": 0,
+    "scope": "Read-only runtime audit, small metadata/presence checks and OS guard probes only; current complete matrix remains the sole active renderer group."
+  },
+  "laterCompleteClosureAndCombinedControls": "./mechanism-shorts-ms3-installed-preparation93-results.json"
+}

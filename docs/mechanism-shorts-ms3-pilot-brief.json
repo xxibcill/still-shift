@@ -1,0 +1,143 @@
+{
+  "version": "mechanism-shorts-ms3-pilot-brief-2",
+  "revision": 3,
+  "date": "2026-10-14",
+  "selection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "selectionSha256": "sha256:8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471",
+  "board": "docs/mechanism-shorts-ms3-pilot-selection.json",
+  "boardRawSha256": "sha256:004f378e3380905fb5ac7ce213f83e2753c7dedf579d841cedaa0994f5c73b64",
+  "denominator": 10,
+  "format": {
+    "width": 1080,
+    "height": 1920,
+    "fps": 30,
+    "normalDurationSeconds": [20, 40],
+    "master": "supplied narration and word/cue timings; normal range does not authorize padding"
+  },
+  "style": "Procedural 3D mechanism explanation views requested by the approved plan; generic naturalistic-shot preference does not replace that explicit style.",
+  "scope": "Owner-selected actual Everyday Unlocked EU-001 through EU-010; reuse ten existing Alden Eleven v4 whole recordings and source-pinned native Blender candidates. Current cue/animation/QA work remains.",
+  "episodes": [
+    {
+      "id": "EU-001",
+      "object": "Tape-measure end hook",
+      "question": "Why does the hook on a tape measure move?",
+      "route": "existing-family-candidate",
+      "durationSeconds": 20.32,
+      "audioSha256": "sha256:25b159d95222162a589d87579502a120d3b4f77197dc8c4403044cbec728856e",
+      "timingSha256": "sha256:175fe29de35af43a7ec940dff091bf7c2f38a7b0eb65dca2d1a2bfd6b9431ab5",
+      "nativeAssetSha256": "sha256:2e0fc8ec95445a041b10877006602cad7717006f5b0188f3e9625f4b64e8ca62",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-002",
+      "object": "Cable tie",
+      "question": "Why does a cable tie tighten but resist pulling backward?",
+      "route": "existing-family-candidate",
+      "durationSeconds": 19.6,
+      "audioSha256": "sha256:ceba4694d3e670e3165c9e87277442cb1788020bacd038995aa89a7f7101bf38",
+      "timingSha256": "sha256:aec771906b3ddea6cd6192c1832a71e692fceb7b3b7ae1aa20b2bdba6a184496",
+      "nativeAssetSha256": "sha256:4fcbdee97d011ee9743aa9db33e40d24bfc744f1c479e71a95a5eb2e5a842765",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-003",
+      "object": "Spring clothespeg",
+      "question": "Why does squeezing one end of a clothespeg open the other?",
+      "route": "existing-family-candidate",
+      "durationSeconds": 19.6,
+      "audioSha256": "sha256:8f0efa34a0785d898e672e0549ad8c9593124380128657b98c51e0fd531d220a",
+      "timingSha256": "sha256:c5506e23505f94e1ba6f487313239e329dff9c52a3d885c3e82b8b77c0b31fd2",
+      "nativeAssetSha256": "sha256:b4882a20e21161207f1e788a6c84c55c69ddc00758f405cfa3aa4c0bdb26d362",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-004",
+      "object": "Metal-tooth zipper",
+      "question": "How does a zipper join its teeth?",
+      "route": "existing-blender-asset-binding-needed",
+      "durationSeconds": 21.76,
+      "audioSha256": "sha256:f1ff76a8423c8b08656771d2aa3d0b97a9bcf9abeff7afd5d74410205d479fe3",
+      "timingSha256": "sha256:be727d4c96017a47db5029b25c1f41c142d0783c28f13094f56f430db98b5090",
+      "nativeAssetSha256": "sha256:668cc570be38d9fb933b89be70191887be1fd43720b5c384f03a11a6c749bbd3",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-005",
+      "object": "Keyhole mounting slot",
+      "question": "How does a keyhole mounting slot hold a screw?",
+      "route": "existing-blender-asset-binding-needed",
+      "durationSeconds": 19.92,
+      "audioSha256": "sha256:1fc6d74f08988af9e7eee7f525e4e552113bea9a2a0e5df2a27259ca35e1c24d",
+      "timingSha256": "sha256:3da657f501dd9526b6f3b641c07a70aeb5cbbba2345a006b18f522838e4fcefe",
+      "nativeAssetSha256": "sha256:d14bc1d7ba6a66f7fbcd3e065e79c32fe14da9d9105fde2fbd37a4336c2b7dae",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-006",
+      "object": "Binder clip",
+      "question": "Why do binder-clip handles make the jaws open?",
+      "route": "existing-blender-asset-binding-needed",
+      "durationSeconds": 21.12,
+      "audioSha256": "sha256:548b73c585568a670a2da061c75ab3f3fb935b00332be23291de3110b97b2af1",
+      "timingSha256": "sha256:65b7012cf62fbb048d23e4cf500eb4cf4937b8df4df230f22b78feca7848bd98",
+      "nativeAssetSha256": "sha256:78baf6707008fd253ee7b2799e47e57722f73e9a72a792d345e90fb20f6764d5",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-007",
+      "object": "Side-release buckle",
+      "question": "How does a side-release buckle lock and release?",
+      "route": "existing-blender-asset-binding-needed",
+      "durationSeconds": 23.6,
+      "audioSha256": "sha256:ff5a3d3d72fadbbdb674598cfd2221362ef95a53910a60fa9c11df63056624f1",
+      "timingSha256": "sha256:5f8cf92a6f11f1e51f3eb919d3eadd9c3e2299ea7466da33008a740755cebad0",
+      "nativeAssetSha256": "sha256:5e003f0e5845e9284eaaefd6f25c3d34acd05f5c8d46e82e3acca8b96296c30f",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-008",
+      "object": "Door spring latch",
+      "question": "Why does a door latch retract and spring back?",
+      "route": "existing-blender-asset-binding-needed",
+      "durationSeconds": 19.28,
+      "audioSha256": "sha256:e43e1132d3ad6eb4846008a5c47e804c84921c3b15024dd3f9c94c9d80d3a636",
+      "timingSha256": "sha256:18384cd9749058a69c374fbe0c777b757a945123e6c2e3f458a1ad2397d31a60",
+      "nativeAssetSha256": "sha256:d77e09c9022cb5e26a66a1083bccf3e95048b4e9e4ae3a6c3e7def498d441079",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-009",
+      "object": "Curved tape-measure blade",
+      "question": "Why is a tape-measure blade curved?",
+      "route": "existing-blender-asset-binding-needed",
+      "durationSeconds": 19.84,
+      "audioSha256": "sha256:b1f92b9fa353f9a23a83b9fd4a0f0fb1d1ca2b16f026529436542be56aee6388",
+      "timingSha256": "sha256:9260f7a2e207ba9625df20fe5eb0b670e4d8a97aa52304ebd52bca79a07abc95",
+      "nativeAssetSha256": "sha256:2b8fde570293006dcb982db13693694479de368323229f8608df41d6d0936dcc",
+      "status": "inputs-located-production-and-reviews-pending"
+    },
+    {
+      "id": "EU-010",
+      "object": "Stay-on can tab",
+      "question": "How does a soda-can tab open the scored panel?",
+      "route": "existing-blender-asset-binding-needed",
+      "durationSeconds": 20.88,
+      "audioSha256": "sha256:702548703c6de1146b4c384d9de5eedc8300d09bdaf621194085aa82e1b8d338",
+      "timingSha256": "sha256:84e476b4f7c1fad7aa97cf8b8e31b0209e8bdb0198a1ec5f487d0b1ae686cfc0",
+      "nativeAssetSha256": "sha256:6a7dfc3a60d84c81beb182c4fa14d606cb03ec0a54113a30d0a5ae438f47e838",
+      "status": "inputs-located-production-and-reviews-pending"
+    }
+  ],
+  "supersedes": {
+    "revision": 2,
+    "date": "2026-10-14",
+    "reason": "Explicit owner selection of the actual channel first ten; seven different test-plan questions are no longer requested narration inputs. New Alden takes require fresh clocks/QA for all ten. Existing extension implementation and historical proofs are preserved.",
+    "previousSelection": "ms3-pilot-2026-10-12-v1",
+    "previousSelectionSha256": "sha256:0d68b0e03e6e4df482328af097c81b54aa8cdee1f7d1fbc028778760bdba7367",
+    "previousBoard": "docs/mechanism-topic-family-coverage.json",
+    "previousBoardRawSha256": "sha256:e6fbe4ca81771b482be89dc28d8cebe0f35df394b1913f12c8f876f8cf963dd5",
+    "previousBrief": "docs/mechanism-shorts-ms3-pilot-brief-original-v1.json",
+    "previousBriefRawSha256": "sha256:d7cc96b2fbe9ad382ae34859617bff9e9b28217dade78f275c8cd91c4d1ac134"
+  },
+  "newElevenLabsCalls": 0
+}

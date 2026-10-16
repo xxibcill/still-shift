@@ -1,0 +1,150 @@
+{
+  "schemaVersion": "ms3-blender-production-versions-results-1",
+  "date": "2026-10-14",
+  "status": "candidate-lifecycle-verified",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "selectionSha256": "8c5f378389d595c83fdcf3ff1cd41bd2d57d64b3a622c953013cffe39d001471",
+  "implementationCommit": "2b335cb2fb7628037c18bd8a8de420feb1aec42e",
+  "runtimeIdentity": {
+    "codeSha256": "sha256:34a0e46af0a1c7ec97cee8e4f787812388bf97ac25271e2df4dce971768c2336",
+    "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b",
+    "runtimeFiles": 694,
+    "runtimeFormat": "source-ts",
+    "nativeAppearanceCodeSha256": "sha256:53d07cba1e91332e91992d5e512e1992e979428cf91cf34ddbdb949745e7dc3e",
+    "profile": {
+      "backend": "webgl2",
+      "transport": "raw_rgba",
+      "workers": 1,
+      "nodeVersion": "22.23.1",
+      "ffmpegVersion": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+      "toolchainSha256": "sha256:4329ec000367b7c96c18900dffd57aee4651136ff8f3f8008f508ec43b77aaf5"
+    }
+  },
+  "contracts": {
+    "queue": "mechanism-production-queue-2",
+    "backend": "blender-native",
+    "product": "mechanism-production-queue-product-2",
+    "episodeReport": "mechanism-production-episode-report-2",
+    "commonJournal": "mechanism-production-queue-state-1",
+    "commonReportBundle": "mechanism-production-report-bundle-1",
+    "legacySchemas": "Version-1 queue/product/episode-report remain strict and unchanged in admitted families.",
+    "identity": "Legacy canonical item identity remains exact; native Blender identity adds backend. Revisions cannot reclassify old items.",
+    "sharedLifecycle": [
+      "artifact/dependency pins",
+      "sealed completion",
+      "resume",
+      "independent permanent failures",
+      "targeted CAS retry ancestry",
+      "changed artifact invalidation",
+      "six bound QA dimensions",
+      "null unmeasured token effort"
+    ],
+    "factoryAndCLI": "Existing declarative creation/run/verification use the Three.js executor, which rejects Blender items before source reads. The full Blender executor remains required."
+  },
+  "verification": [
+    {
+      "kind": "focused-prior-source",
+      "record": "/private/tmp/still-shift-ms3-blender37-focused2.log",
+      "actualExitCode": 0,
+      "passedTests": 66,
+      "files": 5,
+      "qualification": "Before relocating the process-using executor admission test to the runtime group. Final owning tests are covered by the fast/runtime checks below."
+    },
+    {
+      "kind": "fast",
+      "record": "/private/tmp/still-shift-ms3-blender37-gate3-fast.log",
+      "actualExitCode": 0,
+      "holdExitCode": 0,
+      "passedTests": 4556,
+      "files": 452,
+      "seconds": 132.90968724992126,
+      "included": "generated schemas, boundaries, formatting, lint, TypeScript build and unit behavior"
+    },
+    {
+      "kind": "affected-runtime",
+      "record": "/private/tmp/still-shift-ms3-blender37-gate3-runtime.log",
+      "actualExitCode": 0,
+      "holdExitCode": 0,
+      "passedTests": 11,
+      "files": 6,
+      "seconds": 10.341295707970858,
+      "included": "queue creation/run/report/retry CLI, actual dead-owner recovery, and cross-backend admission"
+    },
+    {
+      "kind": "post-commit-source-hold",
+      "record": "/private/tmp/still-shift-ms3-blender37-post-commit-hold1.json",
+      "actualExitCode": 0,
+      "result": {
+        "status": "passed",
+        "mode": "check",
+        "files": 2746,
+        "bytes": 121859262
+      }
+    }
+  ],
+  "retainedFailures": [
+    {
+      "kind": "typescript",
+      "record": "/private/tmp/still-shift-ms3-blender37-build1.log",
+      "status": "failed",
+      "loggedExitCode": 2,
+      "cause": "Shared artifact verification still accepted only a version-1 product type. The artifact-verification helper now accepts the explicit product union."
+    },
+    {
+      "kind": "focused-tests",
+      "record": "/private/tmp/still-shift-ms3-blender37-focused1.log",
+      "actualExitCode": 1,
+      "tests": 66,
+      "passed": 65,
+      "cause": "Reclassification correctly rejected, but the assertion expected different diagnostic wording. The runtime diagnostic and assertion now name backend preservation."
+    },
+    {
+      "kind": "fast",
+      "record": "/private/tmp/still-shift-ms3-blender37-gate1-receipt.json",
+      "actualExitCode": 1,
+      "holdExitCode": 0,
+      "cause": "Generated common report-bundle schema had not yet incorporated explicit episode-report version dispatch. The generated schema was refreshed."
+    },
+    {
+      "kind": "fast",
+      "record": "/private/tmp/still-shift-ms3-blender37-gate2-receipt.json",
+      "actualExitCode": 1,
+      "holdExitCode": 0,
+      "cause": "Unused completion binding in a new negative fixture. The fixture now verifies sealed completion status."
+    }
+  ],
+  "privateInputReview": {
+    "record": "/private/tmp/still-shift-ms3-blender37-copy-intake1.json",
+    "source": "Existing pinned offline ASR observations; no transcription or generation was run.",
+    "normalizedCopyMatches": 9,
+    "episodes": 10,
+    "retainedDifference": "EU-005 has one inflection difference in its original ASR timing stream; existing recheck evidence remains explicit. Punctuation/compound normalization supplies no listening approval."
+  },
+  "limits": {
+    "newBlenderCalls": 0,
+    "newElevenLabsCalls": 0,
+    "newASRCalls": 0,
+    "renderedEpisodeProducts": 0,
+    "lifecycleFixtures": "Synthetic byte artifacts only; no video, decoded native evidence or production review follows from these tests.",
+    "acceptedPilotEpisodes": 0,
+    "selectedPilotEpisodes": 10,
+    "pairedRoutineTokenMeasurements": null,
+    "fullSoftwareBenchmarkInstalledRefresh": false
+  },
+  "remaining": [
+    "full native Blender production executor and complete dependency discovery",
+    "native episode cue/control/camera compilation with whole existing Alden takes",
+    "native semantic and sampled/encoded QA integration",
+    "current first-ten output/cohort/handoff seals",
+    "factual/design/mechanical/encoded/continuous/listening reviews",
+    "broader seeded faults and coverage admission",
+    "comparable paired routine-token measurements",
+    "final software/benchmark/archive/isolated-installed verification"
+  ],
+  "sourceInventory": {
+    "record": "/private/tmp/still-shift-ms3-blender37-inputs3.json",
+    "files": 2746,
+    "bytes": 121859262,
+    "qualification": "Verification ran before the implementation commit; the same selected bytes match after committing. Prose-only evidence/log edits are excluded."
+  }
+}

@@ -599,6 +599,100 @@
               "toothDatumAnchor"
             ],
             "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "type": { "type": "string", "const": "load-seat" },
+              "movingPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "reactionPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "referencePart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "reactionAxis": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "normalAxis": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "pivot": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "contactPoint": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "maxForceNewtons": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000
+              },
+              "complianceMetersPerNewton": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1
+              },
+              "maxTravelMeters": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1
+              },
+              "seatingAngleRadians": {
+                "type": "number",
+                "minimum": -0.4,
+                "maximum": 0.4
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "movingPart",
+              "reactionPart",
+              "referencePart",
+              "reactionAxis",
+              "normalAxis",
+              "pivot",
+              "contactPoint",
+              "maxForceNewtons",
+              "complianceMetersPerNewton",
+              "maxTravelMeters",
+              "seatingAngleRadians"
+            ],
+            "additionalProperties": false
           }
         ]
       }
@@ -640,12 +734,15 @@
               },
               "landmarks": {
                 "minItems": 2,
-                "maxItems": 2,
+                "maxItems": 3,
                 "type": "array",
                 "items": {
                   "type": "object",
                   "properties": {
-                    "id": { "type": "string", "enum": ["root", "tip"] },
+                    "id": {
+                      "type": "string",
+                      "enum": ["root", "tip", "trigger"]
+                    },
                     "vertices": {
                       "type": "integer",
                       "minimum": 1,
@@ -728,6 +825,78 @@
                       "minimum": 1,
                       "maximum": 16
                     }
+                  },
+                  "required": ["id", "vertices"],
+                  "additionalProperties": false
+                }
+              },
+              "seats": {
+                "type": "array",
+                "prefixItems": [
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  },
+                  {
+                    "type": "string",
+                    "maxLength": 128,
+                    "pattern": "^[A-Za-z][\\w.-]*$"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "id",
+              "generator",
+              "mesh",
+              "ownerPart",
+              "topologySha256",
+              "declarationSha256",
+              "landmarks",
+              "seats"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "generator": {
+                "type": "string",
+                "const": "seated-flexible-web-1"
+              },
+              "mesh": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "ownerPart": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
+              "topologySha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "declarationSha256": {
+                "type": "string",
+                "pattern": "^sha256:[a-f0-9]{64}$"
+              },
+              "landmarks": {
+                "minItems": 2,
+                "maxItems": 2,
+                "type": "array",
+                "items": {
+                  "type": "object",
+                  "properties": {
+                    "id": { "type": "string", "enum": ["seat-a", "seat-b"] },
+                    "vertices": { "type": "number", "const": 4 }
                   },
                   "required": ["id", "vertices"],
                   "additionalProperties": false

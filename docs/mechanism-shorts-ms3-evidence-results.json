@@ -1,0 +1,620 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "status": "actual-native-evidence-fresh-handoff-and-complete-fast-runtime-tiers-verified",
+  "baseCommit": "5ceb8396",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-evidence-contract.ts",
+      "bytes": 8473,
+      "sha256": "sha256:6c967ea9323ddc9ed978293b3a0eaf65673403ddbc0ca0c3cecf9462b1123bc1"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-evidence-process.ts",
+      "bytes": 2417,
+      "sha256": "sha256:26c9c0ee36d1f109a4651424a7944445b43410179d10bc0c81ff1ba51bf4f5e1"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-evidence.ts",
+      "bytes": 34979,
+      "sha256": "sha256:0ff80b26a986e562318f0be7c4defc3108d6605b788512bba94be1d9be1996a4"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-handoff.ts",
+      "bytes": 2306,
+      "sha256": "sha256:fbc362acf108c3edd42a281cc752216bcc08d1b42c8ecf115540da2ce9f171a7"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-native-executor.ts",
+      "bytes": 20207,
+      "sha256": "sha256:98c6874053c373cd964352d53136b526c6f8eb939af8bb94c3e13da7301349d7"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cue-native-plates.ts",
+      "bytes": 20352,
+      "sha256": "sha256:77aa036ebf7cb23991f85b1a6cf103ed9397a44dda10c044efb14cc16bcc72cd"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue.ts",
+      "bytes": 18693,
+      "sha256": "sha256:152ccdee9cf2af243629a2375b155f42cef1ff9e5dcb47f007b8c5de65c10d2e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-registry.ts",
+      "bytes": 5345,
+      "sha256": "sha256:43a8d26c9612359b6eb79e2696ac7ce30253cfbaaf5bf9d47bf99fcff67fee60"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-report-io.ts",
+      "bytes": 17289,
+      "sha256": "sha256:b1caf3ada903451091a9513eaa22554d873ab93e0834d0fa0058d7312c36d25d"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+      "bytes": 4602,
+      "sha256": "sha256:e0807a732f07f08d94772590cec64c835e59664e8cff7e185166d32c2ab1db85"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production.ts",
+      "bytes": 9797,
+      "sha256": "sha256:e1a1fe9f0b7eba1b68f191cfff403d2c7a9b57eddb99211ed852776abfdfd12a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/cli.ts",
+      "bytes": 19314,
+      "sha256": "sha256:285b4a8ae49ac0e470e54075b8eb2070109e30c1de78f21b06eeae47ce2c897f"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-evidence.test.ts",
+      "bytes": 4240,
+      "sha256": "sha256:63b09dfd35451abb308b3b3fd2d6040ba326e9b9017ae88ff424437a05868b20"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-report-cli.test.ts",
+      "bytes": 3638,
+      "sha256": "sha256:be04a853faf5f52c521e12a34822287f64dcc6bdaa070ea848769c07b5d5fae4"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-native.ts",
+      "bytes": 11607,
+      "sha256": "sha256:6c221c8ded7749eee2c75dfbff59f174cd4cbf8477dd5700a6377d4686ca2804"
+    }
+  ],
+  "delivered": [
+    "Exact source-sample ceil mapping, entry/mid/exit, event-neighbor and declared-cut sampling with deduplicated frames/retained roles.",
+    "Actual final-video RGBA8 PNGs, source-preserving360x640 phone overviews, caption crops and original-native-projection anchor crops with explicit unavailable/occluded states.",
+    "Nested actual file/PNG/decoded-pixel/source-map verification and rederived transforms; recomputed declarations cannot authorize wrong phone/crop pixels.",
+    "Unmodified final decoded48k float32 PCM WAV, actual sample/channel/byte/hash checks and links to complete decode/audio proof.",
+    "Compact generation-snapshot handoff with source CAS revisions/project hashes and artifact refs; fresh-session CLI rechecks current report/native evidence and refreshes effective QA.",
+    "Nine production schemas and generated machine/doc evidence/handoff limits; per-item scopes retain the shared Node allowance."
+  ],
+  "gate2": {
+    "session": 69282,
+    "status": "passed",
+    "startedUtc": "2026-10-12T22:08:02.658359+00:00",
+    "pid": 154,
+    "commands": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-evidence6-gate2-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-evidence.test.ts",
+          "tests/unit/mechanism-production-native-counters.test.ts",
+          "tests/unit/mechanism-production-report-io.test.ts",
+          "tests/unit/mechanism-production-report.test.ts",
+          "tests/unit/mechanism-production-queue.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-evidence6-gate2-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/production-evidence-contract.ts",
+          "packages/animation-engine/src/mechanism/production-evidence-process.ts",
+          "packages/animation-engine/src/mechanism/production-evidence.ts",
+          "packages/animation-engine/src/mechanism/production-handoff.ts",
+          "packages/animation-engine/src/mechanism/cue-native-plates.ts",
+          "packages/animation-engine/src/mechanism/production-native-executor.ts",
+          "packages/animation-engine/src/mechanism/production-queue.ts",
+          "packages/animation-engine/src/mechanism/production-registry.ts",
+          "packages/animation-engine/src/mechanism/production-report-io.ts",
+          "packages/animation-engine/src/index.ts",
+          "tools/still-shift-cli/src/cli.ts",
+          "tools/still-shift-cli/src/production.ts",
+          "tests/unit/mechanism-production-evidence.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts",
+          "tests/browser/mechanism-production-native.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-evidence6-gate2-2.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-evidence6-gate2-3.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-evidence6-gate2-4.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-evidence6-gate2-5.log"
+      }
+    ],
+    "endedUtc": "2026-10-12T22:08:32.540030+00:00",
+    "focusedTests": 57,
+    "files": 6
+  },
+  "retainedFailure": {
+    "stage": "gate1",
+    "session": 25408,
+    "actualExitCode": 1,
+    "passedBuild": true,
+    "passedFocusedTests": 57,
+    "reason": "Lint consistent-type-imports rejected a type-only CompositionNodeMemory import in the process helper. Corrected only the import; no guard/check/limit weakened. Remaining gate commands were not run in gate1."
+  },
+  "scopedRetainedOutputProof": {
+    "session": 59254,
+    "actualExitCode": 0,
+    "families": 3,
+    "images": 81,
+    "sourceRenderCommit": "eec1954a1357aa88c8b7f113e425805d7b272f49",
+    "result": {
+      "path": "/private/tmp/still-shift-ms3-evidence6-scoped1.json",
+      "bytes": 8969,
+      "sha256": "sha256:585b7d096a50596623c72d6567d72894495a8930f036e7ad6a19ca1074e8853c"
+    },
+    "scope": "New builder/checker uses retained already-verified eec output/capture, preserving original render binding. No new native draw or current whole-queue/source binding claimed. Each call retires temporary scope, preserves foreign1024B and parent disposal retires reservations."
+  },
+  "negativeControls": {
+    "session": 19859,
+    "actualExitCode": 0,
+    "controls": [
+      {
+        "label": "forged phone transform metadata",
+        "reason": "AnimationEngineError: Derived image metadata differs from its actual source frame and transformation"
+      },
+      {
+        "label": "altered phone image with recomputed declared file/pixel hashes",
+        "reason": "AnimationEngineError: Phone/caption pixels do not match the declared transformation of actual source frames"
+      },
+      {
+        "label": "stale cue revision in evidence plan",
+        "reason": "AnimationEngineError: Review plan differs from the current cue revision and output clock"
+      }
+    ],
+    "result": {
+      "path": "/private/tmp/still-shift-ms3-evidence6-negative1.json",
+      "bytes": 751,
+      "sha256": "sha256:142e1bd1ba6fbd1a27115d5a25a70ae5ea24d5e29b71442eb0795466c2ec0ac5"
+    },
+    "qualification": "Current verifier controls on retained eec rendered output; no new native render, human or pilot acceptance."
+  },
+  "viewedDiagnosticImages": {
+    "scope": "One retained tape phone/contact-anchor/caption sample viewed; no whole glyph or human acceptance inferred.",
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gUAUFb/output/scoped-evidence6-1-S1/phone-000001.png",
+        "bytes": 43748,
+        "sha256": "sha256:640c7fea2c3ec09d30cc0cbd99d679e7cbe47c215800925611d852fbc7b41f2d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gUAUFb/output/scoped-evidence6-1-S1/anchor-000001.png",
+        "bytes": 1422,
+        "sha256": "sha256:c7cf10ec796617e86ca4cd7843fa5fa16dd45ea536e17c707166fba423d6ba25"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gUAUFb/output/scoped-evidence6-1-S1/caption-000001.png",
+        "bytes": 3343,
+        "sha256": "sha256:b4888b2e6d8a45e42acfdc4da91c10a4b02d6a5386df253baae82c2c3dfa655e"
+      }
+    ]
+  },
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-build1.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-build2.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-build3.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate1-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate1-1.log",
+      "bytes": 837,
+      "sha256": "sha256:dac7e3cb125f3be5903ba82285b60246ed252e7665eff78695975d4a8ffe44b4"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate1-2.log",
+      "bytes": 366,
+      "sha256": "sha256:853daef1025a2fac294a74c6e5246ba4d95e4823ccf1d377129adeda9fb13d6e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate2-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate2-1.log",
+      "bytes": 837,
+      "sha256": "sha256:44055f0b322abdf032c45d5700adc89e534be5f3d2d3b72c9f044658548f9372"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate2-2.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate2-3.log",
+      "bytes": 502,
+      "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate2-4.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate2-5.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-negative1.log",
+      "bytes": 33,
+      "sha256": "sha256:05a7045c9547f6aeeaf45f41a90c5274e47038bdabe6fb896ddde48f62071626"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-owning1.log",
+      "bytes": 687,
+      "sha256": "sha256:d638f25c9ac8f25e0725bb70e4a46f5a4e4e00f28e2f2fba989d71ff3a63121b"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-schemas1.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-scoped1.log",
+      "bytes": 45,
+      "sha256": "sha256:53c426f719673b1ea23a364ab9734521b66735e7876fee16d854cb20f7a674e9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate1-receipt.json",
+      "bytes": 2089,
+      "sha256": "sha256:de94f505fc47529bad5a23c5f6d5d41ce26eed286fe1618b4f74a075f8b07ced"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-gate2-receipt.json",
+      "bytes": 2611,
+      "sha256": "sha256:9421151b211bc4fcba467bc4ca9aafe897192e904d43b51ab4b5f2b471c57af9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-browser1.log",
+      "bytes": 1217,
+      "sha256": "sha256:74b0c6a6296851d005e818ace997117c9874d0a0eb8608fde331e509cf8d112b"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-browser1-receipt.json",
+      "bytes": 399,
+      "sha256": "sha256:7485ebde441bea7e3399798780f8f64c85a15499d9a879274e05cf39fc2d013f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-browser1-inputs.json",
+      "bytes": 457945,
+      "sha256": "sha256:28a7903b0f0be2beb262a6066e45a77c5c6d57a76c47fb1fc98df30a023080f1"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-runtime1.log",
+      "bytes": 41902,
+      "sha256": "sha256:3d21780b4c6b816fc16d17719b111514afae4ae186d7fb193a80b17e4d18ecf3"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-runtime1-receipt.json",
+      "bytes": 373,
+      "sha256": "sha256:64d466df21f1aed93bc9305c9e3f6984373e46a49049e267c2d33af7ffd2bc15"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-runtime1-inputs.json",
+      "bytes": 457945,
+      "sha256": "sha256:c12531df63227176108323abdfa900953890c63891386bf1ffd69008d0306092"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-fast1.log",
+      "bytes": 43028,
+      "sha256": "sha256:cec0afe9bb5ae07a045ea8253b8405daa6a358bcb75cdef68fe5d2c53e5195ae"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-fast1-receipt.json",
+      "bytes": 367,
+      "sha256": "sha256:7c72fbc395da93ceca08d582aeb5c630271e37b74833aa38b2bc1142c7c2c279"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-evidence6-fast1-inputs.json",
+      "bytes": 457945,
+      "sha256": "sha256:c12531df63227176108323abdfa900953890c63891386bf1ffd69008d0306092"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-production-native-mmKpvN/run.json",
+      "bytes": 20971,
+      "sha256": "sha256:f2d54947cea3f42bf2fb6347dbe92b3d3337982c325ff2fdeb9a55821601166a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-production-native-mmKpvN/fresh-session-handoff.json",
+      "bytes": 3457,
+      "sha256": "sha256:275fea77a0b5363666e0b22d455d3d4f8f529c0a5cedcd44e7744725b0800b42"
+    }
+  ],
+  "remaining": [
+    "Original ten pilot evidence artifacts and reviews; engineering source-derived images, actual authored cut extraction and fresh CLI handoff are verified separately.",
+    "Operational semantic/grouped-warning QA, analytic/sampled/continuous collision distinction and seeded broader mechanical/visual/audio fault suite.",
+    "Actual native interruption/cancel/corrupt/relocation, scoped/affected repair and automatic MS1 overlap.",
+    "Original ten questions/five assets/two behaviors/genuine inputs/factual/design/visual/listening review, broader capabilities and final full/archive/installed/MS3 PR completion."
+  ],
+  "qualification": "Actual three-family native queue/API/report/separate CLI handoff, independent strict image/projection/full-decode/PCM checks and complete held fast/runtime tiers passed in retained stages. A separate authored camera-cut fixture adds60 actual frames/27 images with independent before/after pixels and hashed native matrices. These engineering proofs do not supply whole glyph/mechanical/continuous/listening/factual/human review, final full/archive/installed verification or pilot acceptance.",
+  "committedSource": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
+  "integratedNativeProof": {
+    "status": "passed",
+    "command": "pnpm test:browser:mechanism-production-native",
+    "sourceCommit": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
+    "startedUtc": "2026-10-12T22:11:22.282178+00:00",
+    "pid": 3214,
+    "inventory": "/private/tmp/still-shift-ms3-evidence6-browser1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T22:20:09.938431+00:00",
+    "session": 45359,
+    "root": "/private/tmp/still-shift-ms3-production-native-mmKpvN",
+    "executions": 4,
+    "outputs": 4,
+    "decodedFrames": 240,
+    "families": 3,
+    "heldInputFiles": 2683,
+    "heldInputBytes": 121225370,
+    "images": 108,
+    "imageKinds": {
+      "frame": 60,
+      "phone": 16,
+      "caption-crop": 16,
+      "anchor-crop": 16
+    },
+    "stages": [
+      "cold",
+      "completed-product-reuse",
+      "caption-only-revision",
+      "production-report-api-and-actual-cli",
+      "review-images-audio-and-fresh-session-handoff"
+    ],
+    "freshSessionHandoff": {
+      "scope": "mechanism-production",
+      "episode": "S1",
+      "sourceStatus": "current-verified",
+      "reviewedReady": false,
+      "images": 27,
+      "cropExceptions": 0
+    },
+    "qualification": "Three short engineering fixtures and one caption revision; ten pilot products remain pending. A separate actual changed-camera cut proof is retained under actualCameraCutProof. PCM is engineering input; no whole glyph/mechanical/continuous/listening/factual/human acceptance."
+  },
+  "independentAudit": {
+    "status": "passed-in-two-attempts",
+    "audit1": {
+      "session": 2370,
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit1.log",
+        "bytes": 380,
+        "sha256": "sha256:19009837709340aba44c7cce17a7e4b1151ac7c13296f59c5b91cffa88e84288"
+      },
+      "script": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit1.py",
+        "bytes": 14168,
+        "sha256": "sha256:2e001a21a6fd958a5d3f2fff03d5c569a9ca231209bce68df457fe7573e8dd1c"
+      },
+      "reason": "Phone comparison resized YUV planes before converting to RGBA, unlike the declared decoded-RGBA image transform. Strict byte equality failed. Corrected only the independent audit input filter to format=rgba before selection/scale; no implementation, assertion or limit weakened."
+    },
+    "audit2": {
+      "session": 51040,
+      "actualExitCode": 0,
+      "images": 108,
+      "decodedFrames": 240,
+      "outputs": 4,
+      "pins": 188,
+      "methods": {
+        "images": 108,
+        "kinds": {
+          "frame": 60,
+          "phone": 16,
+          "caption-crop": 16,
+          "anchor-crop": 16
+        },
+        "fullFrames": "independent exact final decoded-frame bytes",
+        "crops": "independent Python byte slicing",
+        "phone": "independent direct-final-video FFmpeg transformation",
+        "nativeProjections": "independent read of hashed original capture rows",
+        "PCM": "independent complete final-review audio decode",
+        "freshSessionHandoff": "current product/code/binding/statuses and32KiB bound"
+      },
+      "reportAudit": {
+        "episodes": 3,
+        "cohortRows": 3,
+        "originalAttemptCount": 4,
+        "currentDurationRows": 3,
+        "percentiles": "independently recomputed",
+        "CLIPageRows": 4,
+        "CLICompleteRows": 15,
+        "reviewCounts": "independently recomputed",
+        "pilotAdmission": "not-established"
+      },
+      "result": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit2.json",
+        "bytes": 109876,
+        "sha256": "sha256:7cc4c410b0b06e927ae1382ea7689333a100472ea74b0347fac97889d66a618e"
+      },
+      "script": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit2.py",
+        "bytes": 14180,
+        "sha256": "sha256:6179c1d8623ccc67dddd6e80b17e0fe71cfccdc6051acd0306dc946c4b71c4f0"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-evidence6-audit2.log",
+        "bytes": 85,
+        "sha256": "sha256:7df7fefe59d69028adda2ebc50af8afdca0d7adcb9f38cba192ce426123015f5"
+      }
+    }
+  },
+  "completeLocalTiers": {
+    "runtime": {
+      "status": "passed",
+      "command": "pnpm check:runtime",
+      "sourceCommit": "fab32e2921c7a45fe805b61a42c40b08f473e00b",
+      "startedUtc": "2026-10-12T22:20:42.758816+00:00",
+      "pid": 23774,
+      "inventory": "/private/tmp/still-shift-ms3-evidence6-runtime1-inputs.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T22:29:18.733378+00:00",
+      "session": 27509,
+      "runtimeTests": 247,
+      "runtimeFiles": 42,
+      "runtimeDurationSeconds": 135.32,
+      "integrationTests": 322,
+      "integrationFiles": 57,
+      "integrationDurationSeconds": 343.99,
+      "depthTests": 14,
+      "browserSmoke": "passed"
+    },
+    "fast": {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "sourceCommit": "fab32e2921c7a45fe805b61a42c40b08f473e00b",
+      "startedUtc": "2026-10-12T22:29:30.530567+00:00",
+      "pid": 73779,
+      "inventory": "/private/tmp/still-shift-ms3-evidence6-fast1-inputs.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T22:31:43.185473+00:00",
+      "session": 59690,
+      "unitTests": 4431,
+      "unitFiles": 436,
+      "unitDurationSeconds": 67.66
+    },
+    "sourceBinding": {
+      "renderSourceCommit": "6615b02b8b6646ae52d2a009c3dcf46f8bc72e06",
+      "localTierHead": "fab32e2921c7a45fe805b61a42c40b08f473e00b",
+      "heldInputFiles": 2683,
+      "heldInputBytes": 121225370,
+      "allThreeInventoriesEqual": true,
+      "qualification": "The fab32e29 commit changes evidence prose only; all browser/runtime/fast runtime input bytes remain identical to6615b02b."
+    }
+  },
+  "actualCameraCutProof": {
+    "status": "passed",
+    "command": "node --import tsx /private/tmp/still-shift-ms3-evidence6-cut1.mts",
+    "sourceCommit": "d6fcd22858166b29a8fba887cb1a95cc4fb82bd8",
+    "startedUtc": "2026-10-12T22:35:25.731535+00:00",
+    "pid": 95199,
+    "inventory": "/private/tmp/still-shift-ms3-evidence6-cut1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T22:38:36.276233+00:00",
+    "session": 47264,
+    "auditSession": 16071,
+    "auditActualExitCode": 0,
+    "root": "/private/tmp/still-shift-ms3-evidence6-cut-AtkcBk",
+    "fixture": "Single two-second engineering tape-hook source with a CAS-authored camera cut at sourceSample24000/outputFrame15",
+    "cutFrames": [14, 15],
+    "decodedFrames": 60,
+    "images": 27,
+    "freshNativeSubmissions": 60,
+    "independentPins": 46,
+    "methods": [
+      "independent bounded final-video RGBA decoding",
+      "exact before/after frame PNG bytes",
+      "actual hashed native observation camera matrices and source camera positions",
+      "Python byte-sliced crops and normalized-RGBA phone transforms"
+    ],
+    "sourceBinding": {
+      "heldInputFiles": 2683,
+      "heldInputBytes": 121225370,
+      "exactRuntimeInputMatchTo6615b02bAndLocalTiers": true,
+      "qualification": "d6fcd228 changes evidence records only; cut fixture and audit are retained separate private scripts. No software source changed."
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1.mts",
+        "bytes": 5318,
+        "sha256": "sha256:a9ff60ec613f586190edd12e7940affa8af4d2b7951613c87edbd0a56ca3d7c5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1.py",
+        "bytes": 1440,
+        "sha256": "sha256:b2284f392dd3802b5ec1efe20298e5300059afc1800233ac89bf3b0670b6028c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1.json",
+        "bytes": 18551,
+        "sha256": "sha256:e5504300eb06d15c2e8dc26872e3d7066e3dcae7d286a87eaf7ca1598211301f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1.log",
+        "bytes": 1043,
+        "sha256": "sha256:2736857b1a3dc2f5c1d178904200c7202f95f7badf34eb996e5532617a5f8898"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-receipt.json",
+        "bytes": 416,
+        "sha256": "sha256:af0a3d30cb9dfc26bf14a0fd5cebb4c3416b81dd0caa2aa8b2b630beb06c830d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-inputs.json",
+        "bytes": 457945,
+        "sha256": "sha256:496a2ee6c22fcad2615f98f5919b70d4430cd94919d563cfbecb41d19c9b9c5a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-audit.py",
+        "bytes": 6057,
+        "sha256": "sha256:62dda247cff89fb2617c4405a227a9e51e253790e9b5a6057a046d63ee38249a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-audit.json",
+        "bytes": 23319,
+        "sha256": "sha256:9d1fc5aeb5615ef57e1823b7aa8cc7705710713ae717d0956a775c5a8bc87b14"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-evidence6-cut1-audit.log",
+        "bytes": 84,
+        "sha256": "sha256:3f0d95743747526adbf85ba647d26ac88a002930f8ddd7df9f9ecf94ce9abbfa"
+      }
+    ],
+    "qualification": "Single two-second engineering tape cut. This verifies actual cut extraction and observed camera choice, not pilot distinctness or physical/glyph/factual/listening/human acceptance."
+  }
+}

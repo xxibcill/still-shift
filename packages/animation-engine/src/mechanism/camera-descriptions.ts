@@ -25,6 +25,17 @@ export function describeMechanismPackCameras(
     kind: "meshes",
     ids,
   });
+  const notchedLine =
+    family === "clothespeg" && scene.parts.some((part) => part.id === "line");
+  const idealLever =
+    family === "clothespeg" &&
+    scene.anchors.some((anchor) => anchor.id === "press.far");
+  const releaseTie =
+    family === "cable-tie" &&
+    scene.anchors.some((anchor) => anchor.id === "release.trigger");
+  const loadTie =
+    family === "cable-tie" &&
+    scene.anchors.some((anchor) => anchor.id === "pawl.stopFoot");
   const whole = parts(
     family === "tape-hook" ? ["hook", "blade", "housing"] : ["model"],
   );
@@ -35,10 +46,23 @@ export function describeMechanismPackCameras(
     proof: Surface[],
     directions: [number, number, number][];
   if (family === "tape-hook") {
-    focus = meshes(["hook-front", "hook-fold"]);
+    const retention = scene.geometry.meshes.some(
+      (mesh) => mesh.id === "hook-retention-neck",
+    );
+    focus = meshes(
+      retention
+        ? [
+            "hook-front",
+            "hook-retention-neck",
+            ...[1, 2, 3].map((i) => `retention.rivet.${i}.top.mesh`),
+          ]
+        : ["hook-front", "hook-fold"],
+    );
     contact = "hook.innerFace";
-    detail = "hook.thickness";
-    relationship = ["hook.innerRange"];
+    detail = retention ? "retention.rivet.2.upper.center" : "hook.thickness";
+    relationship = retention
+      ? ["hook.innerRange", "retention.rivet.2.upper.fixed"]
+      : ["hook.innerRange"];
     proof = [
       surface("inner-face", "hook-front", contact, [1, 0, 0], [0, 0, 0.12]),
     ];
@@ -47,32 +71,86 @@ export function describeMechanismPackCameras(
       [1, 0.1, 1],
       [0.4, 0.1, 1],
     ];
+  } else if (loadTie) {
+    focus = meshes([
+      "pawl.body",
+      "pawl.stop",
+      "head.stopLedge",
+      "hinge.web.mesh",
+    ]);
+    contact = "pawl.primaryTooth";
+    detail = "pawl.stopFoot";
+    relationship = [
+      "primary.contact",
+      "secondary.gap",
+      "stop.gap",
+      "hinge.pawl.attached",
+    ];
+    proof = [
+      surface("pawl-front", "pawl.body", contact, [0, 0, 1]),
+      surface("stop-front", "pawl.stop", detail, [0, 0, 1]),
+    ];
+    directions = [
+      [0.1, 0.2, 1],
+      [0, 0, 1],
+      [0.3, 0.3, 1],
+    ];
   } else if (family === "cable-tie") {
     focus = meshes(["pawl.mesh", "head.root"]);
     contact = "pawl.tip";
-    detail = "pawl.root";
+    detail = releaseTie ? "release.trigger" : "pawl.root";
     relationship = ["pawl.tooth.seated", "pawl.root.fixed"];
     proof = [surface("pawl-tip", "pawl.mesh", contact, [1, 0, 0])];
+    directions = releaseTie
+      ? [
+          [0.8, -0.4, -1],
+          [1, -0.1, -1],
+          [1, -0.6, -0.7],
+        ]
+      : [
+          [0.8, 0.4, 1],
+          [1, 0.1, 1],
+          [1, 0.6, 0.7],
+        ];
+  } else if (idealLever) {
+    focus = meshes([
+      "upper.arm",
+      "press.near.mesh",
+      "press.far.mesh",
+      "spring.mesh",
+    ]);
+    contact = "lever.pivot";
+    detail = "press.far";
+    relationship = ["press.near.attached", "press.far.attached"];
+    proof = [surface("far-pad-cap", "press.far.mesh", "press.far", [0, 1, 0])];
     directions = [
-      [0.8, 0.4, 1],
-      [1, 0.1, 1],
-      [1, 0.6, 0.7],
+      [0.3, 0.8, 1],
+      [0.6, 0.8, 1],
+      [0.2, 1, 1],
     ];
   } else {
-    focus = meshes(["spring.mesh"]);
-    contact = "upper.tip";
-    detail = "spring.coil";
+    focus = meshes(notchedLine ? ["line.round"] : ["spring.mesh"]);
+    contact = notchedLine ? "line.front" : "upper.tip";
+    detail = notchedLine ? "line.front" : "spring.coil";
     relationship = ["spring.upper.seated", "spring.lower.seated"];
-    proof = [
-      surface("coil-front", "spring.mesh", detail, [0, 0, 1], [0.27, -0.2, 1]),
-      surface(
-        "lower-seat-exit",
-        "spring.mesh",
-        "lower.seat",
-        [0, 0, 1],
-        [0, 0, 0.15],
-      ),
-    ];
+    proof = notchedLine
+      ? [surface("line-end", "line.round", "line.front", [0, 0, 1])]
+      : [
+          surface(
+            "coil-front",
+            "spring.mesh",
+            detail,
+            [0, 0, 1],
+            [0.27, -0.2, 1],
+          ),
+          surface(
+            "lower-seat-exit",
+            "spring.mesh",
+            "lower.seat",
+            [0, 0, 1],
+            [0, 0, 0.15],
+          ),
+        ];
     directions = [
       [0.1, 0, 1],
       [0.1, -0.1, 1],
@@ -99,7 +177,9 @@ export function describeMechanismPackCameras(
     const comparison =
       family === "tape-hook" && intent === "aligned-comparison";
     const pegComparison =
-      family === "clothespeg" && intent === "aligned-comparison";
+      family === "clothespeg" &&
+      !notchedLine &&
+      intent === "aligned-comparison";
     const full =
       intent === "recognition" ||
       intent === "controlled-orbit" ||
@@ -112,7 +192,7 @@ export function describeMechanismPackCameras(
     return {
       id,
       intent,
-      motionIntent: `${intent}: ${family === "tape-hook" ? (comparison ? "show the push/outside face" : "show hook travel and the pull/inside face") : family === "cable-tie" ? "show fixed-root pawl lift and seated tooth engagement" : "show seated spring and return to cloth contact"}`,
+      motionIntent: `${intent}: ${family === "tape-hook" ? (comparison ? "show the push/outside face" : "show hook travel and the pull/inside face") : family === "cable-tie" ? (loadTie ? "show primary tooth contact, second-tooth seating, flexible web and frame-stop hold" : releaseTie ? "show fixed-root trigger press, catch clearance and inside tooth engagement" : "show fixed-root pawl lift and seated tooth engagement") : notchedLine ? "show opposing jaw notches and return to round-line contact" : "show seated spring and return to cloth contact"}`,
       target: {
         kind: full ? "part" : "anchor",
         id: full

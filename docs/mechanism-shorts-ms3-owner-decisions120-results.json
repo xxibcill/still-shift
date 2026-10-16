@@ -1,0 +1,112 @@
+{
+  "schemaVersion": "ms3-owner-decisions120-1",
+  "recordedUtc": "2026-10-15T10:34:47.871578+00:00",
+  "sourceCommitAtReceipt": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+  "runtimeDecision": {
+    "humanReply": "Allow Blender for this pilot \u2014 keep using the existing saved models directly.",
+    "status": "explicit-owner-amendment-recorded",
+    "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "episodes": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "allowedBackend": "blender-native",
+    "existingSavedMastersDirectly": true,
+    "documentedBlenderRuntimeAllowed": true,
+    "coreDefaultBackend": "three-native",
+    "coreBlenderFreeContractRetained": true,
+    "mandatoryBlenderNpmDependency": false,
+    "cachedPicturesEstablishArbitraryEditing": false,
+    "selectedOutput": {
+      "width": 1080,
+      "height": 1920,
+      "fps": 30
+    },
+    "narration": "Complete existing Alden takes, original 1x tempo",
+    "allTenInstalledProofStillRequired": true,
+    "historicalPlanAtAudit": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-production-plan.md",
+      "bytes": 115106,
+      "sha256": "sha256:a5a6b11b81d197121cc4e73b3b3691387a00b9b56ac691ef45072130faf1cc8d"
+    },
+    "currentPlan": "./mechanism-shorts-production-plan.md",
+    "wholeReviewOrProductAcceptanceGranted": false,
+    "amendedPlanIdentity": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-production-plan.md",
+      "bytes": 116039,
+      "sha256": "sha256:9b805224b4f6fe0f80c6d00329f124ca95f60d577beeccf05b146ba032846740"
+    },
+    "amendedBriefIdentity": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/mechanism-shorts-ms3-pilot-brief.md",
+      "bytes": 5594,
+      "sha256": "sha256:2795a580e06ed55da3ca9b61d48b91fb3f5412475c2ff99d9b1816ae48ee7b56"
+    }
+  },
+  "publicPrDescriptionDecision": {
+    "humanReply": "Approve this public PR description update",
+    "status": "updated-and-exactly-read-back",
+    "repository": "xxibcill/still-shift",
+    "repositoryVisibility": "public",
+    "prNumber": 58,
+    "url": "https://github.com/xxibcill/still-shift/pull/58",
+    "approvedPreparedDraft": {
+      "path": "/private/tmp/still-shift-ms3-pr58-description114.md",
+      "bytes": 5061,
+      "sha256": "sha256:6b0ac7730b36917f8793a300b3d2b0306eae29e43b73b320d4c1d4f96a0f4ac6"
+    },
+    "accuracyRefreshRequired": "Replace now-terminal failed full113 live claim with actual failure113, complete owning118 scoped pass and active unpassed full119; record the explicitly approved pilot runtime scope.",
+    "priorAutomaticReviewRejectionsRetained": true,
+    "samePurposeBuiltToolRequired": true,
+    "remoteBodyUpdated": true,
+    "execution": {
+      "status": "updated-and-exactly-read-back",
+      "repository": "xxibcill/still-shift",
+      "prNumber": 58,
+      "verifiedUtc": "2026-10-15T10:37:54.266912+00:00",
+      "remoteUpdatedAt": "2026-10-15T10:36:33Z",
+      "headShaAtReadback": "ae114c1d56ee4234cc122747df39c1e3267f9723",
+      "state": "open",
+      "draft": false,
+      "base": "main",
+      "exactExpectedBodyReadback": true,
+      "publishedBody": {
+        "path": "/private/tmp/still-shift-ms3-pr58-description120-published.md",
+        "bytes": 5186,
+        "sha256": "sha256:9dbfbd89c847c117bccf1720ab55319bab3fc74a9620bf490a0b17a279e2b7ad"
+      },
+      "method": "Same purpose-built github_update_pull_request tool, independently followed by github_get_pr_info.",
+      "approvedDraftPreservedExactly": true,
+      "onlyAddedText": "Historical snapshot label and direction to the already-linked current acceptance tracker; no additional metrics or architecture disclosures.",
+      "newerExpandedDraftNotPublished": "/private/tmp/still-shift-ms3-pr58-description120.md",
+      "expandedDraftRejection": "Automatic approval review rejected the materially refreshed body because additional/current public metrics and architecture disclosures were not specifically approved in the prepared114 draft.",
+      "saferAlternativeSucceeded": true,
+      "indirectExecutionUsed": false,
+      "remainingPublicDescriptionApprovalNeeded": false
+    }
+  },
+  "currentFull": {
+    "record": "./mechanism-shorts-ms3-final119-full-gate-results.json",
+    "session": 71989,
+    "status": "live-unpassed"
+  },
+  "newRenderOrBlenderInvocation": false,
+  "newPaidGeneration": false,
+  "publicationOrMergeAuthorized": false,
+  "goalComplete": false,
+  "documentationVerification": {
+    "targetedPrettierExit": 0,
+    "gitDiffCheckExit": 0,
+    "actualSourceHoldExit": 0,
+    "heldInputs": 2793,
+    "heldBytes": 122415742,
+    "newTestsRequired": "Documentation-only amendment; current complete full119 continues unchanged."
+  }
+}

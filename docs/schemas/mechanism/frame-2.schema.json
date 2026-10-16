@@ -131,6 +131,75 @@
                 "maxLength": 128,
                 "pattern": "^[A-Za-z][\\w.-]*$"
               },
+              "type": { "type": "string", "const": "load-seat" },
+              "loadNewtons": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1000000
+              },
+              "displacementMeters": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1000000
+              },
+              "stopTravelMeters": {
+                "type": "number",
+                "exclusiveMinimum": 0,
+                "maximum": 1000000
+              },
+              "angleRadians": {
+                "type": "number",
+                "minimum": -0.4,
+                "maximum": 0.4
+              },
+              "movingTranslation": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "reactionTranslation": {
+                "type": "array",
+                "prefixItems": [
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                  { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+                ]
+              },
+              "phase": {
+                "type": "string",
+                "enum": ["unloaded", "seating", "stopped"]
+              },
+              "stopReactionNewtons": {
+                "type": "number",
+                "minimum": 0,
+                "maximum": 1000000
+              }
+            },
+            "required": [
+              "id",
+              "type",
+              "loadNewtons",
+              "displacementMeters",
+              "stopTravelMeters",
+              "angleRadians",
+              "movingTranslation",
+              "reactionTranslation",
+              "phase",
+              "stopReactionNewtons"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": {
+                "type": "string",
+                "maxLength": 128,
+                "pattern": "^[A-Za-z][\\w.-]*$"
+              },
               "type": { "type": "string", "const": "slider" },
               "position": {
                 "type": "number",
@@ -299,7 +368,7 @@
             "type": "object",
             "propertyNames": {
               "type": "string",
-              "pattern": "^(root|tip|seat-a|seat-b|coil-a|coil-b)$"
+              "pattern": "^(root|tip|trigger|seat-a|seat-b|coil-a|coil-b)$"
             },
             "additionalProperties": {
               "type": "array",

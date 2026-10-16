@@ -2,6 +2,10 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "type": "object",
   "properties": {
+    "variant": {
+      "type": "string",
+      "enum": ["floating-hook", "slotted-retention"]
+    },
     "parameters": {
       "default": { "hookThickness": 0.18, "bladeLength": 10, "bladeWidth": 2 },
       "type": "object",

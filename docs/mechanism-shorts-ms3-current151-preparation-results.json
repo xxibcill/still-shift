@@ -1,0 +1,339 @@
+{
+  "schemaVersion": "mechanism-shorts-ms3-current151-preparation-1",
+  "capturedUtc": "2026-10-15T21:52:43.813561+00:00",
+  "status": "current-identity-queue151-running-not-yet-passed",
+  "actualProducerSession": 14257,
+  "sourcePackageRecord": "./mechanism-shorts-ms3-package145-results.json",
+  "packageSource": "ef9db6e50f83745624af51c43c7abe583b162759",
+  "archive": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-package145/still-shift-0.1.1.tgz",
+    "bytes": 5469414,
+    "sha256": "sha256:4f41bd80ddf63837fba98206c2d961e40c0a5314b5d02470c2e6905b2266325f"
+  },
+  "oldRuntimeIdentity": {
+    "codeSha256": "sha256:cbe5e7fbf14ad62980ba3e97f9325223b054cd502bbef10b4bbdaf795291400b",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "profile": {
+      "backend": "blender-native",
+      "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+      "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+    }
+  },
+  "currentRuntimeIdentity": {
+    "codeSha256": "sha256:6ec6096e62ac78fe326bd895e15d222597f83abf9b4d7a910de6e5fdb54e37b1",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "profile": {
+      "backend": "blender-native",
+      "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+      "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+      "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+      "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+    }
+  },
+  "identityRule": "production-native-identity.ts conservatively hashes all5 runtime package source trees and appearance/dependency identity. New code changes global codeSha256; unchanged Blender/receiver profile preserves native frame keys. Old finished products must become stale rather than being relabeled.",
+  "negative147": {
+    "actualToolExitCode": 0,
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-updated147/results.json",
+      "bytes": 2359,
+      "sha256": "sha256:7e22f2b5c19719be6854972cfb09d6ec654a464bf2c24dc5043612ec3651ca96"
+    },
+    "allTenCurrentReportStatuses": "stale",
+    "allCurrentQA": "unreviewed",
+    "oldProjectFilesUnchanged": 20889,
+    "nativeCurrentKeyControlClockFrames": 6181,
+    "newCapturesOrExports": 0
+  },
+  "independentCopy151": {
+    "copiedFiles": 5344,
+    "bytes": 2207383198,
+    "originalRequiredInputs": 115,
+    "completeNativeFiles": 5223,
+    "independentOriginalInodes": true,
+    "qualification": "Exact ordinary file copies, including existing correctedEU8 cue. New package identity queue and2D exports still required. Native frame keys exclude global runtime code but include unchanged producer profile; actual installed public preflight147 required before new run. No original project files modified; no capture/export/paid generation performed."
+  },
+  "isolation153": {
+    "status": "passed-combined-original-root-and-cache-only-os-controls",
+    "deniedRoots": 15,
+    "nodeReadAndMetadataDenied": true,
+    "pythonMetadataDenied": true,
+    "exactFreshCaptureWorkerStageDenied": true,
+    "nodeDescendantGuardInherited": true,
+    "ordinaryAndExistingCacheWorkerAllowed": true,
+    "fixedSystemPsIdentityAllowed": true,
+    "fixedSystemPsException": "/bin/ps only, process-exec with no-sandbox; Node and Python restrictions independently verified",
+    "profile": "/private/tmp/still-shift-ms3-postgate153-isolation.sb",
+    "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+    "nativeBlenderLaunched": false,
+    "newNativeCaptures": 0,
+    "newEpisodeExports": 0,
+    "scope": "Actual OS isolation controls only. All-ten cache content copy and installed runtime replay remain unproved."
+  },
+  "currentQueueActualExitCode": 0,
+  "currentFiveCommandRunPassed": false,
+  "plannedCommands": [
+    "queue",
+    "run-all10",
+    "report",
+    "resume",
+    "handoff-EU008"
+  ],
+  "plannedIndependentAudits": "All10 full encodedRGBA/PCM/original-reference/PNG/native and sealed handoff packets; no reused old positive current-product status.",
+  "liveCapture": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/current151-live-capture.json",
+    "bytes": 6178,
+    "sha256": "sha256:6db81a91f05faaeee00104c3b94b7b51bb54c387643fda71c4f677fab4dfa1fb"
+  },
+  "retainedCopies": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147/results.json",
+        "bytes": 2359,
+        "sha256": "sha256:7e22f2b5c19719be6854972cfb09d6ec654a464bf2c24dc5043612ec3651ca96"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/00-results.json",
+        "bytes": 2359,
+        "sha256": "sha256:7e22f2b5c19719be6854972cfb09d6ec654a464bf2c24dc5043612ec3651ca96"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147-actual-terminal.json",
+        "bytes": 906,
+        "sha256": "sha256:f27dfcd9fe6b8417ea66d88fe9137a4afb1a65053f5aaa3440b546ed5b1c40eb"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/01-still-shift-ms3-updated147-actual-terminal.json",
+        "bytes": 906,
+        "sha256": "sha256:f27dfcd9fe6b8417ea66d88fe9137a4afb1a65053f5aaa3440b546ed5b1c40eb"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147/report.json",
+        "bytes": 147804,
+        "sha256": "sha256:f8576819c405f777bbc524dbd4c145cba57e948e4b9136bdacb718bcb088bf82"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/02-report.json",
+        "bytes": 147804,
+        "sha256": "sha256:f8576819c405f777bbc524dbd4c145cba57e948e4b9136bdacb718bcb088bf82"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147/report.log",
+        "bytes": 7365,
+        "sha256": "sha256:0bf438acedfdebe234d56d59bc2f18036be568737a257d6801805ed6a0237723"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/03-report.log",
+        "bytes": 7365,
+        "sha256": "sha256:0bf438acedfdebe234d56d59bc2f18036be568737a257d6801805ed6a0237723"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147/native-all-ten.json",
+        "bytes": 4368,
+        "sha256": "sha256:a9f6cb905b978aca1fe6f60229ac595190cf8148c7bde890d6c913ad91458624"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/04-native-all-ten.json",
+        "bytes": 4368,
+        "sha256": "sha256:a9f6cb905b978aca1fe6f60229ac595190cf8148c7bde890d6c913ad91458624"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147/native-all-ten.log",
+        "bytes": 2780,
+        "sha256": "sha256:d80b0552fdf1ce657843be7f5d05fa4c8b0ded225d494b2c2def3feb00b3045c"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/05-native-all-ten.log",
+        "bytes": 2780,
+        "sha256": "sha256:d80b0552fdf1ce657843be7f5d05fa4c8b0ded225d494b2c2def3feb00b3045c"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147/data-before.json",
+        "bytes": 7878776,
+        "sha256": "sha256:b89afc04848b99bc3334e8ddc91eb6ecb5259803e0afabc7bb5ae16a25ab21c7"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/06-data-before.json",
+        "bytes": 7878776,
+        "sha256": "sha256:b89afc04848b99bc3334e8ddc91eb6ecb5259803e0afabc7bb5ae16a25ab21c7"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147-run.py",
+        "bytes": 6204,
+        "sha256": "sha256:3935fd5e98eb18bb67b032c98e036b1a4061392e931e1595c7b0951b1717b97b"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/07-still-shift-ms3-updated147-run.py",
+        "bytes": 6204,
+        "sha256": "sha256:3935fd5e98eb18bb67b032c98e036b1a4061392e931e1595c7b0951b1717b97b"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-updated147-native.mjs",
+        "bytes": 5196,
+        "sha256": "sha256:ba5a25cf45356e4856f0da4507830e2379f27087cbf23c44529c57c6537fccbb"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/08-still-shift-ms3-updated147-native.mjs",
+        "bytes": 5196,
+        "sha256": "sha256:ba5a25cf45356e4856f0da4507830e2379f27087cbf23c44529c57c6537fccbb"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-copy151.py",
+        "bytes": 3371,
+        "sha256": "sha256:00b49f45bef5fa2b40ce3c29c6b63bf368168b7b7dd136df458dc0830d496744"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/09-still-shift-ms3-copy151.py",
+        "bytes": 3371,
+        "sha256": "sha256:00b49f45bef5fa2b40ce3c29c6b63bf368168b7b7dd136df458dc0830d496744"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-copy151-results.json",
+        "bytes": 2290260,
+        "sha256": "sha256:c8373822ad532446313f6d10324d9f9ee1d31888e69d6ace98350381ae62b4c4"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/10-still-shift-ms3-copy151-results.json",
+        "bytes": 2290260,
+        "sha256": "sha256:c8373822ad532446313f6d10324d9f9ee1d31888e69d6ace98350381ae62b4c4"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-copy151-actual-terminal.json",
+        "bytes": 591,
+        "sha256": "sha256:76d097522a4660230d5dda15e24f60aaf0718636a46f1e8c780e80b24ebac6e3"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/11-still-shift-ms3-copy151-actual-terminal.json",
+        "bytes": 591,
+        "sha256": "sha256:76d097522a4660230d5dda15e24f60aaf0718636a46f1e8c780e80b24ebac6e3"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate153-isolation.sb",
+        "bytes": 1564,
+        "sha256": "sha256:2f5ca0a68080639c5be33e046f819e7da49029b852db85b4a5a95fcf2dc40c50"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/12-still-shift-ms3-postgate153-isolation.sb",
+        "bytes": 1564,
+        "sha256": "sha256:2f5ca0a68080639c5be33e046f819e7da49029b852db85b4a5a95fcf2dc40c50"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate153-isolation-probe.mjs",
+        "bytes": 3380,
+        "sha256": "sha256:f886703e1ea176562cbc41ba0591f4c17051141fcdaa0771c5e00b5ee52bbc02"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/13-still-shift-ms3-postgate153-isolation-probe.mjs",
+        "bytes": 3380,
+        "sha256": "sha256:f886703e1ea176562cbc41ba0591f4c17051141fcdaa0771c5e00b5ee52bbc02"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate153-isolation-probe-input1.json",
+        "bytes": 1675,
+        "sha256": "sha256:6dca646804c37cb91890ba0fdd41e41344b74a71ea06111cfdd6ed0b2341c28b"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/14-still-shift-ms3-postgate153-isolation-probe-input1.json",
+        "bytes": 1675,
+        "sha256": "sha256:6dca646804c37cb91890ba0fdd41e41344b74a71ea06111cfdd6ed0b2341c28b"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate153-isolation-probe1.json",
+        "bytes": 838,
+        "sha256": "sha256:21eff049ac2fb24e9f6e59060158865e6685cf9c2f5b17bb3e4b937a5a24fb11"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/15-still-shift-ms3-postgate153-isolation-probe1.json",
+        "bytes": 838,
+        "sha256": "sha256:21eff049ac2fb24e9f6e59060158865e6685cf9c2f5b17bb3e4b937a5a24fb11"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-postgate153-isolation-actual-terminal.json",
+        "bytes": 1079,
+        "sha256": "sha256:7aa27e8490a737d3dba713e80a49f444123d5313ed39930146c2f015e588a031"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/16-still-shift-ms3-postgate153-isolation-actual-terminal.json",
+        "bytes": 1079,
+        "sha256": "sha256:7aa27e8490a737d3dba713e80a49f444123d5313ed39930146c2f015e588a031"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-current151-run.py",
+        "bytes": 10066,
+        "sha256": "sha256:61b20ffe00a0334a8ccf6ba7b89ffdbfd3e2da5fa97820f66a908a1ddc37acf0"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/17-still-shift-ms3-current151-run.py",
+        "bytes": 10066,
+        "sha256": "sha256:61b20ffe00a0334a8ccf6ba7b89ffdbfd3e2da5fa97820f66a908a1ddc37acf0"
+      },
+      "exact": true
+    }
+  ],
+  "originalPilot": {
+    "firstPassPassed": 1,
+    "denominator": 10,
+    "failedAttempts": 9,
+    "pairedTokens": null,
+    "accepted": 0
+  },
+  "wholeReviewOrHumanAcceptance": false,
+  "remaining": "Finish real new-identity151 exports/report/resume/oneCLIhandoff and independent154 all10 current product/packet audits; retain original149stages and150backup as earlier-archive evidence. Whole/owner review stays open.",
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms3-upstream/still-shift/benchmarks/results/ms3-current151-preparation/index.json",
+    "bytes": 18056,
+    "sha256": "sha256:e4490beb02d6f0f13fa300d416bb05e882fcbc1f80ba11fcf9c0e748a41ee755"
+  }
+}

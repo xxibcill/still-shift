@@ -1,0 +1,262 @@
+{
+  "schemaVersion": "ms3-native-hold-results-1",
+  "date": "2026-10-14",
+  "status": "bounded-native-hold-source-slice-verified-production-acceptance-open",
+  "pilot": {
+    "selection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+    "episodes": "EU001\u2013EU010 actual Everyday Unlocked first ten",
+    "narration": "Existing complete Alden Eleven v4 takes at original 1x",
+    "accepted": 0,
+    "pairedRoutineTelemetry": null
+  },
+  "source": {
+    "priorCheckpoint": "b81c17a6b2ccadfc38947467183b04e8f0e98e0f",
+    "runtimeSha256": "sha256:c7cde29700a9db643776cbb9faa7a96cc4d931f8281abcfaf96dd85a9d75f45b",
+    "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-holds58-inputs1.json",
+      "bytes": 474617,
+      "sha256": "sha256:a282fe90eb59e4eaa95edb601e4d706730ec8130e01c4f00a4a4f158af10585b"
+    },
+    "files": 2778,
+    "bytes": 122203611,
+    "sourceCommit": "57d4d0161d9492215219535f9d15666ac041580c"
+  },
+  "implemented": [
+    "Optional bounded authored shot proofPurpose; no automatically invented purpose",
+    "Whole sequence source offsets and absolute shot clocks; legacy sidecar zero offset",
+    "Complete authenticated native camera/control/evaluated mesh/topology/transform/visibility/highlight frame evidence",
+    "Independent source-plan/native-map reconstruction during export and verification QA",
+    "Existing expected-paint, physical and PNG equality guards retain raw frozen measurements and review requirement",
+    "Prospective capacity includes split sequence layers before native capture; cleanup retains foreign reservations"
+  ],
+  "verification": {
+    "fast": {
+      "actualExitCode": 0,
+      "unitTests": 4593,
+      "unitFiles": 457,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-fast4.log",
+        "bytes": 48228,
+        "sha256": "sha256:35259d24f1f90f9e57ae679ef50106ba98be96c51953c89273481f331204c7bb"
+      },
+      "sourceHoldPassed": true
+    },
+    "targetedEarlierCheckpoint": {
+      "tests": 31,
+      "files": 4,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-targeted3.log",
+        "bytes": 521,
+        "sha256": "sha256:c32057c2c799e6d3baae27a03c81cbff04014acfe82b11e0902c4c0768e0f873"
+      }
+    },
+    "runtime": {
+      "steps": [
+        {
+          "step": "runtime",
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 520.1324737910181
+        }
+      ],
+      "ownedCache": "/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-holds58-runtime-cache2-50apz8uk",
+      "reason": "Fresh owned media cache avoids the retained old shared-cache missing-manifest defect; no source, cache quota, thresholds or shared files changed.",
+      "actualExitCode": 0,
+      "runtimeTests": 271,
+      "runtimeFiles": 52,
+      "integrationTests": 324,
+      "integrationFiles": 59,
+      "depthTests": 14,
+      "browserSmokeActualExitCode": 0,
+      "sourceHoldPassed": true,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-holds58-gates2-receipt.json",
+        "bytes": 445,
+        "sha256": "sha256:360fcf1b2adbb804a2e2006e8887e2bd06938c542b5688e4e026a3af09e71161"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-gates2-runtime.log",
+        "bytes": 42990,
+        "sha256": "sha256:2b604861586a3c74a3986e89d4b3983a18a8a96f543b486c96886048e2c3a324"
+      }
+    }
+  },
+  "retainedAttempts": [
+    {
+      "attempt": "targeted1",
+      "result": "29 pass / 1 failed: synthetic observation lacked required highlights; fixture corrected. Output retained in tool transcript."
+    },
+    {
+      "attempt": "targeted2",
+      "result": "30 pass / 1 failed: proof schema was not exported; public export corrected.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-targeted2.log",
+        "bytes": 2859,
+        "sha256": "sha256:0b9ffa0940df7577e5c5310bc7b58e14d4875189ff8f040696c29c0618f75811"
+      }
+    },
+    {
+      "attempt": "fast1",
+      "result": "Stale two generated schemas; regenerated.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-fast1.log",
+        "bytes": 932,
+        "sha256": "sha256:91d808f6cb719567f2bdf35a20f3491740fe9973d9c0f4cdbd9ceee99ca9db6d"
+      }
+    },
+    {
+      "attempt": "fast2",
+      "result": "Optional undefined proof offset incompatible with JSON metadata; default-zero contract corrected.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-fast2.log",
+        "bytes": 5784,
+        "sha256": "sha256:c759b1a1a8ac3886414c3508f08136c195812d8cb30d6c53b9d1dd23e02a6f58"
+      }
+    },
+    {
+      "attempt": "fast3",
+      "result": "Legacy sidecar typed declaration lacked zero offset; corrected.",
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-fast3.log",
+        "bytes": 2462,
+        "sha256": "sha256:4f1134b80a9545c483c4e6f32748ee26704172ba8a17fce163710bb6fc525244"
+      }
+    },
+    {
+      "attempt": "runtime1",
+      "result": "Started before fast unit suite ended; canceled with exit143 and complete tier restarted sequentially.",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-holds58-gates1-receipt.json",
+        "bytes": 332,
+        "sha256": "sha256:252fb66f51abe2deb7be057634ff4ce80967ae5b4581b782f61d43adafacc48f"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-holds58-gates1-runtime.log",
+        "bytes": 7821,
+        "sha256": "sha256:31053e0bdba0052c7c877854c24a99560c2c3ba3352b4c80edc4ec5c5738d78a"
+      }
+    }
+  ],
+  "actualNativeProbe": {
+    "episode": "EU-006",
+    "purpose": "Inspect the closed binder clip before opening its jaws.",
+    "purposeSavedToPilotInputs": false,
+    "frames": 634,
+    "physicalProofFrames": 113,
+    "physicalStates": 1,
+    "nativeRequestsUnchanged": true,
+    "newNativeRenders": 0,
+    "profileUnchanged": true,
+    "originalQueueJournalExact": true,
+    "originalQueueJournalSha256": "sha256:9cba8eaf533411fb033d2a0a37aec8d5ce528ebc346458f6923dd51dd4fc0491",
+    "renderedCandidate": {
+      "runtimeSha256": "sha256:5f918dfdb9bbd09c578f92c0e0ee63c23912518ce15d2b695ffddb3a31192438",
+      "actualProcessExitCode": 0,
+      "qualityStatus": "failed",
+      "errors": 15,
+      "warnings": 22,
+      "measured": {
+        "evaluatedState": true,
+        "pixels": true,
+        "pixelMethod": "grayscale-energy",
+        "textBounds": true
+      },
+      "imageCalls": 634,
+      "nativeSubmissionCalls": 0,
+      "classified": [
+        {
+          "code": "frozen-pixels",
+          "frames": [1, 56],
+          "severity": "warning",
+          "rawSeverity": "error"
+        },
+        {
+          "code": "frozen-pixels",
+          "frames": [58, 74],
+          "severity": "warning",
+          "rawSeverity": "error"
+        },
+        {
+          "code": "frozen-pixels",
+          "frames": [76, 102],
+          "severity": "warning",
+          "rawSeverity": "error"
+        },
+        {
+          "code": "frozen-pixels",
+          "frames": [104, 110],
+          "severity": "warning",
+          "rawSeverity": "error"
+        }
+      ],
+      "stationaryIntervals": [
+        {
+          "start": 0,
+          "end": 57
+        },
+        {
+          "start": 57,
+          "end": 75
+        },
+        {
+          "start": 75,
+          "end": 103
+        },
+        {
+          "start": 103,
+          "end": 111
+        },
+        {
+          "start": 111,
+          "end": 113
+        }
+      ],
+      "scope": "Actual all-frame cached preview pixels and glyph measurements on an in-memory/native-map purpose candidate, before the later explicit legacy-sidecar zero field. No current-source export or production acceptance."
+    },
+    "finalSourceNativeReplay": {
+      "runtimeSha256": "sha256:c7cde29700a9db643776cbb9faa7a96cc4d931f8281abcfaf96dd85a9d75f45b",
+      "proofFrames": 113,
+      "physicalStates": 1,
+      "newNativeRenders": 0
+    },
+    "artifacts": [
+      {
+        "path": "/private/tmp/still-shift-ms3-holds58-native-probe1.json",
+        "bytes": 1386,
+        "sha256": "sha256:0cc72eb68fd98008552b2e4c07a97a9ab7184df30eb1c85a658d5fbacfbfe366"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-holds58-native-probe2.json",
+        "bytes": 34522,
+        "sha256": "sha256:b72fb2638bb4d111db3b1bcd378af9b7b99d5e9eefabf6b681434e8cb13fe635"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-holds58-native-probe3.json",
+        "bytes": 1386,
+        "sha256": "sha256:2ef2afc66dd55e4e88fccfd9bb34317a558c26bd85716fcdd101de425f37210d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-holds58-EU006-composition2.json",
+        "bytes": 95627,
+        "sha256": "sha256:6a9e3c6d7b97a891e3e14d77594cee60687f02dfdc904899a15b724a978e6586"
+      }
+    ]
+  },
+  "currentDeliveries": {
+    "cohort": "actual-first-ten-full-HD47",
+    "revision": 2,
+    "sourceCheckpoint": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+    "runtimeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+    "qa": "178 frozen errors / 162 warnings / 537 images; original current products retained with original binding",
+    "currentSourceRebinding": "pending"
+  },
+  "remaining": [
+    "Authored whole-cohort hold/phase/staging work and current-source exports/QA rebinding",
+    "Broader physical label/event/intersection/mount fault coverage",
+    "Native handoff; whole factual/mechanical/encoded glyph/continuous/listening and original E06/E10 reviews",
+    "Comparable effort and final full software/benchmark/archive/installed-package gates"
+  ],
+  "spending": "No new paid generation",
+  "publication": "No merge or publication"
+}

@@ -1,0 +1,897 @@
+{
+  "schemaVersion": "ms3-live-full119-story-checkpoint123-1",
+  "recordedUtc": "2026-10-15T11:47:13.968748+00:00",
+  "status": "complete-story-group-passed-within-live-required-full; whole-gate-unpassed",
+  "session": 71989,
+  "sourceCommit": "1c9f7d1413bdeb9c78cee72ccd328c4badd46c41",
+  "documentationHeadAtCapture": "d413e9831e5f32362186d351eb76c5ee9b859702",
+  "actualLiveToolObservation": {
+    "path": "/private/tmp/still-shift-ms3-full119-live-observation123.json",
+    "bytes": 489,
+    "sha256": "sha256:457e6e30ed73f4ce3087a41950c0b12ea4cce1b7fce035122bfd16348eb9549f"
+  },
+  "fullActualExitCode": null,
+  "completeGatePassed": false,
+  "sourceFiles": 2793,
+  "sourceBytes": 122415742,
+  "sourceHoldBefore": {
+    "actualExitCode": 0,
+    "output": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2793,
+      "bytes": 122415742
+    }
+  },
+  "sourceHoldAfter": {
+    "actualExitCode": 0,
+    "output": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2793,
+      "bytes": 122415742
+    }
+  },
+  "sourceGuard": {
+    "path": "/private/tmp/still-shift-ms3-final119-hold.py",
+    "bytes": 1398,
+    "sha256": "sha256:e74c259aea3edc613e16c998e3364b740045aca0adc744a99018873e40d1f7de"
+  },
+  "durableSourceSelection": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/source-selection-seed.json",
+    "bytes": 477326,
+    "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+  },
+  "expectedScriptInvocations": 116,
+  "observedScriptHeaders": 74,
+  "exactRequiredPreorderPrefix": true,
+  "latestStartedScript": "test:browser:composition-commerce-adapter",
+  "headerCountQualification": "Includes aliases; not a passed-suite count or completion percentage.",
+  "storyGroup": {
+    "command": [
+      "node",
+      "--import",
+      "tsx",
+      "tests/browser/composition-story-fixtures.ts"
+    ],
+    "standaloneOrProfiledSubstitute": false,
+    "completionEvidence": "Explicit69-case/14086-frame parity line, all69 retained measured gates pass,14 normal repeated export success lines and the next required &&-chained commerce-adapter script has started.",
+    "cases": 69,
+    "frames": 14086,
+    "repeatedByteIdenticalExportPairs": 14,
+    "pixelFailureCases": 0,
+    "maximumMeasuredPixelDelta": 2,
+    "retainedTimingLimit": 1.25,
+    "maximumTimingRatio": 1.2404526240834493,
+    "calibrationPan": {
+      "case": "story/calibration-pan",
+      "frames": 192,
+      "result": {
+        "maxDelta": 1,
+        "minPsnr": 82.7247284862714,
+        "failures": [],
+        "ratio": 1.2226926333624126
+      }
+    },
+    "rows": [
+      {
+        "case": "story/continuous-unequal-margins",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.005925073984567
+        }
+      },
+      {
+        "case": "story/continuous-access-constraint",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0634941311235433
+        }
+      },
+      {
+        "case": "story/continuous-access-constraint/motion-blur",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.8829226138621447
+        }
+      },
+      {
+        "case": "story/continuous-relationship-build",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.003809993362676
+        }
+      },
+      {
+        "case": "story/continuous-evidence-boundary",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0579494828978395
+        }
+      },
+      {
+        "case": "story/continuous-dated-system-break",
+        "frames": 192,
+        "result": {
+          "maxDelta": 1,
+          "minPsnr": 80.96381589571459,
+          "failures": [],
+          "ratio": 1.0125283032813774
+        }
+      },
+      {
+        "case": "story/continuous-category-swap",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.015473738502043
+        }
+      },
+      {
+        "case": "story/continuous-motif-resolve",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0074474844862544
+        }
+      },
+      {
+        "case": "story/v013-unequal-margins",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0172885874682782
+        }
+      },
+      {
+        "case": "story/v013-access-constraint",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0382925314308056
+        }
+      },
+      {
+        "case": "story/buffer-press-unequal-margins",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0237343627217863
+        }
+      },
+      {
+        "case": "story/v2-unequal-margins",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.00120325403377
+        }
+      },
+      {
+        "case": "story/calibration-pan",
+        "frames": 192,
+        "result": {
+          "maxDelta": 1,
+          "minPsnr": 82.7247284862714,
+          "failures": [],
+          "ratio": 1.2226926333624126
+        }
+      },
+      {
+        "case": "story/template-resource-network",
+        "frames": 648,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.998282846696107
+        }
+      },
+      {
+        "case": "story/template-unequal-access",
+        "frames": 312,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.026538310414573
+        }
+      },
+      {
+        "case": "passage/comparison-access/unequal-margins",
+        "frames": 334,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0102078352343389
+        }
+      },
+      {
+        "case": "passage/comparison-access/unequal-access",
+        "frames": 312,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0159198379659886
+        }
+      },
+      {
+        "case": "passage/linked-comparison/compare",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0175815469117897
+        }
+      },
+      {
+        "case": "passage/linked-comparison/continue",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.008671436772987
+        }
+      },
+      {
+        "case": "passage/linked-comparison/reset",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9830921673406144
+        }
+      },
+      {
+        "case": "passage/linked-network-vertical/network",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.008869988663046
+        }
+      },
+      {
+        "case": "component/story-bracket",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.2299306230878775
+        }
+      },
+      {
+        "case": "component/story-detail-sequence",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9831520910338619
+        }
+      },
+      {
+        "case": "component/story-instances",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9444679905109366
+        }
+      },
+      {
+        "case": "component/story-layout",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.106630836455869
+        }
+      },
+      {
+        "case": "component/story-leader",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.921552088787393
+        }
+      },
+      {
+        "case": "component/story-leader/flow",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0804967847450475
+        }
+      },
+      {
+        "case": "component/story-leader/flow-target-matte",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9918419374182696
+        }
+      },
+      {
+        "case": "component/story-leader/flow-target-inverted",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0109961235984217
+        }
+      },
+      {
+        "case": "component/story-leader/spatial",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9893491131884585
+        }
+      },
+      {
+        "case": "component/story-leader/morph",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.8517786496400674
+        }
+      },
+      {
+        "case": "component/story-leader/spatial-morph",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9813278063731131
+        }
+      },
+      {
+        "case": "component/story-leader/appearance-uniform",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0157687196265188
+        }
+      },
+      {
+        "case": "component/story-leader/effects-flow",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9276357372698397
+        }
+      },
+      {
+        "case": "component/story-leader/effects-flow-target-matte",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9796061258602226
+        }
+      },
+      {
+        "case": "component/story-leader/effects-flow-target-inverted",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9748159357856769
+        }
+      },
+      {
+        "case": "component/story-mask",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0317580298132598
+        }
+      },
+      {
+        "case": "component/story-outline",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.2404526240834493
+        }
+      },
+      {
+        "case": "component/story-pin",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0880157154285308
+        }
+      },
+      {
+        "case": "component/story-sequence",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1731696574151955
+        }
+      },
+      {
+        "case": "component/story-stagger",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1640163727813722
+        }
+      },
+      {
+        "case": "component/story-state",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.989560022026072
+        }
+      },
+      {
+        "case": "component/story-state/blended-container",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0094915244462195
+        }
+      },
+      {
+        "case": "component/story-state/appearance-uniform",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.081997084662097
+        }
+      },
+      {
+        "case": "component/story-state/effects-group-grain",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0223926390803453
+        }
+      },
+      {
+        "case": "component/story-state/effects-image-sweep",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9935145521416008
+        }
+      },
+      {
+        "case": "component/story-state/effects-text-sweep",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.8881074433889334
+        }
+      },
+      {
+        "case": "component/story-state/primitive-blur",
+        "frames": 192,
+        "result": {
+          "maxDelta": 1,
+          "minPsnr": 98.90923256143273,
+          "failures": [],
+          "ratio": 1.0060922742343683
+        }
+      },
+      {
+        "case": "component/story-state/primitive-blur-matte",
+        "frames": 192,
+        "result": {
+          "maxDelta": 2,
+          "minPsnr": 99.73458144198486,
+          "failures": [],
+          "ratio": 1.0074096248194704
+        }
+      },
+      {
+        "case": "component/story-state/primitive-blur-stack",
+        "frames": 192,
+        "result": {
+          "maxDelta": 1,
+          "minPsnr": 102.84707305044152,
+          "failures": [],
+          "ratio": 1.001770137728698
+        }
+      },
+      {
+        "case": "component/story-supply-sequence",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0289621923396164
+        }
+      },
+      {
+        "case": "component/story-supply",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0423140558678305
+        }
+      },
+      {
+        "case": "component/story-text-fit",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1217972520874964
+        }
+      },
+      {
+        "case": "component/story-tour",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1494995153682406
+        }
+      },
+      {
+        "case": "component/story-transform",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1436781730375254
+        }
+      },
+      {
+        "case": "component/story-travel",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0878084233150729
+        }
+      },
+      {
+        "case": "component/story-underline",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1841880451758582
+        }
+      },
+      {
+        "case": "component/story-value",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0848708451147266
+        }
+      },
+      {
+        "case": "component/story-visibility",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0114942512903065
+        }
+      },
+      {
+        "case": "component/passage-components/instances",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0909447238703125
+        }
+      },
+      {
+        "case": "component/passage-components/leader",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1469995916416915
+        }
+      },
+      {
+        "case": "component/passage-components/value",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0962393801816495
+        }
+      },
+      {
+        "case": "component/passage-behaviors/transform",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1444600335716433
+        }
+      },
+      {
+        "case": "component/passage-behaviors/state",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.140855722530349
+        }
+      },
+      {
+        "case": "component/passage-behaviors/travel",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.101098077437712
+        }
+      },
+      {
+        "case": "component/passage-behaviors/supply",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1120246595740033
+        }
+      },
+      {
+        "case": "component/passage-timing/visibility",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.1566315699560952
+        }
+      },
+      {
+        "case": "component/passage-timing/text-fit",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 1.0737037103032216
+        }
+      },
+      {
+        "case": "component/passage-timing/supply-sequence",
+        "frames": 192,
+        "result": {
+          "maxDelta": 0,
+          "minPsnr": null,
+          "failures": [],
+          "ratio": 0.9859944012270213
+        }
+      }
+    ],
+    "exportPairs": [
+      {
+        "case": "story/continuous-access-constraint/motion-blur",
+        "frames": 192
+      },
+      {
+        "case": "component/story-leader/flow-target-inverted",
+        "frames": 192
+      },
+      {
+        "case": "component/story-leader/spatial-morph",
+        "frames": 192
+      },
+      {
+        "case": "component/story-leader/effects-flow-target-inverted",
+        "frames": 192
+      },
+      {
+        "case": "component/story-mask",
+        "frames": 192
+      },
+      {
+        "case": "component/story-state/blended-container",
+        "frames": 192
+      },
+      {
+        "case": "component/story-state/appearance-uniform",
+        "frames": 192
+      },
+      {
+        "case": "component/story-state/effects-text-sweep",
+        "frames": 192
+      },
+      {
+        "case": "component/story-state/primitive-blur-stack",
+        "frames": 192
+      },
+      {
+        "case": "component/story-text-fit",
+        "frames": 192
+      },
+      {
+        "case": "component/story-value",
+        "frames": 192
+      },
+      {
+        "case": "component/passage-components/instances",
+        "frames": 192
+      },
+      {
+        "case": "component/passage-behaviors/transform",
+        "frames": 192
+      },
+      {
+        "case": "component/passage-timing/visibility",
+        "frames": 192
+      }
+    ]
+  },
+  "retainedFailed113": {
+    "record": "./mechanism-shorts-ms3-final113-full-gate-results.json",
+    "actualExitCode": 1,
+    "calibrationPanRatio": 1.251626897572802,
+    "notRelabeled": true,
+    "timingCause": "unproven"
+  },
+  "retainedOwning118": {
+    "record": "./mechanism-shorts-ms3-story118-results.json",
+    "actualExitCode": 0,
+    "scope": "Earlier whole profiled owning diagnostics; distinct from this normal full-run checkpoint."
+  },
+  "retainedCopies": [
+    {
+      "originalPath": "/private/tmp/still-shift-ms3-final119-full1.log",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/full119-prefix-story123.log",
+        "bytes": 3225013,
+        "sha256": "sha256:4feab433b1d16b643d381c0c58e62be88408a770152ec349f05b27920cba4c84"
+      },
+      "exactCapturedBytes": true
+    },
+    {
+      "originalPath": "/private/tmp/still-shift-ms3-final119-full1.json",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/full119-running-story123.json",
+        "bytes": 4151,
+        "sha256": "sha256:3d3d1ce05d73d4513c131ca6b0a1d43a8d3d20b709f3cce725950d29cf5f86df"
+      },
+      "exactCapturedBytes": true
+    },
+    {
+      "originalPath": "/private/tmp/still-shift-ms3-full119-live-observation123.json",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/full119-actual-live123.json",
+        "bytes": 489,
+        "sha256": "sha256:457e6e30ed73f4ce3087a41950c0b12ea4cce1b7fce035122bfd16348eb9549f"
+      },
+      "exactCapturedBytes": true
+    },
+    {
+      "originalPath": "/private/tmp/still-shift-ms3-final119-hold.py",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/full119-source-guard123.py",
+        "bytes": 1398,
+        "sha256": "sha256:e74c259aea3edc613e16c998e3364b740045aca0adc744a99018873e40d1f7de"
+      },
+      "exactCapturedBytes": true
+    }
+  ],
+  "newSourceTestsThresholdsBaselinesOrAssets": false,
+  "newCompetingRendererPackageOrInstalledJob": false,
+  "wholePilotOrHumanAcceptance": false,
+  "next": "Continue same live full71989 through every remaining required group and benchmark. Current standard package/all10/6181/EU008 repair remain locked until actual full terminal0/sourcehold0.",
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/story-checkpoint123-index.json",
+    "bytes": 22958,
+    "sha256": "sha256:068f7b8d208cf07db5864c3569f59b2ea87546653c213e1bced5db0e9127a0b9"
+  },
+  "capturingHelperRetained": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final119-gate/retain-story123.py",
+    "bytes": 10584,
+    "sha256": "sha256:de237c8f3b9dea18c118bddfc798a7f9075424d4ae10ad9e3123fa91d762b944",
+    "exact": true
+  },
+  "documentationVerification": {
+    "targetedPrettierActualExitCode": 0,
+    "gitDiffCheckActualExitCode": 0,
+    "sourceHoldBeforeAndAfterActualExitCode": 0
+  }
+}

@@ -57,6 +57,10 @@ function placementBias(
     if (rig.type === "hinge") bound += 2 * Math.hypot(...rig.pivot);
     else if (rig.type === "slider")
       bound += Math.max(...rig.range.map(Math.abs)) + Math.abs(rig.neutral);
+    else if (rig.type === "load-seat")
+      bound +=
+        2 * Math.hypot(...rig.pivot) +
+        rig.maxTravelMeters / scene.units.scaleToMeters;
     else if (rig.type === "ratchet")
       bound += Math.max(...rig.range.map(Math.abs));
   }

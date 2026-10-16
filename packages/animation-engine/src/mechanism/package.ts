@@ -127,7 +127,10 @@ export async function verifyMechanismPackageArtifacts(
     const { verifyNativeMechanismPackageArtifacts } = await import(
       "./native-package.ts"
     );
-    return verifyNativeMechanismPackageArtifacts(root, options);
+    return verifyNativeMechanismPackageArtifacts(root, {
+      ...(signal !== undefined ? { signal } : {}),
+      ...(options.route !== undefined ? { route: options.route } : {}),
+    });
   }
   const manifest = manifestValue as PackageManifest;
   if (
@@ -360,6 +363,7 @@ export async function packageMechanismEpisode(
   options: {
     outputDirectory: string;
     preparedDirectory?: string;
+    cacheDirectory?: string;
     finalOutput?: string;
     signal?: AbortSignal;
     route?: MechanismRoute;

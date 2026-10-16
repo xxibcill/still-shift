@@ -1,0 +1,231 @@
+{
+  "schemaVersion": "ms3-native-source-review-adaptation-results-1",
+  "date": "2026-10-15",
+  "status": "source-focused-fast-qualified-in-stages-integration-render-runtime-open",
+  "baseCommit": "0491e622c36a0b979e7f4854ad24e4e9a010375c",
+  "upstreamRepairs": {
+    "worktree": "/Users/jjae/.codex/worktrees/ms1n-review-fixes/still-shift",
+    "maskCommit": "42397d3f",
+    "diagnosticsCommit": "2b7a4f20",
+    "evidence": "docs/pr-56-fix-results.json"
+  },
+  "changes": [
+    "Move the shader-equivalent Float32 mask rule into the later shared physical visibility module, retaining the PBR material branch and matching actual Three observation.",
+    "Select the existing strict mechanism1/solid1/mechanism2/mechanism3 schemas separately from genuine declared-format mismatch; retain first located semantic issue and bound/redact new diagnostic fields.",
+    "Preserve the later native source capacity/disposal, detached input buffers, PBR binary resource verification and preparation paths."
+  ],
+  "checks": [
+    {
+      "name": "port-red1",
+      "actualExitCode": 1,
+      "passed": 10,
+      "failed": 10,
+      "files": 3,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-red1.log",
+        "bytes": 11302,
+        "sha256": "sha256:9a615393d1add169b29758f7a1b36b3ffad5a00f5eb78d2c129bb515d1083bcf"
+      }
+    },
+    {
+      "name": "port-green1",
+      "actualExitCode": 0,
+      "passed": 20,
+      "failed": 0,
+      "files": 3,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-green1.log",
+        "bytes": 448,
+        "sha256": "sha256:20e74548c8bec507f89d0bacad6114348c8cceffbf2757d5db04a1767d30e74b"
+      }
+    },
+    {
+      "name": "port-green2-expanded",
+      "actualExitCode": 1,
+      "passed": 27,
+      "failed": 1,
+      "files": 4,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-green2.log",
+        "bytes": 2901,
+        "sha256": "sha256:9c4ba1c057ad8aec7c2ea18ce17b781458e8fa7ef76502679b866a43707f7503"
+      },
+      "cause": "v1 source-only control inherited tape graduation texture without its unrelated pinned font. Source correctly rejected at textureFont."
+    },
+    {
+      "name": "port-green3-corrected-fixture",
+      "actualExitCode": 0,
+      "passed": 28,
+      "failed": 0,
+      "files": 4,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-green3.log",
+        "bytes": 756,
+        "sha256": "sha256:f41d0633592c89708b51fc51df8ef937362147ea3c19663f440bc9b3940d2318"
+      },
+      "scope": "Remove atlas from source-only fixture and recompute geometry hash; all four formats, actual source diagnostics, mask queries and existing binary PBR admission pass."
+    },
+    {
+      "name": "port-fast1",
+      "actualExitCode": 0,
+      "tests": 4634,
+      "files": 460,
+      "seconds": 95.34,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-review79-port-fast1.log",
+        "bytes": 49589,
+        "sha256": "sha256:ecf70306c9e4ac65a2b7a1a0e240b8b919f731c63a7813d6308b6fb3eda1a980"
+      },
+      "qualification": "Production source stayed exact throughout; source-only runtime fixture was corrected after format/lint prefix while build/unit phase was running. Final fixture format/lint/types were independently refreshed, so verification is staged, not one uninterrupted final-tree aggregate."
+    },
+    {
+      "name": "final-runtime-fixture-format-lint-types",
+      "actualExitCode": 0,
+      "typeLog": {
+        "path": "/private/tmp/still-shift-ms3-review79-final-types1.log",
+        "bytes": 101,
+        "sha256": "sha256:28157f22c7c4323340b13c65bb0d104629fe513917fa25e5a06300d5256f1029"
+      },
+      "command": "prettier --check runtime fixture; eslint runtime fixture; pnpm build",
+      "qualification": "Actual wrapper exit0 after final fixture edit; no source logic changed after source fast run began."
+    }
+  ],
+  "retainedHelperMistake": "Initial patch --check was accidentally invoked in already-patched MS1N checkout and failed without mutation; correct isolated MS3 checkout check/apply passed before the red run.",
+  "independentReviews": {
+    "Standards": {
+      "agent": "/root/ms3_standards69",
+      "findings": []
+    },
+    "Spec": {
+      "agent": "/root/ms3_spec69",
+      "findings": []
+    }
+  },
+  "liveProducer": {
+    "sourceCommit": "3df62a55",
+    "runtimeSha256": "1090f97c",
+    "session": 58827,
+    "sourceUnchanged": true
+  },
+  "limits": {
+    "integration": "after primary terminal only",
+    "freshGPU": "open",
+    "fullCurrentRuntimeRenderSoftwareBenchmarkArchiveInstalled": "open",
+    "package77": "Archive20e1/runtime d734 remains the earlier installed evidence; it does not contain these later source repairs. Refresh final archive/checks rather than relabel.",
+    "wholePilotReviews": "unreviewed",
+    "acceptedPilot": 0,
+    "paidGeneration": false
+  },
+  "installedSourceRepairProof": {
+    "sourceCommit": "8e11e6b8",
+    "archive": {
+      "path": "/private/tmp/still-shift-ms3-package81/still-shift-0.1.1.tgz",
+      "bytes": 5437291,
+      "sha256": "sha256:acdf939e685bdd78691507ec539871f77b19e0b640f9ea32ed316043826d17b8"
+    },
+    "packageBuild": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package81-build1.log",
+        "bytes": 214,
+        "sha256": "sha256:f1ddc0e7387aa991c323cd6c26cc9dd28d3162d997beee191a0a9bef5da0d701"
+      }
+    },
+    "pack": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package81-pack1.log",
+        "bytes": 343586,
+        "sha256": "sha256:fcd8344b2f5e9977523dfd2ffb332ec26c52d226fd41307df039a7a0ba058ebd"
+      }
+    },
+    "memberAudit": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package81-members1.json",
+        "bytes": 505564,
+        "sha256": "sha256:361887f0ea5911d8eaeb9d53eb68c4c713eae7ad047c18ab4120ab11553b05c9"
+      },
+      "files": 2573,
+      "unpackedBytes": 32091195
+    },
+    "offlineInstallation": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package81-install1.json",
+        "bytes": 480,
+        "sha256": "sha256:84e707b839f749e4438b17232ee889dcdfc8ca97e3062b3f194a9a34dac0de05"
+      }
+    },
+    "publicSourceChecks": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package81-installed-diagnostics1.json",
+        "bytes": 3651,
+        "sha256": "sha256:19227413d67d9d403bdfd4e878c2549059924fdc7d526c7d8080b6700efd72e8"
+      },
+      "cases": 13,
+      "identity": {
+        "codeSha256": "sha256:ebc2d314a78f53bcc98acdd79ab6cdf4724e1f5f788dfb72cdd1506511a09c8d",
+        "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+        "profile": {
+          "backend": "blender-native",
+          "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+          "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+          "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+          "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+        }
+      },
+      "originalSourceReadsDenied": true
+    },
+    "strictInstalledTypes": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package81-installed-types1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      }
+    },
+    "publicInstalledDiscovery": {
+      "actualExitCode": 0,
+      "result": {
+        "path": "/private/tmp/still-shift-ms3-package81-installed-discovery1.json",
+        "bytes": 3326,
+        "sha256": "sha256:a1dd135c5f81d20852a2398bf0e5688293d05a34769286c724acea1cf71685d0"
+      }
+    },
+    "retainedPreparationFailure": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package81-prepare-diagnostics1.log",
+        "bytes": 1023,
+        "sha256": "sha256:b09a548c37e62f75308a0457003e814f4d2f272b929fe19df34f759a06fc8870"
+      },
+      "installedAttemptLog": {
+        "path": "/private/tmp/still-shift-ms3-package81-installed-diagnostics1.log",
+        "bytes": 514,
+        "sha256": "sha256:3a958a35b1b42d48cde331d0084b819c5efa90b27d6b74880939e4435c59b286"
+      },
+      "cause": "Preparation ran from bare consumer without tsx; no input directory was created and installed checker then rejected missing cases.json. Correct source-data preparation cwd and installed-only reader pass separately."
+    },
+    "correctedDataPreparation": {
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package81-prepare-diagnostics2.log",
+        "bytes": 148,
+        "sha256": "sha256:f049138ff7a6975ab0727be5c4667ad663dcabef1f416d1ca316da52933e1aa9"
+      }
+    },
+    "correctedInstalledLog": {
+      "path": "/private/tmp/still-shift-ms3-package81-installed-diagnostics2.log",
+      "bytes": 260,
+      "sha256": "sha256:3be6e9ef6f0307e9732d1d7cddfef2f9cda9985e45dc41e79bcf6395077b0ed3"
+    },
+    "scope": "Independent current repaired package build/archive/member audit, offline installed public source admission/diagnostics, strict types and discovery. Zero renderer groups; full gates, fresh GPU and actual installed lifecycle remain open. Earlier archive77/d734 evidence stays separate.",
+    "durableIgnoredArchiveCopy": {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/benchmarks/results/ms3-package81/still-shift-0.1.1.tgz",
+      "bytes": 5437291,
+      "sha256": "sha256:acdf939e685bdd78691507ec539871f77b19e0b640f9ea32ed316043826d17b8"
+    }
+  }
+}

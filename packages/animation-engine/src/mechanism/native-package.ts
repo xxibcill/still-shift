@@ -87,10 +87,12 @@ const manifestSchema = z
 type NativePackageFile = z.infer<typeof fileSchema>;
 type NativePackageManifest = z.infer<typeof manifestSchema>;
 type NativePackageVerificationControls = {
+  cacheDirectory?: string;
   signal?: AbortSignal;
   route?: MechanismRoute;
 };
 export type NativeMechanismPackageOptions = {
+  cacheDirectory?: string;
   outputDirectory: string;
   preparedDirectory?: string;
   finalOutput?: string;
@@ -165,10 +167,11 @@ const lexical = (a: string, b: string) => (a < b ? -1 : a > b ? 1 : 0);
 function packageVerificationControls(
   options: NativePackageVerificationControls,
 ): NativePackageVerificationControls {
-  const { signal, route } = options;
+  const { signal, route, cacheDirectory } = options;
   return {
     ...(signal !== undefined ? { signal } : {}),
     ...(route !== undefined ? { route } : {}),
+    ...(cacheDirectory !== undefined ? { cacheDirectory } : {}),
   };
 }
 

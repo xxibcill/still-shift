@@ -1,0 +1,205 @@
+{
+  "schemaVersion": "ms3-prerequisite-integration-1",
+  "capturedUtc": "2026-10-15T00:16:18.426383+00:00",
+  "status": "resolved-reviewed-focused-and-fast-passed-full-runtime-open",
+  "parents": {
+    "ms3Isolated": "659e5b76806239bce02630f4ad3d3d4e86c5647b",
+    "upstreamMs1nRepair": "40330672db000720b551abd0f7157f4a6751736b",
+    "mergedMainRequired": "b376514285e4819bdd14361e3467ecf085cf0b9d"
+  },
+  "reason": "Frozen MS3 source3df62a55 predates merged MS1 review repairs. Narrow source-only preflight87 did not prove integration with current main. Integrate prerequisites in idle checkout; live producer packages, worker and ROADMAP remain frozen.",
+  "conflicts": [
+    {
+      "path": "docs/dev-log.md",
+      "resolution": "Retain isolated current evidence and dated history; record prerequisite integration separately."
+    },
+    {
+      "path": "packages/animation-engine/src/composition-native3d.ts",
+      "resolution": "Retain later four-format strict source admission, PBR/resource/capacity/disposal and located/redacted diagnostics."
+    },
+    {
+      "path": "packages/renderer-core/src/native3d/visibility.ts",
+      "resolution": "Retain wrapper delegating to shared Float32 physical-visibility policy with clipping/result decorations."
+    },
+    {
+      "path": "tests/runtime/native3d-source-diagnostics.test.ts",
+      "resolution": "Retain later four-format coverage superset."
+    },
+    {
+      "path": "packages/renderer-core/src/composition/quality-samples.ts",
+      "resolution": "Keep version-aware native catalogue resolution; union upstream caseText/resolvedTextStyle/TextNode imports and displayed-copy semantics."
+    }
+  ],
+  "inheritedRepairs": [
+    "Display actual cased/spanned text consistently for semantic sampling",
+    "Protect panel footprints and default captions",
+    "Ignore camera-clipped bridge occluders and apply Float32 cutout policy",
+    "Validate all-shot rig and hidden-part references before capture"
+  ],
+  "stagedSourceAndTests": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/packages/animation-engine/src/mechanism/browser.ts",
+      "bytes": 5534,
+      "sha256": "sha256:ede258d301f1a78f05d47f5cb95fa4e116a59cf832971f8de2680d1487806a03"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/packages/animation-engine/src/mechanism/io.ts",
+      "bytes": 20321,
+      "sha256": "sha256:f0a82f1a357ae1886f831c57e24965dda0ddfc2f611873a246295fc4dbc0d07e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/packages/animation-engine/src/mechanism/overlays.ts",
+      "bytes": 44735,
+      "sha256": "sha256:7665a672fa07954ac96663a7a5931a91df96080457412a07b037e169a9b8642f"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/packages/animation-engine/src/mechanism/tape-hook.ts",
+      "bytes": 13933,
+      "sha256": "sha256:80db6ecba60ee1a5dffac7342cdc2e39f6cf2e27b2eb5150fc5548dcbaed4945"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/packages/renderer-core/src/composition/quality-samples.ts",
+      "bytes": 31152,
+      "sha256": "sha256:99877a8a3e0feb8fdb48ee922ec2c4abf7da2e285a625dba3b8bb3e92fbcd509"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/tests/runtime/mechanism-capture.test.ts",
+      "bytes": 22697,
+      "sha256": "sha256:050e87bd980567cc79d2281e92d330c0db39a4d8f1df47c64294b9c575800971"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/tests/runtime/mechanism-dependencies.test.ts",
+      "bytes": 11921,
+      "sha256": "sha256:30b5acb8d68ef663b61d2c6c0d4c1ad90418a03702bc78ebc1c35a9cabfae2de"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/tests/unit/composition-semantic-context.test.ts",
+      "bytes": 26031,
+      "sha256": "sha256:5504da7319bfe3b060174e652557a4549ec8b0a0d817d5529fb04087b84c0830"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/tests/unit/mechanism-overlays.test.ts",
+      "bytes": 21022,
+      "sha256": "sha256:9649782f452aa3f6d9c4bd50bcf1c56e33165d03a637c09a8f4e057844bb3ac4"
+    }
+  ],
+  "checks": {
+    "status": "passed-scoped-and-fast-resolved-prerequisite-merge",
+    "parentHead": "659e5b76806239bce02630f4ad3d3d4e86c5647b",
+    "mergeHead": "40330672db000720b551abd0f7157f4a6751736b",
+    "stages": [
+      {
+        "stage": "focused",
+        "actualExitCode": 0,
+        "seconds": 10.040154416114092,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-upstream89-focused1.log",
+          "bytes": 1316,
+          "sha256": "sha256:4b3b45536758964bbfd6d6496a2a127a0ab21f442398d76f06441cf52719cac9"
+        }
+      },
+      {
+        "stage": "fast",
+        "actualExitCode": 0,
+        "seconds": 159.59340183390304,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-upstream89-fast1.log",
+          "bytes": 47661,
+          "sha256": "sha256:a7e1db92e9767a4512ef72041cb4405eb53bb93211c7a5c9febd54fb0198f8c1"
+        }
+      }
+    ],
+    "newRendererGroups": 0,
+    "actualExitCode": 0
+  },
+  "focused": {
+    "files": 6,
+    "tests": 73,
+    "seconds": 9.62,
+    "newRendererGroups": 0
+  },
+  "fast": {
+    "files": 455,
+    "tests": 4594,
+    "unitSeconds": 84.63
+  },
+  "independentReviews": {
+    "standards": {
+      "agent": "/root/ms3_standards69",
+      "findings": 0,
+      "method": "Read-only staged merge/source/test review"
+    },
+    "spec": {
+      "agent": "/root/ms3_spec69",
+      "findings": 0,
+      "method": "Read-only staged merge/source/test review"
+    }
+  },
+  "retainedFailures": {
+    "mergeConflictAttempt": {
+      "path": "/private/tmp/still-shift-ms3-upstream89-merge1.log",
+      "bytes": 842,
+      "sha256": "sha256:1f6590f8deb75969be4e7f5bc1b3462e21a1ee79e9a25419a67a4507e0060ec2"
+    },
+    "initialModuleResolution": "Plain Node require.resolve could not load TypeScript source exports; corrected node --import tsx verifies independent module paths. No source change needed."
+  },
+  "earlierEvidence": {
+    "package85": "Historical source452b/codee231 only; build/archive/installed API results do not qualify this prerequisite merge.",
+    "prepared86": "Prepared and unexecuted for older source; do not run as current evidence.",
+    "preflight87": "Four narrow repair commits only; superseded for final integration planning."
+  },
+  "open": [
+    "Original58827 and follower26381 actually exited0; fresh renderer groups run serially (MS1N3591 active).",
+    "Current merged full pnpm check and required serial benchmark/package/installed gates",
+    "MS2 shared prerequisites and Float32/located diagnostics repairs",
+    "Whole factual/mechanical/glyph/continuous/listening/human reviews; accepted0/10"
+  ],
+  "liveEvidenceReconciliation": {
+    "parents": {
+      "isolated": "e9be5d82b9d9a81aaabe2d6b06068a869cdb731e",
+      "live": "adbb256ca9e173f4134ec30ecc333c66055b8db7"
+    },
+    "initialMergeExitCode": 1,
+    "conflicts": [
+      "docs/dev-log.md",
+      "docs/mechanism-shorts-ms3-code-review.md",
+      "docs/mechanism-shorts-ms3-package-portability-results.json",
+      "docs/mechanism-shorts-ms3-whole-review84-results.json"
+    ],
+    "resolutions": {
+      "devLog": "Use newer live current state/history; prepend isolated prerequisite current state and retain six unique isolated dated entries. Three common-heading original variants retained below.",
+      "codeReview": "Retain isolated declaration-followup absent in live version.",
+      "jsonEvidence": "Use newer live superset and add explicit prerequisite source qualification; old archive bindings remain unchanged."
+    },
+    "originalDevLogVariants": [
+      {
+        "heading": "### 2026-10-15 \u2014 MS3 CPU-only gate and exact integration preflight",
+        "isolatedText": "\n- **Agent / branch:** Codex; isolated `26c4a074` / source codee231.\n- **Done:** locked offline isolated Python environment, exact own editable path;\n  14 CPU worker tests, Python format/lint and soundtrack lint pass. All12 other\n  venv configuration/editable files remain byte-exact.\n- **Preflight:** only the four reviewed repair commits account for19 source/test\n  paths. Applying their aggregate to standalone copies matches all14 resulting\n  target files/deletions exactly; main source/index remain unchanged.\n- **Open / next:** primary58827 is live. Full runtime/toolchain include actual\n  browsers; integrate source and run full gates only after actual terminal.\n  No renderer, new source change, asset work or spending in this slice.\n- **Records:** [CPU/integration qualification](./mechanism-shorts-ms3-whole-review84-results.json).\n\n",
+        "liveText": "\n- **Agent / branch:** Codex; isolated `26c4a074` / source codee231.\n- **Done:** locked offline isolated Python environment, exact own editable path;\n  14 CPU worker tests, Python format/lint and soundtrack lint pass. All12 other\n  venv configuration/editable files remain byte-exact.\n- **Preflight:** only the four reviewed repair commits account for19 source/test\n  paths. Applying their aggregate to standalone copies matches all14 resulting\n  target files/deletions exactly; main source/index remain unchanged.\n- **Progress:** sixth current compact handoff (EU006) also passes independent\n  closure checks; four remain in live producer58827, CPU follower26381.\n- **Open / next:** primary58827 is live. Full runtime/toolchain include actual\n  browsers; integrate source and run full gates only after actual terminal.\n  No renderer, new source change, asset work or spending in this slice.\n- **Records:** [CPU/integration qualification](./mechanism-shorts-ms3-whole-review84-results.json).\n\n"
+      },
+      {
+        "heading": "### 2026-10-15 \u2014 Latest installed MS3 repairs and process isolation",
+        "isolatedText": "\n- **Agent / branch:** Codex; private archive85 from isolated `452b8194`/codee231.\n- **Results:** build/pack,2,573 byte-exact members, offline install,13 public source\n  controls,4 real-lock/retry/cache controls across both queue versions, strict\n  public TypeScript and discovery pass in recorded stages. Compiled runtime8969\n  /profile1dd0 remains distinct from1090/ebc2. No renderer group ran.\n- **Retained:** first archive helper expected npm's excluded root pnpm lock;\n  corrected audit verifies exact corresponding source lock. Initial isolation\n  blocks setuid system ps; copied binary is killed/not used. Fixed system ps-only\n  exception passes; actual Node/pinned Python retain5 original-root read denials.\n- **Open / next:** latest installed86 admits all10/6,181 frames and prepares E1\n  /610 native frames. Guard correctly blocks it while primary58827 stays live.\n  Earlier79/82 stay unexecuted. Integration/fresh full runtime/render/package and\n  whole reviews remain open; no publication, paid generation or acceptance.\n- **Records:** [Latest package evidence](./mechanism-shorts-ms3-package-portability-results.json).\n\n",
+        "liveText": "\n- **Agent / branch:** Codex; private archive85 from isolated `452b8194`/codee231.\n- **Results:** build/pack,2,573 byte-exact members, offline install,13 public source\n  controls,4 real-lock/retry/cache controls across both queue versions, strict\n  public TypeScript and discovery pass in recorded stages. Compiled runtime8969\n  /profile1dd0 remains distinct from1090/ebc2. No renderer group ran.\n- **Retained:** first archive helper expected npm's excluded root pnpm lock;\n  corrected audit verifies exact corresponding source lock. Initial isolation\n  blocks setuid system ps; copied binary is killed/not used. Fixed system ps-only\n  exception passes; actual Node/pinned Python retain5 original-root read denials.\n- **Tracker:** reconcile current run/report/resume,5 verified handoffs and latest\n  installed85 proof. First-pass10% is measured and fails90%; only paired token\n  savings are unverified. Historical engineering rows retain their own cohort.\n- **Open / next:** latest installed86 admits all10/6,181 frames and prepares E1\n  /610 native frames. Guard correctly blocks it while primary58827 stays live.\n  Earlier79/82 stay unexecuted. Integration/fresh full runtime/render/package and\n  whole reviews remain open; no publication, paid generation or acceptance.\n- **Records:** [Latest package evidence](./mechanism-shorts-ms3-package-portability-results.json).\n\n"
+      },
+      {
+        "heading": "### 2026-10-15 \u2014 Relocated first-ten lifecycle and isolated review repairs",
+        "isolatedText": "\n- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `d45f3f4f`.\n- **Live:** original portable68 run/report/resume75382 confirmed live; first eight\n  seal, curved tape blade running. Seven independently audited. All106 declared files and137 prior files guarded.\n- **Results:** independent4,379 full RGBA/whole PCM frames,70 product pins and\n  17,516 native pins pass. Preview0 errors/remaining warnings retained. No new\n  native captures; complete report/resume/remaining outputs unrun at capture.\n- **Isolation:** native handoff fix3a7dcd69 fast4,596 pass. First-pass provenance\n  and two reproduced recovery gaps repaired;73 scoped tests/types pass, fast4,611/14 fixture-runtime checks pass in stages; final refresh4,611/458\n  passes and018c2540 is committed/pushed. Source integration waits for frozen lifecycle terminal.\n- **Open:** current full gates/installed handoff/whole reviews; accepted0/10,\n  tokens null. No new spend, publish, merge or Actions.\n- **Records:** [Portable lifecycle and partial audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).\n",
+        "liveText": "\n- **Agent / branch:** Codex on `codex/mechanism-ms3`, from `d45f3f4f`.\n- **Live:** original portable68 run/report/resume75382 confirmed live; first eight\n  seal, curved tape blade running. Seven independently audited. All106 declared files and137 prior files guarded.\n- **Results:** independent4,379 full RGBA/whole PCM frames,70 product pins and\n  17,516 native pins pass. Preview0 errors/remaining warnings retained. No new\n  native captures; complete report/resume/remaining outputs unrun at capture.\n- **Isolation:** native handoff fix3a7dcd69 fast4,596 pass. First-pass provenance\n  and two reproduced recovery gaps repaired;73 scoped tests/types pass, fast4,611/14 fixture-runtime checks pass in stages; final refresh4,611/458\n  passes and018c2540 is committed/pushed. Source integration waits for frozen lifecycle terminal.\n- **Open:** current full gates/installed handoff/whole reviews; accepted0/10,\n  tokens null. No new spend, publish, merge or Actions.\n- **Records:** [Portable lifecycle and partial audits](./mechanism-shorts-ms3-first-ten-portable-lifecycle-results.json).\n\n"
+      }
+    ],
+    "scope": "All merged source/test bytes are identical to isolated e9be5d82; reconciliation changes documentation only. ROADMAP is reconciled only in this idle checkout before final source verification. Main producer retains its held ROADMAP."
+  },
+  "liveIntegration": {
+    "actualExitCode": 0,
+    "method": "fast-forward-only-after-actual-producer-and-follower-terminal",
+    "from": "adbb256ca9e173f4134ec30ecc333c66055b8db7",
+    "to": "a88abccbf8b66514252025ac985a458454547455",
+    "requiredMainAncestor": "b376514285e4819bdd14361e3467ecf085cf0b9d",
+    "originalSourceHoldBeforeIntegration": 0,
+    "oldProducerSource": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+    "oldProductsRetainRuntime": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "freshCurrentFullGates": "pending-serial-after-ms1n3591",
+    "primaryUserCheckout": "untouched"
+  }
+}

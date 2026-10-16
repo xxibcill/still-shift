@@ -777,6 +777,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../mechanism/evaluate.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/mechanism/load-seat-v2.ts",
+    url: new URL("../mechanism/load-seat-v2.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/mechanism/matrix-v2.ts",
     url: new URL("../mechanism/matrix-v2.ts", import.meta.url),
   },
@@ -819,6 +823,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/mechanism/teaching-topology.ts",
     url: new URL("../mechanism/teaching-topology.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/mechanism/teaching-web.ts",
+    url: new URL("../mechanism/teaching-web.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/mechanism/types-v2.ts",
@@ -1751,6 +1759,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/mechanism/sidecar.ts",
     url: new URL(
       "../../../scene-contract/src/mechanism/sidecar.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/mechanism/static-moment.ts",
+    url: new URL(
+      "../../../scene-contract/src/mechanism/static-moment.ts",
       import.meta.url,
     ),
   },

@@ -1,0 +1,700 @@
+{
+  "schemaVersion": "ms3-package-declaration-portability-results-1",
+  "date": "2026-10-15",
+  "status": "passed-isolated-declaration-private-pack-input-admission-and-current-snapshot-receiving",
+  "sourceCommit": "20e1afe2acb844afe15fae504bcb5a61651fdc61",
+  "sourceBranch": "codex/ms3-review-fixes",
+  "baseCommit": "a37038ef1f2af887735e5f055fc0a1944e119813",
+  "sourceFile": {
+    "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/packages/animation-engine/src/mechanism/blender-episode-compile.ts",
+    "bytes": 9278,
+    "sha256": "sha256:2eabad977a8c49ab5a2f3b4d1cc1a15a43742530cc35c156643dbac421e37fe5"
+  },
+  "change": "Name the existing Composition public return type on composeBlenderEpisode; no executable logic changes.",
+  "liveProducerUntouched": {
+    "worktree": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift",
+    "sourceCommit": "3df62a5598dc46e021ee2c51b173ba33a38d2af6",
+    "runtimeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "unifiedSession": 58827,
+    "sourceHoldInventory": {
+      "path": "/private/tmp/still-shift-ms3-recovery74-source-inputs1.json",
+      "bytes": 477140,
+      "sha256": "sha256:7c69f187e455df2410946b647207ead706433e8908302f448f4d8de89d447f41"
+    }
+  },
+  "checks": [
+    {
+      "name": "original-main-package-build",
+      "actualExitCode": 1,
+      "wrapperTerminalExitCode": 1,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package77/receipt.json",
+        "bytes": 469,
+        "sha256": "sha256:761b0a71b1939e6147596f7a341ce436df41d1954af194681af82342c1bda8c1"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package77/build.log",
+        "bytes": 1313,
+        "sha256": "sha256:50ca473d8fab88aaf59b2a3c70afaefc9b6b2c5037b654cbfe4bff85d89192c5"
+      },
+      "seconds": 6.684394625015557,
+      "errors": [
+        "TS2742 inferred return type references node_modules/zod/v4/core/util.d.cts",
+        "TS7056 inferred return type exceeds compiler serialization length"
+      ],
+      "previousGeneratedPackagePreserved": true
+    },
+    {
+      "name": "isolated-package-build",
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package77-isolated-build2.log",
+        "bytes": 67,
+        "sha256": "sha256:4991c82ddec0ad56e12e8361b8027ada53e9811e5edec7ecdc5b6e6cf1408752"
+      },
+      "emittedPublicDeclaration": {
+        "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/dist/npm/packages/animation-engine/src/mechanism/blender-episode-compile.d.ts",
+        "bytes": 4881,
+        "sha256": "sha256:46deea8183bba7c0496c1fff20305b2a5fcea4532184dcf2ff1ef4e822050e66"
+      }
+    },
+    {
+      "name": "erased-runtime-module-equality",
+      "actualExitCode": 0,
+      "result": {
+        "status": "passed-erased-runtime-byte-equality",
+        "emittedJSBytes": 9487,
+        "sha256": "sha256:3c654a1e0aa62d746784db9c2096e784784fc2dc91fb24f9ce90e81c74e99163",
+        "scope": "Exact module TypeScript transpilation equality; packaged declaration/installed tests remain separate"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package77-type-erasure2.json",
+        "bytes": 282,
+        "sha256": "sha256:6981fa5e245e46392b4898628ef9955fa5a8ba5aca90fe375cd8c578edae6830"
+      }
+    },
+    {
+      "name": "isolated-fast",
+      "actualExitCode": 0,
+      "tests": 4628,
+      "files": 460,
+      "seconds": 94.82,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package77-isolated-fast2.log",
+        "bytes": 49409,
+        "sha256": "sha256:ea021169678280ae365bfd45b9abaae9ae40c6735c0a8a96735bffa3a8ab4e39"
+      }
+    },
+    {
+      "name": "private-pack",
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package77-isolated-pack2.log",
+        "bytes": 343586,
+        "sha256": "sha256:cc62651a57fa1ab758d891f6fb134cc3d7bc268757a0c6cc4ef6488d1fc77160"
+      },
+      "archive": {
+        "path": "/private/tmp/still-shift-ms3-package77/still-shift-0.1.1.tgz",
+        "bytes": 5436003,
+        "sha256": "sha256:fb32f882e0ecf108bdd6bdc9f92394cac55db2cd27f6fecda57ed10c791acd69"
+      }
+    },
+    {
+      "name": "offline-install",
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package77-install2.json",
+        "bytes": 481,
+        "sha256": "sha256:3ac86e30adb787fca9ddb6f27dceb020307e3fa9c5be569cd910b123d3a7139f"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package77-install2.log",
+        "bytes": 237,
+        "sha256": "sha256:e17678d07b8db9dafe50f0df41f58f1b5383199aeffcd75bc94f922699c6ba3a"
+      }
+    },
+    {
+      "name": "installed-source-isolated-api",
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package77-installed-inspection1.json",
+        "bytes": 2683,
+        "sha256": "sha256:bc97d62fc233890383197124c3fa1ea476d89f238068921add7859ead9c5da5f"
+      },
+      "result": {
+        "status": "passed-isolated-installed-api-and-native-identity",
+        "packageVersion": "0.1.1",
+        "publicSpecifier": "still-shift/engine",
+        "identity": {
+          "codeSha256": "sha256:d7345fb9f9ec6a9526459a1693f39c9a013e5f00a9917d105c478d6b5201b81c",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+          "profile": {
+            "backend": "blender-native",
+            "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+            "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+            "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+            "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+          }
+        },
+        "sourceReadDenials": [
+          "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/package.json",
+          "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/package.json",
+          "/Users/jjae/Documents/playground/still-shift/package.json",
+          "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/AGENTS.md"
+        ],
+        "scope": "Actual installed archive public imports and Blender identity; original worktrees and Obsidian sources denied by macOS sandbox. No native render, completed-product receiving, installed export or whole review."
+      },
+      "isolationPolicy": {
+        "path": "/private/tmp/still-shift-ms3-package77-isolation.sb",
+        "bytes": 473,
+        "sha256": "sha256:46789abab111d3287a25dc86ae984672aa4dda0b2f8191e6354820106de86077"
+      },
+      "helper": {
+        "path": "/private/tmp/still-shift-ms3-package77-consumer/inspect-installed1.mjs",
+        "bytes": 1857,
+        "sha256": "sha256:e8f37f412dc9b9f13096888d6ea45e93db6b0e7c356be233fb3e7e61b23ff08e"
+      }
+    },
+    {
+      "name": "installed-discovery",
+      "actualExitCode": 0,
+      "result": {
+        "path": "/private/tmp/still-shift-ms3-package77-installed-discovery1.json",
+        "bytes": 3326,
+        "sha256": "sha256:4b7ec0ecf1e5acd94848ff8c3ff727f840d4fd998a3fe710c15490233135d273"
+      }
+    },
+    {
+      "name": "exact-receiving-copy",
+      "actualExitCode": 0,
+      "files": 112,
+      "bytes": 130607011,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package77-receiving-copy1.json",
+        "bytes": 22913,
+        "sha256": "sha256:3b00a82e604db2ae4daaabe244e83d43884dacab54bdb56ead895ee1bb3bc5eb"
+      }
+    },
+    {
+      "name": "installed-all-ten-input-admission",
+      "actualExitCode": 0,
+      "result": {
+        "path": "/private/tmp/still-shift-ms3-package77-installed-queue1.json",
+        "bytes": 952,
+        "sha256": "sha256:b1b15493e17a798688739768e13155098def0e417156f4c870e47b57020e6162"
+      },
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms3-package77-consumer/receive-inputs1/queue-installed77.json",
+        "bytes": 32166,
+        "sha256": "sha256:f47b7bc9e7291ab9c74618eab5857ab1ccd859bd6d12989323ad429bd90b086c"
+      },
+      "episodes": 10,
+      "frames": 6181,
+      "wholeNarrationSamples": 9884160,
+      "codeSha256": "sha256:d7345fb9f9ec6a9526459a1693f39c9a013e5f00a9917d105c478d6b5201b81c",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "scope": "Fresh r0 manifest under distinct actual compiled installed identity; no original source producer/output identity rewritten. No jobs run."
+    },
+    {
+      "name": "installed-type-tools-offline",
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package77-installed-types-install1.log",
+        "bytes": 274,
+        "sha256": "sha256:43cfabd63dc746023ecd6a9c36a657256bd390a512297386ce6702078df4b494"
+      },
+      "reason": "Offline metadata for pinned typescript@5.9.2 absent; no source change."
+    },
+    {
+      "name": "installed-pinned-type-tools-fetch",
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package77-installed-types-install2.log",
+        "bytes": 334,
+        "sha256": "sha256:5d36933388aee6c19f1296f893fb28fe9c2393e80b6fe607b0d4030d2c42a42b"
+      },
+      "versions": {
+        "typescript": "5.9.2",
+        "@types/node": "22.20.1"
+      },
+      "scriptsDisabled": true
+    },
+    {
+      "name": "installed-types-with-original-sources-denied",
+      "actualExitCode": 0,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package77-installed-types1.log",
+        "bytes": 0,
+        "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+      },
+      "consumer": {
+        "path": "/private/tmp/still-shift-ms3-package77-consumer/api-types1.ts",
+        "bytes": 655,
+        "sha256": "sha256:6d837c5cb5779ecbeb8ea179fa5ebdebcd8b9bd103fed5feb01991e344ccda1d"
+      },
+      "configuration": {
+        "path": "/private/tmp/still-shift-ms3-package77-consumer/tsconfig-types1.json",
+        "bytes": 221,
+        "sha256": "sha256:c540a000e2246c3dea28e2a28b36f667aa076ccf2f4ff20e7888e2c88c41bfe8"
+      },
+      "skipLibCheck": false
+    }
+  ],
+  "independentReview": {
+    "Standards": {
+      "reviewer": "ms3_standards69",
+      "findings": 0,
+      "scope": "Read-only annotation diff; existing domain return type clarifies public compiler contract, no hard standards or actionable smell."
+    },
+    "Spec": {
+      "reviewer": "ms3_spec69",
+      "findings": 0,
+      "scope": "Composition is inferred from the same returned CompositionSchema; native sequence, narration, captions and physical proof preserved."
+    }
+  },
+  "qualification": {
+    "newRendererGroups": 0,
+    "privateArchivePublished": false,
+    "liveSourceFixIntegrated": false,
+    "fullCurrentSoftwareBenchmarkAndArchiveInstalledGate": "open",
+    "actualInstalledProductionExportReportResumeAndHandoff": "open",
+    "wholePilotReviews": "unreviewed",
+    "acceptedPilot": 0,
+    "pairedAuthoringTokens": null
+  },
+  "installedSnapshotReceiving": {
+    "copiedClosure": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package78-receiving-dependencies3.json",
+        "bytes": 200738,
+        "sha256": "sha256:30caa9d9249c5a4e0bb6488aa453a61ad6c2ad139dafb4832a9e601a1872527a"
+      },
+      "result": {
+        "status": "passed-complete-native-sequence-and-capture-receiving-copy",
+        "destination": "/private/tmp/still-shift-ms3-package77-consumer/received-EU001-78",
+        "captureReceipts": 3,
+        "files": 1002,
+        "bytes": 1093534646,
+        "originalProduct": {
+          "path": "products/EU-001-daefc3cc7faa9869-1.json",
+          "bytes": 10644,
+          "sha256": "sha256:12d114ee61c1a6f1d507c78429833edc250e45469ef2de55e89f3187e7575261"
+        },
+        "scope": "Adds sequence-order sidecar required by public native plate verification after initial reader rejected its absence. Existing failed reader/closure attempt retained."
+      },
+      "actualExitCode": 0
+    },
+    "initialReader": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package78-receiving-result1.log",
+        "bytes": 1750,
+        "sha256": "sha256:86ca9f7c07349092135215b0e5a5a61e095348ee86004045c42858178a0316e4"
+      },
+      "cause": "Copied closure omitted the native sequence-order sidecar; public checker rejected absence. Failure retained."
+    },
+    "correctedReader": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package78-receiving-result2.json",
+        "bytes": 3445,
+        "sha256": "sha256:a62e0a04eb4577a3da9b77ddc8de9858c8e4767454faaca0db8221b92fc0ce28"
+      },
+      "result": {
+        "status": "passed-installed-isolated-current-snapshot-native-review-handoff-audio-receiving",
+        "originalProductBinding": {
+          "inputSha256": "sha256:daefc3cc7faa98699f15011508143afc79b5080d09231b264fd4bec066810878",
+          "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+          "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+        },
+        "receiverIdentity": {
+          "codeSha256": "sha256:d7345fb9f9ec6a9526459a1693f39c9a013e5f00a9917d105c478d6b5201b81c",
+          "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+          "profile": {
+            "backend": "blender-native",
+            "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+            "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+            "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+            "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+          }
+        },
+        "retainedOriginalProducerIdentity": true,
+        "filesVerified": 1002,
+        "captureReceipts": 3,
+        "nativeFrames": 610,
+        "nativePublicCheckerPassed": true,
+        "reviewImagesDecoded": 113,
+        "reviewSamples": 100,
+        "reviewPlanSourceAndClockExact": true,
+        "wholePcmBytes": 7815168,
+        "wholePcmSha256": "sha256:b9bc1c8bca52d9ac6b9dba7fe2cd87103f4ce56b76d56c03c0900a5fc5137989",
+        "handoffSchemaSourceClockStatusAndArtifactClosurePassed": true,
+        "originalSourceAccessDenied": true,
+        "newNativeRenders": 0,
+        "newBrowserExports": 0,
+        "wholeReviews": "unreviewed",
+        "scope": "Public installed native plate checker and review/handoff schemas plus independent actual PNG/whole PCM decode after complete independent relocation. Original producer binding remains source runtime1090f97c; receiver compiled runtime is distinct. Fresh installed production render/export/report/resume/handoff creation and whole acceptance are not performed."
+      },
+      "actualExitCode": 0
+    },
+    "correctedLog": {
+      "path": "/private/tmp/still-shift-ms3-package78-receiving-result2.log",
+      "bytes": 169,
+      "sha256": "sha256:75eae4831f0a2adbae701bb4c8228c4f219d460cd28f1da181a50d9f786c42d4"
+    },
+    "runner": {
+      "path": "/private/tmp/still-shift-ms3-package77-consumer/check-received2.mjs",
+      "bytes": 5501,
+      "sha256": "sha256:509fe996d4176b84175d9b675efd43a5572508aedb191d844e1f10c5e2cf7964"
+    },
+    "isolation": {
+      "path": "/private/tmp/still-shift-ms3-package77-isolation.sb",
+      "bytes": 473,
+      "sha256": "sha256:46789abab111d3287a25dc86ae984672aa4dda0b2f8191e6354820106de86077"
+    },
+    "scope": "Installed public native plate checker and review/handoff schemas plus independent review PNG/full PCM verification. Original source1090 product remains bound to its original identity; installed receiverd734 is distinct. Fresh installed export/report/resume/handoff creation remains open."
+  },
+  "preparedFreshInstalledLifecycle": {
+    "manifest": {
+      "path": "/private/tmp/still-shift-ms3-package77-consumer/receive-inputs1/queue-installed79.json",
+      "bytes": 3293,
+      "sha256": "sha256:945c93df08ed26379f8841f051b27f121cb7ca68cbfedf7be667f8d2878c4415"
+    },
+    "queueAdmissionActualExitCode": 0,
+    "queueAdmissionLog": {
+      "path": "/private/tmp/still-shift-ms3-package79-installed-queue1.log",
+      "bytes": 942,
+      "sha256": "sha256:ca990bf4bb49879851cf5d085cd88d96cb3611da9b1eb827080efb9b4a01507a"
+    },
+    "nativeCacheCopy": {
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package79-warm-copy2.json",
+        "bytes": 83111,
+        "sha256": "sha256:1f8df900af7035941ed0d925346dd6a3fc946e1410fcb266c215cb9997c66578"
+      },
+      "files": 386,
+      "bytes": 194102281,
+      "existingNativeFrames": 610,
+      "actualExitCode": 0
+    },
+    "initialCopyFailure": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package79-warm-copy1.log",
+        "bytes": 279,
+        "sha256": "sha256:dc0c128349dc2476a33e3b4adf5e09142cf8d19adc72bd5c23c91495cd3a70c1"
+      },
+      "cause": "Helper assumed pins was a map; actual closure is an array. No destination created; corrected reader copied exact independent files."
+    },
+    "runner": {
+      "path": "/private/tmp/still-shift-ms3-package79-installed-lifecycle1.py",
+      "bytes": 3745,
+      "sha256": "sha256:3db11bda95bd190c8ec9b4e1452cdb3be26e8439969b159397421b52fc52e05e"
+    },
+    "renderAdmissionGuard": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package79-installed-admission-block1.log",
+        "bytes": 292,
+        "sha256": "sha256:070521a0dfe19f18e132981c56c9709ac5a277161f28e8b059a197ddbd74ca33"
+      },
+      "scope": "Expected refusal before primary lifecycle terminal, no renderer launched."
+    },
+    "status": "superseded-without-execution-by-current-package81-lifecycle82",
+    "scope": "Fresh one-episode compiled-runtime manifest, original source path denial and verified matching-profile warm native cache. Old queue/product/items absent; no binding rewriting or native/browser rendering."
+  },
+  "currentPackage81Preparation": {
+    "sourceCommit": "8e11e6b8",
+    "evidence": "docs/mechanism-shorts-ms3-native-source-review-results.json",
+    "consumer": "/private/tmp/still-shift-ms3-package81-consumer",
+    "copyReceipt": {
+      "path": "/private/tmp/still-shift-ms3-package82-prepare-copy1.json",
+      "bytes": 104413,
+      "sha256": "sha256:2f879b43453f25ee67deb04a07b3f829e7ad4c86d7cddc2d1b60c3ab5ef74feb"
+    },
+    "copiedInputFiles": 115,
+    "copiedInputBytes": 130642814,
+    "nativeCacheFiles": 386,
+    "nativeCacheBytes": 194102281,
+    "allTenAdmission": {
+      "actualExitCode": 0,
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms3-package81-consumer/receive-inputs1/queue-installed82-all.json",
+        "bytes": 32166,
+        "sha256": "sha256:4d621ec5af03bce28b77900087e0e627d9f8be77d9e61b8ad16e38f5333a595d"
+      },
+      "episodes": 10,
+      "frames": 6181
+    },
+    "oneEpisodeAdmission": {
+      "actualExitCode": 0,
+      "manifest": {
+        "path": "/private/tmp/still-shift-ms3-package81-consumer/receive-inputs1/queue-installed82.json",
+        "bytes": 3293,
+        "sha256": "sha256:824ef11b688ec4ec8ec8391dc08dd537eb5ee140cc70007aa63bb9ffc44e290a"
+      },
+      "episodes": 1,
+      "frames": 610
+    },
+    "runtimeSha256": "sha256:ebc2d314a78f53bcc98acdd79ab6cdf4724e1f5f788dfb72cdd1506511a09c8d",
+    "runner": {
+      "path": "/private/tmp/still-shift-ms3-package82-installed-lifecycle1.py",
+      "bytes": 3759,
+      "sha256": "sha256:e75f6b546532375b1bc0a22b10fca12bfea7c897364164bb70bfe19d0eff7320"
+    },
+    "renderAdmissionGuard": {
+      "actualExitCode": 1,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package82-installed-admission-block1.log",
+        "bytes": 292,
+        "sha256": "sha256:abfebbd97ac6c553fb052feefc7eb19d7ee5dd5e24d0523ed22bb12e8d75e2fb"
+      },
+      "scope": "Expected refusal before primary lifecycle terminal; zero renderers launched."
+    },
+    "status": "prepared-not-run",
+    "scope": "Uses current repaired archive81; original repository/Obsidian/bundle and earlier consumer77 roots denied. Earlier79 preparation remains preserved; no earlier installed job was executed or rebound."
+  },
+  "latestReviewedPackage85": {
+    "sourceCommit": "452b8194c2ab8ab4ef504969cd73c417fa02138a",
+    "sourceCodeRepairCommit": "e231440e",
+    "archive": {
+      "path": "/private/tmp/still-shift-ms3-package85/still-shift-0.1.1.tgz",
+      "bytes": 5438377,
+      "sha256": "sha256:62706c09c60929fdd8f1855a3cf5cc89a4020e6f6b0ccacb95845fffee07539b"
+    },
+    "durableIgnoredArchiveCopy": {
+      "path": "/Users/jjae/.codex/worktrees/ms3-review-fixes/still-shift/benchmarks/results/ms3-package85/still-shift-0.1.1.tgz",
+      "bytes": 5438377,
+      "sha256": "sha256:62706c09c60929fdd8f1855a3cf5cc89a4020e6f6b0ccacb95845fffee07539b"
+    },
+    "buildAndPackStages": [
+      {
+        "stage": "build",
+        "actualExitCode": 0,
+        "seconds": 12.431751041905954,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package85-build1.log",
+          "bytes": 214,
+          "sha256": "sha256:f1ddc0e7387aa991c323cd6c26cc9dd28d3162d997beee191a0a9bef5da0d701"
+        }
+      },
+      {
+        "stage": "pack",
+        "actualExitCode": 0,
+        "seconds": 1.847395374905318,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package85-pack1.log",
+          "bytes": 343378,
+          "sha256": "sha256:e0e63f9044eeae525861178033bdf7b4def78aff44021e111f1d52c0524bde6f"
+        }
+      }
+    ],
+    "completeMemberAudit": {
+      "actualExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package85-members1.json",
+        "bytes": 505632,
+        "sha256": "sha256:34307b57325170ba623405f222bfd7924730ace657f07b3839cd86761fdbdf7b"
+      },
+      "files": 2573,
+      "unpackedBytes": 32094939,
+      "excludedRootFile": {
+        "path": "pnpm-lock.yaml",
+        "reason": "npm pack excludes its root pnpm lock; corresponding exact lock is retained at source/pnpm-lock.yaml"
+      }
+    },
+    "offlineInstallStages": [
+      {
+        "stage": "install",
+        "actualExitCode": 0,
+        "seconds": 1.193605207838118,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package85-install1.log",
+          "bytes": 237,
+          "sha256": "sha256:a57f1bc1a9eabf050d4e94d91e086b2a29575751dd67619cabb304149790b7ce"
+        }
+      },
+      {
+        "stage": "devtools",
+        "actualExitCode": 0,
+        "seconds": 0.6517817499116063,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package85-devtools1.log",
+          "bytes": 278,
+          "sha256": "sha256:b2e5f95066e90a7d6c0f573659f5b92b45322aa989ca2c2f5c357a5353cdb8c1"
+        }
+      }
+    ],
+    "installedSourceChecks": {
+      "actualExitCode": 0,
+      "cases": 13,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package85-installed-diagnostics1.json",
+        "bytes": 3651,
+        "sha256": "sha256:642ddb5d7f80197b2665c987546b26f840c4178b751dd32e70f57cd2daa76b4f"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-package85-installed-source1.log",
+        "bytes": 260,
+        "sha256": "sha256:ca8815e15df564d3cf32c96975541a8b17663b2a1792723ab1030e0d6f57e0b3"
+      }
+    },
+    "installedRetryControls": {
+      "actualExitCode": 0,
+      "cases": 4,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package85-installed-retry2.json",
+        "bytes": 1870,
+        "sha256": "sha256:5cd3fe34f0621ce53aaea412eccc30cc7123b21ce0d73ee207ab8e96bfa90aad"
+      },
+      "scope": "Actual public queue/real Python locks/retry/corrupt-cache/report APIs, both queue versions; synthetic byte artifacts only."
+    },
+    "installedApiStages": [
+      {
+        "stage": "retry",
+        "actualExitCode": 0,
+        "seconds": 1.4610711249988526,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package85-installed-retry2.log",
+          "bytes": 71,
+          "sha256": "sha256:158f70a5612b320dbc36a37ba9a91b8b0997326a893b7def92a7bb720a0df0c0"
+        }
+      },
+      {
+        "stage": "types",
+        "actualExitCode": 0,
+        "seconds": 13.10569066600874,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package85-installed-types2.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        }
+      },
+      {
+        "stage": "discovery",
+        "actualExitCode": 0,
+        "seconds": 0.6752562921028584,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package85-installed-discovery2.log",
+          "bytes": 3293,
+          "sha256": "sha256:745c8e1f416ef3e46dbc542041e3b5863a1ba676aa9d8c9a1c4e7035bdd85123"
+        }
+      }
+    ],
+    "identity": {
+      "codeSha256": "sha256:89697163351852f877b47e300aff9f29f4c899b4e40f7275da61e95e2ec7c8f7",
+      "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+      "profile": {
+        "backend": "blender-native",
+        "blenderExecutableSha256": "sha256:f5c1f2a0c0bca3389ec772d355242b700975ea84e66cbb3f5257a7bce8e5adeb",
+        "blenderVersion": "Blender 5.2.2 LTS\n\tbuild date: 2026-09-15\n\tbuild time: 01:49:19\n\tbuild commit date: 2026-09-14\n\tbuild commit time: 15:14\n\tbuild hash: d13f752e3b9c\n\tbuild branch: blender-v5.2-release\n\tbuild platform: Darwin\n\tbuild type: Release\n\tbuild c flags:  -Wall -Werror=implicit-function-declaration -Werror=return-type -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wstrict-prototypes -Wmissing-prototypes -Wunused-parameter -Wundef -Wundef-prefix -Werror=unguarded-availability-new  -mmacosx-version-min=11.2  -std=gnu11  -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild c++ flags:  -Wall -Wno-tautological-compare -Wno-unknown-pragmas -Wno-char-subscripts -Wno-overloaded-virtual -Wno-sign-compare -Wno-invalid-offsetof -Wno-suggest-override -Wundef -Wundef-prefix -Wunused-parameter -Wmismatched-tags -Werror=unguarded-availability-new  -mmacosx-version-min=11.2 -ftemplate-depth=1024   -pipe -funsigned-char -fno-strict-aliasing -ffp-contract=off  \n\tbuild link flags: -fexceptions -framework CoreServices -framework Foundation -framework IOKit -framework AppKit -framework Cocoa -framework Carbon -framework AudioUnit -framework AudioToolbox -framework CoreAudio -framework Metal -framework QuartzCore -framework CoreImage -framework OpenGL -framework Accelerate -liconv -Xlinker -no_warn_duplicate_libraries\n\tbuild system: CMake",
+        "workerSha256": "sha256:5991424533e50205a84ae8c7e92115bb2356caa74fec0fb5a45657be85e11733",
+        "receiverProfileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      }
+    },
+    "processIsolation": {
+      "proof": {
+        "path": "/private/tmp/still-shift-ms3-package85-isolation-proof1.json",
+        "bytes": 1502,
+        "sha256": "sha256:98608d1b8a3869eb03e580f8b81da124bff1fabd521a8b6df26dd86bccfd2ce9"
+      },
+      "profile": {
+        "path": "/private/tmp/still-shift-ms3-package85-process-isolation.sb",
+        "bytes": 853,
+        "sha256": "sha256:adfa76524d61a584ed0e18485d803ae083ca28f79a3776d66295c6679c632ebc"
+      },
+      "nodeOriginalFileReadsDenied": 5,
+      "pinnedPythonOriginalFileReadsDenied": 5,
+      "fixedSystemPsException": "Only /bin/ps process-exec uses no-sandbox. Node and Python retain original file-read denials. Real lock identity helper unchanged; exception is disclosed rather than claiming every child is sandboxed."
+    },
+    "retainedFailures": {
+      "archiveSetAudit": {
+        "actualExitCode": 1,
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-package85-prepare1.json",
+          "bytes": 997,
+          "sha256": "sha256:c78ff27a0f9f8b02f41c16f762e1d81385addb68a4c374aa15d1118bb0a2e451"
+        },
+        "cause": "First helper incorrectly required npm to pack root pnpm-lock.yaml. Corrected exact set audit permits only that observed root exclusion and verifies identical source/pnpm-lock.yaml."
+      },
+      "initialRuntimeIsolation": {
+        "actualExitCode": 1,
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-package85-installed-api1.json",
+          "bytes": 1086,
+          "sha256": "sha256:80553507513cee7906ddf841fe7345538f87137b7192cf1caf0d6a1e572b4ddd"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package85-installed-retry1.log",
+          "bytes": 3924,
+          "sha256": "sha256:12bc3c8e7cdc58f522500d11e539a6d957f4b759d5916deaaf5cd6c41418821e"
+        },
+        "cause": "macOS sandbox refused execution of the actual setuid /bin/ps identity helper. Source13 already passed; types/discovery not reached in this attempt."
+      },
+      "directSystemPsProbe": {
+        "path": "/private/tmp/still-shift-ms3-package85-isolation-ps-probe1.json",
+        "bytes": 268,
+        "sha256": "sha256:c8b5ddd8406974cbadf452f48c7501d99a6a337bc6d1b7a08710fe5bcf950554"
+      },
+      "rejectedUnprivilegedCopyProbe": {
+        "receipt": {
+          "path": "/private/tmp/still-shift-ms3-package85-isolation-ps-probe3.json",
+          "bytes": 410,
+          "sha256": "sha256:6a3148ca47e62801eebe020a3c593e145f481398a61568f9c1691e3ba9eaf3cc"
+        },
+        "cause": "A separate byte-exact copy with setuid removed was killed by signal9 outside and inside the test sandbox; not used. Original system executable unchanged."
+      },
+      "fixedSystemPsProbe": {
+        "path": "/private/tmp/still-shift-ms3-package85-isolation-ps-probe4.json",
+        "bytes": 332,
+        "sha256": "sha256:6dc7b08d98f798bde2616c0e33442a677e90b91bd0462d1136f744184b9f912c"
+      }
+    },
+    "preparedFreshInstalledLifecycle86": {
+      "status": "prepared-not-run",
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-package86-prepared1.json",
+        "bytes": 792,
+        "sha256": "sha256:e89db854533d31edf7f167ff06c923a1b159cff89ba6b357a4bb09bb2a0d9a02"
+      },
+      "copyReceipt": {
+        "path": "/private/tmp/still-shift-ms3-package86-prepare-copy1.json",
+        "bytes": 104439,
+        "sha256": "sha256:6db5f245897d6802a0b84a0f901494bb95efc8cf99a45e5fdfa3f15419d16421"
+      },
+      "wrapper": {
+        "path": "/private/tmp/still-shift-ms3-package86-installed-lifecycle1.py",
+        "bytes": 3948,
+        "sha256": "sha256:73baacd8472508dacca00df99e76228b2626ab7d258e0daca704e3e174baa84d"
+      },
+      "allTenFrames": 6181,
+      "oneFrames": 610,
+      "admissionGuard": {
+        "actualExitCode": 1,
+        "expected": true,
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-package86-installed-admission-block1.log",
+          "bytes": 292,
+          "sha256": "sha256:3bada8c3a0027cc03ead3a70af90b78ee102064ea376f5b0c580534013084193"
+        },
+        "newRendererGroups": 0
+      },
+      "earlier79And82": "Retained unexecuted; superseded by latest85/8969 package and prepared86 lifecycle."
+    },
+    "qualification": "Current repaired private package build/archive/installation, all public source/retry controls, strict public TypeScript and discovery pass in recorded stages. No browser/render group, publication, integration, full package matrix or whole pilot acceptance."
+  },
+  "currentPrerequisiteMergeQualification": {
+    "record": "./mechanism-shorts-ms3-prerequisite-integration89-results.json",
+    "source": "e9be5d82 plus live evidence integration in progress",
+    "status": "focused73-and-fast4594-passed; full integrated source gates open",
+    "olderInstalledEvidence": "Package85 and prepared86 retain source452b/codee231 bindings; no earlier archive evidence transfers to this merge."
+  },
+  "finalCurrentInstalledScope92": {
+    "record": "./mechanism-shorts-ms3-current-installed-scope92-results.json",
+    "episodes": 10,
+    "frames": 6181,
+    "requiredNativeKeys": 1571,
+    "status": "prepared-scope-not-executed; wait-for42543-actual-terminal",
+    "qualification": "Prepared86 is one episode/older source. Final installed proof must cover actual first ten under current installed runtime. Original first-pass/whole review counts remain separate."
+  }
+}

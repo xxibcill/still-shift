@@ -1,0 +1,276 @@
+{
+  "schemaVersion": "ms3-final-full-gate-1",
+  "capturedUtc": "2026-10-15T01:09:59.263766+00:00",
+  "status": "failed-native-production-stale-first-pass-expectation",
+  "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+  "unifiedSession": 42543,
+  "command": ["pnpm", "check:all"],
+  "sourceFiles": 2793,
+  "sourceBytes": 122415262,
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-final91-source-inputs1.json",
+    "bytes": 477326,
+    "sha256": "sha256:5d3875063b2ee35c75d7daa5d8a7331bdefd4f08ed082c95920c3fcb32562718"
+  },
+  "runner": {
+    "path": "/private/tmp/still-shift-ms3-final91-full1.py",
+    "bytes": 5781,
+    "sha256": "sha256:6b3262d99f3a15a5ce07acb91bd29f7e236336e4edd0233bea941674d82a18d7"
+  },
+  "liveReceipt": "/private/tmp/still-shift-ms3-final91-full1.json",
+  "log": "/private/tmp/still-shift-ms3-final91-full1.log",
+  "cache": {
+    "directory": "/private/tmp/still-shift-ms3-final91-isolated-media-cache1",
+    "initiallyEmpty": true,
+    "preflight": "./mechanism-shorts-ms3-final91-cache-preflight-results.json",
+    "oldDefaultCache": "Preserved; code still rejects its empty entry. Removal cause unproven."
+  },
+  "previousAttempt": "./mechanism-shorts-ms3-final90-full-gate-results.json",
+  "differenceFromFailed90": {
+    "heldInputChanges": ["ROADMAP.md"],
+    "unchangedInputs": 2792,
+    "productionAndTestsUnchanged": true,
+    "roadmapChange": "Current affected MS2 private package status,28 bytes net."
+  },
+  "upstream": {
+    "nativeHead": "796375b79b1709c1cad30837a5603f91d33d7697",
+    "ms2Head": "8b7374ed218536ba15e531da6a61ce0cf0ff9395",
+    "ms2ArchiveSource": "e44b40deff31355ddf100b4aa604803224bba402",
+    "ms2ArchiveSha256": "06748df2364a30a2bea0c5b89d081415e6cdbf16d353b06cf0862a4bef087185"
+  },
+  "frozen": "All held source/root/ROADMAP inputs until actual42543 terminal. No parallel browser/native-render/video-export group. Milestone evidence/dev-log excluded.",
+  "expectedCompute": "Prior complete matrix5h35m; current larger matrix can take comparably long. No completion time promised.",
+  "scope": "Full current software/benchmark only. Running is not pass. Original ten products retain3df/runtime1090, first-pass10% and null paired tokens; archive/installed/whole/human/fault gates remain.",
+  "progressSnapshots": [
+    {
+      "observedUtc": "2026-10-15T01:19:51.713968+00:00",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "unifiedSession": 42543,
+      "status": "live-full-command-prefix-passed-integration-in-progress",
+      "observedUnits": 4594,
+      "observedUnitFiles": 455,
+      "observedRuntime": 346,
+      "observedRuntimeFiles": 60,
+      "previouslyFailedCueChecks": 5,
+      "previouslyFailedCueChecksNow": "passed unchanged in full run with fresh isolated cache",
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress1.log",
+        "bytes": 89846,
+        "sha256": "sha256:d05e32c1dc778b67d84970fbfaed5a38b8fc97b57ef2b3490f7f60dab0b0a8fc"
+      },
+      "qualification": "Observed prefix only. Full aggregate/render matrix/benchmark not passed or completed."
+    },
+    {
+      "observedUtc": "2026-10-15T01:22:26.181142+00:00",
+      "unifiedSession": 42543,
+      "status": "live-browser-render-matrix-after-all-initial-tiers-passed",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "units": 4594,
+      "runtime": 346,
+      "integration": 324,
+      "python": 14,
+      "completedFirstBrowserGroups": [
+        "soundtrack",
+        "composition-media",
+        "composition-alpha"
+      ],
+      "latestObservedGroup": "composition-output",
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress2.log",
+        "bytes": 109974,
+        "sha256": "sha256:32e59dd5fd1907acfbde7f58cc9a356e1103f9c1e711ee2c4200910ba0951bd6"
+      },
+      "scope": "Observed prefix only; remaining complete render matrix/benchmark and actual full terminal stay open."
+    },
+    {
+      "observedUtc": "2026-10-15T02:09:21.539989+00:00",
+      "unifiedSession": 42543,
+      "status": "live-full-command-exact-preorder-prefix-not-terminal",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "expectedPackageScriptInvocations": 116,
+      "observedScriptInvocations": 63,
+      "exactExpectedPreorderPrefix": true,
+      "latestObservedGroup": "test:browser:composition-lighting",
+      "nextPlannedGroups": [
+        "test:browser:composition-shapes",
+        "test:browser:composition-webgl-export",
+        "test:browser:composition-exposure",
+        "test:browser:composition-effects",
+        "test:browser:composition-mesh"
+      ],
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress3.log",
+        "bytes": 3082142,
+        "sha256": "sha256:dd33fef6d7d7928c0395d76d7838f035faa08ffcc58633cb0222bf750fa0cb1c"
+      },
+      "qualification": "Counts include parent aliases and do not represent a completion percentage or passed-suite total. Latest group is only launched; aggregate/benchmark remain unpassed. Actual specific42543 handle was independently polled live this turn.",
+      "rawCommandTreeSnapshot": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress3.json",
+        "bytes": 33816,
+        "sha256": "sha256:aa8ee7c65211919ec6652a7391a79b3a005f330a32a2f25cbdfec7ac5664be95"
+      }
+    },
+    {
+      "observedUtc": "2026-10-15T03:42:24.048411+00:00",
+      "unifiedSession": 42543,
+      "status": "live-command-exact-prefix-cinematic-adapter-in-progress-not-terminal",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "expectedPackageScriptInvocations": 116,
+      "observedScriptInvocations": 75,
+      "exactExpectedPreorderPrefix": true,
+      "latestObservedGroup": "test:browser:composition-cinematic-adapter",
+      "nextPlannedGroups": [
+        "test:browser:composition-typography-adapter",
+        "test:browser:composition-provider-typography",
+        "test:browser:composition-program",
+        "test:browser:composition-inspector",
+        "test:browser:composition-builder"
+      ],
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress4.log",
+        "bytes": 3317744,
+        "sha256": "sha256:06f34361fdcf23e16f5f6cd120a7a594bb36d5629b8665c1124b34872faba22b"
+      },
+      "scope": "Launch/header counts include aliases; not passed-suite totals or a completion percentage. Completed preceding groups retain CE6-P WebGL timing deferrals; aggregate/benchmark remain open. Specific42543 independently observed live this turn. No concurrent build/render/export started.",
+      "rawCommandTreeSnapshot": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress4.json",
+        "bytes": 34438,
+        "sha256": "sha256:0e7c7e5167cb515674b0964f304b1ccc3649f759460369c2595e79ca4d36f627"
+      }
+    },
+    {
+      "observedUtc": "2026-10-15T04:17:50.532559+00:00",
+      "unifiedSession": 42543,
+      "status": "live-exact-full-command-prefix-cinematic-group-complete-not-full-terminal",
+      "sourceCommit": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+      "expectedPackageScriptInvocations": 116,
+      "observedScriptInvocations": 81,
+      "exactExpectedPreorderPrefix": true,
+      "latestObservedGroup": "test:browser:composition-depth",
+      "nextPlannedGroups": [
+        "test:browser:native3d-depth",
+        "test:browser:native3d-pbr-resources",
+        "test:browser:native3d-pbr-world",
+        "test:browser:native3d-pbr-observation",
+        "test:browser:native3d-pbr-composition"
+      ],
+      "completedCinematicAdapter": {
+        "rows": 46,
+        "forwardReferenceFrames": 5520,
+        "reverseReferenceFrames": 5520,
+        "maximumPixelDelta": 2,
+        "requiredCanvasTimingRowsPassed": 23,
+        "twoByteIdenticalExportsRelocationOverwriteCases": 46,
+        "existingCE6PWebGLTimingDeferrals": [
+          {
+            "fixture": "cinematic/threshold-push",
+            "ratio": 2.0581648335006437
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-grain",
+            "ratio": 2.0901940219390576
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-glow",
+            "ratio": 2.47226029070764
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-directional",
+            "ratio": 2.190969467668532
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-focus",
+            "ratio": 2.5263052074274572
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-sweep",
+            "ratio": 1.697906507245336
+          },
+          {
+            "fixture": "cinematic/threshold-push/effects-active-stack",
+            "ratio": 1.5525174429900745
+          },
+          {
+            "fixture": "cinematic/threshold-push-alternate",
+            "ratio": 2.062468286656648
+          },
+          {
+            "fixture": "cinematic/lateral-track",
+            "ratio": 2.0980031511729083
+          },
+          {
+            "fixture": "cinematic/lateral-track-alternate",
+            "ratio": 2.084086796622924
+          },
+          {
+            "fixture": "cinematic/rising-vista",
+            "ratio": 1.7842515120715559
+          },
+          {
+            "fixture": "cinematic/detail-to-world",
+            "ratio": 1.6144593222322146
+          },
+          {
+            "fixture": "cinematic/curved-approach",
+            "ratio": 1.856929472351517
+          },
+          {
+            "fixture": "cinematic/dolly-zoom-tension",
+            "ratio": 1.3254554401236516
+          },
+          {
+            "fixture": "cinematic/dolly-zoom-tension-alternate",
+            "ratio": 1.34259450389991
+          },
+          {
+            "fixture": "cinematic/layered-parallax",
+            "ratio": 2.129204812699139
+          },
+          {
+            "fixture": "cinematic/layered-parallax-alternate",
+            "ratio": 2.1312697933742304
+          },
+          {
+            "fixture": "cinematic/vertical-rising-vista",
+            "ratio": 1.7222374537697338
+          }
+        ],
+        "webglPerformancePassInferred": false
+      },
+      "immutableLogPrefix": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress5.log",
+        "bytes": 3347916,
+        "sha256": "sha256:b825ce40d8ab735f54c4d2d91b4ac24dc610d7f9ec3bf78d0424b96394e2b664"
+      },
+      "qualification": "Observed header counts include aliases and are not completion percentages or passed-suite totals. The cinematic group completed correctness/required Canvas timing/export controls;18 existing WebGL timing deferrals remain. Specific42543 confirmed live; full aggregate/benchmark/archive/installed/whole reviews remain open.",
+      "rawSnapshot": {
+        "path": "/private/tmp/still-shift-ms3-final91-progress5.json",
+        "bytes": 14349,
+        "sha256": "sha256:1314fd8d05f33386793f476256fde0d7adb525a822f49485dcd032bc2ea3ce81"
+      }
+    }
+  ],
+  "terminal": {
+    "actualObservedUnifiedExitCode": 1,
+    "rawReceipt": {
+      "path": "/private/tmp/still-shift-ms3-final91-full1.json",
+      "bytes": 1421,
+      "sha256": "sha256:2802571c3e391e6975132045201441ede682aa63657ced6a01656cd4bf446a82"
+    },
+    "sourceInputsExact": true,
+    "sourceHoldActualExitCode": 0,
+    "elapsedSeconds": 21672.060231375042,
+    "observedScriptHeaders": 114,
+    "exactExpectedPreorderPrefix": true,
+    "baselineItems": 176,
+    "baselineFrames": 36061,
+    "remainingNotRun": [
+      "test:browser:mechanism-production-recovery",
+      "benchmark"
+    ],
+    "failure": "tests/browser/mechanism-production-native.ts:384 expected3 clean first passes; actual2 plus1 unverified because S1 caption revision lacks classification. All3 current products independently verify.",
+    "staleAssertionDoesNotChangeOriginalPilotMetrics": true,
+    "failedArtifactsRoot": "/private/tmp/still-shift-ms3-production-native-MBtvGa",
+    "softwareOrBenchmarkPassInferred": false
+  }
+}

@@ -158,9 +158,28 @@ it("speech caption eligibility requires measured intact copy throughout the cue 
   );
 });
 
+it("admits an unchanged speech cue ending in a partial last output frame and rejects missing last-frame audio", () => {
+  const { comp, policy } = speechFixture();
+  comp.frameCount = 33;
+  const audio = comp.layers[1]!;
+  const asset = comp.assets.find((entry) => entry.id === "speech")!;
+  if (audio.type !== "audio" || asset.type !== "audio") throw Error("fixture");
+  audio.outPoint = 33;
+  asset.sampleCount = 52800 - 1;
+  audio.sourceEndSample = asset.sampleCount;
+  expect(
+    analyzeCompositionQuality(comp, policy).speechCaptions?.[0]?.eligible,
+  ).toBe(true);
+  audio.sourceEndSample = 32 * 1600;
+  expect(() => analyzeCompositionQuality(comp, policy)).toThrow(
+    /pinned narration samples/,
+  );
+});
+
 function proofFixture() {
   const proof: CompositionPhysicalProofHold = {
     id: "inside",
+    sourceStartFrame: 0,
     purpose: "Compare aligned physical contact faces",
     layer: "plate",
     start: 0,
@@ -291,5 +310,36 @@ it("proof declarations require native ordered complete capture evidence", () => 
   proof.frames[2]!.frame = 9;
   expect(() => analyzeCompositionQuality(comp, policy)).toThrow(
     /complete ordered samples/,
+  );
+});
+
+it("uses an explicit whole-sequence offset for a later proof shot and rejects a shifted source clock", () => {
+  const { comp, policy, proof } = proofFixture();
+  proof.start = 30;
+  proof.sourceStartFrame = 30;
+  proof.frames = proof.frames.slice(30);
+  Object.assign(comp.layers[0]!, {
+    inPoint: 30,
+    startFrame: 30,
+    sourceInFrame: 30,
+  });
+  policy.pixelHashes = Array.from({ length: 90 }, (_, f) =>
+    f < 30 ? "frame-" + f : "same",
+  );
+  const report = analyzeCompositionQuality(comp, policy);
+  expect(report.physicalProofHolds?.[0]).toMatchObject({
+    measuredFrames: 60,
+    stationaryIntervals: [{ start: 30, end: 90 }],
+  });
+  expect(report.diagnostics).toContainEqual(
+    expect.objectContaining({
+      code: "frozen-pixels",
+      severity: "warning",
+      classification: "declared-physical-proof-hold",
+    }),
+  );
+  comp.layers[0]!.startFrame = 29;
+  expect(analyzeCompositionQuality(comp, policy).diagnostics).toContainEqual(
+    expect.objectContaining({ code: "frozen-pixels", severity: "error" }),
   );
 });

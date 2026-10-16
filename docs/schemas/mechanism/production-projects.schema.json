@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-production-projects-1"
+    },
+    "id": { "type": "string", "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$" },
+    "projects": {
+      "minItems": 1,
+      "maxItems": 300,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "pattern": "^[A-Za-z0-9][A-Za-z0-9_-]{0,79}$"
+          },
+          "question": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "familyPath": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "cuePath": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "qaPath": { "type": "string", "minLength": 1, "maxLength": 2048 }
+        },
+        "required": ["id", "question", "familyPath", "cuePath"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": ["schemaVersion", "id", "projects"],
+  "additionalProperties": false
+}

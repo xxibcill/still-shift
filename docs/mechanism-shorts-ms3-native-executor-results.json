@@ -1,0 +1,335 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "status": "native-executor-scoped-proof-passed-in-stages",
+  "baseCommit": "31ec031c",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/package.json",
+      "bytes": 23399,
+      "sha256": "sha256:04223ca4f1c0af0b434e3d170c7b278a5c095cc9626db9a4bc9f6cc4fb6a39a5"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+      "bytes": 4277,
+      "sha256": "sha256:72df29ec683a5a15e5b80ddf5085954dc2f630bcd4fde52d7a8e2795ec2d1d1a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cue-lifecycle.ts",
+      "bytes": 15617,
+      "sha256": "sha256:2e38694fc443c6af082b0eb410074ab6f1250e2ded79236ec1e9122f2f2f466c"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/cue-plate-lifecycle.ts",
+      "bytes": 26351,
+      "sha256": "sha256:62ae7a6588312407d2e38ddf4779acba1b02f8b2242d1d94a462cf8276581e0e"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-native-executor.ts",
+      "bytes": 15947,
+      "sha256": "sha256:3fc2fc704b0e73a095fafe9b1613f3ecfb710e1de81f4db134d18a3ee3a42549"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-native-identity.ts",
+      "bytes": 4178,
+      "sha256": "sha256:343e4052e683d26c12275c9e916c4f43443a0f3b0782add47156436fe4f1d178"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-native-inputs.ts",
+      "bytes": 2787,
+      "sha256": "sha256:160927f9e6153e7295bdf26fb7b2bca09a3b2ce903e74225b07d29b69df38b1b"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-output-check.ts",
+      "bytes": 6938,
+      "sha256": "sha256:bde5e9e08c9aa677a214f7d62a62ba99b6c8a5fdb2d74e7de2fcfd7d77cdf957"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/browser/mechanism-production-native.ts",
+      "bytes": 7122,
+      "sha256": "sha256:7714872114792b4b9d55edae9438175fee0daa41d63181d86a3218dffe8a63e2"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-native-counters.test.ts",
+      "bytes": 1957,
+      "sha256": "sha256:aedf3e24b6aeaf48c326d2e2fead65641067ed6d23e567bb0a12a946c7589acd"
+    }
+  ],
+  "proof": {
+    "owningSession": 71407,
+    "actualExitCode": 0,
+    "command": "pnpm test:browser:mechanism-production-native",
+    "root": "/private/tmp/still-shift-ms3-production-native-gNhNdD",
+    "status": "passed",
+    "families": ["tape-hook", "cable-tie", "clothespeg"],
+    "distinctSceneHashes": 3,
+    "completeDependencyPinsPerItem": 6,
+    "executions": 4,
+    "outputs": 4,
+    "decodedFrames": 240,
+    "coldFreshNativeSubmissions": [60, 60, 60],
+    "completedProductReuseAdditionalExecutions": 0,
+    "captionEditAdditionalExecutions": 1,
+    "captionEditFreshNativeSubmissions": 0,
+    "captionVideoChanged": true,
+    "captionDecodedAudioExact": true,
+    "otherQADimensions": "five unreviewed; no reviewed-ready product",
+    "source": "synthetic engineering PCM",
+    "sharedParent": {
+      "foreignBytes": 1024,
+      "retainedStateBytesPerReturnedCall": 67108864,
+      "afterParentDisposeReservations": 0
+    }
+  },
+  "independentAudit": {
+    "status": "passed",
+    "outputs": 4,
+    "decodedFrames": 240,
+    "pins": 54,
+    "method": "independent ffprobe plus every decoded RGBA frame and complete float32 PCM; product/dependency file byte/hash checks",
+    "result": {
+      "path": "/private/tmp/still-shift-ms3-native3-audit1.json",
+      "bytes": 39126,
+      "sha256": "sha256:d4794c435ee589fb704596e4e2ebb67112e18c751e54b7fa8a3372c5bc165f1c"
+    }
+  },
+  "implementation": [
+    "Actual five-package runtime/native appearance/dependency-lock/toolchain/Node/FFmpeg code and profile identities rechecked before and after work.",
+    "Complete current family/cue/scene/font/narration/sound dependency snapshots and immutable queue/CAS identity.",
+    "Existing shared native capture, verified content-addressed cache, current cached overlay/audio render/check, measured worker/aggregate fresh-native calls. Rejected cache directories and reasons are retained.",
+    "Complete bounded streaming RGBA/PCM decode with shape/frame/sample checks, artifact-specific technical QA; all other dimensions remain unreviewed.",
+    "Shared Node parent passed through compilation/capture/render/check/decode; queue result admission and foreign lease behavior retained."
+  ],
+  "retainedFailures": [
+    {
+      "stage": "build1",
+      "actualExitCode": 2,
+      "reason": "Wrong sequence field and subprocess option names, and exact-optional hash property; corrected to existing APIs."
+    },
+    {
+      "stage": "decode-wiring",
+      "reason": "Inline patch substring failure after creating decoder, before executor wiring/checks; corrected with retained script."
+    },
+    {
+      "stage": "build4",
+      "actualExitCode": 2,
+      "reason": "Browser fixture attempted an internal hash export; uses first actual queue manifest hash for CAS."
+    },
+    {
+      "stage": "browser1",
+      "actualExitCode": 1,
+      "session": 2200,
+      "root": "/private/tmp/still-shift-ms3-production-native-IrzXSY",
+      "reason": "Fixture omitted family argument, producing three tape fixtures; counter reader also applied cached-only result schema to original native capture. It is not three-family coverage. Fixture now asserts actual family and distinct source hashes; reader checks the actual statistics envelope. Cached-only zero-submit validator stays unchanged."
+    },
+    {
+      "stage": "counter1",
+      "reason": "Three fixture failures from wrong statistics version/cache fields; fixtures corrected to actual existing envelope, parser retained."
+    },
+    {
+      "stage": "owning1-observation",
+      "session": 49709,
+      "reason": "Completed log shows package output and 42 tests passed, but final shell tool response was truncated and session no longer available. No recovered terminal exit claimed; fresh gate1 receipt supplies terminal proof."
+    }
+  ],
+  "verification": {
+    "counter2TestsPassed": 3,
+    "build6ActualExitCode": 0,
+    "lint5ActualExitCode": 0,
+    "gate1": {
+      "status": "passed",
+      "startedUtc": "2026-10-12T20:25:33.785719+00:00",
+      "pid": 55130,
+      "commands": [
+        {
+          "command": ["pnpm", "build:package"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native3-gate1-0.log"
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native3-gate1-1.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/mechanism-production-report.test.ts",
+            "tests/unit/mechanism-production-queue.test.ts",
+            "tests/unit/mechanism-production-native-counters.test.ts",
+            "tests/runtime/mechanism-production-queue-recovery.test.ts"
+          ],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-native3-gate1-2.log"
+        }
+      ],
+      "endedUtc": "2026-10-12T20:25:49.801119+00:00"
+    },
+    "fast1": {
+      "status": "passed",
+      "command": "pnpm check:fast",
+      "sourceCommit": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b",
+      "startedUtc": "2026-10-12T20:27:45.981591+00:00",
+      "pid": 58655,
+      "inventory": "/private/tmp/still-shift-ms3-native3-inputs1.json",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-12T20:29:59.513348+00:00",
+      "id": "native3-fast1",
+      "session": 51688,
+      "unitTests": 4404,
+      "unitFiles": 432,
+      "unitDurationSeconds": 68.04,
+      "heldInputFiles": 2659,
+      "heldInputBytes": 120986008,
+      "pins": [
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-fast1.log",
+          "bytes": 41715,
+          "sha256": "sha256:c52594ecd7c274ae3630c9be5e1aa9e16d9a63347c4fce9bcf24a8bbb677fadd"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-fast1-receipt.json",
+          "bytes": 360,
+          "sha256": "sha256:b45c6a659f3e48b2736ea3efa8ca113329d5eb387d64f61af887272aa4376aba"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-native3-inputs1.json",
+          "bytes": 453669,
+          "sha256": "sha256:4b7bf4d88967f1536d6870eafccc4c8f2473a9dc5b3c8b2dc7d6c89860b4a19e"
+        }
+      ],
+      "qualification": "Complete fast tier on efa50574; earlier browser2 has its own retained exact runtime/artifact bindings. Final MS3 full/archive/installed and pilot remain open."
+    }
+  },
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-boundaries1.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-browser1.log",
+      "bytes": 892,
+      "sha256": "sha256:2675e750637f4cd090ce27629274d15043f352068f95d3d58fcfe7cf77d75962"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-browser2.log",
+      "bytes": 387,
+      "sha256": "sha256:3a1f5d45e2b143465f139e34abb24f12e903a16d3ed92bc0c930dd2c9319ab7d"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-build1.log",
+      "bytes": 1368,
+      "sha256": "sha256:f81a890f1a1946edbb0edfedf2a5a80ad23960c6896fd5f8bf14bb24798bdd0f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-build2.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-build3.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-build4.log",
+      "bytes": 328,
+      "sha256": "sha256:b0cef0b1e58bd1b47e828dc6bbf3bd072ac7c6af3c034ea0980b0243e3e59b1d"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-build5.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-build6.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-counter1.log",
+      "bytes": 6051,
+      "sha256": "sha256:bcbc6bb178ef4494527122f7ec5c72ef703c8158faaa438e2db5ef04e02b3b38"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-counter2.log",
+      "bytes": 326,
+      "sha256": "sha256:14f60d8f6b83cfa4aab1fbfb9b83b0b960cd4dc6f9cc8e8a4f178b2de35d4ed2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-gate1-0.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-gate1-1.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-gate1-2.log",
+      "bytes": 698,
+      "sha256": "sha256:0104ddec731fd9167b9c9075ddbef50a67ba66b8d5b554d09d84e11f3ae4f7cb"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-lint1.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-lint2.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-lint4.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-lint5.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-owning1.log",
+      "bytes": 700,
+      "sha256": "sha256:912171c0daca3999dda738942b171d2b94ac1667b0940ef197de48412b46a643"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-package-build1.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/run.json",
+      "bytes": 12946,
+      "sha256": "sha256:ad9fbacef2580f151a14ba8d16d7812f731ed4826b0a549ed3be3efe97717920"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/progress.json",
+      "bytes": 12602,
+      "sha256": "sha256:61abf4be75f2bd9b181493688ad2b5829efb4a231a962925c190e553bb7a3e95"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-native3-gate1-receipt.json",
+      "bytes": 957,
+      "sha256": "sha256:5e6ac015f7b50686d93aa74a2b51796fa7a103267710404d033fb8f3f43a84bd"
+    }
+  ],
+  "remaining": [
+    "Actual native interruption/cancel/corrupt/recovery/relocation proof; current absolute receipt locators intentionally reject relocation.",
+    "Registered bounded semantic QA, grouped warnings, production evidence/handoff, scoped repair and automatic MS1 seeded overlap.",
+    "All ten frozen questions, five assets/two behaviors, genuine inputs, factual/design/visual/listening review and real pilot measurements.",
+    "Report CLI/capability agreement, full current 103-group gate, exact archive/isolated installed proof and MS3 PR."
+  ],
+  "qualification": "Engineering adapter proof only. No genuine narration, whole glyph, mechanical, factual, continuous-motion, listening, human or pilot acceptance; no spending/publishing/merging/Actions.",
+  "committedNativeSource": "efa5057440c1c95a7ac7aa263cc48f50d9a2c41b"
+}

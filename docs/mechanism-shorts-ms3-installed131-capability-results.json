@@ -1,0 +1,397 @@
+{
+  "schemaVersion": "ms3-current-installed-capability-docs131-1",
+  "recordedUtc": "2026-10-15T17:33:23.875Z",
+  "status": "passed-current-installed-production-media-discovery-generated-markdown-25-schemas-and-3-guide-pins",
+  "installedDiscovery": {
+    "path": "/private/tmp/still-shift-ms3-package93-installed-discovery1.json",
+    "bytes": 14140,
+    "sha256": "sha256:1944bb99a6a7be0e3c76dc8f675163477118668012a2a58125b2633d1a3afc5a"
+  },
+  "installedPackage": {
+    "path": "/private/tmp/still-shift-ms3-package93-results1.json",
+    "bytes": 7111,
+    "sha256": "sha256:2d2a15b248df5a73ef1bd470882964f5788adef2c49cf910ba221c0920f2bfb5"
+  },
+  "publicModuleAndCliCapabilitiesExactlyEqual": true,
+  "generatedFormattedMarkdownExact": true,
+  "generatedMarkdown": {
+    "path": "/private/tmp/still-shift-ms3-package93-consumer/node_modules/still-shift/source/docs/mechanism-production-capabilities.md",
+    "bytes": 10548,
+    "sha256": "sha256:abb54cc4389719b810eeab21847ce4243ec808c4cef17239f177075d58df6c43"
+  },
+  "schemas": [
+    {
+      "id": "blender-native-capture-job",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-native-capture-job.schema.json",
+        "bytes": 4717,
+        "sha256": "sha256:31206c22283c969910fd0ddc1db2f80b2ffa9d53390681102d992cb618f9775c"
+      }
+    },
+    {
+      "id": "blender-episode-source",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-episode-source.schema.json",
+        "bytes": 2455,
+        "sha256": "sha256:c8ecc1bf21145d9a3be5a72222790a6603203c716478a4ef40ac6b205f6e08c2"
+      }
+    },
+    {
+      "id": "blender-episode-plan",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-episode-plan.schema.json",
+        "bytes": 9035,
+        "sha256": "sha256:baa55eeacb13cc1a3a4d12518aed887571c13f73d07ba34340a85d38ff04b98d"
+      }
+    },
+    {
+      "id": "blender-episode-plates",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-episode-plates.schema.json",
+        "bytes": 4722,
+        "sha256": "sha256:e7353657d2a785b3a3898e4ad90247d8838d568cd367b8bc1125f5794ed69a77"
+      }
+    },
+    {
+      "id": "blender-production-rendered-visual",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-production-rendered-visual.schema.json",
+        "bytes": 32521,
+        "sha256": "sha256:15d3ab8b07c1a2909b87f39ea7eba6934c44252076266dfda1926f4ac9db4837"
+      }
+    },
+    {
+      "id": "blender-production-qa-plan",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-production-qa-plan.schema.json",
+        "bytes": 9748,
+        "sha256": "sha256:79665f9f125315a4cf8e295f6e567e54c141d4f31408b65498ed169639a0a16d"
+      }
+    },
+    {
+      "id": "blender-production-qa-facts",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-production-qa-facts.schema.json",
+        "bytes": 13747,
+        "sha256": "sha256:2bb5bc1061d85a4f4abf6d2b994b484f24eed9166b62ca8774f54feb4948dbfc"
+      }
+    },
+    {
+      "id": "blender-production-queue",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-production-queue.schema.json",
+        "bytes": 4127,
+        "sha256": "sha256:0a004d796699293007fd4ac49a4d68d17ad58648c5a6a3a7492fda773c196b66"
+      }
+    },
+    {
+      "id": "blender-production-product",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-production-product.schema.json",
+        "bytes": 16974,
+        "sha256": "sha256:5234497e59efab89aff1500892357d56e37517360f8801c3954ef1d9c7d86c89"
+      }
+    },
+    {
+      "id": "blender-production-episode-report",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-production-episode-report.schema.json",
+        "bytes": 12993,
+        "sha256": "sha256:2307c0996aeafbe93998cb1c7433a5ba6ef2e2d42fe7166859a44256c42c79e0"
+      }
+    },
+    {
+      "id": "blender-production-evidence",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/blender-production-evidence.schema.json",
+        "bytes": 13903,
+        "sha256": "sha256:b5eadf93bbf849ada37a64fbdfd3a352d252d388fc6404e3f6b61f555da7cf3d"
+      }
+    },
+    {
+      "id": "production-retry",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-retry.schema.json",
+        "bytes": 654,
+        "sha256": "sha256:e36dd876a4498052761add9d027dbd4ab00481c504e5738af239ef090d19ec67"
+      }
+    },
+    {
+      "id": "production-projects",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-projects.schema.json",
+        "bytes": 1085,
+        "sha256": "sha256:d7325205fffbd92de03228b145708750a1d29cae7b7e314e6d0c7ddc88fa413d"
+      }
+    },
+    {
+      "id": "production-qa-plan",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-qa-plan.schema.json",
+        "bytes": 9451,
+        "sha256": "sha256:320838c7cd512a4fb6a3dfd4c1f51169dfdfcdff4dc7754ea12625b1fa92f685"
+      }
+    },
+    {
+      "id": "production-qa-program",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-qa-program.schema.json",
+        "bytes": 19923,
+        "sha256": "sha256:dce8256fdf312eecea24ff4ecdf894772bf172279879aaee8154e9c3b6df0c64"
+      }
+    },
+    {
+      "id": "production-qa-facts",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-qa-facts.schema.json",
+        "bytes": 13825,
+        "sha256": "sha256:7932d9f35a45125f9e545e9d9ce4e267e670415a49b1eef40a8e16e719c34ddb"
+      }
+    },
+    {
+      "id": "production-evidence",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-evidence.schema.json",
+        "bytes": 16265,
+        "sha256": "sha256:544ba76790a1af6edbab4d474c2107c0062c0e9d57a37434b939efeb2e3a41ab"
+      }
+    },
+    {
+      "id": "production-handoff",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-handoff.schema.json",
+        "bytes": 21304,
+        "sha256": "sha256:27d685e2704bad16a270d883e1f7f67e536898a7f6c7a2528a3177c2cd8d3c3c"
+      }
+    },
+    {
+      "id": "production-report-bundle",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-report-bundle.schema.json",
+        "bytes": 72603,
+        "sha256": "sha256:16e963060dca2d7d51b1c2689861c918d2657caa51724280fe06e5557c07ac7c"
+      }
+    },
+    {
+      "id": "production-queue",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-queue.schema.json",
+        "bytes": 4041,
+        "sha256": "sha256:f863d1acb02674a86279d056a4f420de93185f7f2e9827b146a7c832b43b7a27"
+      }
+    },
+    {
+      "id": "production-queue-state",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-queue-state.schema.json",
+        "bytes": 12481,
+        "sha256": "sha256:518415bc0ed9472fbe4e991b03542b5560746f62d6defac7cb77934ad7fdc82c"
+      }
+    },
+    {
+      "id": "production-episode-report",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-episode-report.schema.json",
+        "bytes": 12935,
+        "sha256": "sha256:c7f6cb58b75e3c9eed7bc4eddba5e45e2cd284defde1f6d8d0c4ad7c4c51f167"
+      }
+    },
+    {
+      "id": "production-cohort-report",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-cohort-report.schema.json",
+        "bytes": 10935,
+        "sha256": "sha256:a5ca347801e383fc4d7ee944f2668b333dce3c4346cbad4cf7b201ddc9b44fe7"
+      }
+    },
+    {
+      "id": "production-qa",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/production-qa.schema.json",
+        "bytes": 2894,
+        "sha256": "sha256:34036f0f30485593200dd6e32c5f3b8616b4a8e236c54cedbf312f3647c17dfc"
+      }
+    },
+    {
+      "id": "semantic-registration",
+      "referenceLocation": "source-checkout-not-bundled-schema-file",
+      "file": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/semantic-registration.schema.json",
+        "bytes": 1842,
+        "sha256": "sha256:14dc606e379dba44698f5208054bc44d2f45ae753a27ba45e94da82dd9ad6cf0"
+      }
+    }
+  ],
+  "guides": [
+    {
+      "path": "/private/tmp/still-shift-ms3-package93-consumer/node_modules/still-shift/source/docs/mechanism-production-queue.md",
+      "bytes": 12295,
+      "sha256": "sha256:19528a0aae28822329ef1adcb5963d21f9e104dc49f76dbd1c940f6159d556a1"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-package93-consumer/node_modules/still-shift/source/docs/mechanism-production-report-command.md",
+      "bytes": 4139,
+      "sha256": "sha256:e0ad57f825e353165bcd97b608b37ff0d2816853f10233a01f300c559a53eb1e"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-package93-consumer/node_modules/still-shift/source/docs/mechanism-blender-episode.md",
+      "bytes": 18750,
+      "sha256": "sha256:20411f08fb0e3be5e75f02c0584958b2731bd54d6fdae13d778c8b93f4fe216e"
+    }
+  ],
+  "retainedFailedProbe": "/private/tmp/still-shift-ms3-installed130-capability-terminal1.json",
+  "qualification": "Schema JSON references are checked against the held source checkout; these JSON documents are not bundled archive members. Uses actual installed public production registry and installed media module. Formatting uses the pinned source formatter; no source generation or package mutation. Three prose guides match previously reviewed source96 exactly. Historical evidence links refer to the repository; this is not a new claim that all historical evidence is bundled. Installed execution/whole reviews remain separate.",
+  "actualTerminal": {
+    "path": "/private/tmp/still-shift-ms3-installed131-capability-terminal1.json",
+    "bytes": 697,
+    "sha256": "sha256:abff895070c75c6c625371946177d7d9fd30a5086bb3c119d538bd9076db5394"
+  },
+  "actualToolExitCode": 0,
+  "retainedCopies": [
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-installed131-capability-terminal1.json",
+        "bytes": 697,
+        "sha256": "sha256:abff895070c75c6c625371946177d7d9fd30a5086bb3c119d538bd9076db5394"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/still-shift-ms3-installed131-capability-terminal1.json",
+        "bytes": 697,
+        "sha256": "sha256:abff895070c75c6c625371946177d7d9fd30a5086bb3c119d538bd9076db5394"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-installed131-capability-audit.json",
+        "bytes": 12308,
+        "sha256": "sha256:3d0b940067372fbbfa6c52ede163589517cbd9749c785c9ffdd94629b04c4198"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/still-shift-ms3-installed131-capability-audit.json",
+        "bytes": 12308,
+        "sha256": "sha256:3d0b940067372fbbfa6c52ede163589517cbd9749c785c9ffdd94629b04c4198"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-installed131-capability-audit.mjs",
+        "bytes": 3661,
+        "sha256": "sha256:b5ea52bfb9721a182198f426459e02d7c165db6eeef57ca3c6daf0f65b7ead68"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/still-shift-ms3-installed131-capability-audit.mjs",
+        "bytes": 3661,
+        "sha256": "sha256:b5ea52bfb9721a182198f426459e02d7c165db6eeef57ca3c6daf0f65b7ead68"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-installed130-capability-terminal1.json",
+        "bytes": 1555,
+        "sha256": "sha256:76680cf1de030b9364acf37063e64a4c3d9f32fba159a7e869286753a9c4c29d"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/still-shift-ms3-installed130-capability-terminal1.json",
+        "bytes": 1555,
+        "sha256": "sha256:76680cf1de030b9364acf37063e64a4c3d9f32fba159a7e869286753a9c4c29d"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-installed130-capability-audit.mjs",
+        "bytes": 3346,
+        "sha256": "sha256:13ae1735395eee38c7700d21579c41f67eda92b859d97d2d32417767268f9e3e"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/still-shift-ms3-installed130-capability-audit.mjs",
+        "bytes": 3346,
+        "sha256": "sha256:13ae1735395eee38c7700d21579c41f67eda92b859d97d2d32417767268f9e3e"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-package93-installed-discovery1.json",
+        "bytes": 14140,
+        "sha256": "sha256:1944bb99a6a7be0e3c76dc8f675163477118668012a2a58125b2633d1a3afc5a"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/still-shift-ms3-package93-installed-discovery1.json",
+        "bytes": 14140,
+        "sha256": "sha256:1944bb99a6a7be0e3c76dc8f675163477118668012a2a58125b2633d1a3afc5a"
+      },
+      "exact": true
+    },
+    {
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-guide96-static1.json",
+        "bytes": 5196,
+        "sha256": "sha256:107e83819c9225ae7e0075ec5d9f9ec47b4dc9b5f12efd8ff83ae96660c59909"
+      },
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/still-shift-ms3-guide96-static1.json",
+        "bytes": 5196,
+        "sha256": "sha256:107e83819c9225ae7e0075ec5d9f9ec47b4dc9b5f12efd8ff83ae96660c59909"
+      },
+      "exact": true
+    }
+  ],
+  "currentSelectedSourceHold": {
+    "actualExitCode": 0,
+    "result": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2793,
+      "bytes": 122415742
+    }
+  },
+  "wholePilotOrHumanAcceptance": false,
+  "currentInstalledAllTenLifecycle": "running56598; not passed",
+  "durableIndex": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/index.json",
+    "bytes": 16896,
+    "sha256": "sha256:6b191f21d36b8c9e4e4cbded27470071c9618dd6c0e5dfded90ca94c5e5d49e1"
+  },
+  "completeSource107DiscoveryParity136": {
+    "comparison": {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-installed131-capabilities/comparison136/index.json",
+      "bytes": 3627,
+      "sha256": "sha256:45f708c4a7ba77548645ae4a30cfd3d015be29e0938b45dcbbd827aa0c413080"
+    },
+    "completeBytesExact": 14140,
+    "compactItems": 32,
+    "compactTruncated": false,
+    "installedActualDiscoveryExitCode": 0,
+    "recordedSource107ActualExitCode": 0,
+    "generalMediaImportRenderLimitsIncluded": true,
+    "recorderPreparationFieldLookupFailureRetained": true
+  }
+}

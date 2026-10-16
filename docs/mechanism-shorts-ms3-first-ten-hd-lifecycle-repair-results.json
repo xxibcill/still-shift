@@ -1,0 +1,159 @@
+{
+  "schemaVersion": "ms3-first-ten-hd-lifecycle-repair-start-results-1",
+  "date": "2026-10-14",
+  "status": "original-run-report-resume-complete-three-input-repair-revision-live",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "heldSource": {
+    "status": "exact",
+    "files": 2777,
+    "bytes": 122189105
+  },
+  "originalLifecycle": {
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-blender47-whole-new1-receipt.json",
+      "bytes": 3935,
+      "sha256": "sha256:2b3028c827ddc87477cbf8113380da41e076b87db2d3102d36063ed3c6a053b9"
+    },
+    "actualExitCode": 0,
+    "steps": [
+      {
+        "step": "queue",
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "privateInputsExact": true,
+        "seconds": 3.2302756670396775
+      },
+      {
+        "step": "run",
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "privateInputsExact": true,
+        "seconds": 6062.666816707933
+      },
+      {
+        "step": "report",
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "privateInputsExact": true,
+        "seconds": 460.12936966703273
+      },
+      {
+        "step": "resume",
+        "actualExitCode": 0,
+        "heldEngineInputsExitCode": 0,
+        "privateInputsExact": true,
+        "seconds": 384.10151666612364
+      }
+    ],
+    "state": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/state-full-new47.json",
+      "bytes": 10368,
+      "sha256": "sha256:bbbff23be5be6491a5246071e2265f62fb7fad60a15ecf2e213f41e349f76e8e"
+    },
+    "report": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/report-full-new47.json",
+      "bytes": 159882,
+      "sha256": "sha256:1d0591bb6e7e43c11d0bfea81b2b58559028d019d2b9e127c751158c43143ea7"
+    },
+    "resume": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/resume-full-new47.json",
+      "bytes": 10368,
+      "sha256": "sha256:c3c11a739141cfad65c3e1a7ee0e04b5be2a664e340b6794d3220680aff34e7a"
+    },
+    "immutableOriginalJournalSnapshot": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/original-full47-final-state-before-repairs.json",
+      "bytes": 10368,
+      "sha256": "sha256:c3c11a739141cfad65c3e1a7ee0e04b5be2a664e340b6794d3220680aff34e7a"
+    },
+    "tenTransactionsComplete": true,
+    "QAAndWholeAcceptance": "separate; unresolved findings and UNREVIEWED remain"
+  },
+  "staticCandidateAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender54-static-audit1.json",
+      "bytes": 59617,
+      "sha256": "sha256:70f8ec7b6ccb3cfb2a8e9342dafdf9b313349e726cfaf3e88299425db9dc12fa"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender54-static-audit1.py",
+      "bytes": 1716,
+      "sha256": "sha256:38ba79638838c0169dca46caad2c2330481ca3ec45e2b89b315d7333d2df76a5"
+    },
+    "frozenPixelFindings": 183,
+    "exactNativeStaticCandidates": 183,
+    "scope": "Current authenticated observation and native PNG identity across each complete located frozen-pixel window. Does not approve hold purpose, narration event timing, actual text/paint or encoded pixels, visibility/contact, continuous viewing or listening. No QA finding is suppressed or resolved."
+  },
+  "repairRevision": {
+    "id": "actual-first-ten-full-HD47",
+    "revision": 1,
+    "baseManifestHash": "sha256:207ad7ed59185cde92f80433922d73b72bb956a1a98eff4a5898bd1e343c6284",
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-repairs53.json",
+      "bytes": 32675,
+      "sha256": "sha256:3928f64fc5e06d219bade1aa95da19b459612bbf40a7b3e974d33891ca0b52b7"
+    },
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-all10-repairs53-cli.json",
+      "bytes": 2349,
+      "sha256": "sha256:84bd38fab43802933eb385ac06b4ef48677e03e08439bf61be1e410b39e18935"
+    },
+    "executor": {
+      "path": "/private/tmp/still-shift-ms3-blender53-whole-repairs1.py",
+      "bytes": 3966,
+      "sha256": "sha256:2c2861fd6199161e36a3b6ec750712532e182e9d1fb67cf2c810029cfcde7568"
+    },
+    "creationStep": {
+      "step": "queue",
+      "actualExitCode": 0,
+      "heldEngineInputsExitCode": 0,
+      "privateInputsExact": true,
+      "seconds": 3.2860094159841537
+    },
+    "changedEpisodes": ["EU-002", "EU-003", "EU-006"],
+    "unchangedEpisodes": [
+      "EU-001",
+      "EU-004",
+      "EU-005",
+      "EU-007",
+      "EU-008",
+      "EU-009",
+      "EU-010"
+    ],
+    "sevenOriginalRowsAndProductSealsExactAtStart": true,
+    "confirmedLiveStage": "EU-002 composition export after verified native capture",
+    "status": "run/report/resume and encoded/geometry/event/staging audits required",
+    "firstCurrentCapture": {
+      "id": "EU-002",
+      "frames": 588,
+      "freshNativeRenders": 185,
+      "reusedNativeFrames": 403,
+      "nativeAudit": {
+        "path": "/private/tmp/still-shift-ms3-blender54-repaired-EU002-native-audit1.json",
+        "bytes": 698,
+        "sha256": "sha256:324406768ea6507c8d0ed5432b5ab60424750d6d18896b32a55992de2617fd2e"
+      },
+      "phaseAudit": {
+        "path": "/private/tmp/still-shift-ms3-blender54-repaired-EU002-phase1.json",
+        "bytes": 515,
+        "sha256": "sha256:76fd4f222b4e4757c40cd3072611550b536fd76eea1c7d1da3f04b2e2daef646"
+      },
+      "pinChecks": 2352,
+      "activeLabels": 344,
+      "rootWorldPoints": 1,
+      "actualPawlPositionHashes": 38,
+      "returnWindowFrames": [269, 374],
+      "scope": "Actual native shape changes while queried root remains fixed; encoded event/contact/continuous review pending."
+    }
+  },
+  "acceptedPilot": 0,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "remaining": [
+    "Complete actual repaired native/export/report/resume and independent encoded/event/visibility/staging checks.",
+    "Authored native hold purposes and complete paint/evidence validation; static pin equality alone does not resolve QA.",
+    "Whole physical/factual/encoded-glyph/continuous/listening and original E06/E10 reviews.",
+    "Broader fault/contact/coverage/handoff/effort and final full software/benchmark/archive/installed-package gates."
+  ]
+}

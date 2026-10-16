@@ -1,0 +1,482 @@
+{
+  "version": "mechanism-ms3-original-pilot-results-1",
+  "date": "2026-10-13",
+  "sourceCommit": "59ce0e5f568c58c649737d7c08c6e76ff4612d06",
+  "implementationSourceCommit": "8c34b4619f57370ea38204a641a47f19295a00cb",
+  "boardRawSha256": "sha256:e6fbe4ca81771b482be89dc28d8cebe0f35df394b1913f12c8f876f8cf963dd5",
+  "selection": "ms3-pilot-2026-10-12-v1",
+  "originalDenominator": 10,
+  "acceptedEpisodes": 0,
+  "routineTokenMeasurements": null,
+  "privateRoot": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w",
+  "authoring": {
+    "status": "passed-after-two-retained-failures",
+    "attempts": [
+      {
+        "attempt": "author1",
+        "receipt": "/private/tmp/still-shift-ms3-pilot21-author1-receipt.json",
+        "receiptSha256": "sha256:09da46833f1b5a31f6e4ca9ff16421c8f0aaf66f1cd5410fc725e1f4dc7243ff",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "sourceCommit": "59ce0e5f568c58c649737d7c08c6e76ff4612d06",
+        "qualification": "Input authoring only; no pilot acceptance."
+      },
+      {
+        "attempt": "author2",
+        "receipt": "/private/tmp/still-shift-ms3-pilot21-author2-receipt.json",
+        "receiptSha256": "sha256:d7b4f46393b71d61cbfae34f2aa6a66e6093c1029c2dbcefac0906256e9bd636",
+        "actualExitCode": 1,
+        "sourceHoldCheckExitCode": 0,
+        "sourceCommit": "59ce0e5f568c58c649737d7c08c6e76ff4612d06",
+        "qualification": "Input authoring only; no pilot acceptance."
+      },
+      {
+        "attempt": "author3",
+        "receipt": "/private/tmp/still-shift-ms3-pilot21-author3-receipt.json",
+        "receiptSha256": "sha256:4fc373bd62264700203ec4acb6ec65d3da84c8a1021bed6d25fa2967a6b1c58a",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "sourceCommit": "59ce0e5f568c58c649737d7c08c6e76ff4612d06",
+        "qualification": "Input authoring only; no pilot acceptance."
+      },
+      {
+        "attempt": "families2",
+        "receipt": "/private/tmp/still-shift-ms3-pilot21-families2-receipt.json",
+        "receiptSha256": "sha256:7ecc0001c84491130f182edfacad31c5d4e53276e092a031a05fb892937d28c0",
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": null,
+        "sourceCommit": null,
+        "qualification": "Input authoring only; no pilot acceptance."
+      }
+    ],
+    "failures": [
+      {
+        "attempt": "author1",
+        "reason": "Assumed compile result had a nested compiled composition; actual public result supplies compositionPath."
+      },
+      {
+        "attempt": "author2",
+        "reason": "Generated camera clip planes differed from fixed narrated scene planes; pose revalidated with fixed planes in author3."
+      },
+      {
+        "attempt": "families1",
+        "actualNodeExitCode": 1,
+        "outerShellExitCode": 0,
+        "reason": "Default sandbox denied the existing artifact-lock ps check. The outer shell cat status is not a Node pass. Fresh families2 packet authoring passed with authorized process inspection."
+      }
+    ],
+    "portraitProjects": [
+      {
+        "id": "E01",
+        "takeId": "EU-001",
+        "frames": 587,
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      {
+        "id": "E03",
+        "takeId": "EU-002",
+        "frames": 646,
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      },
+      {
+        "id": "E08",
+        "takeId": "EU-003",
+        "frames": 643,
+        "width": 1080,
+        "height": 1920,
+        "fps": 30
+      }
+    ],
+    "tenFamilyPackets": {
+      "path": "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/family-packets.json",
+      "sha256": "sha256:0a85ec837e8e8178b28d5cff4ccda1dd48d18a6ab94a4aa8fb4a389bcdaed107",
+      "rows": 10
+    },
+    "missingNarration": ["E02", "E04", "E05", "E06", "E07", "E09", "E10"],
+    "recordingDrafts": 7,
+    "privateTranscriptCopied": false,
+    "audioGeneration": false
+  },
+  "productionRun": {
+    "attempt": "native1",
+    "status": "passed",
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-pilot21-native1-receipt.json",
+      "bytes": 2204,
+      "sha256": "sha256:003904ba663be5a8568f2d9c5d1fa2189f1d5470172cbe077c0bc70aada8a1da"
+    },
+    "queueExitCode": 0,
+    "queueSourceHoldExitCode": 0,
+    "sourceInputs": 2725,
+    "sourceBytes": 121706266,
+    "runtimeCodeAndProfileIgnoreDocumentationAndGitHead": true,
+    "queueStateAtInspection": {
+      "E01": "passed",
+      "E03": "passed",
+      "E08": "passed"
+    },
+    "E01AvailableEvidence": {
+      "nativeFrames": 587,
+      "fullDecodedFrames": 587,
+      "sampledVisualErrors": 5,
+      "warningGroups": 17,
+      "stillsActuallyViewed": [49, 151, 204],
+      "findings": [
+        "Caption panel extends below the 5 percent safe inset and reserves excessive height.",
+        "Missing measured caption/annotation text bounds are retained in the QA warnings.",
+        "Inside/outside contact stills use different camera poses and screen locations; these stills do not establish the required aligned comparison.",
+        "Decoded recognition still has low material contrast."
+      ],
+      "qualification": "Partial run inspection only. Static still review does not establish continuous motion, listening, whole factual acceptance or a completed production run."
+    },
+    "inspectedUtc": "2026-10-13T11:51:47.814886+00:00",
+    "E03AvailableEvidence": {
+      "nativeFrames": 646,
+      "fullDecodedFrames": 646,
+      "sampledVisualErrors": 4,
+      "warningGroups": 15,
+      "phoneStillsActuallyViewed": [80, 228, 378, 553],
+      "findings": [
+        "Oversized caption panel and bottom safe-area placement match the E01 compiler issue.",
+        "Recognition, tongue, passing-tooth and blocked contact are visible in the four sampled phone stills.",
+        "Four raw frozen-run errors remain; purposeful contact holds need evidence-bound review, not blanket suppression."
+      ],
+      "qualification": "Static phone still review only; continuous/listening and whole mechanical/factual acceptance remain unreviewed."
+    },
+    "actualExitCode": 0,
+    "steps": [
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "queue",
+          "--projects",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/projects.json",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/queue.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T10:53:20.055846+00:00",
+        "endedUtc": "2026-10-13T10:53:23.949498+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot21-native1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "run",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/queue.json",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/production1",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/state1.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T10:53:23.949906+00:00",
+        "endedUtc": "2026-10-13T12:00:04.517752+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot21-native1-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "still-shift",
+          "production",
+          "report",
+          "--manifest",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/queue.json",
+          "--output-dir",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/production1",
+          "--report",
+          "/private/tmp/still-shift-ms3-pilot-author-3nvG0w/report1.json"
+        ],
+        "actualExitCode": 0,
+        "sourceHoldCheckExitCode": 0,
+        "startedUtc": "2026-10-13T12:00:04.518342+00:00",
+        "endedUtc": "2026-10-13T12:09:25.167694+00:00",
+        "log": "/private/tmp/still-shift-ms3-pilot21-native1-2.log"
+      }
+    ],
+    "endedUtc": "2026-10-13T12:09:25.168113+00:00",
+    "nativeFrames": 1876,
+    "independentlyDecodedFrames": 1876,
+    "independentImages": 94,
+    "independentScalarComparisons": 1876,
+    "independentlyVerifiedPins": 157,
+    "qualification": "Current E01/E03/E08 subset execution only, original denominator10 and accepted0/10 retained. Three technical passes coexist with three sampled-visual failures and twelve unreviewed dimension rows.",
+    "E08AvailableEvidence": {
+      "nativeFrames": 643,
+      "fullDecodedFrames": 643,
+      "sampledVisualErrors": 4,
+      "phoneStillsActuallyViewed": [53, 209, 360, 479, 596],
+      "findings": [
+        "Caption panel violates bottom safe inset and reserves excessive height.",
+        "Opening, release, fabric-stop and bias macro stills crop out the jaw tips or cloth; sampled pictures do not establish their spoken claims."
+      ],
+      "qualification": "Static phone review only. Whole mechanics, factual, continuous playback and listening remain unreviewed."
+    }
+  },
+  "documentValidation": {
+    "status": "passed",
+    "frozenQuestionsAndAnswers": 10,
+    "currentFamilyBindings": 10,
+    "exactBeatAndFullScriptPairs": 7,
+    "protectedScriptCopies": 0,
+    "privatePathsInBrief": 0,
+    "retainedGeneratorCorrections": [
+      "Initial validator compared the brief selection ID with the full board selection object; corrected to its actual id before any write.",
+      "Public draft revision reference used an absolute temporary path; reduced to its basename before validation."
+    ]
+  },
+  "remaining": [
+    "Repair caption compiler/exclusion geometry and E01/E08 explanation framing; revalidate changed source and current artifacts.",
+    "Repair observed portrait presentation and prove scoped affected output with unchanged native plates where applicable.",
+    "Obtain seven matching supplied narration/timing inputs; existing unrelated recordings are excluded.",
+    "Original ten whole factual/design/visual/continuous/listening reviews, broader QA/repair/capability measurements and final full/archive/installed gates remain open."
+  ],
+  "scope": "Local authoring and engineering evidence; no ElevenLabs spend, publication, merge, Actions change or human acceptance.",
+  "independentAudits": [
+    {
+      "episode": "E01",
+      "status": "passed",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "auditor": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit.py",
+        "bytes": 10799,
+        "sha256": "sha256:89d70c801c87b88cfc87e160fcfe5e99bf12f1d3289c7179f123444aa7db20b7"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit-E01.log",
+        "bytes": 242,
+        "sha256": "sha256:cc36d90e4d643de8cc8e679c639b061e583d66bc9cee61060671fa76ff1a33f4"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit-E01.json",
+        "bytes": 61824,
+        "sha256": "sha256:179442e919595d68e68207e81abb7c072c104eea9d31e715907b49ddfa5f403a"
+      },
+      "nativeFrames": 587,
+      "decodedFrames": 587,
+      "images": 34,
+      "scalarComparisons": 587,
+      "warningGroups": 17,
+      "visualErrors": 5,
+      "sourceNarrationSamples": 938458,
+      "sourcePcmSha256": "sha256:82c8e2fc63d90fb3c178867cc1bf0915ac74b88a0d5d14300ce7ef1be00b7320",
+      "binding": {
+        "inputSha256": "sha256:db8b68972650ca87e53702ba4c1f480b1dcd95e4e4ef58c96d06e1d044ba5495",
+        "outputSha256": "sha256:0233f9e57fc5775402030665073fbd2b42e42d66ff1568ebea1c0cc2e86c86f2",
+        "codeSha256": "sha256:14836055d4c44015d6b3e661976d93bcea1710915115ea919c2e1e4fcff4e171",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 587,
+        "reusedNativePlates": false
+      },
+      "methods": [
+        "independent original native observation artifact pins and all-frame scalar recomputation",
+        "full streaming final RGBA decode, exact extracted frame/crop bytes and phone transforms",
+        "full final/review PCM equality; original whole source WAV/PCM/transcript pins separately verified",
+        "raw grouped peaks, artifact binding and unreviewed handoff preserved"
+      ],
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM.",
+      "verifiedPins": 55
+    },
+    {
+      "episode": "E03",
+      "status": "passed",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-pilot23-audit-E03-receipt.json",
+        "bytes": 343,
+        "sha256": "sha256:b792874c172685d93b151daa02d187434e0b9064c12dabb551a4e995053d5150"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit-E03.json",
+        "bytes": 64790,
+        "sha256": "sha256:959d16991136a21182a4a644db357f4de56f1701e0575c8773acfa0f75d79b6f"
+      },
+      "nativeFrames": 646,
+      "decodedFrames": 646,
+      "images": 27,
+      "scalarComparisons": 646,
+      "warningGroups": 15,
+      "visualErrors": 4,
+      "sourceNarrationSamples": 1032081,
+      "sourcePcmSha256": "sha256:11e144392856472d225de845b230e38139f6dc7bd2445327e2c0b10cb29aaa22",
+      "binding": {
+        "inputSha256": "sha256:f64db3bda8811cdf942e9b6ee053b0fcfded5953a6eec7c83e9a1185bcb438b8",
+        "outputSha256": "sha256:64c728c9cb5f037e71ac9871e0787a2b12b0bd0aa8a009541b8ebe189b0636da",
+        "codeSha256": "sha256:14836055d4c44015d6b3e661976d93bcea1710915115ea919c2e1e4fcff4e171",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 646,
+        "reusedNativePlates": false
+      },
+      "methods": [
+        "independent original native observation artifact pins and all-frame scalar recomputation",
+        "full streaming final RGBA decode, exact extracted frame/crop bytes and phone transforms",
+        "full final/review PCM equality; original whole source WAV/PCM/transcript pins separately verified",
+        "raw grouped peaks, artifact binding and unreviewed handoff preserved"
+      ],
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM.",
+      "verifiedPins": 48
+    },
+    {
+      "episode": "E08",
+      "status": "passed",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-pilot23-audit-E08-receipt.json",
+        "bytes": 343,
+        "sha256": "sha256:d15b9a42b7db7010dd2b2c56946d4f39ac57b06a2fce90b2b337fd5ee7005e4f"
+      },
+      "report": {
+        "path": "/private/tmp/still-shift-ms3-pilot22-audit-E08.json",
+        "bytes": 65994,
+        "sha256": "sha256:8d1bfd5348fa4542f41b359d21fcb69f05d76647a058b27b1d94c00e4a7a8511"
+      },
+      "nativeFrames": 643,
+      "decodedFrames": 643,
+      "images": 33,
+      "scalarComparisons": 643,
+      "warningGroups": 14,
+      "visualErrors": 4,
+      "sourceNarrationSamples": 1027623,
+      "sourcePcmSha256": "sha256:d0d79016ccbf2d6fff606e2800da341d04e2e66b6b6692e5a6c7d9ce5f2ad3a1",
+      "binding": {
+        "inputSha256": "sha256:cb1e95f227a9dcf08b7eb5b39d03bded89560f9c4b124d6ca596d36bb3246b8d",
+        "outputSha256": "sha256:b83335ff1572e4ba76b9b7e6f8ef9302ecf9c3c8f5fd0739b09106b733c99916",
+        "codeSha256": "sha256:14836055d4c44015d6b3e661976d93bcea1710915115ea919c2e1e4fcff4e171",
+        "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b"
+      },
+      "work": {
+        "freshNativeSubmissions": 643,
+        "reusedNativePlates": false
+      },
+      "methods": [
+        "independent original native observation artifact pins and all-frame scalar recomputation",
+        "full streaming final RGBA decode, exact extracted frame/crop bytes and phone transforms",
+        "full final/review PCM equality; original whole source WAV/PCM/transcript pins separately verified",
+        "raw grouped peaks, artifact binding and unreviewed handoff preserved"
+      ],
+      "qualification": "Technical identity/sample-clock/sampled-mount audit. No whole mechanism/factual/continuous/listening/human/pilot acceptance. AAC output PCM is not claimed byte-identical to source PCM.",
+      "verifiedPins": 54
+    }
+  ],
+  "cohortAudit": {
+    "status": "passed",
+    "actualExitCode": 0,
+    "report": {
+      "path": "/private/tmp/still-shift-ms3-pilot23-cohort-audit.json",
+      "bytes": 3582,
+      "sha256": "sha256:dc67f8b0c8004fbbb4eae7dd34c7ed054a89a7648d7e5fce271273450bf2a843"
+    },
+    "subsetEpisodes": 3,
+    "originalDenominator": 10,
+    "firstPassTechnical": {
+      "completed": 3,
+      "passed": 3,
+      "rate": 1,
+      "targetSatisfied": true
+    },
+    "reviewCounts": {
+      "technical": {
+        "passed": 3,
+        "failed": 0,
+        "unreviewed": 0
+      },
+      "mechanical": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "sampled-visual": {
+        "passed": 0,
+        "failed": 3,
+        "unreviewed": 0
+      },
+      "continuous-motion": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "listening": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      },
+      "factual": {
+        "passed": 0,
+        "failed": 0,
+        "unreviewed": 3
+      }
+    },
+    "percentiles": "independently recomputed",
+    "reviewedReady": 0,
+    "qualification": "Only original E01/E03/E08 subset. Its 3/3 first-pass technical result does not establish the original ten-episode target or any whole review."
+  },
+  "captionRegression": {
+    "status": "reproduced-before-repair",
+    "attempts": [
+      {
+        "script": {
+          "path": "/private/tmp/still-shift-ms3-pilot23-caption-regression.mts",
+          "bytes": 1302,
+          "sha256": "sha256:5c4468415255d71cb5b7c6ad04075c4d9f9e0a3570f0f26ed7886af0554c65c8"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-pilot23-caption-regression.log",
+          "bytes": 1556,
+          "sha256": "sha256:2348d0129dd0026015a8c818f027cf63b516dc2ee407034badfbb259c5696c89"
+        },
+        "actualExitCode": 1,
+        "reason": "Inherited annotation placement prevented isolating the caption geometry assertion."
+      },
+      {
+        "script": {
+          "path": "/private/tmp/still-shift-ms3-pilot23-caption-regression2.mts",
+          "bytes": 1394,
+          "sha256": "sha256:a6618c48c047c5f30b239859c98ea7c8a8d90a781d06e33e5db87c99115b899c"
+        },
+        "log": {
+          "path": "/private/tmp/still-shift-ms3-pilot23-caption-regression2.log",
+          "bytes": 960,
+          "sha256": "sha256:7aa8ea9252bd360701d6dccf09ccffab710a97046c738d3c894456a2bc9ffc97"
+        },
+        "actualExitCode": 1,
+        "reason": "All four standard viewports place the panel bottom at99%, exceeding the5% safe inset; caption-only fixture confirms the intended regression."
+      }
+    ],
+    "viewports": [
+      [320, 180],
+      [1280, 720],
+      [720, 1280],
+      [1080, 1920]
+    ]
+  },
+  "currentRuntimeTechnicalRecheck": {
+    "record": "docs/mechanism-shorts-ms3-current-native-results.json",
+    "status": "passed",
+    "sourceCommit": "b9b1bd4217fcf0c7597edc06bba1eb1672b99613",
+    "codeSha256": "sha256:042a3d5f23ba9fce707d682548c23dbce09c34ac4c92de1a711243ec3cc8f66e",
+    "frameTotal": 1876,
+    "protectedFiles": 1934,
+    "freshNativeSubmissionCalls": 0,
+    "historicalProductsRelabeled": false,
+    "currentProductionSeals": "pending",
+    "wholeReviews": "unreviewed"
+  }
+}

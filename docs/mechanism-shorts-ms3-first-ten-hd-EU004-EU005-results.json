@@ -1,0 +1,337 @@
+{
+  "schemaVersion": "ms3-first-ten-hd-EU004-EU005-results-1",
+  "date": "2026-10-14",
+  "status": "zipper-and-keyhole-HD-deliveries-verified-QA-and-whole-reviews-open",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "heldSource": {
+    "status": "exact",
+    "files": 2777,
+    "bytes": 122189105
+  },
+  "nativeAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender51-annotation-audit1.json",
+      "bytes": 2721,
+      "sha256": "sha256:e691ffeb1f68d6b359c47859132882d969fd136addff935e5906818a2120b4be"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender51-annotation-audit1.py",
+      "bytes": 3791,
+      "sha256": "sha256:c066854323cfb8fb5c032531b091212701dfa9a022e40518c2279e6d943ba6f0"
+    },
+    "availableCaptureEpisodes": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005",
+      "EU-006"
+    ],
+    "availableCapturePinChecks": 14684,
+    "availableActiveLabelSamples": 2313,
+    "completedEncodedEpisodes": [
+      "EU-001",
+      "EU-002",
+      "EU-003",
+      "EU-004",
+      "EU-005"
+    ],
+    "completedEpisodeFrames": 3037,
+    "completedEpisodePinChecks": 12148,
+    "completedEpisodeActiveLabels": 1974,
+    "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+  },
+  "encodedAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender51-encoded-audit1.json",
+      "bytes": 27243,
+      "sha256": "sha256:bf24940b90f24053f8ed3659fbf2ab356b4541f8e25da0db109a188a62578be4"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender51-encoded-audit1.py",
+      "bytes": 5197,
+      "sha256": "sha256:10d393d8e935dcfb2d549c3ce8684a1b17541ae4b5c9b09a9e52624346ef423e"
+    },
+    "completedEpisodes": ["EU-001", "EU-002", "EU-003", "EU-004", "EU-005"],
+    "originalWholeAACReferenceParity": true,
+    "scope": "Complete encoded stream facts, original narration versus independent AAC reference, selected encoded images. No listening/continuous/all-frame glyph approval."
+  },
+  "independentFullPicture": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender51-full-picture1.json",
+      "bytes": 1689,
+      "sha256": "sha256:65d4a8608f0d87c600b053236b2ea06518ae42c73aa8627455f19b234637439e"
+    },
+    "rows": [
+      {
+        "id": "EU-004",
+        "decodedFrames": 653,
+        "movie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-004/1/output.mp4",
+          "bytes": 5556353,
+          "sha256": "sha256:2ba73461c8b63a5ec7d9118efbedd9ed9a3015de24ab32281669523c274e448e"
+        },
+        "digest": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-004/full-picture.framemd5",
+          "bytes": 52456,
+          "sha256": "sha256:7b76a1057105b79a2fd19cea8050c2c7d0b36beacbab40652f9afeb04564f6b5"
+        },
+        "scope": "Full encoded RGBA decode to EOF, contiguous frame clock and per-frame digest. No actual continuous viewing or all-frame semantic/glyph approval."
+      },
+      {
+        "id": "EU-005",
+        "decodedFrames": 598,
+        "movie": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-005/1/output.mp4",
+          "bytes": 1745077,
+          "sha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5"
+        },
+        "digest": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-005/full-picture.framemd5",
+          "bytes": 48056,
+          "sha256": "sha256:230f57ab9faf4b1a38b53feb37638b47f883ca023a6f6ae50e7fbb2d6a4386f2"
+        },
+        "scope": "Full encoded RGBA decode to EOF, contiguous frame clock and per-frame digest. No actual continuous viewing or all-frame semantic/glyph approval."
+      }
+    ],
+    "combinedFirstFiveFullDecodedFrames": 3037
+  },
+  "rows": [
+    {
+      "id": "EU-004",
+      "frames": 653,
+      "labels": 3,
+      "freshNativeRenders": 321,
+      "reusedNativeFrames": 332,
+      "nativeOriginalsAndLabelBindingsVerified": true,
+      "originalWholeAACDecodedReferenceExact": true,
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-004/1/output.mp4",
+        "bytes": 5556353,
+        "sha256": "sha256:2ba73461c8b63a5ec7d9118efbedd9ed9a3015de24ab32281669523c274e448e"
+      },
+      "encodedSelectedFrames": [117, 317, 429, 528, 625],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-004/midpoints.png",
+        "bytes": 707189,
+        "sha256": "sha256:887f97a04a184613b5f068911d74b446daeea8bd7667a19c1ac86e0118b2a9a6"
+      },
+      "phoneInspection": "Five encoded phone midpoints inspected; sampled labels are readable and targets identify divider/cup or entry/slot/head. Whole contact/occlusion/encoded-glyph/continuous/listening review remains open.",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-004/1/qa-rendered-visual.json",
+          "bytes": 60275,
+          "sha256": "sha256:17b927ece57f7b5f47c3bf02e9244c2542c8e707c8d6275c35c7d3c12ec00d67"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 5,
+          "frozen-pixels:error": 13,
+          "reading-time:warning": 10
+        },
+        "images": 47,
+        "disposition": "unresolved"
+      },
+      "wholeReview": "UNREVIEWED"
+    },
+    {
+      "id": "EU-005",
+      "frames": 598,
+      "labels": 3,
+      "freshNativeRenders": 158,
+      "reusedNativeFrames": 440,
+      "nativeOriginalsAndLabelBindingsVerified": true,
+      "originalWholeAACDecodedReferenceExact": true,
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-005/1/output.mp4",
+        "bytes": 1745077,
+        "sha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5"
+      },
+      "encodedSelectedFrames": [68, 169, 273, 421, 547],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-005/midpoints.png",
+        "bytes": 379273,
+        "sha256": "sha256:0418dbf0a50559755981fe27ed98dc020775d5317a105aa05be7bf69fe5f1ae1"
+      },
+      "phoneInspection": "Five encoded phone midpoints inspected; sampled labels are readable and targets identify divider/cup or entry/slot/head. Whole contact/occlusion/encoded-glyph/continuous/listening review remains open.",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-005/1/qa-rendered-visual.json",
+          "bytes": 58866,
+          "sha256": "sha256:0c875d602e7c95bca583680e127b30fae1677a1a47a966942f61edc4457a35f4"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 5,
+          "reading-time:warning": 10,
+          "frozen-pixels:error": 19
+        },
+        "images": 54,
+        "disposition": "unresolved"
+      },
+      "wholeReview": "UNREVIEWED"
+    }
+  ],
+  "cueInspection": [
+    {
+      "id": "EU-004",
+      "joinControlFrames": [
+        [98, 155],
+        [292, 397]
+      ],
+      "joinSpeechFrames": [
+        [98, 155],
+        [292, 400]
+      ],
+      "reverseControlFrames": [
+        [165, 210],
+        [459, 580]
+      ],
+      "reverseSpeechFrames": [
+        [165, 210],
+        [459, 580]
+      ],
+      "scope": "Authored controls overlap the associated spoken joins/reversals. Actual continuous guide/element contact remains unreviewed."
+    },
+    {
+      "id": "EU-005",
+      "entryControlFrames": [137, 161],
+      "entrySpeechFrames": [134, 187],
+      "slotControlFrames": [202, 228],
+      "slotSpeechFrames": [203, 309],
+      "pullProbeControlFrames": [403, 418],
+      "pullSpeechFrames": [404, 431],
+      "returnSlotControlFrames": [497, 523],
+      "withdrawControlFrames": [527, 553],
+      "returnAndWithdrawSpeechFrames": [
+        [498, 537],
+        [537, 589]
+      ],
+      "scope": "Declares capture return before withdrawal and aligns actions with original narration; source-bound observation checks pass, but continuous separation/contact remains unreviewed."
+    }
+  ],
+  "factualSourceReview": [
+    {
+      "id": "EU-004",
+      "status": "primary-text-support-for-selected-metal-cup-construction-whole-review-pending",
+      "url": "https://patents.google.com/patent/US1219881A/en",
+      "title": "US1219881A Separable fastener",
+      "accessedOn": "2026-10-14",
+      "locator": "Description of identical cup-shaped locking members, projection10/recess11, and slider6 with Y-shaped channel/tongue",
+      "method": "Primary patent text read; no fresh source diagram inspection in this slice",
+      "supported": "The selected metal members interlock by a projection nesting into a recess; opposite slider travel guides joining or separation through its branching channel.",
+      "limits": "This is the selected metal-element construction; dimensions, collision-free interlock, material deformation and all zipper variants are not established."
+    },
+    {
+      "id": "EU-005",
+      "status": "primary-background-support-for-selected-plain-keyhole-construction-whole-review-pending",
+      "url": "https://patents.google.com/patent/EP1817988A1/en",
+      "title": "EP1817988A1 Picture frame fixings",
+      "accessedOn": "2026-10-14",
+      "locator": "Background: known keyhole-shaped fixing; head enters large portion, shank seats in narrow portion, head overlaps bordering material",
+      "method": "Primary patent background text read; no fresh source diagram inspection in this slice",
+      "supported": "A wider opening admits the screw head; translation seats the shank where surrounding plate material overlaps the head. Sliding back permits withdrawal.",
+      "limits": "The invention\u2019s additional snap neck/resilient fingers are excluded. The source notes conventional fixings can slide free; numerical dimensions/load or whole geometry/contact acceptance are not inferred."
+    }
+  ],
+  "queueSnapshot": {
+    "id": "actual-first-ten-full-HD47",
+    "updatedUtc": "2026-10-14T08:09:24.478Z",
+    "rows": [
+      {
+        "id": "EU-001",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-001-00c45963c001ab77-1.json",
+          "bytes": 9125,
+          "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+        }
+      },
+      {
+        "id": "EU-002",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-002-611543058e800346-1.json",
+          "bytes": 9187,
+          "sha256": "sha256:5c27e8d3319b290b573b39e9ca86afcde85fa4b6335b9959a9028a8923907b85"
+        }
+      },
+      {
+        "id": "EU-003",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-003-db973726be2f0daa-1.json",
+          "bytes": 9227,
+          "sha256": "sha256:edd432ea7ba809bd352dd45d8ebdf535cb2c77918a66eb9bdb29fbfdab8029d1"
+        }
+      },
+      {
+        "id": "EU-004",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-004-d7f67568e2dde8d2-1.json",
+          "bytes": 9244,
+          "sha256": "sha256:1d80a691c16d137fb69e75d091e4f643eaed1f00481a03da027af1f905dea6a7"
+        }
+      },
+      {
+        "id": "EU-005",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-005-0815d5825e366ea1-1.json",
+          "bytes": 9254,
+          "sha256": "sha256:24f48e8b26a353cb1037739f5cb60067b3cd453e19a3974d192c90c41ec8831c"
+        }
+      },
+      {
+        "id": "EU-006",
+        "status": "running",
+        "lastStage": "native-blender-composition-export",
+        "product": null
+      },
+      {
+        "id": "EU-007",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-008",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-009",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-010",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      }
+    ]
+  },
+  "retainedEarlierRepairs": [
+    "EU002 separate tongue-return cue candidate remains unrendered.",
+    "EU003 separate spring close-up pointer candidate remains unrendered."
+  ],
+  "acceptedPilot": 0,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "next": [
+    "Finish unchanged cohort and full report/resume.",
+    "Current remaining encoded/native audits and prepared repair captures/exports.",
+    "Static/staging/contact/physical-fault/handoff/whole review/effort/final-gate work."
+  ]
+}

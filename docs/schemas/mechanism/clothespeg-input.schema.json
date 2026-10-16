@@ -1,113 +1,355 @@
 {
   "$schema": "https://json-schema.org/draft/2020-12/schema",
-  "type": "object",
-  "properties": {
-    "mount": {
+  "anyOf": [
+    {
       "type": "object",
       "properties": {
-        "position": {
-          "default": [0, 0, 0],
-          "type": "array",
-          "prefixItems": [
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
-          ]
+        "mount": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            },
+            "rotation": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            },
+            "scale": {
+              "default": [1, 1, 1],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 }
+              ]
+            },
+            "pivot": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            }
+          },
+          "required": ["position", "rotation", "scale", "pivot"],
+          "additionalProperties": false
         },
-        "rotation": {
-          "default": [0, 0, 0],
-          "type": "array",
-          "prefixItems": [
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
-          ]
+        "style": {
+          "type": "object",
+          "properties": {
+            "color": { "type": "string", "pattern": "^#[\\da-f]{6}$" },
+            "roughness": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
         },
-        "scale": {
-          "default": [1, 1, 1],
-          "type": "array",
-          "prefixItems": [
-            { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
-            { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
-            { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 }
-          ]
+        "expectedPack": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            },
+            "version": {
+              "type": "string",
+              "maxLength": 64,
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "variant": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            },
+            "detail": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            }
+          },
+          "required": ["id", "version", "sha256", "variant", "detail"],
+          "additionalProperties": false
         },
-        "pivot": {
-          "default": [0, 0, 0],
-          "type": "array",
-          "prefixItems": [
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 },
-            { "type": "number", "minimum": -1000000, "maximum": 1000000 }
-          ]
-        }
-      },
-      "required": ["position", "rotation", "scale", "pivot"],
-      "additionalProperties": false
-    },
-    "style": {
-      "type": "object",
-      "properties": {
-        "color": { "type": "string", "pattern": "^#[\\da-f]{6}$" },
-        "roughness": { "type": "number", "minimum": 0, "maximum": 1 }
-      },
-      "additionalProperties": false
-    },
-    "expectedPack": {
-      "type": "object",
-      "properties": {
-        "id": {
-          "type": "string",
-          "maxLength": 128,
-          "pattern": "^[A-Za-z][\\w.-]*$"
-        },
-        "version": {
-          "type": "string",
-          "maxLength": 64,
-          "pattern": "^\\d+\\.\\d+\\.\\d+$"
-        },
-        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
         "variant": {
           "type": "string",
-          "maxLength": 128,
-          "pattern": "^[A-Za-z][\\w.-]*$"
+          "const": "wood-arms-central-spring-cloth"
         },
-        "detail": {
-          "type": "string",
-          "maxLength": 128,
-          "pattern": "^[A-Za-z][\\w.-]*$"
+        "parameters": {
+          "default": {
+            "armLength": 6,
+            "armWidth": 0.8,
+            "clothThickness": 0.16
+          },
+          "type": "object",
+          "properties": {
+            "armLength": {
+              "default": 6,
+              "type": "number",
+              "minimum": 5,
+              "maximum": 8
+            },
+            "armWidth": {
+              "default": 0.8,
+              "type": "number",
+              "minimum": 0.6,
+              "maximum": 1.1
+            },
+            "clothThickness": {
+              "default": 0.16,
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 0.3
+            }
+          },
+          "required": ["armLength", "armWidth", "clothThickness"],
+          "additionalProperties": false
         }
       },
-      "required": ["id", "version", "sha256", "variant", "detail"],
+      "required": ["parameters"],
       "additionalProperties": false
     },
-    "parameters": {
-      "default": { "armLength": 6, "armWidth": 0.8, "clothThickness": 0.16 },
+    {
       "type": "object",
       "properties": {
-        "armLength": {
-          "default": 6,
-          "type": "number",
-          "minimum": 5,
-          "maximum": 8
+        "mount": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            },
+            "rotation": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            },
+            "scale": {
+              "default": [1, 1, 1],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 }
+              ]
+            },
+            "pivot": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            }
+          },
+          "required": ["position", "rotation", "scale", "pivot"],
+          "additionalProperties": false
         },
-        "armWidth": {
-          "default": 0.8,
-          "type": "number",
-          "minimum": 0.6,
-          "maximum": 1.1
+        "style": {
+          "type": "object",
+          "properties": {
+            "color": { "type": "string", "pattern": "^#[\\da-f]{6}$" },
+            "roughness": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
         },
-        "clothThickness": {
-          "default": 0.16,
-          "type": "number",
-          "minimum": 0.1,
-          "maximum": 0.3
+        "expectedPack": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            },
+            "version": {
+              "type": "string",
+              "maxLength": 64,
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "variant": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            },
+            "detail": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            }
+          },
+          "required": ["id", "version", "sha256", "variant", "detail"],
+          "additionalProperties": false
+        },
+        "variant": { "type": "string", "const": "notched-line" },
+        "parameters": {
+          "default": { "armLength": 6, "armWidth": 0.8, "lineRadius": 0.16 },
+          "type": "object",
+          "properties": {
+            "armLength": {
+              "default": 6,
+              "type": "number",
+              "minimum": 5,
+              "maximum": 8
+            },
+            "armWidth": {
+              "default": 0.8,
+              "type": "number",
+              "minimum": 0.6,
+              "maximum": 1.1
+            },
+            "lineRadius": {
+              "default": 0.16,
+              "type": "number",
+              "minimum": 0.08,
+              "maximum": 0.18
+            }
+          },
+          "required": ["armLength", "armWidth", "lineRadius"],
+          "additionalProperties": false
         }
       },
-      "required": ["armLength", "armWidth", "clothThickness"],
+      "required": ["variant", "parameters"],
+      "additionalProperties": false
+    },
+    {
+      "type": "object",
+      "properties": {
+        "mount": {
+          "type": "object",
+          "properties": {
+            "position": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            },
+            "rotation": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            },
+            "scale": {
+              "default": [1, 1, 1],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 },
+                { "type": "number", "exclusiveMinimum": 0, "maximum": 1000 }
+              ]
+            },
+            "pivot": {
+              "default": [0, 0, 0],
+              "type": "array",
+              "prefixItems": [
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 },
+                { "type": "number", "minimum": -1000000, "maximum": 1000000 }
+              ]
+            }
+          },
+          "required": ["position", "rotation", "scale", "pivot"],
+          "additionalProperties": false
+        },
+        "style": {
+          "type": "object",
+          "properties": {
+            "color": { "type": "string", "pattern": "^#[\\da-f]{6}$" },
+            "roughness": { "type": "number", "minimum": 0, "maximum": 1 }
+          },
+          "additionalProperties": false
+        },
+        "expectedPack": {
+          "type": "object",
+          "properties": {
+            "id": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            },
+            "version": {
+              "type": "string",
+              "maxLength": 64,
+              "pattern": "^\\d+\\.\\d+\\.\\d+$"
+            },
+            "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+            "variant": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            },
+            "detail": {
+              "type": "string",
+              "maxLength": 128,
+              "pattern": "^[A-Za-z][\\w.-]*$"
+            }
+          },
+          "required": ["id", "version", "sha256", "variant", "detail"],
+          "additionalProperties": false
+        },
+        "variant": { "type": "string", "const": "ideal-lever-press-points" },
+        "parameters": {
+          "default": {
+            "armLength": 6,
+            "armWidth": 0.8,
+            "clothThickness": 0.16
+          },
+          "type": "object",
+          "properties": {
+            "armLength": {
+              "default": 6,
+              "type": "number",
+              "minimum": 5,
+              "maximum": 8
+            },
+            "armWidth": {
+              "default": 0.8,
+              "type": "number",
+              "minimum": 0.6,
+              "maximum": 1.1
+            },
+            "clothThickness": {
+              "default": 0.16,
+              "type": "number",
+              "minimum": 0.1,
+              "maximum": 0.3
+            }
+          },
+          "required": ["armLength", "armWidth", "clothThickness"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["variant", "parameters"],
       "additionalProperties": false
     }
-  },
-  "required": ["parameters"],
-  "additionalProperties": false
+  ]
 }

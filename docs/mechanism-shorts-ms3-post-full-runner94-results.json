@@ -1,0 +1,119 @@
+{
+  "schemaVersion": "ms3-post-full-package-and-lifecycle-runner-preparation-1",
+  "capturedUtc": "2026-10-15T02:00:16.526715+00:00",
+  "status": "prepared-and-admission-negatives-passed-not-package-or-lifecycle-passed",
+  "sourceCommitAtPreparation": "bcb94bcc125e84ab10ba6a35465bdf664f391561",
+  "fullHeldSource": "3749618d64dfa35a57b2e4f34da5b6722ac9c089",
+  "activeFullSession": 42543,
+  "selectionId": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "planReferences": [
+    "./mechanism-shorts-production-plan.md#verification-and-completion-rules",
+    "./mechanism-shorts-production-plan.md#ms3-production-lifecycle-and-ten-episode-pilot",
+    "./verification.md",
+    "./mechanism-shorts-ms3-current-installed-scope92-results.json",
+    "./mechanism-shorts-ms3-installed-preparation93-results.json"
+  ],
+  "requirementAudit": {
+    "finding": "Earlier current-installed preparation listed member/source/public-API/type/discovery checks but did not explicitly schedule the existing complete offline installed-package matrix for the final archive. Historical85 and current MS2 affected-package91 do not qualify final MS3 archive.",
+    "decision": "Run unchanged pnpm test:package only after actual full91 terminal0. Consume that exact archive in final all-ten consumer rather than build/pack it a second time.",
+    "standardGateScope": "Existing runtime setup, public declarations/imports, browser pixel lint, both backends with source comparisons, installed preview/soundtrack and corresponding-source rebuild. Existing offline mode skips network vulnerability audit; no new audit pass claimed.",
+    "isolationScope": "Standard matrix intentionally compares against source. Separate all-ten receiver and public controls use combined12-root OS denials/cache-only capture guard. No blanket source-denial claim for standard matrix."
+  },
+  "packageRunner": {
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-package93-prepare1.py",
+      "bytes": 12499,
+      "sha256": "sha256:197aee62c9514ba9826a29b070761dd2b4c4b85d81cdc1e79fff13ff9ec89cc1"
+    },
+    "syntax": "Python AST parse passed",
+    "negative": {
+      "path": "/private/tmp/still-shift-ms3-package93-prepare-controls2.json",
+      "bytes": 534,
+      "sha256": "sha256:4e282fd4cb8e62cf13ee2a66f4b07523cd3b7c5b1365ade14b4ab954ce2a87df"
+    },
+    "expectedBlockedChildExitCode": 1,
+    "actualNegativeControllerExitCode": 0,
+    "willRun": [
+      "Actual full/source-hold/terminal admission and clean-worktree check",
+      "Unchanged offline pnpm test:package, retaining actual complete result and exact archive",
+      "Complete archive/dist/corresponding-source member audit and independently installed file equality",
+      "13 current installed public source/diagnostic controls across four formats",
+      "Four installed public queue/retry/cache provenance controls in both queue versions",
+      "Strict public composeBlenderEpisode declarations and installed production discovery",
+      "Final installed-member and held-source checks, exact durable archive copy"
+    ],
+    "notStarted": [
+      "package build",
+      "standard installed matrix",
+      "new archive",
+      "receiving install",
+      "installed public controls"
+    ],
+    "previousPreparedScript": {
+      "path": "/private/tmp/still-shift-ms3-package93-prepare-original94.py",
+      "bytes": 12022,
+      "sha256": "sha256:cee8c2f88b658b0377883159a064c7c172100e626b2f26263a6a880648f9ebd7"
+    },
+    "previousNegative": {
+      "path": "/private/tmp/still-shift-ms3-package93-prepare-controls1.json",
+      "bytes": 489,
+      "sha256": "sha256:fbbc46df2776d479b77d19d7863bb1ea2aa927d4687b35fba3ec1651cd017ffa"
+    },
+    "checkoutHold": "At admission, after every actual package stage and before final success require exact captured Git HEAD and entirely clean checkout, plus full runtime/input inventory equality. No Markdown/dev-log/other tracked mutations while the package wrapper lives. Preserve final archive guide/source identity; docs can be updated after terminal.",
+    "holdRefinementSource": "352bff54cd05da00c0e6a01025e6158fc6a805d4"
+  },
+  "allTenRunner": {
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-package93-lifecycle1.py",
+      "bytes": 11151,
+      "sha256": "sha256:4caa5af0009050d6dbb1a5c6ddd05b8241fcbf0f7283e664cf34e54997c7f66c"
+    },
+    "syntax": "Python AST parse passed",
+    "finalNegative": {
+      "path": "/private/tmp/still-shift-ms3-package93-lifecycle-controls2.json",
+      "bytes": 562,
+      "sha256": "sha256:8cc05c07b64ea97fb8518ce34c651aa63e893f86750ee96fd81835b7bc7b1f25"
+    },
+    "retainedEarlierNegative": {
+      "path": "/private/tmp/still-shift-ms3-package93-lifecycle-controls1.json",
+      "bytes": 421,
+      "sha256": "sha256:6ebf47de5ca61de9b44fb68b5fc469838e86e6ad0376618323ded9e14814b427"
+    },
+    "expectedBlockedChildExitCode": 1,
+    "actualNegativeControllerExitCode": 0,
+    "willRun": [
+      "Require actual full0, package0 and complete expected-hash independent copy0 before any queue/output",
+      "Hold all copied inputs, complete native cache and installed archive members",
+      "Create fresh revision0 all-ten queue using actual installed runtime/profile; reject mismatched IDs/clocks/input pins",
+      "Run, report, resume and ten compact handoffs serially under combined OS profile from independent consumer cwd",
+      "Require current product/QA bindings, full clock equality and unchanged successful journal rows/artifacts",
+      "Require all mechanical/factual/continuous/listening statuses unreviewed; no inference from technical/sampled checks",
+      "Require native map zero fresh captures/6,181 reused output frames, exact original native cache closure and installed archive bytes"
+    ],
+    "episodes": 10,
+    "outputFrames": 6181,
+    "queueCommands": 1,
+    "lifecycleCommands": 13,
+    "clockSource": "Pinned independent receive-inputs93/queue-current72.json is only a historical clock reference; execution uses fresh queue-installed93.json. No reads of old consumer needed during lifecycle.",
+    "metricScope": "Separate installed receiving validation. Original first-pass1/10, nine failed first attempts, target unmet, paired tokens null and accepted0/10 remain unchanged.",
+    "independentPostLifecycleAudit": "Ten handoff packet/current clock/code/artifact audits and complete encoded picture/audio proof remain required after actual lifecycle; prepared wrapper is not that evidence."
+  },
+  "observedControls": {
+    "consumerCreated": false,
+    "archiveCreated": false,
+    "newPackageBuild": false,
+    "newProductionQueue": false,
+    "newNativeCaptures": 0,
+    "newEpisodeExports": 0,
+    "paidVoiceGeneration": 0,
+    "heldInputsExact": 2793
+  },
+  "remaining": "Full42543 is still live; all package/lifecycle work is unexecuted. Physical fault budget and whole product/human review remain separate gates.",
+  "lastPreparedUtc": "2026-10-15T02:04:54.622321+00:00",
+  "activeSerialLifecyclePreparation102": {
+    "record": "./mechanism-shorts-ms3-installed102-preparation-results.json",
+    "oldRunnerDisposition": "Unexecuted and preserved unchanged; superseded for the future all-ten execution by102.",
+    "added": "One public queue discovery and one bounded EU008 copy-repair run between the initial all-ten run and final report/resume/10handoffs. Final all-ten evidence scope remains intact.",
+    "actualExecutionStarted": false
+  }
+}

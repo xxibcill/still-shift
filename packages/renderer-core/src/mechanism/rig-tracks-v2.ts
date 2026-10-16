@@ -1,4 +1,8 @@
 import {
+  prepareLoadSeatCalibrations,
+  sampleLoadSeatV2,
+} from "./load-seat-v2.ts";
+import {
   MECHANISM_LIMITS,
   MechanismRigControlsV2Schema,
 } from "@still-shift/scene-contract";
@@ -89,6 +93,12 @@ export function prepareMechanismRigTracksV2(
           ["rigControls", rig.targetRig],
         );
       validateReturn(rig, control, limits(target), path);
+    } else if (rig.type === "load-seat" && control.type === "load-seat") {
+      validateScalar(
+        control.loadNewtons,
+        [0, rig.maxForceNewtons],
+        [...path, "loadNewtons"],
+      );
     } else if (rig.type === "ratchet" && control.type === "ratchet") {
       validateScalar(control.position, rig.range, [...path, "position"]);
       if (rig.releasePolicy === "non-releasable") {
@@ -116,7 +126,11 @@ export function prepareMechanismRigTracksV2(
       validateScalar(control, limits(rig), path);
     }
   }
+  const calibrations = prepareLoadSeatCalibrations(scene);
   return freezeDeep({
+    ...(Object.keys(calibrations).length
+      ? { loadSeatCalibrations: calibrations }
+      : {}),
     version: "prepared-mechanism-rig-tracks-2" as const,
     rigs: structuredClone(scene.rigs),
     controls,
@@ -130,7 +144,11 @@ function limits(rig: Rig): readonly [number, number] {
       "Return target must be a physical slider or hinge",
       ["rigs", rig.id, "targetRig"],
     );
-  return rig.type === "hinge" ? rig.angleRange : rig.range;
+  return rig.type === "hinge"
+    ? rig.angleRange
+    : rig.type === "load-seat"
+      ? [0, rig.maxForceNewtons]
+      : rig.range;
 }
 
 function validateScalar(
@@ -353,7 +371,24 @@ export function evaluateMechanismRigTracksV2(
           frame,
         ),
       };
-    else if (rig.type === "ratchet") {
+    else if (rig.type === "load-seat") {
+      const calibration = prepared.loadSeatCalibrations?.[rig.id];
+      if (!calibration)
+        fail(
+          "mechanism-load-scale",
+          "Load seating lacks its prepared calibration",
+          ["rigs", rig.id],
+        );
+      output[rig.id] = sampleLoadSeatV2(
+        rig,
+        sampleScalar(
+          control?.type === "load-seat" ? control.loadNewtons : undefined,
+          0,
+          frame,
+        ),
+        calibration,
+      );
+    } else if (rig.type === "ratchet") {
       const position = sampleScalar(
         control?.type === "ratchet" ? control.position : undefined,
         rig.range[0] + rig.neutralTooth * rig.pitch,

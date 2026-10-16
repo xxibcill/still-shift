@@ -1,0 +1,339 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": {
+      "type": "string",
+      "const": "mechanism-production-cohort-report-1"
+    },
+    "percentileMethod": {
+      "type": "string",
+      "const": "linear-interpolation-at-n-minus-one"
+    },
+    "selected": { "type": "integer", "minimum": 0, "maximum": 300 },
+    "attempted": { "type": "integer", "minimum": 0, "maximum": 300 },
+    "firstPassTechnical": {
+      "type": "object",
+      "properties": {
+        "completed": { "type": "integer", "minimum": 0, "maximum": 300 },
+        "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
+        "rate": {
+          "anyOf": [
+            { "type": "number", "minimum": 0, "maximum": 1 },
+            { "type": "null" }
+          ]
+        },
+        "targetSatisfied": {
+          "anyOf": [{ "type": "boolean" }, { "type": "null" }]
+        },
+        "unverified": { "type": "integer", "minimum": 0, "maximum": 300 }
+      },
+      "required": [
+        "completed",
+        "passed",
+        "rate",
+        "targetSatisfied",
+        "unverified"
+      ],
+      "additionalProperties": false
+    },
+    "failures": {
+      "type": "object",
+      "properties": {
+        "failedAttempts": { "type": "integer", "minimum": 0, "maximum": 28800 },
+        "repeatedFailureEpisodes": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 300
+        },
+        "cancelled": { "type": "integer", "minimum": 0, "maximum": 28800 },
+        "interrupted": { "type": "integer", "minimum": 0, "maximum": 28800 },
+        "origins": {
+          "type": "object",
+          "properties": {
+            "transient": { "type": "integer", "minimum": 0, "maximum": 28800 },
+            "authored": { "type": "integer", "minimum": 0, "maximum": 28800 },
+            "unknown": { "type": "integer", "minimum": 0, "maximum": 28800 }
+          },
+          "required": ["transient", "authored", "unknown"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "failedAttempts",
+        "repeatedFailureEpisodes",
+        "cancelled",
+        "interrupted",
+        "origins"
+      ],
+      "additionalProperties": false
+    },
+    "reviewedReady": { "type": "integer", "minimum": 0, "maximum": 300 },
+    "reviewCounts": {
+      "type": "object",
+      "properties": {
+        "technical": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
+          },
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
+          "additionalProperties": false
+        },
+        "mechanical": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
+          },
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
+          "additionalProperties": false
+        },
+        "sampled-visual": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
+          },
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
+          "additionalProperties": false
+        },
+        "continuous-motion": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
+          },
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
+          "additionalProperties": false
+        },
+        "listening": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
+          },
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
+          "additionalProperties": false
+        },
+        "factual": {
+          "type": "object",
+          "properties": {
+            "passed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "failed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "unreviewed": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "notApplicable": {
+              "default": 0,
+              "type": "integer",
+              "minimum": 0,
+              "maximum": 300
+            }
+          },
+          "required": ["passed", "failed", "unreviewed", "notApplicable"],
+          "additionalProperties": false
+        }
+      },
+      "required": [
+        "technical",
+        "mechanical",
+        "sampled-visual",
+        "continuous-motion",
+        "listening",
+        "factual"
+      ],
+      "additionalProperties": false
+    },
+    "durations": {
+      "type": "object",
+      "properties": {
+        "setupSeconds": {
+          "type": "object",
+          "properties": {
+            "available": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "p50": {
+              "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+            },
+            "p95": {
+              "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+            }
+          },
+          "required": ["available", "p50", "p95"],
+          "additionalProperties": false
+        },
+        "routineSeconds": {
+          "type": "object",
+          "properties": {
+            "available": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "p50": {
+              "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+            },
+            "p95": {
+              "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+            }
+          },
+          "required": ["available", "p50", "p95"],
+          "additionalProperties": false
+        },
+        "renderSeconds": {
+          "type": "object",
+          "properties": {
+            "available": { "type": "integer", "minimum": 0, "maximum": 300 },
+            "p50": {
+              "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+            },
+            "p95": {
+              "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+            }
+          },
+          "required": ["available", "p50", "p95"],
+          "additionalProperties": false
+        }
+      },
+      "required": ["setupSeconds", "routineSeconds", "renderSeconds"],
+      "additionalProperties": false
+    },
+    "authoring": {
+      "type": "object",
+      "properties": {
+        "comparablePairedTasks": {
+          "type": "integer",
+          "minimum": 0,
+          "maximum": 300
+        },
+        "routineMedianTokens": {
+          "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+        },
+        "baselineMedianTokens": {
+          "anyOf": [{ "type": "number", "minimum": 0 }, { "type": "null" }]
+        },
+        "savings": { "anyOf": [{ "type": "number" }, { "type": "null" }] },
+        "targetSatisfied": {
+          "anyOf": [{ "type": "boolean" }, { "type": "null" }]
+        }
+      },
+      "required": [
+        "comparablePairedTasks",
+        "routineMedianTokens",
+        "baselineMedianTokens",
+        "savings",
+        "targetSatisfied"
+      ],
+      "additionalProperties": false
+    },
+    "rows": {
+      "maxItems": 300,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string",
+            "maxLength": 128,
+            "pattern": "^[A-Za-z][\\w.-]*$"
+          },
+          "question": { "type": "string", "minLength": 1, "maxLength": 512 },
+          "family": { "type": "string", "minLength": 1, "maxLength": 128 },
+          "reviewedReady": { "type": "boolean" },
+          "attempts": { "type": "integer", "minimum": 0, "maximum": 96 },
+          "failedAttempts": { "type": "integer", "minimum": 0, "maximum": 96 },
+          "firstPass": {
+            "type": "string",
+            "enum": ["pending", "passed", "failed", "unverified"]
+          },
+          "staleDimensions": {
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "technical",
+                "mechanical",
+                "sampled-visual",
+                "continuous-motion",
+                "listening",
+                "factual"
+              ]
+            }
+          },
+          "incompleteDimensions": {
+            "maxItems": 6,
+            "type": "array",
+            "items": {
+              "type": "string",
+              "enum": [
+                "technical",
+                "mechanical",
+                "sampled-visual",
+                "continuous-motion",
+                "listening",
+                "factual"
+              ]
+            }
+          }
+        },
+        "required": [
+          "id",
+          "question",
+          "family",
+          "reviewedReady",
+          "attempts",
+          "failedAttempts",
+          "firstPass",
+          "staleDimensions",
+          "incompleteDimensions"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "percentileMethod",
+    "selected",
+    "attempted",
+    "firstPassTechnical",
+    "failures",
+    "reviewedReady",
+    "reviewCounts",
+    "durations",
+    "authoring",
+    "rows"
+  ],
+  "additionalProperties": false
+}

@@ -1,0 +1,389 @@
+{
+  "schemaVersion": "ms3-first-ten-native-annotation-scout-results-1",
+  "date": "2026-10-14",
+  "status": "eight-actual-episode-scouts-and-sampled-label-repairs-verified-full-ten-batch-in-flight",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "sourceInventory": {
+    "files": 2777,
+    "bytes": 122189105,
+    "path": "/private/tmp/still-shift-ms3-blender46-inputs3.json",
+    "status": "unchanged"
+  },
+  "originals": [
+    {
+      "id": "EU-001",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-002",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-003",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-004",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-005",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-006",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-007",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-008",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-009",
+      "masterVoiceSpeechAndControlClocksExact": true
+    },
+    {
+      "id": "EU-010",
+      "masterVoiceSpeechAndControlClocksExact": true
+    }
+  ],
+  "currentAuthoring": {
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-all10-annotations11-cli.json",
+      "bytes": 2341,
+      "sha256": "sha256:d8b005908ef666214c66636a984a957f3e017c3e582c2dca2a1eff3d74783142"
+    },
+    "authoring": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/authoring-annotations11.json",
+      "bytes": 12826,
+      "sha256": "sha256:e4a4c8b2fe428023ea473140b861fcebc123be4125b51f75d89ebcc8b6543dba"
+    },
+    "wholePreflight": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender47-preflight-all10.json",
+        "bytes": 1284,
+        "sha256": "sha256:91ce5766ed122e7e8efd1e0ecba6fa41a527d6c24d9c3c14e7bfe34fcdcb5bea"
+      },
+      "result": {
+        "status": "passed",
+        "scope": "Source admission and absolute compilation only; native projection/visibility and encoded review pending.",
+        "rows": [
+          {
+            "id": "EU-001",
+            "frames": 610,
+            "callouts": 4,
+            "activeLabelFrames": 529
+          },
+          {
+            "id": "EU-002",
+            "frames": 588,
+            "callouts": 3,
+            "activeLabelFrames": 344
+          },
+          {
+            "id": "EU-003",
+            "frames": 588,
+            "callouts": 5,
+            "activeLabelFrames": 378
+          },
+          {
+            "id": "EU-004",
+            "frames": 653,
+            "callouts": 3,
+            "activeLabelFrames": 363
+          },
+          {
+            "id": "EU-005",
+            "frames": 598,
+            "callouts": 3,
+            "activeLabelFrames": 360
+          },
+          {
+            "id": "EU-006",
+            "frames": 634,
+            "callouts": 5,
+            "activeLabelFrames": 339
+          },
+          {
+            "id": "EU-007",
+            "frames": 708,
+            "callouts": 5,
+            "activeLabelFrames": 485
+          },
+          {
+            "id": "EU-008",
+            "frames": 579,
+            "callouts": 4,
+            "activeLabelFrames": 557
+          },
+          {
+            "id": "EU-009",
+            "frames": 596,
+            "callouts": 6,
+            "activeLabelFrames": 412
+          },
+          {
+            "id": "EU-010",
+            "frames": 627,
+            "callouts": 4,
+            "activeLabelFrames": 490
+          }
+        ],
+        "totalFrames": 6181,
+        "totalLabels": 42
+      }
+    }
+  },
+  "nativeDiscovery": {
+    "path": "/private/tmp/still-shift-ms3-blender47-discover.json",
+    "bytes": 63711,
+    "sha256": "sha256:d7ce721d8d77f0549bae8385bbdf39d7c266117aa54fba43cdd3936d24becfb4"
+  },
+  "scoutPasses": [
+    {
+      "record": {
+        "path": "/private/tmp/still-shift-ms3-blender47-scout-eight4.json",
+        "bytes": 96837,
+        "sha256": "sha256:9688f901b97a33860e43c1e2bbea4941186bf4f3e7eb56b85bd08a72ff2ed1d2"
+      },
+      "receipt": {
+        "pin": {
+          "path": "/private/tmp/still-shift-ms3-blender47-scout-eight4-receipt.json",
+          "bytes": 143,
+          "sha256": "sha256:c4dc91e117afb0e498d9ba99fa35c994ab4d9ea7f6e3ebac9912e0ba4192eb84"
+        },
+        "result": {
+          "actualExitCode": 0,
+          "heldSourceExitCode": 0,
+          "privateInputsExact": true,
+          "privateInputFiles": 331,
+          "seconds": 33.33012654189952
+        }
+      },
+      "frames": 138,
+      "freshNativeRenders": 59,
+      "reusedOutputFrames": 79
+    },
+    {
+      "record": {
+        "path": "/private/tmp/still-shift-ms3-blender47-scout-eight5.json",
+        "bytes": 96858,
+        "sha256": "sha256:384b4d96b57392723c5165f5115ebe6ad86ba43918c032d2e58685a9ec0bcdce"
+      },
+      "receipt": {
+        "pin": {
+          "path": "/private/tmp/still-shift-ms3-blender47-scout-eight5-receipt.json",
+          "bytes": 143,
+          "sha256": "sha256:027d62bc183ec009254d363934bd03a5256f24977a2765188ade736a823e6e2d"
+        },
+        "result": {
+          "actualExitCode": 0,
+          "heldSourceExitCode": 0,
+          "privateInputsExact": true,
+          "privateInputFiles": 349,
+          "seconds": 14.54142062482424
+        }
+      },
+      "frames": 138,
+      "freshNativeRenders": 15,
+      "reusedOutputFrames": 123
+    }
+  ],
+  "independentAudits": [
+    {
+      "record": {
+        "path": "/private/tmp/still-shift-ms3-blender47-scout-audit1.json",
+        "bytes": 34331,
+        "sha256": "sha256:799dd1c8404fae1934522ed41ce288c8aca7696ef030ab7245cc63fb2c7ab89b"
+      },
+      "pins": 552,
+      "sampledActiveLabels": 99,
+      "inFrameAndRenderableIssues": 0
+    },
+    {
+      "record": {
+        "path": "/private/tmp/still-shift-ms3-blender47-scout-audit2.json",
+        "bytes": 34265,
+        "sha256": "sha256:d25065812f7b06ecad44dfa81d79864987ad2b6d001a7a87889fa4c82d3f594d"
+      },
+      "pins": 552,
+      "sampledActiveLabels": 99,
+      "inFrameAndRenderableIssues": 0
+    }
+  ],
+  "poseProbes": {
+    "initial": {
+      "path": "/private/tmp/still-shift-ms3-blender47-phone-probes2.json",
+      "bytes": 6644,
+      "sha256": "sha256:90f6a640ddc9a42eaf74e4d15b79721743f2b0d90dc96bb8ba18cac9d5a69028"
+    },
+    "initialFrames": 138,
+    "initialEpisodes": 8,
+    "changed": {
+      "path": "/private/tmp/still-shift-ms3-blender47-phone-probes3.json",
+      "bytes": 4284,
+      "sha256": "sha256:e9f34bc8f5449a2e21f6cc5da82dbae0edbd8a2dad2930181acdad2e1a305dae"
+    },
+    "changedFrames": 93,
+    "changedEpisodes": 5,
+    "newNativeSubmissions": 0,
+    "scope": "Sampled labelled poses and exact original caption words. No audio layer or narration/whole timing/continuous approval."
+  },
+  "phoneInspection": {
+    "initialSheets": {
+      "path": "/private/tmp/still-shift-ms3-blender47-phone-sheets1.json",
+      "bytes": 10958,
+      "sha256": "sha256:6c6fc0e81f99a8452ee1dd4d24a15f9568fac1a623f8688213a085b2d33704f9"
+    },
+    "initialSelectedFrames": 29,
+    "repairedSheets": {
+      "path": "/private/tmp/still-shift-ms3-blender47-phone-sheets2.json",
+      "bytes": 7425,
+      "sha256": "sha256:b91e8e106ed60efe84fc7c8302dce357294b698d1c4d427dd1313b0924d2d760"
+    },
+    "repairedSelectedFrames": 20,
+    "scope": "All eight initial midpoint sheets and five repaired midpoint sheets inspected at phone scale. The original whole recordings and complete source timing remain unchanged.",
+    "findingsAndRepairs": [
+      "EU001 inside/outside faces cropped at left edge: read-only captured-world camera calibration uses scale2.0 and shiftX\u22120.21375000476837158/shiftY\u22120.29250118136405945. Face-state labels bind measurement_mode0/1; revised contact faces are visible in the sampled views.",
+      "EU003 initial input marker is outside the selected native collection; owned anchor.A.handle and peg.armA are used. The spring-back leader now uses anchor.B.outer_leg_recess and meets the visible wire leg in the revised sample.",
+      "EU007 arm bounding-center leaders land on surrounding housing: owned anchor.actuator_contact follows the flexible arm in the revised samples.",
+      "EU008 coiled spring remains cyan; the leader/amber highlight now correctly identifies the bolt tail rather than labelling its shaft as spring wire.",
+      "EU009 Curved blade is inappropriate through the flattening interval; Blade profile remains valid during that transition. The curved recap blade also remains cyan against the amber flat comparison.",
+      "EU002 tongue/root/tooth, EU004 Y-channel/tooth cup and EU005 entry/slot/head samples remain readable/source-bound drafts; whole physical/factual/continuous reviews remain open."
+    ]
+  },
+  "retainedFailures": [
+    {
+      "receipt": {
+        "pin": {
+          "path": "/private/tmp/still-shift-ms3-blender47-scout-eight1-receipt.json",
+          "bytes": 143,
+          "sha256": "sha256:a00ccc042a0b8b37f72094028115ba1055959477af04c54790f7eb8fc43c1d2a"
+        },
+        "result": {
+          "actualExitCode": 1,
+          "heldSourceExitCode": 0,
+          "privateInputsExact": true,
+          "privateInputFiles": 282,
+          "seconds": 16.15606337506324
+        }
+      },
+      "cause": "Input pad declared as an owned highlight surface; native producer rejects before clothespeg capture."
+    },
+    {
+      "receipt": {
+        "pin": {
+          "path": "/private/tmp/still-shift-ms3-blender47-scout-eight2-receipt.json",
+          "bytes": 143,
+          "sha256": "sha256:2d2887d81cf17ae79f660231374ce89f717bc913960ef8c7acfd0aeab8460354"
+        },
+        "result": {
+          "actualExitCode": 1,
+          "heldSourceExitCode": 0,
+          "privateInputsExact": true,
+          "privateInputFiles": 300,
+          "seconds": 3.321754166157916
+        }
+      },
+      "cause": "Outside-collection input marker remains as a query; native producer rejects."
+    },
+    {
+      "cause": "MESH-only private discovery assertion rejects supported CURVE parts; partial inputs-annotations9 are retained. Corrected guard matches the producer MESH/CURVE/SURFACE contract."
+    },
+    {
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-blender47-phone-probes1.log",
+        "bytes": 772,
+        "sha256": "sha256:a3e3f3e743f9c79547a6166fdbad31ae7e2a5a58837268b985bca4cefe4973bf"
+      },
+      "cause": "Full-episode composer correctly rejects a sparse-frame probe carrying complete original narration. Proper silent pose graphics use shared callout/caption primitives; the narration guard remains intact."
+    },
+    {
+      "receipt": {
+        "pin": {
+          "path": "/private/tmp/still-shift-ms3-blender47-whole-all10-receipt.json",
+          "bytes": 614,
+          "sha256": "sha256:df79715e16f20c687b0cf50cf041daf403cb498d45ca5911fa59fc56ecf1177b"
+        },
+        "result": {
+          "steps": [
+            {
+              "step": "queue",
+              "actualExitCode": 0,
+              "heldEngineInputsExitCode": 0,
+              "privateInputsExact": true,
+              "seconds": 3.3910833750851452
+            },
+            {
+              "step": "run",
+              "actualExitCode": 2,
+              "heldEngineInputsExitCode": 0,
+              "privateInputsExact": true,
+              "seconds": 1.9185677089262754
+            }
+          ],
+          "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-annotations12.json",
+          "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output"
+        }
+      },
+      "cause": "Two-episode trial revisions cannot add eight episode IDs. Rejection preserves the original journal; a separate fixed ten-episode batch is created."
+    }
+  ],
+  "fullTenBatch": {
+    "id": "actual-first-ten-full-HD47",
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-full-new47.json",
+      "bytes": 32582,
+      "sha256": "sha256:5f7d842e0c9e93bebf87798ab3335d61b0e230abb0a8ec3412b68625fc4239c5"
+    },
+    "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47",
+    "cacheCopy": {
+      "pin": {
+        "path": "/private/tmp/still-shift-ms3-blender47-cache-copy1.json",
+        "bytes": 416,
+        "sha256": "sha256:9cb8fdcb9bef837495f50743ad7d882e6f88718c8ae8c3281b3b85b4b9ff9e49"
+      },
+      "result": {
+        "status": "passed",
+        "source": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output/blender-cache",
+        "destination": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/blender-cache",
+        "files": 1851,
+        "bytes": 653583036,
+        "allCopiedBytesExact": true,
+        "originalQueueAndDeliveriesUntouched": true
+      }
+    },
+    "queueCreation": {
+      "steps": [
+        {
+          "step": "queue",
+          "actualExitCode": 0,
+          "heldEngineInputsExitCode": 0,
+          "privateInputsExact": true,
+          "seconds": 3.2302756670396775
+        }
+      ],
+      "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-full-new47.json",
+      "outputRoot": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47"
+    },
+    "status": "run confirmed live; terminal run/report/resume/encoded audits required",
+    "originalTwoEpisodeJournalAndDeliveries": "unchanged; separate new cohort will create its own products from matching native cache"
+  },
+  "acceptedPilot": 0,
+  "pilotDenominator": 10,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "remaining": [
+    "Complete all-ten whole HD run/report/resume and current source/encoded picture/audio audits.",
+    "Resolve stationary-purpose/staging QA and native phone/contact/crop/audio handoff.",
+    "Whole factual/mechanical/encoded-glyph/continuous/listening and original E06/E10 reviews.",
+    "Broader physical label-state/event/contact/fault/coverage controls, comparable effort, and final full software/benchmark/archive/installed-package gates."
+  ]
+}

@@ -1,0 +1,307 @@
+{
+  "schemaVersion": "ms3-blender-native-qa-results-1",
+  "date": "2026-10-14",
+  "status": "candidate-native-observation-qa-verified",
+  "implementationCommit": "780209e3dcd8b95517cc64b4e6e975403baa63c9",
+  "runtimeCodeSha256": "sha256:9a396618e220b0342e3fc89ba743367cda26f6da4944521b239e382446a0362a",
+  "nativeProfileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+  "ownerSelection": "ms3-everyday-unlocked-first-ten-2026-10-14-v2",
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-blender40-inputs3.json",
+    "files": 2770,
+    "bytes": 122066184,
+    "postCommitHold": {
+      "status": "passed",
+      "mode": "check",
+      "files": 2770,
+      "bytes": 122066184
+    }
+  },
+  "implementation": {
+    "qaPath": "optional-canonical-pinned-dependency",
+    "selectors": [
+      "actual-control",
+      "part-origin-drift",
+      "part-matrix-drift",
+      "part-origin-separation",
+      "part-bounds-span",
+      "part-bounds-separation",
+      "part-render-flag",
+      "surface-hash-change"
+    ],
+    "matrixConvention": "Bpy-row-major-translation-at-3-7-11",
+    "units": ["control-value", "matrix-component", "boolean", "native-unit"],
+    "programs": "bounded-registered-interval-rules",
+    "failures": "located-original-numeric-findings-and-missing-measurements",
+    "warnings": "consecutive-failure-runs-with-actual-peak-frame-value-image-and-grouped-raw-peak-ownership",
+    "artifacts": [
+      "qa-program.json",
+      "qa-warnings.json",
+      "qa-warning-groups.json",
+      "qa-facts.json"
+    ],
+    "verification": "current-observation-replay-and-exact-derived-artifact-equality",
+    "wholeMechanical": "unreviewed-after-passing-sampled-rules",
+    "surfaceContact": "not-inferred-from-bounds",
+    "renderVisibility": "not-inferred-from-render-flag"
+  },
+  "softwareVerification": {
+    "receipt": "/private/tmp/still-shift-ms3-blender40-gate3-receipt.json",
+    "result": {
+      "steps": [
+        {
+          "name": "python",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "check",
+            "packages/animation-engine/src/blender-capture-worker.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.22075416590087116
+        },
+        {
+          "name": "python-format",
+          "argv": [
+            "uv",
+            "run",
+            "--no-sync",
+            "ruff",
+            "format",
+            "--check",
+            "packages/animation-engine/src/blender-capture-worker.py"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 0.1538083329796791
+        },
+        {
+          "name": "fast",
+          "argv": ["pnpm", "check:fast"],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 139.71105629205704
+        },
+        {
+          "name": "runtime",
+          "argv": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/runtime/blender-production-cli.test.ts",
+            "tests/runtime/blender-episode-inputs.test.ts",
+            "tests/runtime/blender-production-backend-admission.test.ts",
+            "tests/runtime/blender-capture-admission.test.ts",
+            "tests/runtime/mechanism-production-queue-cli.test.ts",
+            "tests/runtime/mechanism-production-run-cli.test.ts",
+            "tests/runtime/mechanism-production-report-cli.test.ts",
+            "tests/runtime/mechanism-production-retry-cli.test.ts",
+            "tests/runtime/mechanism-production-queue-recovery.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 12.696410584030673
+        }
+      ],
+      "actualExitCode": 0
+    },
+    "fastTests": 4573,
+    "fastFiles": 455,
+    "affectedRuntimeTests": 22,
+    "affectedRuntimeFiles": 9,
+    "focusedReplayAndSelectorTests": 10,
+    "focusedReplayAndSelectorFiles": 2,
+    "focusedReceipt": "/private/tmp/still-shift-ms3-blender40-focused3.log",
+    "predecessorHeldGates": [
+      {
+        "receipt": "/private/tmp/still-shift-ms3-blender40-gate1-receipt.json",
+        "inventory": "/private/tmp/still-shift-ms3-blender40-inputs1.json",
+        "qualification": "Passed software gates before the actual strict warning-reference failure."
+      },
+      {
+        "receipt": "/private/tmp/still-shift-ms3-blender40-gate2-receipt.json",
+        "inventory": "/private/tmp/still-shift-ms3-blender40-inputs2.json",
+        "qualification": "Passed repaired QA implementation before generated capability prose reconciliation."
+      }
+    ]
+  },
+  "actualNativeQA": {
+    "passingAndSeededCommandReceipt": "/private/tmp/still-shift-ms3-blender40-native2-receipt.json",
+    "seededQualification": "Both actual export/report commands exit0; the helper then exits1 because it assumed registration order. The retained assertions are correctly sorted by ID. Independent audit verifies the original products and all findings; separate unchanged resume succeeds.",
+    "seededResumeReceipt": "/private/tmp/still-shift-ms3-blender40-seeded-resume1.json",
+    "currentRepairReceipt": "/private/tmp/still-shift-ms3-blender40-repair3-receipt.json",
+    "currentRepairResult": {
+      "steps": [
+        {
+          "name": "repaired3-queue",
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 2.032439624890685
+        },
+        {
+          "name": "repaired3-run",
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 38.48075008299202
+        },
+        {
+          "name": "repaired3-report",
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 3.950903791002929
+        },
+        {
+          "name": "repaired3-resume",
+          "actualExitCode": 0,
+          "expectedExitCode": 0,
+          "holdExitCode": 0,
+          "seconds": 3.81372412503697
+        }
+      ],
+      "repaired3": {
+        "manifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/qa-repaired3-queue.json",
+        "product": {
+          "path": "products/EU-004-334ea0efaae8c74c-9.json",
+          "bytes": 11056,
+          "sha256": "sha256:f31f3cd44bb6a989e3c7659df7063d2d894dd5886c8e3c364a6051f17dbda779"
+        },
+        "report": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/qa-repaired3-report.json",
+        "facts": {
+          "path": "items/EU-004/9/qa-facts.json",
+          "bytes": 280750,
+          "sha256": "sha256:e3e4ed833ddf4f1cc50140ecdc9e2951846d46f57afc79c5261ed5c0799a47b2"
+        },
+        "groups": 0,
+        "locatedFailures": 0,
+        "newNativeRenders": 0,
+        "completeDecodedPictureAudioEqual": true,
+        "qualityEvidenceBound": true
+      },
+      "actualExitCode": 0,
+      "unchangedCaptureFiles": 664,
+      "acceptedPilot": 0
+    },
+    "independentAudit": "/private/tmp/still-shift-ms3-blender40-audit2.json",
+    "independentAuditResult": {
+      "status": "passed",
+      "episodes": [
+        {
+          "label": "passing2",
+          "runtimeCodeSha256": "sha256:b6a7d1af290fe5bb5e186be7083ab0a9b1a001a1f668876c7cda9a4e71d9f04e",
+          "nativeProfileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+          "outputFrames": 653,
+          "nativeObservationStates": 328,
+          "independentComparisons": 1306,
+          "locatedFailures": 0,
+          "warningGroups": 0,
+          "priorProducts": 5,
+          "completeQualityEvidenceBound": true
+        },
+        {
+          "label": "seeded-failure2",
+          "runtimeCodeSha256": "sha256:b6a7d1af290fe5bb5e186be7083ab0a9b1a001a1f668876c7cda9a4e71d9f04e",
+          "nativeProfileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+          "outputFrames": 653,
+          "nativeObservationStates": 328,
+          "independentComparisons": 1332,
+          "locatedFailures": 26,
+          "warningGroups": 2,
+          "priorProducts": 6,
+          "completeQualityEvidenceBound": true
+        },
+        {
+          "label": "repaired3",
+          "runtimeCodeSha256": "sha256:9a396618e220b0342e3fc89ba743367cda26f6da4944521b239e382446a0362a",
+          "nativeProfileSha256": "sha256:a51512b29d4a8d4c0cb10f71e4717bd326b925ba5f088c592640791fae290ae1",
+          "outputFrames": 653,
+          "nativeObservationStates": 328,
+          "independentComparisons": 1306,
+          "locatedFailures": 0,
+          "warningGroups": 0,
+          "priorProducts": 7,
+          "completeQualityEvidenceBound": true
+        }
+      ],
+      "uniquePinnedFiles": 373,
+      "acceptedPilot": 0
+    },
+    "currentManifest": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/qa-repaired3-queue.json",
+    "currentProduct": {
+      "path": "products/EU-004-334ea0efaae8c74c-9.json",
+      "bytes": 11056,
+      "sha256": "sha256:f31f3cd44bb6a989e3c7659df7063d2d894dd5886c8e3c364a6051f17dbda779"
+    },
+    "currentReport": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-blender38-native-wiem7p1b/qa-repaired3-report.json",
+    "wholeRecordingSeconds": 21.76,
+    "outputFrames": 653,
+    "engineeringDimensions": [320, 568],
+    "originalNativeStates": 328,
+    "unchangedOriginalCaptureFiles": 664,
+    "currentFreshNativeRenders": 0,
+    "completeDecodedPictureAudioEqual": true,
+    "currentLocatedFailures": 0,
+    "seededLocatedFailures": 26,
+    "seededFailureKinds": {
+      "semantic-range-failed": 13,
+      "semantic-measurement-missing": 13
+    },
+    "seededWarningGroups": 2,
+    "currentPriorProducts": 7,
+    "resumeAddsNoAttempt": true,
+    "technicalStatus": "passed",
+    "otherFiveWholeDimensions": "unreviewed"
+  },
+  "retainedFailures": [
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender40-build1.log",
+      "actualExitCode": 2,
+      "reason": "Strict optional property types for QA path and signal; repaired before build2 passes."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender40-native1-receipt.json",
+      "actualExitCode": 1,
+      "reason": "Warning grouper strict artifact references rejected the extra byte-count field; raw references and bad-frame images repaired, with a native replay regression."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender40-focused2.log",
+      "actualExitCode": 1,
+      "reason": "New synthetic replay fixture root used a temporary alias outside canonical artifact ownership; fixture canonicalized and focused3 passes."
+    },
+    {
+      "receipt": "/private/tmp/still-shift-ms3-blender40-native2-receipt.json",
+      "actualExitCode": 1,
+      "scope": "helper-post-export-assertion",
+      "reason": "Helper expected missing-part assertion at an array index; registry sorts by ID. Export/report are correct; independent ID-based numeric audit and separate resume pass."
+    }
+  ],
+  "scope": {
+    "distinctActualEpisodesWithEngineeringDraft": 1,
+    "selectedEpisodes": 10,
+    "acceptedPilotEpisodes": 0,
+    "routineTokenMeasurements": null,
+    "wholeHumanAcceptance": "not-inferred"
+  },
+  "remaining": [
+    "Native rendered readability/review images/crops/audio/evidence/handoff integration",
+    "Current actual EU-001\u2013EU-010 whole plans/products at1080x1920/30fps and object-specific source/cue bindings",
+    "Broader seeded faults, event/transition/order semantics, sampled surface/contact and current coverage admission",
+    "Whole factual/mechanical/encoded glyph/continuous/listening review and original E06/E10 explanation reviews",
+    "Comparable routine-token telemetry",
+    "Final full software/benchmark/archive/checksum/isolated installed-package gates"
+  ],
+  "authority": {
+    "ElevenLabsSpend": 0,
+    "published": false,
+    "merged": false,
+    "GitHubActionsEnabled": false
+  }
+}

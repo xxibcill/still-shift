@@ -1,0 +1,164 @@
+{
+  "date": "2026-10-16",
+  "pullRequest": "https://github.com/xxibcill/still-shift/pull/58",
+  "initialHead": "3c001a0c42cce52a39aeb1163d5c2a7349027c40",
+  "branch": "codex/pr-58-review-fixes",
+  "authorization": "Post each finding inline, one finding per commit, one final push after both fixes.",
+  "comments": [
+    {
+      "finding": "identifiers",
+      "id": 4291869650,
+      "thread": "PRRT_kwDOUNeEOM6tGYGO",
+      "url": "https://github.com/xxibcill/still-shift/pull/58#discussion_r4291869650"
+    },
+    {
+      "finding": "fps",
+      "id": 4291869662,
+      "thread": "PRRT_kwDOUNeEOM6tGYGV",
+      "url": "https://github.com/xxibcill/still-shift/pull/58#discussion_r4291869662"
+    }
+  ],
+  "identifierFix": {
+    "status": "source-fixed-and-verified",
+    "changes": [
+      "Validate logical episode/speech/shot/callout IDs against generated composition syntax and prefix-adjusted lengths.",
+      "Reject narration IDs reserved for generated font and native sequence assets.",
+      "Keep source object/collection/camera/control/anchor names on the existing native name contract.",
+      "Share generated asset ID constants and regenerate public native plan JSON Schema."
+    ],
+    "regressions": {
+      "tests": 11,
+      "red": "10 fail / 1 pass before production changes",
+      "green": "11 pass; 36 total focused tests across 5 files pass",
+      "initialFixtureCorrection": "Initial positive fixture used 114 callout characters; the 15-character callout-leader- prefix allows 113. Initial 9-failure log is retained; corrected independent regressions ran red again before implementation."
+    },
+    "checks": {
+      "focusedUnits": "36 passed",
+      "typescript": "passed",
+      "schemaCheck": "passed",
+      "diffWhitespace": "passed"
+    },
+    "commit": "a155109fb70c1cf7935e4ee5fbe1f25e39568b2e"
+  },
+  "fpsFix": {
+    "status": "source-fixed-and-verified",
+    "changes": [
+      "Reuse CompositionSchema.shape.fps for episode export admission; standalone raw capture remains capped at 120.",
+      "Derive maxFps capability from the receiver schema and regenerate public schema/reference docs.",
+      "Update the existing review-clock assertion from the unsupported 120-FPS episode contract to the supported 60-FPS boundary."
+    ],
+    "regressions": {
+      "red": "2 fail / 1 pass before production changes",
+      "green": "All 3 pass; 30 related cases across 4 files pass."
+    }
+  },
+  "broaderVerification": {
+    "fastAttempts": [
+      {
+        "status": "failed",
+        "unitsPassed": 4621,
+        "unitsFailed": 1,
+        "cause": "Existing native review test still expected the rejected 120-FPS episode contract. Production code unchanged; test updated to the supported 60-FPS boundary.",
+        "log": "pr58-fix-fast.log"
+      },
+      {
+        "status": "passed",
+        "unitFiles": 457,
+        "units": 4622,
+        "log": "pr58-fix-fast-rerun.log"
+      }
+    ],
+    "runtime": {
+      "status": "completed-in-recorded-stages",
+      "originalAggregateCommand": {
+        "command": "pnpm check:runtime",
+        "exitCode": 1,
+        "log": "pr58-fix-runtime.log",
+        "qualification": "Do not relabel this failed command as a continuous pass."
+      },
+      "toolchain": "passed: Node22.23.1/pnpm10.29.3/Python3.12.11/uv0.7.12/Chromium1234/FFmpeg8.0.1",
+      "runtime": {
+        "files": 63,
+        "tests": 376,
+        "status": "passed"
+      },
+      "initialIntegration": {
+        "files": 61,
+        "tests": 327,
+        "passed": 293,
+        "failed": 34,
+        "failures": [
+          {
+            "file": "tests/integration/soundtrack.test.ts",
+            "tests": 31,
+            "cause": "Dedicated isolated soundtrack Python environment was missing; pinned offline setup subsequently passed."
+          },
+          {
+            "file": "tests/integration/depth-worker-protocol.test.ts",
+            "tests": 3,
+            "cause": "Three original 5-second protocol timeouts; cause unproven; assertions and budgets unchanged."
+          }
+        ]
+      },
+      "owningIntegrationRerun": {
+        "status": "passed",
+        "files": 2,
+        "tests": 38,
+        "log": "pr58-fix-integration-rerun.log"
+      },
+      "distinctIntegrationCompletion": {
+        "files": 61,
+        "tests": 327,
+        "status": "all-passed-in-stages",
+        "qualification": "59 initially passing files plus the complete unchanged owning reruns of the two failing files."
+      },
+      "python": {
+        "status": "passed",
+        "tests": 14,
+        "log": "pr58-fix-depth.log"
+      },
+      "browserSmoke": {
+        "status": "passed",
+        "log": "pr58-fix-smoke.log"
+      },
+      "continuationExitCode": 0
+    }
+  },
+  "push": {
+    "mode": "one normal fast-forward push after the second and final repair commit",
+    "target": "origin HEAD:refs/heads/codex/mechanism-ms3",
+    "delivery": "Exact final commit, remote readback and thread closure are recorded after final commit in the primary-checkout delivery receipt."
+  },
+  "logs": "benchmarks/results/pr-58-fix-2026-10-16",
+  "limits": [
+    "No fresh release:check, complete full render/baseline matrix, installed archive qualification or all-ten production rerender.",
+    "Historical package/pilot results retain their original source bindings.",
+    "Pilot compatibility is passive compiler parity only; no human visual/listening or production acceptance inferred."
+  ],
+  "independentRepairReviews": {
+    "standardsFindings": 0,
+    "specFindings": 0,
+    "scope": "Both production repairs and their tests, schemas and capability documentation. No acceptance or production rerender inferred."
+  },
+  "pilotCompatibility": {
+    "episodes": 10,
+    "outputFrames": 6181,
+    "status": "compile-admission-and-exact-reviewed-head-compiled-output-parity-passed",
+    "log": "pr58-pilot-compatibility-parity.log",
+    "qualification": "Passive JSON/compiler check only, not source/media pin revalidation, native capture, export, current product QA or acceptance."
+  },
+  "setup": {
+    "node": "offline frozen pnpm install passed",
+    "python": "offline frozen uv sync passed, independent Python 3.12.11 environment",
+    "soundtrack": "offline pinned setup passed: DawDreamer 0.9.0, NumPy 2.3.3, SciPy 1.16.2; initial missing-runtime failure retained"
+  },
+  "verifiedInputs": {
+    "files": 3452,
+    "bytes": 528324891,
+    "mismatches": 0,
+    "manifest": "benchmarks/results/pr-58-fix-2026-10-16/verified-inputs.json",
+    "sha256": "f9d82f82bf5b3b21036de6b96b6e438398ff78b0a5f1ed5c5c31d8293809cddf",
+    "excludes": ["docs/dev-log.md", "docs/pr-58-fix-results.json"],
+    "qualification": "All source, tests, schema and other held tracked inputs match the successful fast and staged runtime checks. Only the development log and repair evidence receipt are excluded."
+  }
+}

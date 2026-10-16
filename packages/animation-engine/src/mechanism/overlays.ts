@@ -1002,6 +1002,7 @@ function physicalProofHold(episode: MechanismEpisode, capture: SidecarInput) {
     id: shot.id,
     purpose: shot.purpose,
     layer: mechanismOverlayLayerId("plate", shot.id),
+    sourceStartFrame: 0,
     start: shot.startFrame,
     end: shot.endFrameExclusive,
     evidenceSha256: hash(capture.sidecar),

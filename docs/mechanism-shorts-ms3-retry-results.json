@@ -1,0 +1,620 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "7aeae978",
+  "status": "complete-current-fast-runtime-passed-real-native-recovery-pending",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-retry.ts",
+      "bytes": 7200,
+      "sha256": "sha256:ec8738d4930eaab9102d1120cb3841fb5ebf336758ada1ff7958260b81f1c73a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue-contract.ts",
+      "bytes": 8190,
+      "sha256": "sha256:9466d29953abbc8b82f1deef3323f4c54a0d2ea755f11273b27b16585783021a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue.ts",
+      "bytes": 19463,
+      "sha256": "sha256:a5148b2971a7f37274d3a6949fc3bf4f25825904c5992944e8e86379702fc03b"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-registry.ts",
+      "bytes": 8947,
+      "sha256": "sha256:a92f356e75ccc1fe194a51539c4ba3a9f88d640271fd6c98274c3053a0ec3d37"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+      "bytes": 5001,
+      "sha256": "sha256:3296a62cbe1d0429753fadda29ff65f6e96e0e48d3298431c5165c29f9d4f248"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production-execution.ts",
+      "bytes": 5870,
+      "sha256": "sha256:e7cb6a81a94cec8c57dbae1e23e45d7131d3ec14fdfbb6545a3abfb566c1741d"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production.ts",
+      "bytes": 11551,
+      "sha256": "sha256:a96402cb66cb1fcfd72c2fec55fcf312581973516a08b9ad41ddc5a89b75b75a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/cli.ts",
+      "bytes": 19630,
+      "sha256": "sha256:55fb3fa3cd7c0223e25066bdcf41e69482c055b85d1423cf581b255dd10c68e5"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-retry.test.ts",
+      "bytes": 16152,
+      "sha256": "sha256:ee47beda0cec24bb673148c96771bb62f6398fdf312c7cb0ff9c6ca4b970da82"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-retry-cli.test.ts",
+      "bytes": 2979,
+      "sha256": "sha256:2d4ebe4ec23b2adbb1c2c0a6be23ae558070582efbd3875628fb78e52dc24b07"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-report-cli.test.ts",
+      "bytes": 3781,
+      "sha256": "sha256:dadd2434dda6f679f86e07ba5f26108b4b328fc3672f73a6ef0c30ff708c5a1f"
+    }
+  ],
+  "delivered": [
+    "Exact-CAS retry request grants a new bounded batch only to selected failed/cancelled IDs after current dependency pins are repaired.",
+    "Output and manifest locks prevent active-owner mutation and concurrent CAS writers across output roots. Journal bytes, attempts, products and reviews remain unchanged during authorization.",
+    "Immutable original/next manifest history is verified; escaped/corrupt retained history rejects before replacement.",
+    "Run reuses verified completed neighbors, preserves unselected failed/cancelled neighbors and consumes authorization once. Original3 attempts/revision,96/item,32 revisions remain fixed.",
+    "Production retry CLI, fourteen schemas and machine/generated capability limits expose32 selected IDs/16KiB requests; execution/reviews remain separate."
+  ],
+  "scopedPreflight": {
+    "status": "passed",
+    "startedUtc": "2026-10-13T01:40:16.394606+00:00",
+    "sourceSnapshot": [
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-retry.ts",
+        "bytes": 7200,
+        "sha256": "sha256:ec8738d4930eaab9102d1120cb3841fb5ebf336758ada1ff7958260b81f1c73a"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue-contract.ts",
+        "bytes": 8190,
+        "sha256": "sha256:9466d29953abbc8b82f1deef3323f4c54a0d2ea755f11273b27b16585783021a"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue.ts",
+        "bytes": 19463,
+        "sha256": "sha256:a5148b2971a7f37274d3a6949fc3bf4f25825904c5992944e8e86379702fc03b"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-registry.ts",
+        "bytes": 8947,
+        "sha256": "sha256:a92f356e75ccc1fe194a51539c4ba3a9f88d640271fd6c98274c3053a0ec3d37"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+        "bytes": 5001,
+        "sha256": "sha256:3296a62cbe1d0429753fadda29ff65f6e96e0e48d3298431c5165c29f9d4f248"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production-execution.ts",
+        "bytes": 5870,
+        "sha256": "sha256:e7cb6a81a94cec8c57dbae1e23e45d7131d3ec14fdfbb6545a3abfb566c1741d"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production.ts",
+        "bytes": 11551,
+        "sha256": "sha256:a96402cb66cb1fcfd72c2fec55fcf312581973516a08b9ad41ddc5a89b75b75a"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/cli.ts",
+        "bytes": 19630,
+        "sha256": "sha256:55fb3fa3cd7c0223e25066bdcf41e69482c055b85d1423cf581b255dd10c68e5"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-retry.test.ts",
+        "bytes": 16152,
+        "sha256": "sha256:ee47beda0cec24bb673148c96771bb62f6398fdf312c7cb0ff9c6ca4b970da82"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-retry-cli.test.ts",
+        "bytes": 2979,
+        "sha256": "sha256:2d4ebe4ec23b2adbb1c2c0a6be23ae558070582efbd3875628fb78e52dc24b07"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-report-cli.test.ts",
+        "bytes": 3781,
+        "sha256": "sha256:dadd2434dda6f679f86e07ba5f26108b4b328fc3672f73a6ef0c30ff708c5a1f"
+      }
+    ],
+    "commands": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate2-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-retry.test.ts",
+          "tests/runtime/mechanism-production-retry-cli.test.ts",
+          "tests/unit/mechanism-production-projects.test.ts",
+          "tests/unit/mechanism-production-queue.test.ts",
+          "tests/unit/mechanism-production-report-io.test.ts",
+          "tests/runtime/mechanism-production-queue-cli.test.ts",
+          "tests/runtime/mechanism-production-run-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts",
+          "tests/runtime/native-node-config.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate2-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/production-retry.ts",
+          "packages/animation-engine/src/mechanism/production-queue-contract.ts",
+          "packages/animation-engine/src/mechanism/production-queue.ts",
+          "packages/animation-engine/src/mechanism/production-registry.ts",
+          "packages/animation-engine/src/index.ts",
+          "tools/still-shift-cli/src/production-execution.ts",
+          "tools/still-shift-cli/src/production.ts",
+          "tools/still-shift-cli/src/cli.ts",
+          "tests/unit/mechanism-production-retry.test.ts",
+          "tests/runtime/mechanism-production-retry-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate2-2.log"
+      },
+      {
+        "command": ["pnpm", "schema:generate"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate2-3.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate2-4.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate2-5.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate2-6.log"
+      }
+    ],
+    "owningSourceHoldExitCode": 0,
+    "endedUtc": "2026-10-13T01:41:04.253078+00:00",
+    "session": 8569,
+    "focusedTests": 48,
+    "files": 9
+  },
+  "earlierPreflight": {
+    "status": "passed",
+    "startedUtc": "2026-10-13T01:34:27.975187+00:00",
+    "sourceSnapshot": [
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-retry.ts",
+        "bytes": 7200,
+        "sha256": "sha256:ec8738d4930eaab9102d1120cb3841fb5ebf336758ada1ff7958260b81f1c73a"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue-contract.ts",
+        "bytes": 8190,
+        "sha256": "sha256:9466d29953abbc8b82f1deef3323f4c54a0d2ea755f11273b27b16585783021a"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-queue.ts",
+        "bytes": 19463,
+        "sha256": "sha256:a5148b2971a7f37274d3a6949fc3bf4f25825904c5992944e8e86379702fc03b"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-registry.ts",
+        "bytes": 8947,
+        "sha256": "sha256:a92f356e75ccc1fe194a51539c4ba3a9f88d640271fd6c98274c3053a0ec3d37"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+        "bytes": 5001,
+        "sha256": "sha256:3296a62cbe1d0429753fadda29ff65f6e96e0e48d3298431c5165c29f9d4f248"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production-execution.ts",
+        "bytes": 5870,
+        "sha256": "sha256:e7cb6a81a94cec8c57dbae1e23e45d7131d3ec14fdfbb6545a3abfb566c1741d"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/production.ts",
+        "bytes": 11551,
+        "sha256": "sha256:a96402cb66cb1fcfd72c2fec55fcf312581973516a08b9ad41ddc5a89b75b75a"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tools/still-shift-cli/src/cli.ts",
+        "bytes": 19630,
+        "sha256": "sha256:55fb3fa3cd7c0223e25066bdcf41e69482c055b85d1423cf581b255dd10c68e5"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-retry.test.ts",
+        "bytes": 14325,
+        "sha256": "sha256:345cb1b41d38bb43fa52428914c9656a63752c4290d3ac9dc3a5b5e69731b3a7"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-retry-cli.test.ts",
+        "bytes": 2979,
+        "sha256": "sha256:2d4ebe4ec23b2adbb1c2c0a6be23ae558070582efbd3875628fb78e52dc24b07"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/runtime/mechanism-production-report-cli.test.ts",
+        "bytes": 3781,
+        "sha256": "sha256:dadd2434dda6f679f86e07ba5f26108b4b328fc3672f73a6ef0c30ff708c5a1f"
+      }
+    ],
+    "commands": [
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate1-0.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-retry.test.ts",
+          "tests/runtime/mechanism-production-retry-cli.test.ts",
+          "tests/unit/mechanism-production-projects.test.ts",
+          "tests/unit/mechanism-production-queue.test.ts",
+          "tests/unit/mechanism-production-report-io.test.ts",
+          "tests/runtime/mechanism-production-queue-cli.test.ts",
+          "tests/runtime/mechanism-production-run-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts",
+          "tests/runtime/native-node-config.test.ts",
+          "--maxWorkers=2",
+          "--no-file-parallelism"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate1-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/production-retry.ts",
+          "packages/animation-engine/src/mechanism/production-queue-contract.ts",
+          "packages/animation-engine/src/mechanism/production-queue.ts",
+          "packages/animation-engine/src/mechanism/production-registry.ts",
+          "packages/animation-engine/src/index.ts",
+          "tools/still-shift-cli/src/production-execution.ts",
+          "tools/still-shift-cli/src/production.ts",
+          "tools/still-shift-cli/src/cli.ts",
+          "tests/unit/mechanism-production-retry.test.ts",
+          "tests/runtime/mechanism-production-retry-cli.test.ts",
+          "tests/runtime/mechanism-production-report-cli.test.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate1-2.log"
+      },
+      {
+        "command": ["pnpm", "schema:generate"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate1-3.log"
+      },
+      {
+        "command": ["pnpm", "schema:check"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate1-4.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate1-5.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-retry9-gate1-6.log"
+      }
+    ],
+    "owningSourceHoldExitCode": 0,
+    "endedUtc": "2026-10-13T01:35:15.628309+00:00"
+  },
+  "scopedAttempts": [
+    {
+      "name": "scope1",
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-retry9-scope1-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/mechanism-production-retry.test.ts",
+            "tests/runtime/mechanism-production-retry-cli.test.ts",
+            "tests/unit/mechanism-production-queue.test.ts",
+            "tests/runtime/mechanism-production-run-cli.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-retry9-scope1-1.log"
+        }
+      ],
+      "qualification": "Preliminary26 checks before the shared-manifest lock/final test checkpoint; no owning source hold was recorded."
+    },
+    {
+      "name": "scope2",
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 2,
+          "log": "/private/tmp/still-shift-ms3-retry9-scope2-0.log"
+        }
+      ],
+      "failure": "Compile2: test cp/mkdir imports missing; behavior group unstarted."
+    },
+    {
+      "name": "scope3",
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-retry9-scope3-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/mechanism-production-retry.test.ts",
+            "tests/runtime/mechanism-production-retry-cli.test.ts",
+            "tests/unit/mechanism-production-queue.test.ts",
+            "tests/runtime/mechanism-production-run-cli.test.ts",
+            "--maxWorkers=2",
+            "--no-file-parallelism"
+          ],
+          "actualExitCode": 0,
+          "log": "/private/tmp/still-shift-ms3-retry9-scope3-1.log"
+        }
+      ],
+      "qualification": "Build and30 initial retry/queue controls passed before the final cancelled-neighbor check. Final held48-check preflight is authoritative."
+    }
+  ],
+  "orchestrationFailure": "First inline preflight wrapper did not parse (else1 syntax), so no commands ran; corrected saved wrapper subsequently executes held preflight.",
+  "limits": {
+    "retryItems": 32,
+    "requestBytes": 16384,
+    "attemptsPerRevision": 3,
+    "attemptsPerItem": 96,
+    "revisions": 32
+  },
+  "exhaustionProof": {
+    "method": "Actual fixture adapter through32 queue revisions/96 transient attempts and refusal of97th authorization",
+    "scope": "Filesystem/journal lifecycle only; no real native/OS/human/pilot admission"
+  },
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate1-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate1-1.log",
+      "bytes": 1305,
+      "sha256": "sha256:cddb25bc0ad4936fa4c6e2f9f1bb6ee5ad70e6677e71ddabffbecd1b5feb82fb"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate1-2.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate1-3.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate1-4.log",
+      "bytes": 502,
+      "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate1-5.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate1-6.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate2-0.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate2-1.log",
+      "bytes": 1306,
+      "sha256": "sha256:9681ef486572889b7e34b94bb03561110f401b1ff608d1ab74673be5d288c4c2"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate2-2.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate2-3.log",
+      "bytes": 653,
+      "sha256": "sha256:7cec5c2296a29a663652c588639b1b1c1d5d3924bc9247fe620ff2ba2b110d3a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate2-4.log",
+      "bytes": 502,
+      "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate2-5.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate2-6.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate1-receipt.json",
+      "bytes": 5448,
+      "sha256": "sha256:fa07dc0ea0c751fb551070809c469720bc852dfba5e9de33d7cfb2653fff2865"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-retry9-gate2-receipt.json",
+      "bytes": 5448,
+      "sha256": "sha256:b76f951b786d8af93771096eea702bb8aa164d1a6a4ee9f791e098f0fa28239a"
+    }
+  ],
+  "preparedNativeRecovery": {
+    "file": {
+      "path": "/private/tmp/still-shift-ms3-native-recovery-draft.ts",
+      "bytes": 10554,
+      "sha256": "sha256:aee8f1d06dea9fece2f2a2e00f203c9fafab359d299f5af3b3eec046480e5501"
+    },
+    "status": "unintegrated-unrun-draft",
+    "qualification": "Before use, add owned-child cleanup/close-event handling, make second caption edit distinct, compile/lint/register it and preflight actual injection paths; no OS/native recovery pass claimed."
+  },
+  "remaining": [
+    "Integrate/compile/lint/register/preflight native recovery draft3, run actual CLI/OS faults and recovery, then independently audit. Complete fast4458/runtime253/integration322/depth14/smoke pass on exact0d590658 source.",
+    "All original unified whole-review/analytic/continuous/fault/scoped/MS1 repair and ten questions/five assets/two behaviors/genuine inputs/pilot/capability/final full/archive/installed work."
+  ],
+  "qualification": "Targeted authorization verified through strict source-held owning/fixture lifecycle and CLI controls only. Earlier79f3 complete fast/runtime and6080 native/independent evidence remain separately bound. No current real native CLI recovery or whole review/pilot acceptance.",
+  "committedSource": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+  "completeFast": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+    "startedUtc": "2026-10-13T01:47:28.734445+00:00",
+    "pid": 48491,
+    "inventory": "/private/tmp/still-shift-ms3-retry9-fast1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T01:49:39.304230+00:00",
+    "session": 42236,
+    "unitTests": 4458,
+    "unitFiles": 440,
+    "unitSeconds": 67.48,
+    "heldInputFiles": 2702,
+    "heldInputBytes": 121387685,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-fast1.log",
+        "bytes": 42689,
+        "sha256": "sha256:594335b5cefc64b07704d8cf48bff1a6052e09212285db2e890bd4b1587f3e97"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-fast1-receipt.json",
+        "bytes": 364,
+        "sha256": "sha256:f55da82c40f3b68517aab349963a94c4aa6a64f1efae80ef1a3713b1c69ac19d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-fast1-inputs.json",
+        "bytes": 461272,
+        "sha256": "sha256:e6e76e4a4cd97f07800220c2ac710180a0cdfefd5c040adbff3844710de4a637"
+      }
+    ]
+  },
+  "runtimeAttempts": [
+    {
+      "status": "passed",
+      "command": "pnpm check:runtime",
+      "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+      "startedUtc": "2026-10-13T01:51:03.028242+00:00",
+      "pid": 56804,
+      "inventory": "/private/tmp/still-shift-ms3-retry9-runtime1-inputs.json",
+      "actualExitCode": 0,
+      "session": 65430,
+      "logPath": "/private/tmp/still-shift-ms3-retry9-runtime1.log",
+      "resume": "Completed actual0/hold0; preserve source-bound result rather than restarting.",
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T01:59:37.769826+00:00"
+    }
+  ],
+  "preparedNativeRecovery2": {
+    "file": {
+      "path": "/private/tmp/still-shift-ms3-native-recovery-draft2.ts",
+      "bytes": 11882,
+      "sha256": "sha256:4d53bf7dc7fd5d0a08217373ed04f5e2e2d5113b7dea84317dae83f2f78e4d33"
+    },
+    "status": "cleanup-improved-unintegrated-unrun-draft",
+    "qualification": "Retains initial draft under its original exact hash. Draft2 adds bounded child output/close receipts/owned cleanup/process-group kill and distinct caption edits. Still requires integration/type/lint/registration/preflight and actual OS/native/independent audit; no pass claimed."
+  },
+  "completeRuntime": {
+    "status": "passed",
+    "command": "pnpm check:runtime",
+    "sourceCommit": "0d59065879e92891987ae818d3574bf1d0f2ff49",
+    "startedUtc": "2026-10-13T01:51:03.028242+00:00",
+    "pid": 56804,
+    "inventory": "/private/tmp/still-shift-ms3-retry9-runtime1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T01:59:37.769826+00:00",
+    "session": 65430,
+    "runtimeTests": 253,
+    "runtimeFiles": 45,
+    "runtimeSeconds": 138.07,
+    "integrationTests": 322,
+    "integrationFiles": 57,
+    "integrationSeconds": 339.72,
+    "depthTests": 14,
+    "browserSmoke": "completed",
+    "heldInputFiles": 2702,
+    "heldInputBytes": 121387685,
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-runtime1.log",
+        "bytes": 42210,
+        "sha256": "sha256:fd7535e296223e5128367a311f3c3389f383ba3ea8a770f46f6b98aa3d6adce4"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-runtime1-receipt.json",
+        "bytes": 370,
+        "sha256": "sha256:d3346d74349e3d7998c15b248558c7b1055448b6823a530859e9b831e11092e0"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retry9-runtime1-inputs.json",
+        "bytes": 461272,
+        "sha256": "sha256:e6e76e4a4cd97f07800220c2ac710180a0cdfefd5c040adbff3844710de4a637"
+      }
+    ]
+  },
+  "preparedNativeRecovery3": {
+    "file": {
+      "path": "/private/tmp/still-shift-ms3-native-recovery-draft3.ts",
+      "bytes": 12864,
+      "sha256": "sha256:6a47028f70fba95fadb433b9135ab19c82afb311ad5867b919d25fea36642392"
+    },
+    "status": "publication-phase-injection-unintegrated-unrun",
+    "qualification": "Avoids precreating the render directory; observes renderer-created directory before export collision. Prior drafts are retained. Actual invocation remains unverified."
+  }
+}

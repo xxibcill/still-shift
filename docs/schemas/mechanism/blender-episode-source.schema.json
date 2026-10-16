@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "type": "object",
+  "properties": {
+    "schemaVersion": { "type": "string", "const": "blender-episode-source-1" },
+    "family": { "type": "string", "pattern": "^[A-Za-z][A-Za-z0-9.-]{0,127}$" },
+    "designVariant": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "asset": {
+      "type": "object",
+      "properties": {
+        "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+        "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+        "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+      },
+      "required": ["path", "bytes", "sha256"],
+      "additionalProperties": false
+    },
+    "collection": { "type": "string", "minLength": 1, "maxLength": 256 },
+    "resourcePolicy": { "type": "string", "const": "embedded-only" },
+    "controller": {
+      "type": "object",
+      "properties": {
+        "object": { "type": "string", "minLength": 1, "maxLength": 256 },
+        "properties": {
+          "type": "object",
+          "propertyNames": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 256
+          },
+          "additionalProperties": {
+            "type": "object",
+            "properties": {
+              "min": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              },
+              "max": {
+                "type": "number",
+                "minimum": -1000000,
+                "maximum": 1000000
+              }
+            },
+            "required": ["min", "max"],
+            "additionalProperties": false
+          }
+        }
+      },
+      "required": ["object", "properties"],
+      "additionalProperties": false
+    },
+    "evidenceFiles": {
+      "maxItems": 122,
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "path": { "type": "string", "minLength": 1, "maxLength": 2048 },
+          "bytes": { "type": "integer", "minimum": 0, "maximum": 536870912 },
+          "sha256": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" }
+        },
+        "required": ["path", "bytes", "sha256"],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "schemaVersion",
+    "family",
+    "designVariant",
+    "asset",
+    "collection",
+    "resourcePolicy",
+    "evidenceFiles"
+  ],
+  "additionalProperties": false
+}

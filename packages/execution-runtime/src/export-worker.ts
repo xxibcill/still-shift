@@ -1,7 +1,14 @@
 export { compositionWorkerMemoryLimits } from "./composition-export-memory.ts";
-export { serializeCompositionNodeJson } from "./composition-node-json.ts";
+export {
+  serializeCompositionNodeJson,
+  compositionNodeJsonSize,
+} from "./composition-node-json.ts";
 import type { CompositionNodeMemory } from "./composition-node-memory.ts";
-export { CompositionNodeMemory } from "./composition-node-memory.ts";
+export {
+  CompositionNodeMemory,
+  CompositionNodeCapacityError,
+  isCompositionNodeCapacityError,
+} from "./composition-node-memory.ts";
 import { compositionPcmBoundary } from "@still-shift/scene-contract";
 import { CompositionResultBudget } from "./composition-result-budget.ts";
 import { compositionResultSize } from "./composition-result-size.ts";

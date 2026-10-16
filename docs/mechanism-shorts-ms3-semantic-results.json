@@ -1,0 +1,645 @@
+{
+  "version": 1,
+  "milestone": "MS3",
+  "date": "2026-10-13",
+  "branch": "codex/mechanism-ms3",
+  "status": "scoped-semantic-and-warning-foundation-verified",
+  "baseCommit": "f6eada10",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-semantic.ts",
+      "bytes": 10852,
+      "sha256": "sha256:542767c309250508f0d8af9b05a6be3b0397de5f264bb04e816613dc52c2b4b3"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/production-warnings.ts",
+      "bytes": 5910,
+      "sha256": "sha256:a27e9ac95aa875705b5b06defb3a12c882d7cdfb4de55895af3878593baae94a"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/index.ts",
+      "bytes": 4382,
+      "sha256": "sha256:edc0a0d55cb7f2a01e0939571a45df7385d198f959230ec937b770779e898f17"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-semantic.test.ts",
+      "bytes": 9267,
+      "sha256": "sha256:105ef78beff52503e2685944a9d1b395b93c67264dfe2239c2ba5651d5341aa6"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-production-warnings.test.ts",
+      "bytes": 5217,
+      "sha256": "sha256:288c65305cd913585c8ef6eb45bb0c59be47bd2cad643459a95f51658177a2a7"
+    }
+  ],
+  "delivered": [
+    "Immutable hash-identified custom declarative scalar-range registrations; no supplied JavaScript execution.",
+    "Explicit sampled method, units, controlling rig, parts, relationship, frame and raw artifact evidence; missing measurements and missing required output frames fail. Sparse/empty intervals retain their scope or unreviewed state. Full output-frame coverage does not establish continuous collision.",
+    "Finite registrations/rules/sample/comparison/JSON limits; retained finding capacity checked before append; output limit rechecked. Existing MS2 timeline compilation has prospective frame/topology-work bounds. These are declared execution/data bounds, not physical RSS or hard wall-clock certification.",
+    "Located production wrapper retains actual existing MS2 transition/event-order/relationship failures and source/timeline identities. Expected-state success does not become GPU or collision proof.",
+    "Inherited warnings group connected intervals by controlling rig/event/declared event interval/code/unit. Maximum measured value and originating raw index, all children/parts, raw details and bad-frame references stay available; discontinuous intervals/units/rigs/events remain separate. Set accumulation avoids repeatedly rebuilding large unions."
+  ],
+  "limits": {
+    "registrations": 32,
+    "rulesPerRegistration": 16,
+    "samples": 10000,
+    "measurementsPerSample": 128,
+    "comparisons": 100000,
+    "timelineFrameTopologyWork": 2000000,
+    "semanticDataCapacityBytes": 8388608,
+    "warningRows": 2048,
+    "warningDataCapacityBytes": 8388608
+  },
+  "gate4": {
+    "session": 28119,
+    "status": "passed",
+    "pid": 82019,
+    "startedUtc": "2026-10-12T20:41:04.016742+00:00",
+    "commands": [
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-production-semantic.test.ts",
+          "tests/unit/mechanism-production-warnings.test.ts",
+          "tests/unit/mechanism-pack-timeline.test.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-semantic4-gate4-0.log"
+      },
+      {
+        "command": ["pnpm", "build"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-semantic4-gate4-1.log"
+      },
+      {
+        "command": [
+          "pnpm",
+          "exec",
+          "eslint",
+          "packages/animation-engine/src/mechanism/production-semantic.ts",
+          "packages/animation-engine/src/mechanism/production-warnings.ts",
+          "tests/unit/mechanism-production-semantic.test.ts",
+          "tests/unit/mechanism-production-warnings.test.ts",
+          "packages/animation-engine/src/index.ts"
+        ],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-semantic4-gate4-2.log"
+      },
+      {
+        "command": ["pnpm", "check:boundaries"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-semantic4-gate4-3.log"
+      },
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "log": "/private/tmp/still-shift-ms3-semantic4-gate4-4.log"
+      }
+    ],
+    "endedUtc": "2026-10-12T20:41:32.616285+00:00",
+    "focusedTests": 21,
+    "semanticTests": 10,
+    "warningTests": 4,
+    "existingTimelineTests": 7
+  },
+  "actualNativeProof3": {
+    "session": 28871,
+    "actualExitCode": 0,
+    "checkedActualFrames": 180,
+    "seededControls": 3,
+    "families": ["tape-hook", "cable-tie", "clothespeg"],
+    "proofDirectory": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0",
+    "codeSha256": "sha256:32f817b334b010b705c373f6b1fd7183e50b8d2904a7b88a1ad00ddad1db80c0",
+    "profileSha256": "sha256:d6ee189034fe045377c0f8607f922273711fcdb95531a4f4369f4749785c9b1b",
+    "pinCount": 63,
+    "pins": [
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+        "bytes": 202632,
+        "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/tape-hook/cues.json",
+        "bytes": 5787,
+        "sha256": "sha256:9720457b174a739e17b2a23b90aaa20957e2956ee8db2889e1ec7243f5f9963b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/tape-hook/family.json",
+        "bytes": 442,
+        "sha256": "sha256:b3873b5d26ea53448b7d14a01c5a53dbb8012bbff1019bc1f3fb87aa20471124"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/tape-hook/narration.wav",
+        "bytes": 384044,
+        "sha256": "sha256:d862e89727134557fb17b5ea46f1629907ee96f6c08da8a1163d3ffe6e9764b1"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/tape-hook/scene.json",
+        "bytes": 5587949,
+        "sha256": "sha256:24f21fb301a6fd42ad874ddf98f7d310a0138924a56ffaba3acbc1578d335e3e"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/tape-hook/tick.wav",
+        "bytes": 9644,
+        "sha256": "sha256:95bcc0fc375b386f7e77839142490abe6faf25219f332fd7e8bcf1c7c6408c2f"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+        "bytes": 202632,
+        "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/cable-tie/cues.json",
+        "bytes": 5852,
+        "sha256": "sha256:5309622117fa2d79502378aab503c8ca30ec19f0d063528951a78be54aed47f8"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/cable-tie/family.json",
+        "bytes": 456,
+        "sha256": "sha256:e334bc4bc72343540c36d6a1b593b0bc7f96690cec7a35dd45bfcabda91f2d3a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/cable-tie/narration.wav",
+        "bytes": 384044,
+        "sha256": "sha256:d862e89727134557fb17b5ea46f1629907ee96f6c08da8a1163d3ffe6e9764b1"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/cable-tie/scene.json",
+        "bytes": 966861,
+        "sha256": "sha256:a42d91627ddce017a5fdcc1c14e5570be2589e2d875a2203e3ce5e2c3a7bea1f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/cable-tie/tick.wav",
+        "bytes": 9644,
+        "sha256": "sha256:95bcc0fc375b386f7e77839142490abe6faf25219f332fd7e8bcf1c7c6408c2f"
+      },
+      {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/assets/story-motion/fonts/plex-sans-semibold.ttf",
+        "bytes": 202632,
+        "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/clothespeg/cues.json",
+        "bytes": 6644,
+        "sha256": "sha256:b0fe0141cd30208d28e02a6f2b36645a4f3cb8c9d9f3bcfeed25e2c0b31778f7"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/clothespeg/family.json",
+        "bytes": 459,
+        "sha256": "sha256:c5b963ed7001a447a25f4a50dc30a92976e7d10bae5a7707e42a42edd3d2f87d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/clothespeg/narration.wav",
+        "bytes": 384044,
+        "sha256": "sha256:d862e89727134557fb17b5ea46f1629907ee96f6c08da8a1163d3ffe6e9764b1"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/clothespeg/scene.json",
+        "bytes": 468500,
+        "sha256": "sha256:a42f350d856ee6d05ae00bf3ba5deb87657d6812b17ca02ead3953fa09365464"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/inputs/clothespeg/tick.wav",
+        "bytes": 9644,
+        "sha256": "sha256:95bcc0fc375b386f7e77839142490abe6faf25219f332fd7e8bcf1c7c6408c2f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/products/S1-5146989a3b1a38b1-2.json",
+        "bytes": 8520,
+        "sha256": "sha256:343fb56da2d659872f0632b428f57bf3df1b1cf550ddb082a14c7852ab51c841"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/rendered/output.mp4",
+        "bytes": 32097,
+        "sha256": "sha256:949f84c14b150fa3d68c97b2b3a62898c76e7c9e623d08912e75dea347f071ec"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/technical-check.json",
+        "bytes": 1720,
+        "sha256": "sha256:63fee642fc0a41c4347a6d7c3abcb522fd04aee8fafbbe512d1b67d237729d7e"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/decoded-output.json",
+        "bytes": 750,
+        "sha256": "sha256:70e71b1c508f0a3b0f393850236ccc441ad86d74973caf170b1abdc9ca1618aa"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/compiled/composition.json",
+        "bytes": 22993,
+        "sha256": "sha256:47a9503d3e8dd06ecc840866881a087ba13692d02b3adb285d80190a4078a77a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/compiled/cue-compilation.json",
+        "bytes": 797,
+        "sha256": "sha256:b30084df58b8c8bc2ddd8f4af48cb1104bd327c8c505fabfe8a82b837c88bb89"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/rendered/output.mp4.cue-plate-export.json",
+        "bytes": 2055,
+        "sha256": "sha256:7be48be9def188fc1e3dd0366a0b78e8ee7290ab6ee9cf3c7e06339f0fd12ecd"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/rendered/output.mp4.result.json",
+        "bytes": 35079,
+        "sha256": "sha256:e33cad4ba7c20b82df3ee0aa38bae41be8c63a8d0f29b9e238517ac8cd1990c3"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/rendered/output.mp4.scene.json",
+        "bytes": 266084,
+        "sha256": "sha256:e9fb2d6d82ebc3a549d5e8cfe37b87020c29ea1dd9e262806fd8a5837c0ee443"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S1/2/technical-check.json",
+        "bytes": 1720,
+        "sha256": "sha256:63fee642fc0a41c4347a6d7c3abcb522fd04aee8fafbbe512d1b67d237729d7e"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/native-cache/1dda77742ec121073e932bedace21af0ae09be972bcd76de539b9b641fd4acb0/native-%06d.png.native-observations.json",
+        "bytes": 90114,
+        "sha256": "sha256:515d8dd4d91270c3bda3cf1ccb4e8a003362d189cefbdfad39aea6c168dbf8ff"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/native-cache/1dda77742ec121073e932bedace21af0ae09be972bcd76de539b9b641fd4acb0/native-%06d.png.native-observations.000.ndjson",
+        "bytes": 599393,
+        "sha256": "sha256:ec2f6efb784de8854a1ea9017dee8d9651fca2da412e94f4cdda825312c5f403"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S1-actual.json",
+        "bytes": 27755,
+        "sha256": "sha256:54bc0e15cddecd1002be29e4b5ccc77481d3ce032af5f45ab64502a4ccc5fc63"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S1-seeded.json",
+        "bytes": 27101,
+        "sha256": "sha256:3c253ea5fcfd9204069c5bb2f2a77c88f93c768202418df0044ea130cf2434be"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S1-control-result.json",
+        "bytes": 28124,
+        "sha256": "sha256:6c008990df09cd920c11d90edae22c4b6da742eae07aea8fb23836398dca4a2d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/products/S2-ae682f9f8bce0cff-1.json",
+        "bytes": 8305,
+        "sha256": "sha256:a08c2db23c43b33ca26cb46384fc2580984971560ebbb14744554dfea06586bf"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/rendered/output.mp4",
+        "bytes": 28751,
+        "sha256": "sha256:3c64485865b650319a0f1b3de24a998839f8b8f9088c8a1b3c91779a03a82fee"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/technical-check.json",
+        "bytes": 1720,
+        "sha256": "sha256:461c3bb1240618d6ff8ba12369e78d0004523365fc03f08e626e502a3143e64d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/decoded-output.json",
+        "bytes": 750,
+        "sha256": "sha256:142c649872f1d1216c86172e52af5b83d9912086e017a05a8df027364a8f100e"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/compiled/composition.json",
+        "bytes": 22951,
+        "sha256": "sha256:d7f8304d17cede82a5bec94508efc76a2246c304c9099e5944a81f585a829f65"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/compiled/cue-compilation.json",
+        "bytes": 797,
+        "sha256": "sha256:c8af29901424204009b60aa5533dbca7d0e4759abe360abf9a6747d48082d61b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/rendered/output.mp4.cue-plate-export.json",
+        "bytes": 2055,
+        "sha256": "sha256:fb90b0806943eaba4fed7f3c8d84407711a92699e49433541fc8db9028c654d4"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/rendered/output.mp4.result.json",
+        "bytes": 35111,
+        "sha256": "sha256:d63167a58a7c5352c6984c13ac3ad4706730832766a5fbd03de5de68d699398a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/rendered/output.mp4.scene.json",
+        "bytes": 266024,
+        "sha256": "sha256:fef9bec586c33398e7ce214110ff05a668040f372d9818b64ada9147b4a769ca"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S2/1/technical-check.json",
+        "bytes": 1720,
+        "sha256": "sha256:461c3bb1240618d6ff8ba12369e78d0004523365fc03f08e626e502a3143e64d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/native-cache/840a2e655d8df904f89b80dabbbe986ef0b4b7596e5f535d4f9b2866c56b34c9/native-%06d.png.native-observations.json",
+        "bytes": 91100,
+        "sha256": "sha256:e7172dece8333be4b70bacd3ff1dad7e6f48101e46986aaefa3384558fb0fe06"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/native-cache/840a2e655d8df904f89b80dabbbe986ef0b4b7596e5f535d4f9b2866c56b34c9/native-%06d.png.native-observations.000.ndjson",
+        "bytes": 420924,
+        "sha256": "sha256:d02b0d5ee17e665c517f6c3c4c09aedd27ef7baed5ce841a3cf93337361aaf1a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S2-actual.json",
+        "bytes": 27755,
+        "sha256": "sha256:995b5ecc394acc0e3eeca0c25f35b53c5fbc0823dadaa99d7c5ede59a07ba662"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S2-seeded.json",
+        "bytes": 27101,
+        "sha256": "sha256:b21c9f175825cfa6406f938ee28d4aa5c93447b49118a508aafeea07bdca4add"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S2-control-result.json",
+        "bytes": 28124,
+        "sha256": "sha256:1a4859d3e163a5145518daf1a309f3d288d6797750acccca14294620e2ef9705"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/products/S3-00edc4a00a47bee1-1.json",
+        "bytes": 8287,
+        "sha256": "sha256:81e9dfeb169b49b6992a63601cc4f427f9c8c95ff86c43d47220987803f3d7ab"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/rendered/output.mp4",
+        "bytes": 34737,
+        "sha256": "sha256:505fc75116465f99073fa61a4e55bf0088a451e70cde39634416bfd6c60fbaeb"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/technical-check.json",
+        "bytes": 1722,
+        "sha256": "sha256:91c902c222badc6624311a91c827f5870bc3ae6bb8a5cbbea0cd64d1676e256b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/decoded-output.json",
+        "bytes": 750,
+        "sha256": "sha256:c611e6ffe843a54f3ec8db8a3025a84eb0beb74d61da249426c2721396f58989"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/compiled/composition.json",
+        "bytes": 23422,
+        "sha256": "sha256:9a3a65d84221e538a9de466711079d9154e524f80665c6b902124d87a92fb599"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/compiled/cue-compilation.json",
+        "bytes": 799,
+        "sha256": "sha256:71d1def9c4bc6ba8f7e849499d4e1567064d132201a44b166e130425f0e00d57"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/rendered/output.mp4.cue-plate-export.json",
+        "bytes": 2055,
+        "sha256": "sha256:f643d771a6307bf1bc886abe26988edb24061f6cbc5bfbf0100c8a795b37611b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/rendered/output.mp4.result.json",
+        "bytes": 35134,
+        "sha256": "sha256:38cdbcf76f61aa2d65ecdabf9af1bc64abe1584d2e40d013b7bab98710b17706"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/rendered/output.mp4.scene.json",
+        "bytes": 266026,
+        "sha256": "sha256:e997297bdc6f07409248b91a613b7c0ffb42112a289d4016cbdcd5528648a183"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/items/S3/1/technical-check.json",
+        "bytes": 1722,
+        "sha256": "sha256:91c902c222badc6624311a91c827f5870bc3ae6bb8a5cbbea0cd64d1676e256b"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/native-cache/024d26d69280f7ed1e50bcec23e0cd2a94a2a30a4a9bbe85338325c114d1fc29/native-%06d.png.native-observations.json",
+        "bytes": 91103,
+        "sha256": "sha256:d190ee9c11cafb7384c1bd3c25c360b2099cebbb470738c7d08f095433916780"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-production-native-gNhNdD/output/native-cache/024d26d69280f7ed1e50bcec23e0cd2a94a2a30a4a9bbe85338325c114d1fc29/native-%06d.png.native-observations.000.ndjson",
+        "bytes": 557317,
+        "sha256": "sha256:66f4497404259456fd8990dd83088db5e44b8e9b98312e3cc1f79a394131a2a2"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S3-actual.json",
+        "bytes": 27755,
+        "sha256": "sha256:41bca11d47eae200db25760a57011372c4ac4765b14ca693b2dfd634897ab5d5"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S3-seeded.json",
+        "bytes": 27101,
+        "sha256": "sha256:e424cb0554ce0b4bfc425f2b1c95e62b4e2666b133869f662e7b9acd5eb14eed"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/S3-control-result.json",
+        "bytes": 28124,
+        "sha256": "sha256:da270e0dfc9e0db495d6bdac973b906ddf8e71836431d0f1e18a0a72ee5daaf3"
+      }
+    ],
+    "method": "Current original native plate checker; every current dependency/sealed product artifact byte/hash and retained NDJSON capture hash. Registered sampled mount-matrix constancy over all60 real output frames in each family; three separately identified derived frame30 delta0.1 controls fail. Runtime identity stays exact before/after.",
+    "qualification": "Current plate checker revalidates retained original native capture. New bounded registry checks sampled mount constancy only; seeded derived measurement is separately identified. No new render, whole mechanical, continuous collision, factual, playback, listening or pilot acceptance.",
+    "result": {
+      "path": "/private/tmp/still-shift-ms3-semantic4-observed-69D9f0/run.json",
+      "bytes": 18257,
+      "sha256": "sha256:b1d88e2315491301d75ee816eb6cacc19b98730f217527532a098988dae47053"
+    }
+  },
+  "retainedStages": [
+    {
+      "stage": "preparation1",
+      "actualExitCode": 1,
+      "reason": "Bookkeeping wrapper SyntaxError before any check command. Corrected only the wrapper; failed script retained."
+    },
+    {
+      "stage": "gate1",
+      "actualExitCode": 1,
+      "passed": 19,
+      "failed": 1,
+      "reason": "Actual opacity fixture used a null parent, which does not inherit opacity. No implementation guard changed."
+    },
+    {
+      "stage": "gate2",
+      "actualExitCode": 1,
+      "passed": 19,
+      "failed": 1,
+      "reason": "Fixture used nested group children without required size; actual composition contract uses flat parent references. Corrected fixture to existing contract."
+    },
+    {
+      "stage": "gate3",
+      "status": "passed",
+      "focusedTests": 20,
+      "reason": "Original scoped gate completed; then added prospective retained-finding capacity and efficient union accumulation with a new meaningful capacity test, producing final21-test gate4."
+    },
+    {
+      "stage": "nativeProof1",
+      "session": 89864,
+      "actualExitCode": 0,
+      "proofDirectory": "/private/tmp/still-shift-ms3-semantic4-observed-CtujiR",
+      "scope": "Actual60 mount samples per family/current native checker; product/dependency audit expanded in proof2."
+    },
+    {
+      "stage": "nativeProof2",
+      "session": 59593,
+      "actualExitCode": 0,
+      "proofDirectory": "/private/tmp/still-shift-ms3-semantic4-observed-ejCFLT",
+      "scope": "Expanded all-current-dependency/product audit on earlier semantic code; final proof3 rechecks changed capacity/union code under its separate runtime identity."
+    }
+  ],
+  "logs": [
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate1-0.log",
+      "bytes": 2249,
+      "sha256": "sha256:d7031397b39e385e5a169e47c7ee6909b81e74a7d8e0fe2528a55aeebe8e472d"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate2-0.log",
+      "bytes": 2962,
+      "sha256": "sha256:e47cd491bf7307bf0c2690b929e0cd2cd4e108ae421f901784946066722899e8"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate3-0.log",
+      "bytes": 893,
+      "sha256": "sha256:df86d814197ad78e367f984ce21418c29dba6e423f45716642cda4f38700134a"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate3-1.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate3-2.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate3-3.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate3-4.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate4-0.log",
+      "bytes": 894,
+      "sha256": "sha256:09408890d7dbdbc456248859e128daab3339b8e3ed6ce8296282a49b53266c18"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate4-1.log",
+      "bytes": 98,
+      "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate4-2.log",
+      "bytes": 0,
+      "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate4-3.log",
+      "bytes": 186,
+      "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate4-4.log",
+      "bytes": 208,
+      "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-native-proof1.log",
+      "bytes": 139,
+      "sha256": "sha256:fd7ce7e2ad6d5a47949b009c1fdd5d50028c260c3b848189d5606d916bae7a16"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-native-proof2.log",
+      "bytes": 139,
+      "sha256": "sha256:352e6990be9a23f3fc4c84e285b2eae5102fb125477f831fcd997d8de1c3aad5"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-native-proof3.log",
+      "bytes": 139,
+      "sha256": "sha256:398b8169aece5749c08f01282cc045fb6ebce41a2f58015a2a208fb2596b0797"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate1-receipt.json",
+      "bytes": 535,
+      "sha256": "sha256:6eeceed5fcd512dcf6b457d71a8dd6b2462d68e7e94aaf94d01b827ce8b362ce"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate2-receipt.json",
+      "bytes": 535,
+      "sha256": "sha256:65379d4ea811527465fb1ec6d89f260f4274854b047ada3cd098aec51603932f"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate3-receipt.json",
+      "bytes": 1553,
+      "sha256": "sha256:04a46767b63acfb925c233bc5d0e45f758455a3465cbbb21c77b0a1cf7288a0c"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate4-receipt.json",
+      "bytes": 1553,
+      "sha256": "sha256:36441bd0937b909ab09e05c2e6bc3552f0dcff9799ec6d7b1a320b4ebbfb7d29"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-native-proof1.mts",
+      "bytes": 5415,
+      "sha256": "sha256:1b1d63f958e53a172b6f459a9356fb2791604fb0983344abd7a30ed5f0f2b224"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-native-proof2.mts",
+      "bytes": 6168,
+      "sha256": "sha256:96545e979a6c3711ab068abba1c67d920bfa5eee983823cf5a2998ee33ca8120"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-native-proof3.mts",
+      "bytes": 6168,
+      "sha256": "sha256:96545e979a6c3711ab068abba1c67d920bfa5eee983823cf5a2998ee33ca8120"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-semantic4-gate1-preparation-failed.py",
+      "bytes": 1671,
+      "sha256": "sha256:e0c66d2e36b54dc3add60864ef3f789550b0070f06f1ab07b5bcd9410d8fe284"
+    }
+  ],
+  "remaining": [
+    "Integrate actual registered/mechanical checks and grouped original warnings into the durable episode QA/handoff/report command with current artifact identities.",
+    "Analytic collision and continuous collision/playback methods remain unevaluated; these scalar sample programs do not close them.",
+    "Remaining whole mechanical fault suite, actual native interruption/cancel/corrupt/relocation, scoped repair/affected-shot render and automatic MS1 overlap path.",
+    "All original ten pilot questions/five new assets/two behaviors/genuine inputs/factual/design/visual/listening review, capability/CLI and final gates/archive/installed/MS3 PR."
+  ],
+  "qualification": "Scoped QA engineering layer and actual sample evidence only. No whole mechanical, collision, human, factual, listening, pilot acceptance or newly achieved production target.",
+  "committedSource": "114f8df89d2d77aa6c2ae5af292fd2190b6bb8fc",
+  "fast1": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "114f8df89d2d77aa6c2ae5af292fd2190b6bb8fc",
+    "startedUtc": "2026-10-12T20:44:15.067366+00:00",
+    "pid": 85158,
+    "inventory": "/private/tmp/still-shift-ms3-semantic4-inputs1.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-12T20:46:22.009136+00:00",
+    "id": "semantic4-fast1",
+    "session": 51338,
+    "unitTests": 4418,
+    "unitFiles": 434,
+    "unitDurationSeconds": 63.52,
+    "heldInputFiles": 2663,
+    "heldInputBytes": 121017359,
+    "pins": [
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-fast1.log",
+        "bytes": 41652,
+        "sha256": "sha256:327aeb7d26e7d033f55e5ea5c41791c465517e40c0c981550ba75d323bc4e89c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-fast1-receipt.json",
+        "bytes": 362,
+        "sha256": "sha256:92420e53ff6228680e346a91fba03f4e12dfb0c6ec35064fdb748bfe14e70544"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-semantic4-inputs1.json",
+        "bytes": 454374,
+        "sha256": "sha256:4a4dc429bec60981399c7fc3551621c5b76c3f6721e3c7dd7fb2652df127ff1f"
+      }
+    ],
+    "qualification": "Complete fast tier on114f8df8. Scoped native/render and sample proofs keep their separate code/artifact bindings. All final full/archive/installed/pilot and human review gates remain open."
+  }
+}

@@ -14,3 +14,5 @@ export * from "./pack-document.ts";
 export * from "./timeline.ts";
 
 export * from "./narrated-cycle.ts";
+
+export * from "./static-moment.ts";

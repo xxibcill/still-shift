@@ -1,0 +1,111 @@
+{
+  "schemaVersion": "ms3-staged-qualified-installed-orchestration-preparation-1",
+  "capturedUtc": "2026-10-15T07:22:48.178926+00:00",
+  "status": "prepared-staged-qualified-successor-runners-not-executed",
+  "pins": [
+    {
+      "path": "/private/tmp/still-shift-ms3-staged105-admission.py",
+      "bytes": 3948,
+      "sha256": "sha256:5546f49a8eeba10c9f9d25f5f1b31dc91117dd5a2110240a6f7128ad598147aa"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-package106-prepare1.py",
+      "bytes": 12684,
+      "sha256": "sha256:83fab00dba4188fb0c895fdb2e86e0a68d9c9c019560666fcd1fc866075f25b3"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-postgate106-cache-copy1.py",
+      "bytes": 9094,
+      "sha256": "sha256:ea2b48befd89570a16c717c650a2b724f985dc87cf82b0e36938931d63bba0fc"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-package106-lifecycle-base1.py",
+      "bytes": 11175,
+      "sha256": "sha256:d54295d0b131a404405eca50dd269041a0c9f10ea1622dee1a43dc9534d2eec9"
+    },
+    {
+      "path": "/private/tmp/still-shift-ms3-package106-lifecycle1.py",
+      "bytes": 18234,
+      "sha256": "sha256:be803b5771b7214363997e6d428eb5a9c212f65ff57f2a04a0c532d5b4bff30a"
+    }
+  ],
+  "scope": "Same93 consumer/archive/copy destinations and full10/6181/16-command installed102 obligations; only truthful staged qualification admission and active runner filenames change. Old93/102 runners remain unchanged/unexecuted.",
+  "originalAggregateActualExitCode": 1,
+  "actualStaged53131TerminalRequired": 0,
+  "softwareOrInstalledPassClaimed": false,
+  "controlledUtc": "2026-10-15T07:21:26.881146+00:00",
+  "syntax": "All5 prepared modules AST-parse; no actual package/copy/lifecycle started.",
+  "controls": [
+    {
+      "case": "nonterminal-file",
+      "actualExitCode": 1,
+      "expectedRejection": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-installed106-control-nonterminal-file1.log",
+        "bytes": 780,
+        "sha256": "sha256:6acad411305abc24a82844202aa75727c7caa98c1c08b1f5c4e065983f7fce96"
+      },
+      "noConsumerArchiveOrExecutionReceiptCreated": true
+    },
+    {
+      "case": "false-terminal-claim-stdin",
+      "actualExitCode": 1,
+      "expectedRejection": true,
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-installed106-control-false-terminal-claim-stdin1.log",
+        "bytes": 982,
+        "sha256": "sha256:8b252717edf46f18e71c6b1ce4bf6637e664c96989e5f3dee6799b89e62b1e78"
+      },
+      "noConsumerArchiveOrExecutionReceiptCreated": true
+    }
+  ],
+  "falseTerminalClaim": "stdin only, never persisted as an actual admission receipt",
+  "noOutputCreated": true,
+  "rawPreparation": {
+    "path": "/private/tmp/still-shift-ms3-installed106-preparation1.json",
+    "bytes": 2518,
+    "sha256": "sha256:0f78ba5a826101dcf465194112fe02a5bf0b62297588debbcddc0b6f3e1a8564"
+  },
+  "controlRunner": {
+    "path": "/private/tmp/still-shift-ms3-installed106-controls1.py",
+    "bytes": 2441,
+    "sha256": "sha256:2428c92ae48d6facdda0dd416a336390ca124708606d128d6ca8fe0f34e93f4e"
+  },
+  "stagedRepair": "./mechanism-shorts-ms3-repair105-results.json",
+  "priorFullFailure": "./mechanism-shorts-ms3-final91-full-gate-results.json",
+  "scopeAndLabelRepairUnchanged": "./mechanism-shorts-ms3-installed102-preparation-results.json",
+  "actualRuntimeSession": 53131,
+  "admissionRequirements": [
+    "Observe actual53131 terminal0; original42543 observed terminal1 retained. No terminal0 claim may be made for42543.",
+    "Raw staged6 commands all0, exact source hold through each command, original failed full/log and every staged log hashes exact.",
+    "Compare2793 original/current inputs; only one browser assertion test differs by284 bytes, with exact before/after hashes. Production/other sources unchanged.",
+    "Original114-header exact command-tree prefix, replacement owning native script0, previously unrun recovery/benchmark0. All116 original script locations accounted, including176 unchanged baselines/36061 frames and actual benchmark sample measurements.",
+    "Keep full same all-ten10/6181 scope,115 source inputs/5223 native files, actual compiled identity,12 original-root denials and fresh-worker-write denial.",
+    "Package wrapper freezes entire clean checkout/HEAD until its actual terminal. Same93 destinations are unused; new106 runners supersede unexecuted93/102 execution without replacing their evidence."
+  ],
+  "futureCommands": {
+    "package": [
+      "python3",
+      "/private/tmp/still-shift-ms3-package106-prepare1.py",
+      "--terminal-admission",
+      "<actual-staged53131-terminal0-admission.json>"
+    ],
+    "copy": [
+      "python3",
+      "/private/tmp/still-shift-ms3-postgate106-cache-copy1.py",
+      "--copy",
+      "--consumer",
+      "/private/tmp/still-shift-ms3-package93-consumer",
+      "--terminal-admission",
+      "<same-actual-staged-admission.json>"
+    ],
+    "allTen": [
+      "python3",
+      "/private/tmp/still-shift-ms3-package106-lifecycle1.py",
+      "--terminal-admission",
+      "<same-actual-staged-admission.json>"
+    ]
+  },
+  "currentStatus": "Only format/lint/build-types stages are observed0. Owning native and suffix remain live/pending; no actual staged/package/install/lifecycle pass claimed.",
+  "acceptedPilot": 0
+}

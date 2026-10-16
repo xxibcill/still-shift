@@ -315,7 +315,7 @@ function assertOrdinary(composition: z.infer<typeof CompositionSchema>) {
       "Cached export requires exactly one retained native sequence",
     );
 }
-function nativeSubmissionCalls(result: z.infer<typeof outputResult>) {
+function measuredNativeSubmissionCalls(result: z.infer<typeof outputResult>) {
   const { compositionStatistics: stats, work } = result.metrics;
   const measured = work.workersDetail[0]!.result;
   if (
@@ -376,6 +376,68 @@ function nativeSubmissionCalls(result: z.infer<typeof outputResult>) {
   const calls = measured.renderStatistics.byLayerType
     .filter((item) => item.type === "native-depth" || item.type === "native3d")
     .reduce((sum, item) => sum + item.calls, 0);
+  return calls;
+}
+/** Measure actual worker/aggregate native counters; recorded ordered frames must reconcile. */
+export function measureMechanismNativeSubmissionCalls(input: unknown): number {
+  const data = z
+    .object({
+      frameCount: z.number().int().positive(),
+      metrics: z
+        .object({
+          compositionStatistics:
+            outputResult.shape.metrics.shape.compositionStatistics,
+        })
+        .passthrough(),
+    })
+    .passthrough()
+    .parse(input);
+  const stats = data.metrics.compositionStatistics;
+  if (stats.frameCount !== data.frameCount)
+    failure(
+      "metrics.compositionStatistics",
+      "Native submission frame count differs from output",
+    );
+  const measured = stats.workers[0]!.render;
+  const totals = new Map<string, { calls: number; submissionWallMs: number }>();
+  for (const row of measured.byLayerType) {
+    const key = JSON.stringify([row.phase, row.type]),
+      previous = totals.get(key) ?? { calls: 0, submissionWallMs: 0 };
+    previous.calls += row.calls;
+    previous.submissionWallMs += row.submissionWallMs;
+    totals.set(key, previous);
+  }
+  const seen = new Set<string>();
+  for (const row of stats.byLayerType) {
+    const key = JSON.stringify([row.phase, row.type]),
+      actual = totals.get(key);
+    if (
+      seen.has(key) ||
+      !actual ||
+      actual.calls !== row.calls ||
+      actual.submissionWallMs !== row.submissionWallMs
+    )
+      failure(
+        "metrics.compositionStatistics",
+        "Native aggregate differs from actual worker measurements",
+      );
+    seen.add(key);
+  }
+  if (
+    seen.size !== totals.size ||
+    stats.totalSubmissionWallMs !==
+      stats.byLayerType.reduce((sum, r) => sum + r.submissionWallMs, 0)
+  )
+    failure(
+      "metrics.compositionStatistics",
+      "Native aggregate measurements are incomplete",
+    );
+  return measured.byLayerType
+    .filter((r) => r.type === "native-depth" || r.type === "native3d")
+    .reduce((sum, r) => sum + r.calls, 0);
+}
+function nativeSubmissionCalls(result: z.infer<typeof outputResult>) {
+  const calls = measuredNativeSubmissionCalls(result);
   if (calls !== 0)
     failure("metrics.native", "Cached export submitted fresh native work");
   return calls;

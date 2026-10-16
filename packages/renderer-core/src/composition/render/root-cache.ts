@@ -48,7 +48,7 @@ type CountOwner = {
   path: ManagedMetadataText;
 };
 
-/** Retains the first complete root state in its original native target policy. */
+/** Retains bounded complete root states in their original native target policy. */
 export class CompositionRootCache<S extends Surface> {
   private readonly state: {
     entries: Map<string, Entry>;
@@ -262,12 +262,13 @@ export class CompositionRootCache<S extends Surface> {
       if (
         !Number.isSafeInteger(bytes) ||
         bytes < 1 ||
-        this.state.entries.size >= 4096 ||
-        this.retainedBytes + bytes * 2 > this.options.byteLimit
+        bytes * 2 > this.options.byteLimit ||
+        (!this.state.counts.has(path) && this.state.counts.size >= 4096)
       )
         throw Error(
           "Composition root pixels exceed the worker byte/entry bound",
         );
+      this.evictFor(bytes);
       pathHash = await hashRenderMetadata(path);
       signatureHash = await hashRenderMetadata(signature);
       identity = allocateRenderMetadata(320, () => ({
@@ -422,6 +423,21 @@ export class CompositionRootCache<S extends Surface> {
       this.releaseIdentity(originalIdentity, keepCounts, keepSignature);
     }
   }
+  private releaseEntry(path: string, entry: Entry) {
+    this.retainedBytes -= entry.pixels.bytes.byteLength;
+    releaseRenderPixels(entry.pixels.bytes);
+    releaseRenderMetadata(entry.pixels);
+    entry.signature.release();
+    releaseRenderMetadata(entry);
+    this.state.entries.delete(path);
+  }
+  private evictFor(bytes: number) {
+    for (const [path, entry] of this.state.entries) {
+      if (this.retainedBytes + bytes * 2 <= this.options.byteLimit) break;
+      this.releaseEntry(path, entry);
+    }
+    this.resize();
+  }
   get statistics() {
     let bytes = 320;
     for (const { row } of this.state.counts.values()) {
@@ -455,13 +471,8 @@ export class CompositionRootCache<S extends Surface> {
     else delete this.backend.renderRoot;
     if (this.originalPrefix) this.backend.rootPrefix = this.originalPrefix;
     else delete this.backend.rootPrefix;
-    for (const entry of this.state.entries.values()) {
-      releaseRenderPixels(entry.pixels.bytes);
-      releaseRenderMetadata(entry.pixels);
-      entry.signature.release();
-      releaseRenderMetadata(entry);
-    }
-    this.state.entries.clear();
+    for (const [path, entry] of this.state.entries)
+      this.releaseEntry(path, entry);
     for (const count of this.state.counts.values()) {
       count.role.release();
       count.path.release();

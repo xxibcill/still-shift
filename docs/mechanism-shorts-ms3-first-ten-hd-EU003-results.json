@@ -1,0 +1,263 @@
+{
+  "schemaVersion": "ms3-first-ten-hd-EU003-results-1",
+  "date": "2026-10-14",
+  "status": "third-HD-delivery-checked-spring-pointer-repair-preflighted",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "heldSource": {
+    "status": "exact",
+    "files": 2777,
+    "bytes": 122189105
+  },
+  "nativeAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender50-annotation-audit1.json",
+      "bytes": 2194,
+      "sha256": "sha256:28fbc9898c045cea7633de7d68cf4e1357e20ba78f7a3b8db9c2c6698e165bd0"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender50-annotation-audit1.py",
+      "bytes": 3791,
+      "sha256": "sha256:8af9c98874e08dce33ad3b525bbf9cea5603c2e513cbf14ffa9eb9248dbecd56"
+    },
+    "episodes": ["EU-001", "EU-002", "EU-003"],
+    "mappedPinChecks": 7144,
+    "activeLabelSamples": 1251,
+    "EU003": {
+      "id": "EU-003",
+      "frames": 588,
+      "labels": 5,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 58,
+      "reusedNativeFrames": 530,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED"
+    },
+    "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+  },
+  "encodedAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender50-encoded-audit1.json",
+      "bytes": 17273,
+      "sha256": "sha256:66e454f41c733449fe564c56dab1feac2820cfa1c86b8e381587cda3de9c46de"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender50-encoded-audit1.py",
+      "bytes": 5197,
+      "sha256": "sha256:cb29c61f4f7905bbc7b91f506668cdd1de953087bb34cb09e333dda2fa125403"
+    },
+    "episodes": ["EU-001", "EU-002", "EU-003"],
+    "EU003OriginalWholeAACReferenceParity": true,
+    "EU003Movie": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-003/1/output.mp4",
+      "bytes": 990518,
+      "sha256": "sha256:621ad50ecf7bcf03ad36ff6500f94e88d1813425b6960674e96cbf056ee7d45c"
+    },
+    "scope": "Complete encoded stream facts, original narration versus independent AAC reference, selected encoded images. No listening/continuous/all-frame glyph approval."
+  },
+  "independentFullPictureDecode": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender50-full-picture1.json",
+      "bytes": 840,
+      "sha256": "sha256:4dde833f461f353694cd3232a62d330d438d2c3da0ef792e5df63ce631400924"
+    },
+    "EU003Frames": 588,
+    "combinedFirstThreeFrames": 1786,
+    "scope": "Full encoded stream through EOF with contiguous clock and per-frame pixel digests. No continuous viewing/glyph semantic approval."
+  },
+  "phoneInspection": {
+    "sheet": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-003/midpoints.png",
+      "bytes": 398370,
+      "sha256": "sha256:71cc334e2620de06f75e1c318b6928de43c16fb3aeb3e4eff782c708134caa64"
+    },
+    "selectedFrames": [54, 172, 258, 329, 408, 464, 537],
+    "inspected": true,
+    "scope": "Seven encoded 360x640 midpoint views. Text is readable in these samples, but the spring close-up leader ends on wood. This is not all-frame glyph/continuous/listening or whole mechanical approval."
+  },
+  "currentQA": {
+    "artifact": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-003/1/qa-rendered-visual.json",
+      "bytes": 62871,
+      "sha256": "sha256:3d3c0e76dbb9d2cd66798cf0afd70738107dd67ca1f0dcaea9a23f1dca0bb185"
+    },
+    "status": "failed",
+    "frozenPixelErrors": 20,
+    "readingTimeWarnings": 10,
+    "outsideSafeAreaWarnings": 7,
+    "images": 54,
+    "disposition": "unresolved"
+  },
+  "cueInspection": {
+    "openingControlFrames": [110, 140],
+    "squeezeAndArmsCueFrames": [110, 162],
+    "returnControlFrames": [283, 313],
+    "releaseCueFrames": [283, 341],
+    "scope": "Authored event intervals overlap these spoken actions. This does not establish continuous event/contact correctness or actual listening."
+  },
+  "factualSourceReview": {
+    "status": "primary-source-support-for-selected-conventional-construction-whole-review-pending",
+    "selectedDesign": "Conventional wooden two-arm peg around US4063333A Fig7; reconstructed seated normal state, excluding improved retention parts",
+    "primaryURL": "https://patents.google.com/patent/US4063333A/en",
+    "accessedOn": "2026-10-14",
+    "textLocator": "Description paragraphs on conventional clothespin61 / Fig7 / members64,65 / spring66 / grooves74,75 / recesses79,81",
+    "method": "Primary patent search result and subsequently opened canonical text read; original local patent PDF page3 rendered and visually inspected.",
+    "sourceFile": {
+      "path": "/Users/jjae/Documents/obsidian/ai-business/Everyday Unlocked/03 Episodes/E03 Clothespeg/references/patent-US4063333.pdf",
+      "bytes": 991263,
+      "sha256": "sha256:ca05a63a24da33a7d1de1379b5bc3916f93e6e773ad383775bc15d137c95c0de"
+    },
+    "renderedPage": {
+      "path": "/private/tmp/still-shift-ms3-blender50-clothespeg-patent-3.png",
+      "bytes": 84994,
+      "sha256": "sha256:9f1b32d12d22890ed3afc892b7b1c9c4c19a6488c494c46b06f284d9d7d5af42"
+    },
+    "supported": "Two tail-operated arms open against a spring that biases their jaws together. The conventional construction seats the coil in inner grooves and anchors its legs in outer recesses.",
+    "inference": "Fabric can stop complete jaw closure while the spring still supplies closing bias. This is a qualitative inference for the selected ordinary construction; numerical preload, stress and contact are not established.",
+    "limits": "Fig7 illustrates an unstable over-insertion state. The authored normal seated state excludes the invention\u2019s extra retaining clips and pin/aperture modifications. Whole geometry/seating/material and audiovisual acceptance remain open."
+  },
+  "locatedPointerRepair": {
+    "currentInspection": {
+      "path": "/private/tmp/still-shift-ms3-blender50-spring-pointer1.json",
+      "bytes": 2452,
+      "sha256": "sha256:b0f27bd1fc3d8e4a8c125f6a688f1b93f24846e8f7834c9ca3b390308ad3e487"
+    },
+    "candidateInspection": {
+      "path": "/private/tmp/still-shift-ms3-blender50-spring-pointer2.json",
+      "bytes": 1129,
+      "sha256": "sha256:f5db11aa37ed645e64a65f8a864967763af3fee4075a42410d76978f9d306b0c"
+    },
+    "calibration": {
+      "path": "/private/tmp/still-shift-ms3-blender47-calibrate1.json",
+      "bytes": 23498,
+      "sha256": "sha256:3a84c13c83a4ee508fa4fd11842cec17dc3920212e5310d957a12ff20627d026"
+    },
+    "currentTargetGapNativePixels": 38.39800433370116,
+    "candidateGapNativePixels": 3.7439310379458592,
+    "candidateGuide": "anchor.A.outer_leg_recess",
+    "candidatePlan": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-pointer-repair50/EU-003/plan.json",
+      "bytes": 7742,
+      "sha256": "sha256:3da6383cd37b04c155c2229d26abd96f94a62b58b36de15e80c208ba8c5109be"
+    },
+    "candidateSource": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/inputs-pointer-repair50/EU-003/source.json",
+      "bytes": 2353,
+      "sha256": "sha256:f528a870ec8dd0ffa9302272b5ebf62a58ccacaf569cfd6c11c87cdfe9c357ea"
+    },
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender50-pointer-repair1.json",
+      "bytes": 838,
+      "sha256": "sha256:a83f905825967b6508fa66f69fa3e9f84834766740fcd3ff118a5b6c8cd34af1"
+    },
+    "preflight": {
+      "path": "/private/tmp/still-shift-ms3-blender50-pointer-preflight1.json",
+      "bytes": 324,
+      "sha256": "sha256:c4df4c6bc9860a9f10587d9e6272862c4a3e52fe98e79b25467d574279751d9a"
+    },
+    "status": "passed-pure-source-admission",
+    "originalNarrationSpeechCamerasControlsOtherCalloutsExact": true,
+    "samePNGAsCalibratedNativePose": true,
+    "currentCloseupFrames": [235, 283],
+    "currentCloseupDistinctImageAndObservationHashes": [1, 1],
+    "scope": "Channel-ratio cyan proximity is a local inspection aid. Actual new captured query, encoded correction, whole-shot visibility and playback remain required. Live batch inputs are unchanged."
+  },
+  "queueSnapshot": {
+    "id": "actual-first-ten-full-HD47",
+    "updatedUtc": "2026-10-14T07:48:47.705Z",
+    "rows": [
+      {
+        "id": "EU-001",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-001-00c45963c001ab77-1.json",
+          "bytes": 9125,
+          "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+        }
+      },
+      {
+        "id": "EU-002",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-002-611543058e800346-1.json",
+          "bytes": 9187,
+          "sha256": "sha256:5c27e8d3319b290b573b39e9ca86afcde85fa4b6335b9959a9028a8923907b85"
+        }
+      },
+      {
+        "id": "EU-003",
+        "status": "passed",
+        "lastStage": "native-blender-rendered-visual-qa",
+        "product": {
+          "path": "products/EU-003-db973726be2f0daa-1.json",
+          "bytes": 9227,
+          "sha256": "sha256:edd432ea7ba809bd352dd45d8ebdf535cb2c77918a66eb9bdb29fbfdab8029d1"
+        }
+      },
+      {
+        "id": "EU-004",
+        "status": "running",
+        "lastStage": "native-blender-composition-export",
+        "product": null
+      },
+      {
+        "id": "EU-005",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-006",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-007",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-008",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-009",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      },
+      {
+        "id": "EU-010",
+        "status": "pending",
+        "lastStage": null,
+        "product": null
+      }
+    ]
+  },
+  "retainedHelpers": [
+    {
+      "issue": "Primary direct patent open/find initially inaccessible; exact patent search followed by canonical source open succeeded."
+    },
+    {
+      "issue": "pdftotext is unavailable; no text file was created. Source text was read through the primary page and the existing PDF diagram through Poppler."
+    },
+    {
+      "issue": "Private candidate-note constant incorrectly reused another pose\u2019s0.6px distance. Corrected from the measured current-pose3.744px result before repository recording; native data unchanged."
+    }
+  ],
+  "acceptedPilot": 0,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "next": [
+    "Finish remaining unchanged cohort and full report/resume.",
+    "Capture/export/review separate EU002 cue and EU003 pointer repairs.",
+    "Resolve static/staging/contacts and complete broader faults/coverage/handoff/whole reviews/effort/final gates."
+  ]
+}

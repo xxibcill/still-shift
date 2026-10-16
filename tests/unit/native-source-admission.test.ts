@@ -1,3 +1,8 @@
+import {
+  CompositionNodeCapacityError,
+  isCompositionNodeCapacityError,
+} from "@still-shift/execution-runtime/export";
+import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { expect, it } from "vitest";
 import {
   NativeSourceAdmission,
@@ -17,7 +22,7 @@ it("counts decoded structure independently of whitespace and escaped punctuation
   expect(JSON.parse(text).key).toHaveLength(5);
   expect(() =>
     nativeJsonTreeCapacity(text, bytes - 1, "assets.fixture"),
-  ).toThrow(/Node source capacity/);
+  ).toThrow(CompositionNodeCapacityError);
 });
 it("rejects deeply nested valid JSON before its parser can create the tree", () => {
   const text = "[".repeat(129) + "0" + "]".repeat(129);
@@ -82,4 +87,23 @@ it("bounds dense numeric JSON before any decoded numeric array is allocated", ()
   input.dispose();
   budget.dispose();
   expect(budget.statistics.current.metadata).toBe(0);
+});
+
+it("retains native diagnostic codes and locations alongside typed capacity rejection", () => {
+  const location = "assets.fixture";
+  let failure: unknown;
+  try {
+    nativeJsonTreeCapacity("[0]", 1, location);
+  } catch (error) {
+    failure = error;
+  }
+  expect(isCompositionNodeCapacityError(failure)).toBe(true);
+  expect(passageDiagnostics(failure)).toEqual([
+    {
+      code: "comp-native3d-limit",
+      severity: "error",
+      message: "Native JSON exceeds its admitted Node source capacity",
+      path: location,
+    },
+  ]);
 });

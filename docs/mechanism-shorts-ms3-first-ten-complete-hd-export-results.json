@@ -1,0 +1,614 @@
+{
+  "schemaVersion": "ms3-first-ten-complete-HD-export-results-1",
+  "date": "2026-10-14",
+  "status": "ten-exports-and-independent-checks-pass-terminal-run-report-resume-verified",
+  "sourceCommit": "4679b8a835e51a1f2d5e9c8ac49ec099b894a1a8",
+  "runtimeCodeSha256": "sha256:db4e4d9a560eb4fe1f0fdd4e98bf76e467ce70226adebcda5af86c0b55a826d8",
+  "nativeProfileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a",
+  "heldSource": {
+    "status": "exact",
+    "files": 2777,
+    "bytes": 122189105
+  },
+  "cohort": {
+    "id": "actual-first-ten-full-HD47",
+    "revision": 0,
+    "manifest": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/queue-full-new47.json",
+      "bytes": 32582,
+      "sha256": "sha256:5f7d842e0c9e93bebf87798ab3335d61b0e230abb0a8ec3412b68625fc4239c5"
+    },
+    "originalRunReceiptSnapshot": {
+      "path": "/private/tmp/still-shift-ms3-blender53-original-run-receipt.json",
+      "bytes": 619,
+      "sha256": "sha256:d4aafcb8ff5f0b20f717ee73e29a65b03225fef3bdc96eb09be31317bc7ea8d6"
+    },
+    "runExitCode": 0,
+    "runSeconds": 6062.666816707933,
+    "reportResume": "terminal; queue/run/report/resume all actual0 with exact inputs",
+    "terminalReceipt": {
+      "path": "/private/tmp/still-shift-ms3-blender47-whole-new1-receipt.json",
+      "bytes": 3935,
+      "sha256": "sha256:2b3028c827ddc87477cbf8113380da41e076b87db2d3102d36063ed3c6a053b9"
+    }
+  },
+  "nativeAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender53-annotation-audit1.json",
+      "bytes": 3420,
+      "sha256": "sha256:dae6b26741524aa3cdee2ab521befc5d72445af3d31ecd7a25e4c7177cbd7404"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender53-annotation-audit1.py",
+      "bytes": 3791,
+      "sha256": "sha256:fe47c62606a73c04df091fa37f2ea7c65f356991c127cfd9d4ee8b0e947b580b"
+    },
+    "frames": 6181,
+    "pinChecks": 24724,
+    "activeLabelSamples": 4257,
+    "freshNativeRenders": 1078,
+    "reusedNativeFrames": 5103,
+    "scope": "Current native capture pins/highlight assignment/projection records and saved text/leader phase bindings; no surface contact, all-frame encoded glyph, continuous or listening approval."
+  },
+  "encodedAudit": {
+    "record": {
+      "path": "/private/tmp/still-shift-ms3-blender53-encoded-audit2.json",
+      "bytes": 57162,
+      "sha256": "sha256:33a9810fc339cd429a66ce602291d01d5521876e8cd3e376a2e1f71688f7fb12"
+    },
+    "script": {
+      "path": "/private/tmp/still-shift-ms3-blender53-encoded-audit2.py",
+      "bytes": 5198,
+      "sha256": "sha256:f410ecda503f2d12312f149c3928bb639edb5957507741346ede62b175932ac1"
+    },
+    "completeOriginalAACReferenceParity": true,
+    "fullEncodedRGBAFramesDecodedToEOF": 6181,
+    "phoneSheetsInspected": 10,
+    "selectedEncodedFramesInspected": 59,
+    "scope": "Complete encoded decode clocks/digests and original-whole AAC reference parity; ten phone midpoint sheets inspected. No all-frame encoded glyph, complete physical contact, continuous viewing or listening approval."
+  },
+  "rows": [
+    {
+      "id": "EU-001",
+      "frames": 610,
+      "labels": 4,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 113,
+      "reusedNativeFrames": 497,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-001-00c45963c001ab77-1.json",
+        "bytes": 9125,
+        "sha256": "sha256:10bcd7fc5e4da98bf80040ffdb392a5c34da30b32319a7fad5c5a708d972a92b"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-001/1/output.mp4",
+        "bytes": 1321056,
+        "sha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/full-picture.framemd5",
+        "bytes": 49016,
+        "sha256": "sha256:95a51f4b39f02f955dff854e9374628c413c198fc2df4195acda07de9675331b"
+      },
+      "selectedEncodedFrames": [66, 185, 289, 420, 555],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-001/midpoints.png",
+        "bytes": 371685,
+        "sha256": "sha256:2ab3f460478776bca61c4cc1f70fe41b9eac5947a7478ed516471fa3f9596159"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-001/1/qa-rendered-visual.json",
+          "bytes": 66042,
+          "sha256": "sha256:2e2bf6320b5698eb739be7075809e948a93b7a9f4db4d4df64b583bb0f750397"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 5,
+          "reading-time:warning": 11,
+          "frozen-pixels:error": 21
+        },
+        "images": 59
+      }
+    },
+    {
+      "id": "EU-002",
+      "frames": 588,
+      "labels": 3,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 84,
+      "reusedNativeFrames": 504,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-002-611543058e800346-1.json",
+        "bytes": 9187,
+        "sha256": "sha256:5c27e8d3319b290b573b39e9ca86afcde85fa4b6335b9959a9028a8923907b85"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-002/1/output.mp4",
+        "bytes": 1326150,
+        "sha256": "sha256:72ccc9af2e84c9f46a9e151b6695d2e101e69988441adb16e835d090598de2c2"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-002/full-picture.framemd5",
+        "bytes": 47256,
+        "sha256": "sha256:065f419ab001f02057a227771fe62380c7c6f9e86adc0713a39cf543aa2e307e"
+      },
+      "selectedEncodedFrames": [65, 200, 321, 424, 531],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-002/midpoints.png",
+        "bytes": 341731,
+        "sha256": "sha256:00b199d37e15d6e633bf4bc03bffced1b3eeece404b1051f5e579912abcbe303"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-002/1/qa-rendered-visual.json",
+          "bytes": 58598,
+          "sha256": "sha256:d87b1c121d0a9f6a0f48f4e749de4f426c87d01a5e7f05bc9873f168903d9661"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 5,
+          "frozen-pixels:error": 17,
+          "reading-time:warning": 10
+        },
+        "images": 50
+      }
+    },
+    {
+      "id": "EU-003",
+      "frames": 588,
+      "labels": 5,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 58,
+      "reusedNativeFrames": 530,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-003-db973726be2f0daa-1.json",
+        "bytes": 9227,
+        "sha256": "sha256:edd432ea7ba809bd352dd45d8ebdf535cb2c77918a66eb9bdb29fbfdab8029d1"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-003/1/output.mp4",
+        "bytes": 990518,
+        "sha256": "sha256:621ad50ecf7bcf03ad36ff6500f94e88d1813425b6960674e96cbf056ee7d45c"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-003/full-picture.framemd5",
+        "bytes": 47256,
+        "sha256": "sha256:5a7bc2ad7923c04419b63d668dfc0e0cc7b75cb78559b08c1bf4a538ae4250e6"
+      },
+      "selectedEncodedFrames": [54, 172, 258, 329, 408, 464, 537],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-003/midpoints.png",
+        "bytes": 398370,
+        "sha256": "sha256:71cc334e2620de06f75e1c318b6928de43c16fb3aeb3e4eff782c708134caa64"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-003/1/qa-rendered-visual.json",
+          "bytes": 62871,
+          "sha256": "sha256:3d3c0e76dbb9d2cd66798cf0afd70738107dd67ca1f0dcaea9a23f1dca0bb185"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 7,
+          "reading-time:warning": 10,
+          "frozen-pixels:error": 20
+        },
+        "images": 54
+      }
+    },
+    {
+      "id": "EU-004",
+      "frames": 653,
+      "labels": 3,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 321,
+      "reusedNativeFrames": 332,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-004-d7f67568e2dde8d2-1.json",
+        "bytes": 9244,
+        "sha256": "sha256:1d80a691c16d137fb69e75d091e4f643eaed1f00481a03da027af1f905dea6a7"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-004/1/output.mp4",
+        "bytes": 5556353,
+        "sha256": "sha256:2ba73461c8b63a5ec7d9118efbedd9ed9a3015de24ab32281669523c274e448e"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-004/full-picture.framemd5",
+        "bytes": 52456,
+        "sha256": "sha256:7b76a1057105b79a2fd19cea8050c2c7d0b36beacbab40652f9afeb04564f6b5"
+      },
+      "selectedEncodedFrames": [117, 317, 429, 528, 625],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-004/midpoints.png",
+        "bytes": 707189,
+        "sha256": "sha256:887f97a04a184613b5f068911d74b446daeea8bd7667a19c1ac86e0118b2a9a6"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-004/1/qa-rendered-visual.json",
+          "bytes": 60275,
+          "sha256": "sha256:17b927ece57f7b5f47c3bf02e9244c2542c8e707c8d6275c35c7d3c12ec00d67"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 5,
+          "frozen-pixels:error": 13,
+          "reading-time:warning": 10
+        },
+        "images": 47
+      }
+    },
+    {
+      "id": "EU-005",
+      "frames": 598,
+      "labels": 3,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 158,
+      "reusedNativeFrames": 440,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-005-0815d5825e366ea1-1.json",
+        "bytes": 9254,
+        "sha256": "sha256:24f48e8b26a353cb1037739f5cb60067b3cd453e19a3974d192c90c41ec8831c"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-005/1/output.mp4",
+        "bytes": 1745077,
+        "sha256": "sha256:887d993a18e4165d4e6cd016e2e429f0e6ea8dd80c9e82ca885a3bad5edfb3d5"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-005/full-picture.framemd5",
+        "bytes": 48056,
+        "sha256": "sha256:230f57ab9faf4b1a38b53feb37638b47f883ca023a6f6ae50e7fbb2d6a4386f2"
+      },
+      "selectedEncodedFrames": [68, 169, 273, 421, 547],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-005/midpoints.png",
+        "bytes": 379273,
+        "sha256": "sha256:0418dbf0a50559755981fe27ed98dc020775d5317a105aa05be7bf69fe5f1ae1"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-005/1/qa-rendered-visual.json",
+          "bytes": 58866,
+          "sha256": "sha256:0c875d602e7c95bca583680e127b30fae1677a1a47a966942f61edc4457a35f4"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 5,
+          "reading-time:warning": 10,
+          "frozen-pixels:error": 19
+        },
+        "images": 54
+      }
+    },
+    {
+      "id": "EU-006",
+      "frames": 634,
+      "labels": 5,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 0,
+      "reusedNativeFrames": 634,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-006-3f50b143a78b81cc-1.json",
+        "bytes": 9255,
+        "sha256": "sha256:b44cb5356f037124ff4eb1db8e48ec51f27d2ece39d3bcfea46b4ed67223da9c"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/1/output.mp4",
+        "bytes": 1277032,
+        "sha256": "sha256:89d0881e1de9f8a1f2e9b3b716a0382f097988d62599c4c9d07f5ababbe06f28"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-006/full-picture.framemd5",
+        "bytes": 50936,
+        "sha256": "sha256:7824d9d893dddcbcbaed77e79b0794f07280deb4ce36f31fbdf82fa281fd6ac0"
+      },
+      "selectedEncodedFrames": [56, 136, 182, 248, 359, 483, 587],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-006/midpoints.png",
+        "bytes": 436466,
+        "sha256": "sha256:85b77fc0802b0efcf56dca277c37115631687774d2e8673e2bd07b0443839489"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-006/1/qa-rendered-visual.json",
+          "bytes": 63593,
+          "sha256": "sha256:1117b9be2184baf34422f15f29b7d78d657da8aabe02edd2f652cfcb50f073df"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 7,
+          "reading-time:warning": 10,
+          "frozen-pixels:error": 19
+        },
+        "images": 57
+      }
+    },
+    {
+      "id": "EU-007",
+      "frames": 708,
+      "labels": 5,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 150,
+      "reusedNativeFrames": 558,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-007-e0286a4373805c8f-1.json",
+        "bytes": 9240,
+        "sha256": "sha256:0f6aa8287e771d00815d72d5429d5597ae947aacae0db5e9c44a2c87605154bf"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-007/1/output.mp4",
+        "bytes": 1963872,
+        "sha256": "sha256:c7790721f325b0b584ce9c1be70111cb9f4b4d469a2b87b8818401de673fdc95"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-007/full-picture.framemd5",
+        "bytes": 56856,
+        "sha256": "sha256:9ded7a00c7d25911589fec78777be557388b1e37151d1e7ce278033fccfc3448"
+      },
+      "selectedEncodedFrames": [81, 213, 345, 464, 556, 642, 690],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-007/midpoints.png",
+        "bytes": 708771,
+        "sha256": "sha256:5207f712f87002543e0a5293d886b90dcf0abc06db78fb9e2c1e18f601f519de"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-007/1/qa-rendered-visual.json",
+          "bytes": 62201,
+          "sha256": "sha256:e2a36bd613ba6b498c8dac5dec25ba7950ed161f4ab9324624ecf9fb35046300"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 7,
+          "reading-time:warning": 8,
+          "frozen-pixels:error": 18
+        },
+        "images": 53
+      }
+    },
+    {
+      "id": "EU-008",
+      "frames": 579,
+      "labels": 4,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 101,
+      "reusedNativeFrames": 478,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-008-edc6908b07626560-1.json",
+        "bytes": 9268,
+        "sha256": "sha256:42c1027c55d51e02dbe3c395d95b3efb59e5e459dc46aaefdea80568b3cda24f"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-008/1/output.mp4",
+        "bytes": 1231991,
+        "sha256": "sha256:acca78e4a130573cd0fc59d75cece30d6db473a356443ad357cd1afb446ef233"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-008/full-picture.framemd5",
+        "bytes": 46536,
+        "sha256": "sha256:06199b0cd35eadbea831f6876c7e9becab009bf869d5c4f5231c1079e5ce9cda"
+      },
+      "selectedEncodedFrames": [73, 228, 352, 413, 505],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-008/midpoints.png",
+        "bytes": 361816,
+        "sha256": "sha256:c7ced8341ed7d1c70070305ed76accdd4de157c4ac381a521f18bee57cf8467c"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-008/1/qa-rendered-visual.json",
+          "bytes": 61156,
+          "sha256": "sha256:6a31f12bcdcd71c36788903d46f4efad6d193285b41236af5e4cab8e2426d63a"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 5,
+          "reading-time:warning": 11,
+          "frozen-pixels:error": 17
+        },
+        "images": 54
+      }
+    },
+    {
+      "id": "EU-009",
+      "frames": 596,
+      "labels": 6,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 93,
+      "reusedNativeFrames": 503,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-009-4f70fded93394488-1.json",
+        "bytes": 9239,
+        "sha256": "sha256:d8a0530f4ab3086eed1ade3dc6b8773530172eaec380c87ff22661783fc27da4"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-009/1/output.mp4",
+        "bytes": 1072677,
+        "sha256": "sha256:5f7f9d2a3924f194d800d2bbff61cc48d3dd7ab1577e24e44f8aa6056bf805cb"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-009/full-picture.framemd5",
+        "bytes": 47896,
+        "sha256": "sha256:d2fce150586536d1ae839f2a00762407c2ba7f7f228c15920bcaf7e618594aa7"
+      },
+      "selectedEncodedFrames": [51, 148, 277, 387, 439, 505, 570],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-009/midpoints.png",
+        "bytes": 315042,
+        "sha256": "sha256:d37faa263d5a4fc2ae11b7d9e70b5998f2d22bacda7f0bc26ff5cf6969bdfc30"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-009/1/qa-rendered-visual.json",
+          "bytes": 67191,
+          "sha256": "sha256:70272b9979caf7f91e0a94a4782a7401084625028180155c7bb3fcf706ac63fe"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 7,
+          "reading-time:warning": 12,
+          "frozen-pixels:error": 19
+        },
+        "images": 57
+      }
+    },
+    {
+      "id": "EU-010",
+      "frames": 627,
+      "labels": 4,
+      "originalAssetAndAudioExact": true,
+      "freshNativeRenders": 0,
+      "reusedNativeFrames": 627,
+      "completeProjectionPhaseAndLeaderChecks": true,
+      "wholePhysicalGlyphContinuousListeningReview": "UNREVIEWED",
+      "product": {
+        "path": "products/EU-010-df0414ee2e44dd3e-1.json",
+        "bytes": 9215,
+        "sha256": "sha256:ee1d47b8a65d1e6fa0c5a399bcebda2b569de3511760ae24bb9c81302f7eb185"
+      },
+      "video": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-010/1/output.mp4",
+        "bytes": 1553861,
+        "sha256": "sha256:d0bb64e9be3be90af9857fc5ace4d30c1c31b4f919551be60a165970bd0288bc"
+      },
+      "wholeOriginalAACReferenceParity": true,
+      "fullEncodedFrameDigest": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-010/full-picture.framemd5",
+        "bytes": 50376,
+        "sha256": "sha256:b44b4a7505f1ec2f3231d33c8080890e71c82bdbeb57fb844e13f36ef11cbb12"
+      },
+      "selectedEncodedFrames": [67, 172, 279, 396, 510, 602],
+      "phoneSheet": {
+        "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/encoded-full48/EU-010/midpoints.png",
+        "bytes": 657835,
+        "sha256": "sha256:6ceff55a6501d123d77f4b47bc8b68a83f7e4b7b02b8793f6a53da1384c3f568"
+      },
+      "sampledPhoneInspection": "inspected; whole reviews remain unreviewed",
+      "qa": {
+        "artifact": {
+          "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/output-all10-47/items/EU-010/1/qa-rendered-visual.json",
+          "bytes": 63318,
+          "sha256": "sha256:5a872ecf7ca9d163c660755f64fb0e5fc7cf27dab4aedfbafc0296cb84480754"
+        },
+        "status": "failed",
+        "counts": {
+          "outside-safe-area:warning": 6,
+          "reading-time:warning": 10,
+          "frozen-pixels:error": 20
+        },
+        "images": 58
+      }
+    }
+  ],
+  "qa": {
+    "status": "failed-unresolved",
+    "counts": {
+      "outside-safe-area:warning": 59,
+      "reading-time:warning": 102,
+      "frozen-pixels:error": 183
+    },
+    "images": 543,
+    "scope": "Retained QA findings; completed queue transactions do not approve them."
+  },
+  "latestSourceReviews": [
+    {
+      "id": "EU-008",
+      "url": "https://patents.google.com/patent/US10837199B2/en",
+      "title": "US10837199B2 Cylindrical latch bolt assembly",
+      "accessedOn": "2026-10-14",
+      "locator": "Latch550, inclined closing cam556, bolt spring570 and fixed boss572; Figs16\u201318 description",
+      "method": "Primary text read; no fresh patent-figure inspection in this slice",
+      "supported": "Strike contact with the inclined closing face retracts the bolt; a spring against the fixed boss biases it outward.",
+      "limits": "Only the closing stroke is selected. Separate deadlocking system, quantified spring force, complete contact and full audiovisual acceptance remain open."
+    },
+    {
+      "id": "EU-009",
+      "url": "https://patents.google.com/patent/WO2020159114A1/en",
+      "title": "WO2020159114A1 Blade for tape measure",
+      "accessedOn": "2026-10-14",
+      "locator": "Background conventional blade1/Fig2: transverse curve, self-weight bending and flattening for bobbin winding",
+      "method": "Primary background text read; no fresh patent-figure inspection in this slice",
+      "supported": "The conventional transverse curve resists lengthwise self-weight bending and flattens when wound.",
+      "limits": "Selected ordinary profile excludes later invention grooves. Teaching mandrel and flat comparison are authored; quantitative stiffness/standout or actual material force simulation are not established."
+    },
+    {
+      "id": "EU-010",
+      "url": "https://patents.google.com/patent/US6575684B2/en",
+      "title": "US6575684B2 Die for stay-on-tab",
+      "accessedOn": "2026-10-14",
+      "locator": "First lid embodiment: tab nose42/heel44, retained flange46/rivet16, tongue17, score58 and hinge19; operating paragraphs",
+      "method": "Primary text read; no fresh patent-figure inspection in this slice",
+      "supported": "Rivet attachment retains the tab while a forward flange region bends; nose pressure ruptures the scored panel, which remains attached at its hinge.",
+      "limits": "Selected first embodiment only. Authored profile/rupture animation, numeric force/clearance and whole contact/material behavior remain unreviewed."
+    }
+  ],
+  "preparedRepairRevision": {
+    "projects": {
+      "path": "/private/var/folders/r5/vtx2ztmn22s2q3nm340_vq480000gn/T/still-shift-ms3-first-ten42-rz4do7ie/projects-all10-repairs53-cli.json",
+      "bytes": 2349,
+      "sha256": "sha256:84bd38fab43802933eb385ac06b4ef48677e03e08439bf61be1e410b39e18935"
+    },
+    "purePreflight": {
+      "path": "/private/tmp/still-shift-ms3-blender53-preflight-repairs1.json",
+      "bytes": 1284,
+      "sha256": "sha256:91ce5766ed122e7e8efd1e0ecba6fa41a527d6c24d9c3c14e7bfe34fcdcb5bea"
+    },
+    "executor": {
+      "path": "/private/tmp/still-shift-ms3-blender53-whole-repairs1.py",
+      "bytes": 3966,
+      "sha256": "sha256:2c2861fd6199161e36a3b6ec750712532e182e9d1fb67cf2c810029cfcde7568"
+    },
+    "changedEpisodes": ["EU-002", "EU-003", "EU-006"],
+    "preservedSelectedEpisodes": 10,
+    "status": "prepared; terminal original run/report/resume0 required before execution",
+    "scope": "Tongue-return timing, spring-wire anchor and unused-paper staging. All original recordings/masters remain exact; seven unaffected products must remain identical."
+  },
+  "acceptedPilot": 0,
+  "routineTokenMeasurements": null,
+  "wholeReview": "UNREVIEWED",
+  "remaining": [
+    "Original lifecycle complete; current repair revision requires its own terminal run/report/resume and source hold.",
+    "Actual repaired capture/export/encoded event/visibility/staging review.",
+    "Resolved native holds and staging/contact/fault/handoff/whole reviews.",
+    "Comparable effort and final full software/benchmark/archive/installed-package gates."
+  ]
+}

@@ -1,0 +1,621 @@
+import { mkdtemp, readFile, rm, writeFile, cp } from "node:fs/promises";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { describe, expect, it } from "vitest";
+import {
+  CompositionNodeMemory,
+  CompositionNodeCapacityError,
+} from "@still-shift/execution-runtime/export";
+import {
+  runMechanismProductionQueue,
+  MechanismProductionTransientError,
+  MechanismProductionAuthoredError,
+  MechanismProductionQueueSchema,
+  MechanismProductionQueueStateSchema,
+} from "../../packages/animation-engine/src/mechanism/production-queue.ts";
+import { readMechanismProductionReports } from "../../packages/animation-engine/src/mechanism/production-report-io.ts";
+import { summarizeMechanismProductionCohort } from "../../packages/animation-engine/src/mechanism/production-report.ts";
+import { mechanismPackHash } from "../../packages/animation-engine/src/mechanism/pack-support.ts";
+import {
+  fixture,
+  product,
+  executor,
+  hash,
+} from "../fixtures/mechanism-production-queue-support.ts";
+describe("durable production queue", () => {
+  it("seals each item and revalidates existing dependency/output bytes before reuse", async () => {
+    const f = await fixture();
+    let calls = 0;
+    try {
+      const worker = executor(async (i, c) => {
+        calls++;
+        return product(i, c);
+      });
+      const first = await runMechanismProductionQueue(f.path, f.output, worker);
+      const again = await runMechanismProductionQueue(f.path, f.output, worker);
+      expect(calls).toBe(2);
+      expect(again.rows.map((r) => r.status)).toEqual(["passed", "passed"]);
+      expect(first.rows.every((r) => r.attempts.length === 1)).toBe(true);
+      expect(
+        MechanismProductionQueueStateSchema.parse(
+          JSON.parse(
+            await readFile(join(f.output, "queue-state.json"), "utf8"),
+          ),
+        ),
+      ).toEqual(again);
+      const body = JSON.parse(
+        await readFile(join(f.output, again.rows[0]!.product!.path), "utf8"),
+      );
+      expect(
+        body.report.qa.filter(
+          (q: { status: string }) => q.status === "unreviewed",
+        ),
+      ).toHaveLength(5);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("bounds transient retries and preserves independent permanent failures", async () => {
+    const f = await fixture();
+    const counts = new Map<string, number>();
+    try {
+      const worker = executor(async (i, c) => {
+        const n = (counts.get(i.id) ?? 0) + 1;
+        counts.set(i.id, n);
+        if (i.id === "E01") throw new Error("permanent fixture failure");
+        if (n < 3)
+          throw new MechanismProductionTransientError(
+            "temporary worker interruption",
+          );
+        return product(i, c);
+      });
+      const state = await runMechanismProductionQueue(f.path, f.output, worker);
+      expect(state.rows.map((r) => r.status)).toEqual(["failed", "passed"]);
+      expect(state.rows[1]!.attempts.map((a) => a.status)).toEqual([
+        "failed",
+        "failed",
+        "passed",
+      ]);
+      await runMechanismProductionQueue(f.path, f.output, worker);
+      expect([...counts.values()]).toEqual([1, 3]);
+      expect(
+        state.rows[1]!.attempts.slice(0, 2).map(
+          (a) => a.provenance!.failureOrigin,
+        ),
+      ).toEqual(["transient", "transient"]);
+      expect(state.rows[0]!.attempts[0]!.provenance!.failureOrigin).toBe(
+        "unknown",
+      );
+      const body = JSON.parse(
+        await readFile(join(f.output, state.rows[1]!.product!.path), "utf8"),
+      );
+      expect(
+        summarizeMechanismProductionCohort([body.report]).firstPassTechnical
+          .rate,
+      ).toBe(0);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("retains an explicitly authored failure origin", async () => {
+    const f = await fixture();
+    try {
+      const state = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(async () => {
+          throw new MechanismProductionAuthoredError(
+            "Declared invalid author input",
+          );
+        }),
+      );
+      expect(
+        state.rows.every(
+          (row) => row.attempts[0]!.provenance!.failureOrigin === "authored",
+        ),
+      ).toBe(true);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("stops exhausted transient attempts and retains all failure diagnostics", async () => {
+    const f = await fixture();
+    let calls = 0;
+    try {
+      const state = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(async () => {
+          calls++;
+          throw new MechanismProductionTransientError("worker stopped");
+        }),
+      );
+      expect(calls).toBe(6);
+      expect(state.rows.every((r) => r.attempts.length === 3)).toBe(true);
+      expect(
+        state.rows.every((r) =>
+          r.attempts.every((a) => a.diagnostic?.includes("worker stopped")),
+        ),
+      ).toBe(true);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("locates changed dependency bytes without suppressing other item execution", async () => {
+    const f = await fixture();
+    let calls = 0;
+    try {
+      f.manifest.items[0]!.inputs[0]!.sha256 = hash("wrong");
+      // Detach the second item's pins from the intentionally shared fixture array.
+      f.manifest.items[1]!.inputs = [
+        { path: "family.json", bytes: 2, sha256: hash("{}") },
+        { path: "cues.json", bytes: 2, sha256: hash("{}") },
+      ];
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      const state = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(async (i, c) => {
+          calls++;
+          return product(i, c);
+        }),
+      );
+      expect(calls).toBe(1);
+      expect(state.rows.map((r) => r.status)).toEqual(["failed", "passed"]);
+      expect(state.rows[0]!.attempts[0]!.stage).toBe("dependency-admission");
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("retires tampered cached products, retains their rejection and rerenders only affected items", async () => {
+    const f = await fixture();
+    let calls = 0;
+    try {
+      const worker = executor(async (i, c) => {
+        calls++;
+        return product(i, c);
+      });
+      const old = await runMechanismProductionQueue(f.path, f.output, worker);
+      const body = JSON.parse(
+        await readFile(join(f.output, old.rows[0]!.product!.path), "utf8"),
+      );
+      await writeFile(join(f.output, body.artifacts[0].path), "tampered");
+      const state = await runMechanismProductionQueue(f.path, f.output, worker);
+      expect(calls).toBe(3);
+      expect(state.rows[0]!.priorProducts).toHaveLength(1);
+      expect(state.rows[0]!.cacheFailures).toHaveLength(1);
+      expect(state.rows[0]!.attempts).toHaveLength(2);
+      expect(state.rows[0]!.attempts[1]!.provenance!.kind).toBe("recovery");
+      const recovered = JSON.parse(
+        await readFile(join(f.output, state.rows[0]!.product!.path), "utf8"),
+      );
+      expect(
+        summarizeMechanismProductionCohort([recovered.report])
+          .firstPassTechnical.rate,
+      ).toBe(0);
+      expect(state.rows[1]!.attempts).toHaveLength(1);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("ignores a planned-edit declaration on an unchanged request before cache recovery", async () => {
+    const f = await fixture();
+    const worker = executor();
+    try {
+      const initial = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      f.manifest.baseHash = mechanismPackHash(f.manifest);
+      f.manifest.revision = 1;
+      f.manifest.revisionChanges = [
+        { id: "E01", kind: "planned-edit", reason: "No actual request edit" },
+      ];
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      const sealed = JSON.parse(
+        await readFile(join(f.output, initial.rows[0]!.product!.path), "utf8"),
+      );
+      await writeFile(
+        join(f.output, sealed.artifacts[0].path),
+        "corrupt cached output",
+      );
+      const recovered = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      const reports = await readMechanismProductionReports(
+        f.path,
+        f.output,
+        worker,
+      );
+      expect(reports.cohort.rows[0]!.firstPass).toBe("failed");
+      expect(
+        recovered.rows[0]!.interventions?.map((event) => event.kind),
+      ).toEqual(["recovery"]);
+      expect(recovered.rows[0]!.attempts[1]!.provenance!.kind).toBe("recovery");
+      expect(recovered.rows[1]).toEqual(initial.rows[1]);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("records a declared same-request manual recovery without another execution", async () => {
+    const f = await fixture();
+    let calls = 0;
+    const worker = executor(async (i, c) => {
+      calls++;
+      return product(i, c);
+    });
+    try {
+      await runMechanismProductionQueue(f.path, f.output, worker);
+      const oldHash = mechanismPackHash(f.manifest);
+      f.manifest.revision = 1;
+      f.manifest.baseHash = oldHash;
+      f.manifest.revisionChanges = [
+        {
+          id: "E01",
+          kind: "manual-recovery",
+          reason: "Restored original damaged output bytes manually",
+        },
+      ];
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      const state = await runMechanismProductionQueue(f.path, f.output, worker);
+      expect(calls).toBe(2);
+      expect(state.rows[0]!.attempts).toHaveLength(1);
+      const reports = await readMechanismProductionReports(
+        f.path,
+        f.output,
+        worker,
+      );
+      expect(reports.cohort.rows[0]!.firstPass).toBe("failed");
+      expect(reports.cohort.firstPassTechnical.targetSatisfied).toBe(false);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("retains cache recovery even when the attempt budget forbids re-execution", async () => {
+    const f = await fixture();
+    const worker = executor();
+    try {
+      f.manifest.maximumAttempts = 1;
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      const first = await runMechanismProductionQueue(f.path, f.output, worker);
+      const artifact = JSON.parse(
+        await readFile(join(f.output, first.rows[0]!.product!.path), "utf8"),
+      ).artifacts[0];
+      await writeFile(join(f.output, artifact.path), "tampered output");
+      const state = await runMechanismProductionQueue(f.path, f.output, worker);
+      expect(state.rows[0]!.status).toBe("failed");
+      expect(state.rows[0]!.attempts).toHaveLength(1);
+      const reports = await readMechanismProductionReports(
+        f.path,
+        f.output,
+        worker,
+      );
+      expect(reports.cohort.rows[0]!.firstPass).toBe("failed");
+      expect(reports.cohort.firstPassTechnical.targetSatisfied).toBe(false);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("preserves sealed products and attempts when reuse verification lacks capacity, then resumes without rerender", async () => {
+    const f = await fixture();
+    let calls = 0,
+      unavailable = false;
+    const worker = {
+      ...executor(async (i, c) => {
+        calls++;
+        return product(i, c);
+      }),
+      verify: async () => {
+        if (unavailable)
+          throw new CompositionNodeCapacityError(
+            2,
+            1,
+            "seeded unavailable capacity",
+          );
+      },
+    };
+    try {
+      const initial = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      unavailable = true;
+      await expect(
+        runMechanismProductionQueue(f.path, f.output, worker),
+      ).rejects.toBeInstanceOf(CompositionNodeCapacityError);
+      const retained = JSON.parse(
+        await readFile(join(f.output, "queue-state.json"), "utf8"),
+      );
+      expect(retained.rows).toEqual(initial.rows);
+      expect(calls).toBe(2);
+      unavailable = false;
+      const resumed = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      expect(resumed.rows).toEqual(initial.rows);
+      expect(calls).toBe(2);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("requires exact revision/hash and prevents repurposing a selected question", async () => {
+    const f = await fixture();
+    try {
+      await runMechanismProductionQueue(f.path, f.output, executor());
+      const oldHash = mechanismPackHash(f.manifest);
+      f.manifest.revision = 1;
+      f.manifest.baseHash = hash("stale");
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      await expect(
+        runMechanismProductionQueue(f.path, f.output, executor()),
+      ).rejects.toThrow(/previous revision/);
+      f.manifest.baseHash = oldHash;
+      f.manifest.items[0]!.question = "A different explanation";
+      await writeFile(f.path, JSON.stringify(f.manifest));
+      await expect(
+        runMechanismProductionQueue(f.path, f.output, executor()),
+      ).rejects.toThrow(/preserve its explanation/);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it.each(["planned-edit", "repair", "manual-recovery", "unknown"] as const)(
+    "retains the %s revision reason without replacing prior products/attempts",
+    async (kind) => {
+      const f = await fixture();
+      let calls = 0;
+      try {
+        const worker = executor(async (i, c) => {
+          calls++;
+          return product(i, c);
+        });
+        await runMechanismProductionQueue(f.path, f.output, worker);
+        const oldHash = mechanismPackHash(f.manifest);
+        await writeFile(join(f.root, "cues2.json"), "{}");
+        f.manifest.items[0]!.cuePath = "cues2.json";
+        f.manifest.items[0]!.inputs = [
+          { path: "family.json", bytes: 2, sha256: hash("{}") },
+          { path: "cues2.json", bytes: 2, sha256: hash("{}") },
+        ];
+        f.manifest.revision = 1;
+        f.manifest.baseHash = oldHash;
+        if (kind !== "unknown")
+          f.manifest.revisionChanges = [
+            { id: "E01", kind, reason: "Declared revision reason" },
+          ];
+        await writeFile(f.path, JSON.stringify(f.manifest));
+        const state = await runMechanismProductionQueue(
+          f.path,
+          f.output,
+          worker,
+        );
+        expect(calls).toBe(3);
+        expect(state.rows[0]!.priorProducts).toHaveLength(1);
+        expect(state.rows[0]!.attempts.map((a) => a.revision)).toEqual([0, 1]);
+        expect(state.rows[0]!.attempts[1]!.provenance!.kind).toBe(kind);
+        const body = JSON.parse(
+          await readFile(join(f.output, state.rows[0]!.product!.path), "utf8"),
+        );
+        const summary = summarizeMechanismProductionCohort([body.report]);
+        expect(summary.firstPassTechnical.rate).toBe(
+          kind === "planned-edit" ? 1 : kind === "unknown" ? null : 0,
+        );
+      } finally {
+        await rm(f.root, { recursive: true, force: true });
+      }
+    },
+  );
+  it("persists cancellation and resumes untouched pending items later", async () => {
+    const f = await fixture(),
+      controller = new AbortController();
+    try {
+      const cancelled = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(async (_i, c) => {
+          await c.progress("render");
+          controller.abort(Error("stop queue"));
+          c.signal!.throwIfAborted();
+          throw Error("unreachable");
+        }),
+        { signal: controller.signal },
+      );
+      expect(cancelled.rows.map((r) => r.status)).toEqual([
+        "cancelled",
+        "pending",
+      ]);
+      const resumed = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(),
+      );
+      expect(resumed.rows.map((r) => r.status)).toEqual(["passed", "passed"]);
+      expect(resumed.rows[0]!.attempts.map((a) => a.status)).toEqual([
+        "cancelled",
+        "passed",
+      ]);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("adopts a sealed finished attempt after a lost final checkpoint without rerender", async () => {
+    const f = await fixture();
+    let calls = 0;
+    try {
+      const worker = executor(async (i, c) => {
+        calls++;
+        return product(i, c);
+      });
+      const old = await runMechanismProductionQueue(f.path, f.output, worker);
+      old.rows[0]!.status = "running";
+      old.rows[0]!.product = null;
+      Object.assign(old.rows[0]!.attempts[0]!, {
+        status: "running",
+        endedUtc: null,
+        seconds: null,
+      });
+      await writeFile(join(f.output, "queue-state.json"), JSON.stringify(old));
+      const resumed = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        worker,
+      );
+      expect(calls).toBe(2);
+      expect(resumed.rows[0]!.attempts).toHaveLength(1);
+      expect(resumed.rows[0]!.status).toBe("passed");
+      expect(resumed.rows[0]!.attempts[0]!.seconds).not.toBeNull();
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("relocates relative dependency and owned-artifact locators without changing the request", async () => {
+    const f = await fixture();
+    let calls = 0;
+    const relocated = await mkdtemp(
+      join(tmpdir(), "still-shift-queue-relocated-"),
+    );
+    try {
+      const worker = executor(async (i, c) => {
+        calls++;
+        return product(i, c);
+      });
+      const first = await runMechanismProductionQueue(f.path, f.output, worker);
+      await cp(f.root, relocated, { recursive: true });
+      const next = await runMechanismProductionQueue(
+        join(relocated, "queue.json"),
+        join(relocated, "output"),
+        worker,
+      );
+      expect(calls).toBe(2);
+      expect(next.manifestHash).toBe(first.manifestHash);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+      await rm(relocated, { recursive: true, force: true });
+    }
+  });
+  it("rejects wrong executor identities and malformed manifests before execution", async () => {
+    const f = await fixture();
+    let calls = 0;
+    try {
+      await expect(
+        runMechanismProductionQueue(f.path, f.output, {
+          ...executor(),
+          codeSha256: hash("other"),
+        }),
+      ).rejects.toThrow(/Executor code/);
+      const bad = {
+        ...f.manifest,
+        items: [f.manifest.items[0], f.manifest.items[0]],
+      };
+      expect(MechanismProductionQueueSchema.safeParse(bad).success).toBe(false);
+      await writeFile(f.path, '{"schemaVersion":');
+      await expect(
+        runMechanismProductionQueue(
+          f.path,
+          f.output,
+          executor(async (i, c) => {
+            calls++;
+            return product(i, c);
+          }),
+        ),
+      ).rejects.toThrow();
+      expect(calls).toBe(0);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("transfers retained result capacity to a supplied parent and preserves foreign leases", async () => {
+    const f = await fixture(),
+      parent = new CompositionNodeMemory(),
+      foreign = parent.reserve(1024);
+    try {
+      await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(async (i, c) => {
+          c.nodeMemory.reserve(4096);
+          return product(i, c);
+        }),
+        { nodeMemory: parent },
+      );
+      expect(foreign.active).toBe(true);
+      expect(parent.statistics.current.metadata).toBe(64 * 1024 * 1024 + 1024);
+      parent.dispose();
+      expect(parent.statistics.reservations).toBe(0);
+    } finally {
+      parent.dispose();
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("rejects journal/request substitutions and refuses missing audit history", async () => {
+    const f = await fixture();
+    try {
+      const state = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(),
+      );
+      state.rows[0]!.requestHash = hash("forged");
+      await writeFile(
+        join(f.output, "queue-state.json"),
+        JSON.stringify(state),
+      );
+      await expect(
+        runMechanismProductionQueue(f.path, f.output, executor()),
+      ).rejects.toThrow(/Stored journal/);
+      await rm(join(f.output, "queue-state.json"));
+      await expect(
+        runMechanismProductionQueue(f.path, f.output, executor()),
+      ).rejects.toThrow(/history exists/);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("does not publish a worker product after an input changes during execution", async () => {
+    const f = await fixture();
+    try {
+      const state = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(async (i, c) => {
+          const result = await product(i, c);
+          await writeFile(join(f.root, "cues.json"), "changed");
+          return result;
+        }),
+      );
+      expect(state.rows[0]!.status).toBe("failed");
+      expect(state.rows[0]!.product).toBeNull();
+      expect(state.rows[0]!.attempts[0]!.diagnostic).toBeTruthy();
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+  it("rejects a worker report from a different input/code/output identity", async () => {
+    const f = await fixture();
+    try {
+      const state = await runMechanismProductionQueue(
+        f.path,
+        f.output,
+        executor(async (i, c) => {
+          const result = await product(i, c);
+          result.report.binding.inputSha256 = hash("other");
+          return result;
+        }),
+      );
+      expect(state.rows.every((r) => r.status === "failed")).toBe(true);
+      expect(
+        state.rows.every((r) =>
+          r.attempts[0]!.diagnostic?.includes("queue request"),
+        ),
+      ).toBe(true);
+    } finally {
+      await rm(f.root, { recursive: true, force: true });
+    }
+  });
+});

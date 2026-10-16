@@ -1,3 +1,4 @@
+import { createSlottedRetentionScene } from "./tape-slotted-retention.ts";
 import { describeMechanismPackCameras } from "./camera-descriptions.ts";
 import { createMechanismPrimitiveMesh } from "./primitive-mesh.ts";
 import { offsetPackMesh } from "./pack-support.ts";
@@ -35,8 +36,14 @@ export const TapeHookPackParametersSchema = z
     bladeWidth: z.number().finite().min(1).max(3).default(2),
   })
   .strict();
+export const TapeHookPackVariantSchema = z.enum([
+  "floating-hook",
+  "slotted-retention",
+]);
+export type TapeHookPackVariant = z.infer<typeof TapeHookPackVariantSchema>;
 export const TapeHookPackInputSchema = z
   .object({
+    variant: TapeHookPackVariantSchema.optional(),
     parameters: TapeHookPackParametersSchema.default({
       hookThickness: 0.18,
       bladeLength: 10,
@@ -270,11 +277,29 @@ function bounds(scene: MechanismSceneV2) {
   }
   return { min, max };
 }
-let metadata: MechanismPackMetadataReceipt | undefined;
+function variantScene(
+  parameters: TapeHookPackParameters,
+  variant: TapeHookPackVariant,
+  mount?: z.infer<typeof MechanismTransformSchema>,
+  style?: z.infer<typeof TapeHookPackInputSchema>["style"],
+) {
+  const scene = tapeScene(parameters, mount, style);
+  return variant === "slotted-retention"
+    ? createSlottedRetentionScene(scene, parameters)
+    : scene;
+}
+const metadataByVariant = new Map<
+  TapeHookPackVariant,
+  MechanismPackMetadataReceipt
+>();
 /** Returned metadata contains declared counts/bounds, never mesh or texture bytes. */
-export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
-  if (metadata) return metadata;
-  const scene = tapeScene(TapeHookPackParametersSchema.parse({}));
+export function inspectTapeHookPack(
+  variant: TapeHookPackVariant = "floating-hook",
+): MechanismPackMetadataReceipt {
+  variant = TapeHookPackVariantSchema.parse(variant);
+  const saved = metadataByVariant.get(variant);
+  if (saved) return saved;
+  const scene = variantScene(TapeHookPackParametersSchema.parse({}), variant);
   const pack = MechanismPackDocumentSchema.parse({
     schemaVersion: "mechanism-pack-1",
     id: "tape-hook",
@@ -282,24 +307,42 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
     family: "tape-hook",
     status: "candidate",
     generator: {
-      id: "tape-hook-solid",
+      id:
+        variant === "slotted-retention"
+          ? "tape-hook-slotted-retention-solid"
+          : "tape-hook-solid",
       version: "1",
       defaultSourceSha256: hash(scene),
       parameterSchemaSha256: hash(z.toJSONSchema(TapeHookPackParametersSchema)),
     },
-    factualVariant: {
-      id: "floating-hook",
-      description:
-        "Illustrative sliding hook with two securing rivets, selected pull/inside-face and push/outside-face contact. Reference props end at an exposed contact edge. Dimensions are authored model values; no manufacturer dimension or simulation claim.",
-      dimensionBasis: "illustrative",
-      sources: [
-        {
-          url: "https://support.stanleytools.com/hc/en-us/articles/360012677558-Why-does-the-hook-on-my-tape-measure-move",
-          claim:
-            "The moving hook compensates for its thickness during inside and outside measurements.",
-        },
-      ],
-    },
+    factualVariant:
+      variant === "slotted-retention"
+        ? {
+            id: "slotted-retention",
+            description:
+              "Illustrative three-rivet retention assembly: stepped shanks pass through elongated hook slots and smaller blade holes; enlarged top/bottom heads retain a tapered curved neck. Authored dimensions; no measured force or manufacturer dimension claim.",
+            dimensionBasis: "illustrative",
+            sources: [
+              {
+                url: "https://patents.google.com/patent/US4930227A/en",
+                claim:
+                  "Three axial rivets retain a hook body through elongated slots and smaller blade holes; stepped shanks and enlarged heads guide travel and retain the assembly (figures 1-8).",
+              },
+            ],
+          }
+        : {
+            id: "floating-hook",
+            description:
+              "Illustrative sliding hook with two securing rivets, selected pull/inside-face and push/outside-face contact. Reference props end at an exposed contact edge. Dimensions are authored model values; no manufacturer dimension or simulation claim.",
+            dimensionBasis: "illustrative",
+            sources: [
+              {
+                url: "https://support.stanleytools.com/hc/en-us/articles/360012677558-Why-does-the-hook-on-my-tape-measure-move",
+                claim:
+                  "The moving hook compensates for its thickness during inside and outside measurements.",
+              },
+            ],
+          },
     coordinateSystem: scene.coordinateSystem,
     units: scene.units,
     bounds: bounds(scene),
@@ -354,10 +397,12 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
       {
         id: "teaching",
         description:
-          "Generated rounded metal, two rivets and curved graduated blade. One declared detail; no automatic detail generation.",
+          variant === "slotted-retention"
+            ? "Generated three-slot tapered curved neck, drilled blade and three stepped retaining rivets. One declared detail; no automatic detail generation."
+            : "Generated rounded metal, two rivets and curved graduated blade. One declared detail; no automatic detail generation.",
       },
     ],
-    variants: [{ id: "floating-hook", details: ["teaching"] }],
+    variants: [{ id: variant, details: ["teaching"] }],
     neutralPose: [{ rig: "slider", value: 0 }],
     thumbnail: {
       kind: "native-preview-recipe",
@@ -394,20 +439,21 @@ export function inspectTapeHookPack(): MechanismPackMetadataReceipt {
       },
     },
   });
-  metadata = freeze(
+  const metadata = freeze(
     MechanismPackMetadataReceiptSchema.parse({
       schemaVersion: "mechanism-pack-metadata-1",
       sha256: hash(pack),
       pack,
     }),
   );
+  metadataByVariant.set(variant, metadata);
   return metadata;
 }
 export function createTapeHookPack(
   input: z.input<typeof TapeHookPackInputSchema> = {},
 ) {
   const options = TapeHookPackInputSchema.parse(input),
-    receipt = inspectTapeHookPack();
+    receipt = inspectTapeHookPack(options.variant);
   const reference = {
     id: receipt.pack.id,
     version: receipt.pack.version,
@@ -425,7 +471,12 @@ export function createTapeHookPack(
       { code: "mechanism-pack-revision", path: ["expectedPack"] },
     );
   const scene = MechanismSceneV2Schema.parse({
-    ...tapeScene(options.parameters, options.mount, options.style),
+    ...variantScene(
+      options.parameters,
+      options.variant ?? "floating-hook",
+      options.mount,
+      options.style,
+    ),
     pack: reference,
   });
   return freeze({
@@ -476,17 +527,37 @@ function assertTapeHookPackFrame(
       "slider",
       "range",
     ]);
-  for (const id of TAPE_HOOK_RIVET_MESH_IDS)
-    if (
-      instance.scene.geometry.meshes.find((mesh) => mesh.id === id)?.partId !==
-      "blade"
-    )
-      fail("Securing rivets must remain attached to the blade", [
-        "geometry",
-        "meshes",
-        id,
-        "partId",
-      ]);
+  if (instance.pack.variant === "slotted-retention") {
+    for (let i = 1; i <= 3; i++)
+      for (const name of ["lower", "upper", "top", "bottom"]) {
+        const id = `retention.rivet.${i}.${name}`;
+        if (
+          instance.scene.geometry.meshes.find(
+            (mesh) => mesh.id === id + ".mesh",
+          )?.partId !== id ||
+          instance.scene.parts.find((part) => part.id === id)?.parent !==
+            "blade"
+        )
+          fail("Stepped retaining rivets must remain attached to the blade", [
+            "geometry",
+            "meshes",
+            id,
+            "partId",
+          ]);
+      }
+  } else {
+    for (const id of TAPE_HOOK_RIVET_MESH_IDS)
+      if (
+        instance.scene.geometry.meshes.find((mesh) => mesh.id === id)
+          ?.partId !== "blade"
+      )
+        fail("Securing rivets must remain attached to the blade", [
+          "geometry",
+          "meshes",
+          id,
+          "partId",
+        ]);
+  }
   for (const relation of Object.values(frame.relationships))
     if (relation.residual > relation.tolerance)
       fail(

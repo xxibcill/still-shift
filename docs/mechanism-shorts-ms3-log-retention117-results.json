@@ -1,0 +1,131 @@
+{
+  "schemaVersion": "ms3-local-current-gate-log-retention117-1",
+  "status": "passed-local-byte-copy-source-preservation-not-full-gate",
+  "localRecord": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/index.json",
+    "bytes": 5657,
+    "sha256": "sha256:cfd8adf9fdee43913c20dd986e99a964ac6ed782d05cb4a7988ff5c6aa72db1d"
+  },
+  "copies": [
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-final113-full1.py",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/still-shift-ms3-final113-full1.py",
+        "bytes": 5733,
+        "sha256": "sha256:19fd38fc0df3d8a27a27f319f1fe7316499285c0f38b9e11ed4b83d4a3dfd086"
+      },
+      "copyBytesExact": true
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-final113-source-inputs1.json",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/still-shift-ms3-final113-source-inputs1.json",
+        "bytes": 477326,
+        "sha256": "sha256:1f23134b5b2d1492f51f02865e9222639c49002a7416ec98a5a39069c843c99f"
+      },
+      "copyBytesExact": true
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-final113-toolchain1.log",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/still-shift-ms3-final113-toolchain1.log",
+        "bytes": 238,
+        "sha256": "sha256:3ad3e8695b8ffa18ae57b07d1c45db12e5120b82d71ffeceb0845c7eef4c0929"
+      },
+      "copyBytesExact": true
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-final113-progress1.log",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/still-shift-ms3-final113-progress1.log",
+        "bytes": 57118,
+        "sha256": "sha256:48ef1773912d848cea2d8ac67c7555f166c63eed4857b29eb5f45da08f8ad10f"
+      },
+      "copyBytesExact": true
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-final113-progress2.log",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/still-shift-ms3-final113-progress2.log",
+        "bytes": 2871661,
+        "sha256": "sha256:983a099e848c3371cf42da4fd6acc080b2fab5f161a5c8246d926e78746a7475"
+      },
+      "copyBytesExact": true
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-full113-observe.py",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/still-shift-ms3-full113-observe.py",
+        "bytes": 2285,
+        "sha256": "sha256:294862d6815f82081416cd8718f59762a734206c5720b7b2526a38a9a8f2f7a5"
+      },
+      "copyBytesExact": true
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-full113-verifiedwait116.json",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/still-shift-ms3-full113-verifiedwait116.json",
+        "bytes": 2893,
+        "sha256": "sha256:c3e18640163ed21ac26a045d3546c2641ac64856778b2cb8b53f3e0c8fe0d9dc"
+      },
+      "copyBytesExact": true
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-final113-full1.log",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/progress3.log",
+        "bytes": 3119958,
+        "sha256": "sha256:77d2439df7ca852c719fddd62756bd14e633f33057b8dd343cb63a211f1bcb98"
+      },
+      "copyBytesExact": true,
+      "method": "Append-only live log prefix snapshot; not a terminal log."
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-final113-full1.json",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/running-receipt3.json",
+        "bytes": 2707,
+        "sha256": "sha256:c668d0d516bee417c5e126b30d8fb1a2edcfe9d62e2f4ca57d68e6b4a6ce64f4"
+      },
+      "copyBytesExact": true
+    },
+    {
+      "sourcePath": "/private/tmp/still-shift-ms3-retain-full113-117.py",
+      "retained": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-final113-gate/retain-full113-117.py",
+        "bytes": 4076,
+        "sha256": "sha256:e1e6c3ce0ffff750e258ea735d181a013727e7be4fd3da3b6d7129c68281e87f"
+      },
+      "copyBytesExact": true
+    }
+  ],
+  "bytes": 6543995,
+  "sourceBefore": {
+    "status": "passed",
+    "mode": "check",
+    "files": 2793,
+    "bytes": 122415742
+  },
+  "sourceAfter": {
+    "status": "passed",
+    "mode": "check",
+    "files": 2793,
+    "bytes": 122415742
+  },
+  "progress": {
+    "expectedPackageScriptInvocations": 116,
+    "observedPackageScriptHeaders": 65,
+    "exactRequiredPreorderPrefix": true,
+    "latestStartedScript": "test:browser:composition-webgl-export",
+    "previousProgressPrefixesExact": true,
+    "interpretation": "Headers include aliases, not a passed-suite count or completion percentage. Actual current full/benchmark remains unpassed until terminal and source hold."
+  },
+  "session": 8967,
+  "actualLastObservedToolState": "live",
+  "actualFullTerminalExitCode": null,
+  "sourceCommit": "1b21c86ed957d7aa5bae3bb581040711a01eef7d",
+  "why": "Six selected old temporary MS1/MS1N paths are unavailable. Preserve current-run raw metadata and immutable log prefixes locally before temporary cleanup can remove them. This does not restore old evidence.",
+  "scope": "Local retention of exact already-existing producer records and a live-log prefix only. Does not restore the six unavailable older MS1/MS1N files or relabel earlier failures. No current full/package/pilot/human pass inferred.",
+  "externalWrites": 0,
+  "freshRendersLaunched": 0
+}

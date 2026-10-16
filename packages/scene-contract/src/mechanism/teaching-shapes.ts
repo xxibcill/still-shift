@@ -21,7 +21,15 @@ export const MECHANISM_TEACHING_SHAPE_LIMITS = Object.freeze({
 
 export const MechanismShapeLandmarkSchema = z
   .object({
-    id: z.enum(["root", "tip", "seat-a", "seat-b", "coil-a", "coil-b"]),
+    id: z.enum([
+      "root",
+      "tip",
+      "trigger",
+      "seat-a",
+      "seat-b",
+      "coil-a",
+      "coil-b",
+    ]),
     vertexIndices: z
       .array(
         z
@@ -120,6 +128,14 @@ const pawl = z
         thickness: dimension,
         maxDeflection: z.number().finite().min(0).max(500),
         longitudinalSegments: z.number().int().min(2).max(32),
+        trigger: z
+          .object({
+            length: dimension,
+            width: dimension,
+            segments: z.number().int().min(2).max(8),
+          })
+          .strict()
+          .optional(),
       })
       .strict(),
   })
@@ -154,13 +170,40 @@ const spring = z
   })
   .strict();
 
+/** Planar web with both ends attached to rigid seats; no arbitrary morph callback. */
+const web = z
+  .object({
+    ...identity,
+    generator: z.literal("seated-flexible-web-1"),
+    seats: z.tuple([MechanismIdSchema, MechanismIdSchema]),
+    parameters: z
+      .object({
+        width: dimension,
+        thickness: dimension,
+        widthAxis: MechanismUnitAxisV2Schema,
+        minSpan: dimension,
+        maxSpan: dimension,
+        longitudinalSegments: z.number().int().min(2).max(32),
+        terminalTangents: z.tuple([
+          MechanismUnitAxisV2Schema,
+          MechanismUnitAxisV2Schema,
+        ]),
+      })
+      .strict(),
+  })
+  .strict();
+
 export const MechanismTeachingShapeSchema = z
-  .discriminatedUnion("generator", [pawl, spring])
+  .discriminatedUnion("generator", [pawl, spring, web])
   .superRefine((shape, context) => {
     const expected =
       shape.generator === "fixed-root-pawl-curve-1"
-        ? ["root", "tip"]
-        : ["seat-a", "seat-b", "coil-a", "coil-b"];
+        ? shape.parameters.trigger
+          ? ["root", "tip", "trigger"]
+          : ["root", "tip"]
+        : shape.generator === "seated-flexible-web-1"
+          ? ["seat-a", "seat-b"]
+          : ["seat-a", "seat-b", "coil-a", "coil-b"];
     const actual = shape.landmarks.map((landmark) => landmark.id);
     if (
       actual.length !== expected.length ||
@@ -184,6 +227,18 @@ export const MechanismTeachingShapeSchema = z
           "Pawl deflection cannot exceed half its length",
           ["parameters", "maxDeflection"],
         );
+      const trigger = shape.parameters.trigger;
+      if (
+        trigger &&
+        maxDeflection * (1 + (3 * trigger.length) / length) >
+          (length + trigger.length) / 2
+      )
+        mechanismIssue(
+          context,
+          "mechanism-shape-range",
+          "Trigger deflection exceeds the declared closed-beam envelope",
+          ["parameters", "trigger", "length"],
+        );
       if (thickness >= length / 2)
         mechanismIssue(
           context,
@@ -197,9 +252,47 @@ export const MechanismTeachingShapeSchema = z
       mechanismIssue(
         context,
         "mechanism-spring-seat",
-        "Spring requires two distinct seats",
+        "Seated shapes require two distinct seats",
         ["seats", 1],
       );
+    if (shape.generator === "seated-flexible-web-1") {
+      const { minSpan, maxSpan, thickness, widthAxis, terminalTangents } =
+        shape.parameters;
+      if (maxSpan < minSpan || thickness >= minSpan / 4)
+        mechanismIssue(
+          context,
+          "mechanism-web-range",
+          "Web span must be ordered and exceed four thicknesses",
+          ["parameters", "minSpan"],
+        );
+      if (
+        terminalTangents.some(
+          (tangent) =>
+            Math.abs(
+              tangent.reduce(
+                (sum, value, axis) => sum + value * widthAxis[axis]!,
+                0,
+              ),
+            ) > 1e-8,
+        )
+      )
+        mechanismIssue(
+          context,
+          "mechanism-web-plane",
+          "Web terminal tangents must be perpendicular to its width axis",
+          ["parameters", "terminalTangents"],
+        );
+      if (
+        shape.landmarks.some((landmark) => landmark.vertexIndices.length !== 4)
+      )
+        mechanismIssue(
+          context,
+          "mechanism-shape-landmark",
+          "Web landmarks identify complete rectangular rings",
+          ["landmarks"],
+        );
+      return;
+    }
     const parameters = shape.parameters;
     if (parameters.wireRadius >= parameters.coilRadius / 2)
       mechanismIssue(

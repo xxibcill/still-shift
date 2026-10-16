@@ -1,0 +1,749 @@
+{
+  "version": 1,
+  "date": "2026-10-13",
+  "milestone": "MS3",
+  "episode": "E02",
+  "branch": "codex/mechanism-ms3",
+  "baseCommit": "c2eec22811fac0cc9eca056089b1ed3edf560ead",
+  "status": "factory-candidate-fast-native-independent-audit-passed",
+  "sourceSnapshot": [
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/tape-slotted-retention.ts",
+      "bytes": 7559,
+      "sha256": "sha256:88eca78f96b97fec204cc0a8da86f1897b76484bcf33e16d34c43a2045775fdb"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/tape-hook-pack.ts",
+      "bytes": 20413,
+      "sha256": "sha256:b38dff593877367d39e4967f61de70ae292355339d1bc405a66b86b0d3a79063"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/camera-descriptions.ts",
+      "bytes": 5581,
+      "sha256": "sha256:b407197ce596529057f44f4296d8b249774f8a7a1284b3ff54c25e25d3a7cfc1"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/family-registry.ts",
+      "bytes": 6923,
+      "sha256": "sha256:c8c39bbc9cf4cfc9a4f3f2c8b632019ca6f9f8381a93ae20cb805c90482e6005"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/tests/unit/mechanism-slotted-retention.test.ts",
+      "bytes": 9426,
+      "sha256": "sha256:d4b3ea9e03d7bc4a8870222eeda5a5e89020cc1e214d4618ea2bf71e6cda4cef"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/tape-hook-input.schema.json",
+      "bytes": 3650,
+      "sha256": "sha256:c4d716f3cabcc3d821b45b3627e5017ca87616a072fd7bfc62ff5607cfdd4556"
+    },
+    {
+      "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/docs/schemas/mechanism/family-authoring.schema.json",
+      "bytes": 20977,
+      "sha256": "sha256:31fbc6581b67f0aee37af8eaec681e77141e9597b820a31ae226df53f553b122"
+    }
+  ],
+  "implementation": [
+    "Optional explicit slotted-retention variant preserves omitted default source/metadata/document identity.",
+    "Distinct immutable candidate metadata/reference and generated input/family schemas.",
+    "Actual tapered curved three-slot neck, full-length drilled blade and three stepped fixed rivets with upper/lower shanks and top/bottom heads.",
+    "Named cameras reference actual variant meshes/anchors, saved family creation/inspection/CAS parameters preserve variant identity, and discovery exposes both references/examples.",
+    "Independent triangle rays check actual final factory output over9 dimension combinations/13 travel states/64 angles/3 rivets/2 sections."
+  ],
+  "defaultIdentity": {
+    "sourceSha256": "sha256:0a2db1877fe83eb7ee348b6c658b2396dd4a781b3a5c3ffaa413392e182245bc",
+    "metadataSha256": "sha256:5f7fa4100db1ecbb36eb62d2c036857b3740ded49e41856870aed2769e260dd5",
+    "qualification": "Exact historical factory source/metadata identities preserved. Actual current default pixels have not been rerendered on this changed source."
+  },
+  "candidateIdentity": {
+    "sourceSha256": "sha256:8219d2a9189269cb8ab41ddac59ee70aca81eb6cc6ce9d742c5bb11ee4813dd0",
+    "metadataSha256": "sha256:26d9b9d6ff920a8daee8c86e301e5e739532b72f9f703e74616fa49291a8da0e",
+    "metadataBytes": 28022,
+    "meshes": 36,
+    "parts": 23,
+    "triangles": 20804,
+    "status": "candidate"
+  },
+  "failures": [
+    {
+      "stage": "preflight1",
+      "actualExitCode": 2,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight1.log",
+          "bytes": 1170,
+          "sha256": "sha256:aba6532137be8ee678a846e37f84c04cbcedd3d9eaf3bcab4481dfaac45c221f"
+        }
+      ],
+      "reason": "Typed added parts omitted required visible field."
+    },
+    {
+      "stage": "inspect1",
+      "actualExitCode": 1,
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-inspect.log",
+          "bytes": 1484,
+          "sha256": "sha256:915be2fd8e8d78264faf33940119899c5fc06a6c76c9a410db91d7bae4b00056"
+        }
+      ],
+      "reason": "Inherited camera targeted removed hook-front; actual new front/focus references repaired."
+    },
+    {
+      "stage": "scope1",
+      "receipt": {
+        "command": [
+          "pnpm",
+          "exec",
+          "vitest",
+          "run",
+          "tests/unit/mechanism-slotted-retention.test.ts",
+          "tests/unit/mechanism-tape-pack.test.ts",
+          "tests/unit/mechanism-family-authoring.test.ts",
+          "tests/unit/mechanism-family-registry.test.ts",
+          "tests/unit/mechanism-pack-timeline.test.ts"
+        ],
+        "actualExitCode": 1,
+        "startedUtc": "2026-10-13T02:54:25.362093+00:00",
+        "endedUtc": "2026-10-13T02:54:32.534923+00:00",
+        "log": "/private/tmp/still-shift-ms3-retention11-scope1.log"
+      },
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-scope1.log",
+          "bytes": 3626,
+          "sha256": "sha256:f4e42a7ad26fede49c5c6d439118b1596112eb1d46408ec376c52088c823454b"
+        }
+      ],
+      "reason": "Test used nonexistent current.instance field instead of reinspecting returned document;29 passed/1 failed."
+    }
+  ],
+  "preflightAttempts": [
+    {
+      "attempt": 2,
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:55:13.951638+00:00",
+          "endedUtc": "2026-10-13T02:55:24.343048+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight2-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "eslint",
+            "packages/animation-engine/src/mechanism/tape-slotted-retention.ts",
+            "packages/animation-engine/src/mechanism/tape-hook-pack.ts",
+            "packages/animation-engine/src/mechanism/family-registry.ts",
+            "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+            "tests/unit/mechanism-slotted-retention.test.ts"
+          ],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:55:24.344110+00:00",
+          "endedUtc": "2026-10-13T02:55:25.048525+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight2-1.log"
+        },
+        {
+          "command": ["pnpm", "schema:check"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:55:25.048866+00:00",
+          "endedUtc": "2026-10-13T02:55:28.394925+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight2-2.log"
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:55:28.395243+00:00",
+          "endedUtc": "2026-10-13T02:55:29.281015+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight2-3.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/mechanism-slotted-retention.test.ts",
+            "tests/unit/mechanism-tape-pack.test.ts",
+            "tests/unit/mechanism-family-authoring.test.ts",
+            "tests/unit/mechanism-family-registry.test.ts",
+            "tests/unit/mechanism-pack-timeline.test.ts"
+          ],
+          "actualExitCode": 1,
+          "startedUtc": "2026-10-13T02:55:29.281523+00:00",
+          "endedUtc": "2026-10-13T02:55:36.906522+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight2-4.log"
+        }
+      ],
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight2-0.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight2-1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight2-2.log",
+          "bytes": 502,
+          "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight2-3.log",
+          "bytes": 186,
+          "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight2-4.log",
+          "bytes": 3699,
+          "sha256": "sha256:520f3301863bce6acb885c5871d48749cb25559925e088d5a4ee30acc735441f"
+        }
+      ],
+      "qualification": "Build/lint/schema/boundary0; owning1 due comparing Float32 geometry to an unrepresentable double at12 decimals. Exact Math.fround expectation repaired; requirement not loosened."
+    },
+    {
+      "attempt": 3,
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:56:36.955836+00:00",
+          "endedUtc": "2026-10-13T02:56:48.139063+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight3-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "eslint",
+            "packages/animation-engine/src/mechanism/tape-slotted-retention.ts",
+            "packages/animation-engine/src/mechanism/tape-hook-pack.ts",
+            "packages/animation-engine/src/mechanism/family-registry.ts",
+            "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+            "tests/unit/mechanism-slotted-retention.test.ts"
+          ],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:56:48.140409+00:00",
+          "endedUtc": "2026-10-13T02:56:48.866060+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight3-1.log"
+        },
+        {
+          "command": ["pnpm", "schema:check"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:56:48.866404+00:00",
+          "endedUtc": "2026-10-13T02:56:52.345510+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight3-2.log"
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:56:52.345882+00:00",
+          "endedUtc": "2026-10-13T02:56:53.272089+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight3-3.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/mechanism-slotted-retention.test.ts",
+            "tests/unit/mechanism-tape-pack.test.ts",
+            "tests/unit/mechanism-family-authoring.test.ts",
+            "tests/unit/mechanism-family-registry.test.ts",
+            "tests/unit/mechanism-pack-timeline.test.ts"
+          ],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:56:53.272376+00:00",
+          "endedUtc": "2026-10-13T02:57:01.609346+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight3-4.log"
+        }
+      ],
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight3-0.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight3-1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight3-2.log",
+          "bytes": 502,
+          "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight3-3.log",
+          "bytes": 186,
+          "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight3-4.log",
+          "bytes": 2775,
+          "sha256": "sha256:3fccb988b8278f75657c0d8e4589511c1f82d5c3b74aee86931633f7c8ec2a58"
+        }
+      ],
+      "qualification": "All30 owning/build/lint/schema/boundary0 before correcting full bladeLength geometric span; remains separately bound."
+    },
+    {
+      "attempt": 4,
+      "receipt": [
+        {
+          "command": ["pnpm", "build"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:58:01.904242+00:00",
+          "endedUtc": "2026-10-13T02:58:11.653113+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight4-0.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "eslint",
+            "packages/animation-engine/src/mechanism/tape-slotted-retention.ts",
+            "packages/animation-engine/src/mechanism/tape-hook-pack.ts",
+            "packages/animation-engine/src/mechanism/family-registry.ts",
+            "packages/animation-engine/src/mechanism/camera-descriptions.ts",
+            "tests/unit/mechanism-slotted-retention.test.ts"
+          ],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:58:11.654014+00:00",
+          "endedUtc": "2026-10-13T02:58:12.334733+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight4-1.log"
+        },
+        {
+          "command": ["pnpm", "schema:check"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:58:12.335213+00:00",
+          "endedUtc": "2026-10-13T02:58:15.653074+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight4-2.log"
+        },
+        {
+          "command": ["pnpm", "check:boundaries"],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:58:15.653528+00:00",
+          "endedUtc": "2026-10-13T02:58:16.514948+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight4-3.log"
+        },
+        {
+          "command": [
+            "pnpm",
+            "exec",
+            "vitest",
+            "run",
+            "tests/unit/mechanism-slotted-retention.test.ts",
+            "tests/unit/mechanism-tape-pack.test.ts",
+            "tests/unit/mechanism-family-authoring.test.ts",
+            "tests/unit/mechanism-family-registry.test.ts",
+            "tests/unit/mechanism-pack-timeline.test.ts"
+          ],
+          "actualExitCode": 0,
+          "startedUtc": "2026-10-13T02:58:16.515240+00:00",
+          "endedUtc": "2026-10-13T02:58:24.305879+00:00",
+          "log": "/private/tmp/still-shift-ms3-retention11-preflight4-4.log"
+        }
+      ],
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight4-0.log",
+          "bytes": 98,
+          "sha256": "sha256:ddd961a99b75f71302d9b2a78b1f21475edb2d8c5d2f008ae42da654d01d0754"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight4-1.log",
+          "bytes": 0,
+          "sha256": "sha256:e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight4-2.log",
+          "bytes": 502,
+          "sha256": "sha256:904ab0505f30dcbfbc30b28c2b2da22c2d2cc49f3c99a0200defa634e56ec546"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight4-3.log",
+          "bytes": 186,
+          "sha256": "sha256:fa82ea4860b5a1302377a02bc430bb805286f994e907b686290bc6491ae238d9"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-preflight4-4.log",
+          "bytes": 2773,
+          "sha256": "sha256:7ed05fa9b74c334d7c1303e2658a552426af581ad977fef3c1a41c082599d087"
+        }
+      ],
+      "qualification": "Final all30 owning/build/lint/schema/boundary0 and exact2705-source hold after bladeLength span repair."
+    }
+  ],
+  "packageDeclarationAndIdentity": {
+    "receipt": [
+      {
+        "command": ["pnpm", "build:package"],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T02:58:54.367536+00:00",
+        "endedUtc": "2026-10-13T02:59:06.274356+00:00",
+        "log": "/private/tmp/still-shift-ms3-retention11-package1-0.log"
+      },
+      {
+        "command": [
+          "node",
+          "--import",
+          "tsx",
+          "/private/tmp/still-shift-ms3-retention11-inspect.mts"
+        ],
+        "actualExitCode": 0,
+        "startedUtc": "2026-10-13T02:59:06.275435+00:00",
+        "endedUtc": "2026-10-13T02:59:07.660443+00:00",
+        "log": "/private/tmp/still-shift-ms3-retention11-package1-1.log"
+      }
+    ],
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-package1-0.log",
+        "bytes": 208,
+        "sha256": "sha256:9814039d380fa12ed49d9019928510df42a66d46f23276757b485b9dae9cca8c"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-package1-1.log",
+        "bytes": 586,
+        "sha256": "sha256:4e3266d3815391396e4c45aafa6b57699ec01f3244d2787b67c0e0ce2e11c5d6"
+      }
+    ],
+    "qualification": "Actual build:package/declaration and current factory identities only; no verified archive or isolated installed/release claim."
+  },
+  "heldInputs": {
+    "files": 2705,
+    "bytes": 121426284,
+    "inventory": {
+      "path": "/private/tmp/still-shift-ms3-retention11-preflight4-inputs.json",
+      "bytes": 461793,
+      "sha256": "sha256:91984c5e8da823640c4b7c326ca7fd0cfbbb6c0715d5f5069488dacaceff52f7"
+    },
+    "actualHoldExitCode": 0
+  },
+  "qualification": "Distinct factory/software/native engineering candidate on exact9e4ccce1 with complete fast,180 fresh native submissions and149-pin independent audit; all180 final decoded frames/81 images/180 native scalar samples verify and default all-frame pixels/audio match priorc474 cold product. Seven sampled visual errors remain per product; whole/factual/design/continuous/listening/genuine narration/pilot acceptance remains open. No newly accepted asset/episode, ElevenLabs spending or publication.",
+  "remaining": [
+    "Readable retention explanation views and resolved original QA/whole/factual/design/continuous/genuine speech/listening evidence for E02.",
+    "Remaining original four new assets/two behaviors, all ten frozen questions, scoped/MS1 repair, broader faults/capability reconciliation and final full/benchmark/archive/installed work."
+  ],
+  "independentFactoryRay": {
+    "receipt": {
+      "command": [
+        "node",
+        "--import",
+        "tsx",
+        "/private/tmp/still-shift-ms3-retention11-ray1.mts"
+      ],
+      "actualExitCode": 0,
+      "startedUtc": "2026-10-13T03:00:42.525473+00:00",
+      "endedUtc": "2026-10-13T03:00:45.415739+00:00",
+      "log": "/private/tmp/still-shift-ms3-retention11-ray1.log"
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-ray1.mts",
+        "bytes": 4001,
+        "sha256": "sha256:c3ba12959f4b914abb59630358c377bf39d2cacc2b1a85ed430c25f6d1606b72"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-ray1.log",
+        "bytes": 142,
+        "sha256": "sha256:c86848c7efd23d3185d2fc8ed7dd3a3508b7cc46ff24ee6a1916c63a6cde0c58"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-ray1-receipt.json",
+        "bytes": 305,
+        "sha256": "sha256:061ba5a4477f4778a020db574f3d23345f8171581a92e4ab6b475645b1e97397"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-ray1.json",
+        "bytes": 2166,
+        "sha256": "sha256:b8911636886b318e414df9d3d5b6625180c67a944272d8b7d9fd181a11dd1403"
+      }
+    ],
+    "results": {
+      "status": "sampled-independent-factory-mesh-ray-passed",
+      "rays": 44928,
+      "minimumUpper": 0.012122686249887951,
+      "minimumLower": 0.004486667065686317,
+      "results": [
+        {
+          "hookThickness": 0.04,
+          "bladeWidth": 1,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        },
+        {
+          "hookThickness": 0.04,
+          "bladeWidth": 2,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        },
+        {
+          "hookThickness": 0.04,
+          "bladeWidth": 3,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        },
+        {
+          "hookThickness": 0.18,
+          "bladeWidth": 1,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        },
+        {
+          "hookThickness": 0.18,
+          "bladeWidth": 2,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        },
+        {
+          "hookThickness": 0.18,
+          "bladeWidth": 3,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        },
+        {
+          "hookThickness": 0.35,
+          "bladeWidth": 1,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        },
+        {
+          "hookThickness": 0.35,
+          "bladeWidth": 2,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        },
+        {
+          "hookThickness": 0.35,
+          "bladeWidth": 3,
+          "minimumUpperMeshClearance": 0.012122686249887951,
+          "minimumLowerMeshClearance": 0.004486667065686317
+        }
+      ],
+      "qualification": "Double-sided Moller-Trumbore ray intersections against actual subdivided triangle meshes at declared upper/lower stem section heights, nine parameter combinations, thirteen travel states and sixty-four angles per rivet. Conservative circumscribed stem radii. Sampled geometric evidence only; no continuous collision/native/factory/factual/design/pilot acceptance."
+    }
+  },
+  "committedSource": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+  "completeFast": {
+    "status": "passed",
+    "command": "pnpm check:fast",
+    "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+    "startedUtc": "2026-10-13T03:02:06.861480+00:00",
+    "pid": 30110,
+    "inventory": "/private/tmp/still-shift-ms3-retention11-fast1-inputs.json",
+    "actualExitCode": 0,
+    "sourceHoldCheckExitCode": 0,
+    "endedUtc": "2026-10-13T03:04:23.266064+00:00",
+    "unitTests": 4462,
+    "testFiles": 441,
+    "heldInputFiles": 2705,
+    "heldInputBytes": 121426284,
+    "receipt": {
+      "path": "/private/tmp/still-shift-ms3-retention11-fast1-receipt.json",
+      "bytes": 369,
+      "sha256": "sha256:040844e6669a5a1c1ac3dc787b8158a7856aa4be90c753985d4509806080ceeb"
+    },
+    "log": {
+      "path": "/private/tmp/still-shift-ms3-retention11-fast1.log",
+      "bytes": 44325,
+      "sha256": "sha256:c4a7e8f4db779077ef259aa0be42817f09a5f6be7d9bc883f76cffca234f392d"
+    },
+    "inventoryFile": {
+      "path": "/private/tmp/still-shift-ms3-retention11-fast1-inputs.json",
+      "bytes": 461793,
+      "sha256": "sha256:a6da92427f5151f59cad45cf0b2550c658d1c51f4bca125f73753247cf65c795"
+    }
+  },
+  "nativeAttempts": [
+    {
+      "status": "failed",
+      "command": "node --import tsx /private/tmp/still-shift-ms3-retention11-native1.mts",
+      "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+      "startedUtc": "2026-10-13T03:06:01.119621+00:00",
+      "pid": 43502,
+      "inventory": "/private/tmp/still-shift-ms3-retention11-native1-inputs.json",
+      "actualExitCode": 1,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T03:06:05.192275+00:00",
+      "session": 63261,
+      "root": "/private/tmp/still-shift-ms3-retention-native-JMhjoi",
+      "reason": "Pre-render cue admission rejected Retaining rivets label under unchanged reading-time budget; no queue/native execution occurred.",
+      "files": [
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-native1.mts",
+          "bytes": 4589,
+          "sha256": "sha256:ff0b30c2b585dc2de506e02ebdff0efe195c780412216abd70d2c2ed17ca576e"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-native1.py",
+          "bytes": 1460,
+          "sha256": "sha256:55a5f323c0f84f2660f9dc700befb0c7d4611c279e3b9e953ca1648126423629"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-native1.log",
+          "bytes": 1961,
+          "sha256": "sha256:2a1c7c482fde199c1d13a4d1eb26a30d2c56b810661a62c20741875262138109"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention11-native1-receipt.json",
+          "bytes": 426,
+          "sha256": "sha256:06aa74a5faf0fb38fa1daa08b7fa23e7998207d50b055a9e9778cd25c573544d"
+        },
+        {
+          "path": "/private/tmp/still-shift-ms3-retention-native-JMhjoi/failure.json",
+          "bytes": 795,
+          "sha256": "sha256:3bfc38e71184a3c5d81e02eaf60d87e25bdc61b65acf5c28bff70b5aa990e160"
+        }
+      ]
+    },
+    {
+      "status": "passed",
+      "command": "node --import tsx /private/tmp/still-shift-ms3-retention11-native2.mts",
+      "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+      "startedUtc": "2026-10-13T03:07:46.051164+00:00",
+      "pid": 47263,
+      "inventory": "/private/tmp/still-shift-ms3-retention11-native2-inputs.json",
+      "actualExitCode": 0,
+      "session": 36579,
+      "harness": {
+        "path": "/private/tmp/still-shift-ms3-retention11-native2.mts",
+        "bytes": 4578,
+        "sha256": "sha256:ff91c16e8bad7260b5ccb8eb07860515491cfe00d3c1049bd3db3b7a7eb1eab1"
+      },
+      "wrapper": {
+        "path": "/private/tmp/still-shift-ms3-retention11-native2.py",
+        "bytes": 1558,
+        "sha256": "sha256:e28b559f21bf147ed391b962e1fff18a24751da3efbd5bac73dc324151c18466"
+      },
+      "logPath": "/private/tmp/still-shift-ms3-retention11-native2.log",
+      "root": "/private/tmp/still-shift-ms3-retention-native-1cp5nE",
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T03:25:09.640104+00:00",
+      "run": {
+        "path": "/private/tmp/still-shift-ms3-retention-native-1cp5nE/run.json",
+        "bytes": 482,
+        "sha256": "sha256:f155ab43f16adf66b78026452426e9749ffb8c16b26ee36222b5a913bf52dd0d"
+      },
+      "log": {
+        "path": "/private/tmp/still-shift-ms3-retention11-native2.log",
+        "bytes": 1497,
+        "sha256": "sha256:cc0d64a814f84949881cf8491fc46625df41efe92d2e8d9f77f7acfe3176257e"
+      },
+      "receipt": {
+        "path": "/private/tmp/still-shift-ms3-retention11-native2-receipt.json",
+        "bytes": 426,
+        "sha256": "sha256:2caf748051c383551a31e9a8c030e6516277dc5434cc2914862b601c1bc38cca"
+      },
+      "qualification": "Actual current-source three declarative engineering products and current CLI report pass; first pre-render reading admission failure retained."
+    }
+  ],
+  "independentAudit": {
+    "receipt": {
+      "status": "passed",
+      "startedUtc": "2026-10-13T03:26:33.942018+00:00",
+      "pid": 76100,
+      "sourceCommit": "9e4ccce166d8f3f04c32923fae5b20dc3a8535da",
+      "documentationHead": "d9a32280c03f08d6a804940ccca0ee852261f9ce",
+      "nativeRun": "/private/tmp/still-shift-ms3-retention-native-1cp5nE",
+      "actualExitCode": 0,
+      "sourceHoldCheckExitCode": 0,
+      "endedUtc": "2026-10-13T03:26:36.485758+00:00"
+    },
+    "files": [
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1.py",
+        "bytes": 12336,
+        "sha256": "sha256:9f8ea112475978f57f13937b47ad4f9a70ae4989e4d5a4c2264a955c6f7c1c6d"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1-wrapper.py",
+        "bytes": 1371,
+        "sha256": "sha256:de9083dc7eed362ce7b1040d82bf13c9008fc81fd03a85a2fd5f66be491b3f9a"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1.log",
+        "bytes": 929,
+        "sha256": "sha256:9bc839859d07a79142ed1dbc3c6cf384b4634fe6ce4d0a8a40232a7fe9478c7f"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1-receipt.json",
+        "bytes": 398,
+        "sha256": "sha256:f569caacf7f2d48d2b36fa7bdc4dce423f8a4de768c84f83d93c8b64a68e6419"
+      },
+      {
+        "path": "/private/tmp/still-shift-ms3-retention11-audit1.json",
+        "bytes": 65096,
+        "sha256": "sha256:706dc4c58d967821982ab3aa24b9ce71ffd1cc220668c9fa7da2b453a8f64b8e"
+      }
+    ],
+    "summary": {
+      "products": 3,
+      "decodedFrames": 180,
+      "images": 81,
+      "actualScalarSamples": 180,
+      "independentNativeCaptures": 3,
+      "freshNativeSubmissions": 180
+    },
+    "pins": 149,
+    "defaultDecodedFrameAndAudioParity": true,
+    "methods": [
+      "all pinned artifacts/original native anchors/matrices/scalars/rules/warnings",
+      "full RGBA/video/audio decode and exact image/crop/phone equality",
+      "all three current technical reports and distinct candidate/reference geometry",
+      "exact all-frame decoded default picture/audio comparison against prior c474 native10 cold product"
+    ],
+    "qualification": "Current engineering software/native/decoded evidence only. No actual native mesh cavity clearance, readable retention/factual/design/whole/continuous/listening/genuine speech/pilot acceptance."
+  },
+  "currentReport": {
+    "path": "/private/tmp/still-shift-ms3-retention-native-1cp5nE/current-report.json",
+    "bytes": 44857,
+    "sha256": "sha256:4a6291906341957083159f35b15c2b627115ea2e2b702a864b7d90c0407bac78"
+  },
+  "engineeringReviewCounts": {
+    "technical": {
+      "passed": 3,
+      "failed": 0,
+      "unreviewed": 0
+    },
+    "mechanical": {
+      "passed": 0,
+      "failed": 0,
+      "unreviewed": 3
+    },
+    "sampled-visual": {
+      "passed": 0,
+      "failed": 3,
+      "unreviewed": 0
+    },
+    "continuous-motion": {
+      "passed": 0,
+      "failed": 0,
+      "unreviewed": 3
+    },
+    "listening": {
+      "passed": 0,
+      "failed": 0,
+      "unreviewed": 3
+    },
+    "factual": {
+      "passed": 0,
+      "failed": 0,
+      "unreviewed": 3
+    }
+  },
+  "engineeringFirstPass": {
+    "completed": 3,
+    "passed": 3,
+    "rate": 1,
+    "targetSatisfied": true
+  },
+  "reviewedReady": 0
+}

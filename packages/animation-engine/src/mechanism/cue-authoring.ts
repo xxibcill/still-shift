@@ -141,14 +141,24 @@ export const MechanismCuePatchSchema = z
       MECHANISM_RESPONSE_LIMITS.patchBytes,
     { message: "Patch exceeds 16 KiB" },
   );
-function failure(code: string, message: string, path: string): never {
-  throw new AnimationEngineError("SCENE_INVALID", message, {
-    stage: "mechanism-cue-authoring",
-    diagnosticCode: code,
-    path,
-    nextAction:
-      "Inspect the current cue revision/hash and pinned family source, repair the located field, then recompile/render/check.",
-  });
+function failure(
+  code: string,
+  message: string,
+  path: string,
+  cause?: Error,
+): never {
+  throw new AnimationEngineError(
+    "SCENE_INVALID",
+    message,
+    {
+      stage: "mechanism-cue-authoring",
+      diagnosticCode: code,
+      path,
+      nextAction:
+        "Inspect the current cue revision/hash and pinned family source, repair the located field, then recompile/render/check.",
+    },
+    cause ? { cause } : undefined,
+  );
 }
 function version(input: unknown, expected: string) {
   if (
@@ -183,6 +193,7 @@ export function inspectMechanismCueAuthoring(
         error.location.code,
         error.message,
         error.location.path.join("/"),
+        error,
       );
     throw error;
   }

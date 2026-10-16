@@ -69,10 +69,37 @@ values. The hook-thickness range is 0.04–0.35, blade length 4–20 and blade w
 1–3. The tested dimensions are 0.18/10/2 and 0.26/14/2.5. A style change preserves
 mesh arrays and their hash while changing the effective material/source identity.
 
+## Three-rivet slotted retention candidate
+
+Use `createTapeHookPack({ variant: "slotted-retention" })` or
+`inspectTapeHookPack("slotted-retention")` for E02's distinct candidate. The
+omitted variant keeps the original `floating-hook` source and metadata identities.
+The new reference has its own immutable metadata hash; a floating-hook
+`expectedPack` is rejected for this variant. Saved family creation accepts the
+same variant field, and registry examples/references expose both choices.
+
+The candidate has a tapered curved neck with three elongated through-slots,
+a blade with three smaller holes, and three fixed stepped rivets. Each rivet
+has lower/upper shanks and top/bottom retaining heads. The geometry follows
+[US4930227A figures 1–8](https://patents.google.com/patent/US4930227A/en);
+dimensions remain authored illustrative values. Nominal slot width is0.23,
+upper/lower shank radii are0.085/0.055, blade-hole radius is0.06 and retaining
+head radius is0.17. Capsule polygons circumscribe the nominal opening to
+preserve0.012 axial clearance after triangulation. The maximum polygon width
+is `0.23 / cos(pi/28)`, rather than an asserted exact0.23 mesh width.
+
+Software checks preserve default identities, validate saved-family CAS and
+mounted endpoints, and independently intersect actual triangles at nine
+thickness/width combinations, thirteen travel states and64 directions per
+rivet. Those sampled checks do not establish continuous collision, actual native
+appearance, factual/design approval, a supported pack or E02 pilot acceptance.
+The candidate's camera recipes reference its actual neck/front/rivet meshes.
+
 ## Rig and composition route
 
-The slider moves `hook` relative to `model` over `[0, hookThickness]`. Its six
-rivet meshes remain owned by `blade`. The optional `mount` transform moves the
+The slider moves `hook` relative to `model` over `[0, hookThickness]`. The default
+variant has six rivet meshes owned by `blade`; slotted retention has twelve meshes
+on separate rivet components parented to `blade`. The optional `mount` transform moves the
 model and its board/wall/datum reference together. `evaluateTapeHookPackFrame()`
 performs fresh expected-state evaluation and rejects wrong travel, rivet
 ownership, failed declared relationships or a changed source identity.
@@ -100,6 +127,57 @@ its SHA-256 and weight. The repository example uses
 `a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1`.
 The browser and normal renderer verify and decode these bytes; no system-font
 substitution is used. Installed-package font delivery remains to be verified.
+
+## Inside-serrated releasable candidate
+
+Use `createCableTiePack({ variant: "inside-serrated-extended-trigger-cutaway" })`
+and `inspectCableTiePack("inside-serrated-extended-trigger-cutaway")` for E05's
+separate candidate. It follows the [RELK2R product/closure diagram](https://www.hellermanntyton.com/products/cable-ties-releasable/relk2r/115-02202).
+The model exposes a straight tail/head cutaway, with serrations facing three
+reference cables and a wider flexible trigger extending past the locking tip.
+Dimensions, release curvature and material appearance remain illustrative.
+The selected original outside-serrated variant retains its source/metadata and
+non-releasable guard, including rejection of future authored release keys.
+
+The same `pitch`, `strapWidth` and `toothCount` parameters apply. The new
+reference admits the existing `teaching-release` ratchet policy; engaged reverse
+remains illegal. One `pawlDeflection` scalar moves both catch and trigger, with
+one closed capped mesh. The optional generator `parameters.trigger` declares
+length, width and2–8 sections. Its far section continues the base tangent and
+has a bounded deflection envelope. Root/tip landmarks remain required; a trigger
+landmark is present only when the section is authored. Old unextended topology
+is unchanged. Metadata and frame contracts explicitly admit the new landmark.
+
+Factory checks verify21 closed deformation states, fixed root, downward trigger/
+catch motion, released withdrawal and saved-family CAS/registry identity.
+Current runtime/native/default parity and factual/design/whole/continuous/
+genuine narration/listening/pilot review remain separate. No force rating is inferred.
+
+## Notched-jaw round-line candidate
+
+E09 uses `createClothespegPack({ variant: "notched-line" })` and
+`inspectClothespegPack("notched-line")`. This distinct candidate has actual facing
+concave jaw notches and a separate closed round line, following conventional
+front seating in [US2590881A](https://patents.google.com/patent/US2590881A/en).
+The slot/tongue/ledge restraint improvement and deep-gullet displacement are excluded.
+Dimensions remain illustrative; no friction or holding-force claim is made.
+
+Selected parameters are `armLength`5–8 (default6), `armWidth`0.6–1.1 (default0.8),
+and `lineRadius`0.08–0.18 (default0.16). The omitted variant keeps the original
+cloth peg and its exact source/metadata identities. Strict selected schemas reject
+`clothThickness` on a notched-line input and `lineRadius` on a default cloth input.
+The registry exposes the `notched-line-parameters` schema and example/reference.
+Saved family CAS edits can change line radius while preserving that reference.
+
+Neutral upper/lower jaw contacts meet the line. Existing spring-return controls
+use `stopValue: 0`; positive closing beyond neutral is rejected by
+`upper.line.gap`/`lower.line.gap`. Tangent notch facets include a horizontal
+contact face; a1e-5 outward geometry margin protects the other facets from
+Float32 rounding, with the original1e-8 contact tolerance retained. Rear handle
+heights scale with arm length to preserve separation across the opening range.
+Software checks independently slice actual triangles at nine sizes and37 poses
+per size/two jaws. Native appearance, whole mechanics/collision, factual/design,
+genuine narration/listening and pilot acceptance remain separate.
 
 ## Cable-tie and clothespeg candidates
 

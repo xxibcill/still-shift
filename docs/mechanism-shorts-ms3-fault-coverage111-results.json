@@ -1,0 +1,459 @@
+{
+  "schemaVersion": "ms3-fourteen-required-fault-scenarios-evidence-matrix-1",
+  "capturedUtc": "2026-10-15T08:26:34.319705+00:00",
+  "status": "fourteen-scenarios-mapped-with-exact-current-and-historical-scopes-required-full-open",
+  "sourceCommit": "c76283dae4af23363857207e7d218d8b9e2286cd",
+  "sourceInventory": {
+    "path": "/private/tmp/still-shift-ms3-repair110-source-inputs1.json",
+    "bytes": 477326,
+    "sha256": "sha256:15c30dfbd59d8b15735a9faf725d25d8617f38da086676d5e3263c1471265552"
+  },
+  "sourceFiles": 2793,
+  "sourceBytes": 122415742,
+  "sourceDelta": "Only2 browser assertion files since full91; all other held source/dependencies/tests byte-exact.",
+  "rows": [
+    {
+      "case": "intersection",
+      "evidence": "./mechanism-shorts-ms3-physical-fault104-results.json",
+      "method": "Actual native derivative capture + sampled bounds selector + retained closed/oriented surface interior-point witness",
+      "frames": [266],
+      "scope": "Current diagnostic source code/worker unchanged; sparse stills, not continuous collision or a production movie."
+    },
+    {
+      "case": "moving mount",
+      "evidence": "./mechanism-shorts-ms3-physical-fault104-results.json",
+      "method": "Actual native derivative baseline/fault captures + fixed-reference matrix drift",
+      "frames": [0, 64, 159],
+      "scope": "Current diagnostic code unchanged;0.3 drift located64/159, not whole mechanical approval."
+    },
+    {
+      "case": "clipped text",
+      "evidence": "current visual109",
+      "method": "Every-frame preview pixels/glyph bounds and actual encoded affected-frame still",
+      "frames": [0, 14],
+      "scope": "Current2D synthetic software case, reading-time error0/15 qualifying frames;60 encoded frames fully decoded."
+    },
+    {
+      "case": "unreadable hold",
+      "evidence": "current visual109",
+      "method": "Every-frame preview pixels/glyph bounds and actual encoded frame6/13 inspection",
+      "frames": [0, 14],
+      "scope": "Current2D software case, only3/15 qualifying frames/0.1s;60 encoded frames fully decoded."
+    },
+    {
+      "case": "wrong label state",
+      "evidence": "current compiler111",
+      "method": "Current compileBlenderEpisode rejects the misplaced inside-state label before render; original native image/geometry witnesses authenticated",
+      "frames": [239, 266],
+      "scope": "Compiler invocation is current; original product/image binding1090 stays original. No faulty final overlay or whole review claimed."
+    },
+    {
+      "case": "illegal transition",
+      "evidence": "tests/unit/mechanism-pack-timeline.test.ts:83",
+      "method": "Release-before-contact rejects with slider/board/hook/relationship and first fractional interval",
+      "frames": [1.5, 3],
+      "scope": "Passed within retained full91 unit group; unit source and all production/dependencies unchanged on110 inventory. Pre-render rejection; no invalid movie claimed."
+    },
+    {
+      "case": "invalid event order",
+      "evidence": "tests/unit/mechanism-pack-timeline.test.ts:122",
+      "method": "Malformed event inventory rejects at authored event/frame paths",
+      "scope": "Same exact-source current unit qualification; no physical/rendered failure invented."
+    },
+    {
+      "case": "missing audio",
+      "evidence": "corrupt-scene-missing-audio",
+      "method": "Actual current CLI input failure, retained failed attempt and targeted repaired-pin recovery",
+      "scope": "15 actions complete in retained105 recovery run; overall test remains1 due stale metric assertion. Full rerun still required."
+    },
+    {
+      "case": "export failure",
+      "evidence": "owned-export-publication-failure",
+      "method": "Observed nonempty owned temporary MP4, injected publication collision, retained failed attempt and targeted recovery",
+      "scope": "Actual action evidence within retained failed105 test; no overall pass inferred."
+    },
+    {
+      "case": "worker interruption",
+      "evidence": "actual-sigkill-native-output",
+      "method": "Actual OS SIGKILL, interrupted journal state and resume-after-sigkill",
+      "scope": "Current actual action checkpoint, failed overall test retained."
+    },
+    {
+      "case": "corrupt asset",
+      "evidence": "corrupt-scene-missing-audio",
+      "method": "Actual source bytes corrupted then restored; neighbors/failed attempts and targeted recovery retained",
+      "scope": "Current actual action checkpoint, not a pilot episode."
+    },
+    {
+      "case": "cancelled jobs",
+      "evidence": "actual-sigterm-cached-export",
+      "method": "Actual SIGTERM/cancelled state and resume-after-sigterm",
+      "scope": "Current final report retains1 cancellation and1 interruption; overall test still1."
+    },
+    {
+      "case": "stale patches",
+      "evidence": [
+        "tests/unit/mechanism-cue-authoring.test.ts",
+        "tests/runtime/mechanism-production-retry.test.ts",
+        "./mechanism-shorts-ms3-repair-results.json#/freshConsumedRequestNegative"
+      ],
+      "method": "Exact-revision/hash authoring admission + current11 retry-runtime cases; historical actual consumed-request CLI rejection separately bound",
+      "scope": "Unit/runtime code qualification is current and source-identical; historical bridge CLI evidence keeps its own binding, no automatic whole/current movie transfer."
+    },
+    {
+      "case": "relocation",
+      "evidence": "actual-relocation-recovery",
+      "method": "Copied fixture, retired original root, stale products before resume,3 current verified/unreviewed products after recovery",
+      "scope": "Actual current action completes before the stale expected2/actual0 assertion; overall105 remains failed."
+    }
+  ],
+  "focused110": {
+    "path": "/private/tmp/still-shift-ms3-repair110-focused1.json",
+    "bytes": 4451,
+    "sha256": "sha256:119ab9922a1156ff851dbd9db338dd326c631aad95dd3c73afb8763188419a50"
+  },
+  "currentVisual109": {
+    "path": "/private/tmp/still-shift-ms3-visual109-run2.json",
+    "bytes": 1460,
+    "sha256": "sha256:06c272d3328af41858354855d77791266b1846b5735f2959cdb1f9dbf79a7623"
+  },
+  "visualControls": {
+    "path": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/run.json",
+    "bytes": 2916,
+    "sha256": "sha256:f2b58860471c2cff2924a734338db85f300baa7b1e9f40aabb0c7992bc0c1925"
+  },
+  "visualRows": [
+    {
+      "control": "baseline",
+      "method": "actual-60-frame-2d-preview-pixels-and-glyph-bounds",
+      "nativeCalls": 0,
+      "findings": [],
+      "encodedOutput": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/baseline.mp4",
+      "fullyDecodedFrames": 60,
+      "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+    },
+    {
+      "control": "clipped",
+      "method": "actual-60-frame-2d-preview-pixels-and-glyph-bounds",
+      "nativeCalls": 0,
+      "findings": [
+        {
+          "code": "reading-time",
+          "severity": "error",
+          "nodes": ["caption"],
+          "node": "caption",
+          "path": "speechCaptions.0",
+          "frames": [0, 14],
+          "measured": 0,
+          "message": "Speech caption must retain exact intact visible copy throughout the supplied cue; 0/15 frames qualify."
+        }
+      ],
+      "encodedOutput": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/clipped.mp4",
+      "fullyDecodedFrames": 60,
+      "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+    },
+    {
+      "control": "short-hold",
+      "method": "actual-60-frame-2d-preview-pixels-and-glyph-bounds",
+      "nativeCalls": 0,
+      "findings": [
+        {
+          "code": "reading-time",
+          "severity": "error",
+          "nodes": ["caption"],
+          "node": "caption",
+          "path": "speechCaptions.0",
+          "frames": [0, 14],
+          "measured": 0.1,
+          "message": "Speech caption must retain exact intact visible copy throughout the supplied cue; 3/15 frames qualify."
+        }
+      ],
+      "encodedOutput": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/short-hold.mp4",
+      "fullyDecodedFrames": 60,
+      "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+    },
+    {
+      "control": "wrong-copy",
+      "method": "preflight",
+      "diagnostics": [
+        {
+          "code": "comp-lint-speech-caption",
+          "severity": "error",
+          "message": "Speech captions require exact copy and unchanged source cue boundaries",
+          "path": "speechCaptions.0.layer"
+        }
+      ]
+    }
+  ],
+  "encodedMovies": [
+    {
+      "control": "baseline",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/baseline.mp4",
+        "bytes": 22720,
+        "sha256": "sha256:f77e6f4ecb83d5b216542b95423464b8644efb6ff01e369b3d749af13ba9c297"
+      },
+      "copy": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-software-faults111/baseline.mp4",
+        "bytes": 22720,
+        "sha256": "sha256:f77e6f4ecb83d5b216542b95423464b8644efb6ff01e369b3d749af13ba9c297"
+      },
+      "decodedFrames": 60,
+      "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+    },
+    {
+      "control": "clipped",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/clipped.mp4",
+        "bytes": 22525,
+        "sha256": "sha256:c1b4d42926d2b2dd721aa7ff3d4b22b6d4a0fa50d0c95bf93c3903ad46951052"
+      },
+      "copy": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-software-faults111/clipped.mp4",
+        "bytes": 22525,
+        "sha256": "sha256:c1b4d42926d2b2dd721aa7ff3d4b22b6d4a0fa50d0c95bf93c3903ad46951052"
+      },
+      "decodedFrames": 60,
+      "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+    },
+    {
+      "control": "short-hold",
+      "original": {
+        "path": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/short-hold.mp4",
+        "bytes": 22752,
+        "sha256": "sha256:46c4106c4433e00eb3d282eb898aa0a224c924c5a01278a84f8759a088f52448"
+      },
+      "copy": {
+        "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-software-faults111/short-hold.mp4",
+        "bytes": 22752,
+        "sha256": "sha256:46c4106c4433e00eb3d282eb898aa0a224c924c5a01278a84f8759a088f52448"
+      },
+      "decodedFrames": 60,
+      "decodedAudioSha256": "sha256:bfe2cbc3c5fcc7f45ac8cb2ea33ccb8935dbc14f4f7e55da2d14fc13180a3d45"
+    }
+  ],
+  "sampledEncodedReview": {
+    "reviewer": "Codex agent",
+    "method": "Actual view_image original-resolution inspection of4 encoded320x180 PNGs",
+    "images": [
+      {
+        "image": {
+          "path": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/baseline-frame6.png",
+          "bytes": 2922,
+          "sha256": "sha256:01316e01d8e987649ffe69153f02c88d837ee51ee79c58771194dffe232d32ec"
+        },
+        "copy": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-software-faults111/baseline-frame6.png",
+          "bytes": 2922,
+          "sha256": "sha256:01316e01d8e987649ffe69153f02c88d837ee51ee79c58771194dffe232d32ec"
+        },
+        "agentObservation": "Start is fully visible."
+      },
+      {
+        "image": {
+          "path": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/clipped-frame6.png",
+          "bytes": 2314,
+          "sha256": "sha256:ced7332c90cfb74bc52f4b9e3789c90d07d7a3b69bf90cb1ce5d5a6c3cc5b2f7"
+        },
+        "copy": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-software-faults111/clipped-frame6.png",
+          "bytes": 2314,
+          "sha256": "sha256:ced7332c90cfb74bc52f4b9e3789c90d07d7a3b69bf90cb1ce5d5a6c3cc5b2f7"
+        },
+        "agentObservation": "The leading glyph is cut at the left frame edge."
+      },
+      {
+        "image": {
+          "path": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/short-hold-frame6.png",
+          "bytes": 703,
+          "sha256": "sha256:91f84d07b65d26dfeef96165cbf08dcf6f8b890b5f455901972e41babefcff70"
+        },
+        "copy": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-software-faults111/short-hold-frame6.png",
+          "bytes": 703,
+          "sha256": "sha256:91f84d07b65d26dfeef96165cbf08dcf6f8b890b5f455901972e41babefcff70"
+        },
+        "agentObservation": "Caption is absent."
+      },
+      {
+        "image": {
+          "path": "/private/tmp/still-shift-ms3-visual109-controls-vfS8me/short-hold-frame13.png",
+          "bytes": 2907,
+          "sha256": "sha256:c298fa9b844d12c35c93e1285d7bc9cb16db8cb447bcfd4061113a1134ab8746"
+        },
+        "copy": {
+          "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-software-faults111/short-hold-frame13.png",
+          "bytes": 2907,
+          "sha256": "sha256:c298fa9b844d12c35c93e1285d7bc9cb16db8cb447bcfd4061113a1134ab8746"
+        },
+        "agentObservation": "Start is visible; measured qualifying hold is only3/15 frames."
+      }
+    ],
+    "scope": "Sampled control stills only; not all-frame encoded glyph, normal-speed, genuine narration or human acceptance."
+  },
+  "currentCompiler111": {
+    "path": "/private/tmp/still-shift-ms3-physical-label-state111-result1.json",
+    "bytes": 6273,
+    "sha256": "sha256:ddb6817488af786b551ac58619fb5dc96858eee75e5cabcdde9cf6577f8f2e01"
+  },
+  "currentCompilerSource": {
+    "path": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/packages/animation-engine/src/mechanism/blender-episode-compile.ts",
+    "bytes": 9278,
+    "sha256": "sha256:2eabad977a8c49ab5a2f3b4d1cc1a15a43742530cc35c156643dbac421e37fe5"
+  },
+  "originalNativeWitnessBinding": {
+    "inputSha256": "sha256:daefc3cc7faa98699f15011508143afc79b5080d09231b264fd4bec066810878",
+    "outputSha256": "sha256:1f2baa7d7a4f0241d3dccc0f86067e91f93af64e138f8575d3482a151cfb882e",
+    "codeSha256": "sha256:1090f97c900f916558a61809c5bab908bd9b16b6363161a2166d873fc5be8ad4",
+    "profileSha256": "sha256:1dd05300ea5a6b673f94020f1b87d385f7536ce35d58f47594f925de26d2ad7a"
+  },
+  "recovery105ActualExitCode": 1,
+  "recovery105Failure": {
+    "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/failure.json",
+    "bytes": 4957,
+    "sha256": "sha256:a77ef4bb35c6a87aff97aeeb36a763e4baa0410f0a19e624ebec331ecff7abdf"
+  },
+  "authenticatedRecoveryCheckpoints": [
+    {
+      "name": "cli-queue",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-0-cli-queue.json",
+        "bytes": 1362,
+        "sha256": "sha256:1dcebb7a89c790103ce1f5dbedec79df145dfc79c21f3b5ddf0c7c5ad2623cab"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-0-cli-queue.json"
+    },
+    {
+      "name": "actual-sigkill-native-output",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-1-actual-sigkill-native-output.json",
+        "bytes": 2604,
+        "sha256": "sha256:55e419a848851144f70da75aa6c40186795ccb60ff1535f97c87bf803e19d265"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-1-actual-sigkill-native-output.json"
+    },
+    {
+      "name": "resume-after-sigkill",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-2-resume-after-sigkill.json",
+        "bytes": 8586,
+        "sha256": "sha256:b496e9b44fc9e83d4ae3ede49118d5d59eea3662a1dd62fa121b6b58c0b746de"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-2-resume-after-sigkill.json"
+    },
+    {
+      "name": "actual-sigterm-cached-export",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-3-actual-sigterm-cached-export.json",
+        "bytes": 7329,
+        "sha256": "sha256:aba8220a3a7303d4dd39c63f82a9d2029829ce2954e6c7c6d314139e46124a87"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-3-actual-sigterm-cached-export.json"
+    },
+    {
+      "name": "resume-after-sigterm",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-4-resume-after-sigterm.json",
+        "bytes": 10270,
+        "sha256": "sha256:1c11d3d9db09d8bff846807ecbd84436f5e2e5ba72ed7fa25e637be2bb4acca2"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-4-resume-after-sigterm.json"
+    },
+    {
+      "name": "corrupt-scene-missing-audio",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-5-corrupt-scene-missing-audio.json",
+        "bytes": 12795,
+        "sha256": "sha256:1a5cde2afb77f9f499c806540719ccb4acf657295ac5791d09a6f6a317699521"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-5-corrupt-scene-missing-audio.json"
+    },
+    {
+      "name": "cli-retry",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-6-cli-retry.json",
+        "bytes": 1489,
+        "sha256": "sha256:6a3f829fc9eb238af110f693130c83880f03805522644bcedace1d5b77fc3905"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-6-cli-retry.json"
+    },
+    {
+      "name": "targeted-input-recovery",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-7-targeted-input-recovery.json",
+        "bytes": 14436,
+        "sha256": "sha256:a5fd4c8d0204ec7d304674c918763c32617e918e8d690157d83912d7d231867d"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-7-targeted-input-recovery.json"
+    },
+    {
+      "name": "owned-export-collision-injected",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-8-owned-export-collision-injected.json",
+        "bytes": 351,
+        "sha256": "sha256:3e358437e8d6c6f8075473994779e04816c4f7c77c34d628d9e81b39776300cd"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-8-owned-export-collision-injected.json"
+    },
+    {
+      "name": "owned-export-publication-failure",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-9-owned-export-publication-failure.json",
+        "bytes": 13520,
+        "sha256": "sha256:11250cfe89c5e3b7485051dcbc53866d7ca992c323cd887517681393468e78bb"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-9-owned-export-publication-failure.json"
+    },
+    {
+      "name": "cli-retry",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-10-cli-retry.json",
+        "bytes": 1417,
+        "sha256": "sha256:ea7bd9a157587c9cfd51550e34de585b6b530a6b439eee317688c9d8420b442e"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-10-cli-retry.json"
+    },
+    {
+      "name": "targeted-export-recovery",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-11-targeted-export-recovery.json",
+        "bytes": 16200,
+        "sha256": "sha256:6879b4db789b19dda196a0f0925296f4004f7d1683cf99af6dbd90fe20fd1e54"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-recovery-zlgeKB/stage-11-targeted-export-recovery.json"
+    },
+    {
+      "name": "cli-report",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-12-cli-report.json",
+        "bytes": 6104,
+        "sha256": "sha256:43220a2917a742d87d31a07e662184265d1e14fa550c60ce199dba8b6886dc53"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-12-cli-report.json"
+    },
+    {
+      "name": "actual-relocation-recovery",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-13-actual-relocation-recovery.json",
+        "bytes": 20155,
+        "sha256": "sha256:0df3ceec2bc26a4bfc777f8486c53ec5caa2a58bb9203e0ad832555a3e3b5a89"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-13-actual-relocation-recovery.json"
+    },
+    {
+      "name": "cli-report",
+      "currentLocation": {
+        "path": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-14-cli-report.json",
+        "bytes": 6329,
+        "sha256": "sha256:67c6ee45897ffed0af8aa8075c3272a3bde28d8204d86d29c0d768be04ce78b1"
+      },
+      "recordedPath": "/private/tmp/still-shift-ms3-native-relocated-OUtue0/stage-14-cli-report.json"
+    }
+  ],
+  "full91ActualExitCode": 1,
+  "currentFullGate": "Required and not yet rerun; this matrix/replay does not satisfy it.",
+  "reviewIndex": "/Users/jjae/.codex/worktrees/mechanism-ms0/still-shift/benchmarks/results/ms3-software-faults111/index.md",
+  "acceptedPilot": 0,
+  "elevenLabsCalls": 0,
+  "newNativeCapturesFor109And111": 0
+}

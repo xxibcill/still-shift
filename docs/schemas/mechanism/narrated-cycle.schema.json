@@ -344,6 +344,70 @@
               {
                 "type": "object",
                 "properties": {
+                  "type": { "type": "string", "const": "load-seat" },
+                  "loadNewtons": {
+                    "type": "object",
+                    "properties": {
+                      "value": {
+                        "type": "number",
+                        "minimum": -1000000,
+                        "maximum": 1000000
+                      },
+                      "keys": {
+                        "minItems": 1,
+                        "maxItems": 2000,
+                        "type": "array",
+                        "items": {
+                          "type": "object",
+                          "properties": {
+                            "at": {
+                              "type": "object",
+                              "properties": {
+                                "cue": {
+                                  "type": "string",
+                                  "maxLength": 128,
+                                  "pattern": "^[a-zA-Z][\\w-]*$"
+                                },
+                                "edge": {
+                                  "default": "start",
+                                  "type": "string",
+                                  "enum": ["start", "end"]
+                                },
+                                "offsetSamples": {
+                                  "default": 0,
+                                  "type": "integer",
+                                  "minimum": -172800000,
+                                  "maximum": 172800000
+                                }
+                              },
+                              "required": ["cue", "edge", "offsetSamples"],
+                              "additionalProperties": false
+                            },
+                            "value": {
+                              "type": "number",
+                              "minimum": -1000000,
+                              "maximum": 1000000
+                            },
+                            "easing": {
+                              "default": "linear",
+                              "type": "string",
+                              "enum": ["linear", "smoothstep", "hold"]
+                            }
+                          },
+                          "required": ["at", "value", "easing"],
+                          "additionalProperties": false
+                        }
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "required": ["type", "loadNewtons"],
+                "additionalProperties": false
+              },
+              {
+                "type": "object",
+                "properties": {
                   "type": { "type": "string", "const": "spring-return" },
                   "states": {
                     "minItems": 1,

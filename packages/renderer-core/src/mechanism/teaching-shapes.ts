@@ -31,6 +31,7 @@ import { normalize, boundsOfPositions } from "./shape-math.ts";
 import { createMechanismTeachingTopology } from "./teaching-topology.ts";
 import type { MechanismTeachingTopology } from "./teaching-topology.ts";
 import { sampleFixedRootPawl } from "./teaching-pawl.ts";
+import { sampleSeatedFlexibleWeb } from "./teaching-web.ts";
 import { sampleSeatedTorsionSpring } from "./teaching-spring.ts";
 
 type Shape = DeepReadonly<MechanismTeachingShape>;
@@ -45,6 +46,16 @@ const inputsSchema = z.discriminatedUnion("generator", [
   z
     .object({
       generator: z.literal("seated-torsion-spring-1"),
+      seats: z.tuple([MechanismVectorSchema, MechanismVectorSchema]),
+      terminalTangents: z.tuple([
+        MechanismUnitAxisV2Schema,
+        MechanismUnitAxisV2Schema,
+      ]),
+    })
+    .strict(),
+  z
+    .object({
+      generator: z.literal("seated-flexible-web-1"),
       seats: z.tuple([MechanismVectorSchema, MechanismVectorSchema]),
       terminalTangents: z.tuple([
         MechanismUnitAxisV2Schema,
@@ -173,7 +184,14 @@ export function evaluateTeachingShape(
             inputs.seats,
             inputs.terminalTangents,
           )
-        : undefined;
+        : shape.generator === "seated-flexible-web-1" &&
+            inputs.generator === "seated-flexible-web-1"
+          ? sampleSeatedFlexibleWeb(
+              shape,
+              inputs.seats,
+              inputs.terminalTangents,
+            )
+          : undefined;
   if (!sampled)
     fail(
       "Unsupported generator/input association",
@@ -198,7 +216,7 @@ export function evaluateTeachingShape(
       ? `pawl:${inputs.deflection}`
       : // Driver association uses the GPU's declared Float32 precision. Independent
         // observation still hashes every used position/normal byte; sampling stays Float64.
-        `spring-f32:${[
+        `${inputs.generator === "seated-flexible-web-1" ? "web" : "spring"}-f32:${[
           ...inputs.seats.flat(),
           ...inputs.terminalTangents.flat(),
         ]
@@ -254,14 +272,14 @@ export function teachingShapeInputsForPartsV2(
     const anchor = scene.anchors.find((anchor) => anchor.id === id);
     if (!anchor || anchor.source.kind !== "part-local")
       fail(
-        "Spring seat must be a rigid part-local anchor",
+        "Shape seat must be a rigid part-local anchor",
         shape,
         "seats",
         "mechanism-spring-seat",
       );
     const part = parts[anchor.source.part];
     if (!part)
-      fail("Unknown spring seat part", shape, "seats", "mechanism-spring-seat");
+      fail("Unknown shape seat part", shape, "seats", "mechanism-spring-seat");
     const matrix = relativeSeatMatrix(
       shape.ownerPart,
       anchor.source.part,

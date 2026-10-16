@@ -65,6 +65,10 @@ export async function prepareNativeShapeAssociations(
       mesh: shape.mesh,
       ownerPart: shape.ownerPart,
       generator: shape.generator,
+      ...(shape.generator === "fixed-root-pawl-curve-1" &&
+      shape.parameters.trigger
+        ? { triggerLandmark: true as const }
+        : {}),
       declarationSha256: await hashNativeData(shape),
       topologySha256: shape.topologySha256,
       templateSha256: await hashNativeData({

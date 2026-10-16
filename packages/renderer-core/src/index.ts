@@ -137,6 +137,10 @@ export {
   type MotionLintDiagnostic,
   type MotionLintCode,
 } from "./story-quality.ts";
+export {
+  CompositionPhysicalProofHoldSchema,
+  type CompositionPhysicalProofHold,
+} from "./composition/quality-policy.ts";
 export { analyzeRenderedCompositionQuality } from "./composition/quality-render.ts";
 export {
   compositionQualityFrame,
