@@ -1362,7 +1362,7 @@
     {
       "version": "0.2.0",
       "date": "2026-10-16",
-      "status": "verified-awaiting-final-release-approval",
+      "status": "published-registry-archive-verified",
       "branch": "codex/release-0.2.0",
       "baseCommit": "9c94101d829a8ce6e56476629b88ea85e6b056c0",
       "previousReleaseSource": "73c01fa7c0b3bb47066d32e857d7901220abb8a4",
@@ -1377,7 +1377,7 @@
         "members": 2574,
         "correspondingSources": 1052
       },
-      "published": false,
+      "published": true,
       "evidenceDirectory": "benchmarks/results/npm-0.2.0-20261016",
       "notes": "docs/npm-release-0.2.0.md",
       "qualification": "Candidate-bound completion in recorded stages. Original aggregate and isolated harness failures remain retained; source, thresholds, baselines and archive stayed unchanged. Completion records follow the tested commit and do not qualify a newer source or rebuilt tarball. No fresh actual-ten pilot or human acceptance claim.",
@@ -1640,8 +1640,8 @@
         "humanReviews": "Whole factual/mechanical/encoded-text/readability/normal-speed motion/listening and owner review remain open. Finer Thai motion unadopted; MS4 future."
       },
       "publication": {
-        "status": "awaiting-final-owner-release-review",
-        "authorization": null,
+        "status": "published-registry-archive-verified",
+        "authorization": "Explicit owner answer: Approve and publish; covers exact source/archive, experimental scope, production promotion, annotated tag, npm publication and PR #59 merge.",
         "dryRun": {
           "exitCode": 0,
           "archiveUnchanged": true,
@@ -1652,8 +1652,130 @@
           "packageMaintainerConfirmed": true,
           "receipt": "authentication-recheck-1.json",
           "initialFailureRetained": "authentication-preflight.json"
+        },
+        "startedAt": "2026-10-16T16:43:52.932941+00:00",
+        "finishedAt": "2026-10-16T16:44:24.174663+00:00",
+        "exitCode": 0,
+        "receipt": "npm-publication-attempt-2.json",
+        "command": [
+          "npm",
+          "publish",
+          "/Users/jjae/.codex/worktrees/release-0-2-0/still-shift/benchmarks/results/npm-0.2.0-20261016/still-shift-0.2.0.tgz",
+          "--access",
+          "public",
+          "--tag",
+          "latest",
+          "--ignore-scripts",
+          "--json",
+          "--registry=https://registry.npmjs.org"
+        ],
+        "outsideGit": true,
+        "ignoreScripts": true,
+        "archiveUnchanged": true,
+        "browserAuthenticationCompletedByOwner": true,
+        "initialAttempt": {
+          "exitCode": 1,
+          "error": "EOTP",
+          "receipt": "npm-publication-attempt-1.json",
+          "log": "npm-publication-attempt-1.log",
+          "resolution": "Interactive npm browser authentication completed by the owner; the unchanged archive then publishes with exit 0."
+        },
+        "registryVerificationFailuresRetained": [
+          "registry-verification-failure-1.json",
+          "registry-verification-failure-2.json",
+          "registry-verification-failure-3.json",
+          "registry-verification-failure-4.json",
+          "registry-verification-failure-5.json",
+          "registry-verification-failure-6.json",
+          "registry-verification-failure-7.json"
+        ],
+        "registryVerificationResolution": "Initial Python HTTPS read failed because its local issuer certificate was unavailable. System curl retains normal TLS verification; early exact-version reads returned 404 during npm processing. Final public metadata and tarball verification pass without any republish or archive rebuild.",
+        "normalNpmDownload": {
+          "exitCode": 0,
+          "freshCache": true,
+          "ignoreScripts": true,
+          "byteIdentical": true,
+          "receipt": "registry-npm-pack-verification-2.json",
+          "initialProcessingFailureRetained": "registry-npm-pack-verification.json"
+        },
+        "propagationProbe": {
+          "receipt": "registry-tarball-propagation-probe.json",
+          "qualification": "Fresh query download already matched the archive while the plain URL retained an earlier 404. Final verification also passes from the ordinary registry URL and normal npm fresh-cache download."
         }
-      }
+      },
+      "productionPromoted": true,
+      "releaseTagCreated": true,
+      "ownerReleaseApproval": {
+        "answer": "Approve and publish",
+        "recordedAt": "2026-10-16T16:42:01.417Z",
+        "sourceCommit": "ba13d26a14f77baefcdf76090a751bec8efe93a3",
+        "archiveSha256": "232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f",
+        "actions": [
+          "production promotion",
+          "annotated v0.2.0 tag",
+          "npm publication",
+          "merge PR #59"
+        ],
+        "experimentalScopeApproved": true,
+        "acceptedPilotProducts": 0,
+        "totalPilotProducts": 10,
+        "receipt": "owner-release-approval.json"
+      },
+      "productionPromotion": {
+        "recordedAt": "2026-10-16T16:42:34.904493+00:00",
+        "from": "73c01fa7c0b3bb47066d32e857d7901220abb8a4",
+        "to": "ba13d26a14f77baefcdf76090a751bec8efe93a3",
+        "tree": "09f87042989b5d675a5e462722b0e143e40c843b",
+        "fastForward": true,
+        "force": false,
+        "receipt": "production-promotion.json"
+      },
+      "releaseTag": {
+        "recordedAt": "2026-10-16T16:42:37.432768+00:00",
+        "tag": "v0.2.0",
+        "type": "annotated",
+        "object": "ae4cc9a8302daaa3a236155662b7d9f5eb3adba3",
+        "sourceCommit": "ba13d26a14f77baefcdf76090a751bec8efe93a3",
+        "receipt": "annotated-tag.json"
+      },
+      "registryVerification": {
+        "status": "passed",
+        "startedAt": "2026-10-16T16:56:32.076105+00:00",
+        "verifiedAt": "2026-10-16T16:56:34.040182+00:00",
+        "packageUrl": "https://www.npmjs.com/package/still-shift/v/0.2.0",
+        "name": "still-shift",
+        "version": "0.2.0",
+        "distTags": {
+          "latest": "0.2.0"
+        },
+        "publishedAt": "2026-10-16T16:51:38.798Z",
+        "tarballUrl": "https://registry.npmjs.org/still-shift/-/still-shift-0.2.0.tgz",
+        "bytes": 5484582,
+        "unpackedSize": 32252294,
+        "fileCount": 2574,
+        "sha256": "232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f",
+        "sha1": "29e846da2a31f8ae55cd54fbcf765adf036bf124",
+        "sha512Integrity": "sha512-VMQ02Cm1vQqLhuQsYZ4/w0ptE3CzUWVMm5zZV9Si7cc0+AS+jLb4ibMXfNdAw6+Tb4jnLEAzquyThEUVzNW/ag==",
+        "registryIntegrityMatches": true,
+        "archivesByteIdentical": true,
+        "sourceCommit": "ba13d26a14f77baefcdf76090a751bec8efe93a3",
+        "sourceTree": "09f87042989b5d675a5e462722b0e143e40c843b",
+        "registryGitHead": null,
+        "comparison": "Downloaded public tarball is byte-for-byte identical to the exact retained archive that passed candidate-bound staged verification. No archive was rebuilt.",
+        "newSoftwareTestsRun": false,
+        "metadataReceipt": "registry-version-metadata.json",
+        "downloadedArchive": "public-still-shift-0.2.0.tgz",
+        "transport": "System curl with normal TLS certificate verification; Python certificate-store failure retained separately. No TLS bypass.",
+        "receipt": "registry-verification.json"
+      },
+      "releasePullRequest": {
+        "number": 59,
+        "url": "https://github.com/xxibcill/still-shift/pull/59",
+        "ownerMergeAuthorized": true,
+        "mergeMethod": "merge",
+        "recording": "Publication completion is recorded on this PR before its authorized merge; final merge readback is retained in the evidence directory."
+      },
+      "completedUtc": "2026-10-16T16:57:15.817233+00:00"
     }
   ]
 }

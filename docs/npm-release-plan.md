@@ -1,8 +1,8 @@
 # npm releases
 
-## Next release: 0.2.0 — 2026-10-16
+## Release 0.2.0 — 2026-10-16
 
-**State:** candidate `ba13d26a14f77baefcdf76090a751bec8efe93a3` verified in recorded stages. All 28 standard package checks, both focused installed mechanism groups and the new browser-entry bundle check pass. Exact archive SHA-256: `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f`. Final owner release review, production promotion, tagging and publication remain pending. Completion-record commits identify this tested source separately; see [release results](./npm-release-results.json).
+**State:** `still-shift@0.2.0` is published and verified as `latest`. The owner approved source `ba13d26a14f77baefcdf76090a751bec8efe93a3` and the documented experimental MS3 scope. Remote `production` and the fixed annotated `v0.2.0` tag point to that exact tested commit. The downloaded public tarball is byte-for-byte identical to the 5,484,582-byte verified archive, SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f`. All 28 standard installed checks, both focused mechanism groups and the browser-entry bundle pass; the complete software/benchmark gate completed in recorded stages with failures and 19 timing deferrals retained. Completion records identify the tested source separately; see [release results](./npm-release-results.json) and [PR #59](https://github.com/xxibcill/still-shift/pull/59).
 
 **Recommendation:** release `still-shift@0.2.0` for the mechanism feature set
 merged since `0.1.1`. This is a feature release rather than a documentation or
@@ -10,9 +10,9 @@ bug-fix patch. The project remains pre-1.0; audit compatibility and document any
 migration requirements before finalizing the candidate. The minor-version choice
 follows the [SemVer initial-development guidance](https://semver.org/#how-should-i-deal-with-revisions-in-the-0yz-initial-development-phase).
 
-### Verified starting point
+### Verified pre-release starting point (historical)
 
-Read-only GitHub and public npm checks on 2026-10-16 establish:
+The following read-only observations preceded preparation and publication on 2026-10-16; they retain the original starting point:
 
 | Item                                         | Verified value                                                        |
 | -------------------------------------------- | --------------------------------------------------------------------- |
@@ -27,7 +27,7 @@ Sources: [PR #58](https://github.com/xxibcill/still-shift/pull/58),
 [merged source](https://github.com/xxibcill/still-shift/commit/9c94101d829a8ce6e56476629b88ea85e6b056c0),
 [public registry metadata](https://registry.npmjs.org/still-shift), and the
 `0.1.1` publication record in [release results](./npm-release-results.json).
-These are observations, not a reservation of the version; recheck before publishing.
+These pre-release observations are historical. The State section and version-specific release results above record the completed publication.
 
 The primary `codex/roadmap-reconciliation` checkout is older and contains unrelated
 edits. Its root still says `0.1.0`; it must not supply the candidate, built archive
@@ -146,13 +146,9 @@ whole pilot accepted merely because the library is published.
 
 ### Go/no-go and next action
 
-The candidate is ready for release approval only after final scope/compatibility
-review, the complete candidate-bound release gate, installed archive verification,
-dependency audit, immutable checksum/source records and an explicit decision on the
-open pilot acceptance scope. Human watching/listening acceptance remains a separate
-record. No new ElevenLabs spending is part of this plan; reuse existing audio.
+The owner approved the exact verified source/archive, the limited experimental MS3 scope, production promotion, the fixed annotated tag, npm publication and merging PR #59. Publication and public-registry byte verification are complete. Human watching/listening acceptance remains separate and accepted pilot products remain 0/10. No new ElevenLabs spending was performed.
 
-**Execution:** preparation and candidate-bound technical verification are complete on `ba13d26a14f77baefcdf76090a751bec8efe93a3` (tree `09f87042989b5d675a5e462722b0e143e40c843b`). All 3,455 held inputs match. The original aggregate exits 1 at three protocol timeouts; the unchanged five-case owning rerun and all remaining original commands pass in recorded stages. Two installed harness startup/environment failures remain retained with minimal reproductions and corrected-harness passing reruns. The exact 5,484,582-byte archive is retained, audited and dry-run successfully; it has not been published. Final release approval must include the documented experimental scope, with pilot acceptance still 0/10. Promote and tag this tested commit after review; completion metadata is a separate followup.
+**Execution:** source `ba13d26a14f77baefcdf76090a751bec8efe93a3` (tree `09f87042989b5d675a5e462722b0e143e40c843b`) remains the tested release checkpoint. All 3,455 held inputs matched before completion-record edits. The original aggregate exits 1 at three protocol timeouts; the unchanged five-case owning rerun and all remaining original commands pass in recorded stages. Two installed harness failures and corrected-harness passing reruns remain retained. Production promotion fast-forwards from `73c01fa7`; `v0.2.0` is annotated and fixed on the approved source. Initial npm publication returned `EOTP`; after owner browser authentication the unchanged retained archive publishes with exit 0 at `2026-10-16T16:44:24.174663+00:00`. Early registry reads retain a local Python certificate failure and processing-period 404s; final TLS-verified public download matches every byte, SHA-256, SHA-1 and registry SHA-512 integrity. `latest` is `0.2.0`. Completion documentation follows the frozen tested commit without rebuilding it. MS3 remains experimental, with original first-pass 1/10, token savings null and accepted products 0/10.
 
 ## Historical 0.1.0 release — 2026-10-09
 
