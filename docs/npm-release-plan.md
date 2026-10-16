@@ -1,4 +1,160 @@
-# npm release — 2026-10-09
+# npm releases
+
+## Release 0.2.0 — 2026-10-16
+
+**State:** `still-shift@0.2.0` is published and verified as `latest`. The owner approved source `ba13d26a14f77baefcdf76090a751bec8efe93a3` and the documented experimental MS3 scope. Remote `production` and the fixed annotated `v0.2.0` tag point to that exact tested commit. The downloaded public tarball is byte-for-byte identical to the 5,484,582-byte verified archive, SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f`. All 28 standard installed checks, both focused mechanism groups and the browser-entry bundle pass; the complete software/benchmark gate completed in recorded stages with failures and 19 timing deferrals retained. Completion records identify the tested source separately; see [release results](./npm-release-results.json) and [PR #59](https://github.com/xxibcill/still-shift/pull/59).
+
+**Recommendation:** release `still-shift@0.2.0` for the mechanism feature set
+merged since `0.1.1`. This is a feature release rather than a documentation or
+bug-fix patch. The project remains pre-1.0; audit compatibility and document any
+migration requirements before finalizing the candidate. The minor-version choice
+follows the [SemVer initial-development guidance](https://semver.org/#how-should-i-deal-with-revisions-in-the-0yz-initial-development-phase).
+
+### Verified pre-release starting point (historical)
+
+The following read-only observations preceded preparation and publication on 2026-10-16; they retain the original starting point:
+
+| Item                                         | Verified value                                                        |
+| -------------------------------------------- | --------------------------------------------------------------------- |
+| Public npm release                           | `0.1.1`, tagged `latest`; `0.2.0` is not published                    |
+| Release baseline / remote `production`       | `73c01fa7c0b3bb47066d32e857d7901220abb8a4`, the fixed `v0.1.1` source |
+| Remote `main` / merged PR #58                | `9c94101d829a8ce6e56476629b88ea85e6b056c0`                            |
+| PR #58 reviewed head                         | `120c8dc371f86f231ecd09f1f203f40ab012406b`                            |
+| Version in merged root and release manifests | `0.1.1`                                                               |
+| GitHub Actions                               | Disabled; all checks remain local                                     |
+
+Sources: [PR #58](https://github.com/xxibcill/still-shift/pull/58),
+[merged source](https://github.com/xxibcill/still-shift/commit/9c94101d829a8ce6e56476629b88ea85e6b056c0),
+[public registry metadata](https://registry.npmjs.org/still-shift), and the
+`0.1.1` publication record in [release results](./npm-release-results.json).
+These pre-release observations are historical. The State section and version-specific release results above record the completed publication.
+
+The primary `codex/roadmap-reconciliation` checkout is older and contains unrelated
+edits. Its root still says `0.1.0`; it must not supply the candidate, built archive
+or release verification. Preserve those edits and use an isolated checkout of the
+named merged source when execution begins.
+
+### Release scope and claims
+
+Include the integrated change from `v0.1.1` through the named PR #58 merge:
+
+- PR #51: mechanism planning and evidence audit.
+- PR #52: MS1 authoring/CLI/API bridge, typography, checks and portable E01 delivery.
+- PR #56: MS1N native solid 3D composition, depth, anchors and portable preparation.
+- PR #57: reusable mechanism packs, cue edits, camera/annotation recipes and saved
+  lifecycle/cache behavior.
+- PR #58: durable production queues, recovery/retry, scoped repairs, reporting and
+  portable handoffs, including the identifier and receiver-FPS review repairs.
+
+Draft release-note lead: "Adds mechanism episode authoring, native 3D composition,
+reusable cue-driven packs and recoverable production queues with portable handoffs."
+Audit the actual diff and installed public surface before claiming compatibility.
+
+Keep MS3 pilot support and acceptance limitations explicit in release notes and
+usage guidance. The [merged acceptance tracker](https://github.com/xxibcill/still-shift/blob/9c94101d829a8ce6e56476629b88ea85e6b056c0/docs/mechanism-shorts-ms3-acceptance.md)
+and its reconciliation162 record technical delivery while retaining:
+
+- Original first-pass completion of **1/10 (10%)**, below the 90% target, and nine
+  retained failures. Paired authoring-token savings remain **unverified/null**.
+- Reviewed-ready/supported/accepted pilot products at **0/10**. Whole factual,
+  mechanical, encoded-text, normal-speed motion, listening and owner reviews remain
+  open. New exports or passing tests cannot reset these measurements.
+- Candidate family packs, nineteen existing CE6-P timing deferrals and unadopted
+  finer Thai motion limits. MS4 scale/diversity and sound extensions remain future
+  scope. Core/default Three remains Blender-free; the Blender pilot has its own
+  source/profile bindings and does not establish universal Blender support.
+
+Recommended scope is the implemented package features with these pilot capabilities
+identified as experimental. Owner review must approve that scope before promotion;
+a release claiming completed MS3 product acceptance must first close its remaining
+reviews and targets or record an explicit owner scope decision. Do not label the
+whole pilot accepted merely because the library is published.
+
+### Ordered execution plan
+
+1. **Isolate and freeze scope.** Recheck live refs, then create or reuse a clean
+   managed worktree based on `9c94101d`, on `codex/release-0.2.0`. If `main` has
+   advanced, keep this source unless the additional changes are explicitly selected
+   and reviewed. Compare against `v0.1.1`, inventory public exports/CLI/schema and
+   compatibility changes, and finalize the release notes and pilot limitations.
+
+2. **Prepare the versioned source.** Set root `package.json` and `npm-release.json`
+   to `0.2.0`; refresh `scripts/release/npm-shrinkwrap.json` using
+   `pnpm lock:package`. Inspect the lock diff and retain existing dependency pins;
+   unexpected upgrades require resolution and review. Synchronize other lock or
+   generated metadata only where required. Keep private workspace package versions
+   independent. Commit all package source, documentation and build inputs before
+   the final gate, and record that exact commit and tree as the release candidate.
+   The PR #58 merge is the starting point, not the final versioned release commit.
+
+3. **Run the complete local release gate.** Select Node **22.23.1**, pnpm
+   **10.29.3**, Python **3.12.11**, uv **0.7.12**, Playwright **1.62.1**, Chromium
+   revision **1234** / **151.0.7922.34**, and FFmpeg **8.0.1**, as pinned in
+   `toolchain.json`. Install locked dependencies and required browser/Python/audio
+   runtimes, pass `pnpm toolchain:check`, then run **`pnpm release:check`** serially
+   against the committed candidate. This includes `check:all`, the benchmark and
+   actual installed-package verification. Use an isolated writable cache and an
+   execution environment permitting local processes, servers and lock inspection.
+   Do not change baseline hashes, thresholds or timeouts to obtain a pass.
+
+   Retain every failure, retry, actual exit status and source hold. Existing MS3
+   full119 completed in about **6 h 45 min**, before later repairs; allow an overnight
+   verification window plus package checks and any repairs. It is historical
+   evidence and does not qualify the new versioned commit. Current PR #58 fast and
+   staged runtime evidence also does not replace this release gate. Do not promise
+   a publication date until the new terminal result and review are available.
+
+4. **Bind and review the archive.** Verify the final standard package matrix
+   (the merged MS3 checkpoint reports 27 checks; retain the actual current list),
+   CLI version/help, strict consumer types, legacy inputs, both render backends,
+   setup commands, audio and corresponding-source rebuild. Exercise installed
+   mechanism queue/report/resume/handoff and cache/relocation/retry behavior from
+   this archive; retain older all-ten proofs under their original bindings. If
+   claiming current all-ten pilot execution, refresh its complete installed proof
+   on this candidate. Offline installation does not establish a current security
+   audit: run and record the locked production dependency audit separately if the
+   offline path is used.
+
+   Retain `dist/releases/still-shift-0.2.0.tgz`, its SHA-256 and registry-compatible
+   integrity, package-verification report, source commit/tree, toolchain, logs and
+   source inventory under a dedicated `benchmarks/results/npm-0.2.0-<date>/`
+   directory. Append a new version-specific record in `docs/npm-release-results.json`;
+   preserve the published `0.1.0`/`0.1.1` records and all failed attempts. A source
+   change or rebuilt archive requires refreshed relevant verification. Finalize
+   artifact-affecting documentation before the freeze; completion records must
+   identify the tested source separately and must not silently rebuild its archive.
+
+5. **Review and promote the exact candidate.** Open the release-preparation PR to
+   `main` with its change summary, compatibility notes, limitations, exact source and
+   archive checksums, and local results. After approval, retain its ancestry and
+   promote only the verified commit to `production`, preferably by fast-forward.
+   If promotion requires a merge, preserve ancestry and verify the resulting tree;
+   never squash the promotion, force-push `production` or include a newer unverified
+   `main` tip. Create fixed annotated `v0.2.0` on the exact approved release source.
+   Promotion and tagging require release approval and do not publish to npm.
+
+6. **Publish only when requested, then verify.** Recheck version availability and
+   maintainer authentication, dry-run the exact retained archive, and complete any
+   npm browser/2FA challenge. With explicit publication authorization, publish
+   that archive with public access. Confirm `still-shift@0.2.0` and `latest`, download
+   the public tarball and compare its bytes/checksums to the tested archive; record
+   publication and update the development log. Never rebuild between verification
+   and publication. If authentication or publication fails, retain the candidate
+   and failure record; report unpublished status. A post-publication defect needs
+   a new patch version, following the production hotfix policy, with the fix merged
+   back into `main`; existing versions and tags remain fixed.
+
+### Go/no-go and next action
+
+The owner approved the exact verified source/archive, the limited experimental MS3 scope, production promotion, the fixed annotated tag, npm publication and merging PR #59. Publication and public-registry byte verification are complete. Human watching/listening acceptance remains separate and accepted pilot products remain 0/10. No new ElevenLabs spending was performed.
+
+**Execution:** source `ba13d26a14f77baefcdf76090a751bec8efe93a3` (tree `09f87042989b5d675a5e462722b0e143e40c843b`) remains the tested release checkpoint. All 3,455 held inputs matched before completion-record edits. The original aggregate exits 1 at three protocol timeouts; the unchanged five-case owning rerun and all remaining original commands pass in recorded stages. Two installed harness failures and corrected-harness passing reruns remain retained. Production promotion fast-forwards from `73c01fa7`; `v0.2.0` is annotated and fixed on the approved source. Initial npm publication returned `EOTP`; after owner browser authentication the unchanged retained archive publishes with exit 0 at `2026-10-16T16:44:24.174663+00:00`. Early registry reads retain a local Python certificate failure and processing-period 404s; final TLS-verified public download matches every byte, SHA-256, SHA-1 and registry SHA-512 integrity. `latest` is `0.2.0`. Completion documentation follows the frozen tested commit without rebuilding it. MS3 remains experimental, with original first-pass 1/10, token savings null and accepted products 0/10.
+
+## Historical 0.1.0 release — 2026-10-09
+
+The remaining sections retain the original `0.1.0` procedure and evidence. Their
+registry observations are dated history; the verified current baseline for the
+next release is `0.1.1` as recorded above.
 
 **Status:** `still-shift@0.1.0` published and verified. Technical
 verification passed in stages; all 26 clean-consumer checks pass. The owner
@@ -140,16 +296,8 @@ and [release tagging](https://git-scm.com/book/en/v2/Git-Basics-Tagging).
 
 ```sh
 pnpm install --frozen-lockfile
-uv sync --frozen --python 3.12.11
-pnpm browser:install
-pnpm soundtrack:setup
 pnpm release:check
 ```
-
-Fresh checkouts need the pinned Python environment, Chromium and the separate
-hash-locked soundtrack runtime because the full gate exercises all supported
-workers. FFmpeg/ffprobe must also be on `PATH`; run `pnpm toolchain:check` to
-confirm the pinned toolchain. Runtime setup does not publish a package.
 
 `release:check` runs the existing full `check:all` software gate, then builds,
 packs and tests the installed package. The archived corpus remains excluded.

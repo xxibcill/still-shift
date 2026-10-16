@@ -6,12 +6,13 @@ use prepared story/commerce recipes or build a custom composition. Includes the
 `still-shift` command, motion authoring API, renderer and optional soundtrack
 workflow. Licensed under GPL-3.0-only.
 
-This README describes the current package source. The full
+This README describes the `0.2.0` package source. The full
 [user guide](./user-guide.md), [composition reference](./composition-reference.md)
 and [AI discovery skill](../skills/ask-still-shift/SKILL.md) ship under `source/`.
-The published `0.1.0` archive predates this documentation refresh; these added guides
-and skills are included in this `0.1.1` candidate. Updating this source does not
-update an already published version; publication requires a verified archive.
+This release adds mechanism authoring, native solid 3D and recoverable production
+queues; see [release notes and supported limits](./npm-release-0.2.0.md).
+Candidate mechanism families and the actual first-ten pilot retain open product
+and watching/listening acceptance.
 
 ## Install
 
@@ -61,6 +62,33 @@ includes text references and small authoring examples, while benchmark fixtures,
 historical measurement JSON, rendered reviews and their artwork collections remain
 in the repository. Small release records are retained with the package source. Some examples
 also need the checkout's pinned fonts/art; the puppet example includes its own SVGs.
+
+## Mechanism authoring and production
+
+Use `episode` commands to inspect, validate, prepare, compile, render, check and
+package saved mechanism projects. Native meshes, world graphics and bounded rigid
+glTF/GLB resources share the composition renderer. Reusable families and supplied
+narration cues drive controls, camera recipes, annotations and cached native plates.
+The `production` commands manage durable queues, reports, retries and handoffs.
+
+```sh
+npx still-shift episode discover
+npx still-shift production discover
+```
+
+Start with the [episode CLI](./mechanism-episode-cli.md),
+[family authoring](./mechanism-family-authoring.md),
+[native PBR resources](./native-pbr-resources.md) and
+[production queues](./mechanism-production-queue.md). These workflows need authored
+project files and their pinned assets; no private pilot models, narration, rendered
+videos or Blender executable are included. Core/default Three workflows remain
+Blender-free. Blender capture is a separate, explicitly selected host integration.
+
+Mechanism packs remain candidates. The original ten-video pilot achieved 1/10
+first-pass completion; token savings are unverified, and complete factual,
+mechanical, text, motion, listening and owner reviews remain open. Software checks
+and portable output do not establish pilot acceptance. See the
+[release limitations](./npm-release-0.2.0.md#acceptance-and-limits).
 
 ## Composition features and commands
 

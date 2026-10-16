@@ -43,42 +43,18 @@ still hold before relying on them.
 
 ## Current state
 
-- **PR #58 review findings repaired and verified (2026-10-16):** both P2
-  findings were posted inline before repair. Identifier commit `a155109f` adds
-  bounded logical IDs and reserved assets; the separate FPS slice shares the
-  receiving composition’s 60-FPS schema, keeping raw capture at 120. Fast 4,622
-  units and independent reviews 0/0 pass. Runtime completion is staged: 376 runtime,
-  327 distinct integration, 14 Python and smoke. The missing soundtrack runtime
-  and three 5s protocol timeouts remain retained; all 38 owning rerun cases pass.
-  All 3,452 held inputs match. Ten pilot plans retain exact compiled-output parity.
-  One final push delivers both commits; owner merge and human acceptance remain
-  separate. Primary edits and historical package/pilot bindings are preserved.
-  [Fixes and verification](./pr-58-fix-results.json),
-  [original review](./pr-58-review-results.json).
+- **0.2.0 published and registry-verified (2026-10-16):** owner-approved source `ba13d26a` is remote `production` and fixed annotated `v0.2.0`. Public npm `latest` is `0.2.0`; its downloaded archive matches the verified SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f` byte for byte. Technical verification completed in recorded stages; all 28 standard installed checks, both focused mechanism groups and browser bundle pass. Original aggregate/harness failures, npm `EOTP`/browser retry, registry-processing reads and 19 timing deferrals remain retained. PR #59 carries the publication records; its authorized merge preserves release ancestry, with final readback retained separately. MS3 remains experimental: original first-pass 1/10, token savings null, accepted 0/10. [Results](./npm-release-results.json), [plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59).
 
-- **PR #58 conflicts resolved and verified (2026-10-16):** merge `main`
-  `cfe2bc3f` into PR head `981e7403`, preserving both parents and histories.
-  Keep one complete upstream v1/v2 observation suite each and the family command
-  allowlist. Fast 4,608 units; runtime/integration, Python 14 and smoke complete in
-  recorded stages. Three initial 5s protocol timeouts remain retained with the
-  unchanged five-case passing rerun. Final 23 focused cases pass; all 2,686 retained
-  inputs match. Normal push targets PR #58; owner merge/human acceptance remain
-  separate. Earlier full/package/pilot records retain their original source bindings.
-  [Resolution evidence](./pr-58-conflict-resolution-results.json).
+- **Integrated feature baseline:** PR #58 is owner-merged as `9c94101d`; its review/fix/conflict records retain their original source and staged verification bindings. The released source includes that merged source plus committed 0.2.0 metadata and guidance. Earlier published tags remain fixed. Primary checkout edits are preserved. [PR #58](https://github.com/xxibcill/still-shift/pull/58), [fix record](./pr-58-fix-results.json).
 
-- **Prerequisites integrated in main:** PR #56/#57 are owner-merged through
-  `cfe2bc3f`. Their source repairs, failure history and verification records remain
-  retained below and in the linked evidence; previous open/mergeable statements
-  describe their original snapshots.
-
-- **MS0–MS3 technical implementation delivered:** current source0da1f1dd includes
+- **MS0–MS3 historical technical evidence:** checkpoint `0da1f1dd` includes
   upstream PR56/57 repairs. Fast143 passes4,608 units; runtime368 and staged146
   owning5/Python14/smoke pass with original two protocol timeouts retained. Eight
   owning144 browser groups pass, including15-stage recovery. Package145 actual0
   passes27 checks/2,573 members/1,051 sources/13 diagnostics/four retry controls.
   Complete full119 keeps its earlier1c source binding; current qualification is
   scoped PR followup, with no fresh entire full-gate claim.
-- **Actual first ten current outputs:** producer14257 actual0 finishes five CLI
+- **Latest actual-ten pilot evidence (historical source binding):** producer14257 actual0 finishes five CLI
   calls, including all-ten export/report/resume and one EU008 handoff. Independent
   current audits in recorded stages157 verify6,181 frames/130 artifacts/1,084 images/24,724 native pins,
   complete original Alden1× and zero new captures. All ten sealed snapshots bind
@@ -89,7 +65,7 @@ still hold before relying on them.
   retained outside temp. Whole factual/mechanical/glyph/normal-speed/listening and
   owner reviews pending; reviewed-ready/supported/accepted0. Original first-pass
   remains1/10/nine failures; comparable token savings null. Blender permitted for
-  pilot; core/default Three Blender-free. No ElevenLabs spending or publication.
+  pilot; core/default Three Blender-free. No ElevenLabs spending or pilot-video publication.
 - **Finite evidence:** [162](./mechanism-shorts-acceptance-reconciliation162-results.json)
   reconciles49 rows/26 clauses/21 traceability. Original56598 wrapper1/corrected1490,
   runtime staged completions, six older missing raw paths and19 timing deferrals
@@ -103,6 +79,41 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-10-16 — Publish and verify 0.2.0
+
+- **Agent / branch:** Codex on `codex/release-0.2.0`; tested source `ba13d26a`, separate publication records.
+- **Approval / refs:** owner explicitly approved the exact source/archive and experimental scope. Production fast-forwarded from `73c01fa7`; annotated `v0.2.0` is fixed on `ba13d26a`. Earlier version tags remain unchanged.
+- **Publication:** exact retained archive, scripts disabled, empty directory outside Git. Initial `EOTP` exits 1; owner browser authentication permits the interactive retry to exit 0. No rebuild or republish during registry processing.
+- **Registry:** `still-shift@0.2.0` and `latest` confirmed; downloaded 5,484,582-byte tarball matches verified SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f`, SHA-1 and SHA-512 integrity. Initial Python certificate-store failure and processing 404s retained; normal system TLS verification passes.
+- **Qualification:** candidate-bound staged checks and all failures/19 timing deferrals remain recorded. MS3 experimental; original first-pass 1/10, paired token savings null, accepted 0/10. No human review or fresh actual-ten pilot acceptance inferred.
+- **Delivery:** PR #59 carries publication records for the authorized ancestry-preserving merge. Final remote merge readback and primary-edit preservation receipt remain with durable evidence; Actions remain disabled.
+- **Records:** [release results](./npm-release-results.json), [release plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59); `benchmarks/results/npm-0.2.0-20261016/`.
+
+### 2026-10-16 — 0.2.0 candidate verified for final release review
+
+- **Agent / branch:** Codex on `codex/release-0.2.0`; tested source `ba13d26a14f77baefcdf76090a751bec8efe93a3`.
+- **Results:** candidate-bound software/benchmark completion in stages; 4,622 units, 376 runtime, 327 distinct integration and 14 Python cases. All 28 standard package checks, two installed mechanism groups and public browser bundle pass; locked production audit has zero vulnerabilities.
+- **Retained:** initial three 5s protocol timeouts, unchanged five-case rerun, two installed harness failures, source holds and 19 existing WebGL timing deferrals. Harness fixes move child logs outside denied roots and exempt only system `ps` for actual lock identity; product source/assertions/archive stay fixed.
+- **Archive:** 5,484,582 bytes, 2,574 members/1,052 corresponding sources; SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f`.
+- **Open / next:** final owner approval of exact source/archive and experimental MS3 scope (accepted 0/10), then production promotion, annotated tag and publication. npm maintainer login and dry run pass; publication has not been attempted.
+- **Records:** [release results](./npm-release-results.json), [plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59); raw logs/methods/receipts under `benchmarks/results/npm-0.2.0-20261016/`. Completion documentation follows the frozen tested commit without rebuilding its archive.
+
+### 2026-10-16 — Prepare the 0.2.0 release candidate
+
+- **Agent / branch:** Codex on isolated `codex/release-0.2.0` from `9c94101d`.
+- **Scope:** version metadata, runtime lock, release notes, compatibility and
+  experimental pilot scope; original primary checkout edits preserved.
+- **Setup:** initial worktree creation lacked the new merge object; fetching the
+  named remote refs resolved it. Frozen offline pnpm/uv and pinned soundtrack setup
+  pass; Actions are still disabled. Full release verification is pending.
+- **Lock decision:** regeneration proposed Rollup 4.64.7; retained that output as
+  a rejected update and preserved every existing dependency pin, changing only the
+  two package-version lock fields. Pinned toolchain preflight and the exact locked
+  production audit pass, with zero reported vulnerabilities.
+- **Open / next:** freeze the committed candidate, run `pnpm release:check`, bind
+  the archive, then present the concrete release for review and approval.
+- **Records:** [release notes](./npm-release-0.2.0.md), [plan](./npm-release-plan.md).
 
 ### 2026-10-16 — PR #58 FPS repair and final verification
 
