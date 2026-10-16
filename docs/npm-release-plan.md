@@ -2,10 +2,7 @@
 
 ## Next release: 0.2.0 — 2026-10-16
 
-**State:** release preparation authorized on 2026-10-16 and in progress on
-`codex/release-0.2.0`, isolated from the primary checkout. Final verification,
-release review, promotion and publication remain pending. See the
-[0.2.0 release notes and acceptance scope](./npm-release-0.2.0.md).
+**State:** candidate `ba13d26a14f77baefcdf76090a751bec8efe93a3` verified in recorded stages. All 28 standard package checks, both focused installed mechanism groups and the new browser-entry bundle check pass. Exact archive SHA-256: `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f`. Final owner release review, production promotion, tagging and publication remain pending. Completion-record commits identify this tested source separately; see [release results](./npm-release-results.json).
 
 **Recommendation:** release `still-shift@0.2.0` for the mechanism feature set
 merged since `0.1.1`. This is a feature release rather than a documentation or
@@ -155,10 +152,7 @@ dependency audit, immutable checksum/source records and an explicit decision on 
 open pilot acceptance scope. Human watching/listening acceptance remains a separate
 record. No new ElevenLabs spending is part of this plan; reuse existing audio.
 
-**Execution:** the merged source is isolated and the `0.2.0` metadata and release
-notes are being prepared. The complete release gate must bind the committed
-candidate. Results and publication status are recorded separately; this document
-does not claim that pending checks have passed.
+**Execution:** preparation and candidate-bound technical verification are complete on `ba13d26a14f77baefcdf76090a751bec8efe93a3` (tree `09f87042989b5d675a5e462722b0e143e40c843b`). All 3,455 held inputs match. The original aggregate exits 1 at three protocol timeouts; the unchanged five-case owning rerun and all remaining original commands pass in recorded stages. Two installed harness startup/environment failures remain retained with minimal reproductions and corrected-harness passing reruns. The exact 5,484,582-byte archive is retained, audited and dry-run successfully; it has not been published. Final release approval must include the documented experimental scope, with pilot acceptance still 0/10. Promote and tag this tested commit after review; completion metadata is a separate followup.
 
 ## Historical 0.1.0 release — 2026-10-09
 

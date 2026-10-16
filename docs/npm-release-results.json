@@ -1362,18 +1362,298 @@
     {
       "version": "0.2.0",
       "date": "2026-10-16",
-      "status": "candidate-prepared-awaiting-final-release-gate-and-review",
+      "status": "verified-awaiting-final-release-approval",
       "branch": "codex/release-0.2.0",
       "baseCommit": "9c94101d829a8ce6e56476629b88ea85e6b056c0",
       "previousReleaseSource": "73c01fa7c0b3bb47066d32e857d7901220abb8a4",
-      "sourceCommit": null,
-      "archive": null,
+      "sourceCommit": "ba13d26a14f77baefcdf76090a751bec8efe93a3",
+      "archive": {
+        "path": "dist/releases/still-shift-0.2.0.tgz",
+        "retainedPath": "benchmarks/results/npm-0.2.0-20261016/still-shift-0.2.0.tgz",
+        "bytes": 5484582,
+        "sha256": "232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f",
+        "sha512Integrity": "sha512-VMQ02Cm1vQqLhuQsYZ4/w0ptE3CzUWVMm5zZV9Si7cc0+AS+jLb4ibMXfNdAw6+Tb4jnLEAzquyThEUVzNW/ag==",
+        "sha1": "29e846da2a31f8ae55cd54fbcf765adf036bf124",
+        "members": 2574,
+        "correspondingSources": 1052
+      },
       "published": false,
       "evidenceDirectory": "benchmarks/results/npm-0.2.0-20261016",
       "notes": "docs/npm-release-0.2.0.md",
-      "qualification": "Final source and checksum are recorded only after committing and verifying the candidate. Historical milestone runs are not a current release pass. MS3 pilot remains experimental: original first-pass 1/10, paired token savings null, accepted 0/10.",
+      "qualification": "Candidate-bound completion in recorded stages. Original aggregate and isolated harness failures remain retained; source, thresholds, baselines and archive stayed unchanged. Completion records follow the tested commit and do not qualify a newer source or rebuilt tarball. No fresh actual-ten pilot or human acceptance claim.",
       "dependencyLock": "pnpm lock:package regeneration retained separately; unselected Rollup update rejected, original dependency graph preserved with two version-only metadata changes.",
-      "githubActions": false
+      "githubActions": false,
+      "recordedUtc": "2026-10-16T16:31:51.464153+00:00",
+      "sourceTree": "09f87042989b5d675a5e462722b0e143e40c843b",
+      "technicalVerification": {
+        "status": "passed-in-stages",
+        "toolchain": "toolchain.json",
+        "firstAggregate": {
+          "command": "pnpm release:check",
+          "exitCode": 1,
+          "startedUtc": "2026-10-16T08:57:34.655492+00:00",
+          "finishedUtc": "2026-10-16T09:10:39.883075+00:00",
+          "elapsedSeconds": 785.2129904590547,
+          "failure": "Three 5-second integration depth-worker protocol timeouts; cause unproven. Other 324 integration cases passed.",
+          "receipt": "release-gate-attempt-1-receipt.json"
+        },
+        "owningRerun": {
+          "cases": 5,
+          "exitCode": 0,
+          "sourceAndTimeoutsUnchanged": true
+        },
+        "unitCases": 4622,
+        "runtimeCases": 376,
+        "integrationDistinctCasesCompletedInStages": 327,
+        "pythonCases": 14,
+        "continuation": {
+          "invocations": 104,
+          "allExitCodes": 0,
+          "startedUtc": "2026-10-16T09:11:52.519950+00:00",
+          "finishedUtc": "2026-10-16T15:47:26.352150+00:00",
+          "receipt": "release-continuation-1.json"
+        },
+        "benchmark": {
+          "exitCode": 0,
+          "qualification": "Software benchmark only; no paired authoring-token savings or full-production cost claim."
+        },
+        "sourceHold": {
+          "trackedFiles": 3455,
+          "bytes": 529206894,
+          "changedPaths": [],
+          "receipt": "final-source-hold.json"
+        },
+        "timingDeferrals": {
+          "count": 19,
+          "receipt": "timing-deferrals.json",
+          "qualification": "Existing CE6-P WebGL timing-only policy; strict deferred timing targets remain unmet."
+        }
+      },
+      "packageVerification": {
+        "standardChecks": 28,
+        "checks": [
+          {
+            "name": "locked production dependency audit",
+            "seconds": 0.48454120800000056
+          },
+          {
+            "name": "install archive outside repository (npm)",
+            "seconds": 15.729731208
+          },
+          {
+            "name": "installed feature guides, skills and self-contained puppet example",
+            "seconds": 0.00450800000000163
+          },
+          {
+            "name": "installed command help",
+            "seconds": 1.817990249999999
+          },
+          {
+            "name": "installed command version",
+            "seconds": 0.4825437500000007
+          },
+          {
+            "name": "consumer TypeScript declarations",
+            "seconds": 11.119268
+          },
+          {
+            "name": "consumer bundler declarations",
+            "seconds": 11.266393750000002
+          },
+          {
+            "name": "TypeScript program validation",
+            "seconds": 1.176568167000005
+          },
+          {
+            "name": "installed browser pixel-quality analysis",
+            "seconds": 1.4289330000000044
+          },
+          {
+            "name": "legacy motion import in installed program",
+            "seconds": 0.7557767090000053
+          },
+          {
+            "name": "JSON program validation",
+            "seconds": 0.48941600000000474
+          },
+          {
+            "name": "installed API imports",
+            "seconds": 0.48054291699999885
+          },
+          {
+            "name": "opt-in browser runtime setup",
+            "seconds": 0.7006827080000003
+          },
+          {
+            "name": "opt-in depth runtime setup",
+            "seconds": 1.8623845829999992
+          },
+          {
+            "name": "installed depth worker command",
+            "seconds": 18.862427166999993
+          },
+          {
+            "name": "installed canvas2d export",
+            "seconds": 1.8079077080000134
+          },
+          {
+            "name": "canvas2d frame count",
+            "seconds": 0.016760834000000613
+          },
+          {
+            "name": "canvas2d source comparison",
+            "seconds": 2.6340228750000096
+          },
+          {
+            "name": "installed webgl2 export",
+            "seconds": 1.859830041999987
+          },
+          {
+            "name": "webgl2 frame count",
+            "seconds": 0.016334957999992183
+          },
+          {
+            "name": "webgl2 source comparison",
+            "seconds": 2.4746638749999983
+          },
+          {
+            "name": "installed preview page and seeking",
+            "seconds": 1.7450864999999904
+          },
+          {
+            "name": "opt-in soundtrack runtime setup",
+            "seconds": 1.106542665999994
+          },
+          {
+            "name": "soundtrack fixture",
+            "seconds": 0.017511750000005124
+          },
+          {
+            "name": "installed soundtrack worker and API",
+            "seconds": 3.3415047500000075
+          },
+          {
+            "name": "installed soundtrack CLI",
+            "seconds": 0.4940978749999922
+          },
+          {
+            "name": "corresponding source dependencies",
+            "seconds": 0.9198908749999973
+          },
+          {
+            "name": "corresponding source rebuild",
+            "seconds": 11.917466125000006
+          }
+        ],
+        "receipt": "package-verification.json",
+        "archiveInventory": "archive-members.json",
+        "archiveAudit": "archive-audit.json",
+        "productionAudit": {
+          "vulnerabilities": {
+            "info": 0,
+            "low": 0,
+            "moderate": 0,
+            "high": 0,
+            "critical": 0,
+            "total": 0
+          },
+          "dependencies": {
+            "prod": 30,
+            "dev": 0,
+            "optional": 81,
+            "peer": 0,
+            "peerOptional": 0,
+            "total": 110
+          }
+        }
+      },
+      "installedMechanism": {
+        "status": "passed",
+        "attempt": 3,
+        "stages": [
+          {
+            "name": "mechanism-production-native",
+            "exitCode": 0,
+            "seconds": 937.0936412501615,
+            "logSha256": "71359b77154d8c944c9b52d3ddd6a5a64e3a6584f209657285c9f41b090ddc41",
+            "terminal": {
+              "status": "passed",
+              "executions": 5,
+              "outputs": 5
+            }
+          },
+          {
+            "name": "mechanism-production-recovery",
+            "exitCode": 0,
+            "seconds": 1399.541560875019,
+            "logSha256": "c6393442a8aee9b60270257e407fbc14e7a74e53a2202b567c55a88f3a607dcb",
+            "terminal": {
+              "status": "passed",
+              "products": 10,
+              "native": 360
+            }
+          }
+        ],
+        "receipt": "installed-mechanism-results.json",
+        "retainedFailedAttempts": [
+          {
+            "receipt": "installed-attempt-1/installed-mechanism-results.json",
+            "status": "failed",
+            "stageExitCodes": [-6]
+          },
+          {
+            "receipt": "installed-attempt-2/installed-mechanism-results.json",
+            "status": "failed",
+            "stageExitCodes": [1]
+          }
+        ],
+        "harnessResolutions": [
+          "installed-isolation-resolution.json",
+          "installed-isolation-ps-resolution.json"
+        ],
+        "isolation": "Both original source roots denied to package Node/Python/browser/CLI processes; only system /bin/ps exempted for required lock-identity inspection. Test fixture/assertion sources match the frozen candidate; runtime imports target installed package and CLI. Child logs written outside denied roots then retained.",
+        "qualification": "Synthetic local PCM and real rendering/interruption/retry/relocation/handoff. Does not refresh actual ten-pilot execution or human reviews."
+      },
+      "publicSurface": {
+        "comparison": "public-surface-comparison.json",
+        "qualification": "No removed export names across seven 0.1.1 entry points; name comparison is not a complete structural-signature guarantee. Existing consumer types and legacy fixture checks pass.",
+        "newBrowserEntryBundle": {
+          "entry": "still-shift/renderer/native3d-browser",
+          "exitCode": 0,
+          "receipt": "installed-public-browser-export.json"
+        }
+      },
+      "pilotScope": {
+        "experimental": true,
+        "originalFirstPass": {
+          "passed": 1,
+          "total": 10,
+          "targetPercent": 90,
+          "originalFailuresRetained": 9
+        },
+        "pairedAuthoringTokenSavings": null,
+        "tokenSavingsTargetPercent": 50,
+        "reviewedReady": 0,
+        "supported": 0,
+        "accepted": 0,
+        "totalPilotProducts": 10,
+        "humanReviews": "Whole factual/mechanical/encoded-text/readability/normal-speed motion/listening and owner review remain open. Finer Thai motion unadopted; MS4 future."
+      },
+      "publication": {
+        "status": "awaiting-final-owner-release-review",
+        "authorization": null,
+        "dryRun": {
+          "exitCode": 0,
+          "archiveUnchanged": true,
+          "receipt": "npm-publish-dry-run.json"
+        },
+        "authentication": {
+          "exitCode": 0,
+          "packageMaintainerConfirmed": true,
+          "receipt": "authentication-recheck-1.json",
+          "initialFailureRetained": "authentication-preflight.json"
+        }
+      }
     }
   ]
 }
