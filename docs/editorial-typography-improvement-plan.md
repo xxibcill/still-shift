@@ -1,6 +1,9 @@
 # Editorial title overlays: improvement plan
 
-Date: 2026-11-15. Status: **proposed; no milestone approved or started.**
+Date: 2026-11-15. Status: **ET0 complete on `codex/editorial-titles-et0`
+(review pending); ET1–ET8 proposed.** ET0 re-baselined every finding on `main`
+(98a92e92); see [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
+[ET0 results](./editorial-typography-et0-results.json).
 Source evidence: [proof report](./editorial-typography-proof-2026-11-15.md) and
 [results JSON](./editorial-typography-proof-2026-11-15-results.json). Finding IDs
 (O1–O11, P1) refer to that report.
@@ -31,19 +34,43 @@ footage understanding and candidate search stay outside the core (ET7).
   in the [typography plan](./typography-motion-engine-plan.md#exact-copy-font-coverage);
   ET5 reuses that plan's MS2 Thai probes.
 
+## Re-baseline on `main` (ET0)
+
+The proof ran on `e6eb7b06`; `main` is 424 commits later. All nine proof renders
+are byte-identical on `main`, so every rendered finding behaves as recorded. Lint
+and font routes did change. Details and numbers are in the
+[ET0 results](./editorial-typography-et0-results.json); fixtures and their
+recorded outcomes are in
+[`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md).
+
+| ID  | On `main`                                                                                                               | Effect on this plan                                                                                                                                                               |
+| --- | ----------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| O1  | Still reproduced: 18/30 px authored gaps render as 92/107 px static, 150/239 px animated                                | ET4 unchanged                                                                                                                                                                     |
+| O2  | Still reproduced: 39.9% of the line's ink off-frame; lint gives only `outside-safe-area`                                | ET5 unchanged                                                                                                                                                                     |
+| O3  | Still reproduced: bar visible on frames 70–83 with no text ink                                                          | ET5 unchanged                                                                                                                                                                     |
+| O4  | **Fixed** by `6ed1a5d0` (prepared media replaced base64 inlining)                                                       | ET2 needs no root cause; its O4 checks become regressions                                                                                                                         |
+| O5  | Still reproduced on `comp`; the core gate exists on `main`                                                              | ET1 partly done: cmap 4/12, identity, strict/legacy `inspectFontText` and reachable-copy collection exist and gate mechanism episodes; the composition route passes no validation |
+| O6  | Still reproduced: contrast falls to 1.16:1 with no finding                                                              | ET3 unchanged                                                                                                                                                                     |
+| O7  | Still reproduced                                                                                                        | ET6 unchanged                                                                                                                                                                     |
+| O8  | Changed: state lint no longer flags footage; pixel mode flags footage-only spans that are near-static in encoded pixels | ET2's frames 157–167 check revised below                                                                                                                                          |
+| O9  | Changed: state lint still cannot evaluate `attach`; pixel mode can                                                      | ET4/ET6 unchanged                                                                                                                                                                 |
+| O10 | Still reproduced (`-20–900` worst case)                                                                                 | ET5 unchanged                                                                                                                                                                     |
+| O11 | Still reproduced and wider: serif seams persist through the hold                                                        | ET5 probe includes hold frames                                                                                                                                                    |
+| P1  | Still passes: mark gap 11–12 px in frames 21–34                                                                         | ET5 Thai probes unchanged                                                                                                                                                         |
+
 ## Milestone tracker
 
-| ID  | Milestone                                   | Findings         | Depends on                            | Estimate (active days) | Status   |
-| --- | ------------------------------------------- | ---------------- | ------------------------------------- | ---------------------- | -------- |
-| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                    | Proposed |
-| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5                    | Proposed |
-| ET2 | Pixel lint over native video                | O4, O8           | ET0                                   | 1–3 after root cause   | Proposed |
-| ET3 | Text-over-video legibility checks           | O6               | ET2                                   | 3–5                    | Proposed |
-| ET4 | Measured multi-layer layout anchors         | O1, O9           | ET0                                   | 3–5                    | Proposed |
-| ET5 | Authoring guards and probes                 | O2, O3, O10, O11 | ET0, owner: align                     | 2–4                    | Proposed |
-| ET6 | Measurement API and editorial lint profile  | O7, O9           | ET4, owner: reading rule              | 2–4                    | Proposed |
-| ET7 | External orchestration pilot (outside core) | —                | ET1–ET4, owner: location              | 5–10                   | Proposed |
-| ET8 | Aesthetic proof on authorized real inputs   | —                | ET1–ET3 (ET7 optional), owner: inputs | 2–3                    | Proposed |
+| ID  | Milestone                                   | Findings         | Depends on                            | Estimate (active days)                       | Status                         |
+| --- | ------------------------------------------- | ---------------- | ------------------------------------- | -------------------------------------------- | ------------------------------ |
+| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                                          | Done on branch, review pending |
+| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5; re-estimate (core gate exists)          | Proposed; partly on `main`     |
+| ET2 | Pixel lint over native video                | O4, O8           | ET0                                   | 1–3 after root cause; re-estimate (O4 fixed) | Proposed; O4 fixed on `main`   |
+| ET3 | Text-over-video legibility checks           | O6               | ET2                                   | 3–5                                          | Proposed                       |
+| ET4 | Measured multi-layer layout anchors         | O1, O9           | ET0                                   | 3–5                                          | Proposed                       |
+| ET5 | Authoring guards and probes                 | O2, O3, O10, O11 | ET0, owner: align                     | 2–4                                          | Proposed                       |
+| ET6 | Measurement API and editorial lint profile  | O7, O9           | ET4, owner: reading rule              | 2–4                                          | Proposed                       |
+| ET7 | External orchestration pilot (outside core) | —                | ET1–ET4, owner: location              | 5–10                                         | Proposed                       |
+| ET8 | Aesthetic proof on authorized real inputs   | —                | ET1–ET3 (ET7 optional), owner: inputs | 2–3                                          | Proposed                       |
 
 Recommended order: ET0 → ET1 → ET2 → ET3 → ET4 → ET5/ET6 → ET8 → ET7. ET1, ET2 and
 ET4 touch separate code and can run in parallel after ET0. Estimates are planning
@@ -70,17 +97,22 @@ re-run elsewhere or used as regression tests.
 
 **Checks**
 
-- [ ] Generator reproduces the fixture clip byte-identically on rerun; descriptor
-      hash verified by `comp validate`.
-- [ ] Every fixture renders with the pinned toolchain; render hashes recorded.
-- [ ] Each negative reproduces its finding with a measured value (gap pixels,
+- [x] Generator reproduces the fixture clip byte-identically on rerun; descriptor
+      hash verified by `comp validate`. (70,569-byte clip, SHA-256 `c4daea53…4019`;
+      `--check` matched twice; a zeroed hash fails with `comp-media-checksum`.)
+- [x] Every fixture renders with the pinned toolchain; render hashes recorded.
+      (Eight renders in `et0-baseline.json`; a second run reproduced all of them.)
+- [x] Each negative reproduces its finding with a measured value (gap pixels,
       off-frame fraction, bar visible after text opacity 0, lint error text,
-      missing code points, background luminance under glyphs).
-- [ ] P1 control renders with marks attached in recorded frames.
-- [ ] `pnpm check:fast` passes; no existing baseline changes.
+      missing code points, background luminance under glyphs). Exception: O4 no
+      longer reproduces on `main`; its fixture is recorded as a now-passing
+      regression with the lint outcome instead of error text.
+- [x] P1 control renders with marks attached in recorded frames.
+- [x] `pnpm check:fast` passes; no existing baseline changes.
 
 **Owner decision:** approve committing a synthetic clip (or name another
-authorized source).
+authorized source). ET0 committed the synthetic clip as its task brief asked;
+the owner can still reject it at review.
 
 ---
 
@@ -91,6 +123,17 @@ no warning (O5). Wrong-face copy is a correctness failure, not a style issue.
 
 **Scope** (the typography plan's MS1 font gate; implement once for native and
 adapter routes)
+
+**ET0 re-baseline:** `main` already reads `cmap` formats 4/12
+([`font-cmap.ts`](../packages/renderer-core/src/font-cmap.ts)), records font
+identity and checks reachable copy with legacy/strict profiles
+([`font-identity.ts`](../packages/renderer-core/src/font-identity.ts),
+[`font-copy.ts`](../packages/renderer-core/src/font-copy.ts)), and enforces it for
+mechanism-episode font dependencies. The composition renderer calls
+`loadCompositionFonts` without validation options and `comp` has no strict font
+option, so O5 still reproduces there. Remaining ET1 work is mainly wiring the
+existing gate into `comp validate`/`render`, the legacy warning, the explicit
+pinned fallback list and the checks below. Re-estimate at entry.
 
 - Read `cmap` (formats 4 and 12 at minimum) during font preparation; the proof's
   [`cmap-probe.ts`](../research/editorial-typography-proof/cmap-probe.ts) is a
@@ -128,6 +171,10 @@ automated check sees the footage. State lint also reports moving footage as froz
 
 **Scope**
 
+- **ET0 re-baseline:** done on `main`. `6ed1a5d0` removed the base64 data-URL
+  inlining and passes prepared media; all six proof runs and the ET0 video
+  fixture now lint with pixels and text bounds. The O4 checks below are kept as
+  regressions.
 - Root-cause the `page.evaluate` navigation failure in
   [`composition-lint.ts`](../packages/animation-engine/src/composition-lint.ts)
   (candidates: base64 data URLs for every prepared frame in one payload; Vite
@@ -141,7 +188,11 @@ automated check sees the footage. State lint also reports moving footage as froz
 - [ ] All three proof treatments and the ET0 video fixtures lint with pixels
       (`measured.pixels: true`, `textBounds: true`).
 - [ ] Frames 157–167 of the proof (footage only) are no longer reported frozen
-      in pixel mode.
+      in pixel mode. **Revised by ET0:** the proof clip is effectively static
+      there in encoded pixels (mean inter-frame luma change ≤ 0.002/255, several
+      frames exactly 0), so the pixel-mode report may be correct. Use footage
+      with measurable motion (the ET0 synthetic clip reports no frozen frames)
+      and decide separately whether near-static footage should count as motion.
 - [ ] A 60 s clip lints within recorded memory bounds; cancellation leaves no
       temporary cache.
 - [ ] Non-video pixel lint results are byte-identical before and after.
@@ -236,7 +287,9 @@ to new copy.
       diagnostic text. No out-of-range value may reach rendering.
 - [ ] **Serif fragment (O11).** Reproduce at frames 30–36 with masked per-glyph
       entrance; classify as overhang clipping, mask feather or other, then fix or
-      record as accepted.
+      record as accepted. ET0 found the seams also persist through the hold while
+      a per-glyph tracking animator runs (proof T1 frame 100; ET0
+      `o1-attach-animated.ts` frame 45); include hold frames.
 - [ ] **Thai probes.** Run the typography plan's MS2 finer-segmentation and
       script-sensitive tracking probes with the ET0 Thai fixture; record supported
       units. No blanket claim either way.

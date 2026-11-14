@@ -6,6 +6,12 @@ Source: [`research/editorial-typography-proof/`](../research/editorial-typograph
 Review images: [`docs/review/editorial-typography-proof-2026-11-15/`](./review/editorial-typography-proof-2026-11-15/).
 Milestone plan: [editorial typography improvement plan](./editorial-typography-improvement-plan.md).
 
+> **Re-baseline note (ET0, 2026-11-15):** this report describes source
+> `e6eb7b06`. On `main` (`98a92e92`) all nine renders are byte-identical, O4 is
+> fixed, and `cmap` coverage checking exists but is not run by the composition
+> route, so O5 still reproduces there. See the
+> [ET0 results](./editorial-typography-et0-results.json).
+
 ## Answer in brief
 
 Still Shift can already render varied editorial titles over a vertical video crop.
