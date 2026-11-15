@@ -396,6 +396,33 @@ it("reports malformed font tables clearly without rejecting legacy inputs", asyn
   });
 });
 
+it("never reports uninspected copy as covered", async () => {
+  // Nine counting layers generate more resolved runs than the inspection budget.
+  const frames = 10000;
+  const { input } = await write({
+    frameCount: frames,
+    assets: [await plex()],
+    textStyles: { figures: { fontAsset: "sans", figures: "tabular" } },
+    layers: Array.from({ length: 9 }, (_, i) =>
+      textLayer(`count${i}`, "0", "sans", {
+        style: "figures",
+        locale: "en",
+        states: ["0", "99990"],
+        transitions: [
+          { kind: "count", window: { start: 0, end: frames - 2 }, toState: 1 },
+        ],
+      }),
+    ),
+  });
+  const legacy = await run(["validate", "--input", input]);
+  expect(legacy.code).toBe(0);
+  const output = JSON.parse(legacy.stdout);
+  expect(output.diagnostics).toEqual([
+    expect.objectContaining({ code: "font-copy-budget", severity: "warning" }),
+  ]);
+  expect(output.fontCoverage).toMatchObject({ covered: false, runs: 0 });
+});
+
 it("resolves missing code points through declared pinned fallbacks only", async () => {
   const withFallback = await strict({
     assets: [

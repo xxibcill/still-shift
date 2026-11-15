@@ -63,7 +63,11 @@ export type CompositionFontFallbackRun = {
 };
 export type CompositionFontCoverageReport = {
   profile: CompositionFontCoverageProfile;
-  /** Every reachable code point is in its pinned font or a declared fallback. */
+  /**
+   * Every reachable code point was inspected and is in its pinned font or a
+   * declared fallback. False when a font or the reachable copy could not be
+   * inspected (for example `font-copy-budget`), never a guess.
+   */
   covered: boolean;
   /** Resolved font runs and distinct reachable code points inspected. */
   runs: number;
@@ -133,9 +137,12 @@ export function inspectCompositionFonts(
     }
   }
   let runs: CollectedFontTextRun[] = [];
+  // Cleared when copy or a font's runs cannot be inspected: coverage is then unknown.
+  let inspected = true;
   try {
     runs = compositionCopyRuns(comp);
   } catch (error) {
+    inspected = false;
     diagnostics.push(
       ...passageDiagnostics(error).map((finding) => ({
         ...finding,
@@ -174,6 +181,7 @@ export function inspectCompositionFonts(
         { profile },
       );
     } catch (error) {
+      inspected = false;
       found = passageDiagnostics(error).map((finding) => ({
         ...finding,
         severity,
@@ -254,7 +262,9 @@ export function inspectCompositionFonts(
       covered:
         !diagnostics.some((finding) =>
           ["font-coverage", "font-fallback-cluster"].includes(finding.code),
-        ) && identities.size === fonts.length,
+        ) &&
+        identities.size === fonts.length &&
+        inspected,
       runs: runs.length,
       codePoints: reachable.size,
       fonts: fonts.flatMap(({ asset }) => {

@@ -596,6 +596,9 @@ against its exact reachable copy in Node, before any browser work, through
   so the face that drew each glyph is declared, not measured.
 - **Results.** `comp validate` always prints `fontCoverage` with each font's actual
   family, subfamily, PostScript name, weight class, style, axes and `cmap` formats.
+  `covered` is `true` only when every font and all reachable copy were inspected;
+  a font that cannot be read or copy over the inspection budget (`font-copy-budget`)
+  makes it `false`.
   Render results include it when the profile is strict, a font declares fallbacks
   or coverage found gaps; otherwise results are unchanged. Coverage never changes
   the scene manifest, cache keys or rendered pixels of compositions without
