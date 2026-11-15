@@ -25,7 +25,7 @@
     },
     "orphanedDecoration": {
       "code": "orphaned-decoration (default error; pixel lint only)",
-      "measure": "For root and precomp text layers with decorations, the pixel lint samples each frame's evaluated state and asks the prepared text (typographyOrphanedDecorations) which decorations paint while every glyph they decorate (their span, if any) is transparent through text-animator opacity, a word reveal or the layer reveal. It uses the renderer's own draw plan, transitions included. path names the decoration (layers.N.decorations.M).",
+      "measure": "For root and precomp text layers with decorations, the analysis asks, on each frame it already samples (one pass; the evidence is a probe since the PR #66 review), the prepared text (typographyOrphanedDecorations) which decorations paint while every glyph they decorate (their span, if any) is transparent through text-animator opacity, a word reveal or the layer reveal. It uses the renderer's own draw plan, transitions included. path names the decoration (layers.N.decorations.M).",
       "fix": "Opt-in decoration field fadeWithText (composition schema): the mark's alpha is multiplied by the highest animator opacity of its non-blank glyphs on each line. Off by default; existing compositions render unchanged."
     }
   },

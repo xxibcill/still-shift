@@ -7,6 +7,14 @@ import { brushStroke } from "./brush-path.ts";
 import { inkStrokeOutline } from "./ink-path.ts";
 import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
 
+/**
+ * A decoration as drawn: the prepared shape plus the composition-only
+ * `fadeWithText` opt-in (ET5a), which `textNode` carries through.
+ */
+export type DrawnTextDecoration = NonNullable<
+  TextNode["decorations"]
+>[number] & { fadeWithText?: boolean };
+
 export function decorationSegments(
   node: TextNode,
   layout: ShapedLayout,
@@ -53,9 +61,8 @@ export function decorationReveal(
     : 1;
 }
 /** ET5a: the mark follows its text's animator opacity (composition opt-in). */
-export const decorationFadesWithText = (
-  mark: NonNullable<TextNode["decorations"]>[number],
-) => (mark as { fadeWithText?: boolean }).fadeWithText === true;
+export const decorationFadesWithText = (mark: DrawnTextDecoration) =>
+  mark.fadeWithText === true;
 export function drawTextDecorations(
   ctx: CanvasRenderingContext2D,
   node: TextNode,

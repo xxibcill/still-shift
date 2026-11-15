@@ -1,5 +1,6 @@
 import type { Composition } from "@still-shift/scene-contract";
 import {
+  homographicBounds,
   homographicPoint,
   affineViewportCovered,
   normalizedHomography,
@@ -7,7 +8,6 @@ import {
 import { boundaryVelocityJump } from "../camera-sampling.ts";
 import { projectBounds } from "./evaluate/geometry.ts";
 import type { Bounds } from "./evaluate/types.ts";
-import { homographicBounds } from "./projective-quality.ts";
 import {
   lintSeverity,
   type MotionLintCode,
@@ -282,25 +282,32 @@ export function compositionDecorationFindings(
   policy: ResolvedCompositionQualityPolicy,
 ) {
   const { diagnostics, add } = findingsCollector(policy);
-  const evidence = policy.textFramingEvidence?.orphanedDecorations ?? {};
-  for (const [id, entries] of Object.entries(evidence))
-    for (const { frame: at, decorations } of entries) {
-      const sample = frames[at]?.layers.get(id);
-      if (!sample || !sample.visible) continue;
+  const probe = policy.textFramingEvidence?.orphanedDecorations;
+  if (!probe) return diagnostics;
+  frames.forEach((frame, at) => {
+    for (const sample of frame.layers.values()) {
       const layer = sample.state.layer;
-      for (const index of decorations) {
-        const mark =
-          layer.type === "text" ? layer.decorations?.[index] : undefined;
+      if (layer.type !== "text" || !layer.decorations?.length) continue;
+      if (!sample.visible) continue;
+      const key = textEvidenceKey(frame, sample);
+      if (!key) continue;
+      const orphaned = probe({
+        key,
+        state: sample.state.state ?? 0,
+        reveal: sample.state.reveal ?? 1,
+        time: sample.state.time,
+      });
+      for (const index of orphaned)
         add(
           "orphaned-decoration",
           sample,
           [at, at],
           1,
-          orphanedDecorationMessage(mark),
+          orphanedDecorationMessage(layer.decorations[index]),
           `${sample.path}.decorations.${index}`,
         );
-      }
     }
+  });
   return diagnostics;
 }
 export function compositionFramingFindings(

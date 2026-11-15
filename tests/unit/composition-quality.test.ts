@@ -8,6 +8,8 @@ import {
   passageDiagnostics,
 } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
+import { textNode } from "../../packages/renderer-core/src/composition/render/text-scenes.ts";
+import { decorationFadesWithText } from "../../packages/renderer-core/src/typography-decorations.ts";
 import {
   composition,
   fixtures,
@@ -1585,12 +1587,9 @@ describe("ET5a text framing and decoration guards", () => {
       {
         evaluation: { textBounds: { title: [line] } },
         textFramingEvidence: {
-          orphanedDecorations: {
-            title: [
-              { frame: 1, decorations: [0] },
-              { frame: 2, decorations: [0] },
-            ],
-          },
+          // The probe answers from evaluated state: orphaned from frame 1 on.
+          orphanedDecorations: ({ key, time }) =>
+            key === "title" && time >= 1 ? [0] : [],
         },
       },
     ).diagnostics.filter((d) => d.code === "orphaned-decoration");
@@ -1608,6 +1607,16 @@ describe("ET5a text framing and decoration guards", () => {
     ]);
     expect(found[0]!.message).toContain("highlight");
     expect(found[0]!.message).toContain("set `fadeWithText: true`");
+  });
+
+  it("carries fadeWithText from the layer to the drawn decoration", () => {
+    const layer = title([100, 100], {
+      decorations: [
+        { kind: "highlight", color: "#c9d29a", fadeWithText: true },
+      ],
+    }) as Extract<CompositionLayer, { type: "text" }>;
+    const [mark] = textNode(composition([layer]), layer).decorations!;
+    expect(decorationFadesWithText(mark!)).toBe(true);
   });
 
   it("points to the decoration's reveal when fadeWithText is already set", () => {

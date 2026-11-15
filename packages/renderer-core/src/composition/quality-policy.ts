@@ -307,13 +307,16 @@ export type TextFramingEvidence = {
    */
   ink?: Record<string, readonly (readonly Bounds[])[]>;
   /**
-   * Per text layer sample id: frames on which decorations (by index) paint
-   * while every glyph they decorate is transparent.
+   * Indices of a text layer's decorations that paint while every glyph they
+   * decorate is transparent. Asked for each visible frame of a decorated text
+   * layer, from the frames the analysis already sampled.
    */
-  orphanedDecorations?: Record<
-    string,
-    readonly { frame: number; decorations: readonly number[] }[]
-  >;
+  orphanedDecorations?: (content: {
+    key: string;
+    state: number;
+    reveal: number;
+    time: number;
+  }) => readonly number[];
 };
 /** Measured inputs for the ET3 legibility rules, supplied by the lint runner. */
 export type TextLegibilityEvidence = {
