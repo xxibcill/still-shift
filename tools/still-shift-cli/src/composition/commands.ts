@@ -282,9 +282,9 @@ export async function runCompositionCommand(
             JSON.parse(await readFile(resolve(path), "utf8")),
           )
         : {};
-      // ET2: own SIGINT/SIGTERM while linting so media staging, the media
-      // cache lock, the lint dev-server cache and the compiled program are
-      // removed by their owners instead of being left by process exit.
+      // ET2: own SIGINT/SIGTERM/SIGHUP while linting so media staging, the
+      // media cache lock, the lint dev-server cache and the compiled program
+      // are removed by their owners instead of being left by process exit.
       const controller = new AbortController();
       // Repeated signals are expected (a terminal signals the whole process
       // group and tsx relays it again); aborting is idempotent.
@@ -300,12 +300,15 @@ export async function runCompositionCommand(
           ]),
         );
       };
-      const interrupt = cancel("SIGINT"),
-        terminate = cancel("SIGTERM");
+      // All three: the browser is launched without Playwright's handlers for
+      // SIGINT, SIGTERM and SIGHUP, so an unowned one would end the process
+      // with no cleanup (a closed terminal or dropped SSH session sends SIGHUP).
+      const listeners = (["SIGINT", "SIGTERM", "SIGHUP"] as const).map(
+        (name) => [name, cancel(name)] as const,
+      );
       // Persistent listeners: tsx's signal relay exits the process when no
       // listener remains after a signal, before cleanup could finish.
-      process.on("SIGINT", interrupt);
-      process.on("SIGTERM", terminate);
+      for (const [name, listener] of listeners) process.on(name, listener);
       try {
         const program = await loadProgram(input, {
           signal: controller.signal,
@@ -325,8 +328,7 @@ export async function runCompositionCommand(
       } catch (error) {
         throw controller.signal.aborted ? controller.signal.reason : error;
       } finally {
-        process.off("SIGINT", interrupt);
-        process.off("SIGTERM", terminate);
+        for (const [name, listener] of listeners) process.off(name, listener);
       }
     }
     if (command === "render") {
