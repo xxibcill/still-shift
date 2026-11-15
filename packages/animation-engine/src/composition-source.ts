@@ -21,6 +21,12 @@ import {
   type CompositionNative3DPreparation,
 } from "./composition-native3d.ts";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
+import {
+  checkCompositionFonts,
+  compositionFontCoverageProfile,
+  type CompositionFontCoverageProfile,
+  type CompositionFontCoverageReport,
+} from "./composition-font-coverage.ts";
 /** Text layers drawn with a generic browser face: root ids or `precomp-id/layer-id`. */
 function systemFontLayers(composition: Composition): string[] {
   const fonts = new Set(
@@ -46,6 +52,8 @@ export type CompositionSource = {
   warnings: CompositionDiagnostic[];
   /** Text layers whose output depends on the machine's generic fonts. */
   systemFontLayers: string[];
+  /** ET1 exact-copy coverage of every pinned font, checked before rendering. */
+  fontCoverage: CompositionFontCoverageReport;
   /** Absolute still/font, captured native PNG and verified mix WAV paths, by resource id. */
   assetPaths: Record<string, string>;
   preparedMedia?: CompositionPreparedMedia;
@@ -65,6 +73,8 @@ export async function readCompositionSource(
   options: CompositionMediaPreparationOptions & {
     backend?: "canvas2d" | "webgl2";
     nodeMemory?: CompositionNodeMemory;
+    /** Raise exact-copy font coverage to `strict`; never lowers the composition's. */
+    fontCoverage?: CompositionFontCoverageProfile;
   } = {},
 ): Promise<CompositionSource> {
   options.signal?.throwIfAborted();
@@ -107,6 +117,11 @@ export async function readCompositionSource(
       },
       dirname(sourcePath),
     );
+    const fonts = await checkCompositionFonts(
+      composition,
+      assetPaths,
+      compositionFontCoverageProfile(composition, options.fontCoverage),
+    );
     const media = await prepareCompositionMedia(
       composition,
       dirname(sourcePath),
@@ -119,8 +134,9 @@ export async function readCompositionSource(
     );
     const source = {
       composition,
-      warnings: result.diagnostics,
+      warnings: [...result.diagnostics, ...fonts.warnings],
       systemFontLayers: systemFontLayers(composition),
+      fontCoverage: fonts.report,
       assetPaths: {
         ...assetPaths,
         ...native?.assetPaths,

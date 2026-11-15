@@ -149,6 +149,8 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A `state` or `stateFrom` value has no matching source or text state.",
   "comp-state-mix": "Only one of `stateFrom` and `stateMix` is set.",
   "comp-text-style-missing": "A text layer uses an unknown text style.",
+  "comp-font-fallback":
+    "A font asset lists itself or the same fallback font more than once.",
   "comp-text-font": "A text size above 180 without a pinned font.",
   "comp-text-pinned-font":
     "Spans, decorations, transitions, text animators or `textBox` on a text layer without a pinned font.",

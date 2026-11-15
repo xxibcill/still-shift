@@ -19,7 +19,20 @@ export type LoadedFont = {
   metrics?: FontMetrics;
   identity?: FontIdentity;
   fontDiagnostics?: FontValidationDiagnostic[];
+  /**
+   * ET1 declared pinned fallbacks: faces registered under this font's family with
+   * a `unicode-range` of exactly the reachable code points the font lacks.
+   */
+  fallbackFaces?: {
+    fontId: string;
+    bytes: ArrayBuffer;
+    unicodeRange: string;
+  }[];
 };
+/** Per font id, the declared fallback faces and the code points each draws. */
+export type PreparedFontFallbacks = (
+  bytes: ReadonlyMap<string, ArrayBuffer>,
+) => ReadonlyMap<string, readonly { fallback: string; codePoints: number[] }[]>;
 import { readFontMetrics, type FontMetrics } from "./font-metrics.ts";
 import { resolvedTextStyle, styleFontKey } from "./typography-style.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
@@ -43,6 +56,7 @@ export async function loadPreparedFonts(
     },
   assetUrl: (id: string) => string,
   validation?: FontValidationOptions,
+  fallbacks?: PreparedFontFallbacks,
 ): Promise<Map<string, LoadedFont>> {
   const textRuns = validation
     ? (validation.textRuns ?? collectFontTextRuns(scene))
@@ -111,6 +125,7 @@ export async function loadPreparedFonts(
       },
     );
     const fonts: Map<string, LoadedFont> = new Map(entries);
+    if (fallbacks) await registerFontFallbacks(fonts, fallbacks);
     if (scene.typography) {
       for (const node of scene.nodes ?? []) {
         if (node.type !== "text") continue;
@@ -126,6 +141,76 @@ export async function loadPreparedFonts(
     }
     return fonts;
   });
+}
+
+/** Join declared fallback faces to a font's family, under a family of their own. */
+async function registerFontFallbacks(
+  fonts: Map<string, LoadedFont>,
+  fallbacks: PreparedFontFallbacks,
+) {
+  const plan = fallbacks(
+    new Map(
+      [...fonts].flatMap(([id, font]) =>
+        font.bytes ? [[id, font.bytes]] : [],
+      ),
+    ),
+  );
+  for (const [id, faces] of plan) {
+    const source = fonts.get(id);
+    if (!source?.bytes || !faces.length) continue;
+    const fallbackFaces = faces.map(({ fallback, codePoints }) => {
+      const bytes = fonts.get(fallback)?.bytes;
+      if (!bytes) throw new Error(`Font unavailable: ${fallback}`);
+      return {
+        fontId: fallback,
+        bytes,
+        unicodeRange: unicodeRange(codePoints),
+      };
+    });
+    const digest = await sha256Hex(
+      new TextEncoder().encode(
+        JSON.stringify(
+          faces.map(({ fallback, codePoints }) => [
+            fonts.get(fallback)!.family,
+            codePoints,
+          ]),
+        ),
+      ).buffer,
+    );
+    // A distinct family keeps fallbacks from leaking into other compositions
+    // that load the same primary bytes into this document.
+    const family = `${source.family}-fallback-${digest.slice(0, 16)}`;
+    await registerFamily(family, source, fallbackFaces);
+    fonts.set(id, { ...source, family, fallbackFaces });
+  }
+}
+async function registerFamily(
+  family: string,
+  source: LoadedFont,
+  fallbackFaces: NonNullable<LoadedFont["fallbackFaces"]>,
+) {
+  const base = { weight: source.weight, style: source.style ?? "normal" };
+  const initialize = async (face: FontFace) => {
+    await face.load();
+    document.fonts.add(face);
+  };
+  await decodeRenderFont(family, source.bytes!, base, initialize);
+  for (const face of fallbackFaces)
+    await decodeRenderFont(
+      family,
+      face.bytes,
+      {
+        weight: source.weight,
+        style: source.style ?? "normal",
+        unicodeRange: face.unicodeRange,
+      },
+      initialize,
+    );
+}
+function unicodeRange(codePoints: readonly number[]) {
+  return codePoints
+    .map((codePoint) => `U+${codePoint.toString(16).toUpperCase()}`)
+    .join(", ");
 }
 
 export async function loadTextStyleFont(
@@ -205,6 +290,23 @@ export async function loadTextStyleFont(
         }
       },
     );
+    // Declared fallbacks keep drawing their code points at their own defaults:
+    // this style's axes and features apply only to the primary font's glyphs
+    // (documented in composition-reference-notes.md, Exact-copy font coverage).
+    for (const face of source.fallbackFaces ?? [])
+      await decodeRenderFont(
+        family,
+        face.bytes,
+        {
+          weight: source.weight,
+          style: source.style ?? "normal",
+          unicodeRange: face.unicodeRange,
+        },
+        async (fallback) => {
+          await fallback.load();
+          document.fonts.add(fallback);
+        },
+      );
   });
   fonts.set(key, { ...source, family });
 }

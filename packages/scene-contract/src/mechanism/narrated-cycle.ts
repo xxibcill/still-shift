@@ -237,7 +237,8 @@ const control = z.discriminatedUnion("type", [
     })
     .strict(),
 ]);
-const font = CompositionAssetSchema.options[1];
+// Mechanism cycles keep their own strict font gate; composition fallbacks stay out.
+const font = CompositionAssetSchema.options[1].omit({ fallbacks: true });
 /** Sample references, never a nine-shot template or a stretched narration clock. */
 export const MechanismNarratedCycleSchema = z
   .object({

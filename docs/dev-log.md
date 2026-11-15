@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial title overlays (2026-11-15):** ET0 of the [editorial typography plan](./editorial-typography-improvement-plan.md) is committed on `codex/editorial-titles-et0` (from `98a92e92`; not pushed, no PR). Tracked synthetic clip, fixtures and recorded baseline live in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md). On `main`: O4 (pixel lint over video) is fixed; O1, O2, O3, O5 (composition route), O6, O7, O10 still reproduce; O11 seams also persist through the hold. ET1 is partly on `main` (font gate exists, not wired into `comp`). Pending owner decisions: synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. No human visual acceptance. [ET0 results](./editorial-typography-et0-results.json).
+- **Editorial titles ET0/ET1 (2026-11-15):** ET0 (fixtures, synthetic clip, recorded baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)) is merged on `main` via PR #60. ET1 font gate is [PR #61](https://github.com/xxibcill/still-shift/pull/61) on `codex/editorial-titles-et1`, merged with `main`, O5 re-baselined and ET1 checks ticked (owner review pending): composition `fontCoverage: "strict"` or `--font-coverage strict` blocks wrong-face copy before render; legacy default warns only. O4 fixed; O1, O2, O3, O6, O7, O10, O11 still reproduce. Pending owner decisions: PR #61 review, synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. No human visual acceptance (including fallback Thai). [ET0 results](./editorial-typography-et0-results.json), [ET1 results](./editorial-typography-et1-results.json).
 
 - **0.2.0 published and registry-verified (2026-10-16):** owner-approved source `ba13d26a` is remote `production` and fixed annotated `v0.2.0`. Public npm `latest` is `0.2.0`; its downloaded archive matches the verified SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f` byte for byte. Technical verification completed in recorded stages; all 28 standard installed checks, both focused mechanism groups and browser bundle pass. Original aggregate/harness failures, npm `EOTP`/browser retry, registry-processing reads and 19 timing deferrals remain retained. PR #59 carries the publication records; its authorized merge preserves release ancestry, with final readback retained separately. MS3 remains experimental: original first-pass 1/10, token savings null, accepted 0/10. [Results](./npm-release-results.json), [plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59).
 
@@ -81,6 +81,31 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-15 — ET1 re-review: merge ET0, re-baseline O5, covered flag
+
+- **Branch:** `codex/editorial-titles-et1` ([PR #61](https://github.com/xxibcill/still-shift/pull/61)), now merged with `main` (ET0, PR #60); only this log conflicted.
+- **Done:** `4ead31ac` reports `fontCoverage.covered: false` when a font or the reachable copy could not be inspected (`font-copy-budget`; legacy previously said `covered: true, runs: 0`); `a5a9856e` re-records exactly O5 `validate.diagnostics`/`render.warnings` in `et0-baseline.json`; the ET1 plan checkboxes are ticked.
+- **Correction:** the first review overstated finding 1: the Mac-only-cmap font fails to render with or without fallbacks (also on `main` before ET1), so `5e3533a6` is a consistency fix, not a user-visible one. The browser planner's unguarded copy budget is likewise unreachable in a real render.
+- **Verified (Node 22.23.1):** `check:fast` 457 files / 4,622 tests; font-coverage integration 12 tests; browser `composition-font-fallback`, `typography`, `composition-provider-typography`, `composition-typography-adapter`, `composition-baselines` (176 items, 36,061 frames), `composition-cache-dependencies` (72 exports); ET0 `--check`; nine proof renders byte-identical; T1–T3 pass strict. Not run: full `test:integration`, `check:runtime`, `pnpm check`, WebGL2, human visual review.
+- **Records:** [ET1 results](./editorial-typography-et1-results.json) (`finalVerification`, `reviewFixes`).
+
+### 2026-11-15 — ET1 review fixes (PR #61)
+
+- Review findings posted inline on [PR #61](https://github.com/xxibcill/still-shift/pull/61#pullrequestreview-5909333414); one commit per finding.
+- Fixed: the browser fallback planner threw on fonts the legacy Node gate only warns about (e.g. no Unicode format 4/12 cmap); it now reads only fonts that declare or serve as fallbacks and skips unreadable ones. Regression test added to `composition-font-coverage.test.ts`.
+- Documented: fallback faces ignore text-style/animator axes and OpenType features. Removed an unused `registerFamily` parameter.
+- Verified on Node 22.23.1: `pnpm check:fast` (457 files / 4,622 tests), the integration file (11 tests) and browser groups `composition-font-fallback`, `typography`, `composition-provider-typography`, `composition-typography-adapter`. A first `check:fast` on Node 24.16 failed only the CE9 bake snapshot by one float ulp, identically on `main`; not a PR regression. Not run: full `test:integration`, `check:runtime`, `pnpm check`, human visual review.
+
+### 2026-11-15 — ET1 exact-copy font coverage gate
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-et1` (from `main` `98a92e92`); not pushed, no PR.
+- **Scope:** editorial typography ET1 = typography plan MS1 font gate, on the composition route.
+- **Done:** `769c67c9` composition-1 `fontCoverage` (`legacy`/`strict`) and font `fallbacks`; `c556dec7` Node gate in `comp validate`/`render`/`lint` (`--font-coverage`, raise-only), reusing the existing cmap/identity/copy modules, plus declared pinned fallbacks rendered via `unicode-range`; records commit.
+- **Results:** O5 Plex + Thai now fails strict before render, naming U+0E04/U+0E25/U+0E38, font sha and each layer; legacy stays valid/byte-identical with two warnings. States, generated counts, corrections, span fonts and precomps are covered. Fallback Thai equals direct Noto exactly. Nine proof renders and eight ET0 fixture renders byte-identical; 176 composition baselines and CE15 cache dependencies pass; `check:fast` 4,622 tests (run 1 failed on the every-field fixture, fixed).
+- **Rejected / do not repeat:** a CSS family stack at every `ctx.font` site (many call sites, cache-key risk) — fallbacks join the family by `unicode-range` instead; routing a whole cluster's base character to a fallback (would change that character everywhere) — split clusters are a finding.
+- **Open / next:** owner chose to keep ET1 independent of `codex/editorial-titles-et0`; whenever they meet, re-record only O5 `validate.diagnostics`/`render.warnings` in `et0-baseline.json` and tick the ET1 plan checkboxes. Fallback face per glyph is declared, not measured; WebGL2 and human review not run.
+- **Records:** [ET1 results](./editorial-typography-et1-results.json), [reference notes](./composition-reference-notes.md#exact-copy-font-coverage-et1).
 
 ### 2026-11-15 — Editorial titles ET0: fixtures and re-baseline on main
 

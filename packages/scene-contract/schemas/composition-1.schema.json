@@ -121,6 +121,12 @@
                   "required": ["min", "default", "max"],
                   "additionalProperties": false
                 }
+              },
+              "fallbacks": {
+                "minItems": 1,
+                "maxItems": 4,
+                "type": "array",
+                "items": { "$ref": "#/$defs/__schema0" }
               }
             },
             "required": ["id", "type", "path", "sha256", "weight"],
@@ -669,6 +675,7 @@
       "required": ["keys"],
       "additionalProperties": false
     },
+    "fontCoverage": { "type": "string", "enum": ["legacy", "strict"] },
     "metadata": { "$ref": "#/$defs/__schema80" }
   },
   "required": [

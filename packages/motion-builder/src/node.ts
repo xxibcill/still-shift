@@ -228,6 +228,8 @@ export async function fontAsset(
     weight?: string;
     style?: "normal" | "italic";
     variable?: FontAsset["variable"];
+    /** ET1: pinned font asset ids that draw code points this font lacks. */
+    fallbacks?: FontAsset["fallbacks"];
   } = {},
 ): Promise<FontAsset> {
   const site = sourceLocation();
@@ -242,6 +244,9 @@ export async function fontAsset(
       weight: options.weight ?? "400",
       ...(options.style === undefined ? {} : { style: options.style }),
       ...(options.variable === undefined ? {} : { variable: options.variable }),
+      ...(options.fallbacks === undefined
+        ? {}
+        : { fallbacks: options.fallbacks }),
     },
     site,
   );

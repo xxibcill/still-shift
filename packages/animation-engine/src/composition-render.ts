@@ -6,6 +6,10 @@ import {
   type CompositionDiagnostic,
 } from "@still-shift/scene-contract";
 import type { CompositionMediaPreparationOptions } from "./composition-media.ts";
+import type {
+  CompositionFontCoverageProfile,
+  CompositionFontCoverageReport,
+} from "./composition-font-coverage.ts";
 import { COMPOSITION_EVALUATOR_VERSION } from "../../renderer-core/src/composition/evaluate/evaluate.ts";
 import {
   compositionScene,
@@ -36,12 +40,25 @@ const hash = (bytes: Uint8Array | string) =>
 
 export type LoadedComposition = CompositionSource & { scene: CompositionScene };
 
+function reportsFontCoverage(loaded: CompositionSource) {
+  const coverage = loaded.fontCoverage;
+  return (
+    coverage.profile === "strict" ||
+    !coverage.covered ||
+    coverage.fallbackRuns.length > 0 ||
+    loaded.composition.assets.some(
+      (asset) => asset.type === "font" && asset.fallbacks?.length,
+    )
+  );
+}
+
 /** Prepare an inspected composition source for a selected renderer backend. */
 export async function loadComposition(
   compositionPath: string,
   backend?: CompositionBackend,
   options: CompositionMediaPreparationOptions & {
     nodeMemory?: CompositionNodeMemory;
+    fontCoverage?: CompositionFontCoverageProfile;
   } = {},
 ): Promise<LoadedComposition> {
   const source = await readCompositionSource(compositionPath, {
@@ -86,6 +103,12 @@ export type CompositionRenderResult = {
   /** Non-empty when text used generic browser faces: output is then not
    * reproducible on other machines or browser versions. */
   systemFontLayers: string[];
+  /**
+   * ET1 exact-copy font coverage. Present when the profile is strict, a font
+   * declares fallbacks, or coverage found gaps; omitted otherwise so earlier
+   * results keep their bytes.
+   */
+  fontCoverage?: CompositionFontCoverageReport;
   checksums: { source: string; scene: string; output: string };
   metrics: ExportMetrics;
 };
@@ -108,6 +131,8 @@ export async function renderComposition(request: {
   validateNativeSourceEdges?: () => Promise<void>;
   /** Recheck owning source revisions before guarded composition publication. */
   validateSourceEdges?: () => Promise<void>;
+  /** ET1: raise exact-copy font coverage to strict before any browser work. */
+  fontCoverage?: CompositionFontCoverageProfile;
 }): Promise<CompositionRenderResult> {
   request.signal?.throwIfAborted();
   if (
@@ -133,6 +158,7 @@ export async function renderComposition(request: {
         ...(request.cacheDirectory
           ? { cacheDirectory: request.cacheDirectory }
           : {}),
+        ...(request.fontCoverage ? { fontCoverage: request.fontCoverage } : {}),
       },
     );
     const { width, height } = loaded.scene.canvas;
@@ -245,6 +271,9 @@ export async function renderComposition(request: {
                   ...(request.cacheDirectory
                     ? { cacheDirectory: request.cacheDirectory }
                     : {}),
+                  ...(request.fontCoverage
+                    ? { fontCoverage: request.fontCoverage }
+                    : {}),
                 },
               );
               if (verified.sourceChecksum !== loaded.sourceChecksum)
@@ -282,6 +311,9 @@ export async function renderComposition(request: {
           sceneManifestPath,
           warnings: loaded.warnings,
           systemFontLayers: loaded.systemFontLayers,
+          ...(reportsFontCoverage(loaded)
+            ? { fontCoverage: loaded.fontCoverage }
+            : {}),
           checksums: {
             source: loaded.sourceChecksum,
             scene: hash(manifestBytes),

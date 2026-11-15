@@ -75,6 +75,11 @@ export const CompositionAssetSchema = z.discriminatedUnion("type", [
         .regex(/^(?:[1-8]\d{2}|900)$/, "Font weight must be 100–900"),
       style: z.enum(["normal", "italic"]).optional(),
       variable: CompositionFontAxesSchema.optional(),
+      /**
+       * ET1: ordered pinned font assets that draw this face's missing code points.
+       * Only the code points the font lacks use a fallback; never a system face.
+       */
+      fallbacks: z.array(compositionId).min(1).max(4).optional(),
     })
     .strict(),
   CompositionVideoAssetSchema,
@@ -247,6 +252,11 @@ const compositionFields = {
     .max(L.maxBehaviours)
     .optional(),
   camera2d: Camera2dSchema.optional(),
+  /**
+   * ET1 exact-copy font coverage. `legacy` (default) reports reachable code points
+   * missing from their pinned font as warnings; `strict` makes them errors.
+   */
+  fontCoverage: z.enum(["legacy", "strict"]).optional(),
   metadata: metadata.optional(),
 };
 type CompositionFields = Omit<typeof compositionFields, "precomps"> & {
