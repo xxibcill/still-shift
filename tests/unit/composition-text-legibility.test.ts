@@ -475,6 +475,38 @@ describe("text legibility findings", () => {
     expect(zones[0]![1]).toBeLessThan(zones[1]![1] as number);
   });
 
+  it("says when contrast does not credit a shadow or glow", () => {
+    const run = (effects: unknown[]) =>
+      analyzeCompositionQuality(
+        composition({
+          layers: [
+            {
+              ...composition().layers[0]!,
+              effects,
+            } as Composition["layers"][number],
+          ],
+        }),
+        { textLegibility: {} },
+      ).textLegibility!.limitations.filter((text) =>
+        text.includes("does not credit"),
+      );
+    expect(
+      run([
+        { id: "shadow", effect: "light.drop-shadow" },
+        { id: "glow", effect: "light.glow" },
+        { id: "blur", effect: "blur.gaussian" },
+      ]),
+    ).toEqual([
+      expect.stringMatching(
+        /^text-contrast of title does not credit its light\.drop-shadow and light\.glow effect:/,
+      ),
+    ]);
+    expect(
+      run([{ id: "shadow", effect: "light.drop-shadow", enabled: false }]),
+    ).toEqual([]);
+    expect(run([])).toEqual([]);
+  });
+
   it("reports declared platform UI bands", () => {
     const report = analyzeCompositionQuality(composition(), {
       textLegibility: {

@@ -1053,7 +1053,7 @@
     }
   ],
   "notRun": [
-    "WebGL2 backend with --legibility (the variants use the linted backend; only canvas2d was exercised)",
+    "WebGL2 backend with --legibility before the PR 63 review fixes (since covered by caption tests; see reviewFixes)",
     "pnpm check, full pnpm test and pnpm release:check",
     "Human visual or listening review (not inferred from lint)",
     "Platform safe-zone presets: none are built in; bands are policy data, covered by unit tests only"
@@ -1079,5 +1079,62 @@
     "Broken-path checks: enabled:false mask → o1-attach-animated check fails (kicker 1:1 vs 11.08:1); container-only background → o3-highlight-fade check fails (13.94:1 vs 10.04:1). Sources restored and verified with cmp.",
     "Gate run 1 at ec115f69 was stopped during check:fast to add the regression tests; no results kept.",
     "Gate run 2 at b7328f72: all steps pass except check:runtime run 1 (cold-start timeouts, see finalVerification); its rerun passed. Proof checks final: see proofChecks.final."
-  ]
+  ],
+  "reviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/63#pullrequestreview-5910915546",
+    "base": "40886a8b",
+    "note": "Five review findings on PR 63, one commit each. Findings 1–3 were reproduced with comp lint --pixels true before fixing; every new test was run against the previous source and failed there.",
+    "findings": [
+      {
+        "id": 1,
+        "commit": "a841c954",
+        "finding": "Text held below full opacity was never measured: the glyph mask kept the layer and group-ancestor opacity, so no mask pixel reached red ≥ 254.",
+        "reproduced": "O6 with credit opacity 0.95: 80 reading frames, 0 measured, no finding, lint passed.",
+        "fix": "Mask draws the layer and its group ancestors at opacity 1 with a normal blend and drops opacity expressions, drivers, periodic motion and behaviours on root layers (except the track matte). Reading frames with no measured word are listed under limitations.",
+        "tests": "Unit: mask opacity and opacity-motion stripping; unmeasured-frame limitation. Browser: O6 credit at 0.95 measured and flagged over the band."
+      },
+      {
+        "id": 2,
+        "commit": "ebfc9055",
+        "finding": "--legibility and --strict replaced the saved metadata.readingPolicy textLegibility and severities (shallow merge), dropping saved waivers, safe zones and unrelated severities.",
+        "reproduced": "O6 with saved waivers: no flags applied them; --legibility true gave waivers []; --strict text-contrast exited 1 with both findings as errors.",
+        "fix": "The CLI builds the policy after loading the program; textLegibility and severities come from the --policy file when set, otherwise from the saved policy, and --strict codes are added on top.",
+        "tests": "Browser: saved waiver and saved outside-safe-area error kept under --legibility true and --strict text-contrast."
+      },
+      {
+        "id": 3,
+        "commit": "86b77e3d",
+        "finding": "All probe previews were created up front and kept; each WebGL2 preview holds a GL context (Chromium keeps about 16 per page).",
+        "reproduced": "WebGL2: 12 captions in turn and 10 captions together failed with comp-webgl-size: surface exceeds MAX_TEXTURE_SIZE (lost context); 4 captions and 12 without --legibility passed.",
+        "fix": "Previews open for each layer's reading window only; at most six pairs stay live, extra simultaneous layers get a per-frame pair. Closing a probe loses its WebGL context and drops the canvas backing store. Probe previews get a view of the shared media whose dispose is a no-op (closing one mid-run otherwise stopped the video: 'Disposed media resources').",
+        "tests": "Browser: WebGL2 12 captions in turn and 10 together, every layer measured on all reading frames at 13.71:1 (#222222 on #EEEEEE)."
+      },
+      {
+        "id": 4,
+        "commit": "7f3b8119",
+        "finding": "x-height-floor and platform-safe-zone reported the whole reading window's worst value on every range.",
+        "fix": "Each finding reports the smallest x-height or deepest overlap within its own range.",
+        "tests": "Unit: two ranges split by a cut report 4.95 and 2.75 px, and increasing band depth."
+      },
+      {
+        "id": 5,
+        "commit": "this commit (see git log)",
+        "finding": "Contrast compares each glyph pixel with the frame behind it, so shadows or glows added for legibility are not credited, and the report did not say so.",
+        "fix": "Per-layer limitation for text layers with an enabled light.drop-shadow or light.glow effect; documented. Measurement unchanged.",
+        "tests": "Unit: limitation for enabled shadow and glow, none for a disabled one or for blur."
+      }
+    ],
+    "verification": {
+      "node": "22.23.1",
+      "checkFast": "passed (461 files / 4,646 tests)",
+      "composition-quality": "passed (114 s; includes the new ET3 browser cases, WebGL2 included)",
+      "composition-media": "passed (114 s)"
+    },
+    "notRun": [
+      "pnpm check:runtime, pnpm check and pnpm release:check",
+      "The 38-run off-by-default byte-identity comparison against main was not repeated; the changes only run when legibility rules are declared",
+      "WebGL2 with video and the proof treatments (T1–T3) after the fixes",
+      "Human visual review"
+    ]
+  }
 }

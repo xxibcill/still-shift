@@ -43,6 +43,12 @@ export const DEFAULT_REVIEW_WIDTH = 360;
 export const DEFAULT_MINIMUM_X_HEIGHT = 6;
 /** Fewer glyph-interior pixels than this leave a word unmeasured on a frame. */
 export const MINIMUM_WORD_PIXELS = 16;
+/**
+ * Effects that paint a backdrop around the glyphs (an outline-like glow or a
+ * shadow), often added for legibility. Contrast compares each glyph-interior
+ * pixel with the frame behind it, so it does not credit them.
+ */
+export const BACKDROP_EFFECTS = ["light.drop-shadow", "light.glow"] as const;
 /** Word codes are R = 255, G/B = 4 + 8k; 32 × 32 words fit. */
 const MAX_CODED_WORDS = 1024;
 
@@ -655,6 +661,22 @@ export function analyzeTextLegibility(
         );
       }
     }
+
+    const backdrops = [
+      ...new Set(
+        (layer.effects ?? [])
+          .filter(
+            (effect) =>
+              effect.enabled !== false &&
+              (BACKDROP_EFFECTS as readonly string[]).includes(effect.effect),
+          )
+          .map((effect) => effect.effect),
+      ),
+    ];
+    if (backdrops.length)
+      limitations.push(
+        `text-contrast of ${layer.id} does not credit its ${backdrops.join(" and ")} effect: each glyph pixel is compared with the frame behind it, so an outline or shadow added for legibility is not counted and the layer can be reported below target while it reads well.`,
+      );
 
     // x-height-floor
     const node = textNode(comp, layer);

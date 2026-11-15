@@ -2179,7 +2179,10 @@ frame counts, the worst word, per-word worst contrast, the smallest x-height and
 any waiver. Text inside precomps is not measured and is listed under
 `limitations`. These are legibility signals, not visual acceptance: they do not
 model blur, halation, motion, colour-vision deficiency or polarity, and a
-textured background's darkest 5% can fail a word a person reads easily. Keep human
+textured background's darkest 5% can fail a word a person reads easily. Each
+glyph pixel is compared with the frame directly behind it, so a
+`light.drop-shadow` or `light.glow` effect added for legibility is not
+credited; `limitations` names every text layer that has one enabled. Keep human
 review separate. Contrast adds two renders per text layer and reading frame.
 Their two extra previews exist only during the layer's reading window, and at
 most six layers keep theirs across frames (more on screen together get a pair
