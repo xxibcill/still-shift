@@ -4,6 +4,7 @@ import {
   releaseRenderCanvas,
 } from "./managed-memory-context.ts";
 import type { CanvasPixelSource } from "./canvas-pixel-source.ts";
+import { cachedRecent } from "./recent-cache.ts";
 import { resolveTextEvents } from "./typography-events.ts";
 import { easeMotion } from "./motion-easing.ts";
 import { axisKey, axisLayout, nodeAxisVariants } from "./typography-axes.ts";
@@ -66,7 +67,8 @@ export type TextRaster = {
   /**
    * ET5b: rasters of runs of clusters (keyed `first:last`) holding only their
    * own glyph ink, made on first use when neighbouring clusters on a line are
-   * drawn with different poses (see `drawRaster`).
+   * drawn with different poses (see `drawRaster`); bounded to the most
+   * recently used (see `isolatedSegmentLimit`).
    */
   isolated?: Map<string, { raster: TextRaster; x: number }>;
 };
@@ -329,13 +331,49 @@ function isolatedSegment(
   last: number,
 ) {
   raster.isolated ??= new Map();
-  const key = `${first}:${last}`;
-  let segment = raster.isolated.get(key);
-  if (!segment) {
-    segment = rasterizeSegment(node, raster, first, last);
-    raster.isolated.set(key, segment);
+  return cachedRecent(
+    raster.isolated,
+    `${first}:${last}`,
+    isolatedSegmentLimit(raster.layout),
+    () => rasterizeSegment(node, raster, first, last),
+    (stale) => releaseTextRaster(stale.raster),
+  );
+}
+/**
+ * Isolated segments kept per raster. One frame draws at most one segment per
+ * cluster, so twice that keeps the previous frame's segments for reuse while
+ * bounding memory: a stagger's settled prefix alone is a new segment each
+ * time it grows, and arbitrary motion can produce a quadratic number.
+ */
+function isolatedSegmentLimit(layout: ShapedLayout) {
+  return Math.max(32, 2 * layout.clusters.length);
+}
+/**
+ * Release a raster's native storage and that of its variants and isolated
+ * segments. Shared preparation sources keep their own canvases; tints painted
+ * locally are released either way.
+ */
+function releaseTextRaster(
+  raster: TextRaster,
+  seen = new Set<TextRaster>(),
+): void {
+  if (seen.has(raster)) return;
+  seen.add(raster);
+  if (!raster.sourceCanvas) {
+    releaseRenderCanvas(raster.canvas);
+    for (const canvas of raster.strokes.values()) releaseRenderCanvas(canvas);
   }
-  return segment;
+  for (const canvas of raster.colors.values())
+    if (!raster.sourceCanvas || localColorCanvases.has(canvas)) {
+      localColorCanvases.delete(canvas);
+      releaseRenderCanvas(canvas);
+    }
+  raster.colors.clear();
+  for (const variant of raster.variants.values())
+    releaseTextRaster(variant, seen);
+  for (const isolated of raster.isolated?.values() ?? [])
+    releaseTextRaster(isolated.raster, seen);
+  raster.isolated?.clear();
 }
 /** The segment's outline, cached on it under the line raster's key scheme. */
 function isolatedStroke(isolated: TextRaster, width: number, color: string) {
@@ -650,24 +688,7 @@ export function prepareTypography(
 /** Release native typography storage; shared preparation sources retain their separate owners. */
 export function disposeTypography(prepared: PreparedTypography): void {
   const seen = new Set<TextRaster>();
-  const release = (raster: TextRaster) => {
-    if (seen.has(raster)) return;
-    seen.add(raster);
-    if (!raster.sourceCanvas) {
-      releaseRenderCanvas(raster.canvas);
-      for (const canvas of raster.strokes.values()) releaseRenderCanvas(canvas);
-    }
-    for (const canvas of raster.colors.values())
-      if (!raster.sourceCanvas || localColorCanvases.has(canvas)) {
-        localColorCanvases.delete(canvas);
-        releaseRenderCanvas(canvas);
-      }
-    raster.colors.clear();
-    for (const variant of raster.variants.values()) release(variant);
-    for (const isolated of raster.isolated?.values() ?? [])
-      release(isolated.raster);
-    raster.isolated?.clear();
-  };
+  const release = (raster: TextRaster) => releaseTextRaster(raster, seen);
   for (const rasters of prepared.nodes.values())
     for (const raster of rasters.values()) release(raster);
   for (const corrections of prepared.corrections.values())
