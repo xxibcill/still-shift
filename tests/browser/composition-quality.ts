@@ -846,7 +846,7 @@ try {
   );
   const lintSignals = await verifyLintSignalCleanup();
   console.log(
-    `ET2: comp lint cancelled by ${lintSignals.signals.join(", ")} during the browser phase exits 1 with comp-program-aborted and leaves no temporary entries or browser process.`,
+    `ET2: comp lint cancelled by ${lintSignals.signals.join(", ")} during the browser phase exits 128 + the signal number with comp-program-aborted and leaves no temporary entries or browser process.`,
   );
 
   const cliPixels = await lintCompositionFile(

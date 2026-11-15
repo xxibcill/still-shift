@@ -29,7 +29,11 @@ import { parseNamedArguments, requireArgument } from "../named-options.ts";
 import { loadProgram } from "./program.ts";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { withProgramFile, writeComposition } from "./files.ts";
-import { ownProcessSignals, signalExitCode } from "./process-signals.ts";
+import {
+  ownProcessSignals,
+  signalExitCode,
+  type OwnedSignal,
+} from "./process-signals.ts";
 import {
   COMPOSITION_OUTPUT_FORMATS,
   type CompositionOutputFormat,
@@ -291,6 +295,7 @@ export async function runCompositionCommand(
       // them, so an unowned one would end the process with no cleanup (a
       // closed terminal or dropped SSH session sends SIGHUP).
       const controller = new AbortController();
+      let cancelledBy: OwnedSignal | undefined;
       const lintFailure = (message: string) => ({
         code: "comp-program-aborted",
         severity: "error" as const,
@@ -298,12 +303,14 @@ export async function runCompositionCommand(
         message,
       });
       const releaseSignals = ownProcessSignals({
-        cancel: (signal) =>
+        cancel: (signal) => {
+          cancelledBy = signal;
           controller.abort(
             new CompositionProgramError([
               lintFailure(`Composition lint cancelled by ${signal}`),
             ]),
-          ),
+          );
+        },
         // A signal after the relay window means cleanup is taking too long
         // for the user: stop now, as an unowned signal would. Written
         // synchronously, because stderr to a pipe is asynchronous on macOS.
@@ -339,7 +346,17 @@ export async function runCompositionCommand(
         io.stdout(json(report));
         return report.status === "failed" ? 1 : 0;
       } catch (error) {
-        throw controller.signal.aborted ? controller.signal.reason : error;
+        if (!cancelledBy) throw error;
+        // Cleanup has finished: report the cancel and exit as a process
+        // ended by that signal would (130 for SIGINT), so callers can tell
+        // an interrupted lint from one with findings (exit 1).
+        io.stderr(
+          json({
+            status: "failed",
+            diagnostics: diagnostics(controller.signal.reason),
+          }),
+        );
+        return signalExitCode(cancelledBy);
       } finally {
         releaseSignals();
       }

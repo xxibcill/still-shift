@@ -11,7 +11,7 @@ import assert from "node:assert/strict";
 import { execFile, spawn } from "node:child_process";
 import { mkdtemp, readdir, rm } from "node:fs/promises";
 import { join, resolve } from "node:path";
-import { tmpdir } from "node:os";
+import { constants, tmpdir } from "node:os";
 import { setTimeout as delay } from "node:timers/promises";
 import { promisify } from "node:util";
 import {
@@ -99,7 +99,7 @@ async function cancelCliLint(signal: (typeof signals)[number]) {
       ]);
       assert.deepEqual(
         result,
-        { code: 1, signal: null },
+        { code: 128 + constants.signals[signal], signal: null },
         `${signal}: exit after cancellation: ${stderr}`,
       );
     } finally {
