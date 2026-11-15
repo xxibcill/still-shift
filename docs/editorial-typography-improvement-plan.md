@@ -1,8 +1,9 @@
 # Editorial title overlays: improvement plan
 
 Date: 2026-11-15. Status: **ET0–ET3 merged on `main` (PR #60, #61, #62, #63);
-remaining milestones reordered by the
-[direction review](#direction-review-2026-11-15) and still proposed.** ET0
+ET5a and ET5b implemented on `codex/editorial-titles-et5a` and
+`codex/editorial-titles-et5b` (PRs pending); remaining milestones reordered by
+the [direction review](#direction-review-2026-11-15) and still proposed.** ET0
 re-baselined every finding on `main` (98a92e92); see
 [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
@@ -102,7 +103,7 @@ order did not, for these reasons.
 | ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62) |
 | ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63) |
 | G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Waiting on owner          |
-| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Proposed                  |
+| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Implemented (PR pending)  |
 | ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5                                        | Proposed                  |
 | ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                  |
 | ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Proposed                  |
@@ -405,21 +406,39 @@ which of the two is right.
 **Why:** two traps passed every check (O2, O3), and a generator will hit both
 repeatedly. They are cheap and independent of the pilot's outcome.
 
+**Result (2026-11-15):** implemented on `codex/editorial-titles-et5a`; see the
+[ET5a results](./editorial-typography-et5a-results.json). Pixel lint reports
+both traps by default as errors: `text-off-canvas` (O2 fixture 0.399 of its
+settled ink, matching ET0's pixel measurement; pass-1 T3 `line` 0.399 and
+`credit` 0.365) and `orphaned-decoration` (O3 fixture frames 70–83 and its
+first frame 4; pass-1 T2 `tag` 134–149). The opt-in decoration field
+`fadeWithText` makes the bar follow its text's opacity. Default renders are
+unchanged; the only ET0 baseline changes are the two new findings.
+
 **Scope and checks**
 
-- [ ] **Align contract (O2).** Owner decides: keep origin centring (document it
+- [x] **Align contract (O2).** Owner decides: keep origin centring (document it
       and warn when `align` is not `left` and the text overflows the frame) or
-      centre within `textLayout.width` behind a versioned field.
-- [ ] **Partial off-canvas severity.** A layer with a large share of its ink
+      centre within `textLayout.width` behind a versioned field. _Implemented
+      the recommended guard (documented contract; the finding names it when a
+      centred or right-aligned layer overflows). D-align stays open: the
+      versioned centring field was not built._
+- [x] **Partial off-canvas severity.** A layer with a large share of its ink
       off-frame is reported as an error proportional to the hidden fraction,
       distinct from a few-pixel safe-inset incursion. The ET0 O2 fixture (39.9%
-      off-frame) fails; a 5 px incursion stays a warning.
-- [ ] **Decorations and fades (O3).** Either highlight/box/underline inherit their
+      off-frame) fails; a 5 px incursion stays a warning. _`text-off-canvas`,
+      `measured` = hidden share of settled glyph ink, threshold
+      `textOffCanvasFraction` (default 0.05). Pixel lint only; text animators'
+      excursions are excluded, layer transforms are not._
+- [x] **Decorations and fades (O3).** Either highlight/box/underline inherit their
       text's animator opacity (versioned), or lint reports a visible decoration
       with fully transparent text. The ET0 O3 fixture (frames 70–83) is caught or
-      fixed.
-- [ ] Existing outputs and default lint results unchanged unless versioned.
-- [ ] `pnpm check:fast` plus the browser groups for each touched area.
+      fixed. _Both: `orphaned-decoration` lint, and opt-in `fadeWithText`
+      (`o3-highlight-fade-with-text.ts`: bar pixels after the fade 50,483 → 0)._
+- [x] Existing outputs and default lint results unchanged unless versioned.
+      _Render hashes unchanged; default lint changes only where the new rules
+      fire, recorded in the ET0 baseline._
+- [x] `pnpm check:fast` plus the browser groups for each touched area.
 
 Estimate: 1–2 days.
 

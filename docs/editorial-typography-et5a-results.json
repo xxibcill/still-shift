@@ -1,0 +1,119 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-et5a",
+  "milestone": "ET5a — Framing and decoration guards",
+  "plan": "docs/editorial-typography-improvement-plan.md#et5a--framing-and-decoration-guards",
+  "date": "2026-11-16",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/editorial-titles-et5a",
+  "base": "main 0af3a405 (Merge PR #65, plan direction review; ET0–ET3 merged)",
+  "toolchain": "Node 22.23.1, pnpm 10.29.3 (nvm), Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+  "reEstimate": "Planned 1–2 active days; done in one session. Both findings needed only measurements the renderer already has: settled glyph ink boxes from the shaped layout (O2) and the renderer's own per-frame draw plan (O3).",
+  "ownerDecisionsRespected": "D-align was not decided. The guard implements the plan's recommendation (keep origin centring, document and guard); a versioned centre-within-textLayout.width field was not built and stays available. G1 decisions (contrast targets, phone floor, clip, font list) untouched.",
+  "failingFirst": {
+    "o2": "On main 0af3a405 the ET0 O2 fixture's pixel lint reports only outside-safe-area (warning) for 39.9% of the line off-frame (et0-baseline.json, ET0); pass-1 T3 likewise. No rule reported hidden copy.",
+    "o3": "On main the ET0 O3 fixture's pixel lint has no decoration finding while the bar stays at 50,483 px on frames 70–83 with zero text ink (ET0 pixel counts); pass-1 T2 likewise.",
+    "tests": "tests/browser/composition-framing-guards.ts asserts the new findings on the ET0 fixtures and on footage-free copies of the pass-1 compositions (research/editorial-typography-proof/pass1/*.composition.json via tests/helpers/editorial-proof-pass1.ts); it fails on main, where neither code exists."
+  },
+  "design": {
+    "textOffCanvas": {
+      "code": "text-off-canvas (default error; pixel lint only)",
+      "evidence": "Preparation records, per text state, the settled glyph-ink box of each line (union of shaped cluster ink boxes; no text-animator excursions, container or decorations). Exposed as preview.textInkBounds and passed to analyzeCompositionQuality as runtime evidence (policy.textFramingEvidence, never saved).",
+      "measure": "On each visible frame the line boxes are projected by the sample's matrix (or homography), so parents and precomp hosts count. measured = area outside the canvas / total area, reported when it reaches textOffCanvasFraction (policy, default 0.05). Precomp text uses its precomp-id/layer-id key.",
+      "alignContract": "When the layer's align is center or right, the message states that align places each line relative to the layer origin, not within textLayout.width.",
+      "notCovered": "State-only lint measures no glyph ink and adds nothing (unchanged reports). Text without a pinned font is not measured. A layer slid in from off-frame by its transform is reported on the frames it is cut; a text-animator entrance is not."
+    },
+    "orphanedDecoration": {
+      "code": "orphaned-decoration (default error; pixel lint only)",
+      "measure": "For root and precomp text layers with decorations, the pixel lint samples each frame's evaluated state and asks the prepared text (typographyOrphanedDecorations) which decorations paint while every glyph they decorate (their span, if any) is transparent through text-animator opacity, a word reveal or the layer reveal. It uses the renderer's own draw plan, transitions included. path names the decoration (layers.N.decorations.M).",
+      "fix": "Opt-in decoration field fadeWithText (composition schema): the mark's alpha is multiplied by the highest animator opacity of its non-blank glyphs on each line. Off by default; existing compositions render unchanged."
+    }
+  },
+  "changes": [
+    "packages/scene-contract/src/composition/typography.ts: decoration fadeWithText (boolean, optional); regenerated composition-1 JSON schema, composition reference and compose skill.",
+    "packages/renderer-core/src/typography-decorations.ts: per-line decorated-glyph opacity, decorationReveal, fadeWithText alpha.",
+    "packages/renderer-core/src/typography-renderer.ts: typographyOrphanedDecorations (same draw plan and poses as drawing).",
+    "packages/renderer-core/src/composition/render/text.ts and renderer.ts: CompositionText.inkBounds / orphanedDecorations, preview.textInkBounds / orphanedTextDecorations.",
+    "packages/renderer-core/src/composition/quality-policy.ts: codes text-off-canvas and orphaned-decoration (error), textOffCanvasFraction, TextFramingEvidence.",
+    "packages/renderer-core/src/composition/quality-rules.ts: textOffCanvasShare, text-off-canvas in framing findings, compositionDecorationFindings.",
+    "packages/renderer-core/src/composition/quality-render.ts: collects TextFramingEvidence during pixel lint.",
+    "benchmarks/fixtures/editorial-titles: o3-highlight-fade.ts parameterised (default output byte-identical), new o3-highlight-fade-with-text.ts, README rows, et0-baseline.json re-recorded.",
+    "scripts/editorial-titles/et0-baseline.ts: --write keeps the expanded JSON layout so re-recording diffs only changed entries.",
+    "tests: unit (tests/unit/composition-quality.test.ts, 9 cases), browser (tests/browser/composition-framing-guards.ts, run from test:browser:composition-quality), helper tests/helpers/editorial-proof-pass1.ts.",
+    "docs/composition-reference-notes.md: rule list, layer notes and a 'Title framing and decoration guards (ET5a)' section."
+  ],
+  "checks": {
+    "o2Fixture": {
+      "status": "met",
+      "evidence": "o2-center-origin: text-off-canvas error on line, frames 4–83, measured 0.399 (ET0 pixel share 0.399), message names the align contract; outside-safe-area warning kept. o2-center-control: no guard finding."
+    },
+    "smallIncursion": {
+      "status": "met",
+      "evidence": "The control line moved to x = −5 (≈5 px off the left edge): outside-safe-area warning only. Unit cases: 5 px of 200 (2.5%) and an inset-only incursion stay warnings; 40% and 90% are errors."
+    },
+    "o3Fixture": {
+      "status": "met (caught and fixable)",
+      "evidence": "o3-highlight-fade: orphaned-decoration error on tag, decoration 0, frames 70–83 and 4–4 (the line animator starts the tag at opacity 0 while the bar is already full). o3-highlight-fade-with-text: no finding; H.264 bar pixels frame 40 41,111 vs 41,089 default (encoder noise), frame 76 0 vs 50,483. Default render pixel counts equal the ET0 record (41,089 / 50,483)."
+    },
+    "pass1Proof": {
+      "status": "met",
+      "evidence": "Footage-free copies (video asset and layer removed, absolute font paths): T3 text-off-canvas on line 0.399 and credit 0.365 (frames 12–149); T2 orphaned-decoration on tag 134–149; T1 no guard finding."
+    },
+    "defaultsUnchanged": {
+      "status": "met",
+      "evidence": "et0-baseline.ts --check before re-recording: every render hash and measured outcome unchanged; the only differences were the added text-off-canvas (O2) and orphaned-decoration (O3) diagnostics. o3-highlight-fade.ts renders byte-identically (same hash). State-only lint adds nothing. The O3 default render is unchanged; fadeWithText is opt-in."
+    },
+    "policy": {
+      "status": "met",
+      "evidence": "textOffCanvasFraction 0.5 tolerates the 39.9% fixture; severities lower either rule to a warning."
+    },
+    "verificationTier": {
+      "status": "met",
+      "evidence": "check:fast, test:browser:composition-quality (includes the ET5a guards), test:browser:typography and test:browser:composition-typography-adapter pass; see finalVerification."
+    }
+  },
+  "et0BaselineChanges": [
+    "findings.O2.lintPixels.diagnostics: + text-off-canvas error, line, frames 4–83, measured 0.399.",
+    "findings.O3.lintPixels.diagnostics: + orphaned-decoration error, tag, frames 4–4 and 70–83."
+  ],
+  "reviewFrames": {
+    "clip": "benchmarks/results/cinematic-illustrated/review-v3/ci-09-layered-parallax.mp4 (git-ignored local clip, SHA-256 d5bc5a52…7fdcd verified; linked from the primary checkout)",
+    "method": "Pass-1 T2 JSON copied with absolute asset paths (JSON inputs take only regular files), rendered to H.264 with comp render on main 0af3a405 (detached temporary worktree) and on this branch; the 'after' copy sets fadeWithText: true on the tag's highlight. Frames extracted by FFmpeg ordinal (select=eq(n,N)), as research/editorial-typography-proof/review-frames.sh does.",
+    "sheet": "docs/review/editorial-typography-et5-2026-11-16/t2-pass1-bar-main-vs-fade-with-text.jpg (tag region at 0.8×, frames 100 hold and 130/134/138/142/146 exit; left main, right ET5a + fadeWithText)",
+    "measured": "Default T2 pass-1 render on this branch is byte-identical to main (output sha256:11c5f91a…). With fadeWithText, frame 100 differs in 4 pixels (encoder); frames 130–146 differ in ~22,000 pixels each: the bar fades with the tag instead of staying.",
+    "notAcceptance": "For the owner's review only; no visual acceptance is inferred."
+  },
+  "rejectedExperiments": [
+    {
+      "experiment": "Measure the off-frame share from the evaluator's text bounds (the measured motion-union bounds).",
+      "reason": "Those bounds include every reachable text-animator excursion, so a glyph entrance from below or a tracking drift would count as off-frame on every frame. Settled per-line ink boxes were used instead."
+    },
+    {
+      "experiment": "Make every decoration follow its text's opacity by default.",
+      "reason": "Changes existing renders (story and commerce typography share the decoration path); kept opt-in as fadeWithText and paired with a default lint finding."
+    }
+  ],
+  "limitations": [
+    "Both rules need pixel lint (--pixels true); state-only lint has no glyph measurements.",
+    "text-off-canvas uses axis-aligned line boxes, not glyph outlines; rotated or projected lines use their screen bounding box.",
+    "A decoration over a run of only spaces counts as orphaned only by its own glyphs; its fadeWithText alpha is 0 on such a line."
+  ],
+  "notRun": [
+    "pnpm check, full pnpm test, pnpm release:check",
+    "WebGL2 pixel lint of the ET5a fixtures (the evidence comes from the shared text preparation, which both backends use)",
+    "Human visual acceptance: the review sheets are for the owner; nothing here is acceptance"
+  ],
+  "finalVerification": {
+    "node": "22.23.1",
+    "checkFast": "passed (461 files / 4,657 tests) after the implementation, and again on the final tree before commit",
+    "compositionQuality": "passed (includes the ET5a guards: O2 0.399, O3 frames 4 and 70–83, pass-1 T3 and T2, fadeWithText bar 50,483 → 0 px)",
+    "typography": "passed",
+    "compositionTypographyAdapter": "passed",
+    "et0Baseline": "--check before re-record: only the two new findings differ; --write re-recorded; render hashes unchanged",
+    "typographyBaselines": "composition-baselines --write --family typography run by mistake in this worktree produced identical typography hashes (renders unchanged); its timing-only change was reverted"
+  },
+  "lintSweep": {
+    "method": "comp lint --pixels true on the 12 text-bearing composition inputs in examples/composition and benchmarks/fixtures/composition, on main 0af3a405 (detached temporary worktree) and on this branch; stdout compared.",
+    "result": "All 12 reports byte-identical. Only 2 inputs reach pixel lint (ce4a/native-beat.json, unequal-margins/program.ts); the other 10 stop identically before lint (system-font text, perspective on Canvas). Weak evidence of unchanged defaults; the ET0 fixtures and the composition-quality suite carry the rest."
+  }
+}
