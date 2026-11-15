@@ -33,6 +33,7 @@ import {
   type LayerPixelEnergy,
 } from "./story-continuous-quality.ts";
 import { evaluatePreparedNode, type Property } from "./prepared-scene.ts";
+import { analyzeTextLegibility } from "./composition/text-legibility.ts";
 import type { StoryRenderScene } from "./story-scene.ts";
 import type { PreparedNode } from "../../scene-contract/src/prepared.ts";
 
@@ -330,6 +331,10 @@ export function analyzeStoryQuality(
 
 export {
   CompositionQualityPolicySchema,
+  CompositionTextLegibilitySchema,
+  TEXT_LEGIBILITY_CODES,
+  type TextLegibilityCode,
+  type TextLegibilityEvidence,
   CompositionSemanticAssociationSchema,
   CompositionReadingMemberSchema,
   MOTION_LINT_CODES,
@@ -461,6 +466,10 @@ export function analyzeCompositionQuality(
         diagnostic.classification = "declared-reading-hold";
       }
     }
+  const textLegibility = resolved.textLegibility
+    ? analyzeTextLegibility(comp, frames, resolved)
+    : undefined;
+  if (textLegibility) diagnostics.push(...textLegibility.diagnostics);
   const physicalProofHolds = classifyPhysicalProofHolds(
     frames,
     resolved,
@@ -505,6 +514,7 @@ export function analyzeCompositionQuality(
     },
     ...(readingDeclarations.length ? { readingDeclarations } : {}),
     ...(physicalProofHolds.length ? { physicalProofHolds } : {}),
+    ...(textLegibility ? { textLegibility: textLegibility.report } : {}),
     ...(resolved.speechCaptions?.length
       ? {
           speechCaptions: analyzeCompositionSpeechCaptions(

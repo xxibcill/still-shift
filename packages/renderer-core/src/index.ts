@@ -128,7 +128,11 @@ export {
   CompositionQualityPolicySchema,
   CompositionSemanticAssociationSchema,
   CompositionReadingMemberSchema,
+  CompositionTextLegibilitySchema,
   MOTION_LINT_CODES,
+  TEXT_LEGIBILITY_CODES,
+  type TextLegibilityCode,
+  type TextLegibilityEvidence,
   type CompositionQualityPolicy,
   type CompositionQualityReport,
   type CompositionSemanticAssociation,
@@ -142,6 +146,15 @@ export {
   type CompositionPhysicalProofHold,
 } from "./composition/quality-policy.ts";
 export { analyzeRenderedCompositionQuality } from "./composition/quality-render.ts";
+export { readFontMetrics } from "./font-metrics.ts";
+export {
+  analyzeTextLegibility,
+  legibilityWords,
+  measureTextContrastPixels,
+  textLegibilityMask,
+  TEXT_LEGIBILITY_VERSION,
+  type TextLegibilityReport,
+} from "./composition/text-legibility.ts";
 export {
   compositionQualityFrame,
   compositionQualityTree,
