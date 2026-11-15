@@ -1,5 +1,6 @@
 import {
   createRenderCanvas,
+  readRenderImageData,
   retainRenderCanvas,
   releaseRenderCanvas,
 } from "./managed-memory-context.ts";
@@ -71,6 +72,8 @@ export type TextRaster = {
    * recently used (see `isolatedSegmentLimit`).
    */
   isolated?: Map<string, { raster: TextRaster; x: number }>;
+  /** ET5b: whether shaping joins each cluster to the next (see `joinsNext`). */
+  joins?: Map<number, boolean>;
 };
 export type PreparedTypography = {
   corrections: Map<
@@ -446,6 +449,89 @@ function poseSegments(
     key = next;
   }
   return segments;
+}
+/**
+ * ET5b: whether shaping joins a cluster to the next one, as a ligature or a
+ * contextual form does. Segments are shaped on their own, so splitting such
+ * a pair at a pose boundary would change their glyphs while the poses differ
+ * and change them back when they merge. Measured once per boundary: the pair
+ * shaped together against each cluster shaped alone, at the layout's
+ * positions; kerning keeps the glyphs and so does not count.
+ */
+function joinsNext(node: TextNode, raster: TextRaster, index: number) {
+  const layout = raster.layout,
+    a = layout.clusters[index]!,
+    b = layout.clusters[index + 1];
+  if (!b || a.lineIndex !== b.lineIndex || a.runIndex !== b.runIndex)
+    return false;
+  raster.joins ??= new Map();
+  const cached = raster.joins.get(index);
+  if (cached !== undefined) return cached;
+  const pair = isolatedSegment(node, raster, index, index + 1),
+    left = isolatedSegment(node, raster, index, index),
+    right = isolatedSegment(node, raster, index + 1, index + 1);
+  const { width, height } = pair.raster.canvas;
+  const apart = surface(width, height, raster.softwareRaster);
+  let joined = false;
+  try {
+    const ctx = apart.getContext("2d")!;
+    for (const part of [left, right])
+      ctx.drawImage(
+        part.raster.canvas,
+        part.raster.left + part.x - (pair.raster.left + pair.x),
+        part.raster.top - pair.raster.top,
+      );
+    const together = readRenderImageData(
+        pair.raster.canvas.getContext("2d")!,
+        0,
+        0,
+        width,
+        height,
+      ).data,
+      separate = readRenderImageData(ctx, 0, 0, width, height).data;
+    // Rounding at glyph edges differs by far less than a changed glyph.
+    let changed = 0;
+    for (let i = 3; i < together.length && changed < 3; i += 4)
+      if (Math.abs(together[i]! - separate[i]!) > 96) changed++;
+    joined = changed >= 3;
+  } finally {
+    releaseRenderCanvas(apart);
+  }
+  raster.joins.set(index, joined);
+  return joined;
+}
+/**
+ * ET5b: on lines drawn by segments, the clusters that shaping joins across a
+ * pose boundary, mapped to their whole joined unit [first, last]. A unit is
+ * rasterized together, so its glyphs keep their shapes, and each cluster
+ * draws its own columns of it with its own pose.
+ */
+function joinedUnits(
+  node: TextNode,
+  raster: TextRaster,
+  poses: TextPose[],
+  lines: Set<number>,
+) {
+  const units = new Map<number, [number, number]>();
+  for (const lineIndex of lines) {
+    const line = raster.layout.lines[lineIndex]!,
+      start = line.clusters[0]!,
+      end = line.clusters.at(-1)!;
+    for (let i = start; i < end; i++) {
+      if (
+        units.has(i) ||
+        drawPoseKey(poses[i]!) === drawPoseKey(poses[i + 1]!) ||
+        !joinsNext(node, raster, i)
+      )
+        continue;
+      let first = i,
+        last = i + 1;
+      while (first > start && joinsNext(node, raster, first - 1)) first--;
+      while (last < end && joinsNext(node, raster, last)) last++;
+      for (let k = first; k <= last; k++) units.set(k, [first, last]);
+    }
+  }
+  return units;
 }
 export function prepareTypography(
   scene: (StoryRenderScene | CommerceRenderScene) & TextAnimationContext,
@@ -961,7 +1047,12 @@ function drawCluster(
   );
   ctx.restore();
 }
-/** ET5b: one isolated segment with its shared pose. */
+/**
+ * ET5b: one isolated segment with its shared pose, or, with `slice`, the
+ * columns of one cluster of a joined unit (see `joinedUnits`): from its
+ * advance boundaries inside the unit, and to the raster's edge at the
+ * unit's ends so overhanging ink stays with the unit's outer clusters.
+ */
 function drawSegment(
   ctx: CanvasRenderingContext2D,
   node: TextNode,
@@ -969,37 +1060,50 @@ function drawSegment(
   first: number,
   last: number,
   pose: TextPose,
+  slice?: number,
 ) {
   if (pose.opacity <= 0) return;
   raster = axisRaster(raster, pose.axes);
   const { raster: own, x } = isolatedSegment(node, raster, first, last);
+  const origin = own.left + x;
+  let from = origin,
+    to = origin + own.canvas.width;
+  if (slice !== undefined) {
+    const cluster = raster.layout.clusters[slice]!;
+    if (slice !== first) from = Math.round(cluster.x);
+    if (slice !== last) to = Math.round(cluster.x + cluster.advance);
+    if (to <= from) return;
+  }
+  const paint = (canvas: HTMLCanvasElement) =>
+    ctx.drawImage(
+      canvas,
+      from - origin,
+      0,
+      to - from,
+      own.canvas.height,
+      from,
+      own.top,
+      to - from,
+      own.canvas.height,
+    );
   ctx.save();
   ctx.globalAlpha *= Math.max(0, Math.min(1, pose.opacity));
   posedClusterTransform(ctx, pose);
   const strokeWidth = quantizeStrokeWidth(pose.strokeWidth);
-  if (strokeWidth > 0)
-    ctx.drawImage(
-      isolatedStroke(own, strokeWidth, pose.stroke),
-      own.left + x,
-      own.top,
-    );
-  // As drawCluster, for every cluster: the raster holds each cluster's span
-  // colour, so it draws as painted only when all of them are the pose's fill.
-  // Clusters with different span colours share a pose when an animator drives
-  // their fill to one colour; the segment is then tinted as a whole.
+  if (strokeWidth > 0) paint(isolatedStroke(own, strokeWidth, pose.stroke));
+  // As drawCluster, for every cluster drawn: the raster holds each cluster's
+  // span colour, so it draws as painted only when all of them are the pose's
+  // fill. Clusters with different span colours share a pose when an animator
+  // drives their fill to one colour; the segment is then tinted as a whole.
   const painted = (index: number) =>
     own.colorCoverage
       ? "#ffffff"
       : (node.spans?.[raster.layout.clusters[index]!.spanIndex]?.color ??
         node.color);
   let untinted = true;
-  for (let i = first; i <= last && untinted; i++)
+  for (let i = slice ?? first; i <= (slice ?? last) && untinted; i++)
     untinted = painted(i) === pose.fill;
-  ctx.drawImage(
-    untinted ? own.canvas : coloredRaster(own, pose.fill),
-    own.left + x,
-    own.top,
-  );
+  paint(untinted ? own.canvas : coloredRaster(own, pose.fill));
   ctx.restore();
 }
 function posedClusterTransform(ctx: CanvasRenderingContext2D, pose: TextPose) {
@@ -1100,7 +1204,10 @@ function drawRaster(
   );
   ({ poses, reveal } = typographyRevealPoses(node, raster, poses, reveal));
   const distinct = linesWithDistinctPoses(raster.layout, poses);
-  // Lines with one pose draw by slices; the others by isolated segments.
+  const units = joinedUnits(node, raster, poses, distinct);
+  // Lines with one pose draw by slices; the others by isolated segments,
+  // except clusters whose shaping joins them across a pose boundary, which
+  // draw as slices of their joined unit. Drawn in cluster order.
   const drawIndices = (target: CanvasRenderingContext2D, indices: number[]) => {
     const sliced = indices.filter(
       (i) => !distinct.has(raster.layout.clusters[i]!.lineIndex),
@@ -1110,8 +1217,30 @@ function drawRaster(
     const isolated = indices.filter((i) =>
       distinct.has(raster.layout.clusters[i]!.lineIndex),
     );
-    for (const [first, last] of poseSegments(raster.layout, poses, isolated))
-      drawSegment(target, node, raster, first, last, poses[first]!);
+    const draws: [number, number, number | undefined][] = [
+      ...poseSegments(
+        raster.layout,
+        poses,
+        isolated.filter((i) => !units.has(i)),
+      ).map(([first, last]): [number, number, undefined] => [
+        first,
+        last,
+        undefined,
+      ]),
+      ...isolated
+        .filter((i) => units.has(i))
+        .map((i): [number, number, number] => [...units.get(i)!, i]),
+    ].sort((a, b) => (a[2] ?? a[0]) - (b[2] ?? b[0]));
+    for (const [first, last, slice] of draws)
+      drawSegment(
+        target,
+        node,
+        raster,
+        first,
+        last,
+        poses[slice ?? first]!,
+        slice,
+      );
   };
   for (const group of textBlurRuns(poses)) {
     const layer = resetLayer(prepared.layer, width, height);

@@ -186,6 +186,28 @@ function expectedFrame(
   return out;
 }
 
+/**
+ * A frame whose lower part was displaced by `offset` (vertically, clear of
+ * the rest), moved back: every pixel from row `split` down returns by the
+ * offset. When the parts are cut from one static line, this rebuilds it.
+ * The background is the frame's own corner pixel (encoded paper can differ
+ * from the composition's nominal colour).
+ */
+function reassembled(moved: Buffer, offset: [number, number], split: number) {
+  const paper = moved.subarray(0, 3),
+    out = Buffer.alloc(moved.length);
+  for (let i = 0; i < out.length; i += 3) out.set(paper, i);
+  for (let y = 0; y < H; y++)
+    for (let x = 0; x < W; x++) {
+      const i = (y * W + x) * 3;
+      if (moved.subarray(i, i + 3).equals(paper)) continue;
+      const ty = y >= split ? y - offset[1] : y,
+        tx = y >= split ? x - offset[0] : x;
+      if (tx < 0 || ty < 0 || tx >= W || ty >= H) continue;
+      moved.copy(out, (ty * W + tx) * 3, i, i + 3);
+    }
+  return out;
+}
 /** Pixels whose largest channel difference exceeds `tolerance`. */
 function differing(a: Buffer, b: Buffer, tolerance = 24) {
   let count = 0;
@@ -330,7 +352,25 @@ export async function verifyGlyphSeams() {
       await frame0(directory, "tint-ve-x-moved", recoloured),
       expectedFrame(unspanned, spaced, offset),
     );
-    return { displaced, transparent, separated, neighbours, ligature, tinted };
+    // A ligature split across poses stays one glyph: with only the "i" of
+    // "fi" displaced, the ligature is cut at the layout advance, not
+    // reshaped as a lone "f" and "i" (which would snap back to the ligature
+    // when the poses meet). Moving the lower part back rebuilds the line.
+    const split = await frame0(
+      directory,
+      "lig-fi-split",
+      serifPair("fi", { offset }, loose),
+    );
+    const joined = differing(reassembled(split, offset, 345), ligated);
+    return {
+      displaced,
+      transparent,
+      separated,
+      neighbours,
+      ligature,
+      tinted,
+      joined,
+    };
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -347,6 +387,7 @@ export async function assertNoGlyphSeams() {
       neighbours: { Ol: 0, li: 0, iv: 0 },
       ligature: 0,
       tinted: 0,
+      joined: 0,
     },
     `ET5b: per-glyph poses must not carry a neighbour's ink (pixels differing from the static oracle: ${JSON.stringify(result)})`,
   );
