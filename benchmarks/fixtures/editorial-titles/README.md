@@ -51,6 +51,13 @@ the git-ignored `benchmarks/results/editorial-titles-et0/`):
 pnpm exec tsx scripts/editorial-titles/et0-baseline.ts --check
 ```
 
+The recorded baseline is platform-specific: it was measured on macOS with the
+pinned toolchain. Render hashes depend on the Chromium canvas and the host font
+stack, and O5's hash and fallback ink count depend on whichever Thai fallback
+face the host provides (that fallback is the O5 finding). On another platform,
+expect `--check` to differ; record a separate baseline there rather than
+treating the difference as a regression.
+
 A milestone that intentionally changes one of these outcomes (for example ET1
 rejecting `o5-plex-thai.ts`) re-records the baseline with `--write` and lists the
 changed entries in its results file.
