@@ -63,6 +63,12 @@ export type TextRaster = {
   colorCoverage?: boolean;
   /** Composition outlines cache opaque coverage, independent of animated colour. */
   strokeCoverage?: boolean;
+  /**
+   * ET5b: rasters of runs of clusters (keyed `first:last`) holding only their
+   * own glyph ink, made on first use when neighbouring clusters on a line are
+   * drawn with different poses (see `drawRaster`).
+   */
+  isolated?: Map<string, { raster: TextRaster; x: number }>;
 };
 export type PreparedTypography = {
   corrections: Map<
@@ -235,6 +241,173 @@ export function rasterizeText(
     ...(softwareRaster ? { softwareRaster: true } : {}),
     ...(colorCoverage ? { colorCoverage: true } : {}),
   };
+}
+/**
+ * ET5b: the glyph ink of a run of neighbouring clusters on one line that share
+ * a pose, shaped and painted on its own. Slicing the line raster at advance
+ * boundaries hands a glyph's overhang (a serif, an italic stroke) to its
+ * neighbour; drawn with the neighbour's pose, that sliver detaches as a
+ * fragment and leaves a seam (finding O11). A segment keeps the shaping inside
+ * it (ligatures, contextual forms); its clusters sit at the layout's kerned
+ * positions. The raster's coordinates are shifted left by `x` (an integer).
+ */
+type IsolatedSegment = { raster: TextRaster; x: number };
+function rasterizeSegment(
+  node: TextNode,
+  raster: TextRaster,
+  first: number,
+  last: number,
+): IsolatedSegment {
+  // An integer shift keeps every glyph's subpixel phase and an unscaled draw.
+  const layout = raster.layout,
+    x = Math.floor(layout.clusters[first]!.x),
+    line = layout.lines[layout.clusters[first]!.lineIndex]!;
+  const shift = <T extends { x: number }>(value: T): T => ({
+    ...value,
+    x: value.x - x,
+  });
+  const indices = Array.from({ length: last - first + 1 }, (_, i) => first + i);
+  const clusters = indices.map((index) => {
+    const cluster = layout.clusters[index]!;
+    return {
+      ...shift(cluster),
+      lineIndex: 0,
+      ...(cluster.ink ? { ink: shift(cluster.ink) } : {}),
+    };
+  });
+  const runs: ShapedLayout["runs"] = [];
+  const runOf = new Map<number, number>();
+  indices.forEach((index, i) => {
+    const cluster = layout.clusters[index]!;
+    let at = runOf.get(cluster.runIndex);
+    if (at === undefined) {
+      at = runs.length;
+      runOf.set(cluster.runIndex, at);
+      const run = layout.runs[cluster.runIndex]!;
+      runs.push({ ...run, text: "", x: cluster.x - x, width: 0, clusters: [] });
+    }
+    const run = runs[at]!;
+    run.text += cluster.text;
+    run.clusters.push(i);
+    run.width = cluster.x - x + cluster.advance - run.x;
+    clusters[i]!.runIndex = at;
+  });
+  const end = layout.clusters[last]!;
+  const sub: ShapedLayout = {
+    ...layout,
+    top: line.baseline - line.ascent,
+    height: line.ascent + line.descent,
+    clusters,
+    runs,
+    lines: [
+      {
+        ...line,
+        x: layout.clusters[first]!.x - x,
+        width: end.x + end.advance - layout.clusters[first]!.x,
+        clusters: indices.map((_, i) => i),
+      },
+    ],
+  };
+  // Made on first use while drawing, so it is painted locally: shared
+  // preparation sources only admit requests during preparation. Retained like
+  // local tints, so a frame's scratch memory does not reclaim the cache.
+  const isolated = rasterizeText(
+    node,
+    sub,
+    raster.fonts,
+    raster.colorCoverage,
+    raster.softwareRaster,
+  );
+  retainRenderCanvas(isolated.canvas);
+  if (raster.strokeCoverage) isolated.strokeCoverage = true;
+  return { raster: isolated, x };
+}
+function isolatedSegment(
+  node: TextNode,
+  raster: TextRaster,
+  first: number,
+  last: number,
+) {
+  raster.isolated ??= new Map();
+  const key = `${first}:${last}`;
+  let segment = raster.isolated.get(key);
+  if (!segment) {
+    segment = rasterizeSegment(node, raster, first, last);
+    raster.isolated.set(key, segment);
+  }
+  return segment;
+}
+/** The segment's outline, cached on it under the line raster's key scheme. */
+function isolatedStroke(isolated: TextRaster, width: number, color: string) {
+  const strokeColor = isolated.strokeCoverage ? "#ffffff" : color;
+  const key = `${width}:${strokeColor}`;
+  let canvas = isolated.strokes.get(key);
+  if (!canvas) {
+    canvas = renderStrokedRaster(isolated, width, strokeColor);
+    retainRenderCanvas(canvas);
+    isolated.strokes.set(key, canvas);
+  }
+  return isolated.strokeCoverage && color !== "#ffffff"
+    ? coloredRaster(isolated, color, canvas, `stroke:${width}:${color}`)
+    : canvas;
+}
+/** Everything that makes two clusters draw differently. */
+function drawPoseKey(pose: TextPose) {
+  const transformed =
+    pose.scale !== 1 || pose.rotation !== 0 || pose.skew !== 0;
+  return JSON.stringify([
+    pose.x,
+    pose.y,
+    pose.scale,
+    pose.rotation,
+    pose.skew,
+    pose.opacity,
+    pose.blur,
+    quantizeStrokeWidth(pose.strokeWidth),
+    pose.fill,
+    pose.stroke,
+    axisKey(pose.axes),
+    pose.mask,
+    pose.feather,
+    transformed ? [pose.anchorX, pose.anchorY] : 0,
+  ]);
+}
+/**
+ * ET5b: lines whose clusters are not all drawn with one pose. They draw by
+ * isolated segments; lines with one pose keep the line raster's slices, which
+ * tile it exactly, so settled text stays pixel-identical.
+ */
+function linesWithDistinctPoses(layout: ShapedLayout, poses: TextPose[]) {
+  const lines = new Set<number>();
+  for (const [lineIndex, line] of layout.lines.entries()) {
+    const keys = new Set(line.clusters.map((i) => drawPoseKey(poses[i]!)));
+    if (keys.size > 1) lines.add(lineIndex);
+  }
+  return lines;
+}
+/** Consecutive indices on one line with one pose, as [first, last] pairs. */
+function poseSegments(
+  layout: ShapedLayout,
+  poses: TextPose[],
+  indices: number[],
+) {
+  const segments: [number, number][] = [];
+  let key: string | undefined;
+  for (const index of indices) {
+    const next = drawPoseKey(poses[index]!);
+    const open = segments.at(-1);
+    if (
+      open &&
+      open[1] === index - 1 &&
+      layout.clusters[open[1]]!.lineIndex ===
+        layout.clusters[index]!.lineIndex &&
+      next === key
+    )
+      open[1] = index;
+    else segments.push([index, index]);
+    key = next;
+  }
+  return segments;
 }
 export function prepareTypography(
   scene: (StoryRenderScene | CommerceRenderScene) & TextAnimationContext,
@@ -491,6 +664,9 @@ export function disposeTypography(prepared: PreparedTypography): void {
       }
     raster.colors.clear();
     for (const variant of raster.variants.values()) release(variant);
+    for (const isolated of raster.isolated?.values() ?? [])
+      release(isolated.raster);
+    raster.isolated?.clear();
   };
   for (const rasters of prepared.nodes.values())
     for (const raster of rasters.values()) release(raster);
@@ -739,17 +915,7 @@ function drawCluster(
   if (right <= x || bottom <= y) return;
   ctx.save();
   ctx.globalAlpha *= Math.max(0, Math.min(1, pose.opacity));
-  ctx.translate(pose.anchorX + pose.x, pose.anchorY + pose.y);
-  ctx.rotate((pose.rotation * Math.PI) / 180);
-  ctx.transform(
-    pose.scale,
-    0,
-    Math.tan((pose.skew * Math.PI) / 180),
-    pose.scale,
-    0,
-    0,
-  );
-  ctx.translate(-pose.anchorX, -pose.anchorY);
+  posedClusterTransform(ctx, pose);
   const paint = (canvas: HTMLCanvasElement, dx = 0, dy = 0) =>
     ctx.drawImage(
       canvas,
@@ -773,6 +939,56 @@ function drawCluster(
       : coloredRaster(raster, pose.fill),
   );
   ctx.restore();
+}
+/** ET5b: one isolated segment with its shared pose. */
+function drawSegment(
+  ctx: CanvasRenderingContext2D,
+  node: TextNode,
+  raster: TextRaster,
+  first: number,
+  last: number,
+  pose: TextPose,
+) {
+  if (pose.opacity <= 0) return;
+  raster = axisRaster(raster, pose.axes);
+  const { raster: own, x } = isolatedSegment(node, raster, first, last);
+  const cluster = raster.layout.clusters[first]!;
+  ctx.save();
+  ctx.globalAlpha *= Math.max(0, Math.min(1, pose.opacity));
+  posedClusterTransform(ctx, pose);
+  const strokeWidth = quantizeStrokeWidth(pose.strokeWidth);
+  if (strokeWidth > 0)
+    ctx.drawImage(
+      isolatedStroke(own, strokeWidth, pose.stroke),
+      own.left + x,
+      own.top,
+    );
+  // As drawCluster. A segment shares one pose, so one fill: by default the
+  // span colour of all its clusters, otherwise an animator's tint.
+  ctx.drawImage(
+    pose.fill ===
+      (own.colorCoverage
+        ? "#ffffff"
+        : (node.spans?.[cluster.spanIndex]?.color ?? node.color))
+      ? own.canvas
+      : coloredRaster(own, pose.fill),
+    own.left + x,
+    own.top,
+  );
+  ctx.restore();
+}
+function posedClusterTransform(ctx: CanvasRenderingContext2D, pose: TextPose) {
+  ctx.translate(pose.anchorX + pose.x, pose.anchorY + pose.y);
+  ctx.rotate((pose.rotation * Math.PI) / 180);
+  ctx.transform(
+    pose.scale,
+    0,
+    Math.tan((pose.skew * Math.PI) / 180),
+    pose.scale,
+    0,
+    0,
+  );
+  ctx.translate(-pose.anchorX, -pose.anchorY);
 }
 function resetLayer(canvas: HTMLCanvasElement, width: number, height: number) {
   if (canvas.width !== width || canvas.height !== height) {
@@ -858,6 +1074,20 @@ function drawRaster(
     poses,
   );
   ({ poses, reveal } = typographyRevealPoses(node, raster, poses, reveal));
+  const distinct = linesWithDistinctPoses(raster.layout, poses);
+  // Lines with one pose draw by slices; the others by isolated segments.
+  const drawIndices = (target: CanvasRenderingContext2D, indices: number[]) => {
+    const sliced = indices.filter(
+      (i) => !distinct.has(raster.layout.clusters[i]!.lineIndex),
+    );
+    sliced.forEach((i) => drawCluster(target, node, raster, i, poses[i]!));
+    if (sliced.length === indices.length) return;
+    const isolated = indices.filter((i) =>
+      distinct.has(raster.layout.clusters[i]!.lineIndex),
+    );
+    for (const [first, last] of poseSegments(raster.layout, poses, isolated))
+      drawSegment(target, node, raster, first, last, poses[first]!);
+  };
   for (const group of textBlurRuns(poses)) {
     const layer = resetLayer(prepared.layer, width, height);
     layer.translate(-left, -top);
@@ -877,12 +1107,12 @@ function drawRaster(
     }
     for (const [key, indices] of masked) {
       if (key === "plain") {
-        indices.forEach((i) => drawCluster(layer, node, raster, i, poses[i]!));
+        drawIndices(layer, indices);
         continue;
       }
       const mask = resetLayer(prepared.maskLayer, width, height);
       mask.translate(-left, -top);
-      indices.forEach((i) => drawCluster(mask, node, raster, i, poses[i]!));
+      drawIndices(mask, indices);
       const clusters = indices.map((i) => raster.layout.clusters[i]!),
         box = clusterBox(clusters),
         pose = poses[indices[0]!]!;
