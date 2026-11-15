@@ -282,16 +282,52 @@ export async function runCompositionCommand(
             JSON.parse(await readFile(resolve(path), "utf8")),
           )
         : {};
-      const program = await loadProgram(input);
-      const report = await withProgramFile(program, input, (path) =>
-        lintCompositionFile(path, policy, {
-          pixels,
-          backend,
-          ...(fontCoverage ? { fontCoverage } : {}),
-        }),
-      );
-      io.stdout(json(report));
-      return report.status === "failed" ? 1 : 0;
+      // ET2: own SIGINT/SIGTERM while linting so media staging, the media
+      // cache lock, the lint dev-server cache and the compiled program are
+      // removed by their owners instead of being left by process exit.
+      const controller = new AbortController();
+      // Repeated signals are expected (a terminal signals the whole process
+      // group and tsx relays it again); aborting is idempotent.
+      const cancel = (name: NodeJS.Signals) => () => {
+        controller.abort(
+          new CompositionProgramError([
+            {
+              code: "comp-program-aborted",
+              severity: "error",
+              path: "input",
+              message: `Composition lint cancelled by ${name}`,
+            },
+          ]),
+        );
+      };
+      const interrupt = cancel("SIGINT"),
+        terminate = cancel("SIGTERM");
+      // Persistent listeners: tsx's signal relay exits the process when no
+      // listener remains after a signal, before cleanup could finish.
+      process.on("SIGINT", interrupt);
+      process.on("SIGTERM", terminate);
+      try {
+        const program = await loadProgram(input, {
+          signal: controller.signal,
+        });
+        controller.signal.throwIfAborted();
+        const report = await withProgramFile(program, input, (path) =>
+          lintCompositionFile(path, policy, {
+            pixels,
+            backend,
+            signal: controller.signal,
+            ownsProcessSignals: true,
+            ...(fontCoverage ? { fontCoverage } : {}),
+          }),
+        );
+        io.stdout(json(report));
+        return report.status === "failed" ? 1 : 0;
+      } catch (error) {
+        throw controller.signal.aborted ? controller.signal.reason : error;
+      } finally {
+        process.off("SIGINT", interrupt);
+        process.off("SIGTERM", terminate);
+      }
     }
     if (command === "render") {
       const values = parseNamedArguments(args.slice(1), [

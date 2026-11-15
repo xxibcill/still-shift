@@ -51,11 +51,23 @@ export function renderBrowserArgs(profile: RenderBrowserProfile = "pinned") {
 
 /** Launch headless Chromium with the pinned software-rendering profile. */
 export function launchRenderBrowser(
-  options: { profile?: RenderBrowserProfile } = {},
+  options: {
+    profile?: RenderBrowserProfile;
+    /**
+     * Set to false only when the caller turns SIGINT/SIGTERM/SIGHUP into an
+     * abort that closes this browser. Playwright's own handlers otherwise exit
+     * the process after closing browsers, before the caller's cleanup runs.
+     * Launch flags and rendering are unchanged.
+     */
+    handleProcessSignals?: boolean;
+  } = {},
 ): Promise<Browser> {
   return chromium.launch({
     headless: true,
     args: renderBrowserArgs(options.profile),
+    ...(options.handleProcessSignals === false
+      ? { handleSIGINT: false, handleSIGTERM: false, handleSIGHUP: false }
+      : {}),
   });
 }
 

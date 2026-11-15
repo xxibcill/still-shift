@@ -1,9 +1,12 @@
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
   AnimationEngineError,
+  resolveCompositionMediaLimits,
   type Composition,
 } from "@still-shift/scene-contract";
 import { createReadStream } from "node:fs";
+import { createServer as createHttpServer, type Server } from "node:http";
+import type { AddressInfo } from "node:net";
 import { mkdtemp, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { extname, join } from "node:path";
@@ -18,6 +21,7 @@ import {
   type CompositionBackend,
   type CompositionQualityReport,
 } from "@still-shift/renderer-core";
+import type { CompositionMediaResourceStats } from "../../renderer-core/src/composition/render/media-resources.ts";
 import type * as Renderer from "@still-shift/renderer-core";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import {
@@ -39,6 +43,15 @@ export type CompositionLintReport = CompositionQualityReport & {
   textBounds?: NonNullable<
     NonNullable<CompositionQualityPolicy["evaluation"]>["textBounds"]
   >;
+  /**
+   * ET2: native media decode residency after the last linted frame, with the
+   * browser LRU budget (`mediaLimits.decodedFrameBytes`). Present only when
+   * `collectMediaStatistics` is set and the composition has video or sequence
+   * media, so existing reports keep their bytes.
+   */
+  mediaStatistics?: Readonly<CompositionMediaResourceStats> & {
+    decodedFrameBytesLimit: number;
+  };
 };
 
 export type CompositionLintOptions = BrowserRuntimeOptions & {
@@ -46,9 +59,17 @@ export type CompositionLintOptions = BrowserRuntimeOptions & {
   backend?: CompositionBackend;
   collectTextBounds?: boolean;
   collectStatistics?: boolean;
+  /** ET2: report native media decode residency (see `mediaStatistics`). */
+  collectMediaStatistics?: boolean;
   cacheDirectory?: string;
   nodeMemory?: CompositionNodeMemory;
   signal?: AbortSignal | undefined;
+  /**
+   * ET2: the caller turns process signals into an abort of `signal` (the CLI
+   * does). The pinned browser is then launched without Playwright's process
+   * signal handlers, which exit the process before cleanup can finish.
+   */
+  ownsProcessSignals?: boolean;
   /** ET1: raise exact-copy font coverage to strict; findings then fail loading. */
   fontCoverage?: "legacy" | "strict";
 };
@@ -106,6 +127,7 @@ async function lintOwnedComposition(
   const root = options.projectRoot ?? defaultBrowserProjectRoot;
   const cacheDir = await mkdtemp(join(tmpdir(), "composition-lint-vite-"));
   let server: ViteDevServer | undefined;
+  let http: Server | undefined;
   let browser: Browser | undefined;
   const abort = () => {
     void browser?.close().catch(() => {});
@@ -113,6 +135,9 @@ async function lintOwnedComposition(
   options.signal?.addEventListener("abort", abort, { once: true });
   try {
     options.signal?.throwIfAborted();
+    // ET2: middleware mode on an owned HTTP server. A listening Vite dev
+    // server installs a process-wide SIGTERM handler that exits the process,
+    // which would skip this function's cleanup of `cacheDir`.
     server = await createServer({
       root,
       cacheDir,
@@ -120,19 +145,33 @@ async function lintOwnedComposition(
       logLevel: "silent",
       plugins: [lintAssetPlugin(loaded.assetPaths)],
       server: {
-        host: "127.0.0.1",
-        port: 0,
+        middlewareMode: true,
+        hmr: false,
+        ws: false,
         fs: { allow: [root, defaultBrowserProjectRoot] },
       },
     });
     options.signal?.throwIfAborted();
-    await server.listen();
+    const listening = createHttpServer(server.middlewares);
+    http = listening;
+    await new Promise<void>((resolve, reject) => {
+      listening.once("error", reject);
+      listening.listen(0, "127.0.0.1", () => {
+        listening.off("error", reject);
+        resolve();
+      });
+    });
     options.signal?.throwIfAborted();
-    browser = await launchRenderBrowser();
+    browser = await launchRenderBrowser(
+      options.ownsProcessSignals ? { handleProcessSignals: false } : {},
+    );
     options.signal?.throwIfAborted();
     const page = await browser.newPage();
     await page.goto(
-      runtimeBrowserUrl(server.resolvedUrls!.local[0]!, "composition-compile"),
+      runtimeBrowserUrl(
+        `http://127.0.0.1:${(listening.address() as AddressInfo).port}/`,
+        "composition-compile",
+      ),
     );
     const moduleUrl = `/@fs/${fileURLToPath(new URL("../../renderer-core/src/index.ts", import.meta.url))}`;
     await page.addScriptTag({
@@ -163,6 +202,8 @@ async function lintOwnedComposition(
         backend,
         collectTextBounds,
         collectStatistics,
+        collectMediaStatistics,
+        decodedFrameBytesLimit,
       }) => {
         const comp = JSON.parse(json) as Composition;
         const policy = JSON.parse(policyJson) as CompositionQualityPolicy;
@@ -174,8 +215,11 @@ async function lintOwnedComposition(
         let preview:
           | ReturnType<typeof renderer.createCompositionPreview>
           | undefined;
+        let resources:
+          | Awaited<ReturnType<typeof renderer.loadCompositionResources>>
+          | undefined;
         try {
-          const resources = await renderer.loadCompositionResources(
+          resources = await renderer.loadCompositionResources(
             comp,
             (id: string) => `/_lint/assets/${encodeURIComponent(id)}`,
             {
@@ -203,6 +247,14 @@ async function lintOwnedComposition(
               ? { renderStatistics: preview.renderStatistics?.() }
               : {}),
             ...(collectTextBounds ? { textBounds: preview.textBounds } : {}),
+            ...(collectMediaStatistics && resources.media
+              ? {
+                  mediaStatistics: {
+                    ...resources.media.stats(),
+                    decodedFrameBytesLimit,
+                  },
+                }
+              : {}),
           };
         } catch (error) {
           return {
@@ -222,6 +274,10 @@ async function lintOwnedComposition(
         backend,
         collectTextBounds: options.collectTextBounds ?? false,
         collectStatistics: options.collectStatistics ?? false,
+        collectMediaStatistics: options.collectMediaStatistics ?? false,
+        decodedFrameBytesLimit: resolveCompositionMediaLimits(
+          loaded.composition.mediaLimits,
+        ).decodedFrameBytes,
       },
     );
     options.signal?.throwIfAborted();
@@ -233,6 +289,9 @@ async function lintOwnedComposition(
         : {}),
       validationDiagnostics: loaded.warnings,
       ...(result.textBounds ? { textBounds: result.textBounds } : {}),
+      ...(result.mediaStatistics
+        ? { mediaStatistics: result.mediaStatistics }
+        : {}),
     };
   } catch (error) {
     options.signal?.throwIfAborted();
@@ -245,10 +304,21 @@ async function lintOwnedComposition(
       try {
         await server?.close();
       } finally {
-        await rm(cacheDir, { recursive: true, force: true });
+        try {
+          if (http?.listening) await closeHttpServer(http);
+        } finally {
+          await rm(cacheDir, { recursive: true, force: true });
+        }
       }
     }
   }
+}
+
+function closeHttpServer(server: Server) {
+  return new Promise<void>((resolve, reject) => {
+    server.close((error) => (error ? reject(error) : resolve()));
+    server.closeAllConnections();
+  });
 }
 
 /** Serve only already validated resources; native frame decoding retains its bounded LRU. */
