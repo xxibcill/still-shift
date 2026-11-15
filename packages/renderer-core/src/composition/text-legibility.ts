@@ -680,10 +680,12 @@ export function analyzeTextLegibility(
       );
       let floor: { review: number; output: number; frame: number } | undefined;
       const small: number[] = [];
+      const perFrame = new Map<number, { review: number; output: number }>();
       for (const frame of reading) {
         const scale = Math.abs(frames[frame]!.layers.get(layer.id)!.scale[1]);
         const output = smallest.xHeight * scale;
         const review = (output * reviewWidth) / comp.width;
+        perFrame.set(frame, { review, output });
         if (!floor || review < floor.review) floor = { review, output, frame };
         if (review < minimumXHeight) small.push(frame);
       }
@@ -693,14 +695,21 @@ export function analyzeTextLegibility(
         frame: floor!.frame,
         fonts: [...new Set(measuredStyles.map((style) => style.font))],
       };
-      for (const [start, end] of ranges(small, policy.cuts))
+      for (const [start, end] of ranges(small, policy.cuts)) {
+        // Each range reports its own smallest x-height.
+        let least = perFrame.get(start)!;
+        for (let frame = start + 1; frame <= end; frame++) {
+          const value = perFrame.get(frame);
+          if (value && value.review < least.review) least = value;
+        }
         push(
           "x-height-floor",
           [start, end],
-          round(floor!.review),
-          `${layer.id} x-height is ${floor!.review.toFixed(1)} px at a ${reviewWidth} px review width (${floor!.output.toFixed(1)} px at ${comp.width} px output); floor ${minimumXHeight} px.`,
+          round(least.review),
+          `${layer.id} x-height is ${least.review.toFixed(1)} px at a ${reviewWidth} px review width (${least.output.toFixed(1)} px at ${comp.width} px output); floor ${minimumXHeight} px.`,
           { path: `${path}.fontSize` },
         );
+      }
     } else if (!measuredStyles.length)
       limitations.push(
         `x-height of ${layer.id} is not measured: it uses no pinned font.`,
@@ -709,7 +718,7 @@ export function analyzeTextLegibility(
     // platform-safe-zone
     for (const zone of safeZones) {
       const inside: number[] = [];
-      let deepest = 0;
+      const depth = new Map<number, number>();
       for (const frame of reading) {
         const bounds = frames[frame]!.layers.get(layer.id)!.clippedBounds;
         if (!bounds) continue;
@@ -749,10 +758,14 @@ export function analyzeTextLegibility(
           (bounds.right - bounds.left) * (bounds.bottom - bounds.top);
         if (width > 0 && height > 0 && area > 0) {
           inside.push(frame);
-          deepest = Math.max(deepest, (width * height) / area);
+          depth.set(frame, (width * height) / area);
         }
       }
-      for (const [start, end] of ranges(inside, policy.cuts))
+      for (const [start, end] of ranges(inside, policy.cuts)) {
+        // Each range reports its own deepest overlap.
+        let deepest = 0;
+        for (let frame = start; frame <= end; frame++)
+          deepest = Math.max(deepest, depth.get(frame) ?? 0);
         push(
           "platform-safe-zone",
           [start, end],
@@ -760,6 +773,7 @@ export function analyzeTextLegibility(
           `${layer.id} enters the ${zone.edge} UI band "${zone.id}" (${round(zone.fraction * 100, 1)}% of the frame); up to ${round(deepest * 100, 1)}% of its text box is inside.`,
           { path: `${path}.transform` },
         );
+      }
     }
     return entry;
   });

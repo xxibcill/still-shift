@@ -412,6 +412,69 @@ describe("text legibility findings", () => {
     ).toBe(true);
   });
 
+  it("reports each range's own worst x-height and safe-zone depth", () => {
+    // Two ranges split by a cut: frames 0–4 at one scale and position,
+    // frames 5–9 smaller and deeper in the band. Each finding must report
+    // its own range, not the whole window's worst.
+    const held = <T>(first: T, second: T) => ({
+      keys: [
+        { frame: 0, value: first },
+        { frame: 4, value: first },
+        { frame: 5, value: second },
+        { frame: 9, value: second },
+      ],
+    });
+    const report = analyzeCompositionQuality(
+      composition({
+        assets: [
+          {
+            id: "mono",
+            type: "font",
+            path: "mono.ttf",
+            sha256: `sha256:${"0".repeat(64)}`,
+            weight: "500",
+          },
+        ] as Composition["assets"],
+        layers: [
+          {
+            ...composition().layers[0]!,
+            fontAsset: "mono",
+            fontSize: 32,
+            transform: {
+              position: held([100, 300], [100, 280]),
+              scale: held([0.9, 0.9], [0.5, 0.5]),
+            },
+          } as Composition["layers"][number],
+        ],
+      }),
+      {
+        intentionalCuts: [5],
+        textLegibility: {
+          safeZones: [{ id: "status", edge: "top", fraction: 0.17 }],
+        },
+        textLegibilityEvidence: { fontXHeights: { mono: 0.516 } },
+        evaluation: {
+          textBounds: { title: [{ left: 0, top: 0, right: 400, bottom: 60 }] },
+        },
+      },
+    );
+    const found = (code: string) =>
+      report.diagnostics
+        .filter((d) => d.code === code)
+        .map((d) => [d.frames, d.measured]);
+    // 32 px × 0.516 = 16.5 px at 1080, so 5.5 px at 360, times the scale.
+    expect(found("x-height-floor")).toEqual([
+      [[0, 4], 4.95],
+      [[5, 9], 2.75],
+    ]);
+    const zones = found("platform-safe-zone");
+    expect(zones.map(([frames]) => frames)).toEqual([
+      [0, 4],
+      [5, 9],
+    ]);
+    expect(zones[0]![1]).toBeLessThan(zones[1]![1] as number);
+  });
+
   it("reports declared platform UI bands", () => {
     const report = analyzeCompositionQuality(composition(), {
       textLegibility: {
