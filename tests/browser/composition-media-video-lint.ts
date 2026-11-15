@@ -2,7 +2,7 @@
 // it leaves no temporary cache
 // (docs/editorial-typography-improvement-plan.md#et2--pixel-lint-over-native-video).
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdir, mkdtemp, readdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { subscribe, unsubscribe } from "node:diagnostics_channel";
@@ -12,23 +12,13 @@ import { lintCompositionFile } from "@still-shift/animation-engine";
 import type { CompositionMediaLimits } from "@still-shift/scene-contract";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import {
+  directoryBytes,
   generateLongClip,
   lintTemporaryEntries,
   longClipComposition,
   mediaCacheTransientEntries,
   type LongClip,
 } from "../helpers/editorial-video-lint.ts";
-
-async function directoryBytes(path: string): Promise<number> {
-  let total = 0;
-  for (const entry of await readdir(path, { withFileTypes: true })) {
-    const child = join(path, entry.name);
-    total += entry.isDirectory()
-      ? await directoryBytes(child)
-      : (await stat(child)).size;
-  }
-  return total;
-}
 
 async function until(
   condition: () => Promise<boolean>,

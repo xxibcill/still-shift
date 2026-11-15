@@ -5,7 +5,7 @@
 // The long clip is never committed: it is regenerated into a caller-owned
 // temporary directory by looping the tracked 4 s fixture clip with FFmpeg.
 import { execFile } from "node:child_process";
-import { readdir } from "node:fs/promises";
+import { readdir, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { promisify } from "node:util";
@@ -196,6 +196,24 @@ export async function lintTemporaryEntries(): Promise<string[]> {
       lintTemporaryPrefixes.some((prefix) => name.startsWith(prefix)),
     )
     .sort();
+}
+
+/** Bytes under `path`, recursively; 0 when it does not exist. */
+export async function directoryBytes(path: string): Promise<number> {
+  const entries = await readdir(path, { withFileTypes: true }).catch(
+    (error) => {
+      if ((error as NodeJS.ErrnoException).code === "ENOENT") return [];
+      throw error;
+    },
+  );
+  let total = 0;
+  for (const entry of entries) {
+    const child = join(path, entry.name);
+    total += entry.isDirectory()
+      ? await directoryBytes(child)
+      : (await stat(child)).size;
+  }
+  return total;
 }
 
 /** Staging directories and the lock a media cache transaction owns. */

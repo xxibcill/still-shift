@@ -13,7 +13,7 @@
 // prepared cache bytes against `mediaLimits.decodedCacheBytes`, and any
 // temporary entries the lint left behind.
 import { execFileSync } from "node:child_process";
-import { mkdtemp, readdir, rm, stat, writeFile } from "node:fs/promises";
+import { mkdtemp, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { parseArgs } from "node:util";
@@ -24,6 +24,7 @@ import {
 } from "@still-shift/scene-contract";
 import { passageDiagnostics } from "@still-shift/renderer-core";
 import {
+  directoryBytes,
   generateLongClip,
   lintTemporaryEntries,
   longClipComposition,
@@ -75,19 +76,6 @@ function residentBytes() {
     queue.push(...(children.get(pid) ?? []));
   }
   return { node: process.memoryUsage().rss, descendants };
-}
-
-async function directoryBytes(path: string): Promise<number> {
-  let total = 0;
-  for (const entry of await readdir(path, { withFileTypes: true }).catch(
-    () => [],
-  )) {
-    const child = join(path, entry.name);
-    total += entry.isDirectory()
-      ? await directoryBytes(child)
-      : (await stat(child)).size;
-  }
-  return total;
 }
 
 const work = await mkdtemp(join(tmpdir(), "et2-long-clip-"));
