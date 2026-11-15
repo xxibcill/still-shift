@@ -272,6 +272,55 @@ export async function verifyTextLegibility() {
       },
     ]);
     assert.equal(waived.code, 1);
+
+    // The flags keep the composition's saved reading policy: its waiver and
+    // an unrelated saved severity. They used to replace `textLegibility` and
+    // `severities` wholesale, dropping both.
+    const savedReason = "Saved with the composition.";
+    for (const flags of [
+      ["--legibility", "true"],
+      ["--strict", "text-contrast"],
+    ]) {
+      const saved = await lintVariant(
+        directory,
+        "o6-dark-band",
+        (composition) => {
+          composition.metadata = {
+            ...composition.metadata,
+            readingPolicy: {
+              severities: { "outside-safe-area": "error" },
+              textLegibility: {
+                waivers: [{ layer: "credit", reason: savedReason }],
+              },
+            },
+          };
+        },
+        flags,
+      );
+      const label = `ET3 ${flags.join(" ")}`;
+      assert.deepEqual(
+        saved.report.textLegibility!.waivers.map((w) => [w.layer, w.reason]),
+        [["credit", savedReason]],
+        `${label}: the saved waiver is kept`,
+      );
+      for (const d of saved.report.diagnostics.filter(
+        (d) => d.code === "text-contrast",
+      ))
+        assert.equal(
+          d.severity,
+          d.node === "credit" || flags[0] === "--legibility"
+            ? "warning"
+            : "error",
+          `${label}: ${d.node} ${d.frames.join("-")} severity`,
+        );
+      assert.ok(
+        saved.report.diagnostics.some(
+          (d) => d.code === "outside-safe-area" && d.severity === "error",
+        ),
+        `${label}: the saved outside-safe-area severity is kept`,
+      );
+      assert.equal(saved.code, 1, `${label}: the saved error severity gates`);
+    }
   } finally {
     await rm(directory, { recursive: true, force: true });
   }

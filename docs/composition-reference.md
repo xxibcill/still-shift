@@ -3439,7 +3439,10 @@ Declaring `textLegibility` in the lint policy (or in the composition's saved
 root text layers. They are **warnings** unless `severities` raises them;
 `--strict text-contrast` (a comma-separated list of `text-contrast`,
 `x-height-floor` and `platform-safe-zone`) declares the rules and makes the named
-codes errors. Without any of these, reports are unchanged.
+codes errors. The flags keep the `textLegibility` and `severities` already in
+effect, from the `--policy` file when it sets them and otherwise from the saved
+`metadata.readingPolicy`, so saved waivers, safe zones and unrelated severities
+still apply. Without any of these, reports are unchanged.
 
 ```sh
 pnpm --silent still-shift comp lint --input title.ts --pixels true --legibility true

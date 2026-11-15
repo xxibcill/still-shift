@@ -103,23 +103,38 @@ function strictLegibilityOption(values: Map<string, string>) {
 }
 /**
  * ET3: `--legibility true` declares the legibility rules with their defaults;
- * `--strict` declares them too and raises the named codes to errors. A
- * policy's own `textLegibility` and severities are kept, except that strict
- * codes always gate.
+ * `--strict` declares them too and raises the named codes to errors. The
+ * `textLegibility` and severities in effect are kept, except that strict codes
+ * always gate. Lint merges the policy over the composition's saved
+ * `metadata.readingPolicy` one key at a time, so they come from the policy
+ * file when it sets them and otherwise from the saved policy; replacing them
+ * here without the saved values would drop its waivers, safe zones, targets
+ * and unrelated severities.
  */
 function withLegibilityOptions(
   policy: CompositionQualityPolicy,
   legibility: boolean,
   strict: TextLegibilityCode[],
+  savedPolicy: unknown,
 ): CompositionQualityPolicy {
   if (!legibility && !strict.length) return policy;
+  // An invalid saved policy is rejected later by the lint's own resolution.
+  const saved =
+    savedPolicy &&
+    typeof savedPolicy === "object" &&
+    !Array.isArray(savedPolicy)
+      ? (savedPolicy as Pick<
+          CompositionQualityPolicy,
+          "textLegibility" | "severities"
+        >)
+      : {};
   return {
     ...policy,
-    textLegibility: policy.textLegibility ?? {},
+    textLegibility: policy.textLegibility ?? saved.textLegibility ?? {},
     ...(strict.length
       ? {
           severities: {
-            ...policy.severities,
+            ...(policy.severities ?? saved.severities),
             ...Object.fromEntries(strict.map((code) => [code, "error"])),
           },
         }
@@ -398,18 +413,22 @@ export async function runCompositionCommand(
       const pixels = booleanOption(values, "pixels"),
         path = values.get("policy");
       const strict = strictLegibilityOption(values);
-      const policy = withLegibilityOptions(
-        path
-          ? CompositionQualityPolicySchema.parse(
-              JSON.parse(await readFile(resolve(path), "utf8")),
-            )
-          : {},
-        booleanOption(values, "legibility"),
-        strict,
-      );
+      const legibility = booleanOption(values, "legibility");
+      const filePolicy = path
+        ? CompositionQualityPolicySchema.parse(
+            JSON.parse(await readFile(resolve(path), "utf8")),
+          )
+        : {};
       return await withOwnedSignals("lint", io, async (signal) => {
         const program = await loadProgram(input, { signal });
         signal.throwIfAborted();
+        // After loading: the flags must keep the saved reading policy's values.
+        const policy = withLegibilityOptions(
+          filePolicy,
+          legibility,
+          strict,
+          program.composition.metadata?.readingPolicy,
+        );
         const report = await withProgramFile(program, input, (path) =>
           lintCompositionFile(path, policy, {
             pixels,
