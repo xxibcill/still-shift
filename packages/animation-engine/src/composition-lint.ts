@@ -129,8 +129,16 @@ async function lintOwnedComposition(
   let server: ViteDevServer | undefined;
   let http: Server | undefined;
   let browser: Browser | undefined;
+  // One close per browser. A second Browser.close() while the first is in
+  // progress force-kills Chromium and resolves before Playwright removes its
+  // profile and artifacts folders, so cleanup awaits the abort's close.
+  let browserClosing: Promise<void> | undefined;
+  const closeBrowser = () => {
+    if (browser && !browserClosing) browserClosing = browser.close();
+    return browserClosing;
+  };
   const abort = () => {
-    void browser?.close().catch(() => {});
+    void closeBrowser()?.catch(() => {});
   };
   options.signal?.addEventListener("abort", abort, { once: true });
   try {
@@ -299,7 +307,7 @@ async function lintOwnedComposition(
   } finally {
     options.signal?.removeEventListener("abort", abort);
     try {
-      await browser?.close();
+      await closeBrowser();
     } finally {
       try {
         if (server) await closeViteServer(server);
