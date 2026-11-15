@@ -307,7 +307,11 @@ async function lintOwnedComposition(
   } finally {
     options.signal?.removeEventListener("abort", abort);
     try {
-      await closeBrowser();
+      // The abort started this close and already ignored its failure; the
+      // caller's abort reason, thrown above, stays the result.
+      await closeBrowser()?.catch((error: unknown) => {
+        if (!options.signal?.aborted) throw error;
+      });
     } finally {
       try {
         if (server) await closeViteServer(server);
