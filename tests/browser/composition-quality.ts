@@ -22,6 +22,7 @@ import type {
 import { fileURLToPath } from "node:url";
 import o4VideoPixelLint from "../../benchmarks/fixtures/editorial-titles/o4-video-pixel-lint.ts";
 import { editorialFixture } from "../helpers/editorial-video-lint.ts";
+import { verifyLintSignalCleanup } from "./composition-lint-signals.ts";
 import {
   collapsedMotionComposition,
   groupEffectMotionComposition,
@@ -842,6 +843,10 @@ try {
   }
   console.log(
     "ET2: video pixel lint measures pixels and text bounds over the tracked clip; footage motion reaches the pixel rule; decode residency stays in budget.",
+  );
+  const lintSignals = await verifyLintSignalCleanup();
+  console.log(
+    `ET2: comp lint cancelled by ${lintSignals.signals.join(", ")} during the browser phase exits 1 with comp-program-aborted and leaves no temporary entries or browser process.`,
   );
 
   const cliPixels = await lintCompositionFile(

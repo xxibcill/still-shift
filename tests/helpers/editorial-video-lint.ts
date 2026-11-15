@@ -177,13 +177,23 @@ export async function longClipComposition(
   return mediaLimits ? { ...composition, mediaLimits } : composition;
 }
 
-/** Temporary directories `lintCompositionFile` and the CLI may create. */
+/**
+ * Temporary directories `lintCompositionFile`, the CLI and the pinned browser
+ * may create. Playwright removes its profile and artifacts folders only when
+ * the browser closes normally, so a leak there means cleanup was skipped.
+ */
+const lintTemporaryPrefixes = [
+  "composition-lint-vite-",
+  "still-shift-compiled-",
+  "still-shift-program-",
+  "playwright_chromiumdev_profile-",
+  "playwright-artifacts-",
+];
+
 export async function lintTemporaryEntries(): Promise<string[]> {
   return (await readdir(tmpdir()))
-    .filter(
-      (name) =>
-        name.startsWith("composition-lint-vite-") ||
-        name.startsWith("still-shift-compiled-"),
+    .filter((name) =>
+      lintTemporaryPrefixes.some((prefix) => name.startsWith(prefix)),
     )
     .sort();
 }
