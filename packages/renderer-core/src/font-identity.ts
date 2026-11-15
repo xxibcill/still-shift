@@ -234,10 +234,11 @@ function diagnostic(
     ...(run?.frame === undefined ? {} : { frame: run.frame }),
   };
 }
-function formatCodePoint(codePoint: number) {
+export function formatCodePoint(codePoint: number) {
   return `U+${codePoint.toString(16).toUpperCase().padStart(4, "0")}`;
 }
-function isShapingControl(codePoint: number) {
+/** Format and bidi controls that select shaping but need no glyph of their own. */
+export function isShapingControl(codePoint: number) {
   return (
     codePoint === 9 ||
     codePoint === 10 ||

@@ -89,13 +89,13 @@ Usage:
   pnpm still-shift sfx generate --provider elevenlabs --id <slug> --prompt <text> --duration <seconds> --output-dir <new-directory> [--prompt-influence 0.3] [--loop true|false]
   pnpm still-shift prepare-commerce --brief <brief.json> --output <prepared.json>
   pnpm --silent still-shift comp preview --input <composition.json|program.ts> [--watch] [--port 4173]
-  pnpm --silent still-shift comp validate --input <composition.json|program.ts>
+  pnpm --silent still-shift comp validate --input <composition.json|program.ts> [--font-coverage legacy|strict]
   pnpm --silent still-shift comp export-json --input <composition.json|program.ts> [--output <composition.json>]
-  pnpm --silent still-shift comp render --input <composition.json|program.ts> --output <path> [--backend canvas2d|webgl2] [--format prores4444|png8|png16|h264|hevc10|prores422hq|vp9alpha] [--transport png_pipe|raw_rgba] [--workers 1|2|3|4] [--cache-static true|false]
+  pnpm --silent still-shift comp render --input <composition.json|program.ts> --output <path> [--backend canvas2d|webgl2] [--format prores4444|png8|png16|h264|hevc10|prores422hq|vp9alpha] [--transport png_pipe|raw_rgba] [--workers 1|2|3|4] [--cache-static true|false] [--font-coverage legacy|strict]
   pnpm --silent still-shift comp export-json --scene <family-scene.json> [--output <composition.json|program.ts>] [--normalized true]
   pnpm --silent still-shift comp normalize --input <composition.json|program.ts> [--output <composition.json|program.ts>]
   pnpm --silent still-shift comp bake --input <composition.json|program.ts> [--output <composition.json|program.ts>]
-  pnpm --silent still-shift comp lint --input <composition.json|program.ts> [--policy <policy.json>] [--pixels true|false] [--backend canvas2d|webgl2]
+  pnpm --silent still-shift comp lint --input <composition.json|program.ts> [--policy <policy.json>] [--pixels true|false] [--backend canvas2d|webgl2] [--font-coverage legacy|strict]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.

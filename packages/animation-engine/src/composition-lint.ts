@@ -49,6 +49,8 @@ export type CompositionLintOptions = BrowserRuntimeOptions & {
   cacheDirectory?: string;
   nodeMemory?: CompositionNodeMemory;
   signal?: AbortSignal | undefined;
+  /** ET1: raise exact-copy font coverage to strict; findings then fail loading. */
+  fontCoverage?: "legacy" | "strict";
 };
 export async function lintCompositionFile(
   input: string,
@@ -78,6 +80,7 @@ async function lintOwnedComposition(
       ? { cacheDirectory: options.cacheDirectory }
       : {}),
     ...(options.signal ? { signal: options.signal } : {}),
+    ...(options.fontCoverage ? { fontCoverage: options.fontCoverage } : {}),
   }).catch((error: unknown) => {
     if (
       error instanceof AnimationEngineError &&

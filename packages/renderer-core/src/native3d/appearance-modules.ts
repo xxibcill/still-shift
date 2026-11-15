@@ -271,6 +271,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../composition/evaluate/version.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/composition/font-coverage.ts",
+    url: new URL("../composition/font-coverage.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/composition/mesh/bounds.ts",
     url: new URL("../composition/mesh/bounds.ts", import.meta.url),
   },
@@ -495,6 +499,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/composition/render/text-frames.ts",
     url: new URL("../composition/render/text-frames.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/composition/render/text-scenes.ts",
+    url: new URL("../composition/render/text-scenes.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/composition/render/text.ts",

@@ -64,6 +64,16 @@ function backendOption(values: Map<string, string>): CompositionBackend {
     );
   return backend;
 }
+function fontCoverageOption(values: Map<string, string>) {
+  const value = values.get("font-coverage");
+  if (value !== undefined && value !== "legacy" && value !== "strict")
+    programError(
+      "comp-program-option",
+      "--font-coverage must be legacy or strict",
+      "font-coverage",
+    );
+  return value as "legacy" | "strict" | undefined;
+}
 function diagnostics(error: unknown): CompositionDiagnostic[] {
   if (error instanceof CompositionProgramError) return error.diagnostics;
   if (
@@ -233,13 +243,15 @@ export async function runCompositionCommand(
       return 0;
     }
     if (command === "validate") {
-      const values = parseNamedArguments(args.slice(1), ["input"]),
+      const values = parseNamedArguments(args.slice(1), [
+          "input",
+          "font-coverage",
+        ]),
         input = requireArgument(values, "input");
+      const fontCoverage = fontCoverageOption(values);
       const program = await loadProgram(input);
-      const source = await withProgramFile(
-        program,
-        input,
-        readCompositionSource,
+      const source = await withProgramFile(program, input, (path) =>
+        readCompositionSource(path, fontCoverage ? { fontCoverage } : {}),
       );
       io.stdout(
         json({
@@ -247,6 +259,7 @@ export async function runCompositionCommand(
           source: program.source,
           id: program.composition.id,
           diagnostics: source.warnings,
+          fontCoverage: source.fontCoverage,
         }),
       );
       return 0;
@@ -257,9 +270,11 @@ export async function runCompositionCommand(
           "policy",
           "pixels",
           "backend",
+          "font-coverage",
         ]),
         input = requireArgument(values, "input");
       const backend = backendOption(values);
+      const fontCoverage = fontCoverageOption(values);
       const pixels = booleanOption(values, "pixels"),
         path = values.get("policy");
       const policy = path
@@ -269,7 +284,11 @@ export async function runCompositionCommand(
         : {};
       const program = await loadProgram(input);
       const report = await withProgramFile(program, input, (path) =>
-        lintCompositionFile(path, policy, { pixels, backend }),
+        lintCompositionFile(path, policy, {
+          pixels,
+          backend,
+          ...(fontCoverage ? { fontCoverage } : {}),
+        }),
       );
       io.stdout(json(report));
       return report.status === "failed" ? 1 : 0;
@@ -283,9 +302,11 @@ export async function runCompositionCommand(
           "transport",
           "workers",
           "cache-static",
+          "font-coverage",
         ]),
         input = requireArgument(values, "input");
       const backend = backendOption(values);
+      const fontCoverage = fontCoverageOption(values);
       const workers = values.get("workers");
       if (workers !== undefined && !/^[1-4]$/.test(workers))
         programError(
@@ -327,6 +348,7 @@ export async function runCompositionCommand(
           ...(format ? { format: format as CompositionOutputFormat } : {}),
           ...(workers ? { workers: Number(workers) as 1 | 2 | 3 | 4 } : {}),
           ...(cacheStatic === undefined ? {} : { cacheStatic }),
+          ...(fontCoverage ? { fontCoverage } : {}),
           ...(transport
             ? { transport: transport as "png_pipe" | "raw_rgba" | "jpeg_pipe" }
             : {}),

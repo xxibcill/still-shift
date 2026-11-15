@@ -60,6 +60,7 @@ pnpm still-shift comp render --input program.ts --output clip.mp4
 | `expressions`   | no       | object                  |
 | `behaviours`    | no       | array                   |
 | `camera2d`      | no       | object                  |
+| `fontCoverage`  | no       | `legacy`, `strict`      |
 | `metadata`      | no       | object                  |
 
 See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1.schema.json) for full nested bounds and structural unions. Run semantic validation for references, paths and cycles. All listed layer types are implemented; the implementation notes' availability section records backend requirements, operating guides and deferred follow-ups.
@@ -1273,6 +1274,7 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-state-range`                   | A `state` or `stateFrom` value has no matching source or text state.                                     |
 | `comp-state-mix`                     | Only one of `stateFrom` and `stateMix` is set.                                                           |
 | `comp-text-style-missing`            | A text layer uses an unknown text style.                                                                 |
+| `comp-font-fallback`                 | A font asset lists itself or the same fallback font more than once.                                      |
 | `comp-text-font`                     | A text size above 180 without a pinned font.                                                             |
 | `comp-text-pinned-font`              | Spans, decorations, transitions, text animators or `textBox` on a text layer without a pinned font.      |
 | `comp-text-box-size`                 | A `textBox` text layer without a `size`.                                                                 |
@@ -1908,6 +1910,60 @@ changing the contract.
   leading, group pivots, font-axis variants, blur, strokes and decorations, plus the
   union of all states while transitions can show another text.
 
+#### Exact-copy font coverage (ET1)
+
+A pinned font guarantees bytes, not glyphs: without a check, copy the font lacks is
+painted by whatever face the browser finds (finding O5 in the
+[editorial typography plan](./editorial-typography-improvement-plan.md#et1--exact-copy-font-coverage-gate)).
+`comp validate`, `comp render` and `comp lint` therefore check every pinned font
+against its exact reachable copy in Node, before any browser work, through
+[`font-coverage.ts`](../packages/renderer-core/src/composition/font-coverage.ts).
+
+- **Reachable copy** is collected as font preparation collects it: `text`, every
+  state, generated count strings (with their locale's digits and separators),
+  correction replacements, component-bound text, case transforms per grapheme,
+  spans with their own style fonts, and text layers in every precomp.
+- **Profiles.** Top-level `fontCoverage: "legacy" | "strict"` (default `legacy`);
+  `--font-coverage strict` raises a run to strict and never lowers a composition
+  that declares `strict`. Legacy keeps rendering exactly as before and reports each
+  finding as a `warning`; strict reports them as errors, and `validate`/`render`/`lint`
+  stop before rendering (render exits 2). Findings name the font id and SHA-256,
+  layer (`precomp-id/layer-id` inside precomps), JSON path, span and missing code
+  points.
+- **Rules.** Coverage is per Unicode code point in the font's Unicode `cmap`
+  (format 4 or 12). Tab, line feed, carriage return, ZWSP, ZWNJ, ZWJ, BOM, LRM/RLM,
+  bidi embeddings/isolates and variation selectors need no glyph of their own.
+  Combining marks and every space other than those controls (including U+00A0 and
+  U+3000) must be in the font. Coverage is necessary evidence, not proof of correct
+  shaping or mark positioning.
+- **Fallbacks.** A font asset may list up to four other pinned font assets in
+  `fallbacks`. Each reachable code point the font lacks resolves to the first
+  fallback that has it; fallbacks are not followed transitively, and no system face
+  is ever used. Rendering joins those faces to the font's family with a
+  `unicode-range` of exactly the resolved code points, at the font's own weight and
+  style descriptors, so covered copy renders byte-identically. A grapheme cluster
+  whose code points would come from different faces is reported as
+  `font-fallback-cluster`. `comp validate` and render results list each run's
+  fallback code points in `fontCoverage.fallbackRuns`; the browser still shapes,
+  so the face that drew each glyph is declared, not measured.
+- **Results.** `comp validate` always prints `fontCoverage` with each font's actual
+  family, subfamily, PostScript name, weight class, style, axes and `cmap` formats.
+  Render results include it when the profile is strict, a font declares fallbacks
+  or coverage found gaps; otherwise results are unchanged. Coverage never changes
+  the scene manifest, cache keys or rendered pixels of compositions without
+  fallbacks.
+
+| Code                    | Meaning                                                                                     |
+| ----------------------- | ------------------------------------------------------------------------------------------- |
+| `font-coverage`         | Reachable copy contains code points missing from its font and from every declared fallback. |
+| `font-fallback-cluster` | A grapheme cluster would be drawn partly by its font and partly by a fallback.              |
+| `font-cut-identity`     | Declared weight, style, family, subfamily or PostScript name differs from the pinned bytes. |
+| `font-axis-range`       | A style's axis value is outside the pinned font's axis range.                               |
+| `font-metadata`         | The font's SFNT directory or name/OS/2 data is malformed or over budget.                    |
+| `font-cmap`             | The font's `cmap` table is malformed or over budget.                                        |
+| `font-cmap-unsupported` | The font has no Unicode format 4 or 12 `cmap` subtable.                                     |
+| `font-copy-budget`      | Reachable copy exceeds the bounded inspection budget.                                       |
+
 ### Content providers (CE4a)
 
 A `provider` layer stores inspectable JSON for content that a family adapter cannot
@@ -2166,7 +2222,7 @@ see [media assets and authoring](./composition-media.md#author-and-preview-nativ
 | `type`     | Fields                                                                                                                           |
 | ---------- | -------------------------------------------------------------------------------------------------------------------------------- |
 | `image`    | `path`, `sha256`, `width`, `height` (natural pixel size)                                                                         |
-| `font`     | `path`, `sha256`, `weight` (`"100"`–`"900"`), `style`, `variable` axes                                                           |
+| `font`     | `path`, `sha256`, `weight` (`"100"`–`"900"`), `style`, `variable` axes, `fallbacks` (pinned font ids, ET1)                       |
 | `video`    | `path`, `sha256`, `width`, `height`, `frameCount`, rational `frameRate`, SDR `color`.                                            |
 | `sequence` | Video fields plus `manifestPath` and `firstFrame`; `path` is a numbered PNG pattern and `sha256` pins the ordered hash manifest. |
 | `audio`    | `path`, `sha256`, `sampleRate: 48000`, decoded `sampleCount`, `channels: 1 \| 2`.                                                |
