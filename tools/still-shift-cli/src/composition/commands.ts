@@ -354,7 +354,7 @@ export async function runCompositionCommand(
             JSON.parse(await readFile(resolve(path), "utf8")),
           )
         : {};
-      return withOwnedSignals("lint", io, async (signal) => {
+      return await withOwnedSignals("lint", io, async (signal) => {
         const program = await loadProgram(input, { signal });
         signal.throwIfAborted();
         const report = await withProgramFile(program, input, (path) =>
