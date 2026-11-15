@@ -586,11 +586,11 @@ async function webFont(root: string, signature: "wOFF" | "wOF2") {
 }
 
 it.each([
-  ["wOFF", "WOFF"],
-  ["wOF2", "WOFF2"],
+  ["wOFF", "WOFF", "woff"],
+  ["wOF2", "WOFF2", "woff2"],
 ] as const)(
   "rejects a pinned %s font in every command before any browser work",
-  async (signature, label) => {
+  async (signature, label, extension) => {
     const root = await directory();
     const { input } = await write({
       assets: [await plex(), await webFont(root, signature)],
@@ -601,9 +601,11 @@ it.each([
       severity: "error",
       path: "assets[1].path",
       fontId: "title",
-      message: expect.stringMatching(
-        new RegExp(`Font title is a ${label} font.*TTF or OTF`),
-      ),
+      message:
+        `Font title is a ${label} font; composition fonts must be SFNT TTF ` +
+        `or OTF files. Decompress it, for example \`fonttools ttLib ` +
+        `font.${extension} -o font.ttf\`, then pin the converted file's ` +
+        "path and sha256.",
     });
     // Legacy coverage still rejects it: the renderer cannot read the container.
     const validated = await run(["validate", "--input", input]);

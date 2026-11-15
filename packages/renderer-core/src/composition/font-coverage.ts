@@ -105,12 +105,13 @@ export function compositionCopyRuns(comp: Composition): CollectedFontTextRun[] {
   return compositionFontTextRuns(comp, typed);
 }
 
+const pinConverted = "then pin the converted file's path and sha256.";
 const fontConversionHints: Record<Exclude<FontContainer, "sfnt">, string> = {
-  woff: "Decompress it, for example `fonttools ttLib font.woff -o font.ttf`",
-  woff2: "Decompress it, for example `fonttools ttLib font.woff2 -o font.ttf`",
-  collection:
-    "Extract one face, for example `fonttools ttLib -y 0 fonts.ttc -o font.ttf`",
-  unknown: "Supply the font's original TTF or OTF file",
+  woff: `Decompress it, for example \`fonttools ttLib font.woff -o font.ttf\`, ${pinConverted}`,
+  woff2: `Decompress it, for example \`fonttools ttLib font.woff2 -o font.ttf\`, ${pinConverted}`,
+  collection: `Extract one face, for example \`fonttools ttLib -y 0 fonts.ttc -o font.ttf\`, ${pinConverted}`,
+  unknown:
+    "Supply the font's original TTF or OTF file and pin that file's path and sha256.",
 };
 
 /** Inspect every pinned font against its reachable copy. Never throws for font data. */
@@ -141,8 +142,7 @@ export function inspectCompositionFonts(
         message:
           `Font ${asset.id} is a ${fontContainerLabel(container)}; ` +
           "composition fonts must be SFNT TTF or OTF files. " +
-          `${fontConversionHints[container]}, then pin the converted ` +
-          "file's path and sha256.",
+          fontConversionHints[container],
         path: formatJsonPath(["assets", index, "path"]),
         fontId: asset.id,
         fontSha256: asset.sha256,
