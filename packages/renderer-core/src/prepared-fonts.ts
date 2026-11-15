@@ -295,7 +295,9 @@ export async function loadTextStyleFont(
         }
       },
     );
-    // Declared fallbacks keep drawing their code points at their own defaults.
+    // Declared fallbacks keep drawing their code points at their own defaults:
+    // this style's axes and features apply only to the primary font's glyphs
+    // (documented in composition-reference-notes.md, Exact-copy font coverage).
     for (const face of source.fallbackFaces ?? [])
       await decodeRenderFont(
         family,

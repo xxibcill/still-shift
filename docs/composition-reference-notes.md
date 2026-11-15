@@ -585,7 +585,11 @@ against its exact reachable copy in Node, before any browser work, through
   fallback that has it; fallbacks are not followed transitively, and no system face
   is ever used. Rendering joins those faces to the font's family with a
   `unicode-range` of exactly the resolved code points, at the font's own weight and
-  style descriptors, so covered copy renders byte-identically. A grapheme cluster
+  style descriptors, so covered copy renders byte-identically. Fallback faces stay
+  at their own defaults: a text style's or text animator's variable axes (such as
+  an animated `wght`) and OpenType features (`figures`, small caps, `features`)
+  apply only to the primary font's glyphs, never to code points a fallback draws.
+  A grapheme cluster
   whose code points would come from different faces is reported as
   `font-fallback-cluster`. `comp validate` and render results list each run's
   fallback code points in `fontCoverage.fallbackRuns`; the browser still shapes,

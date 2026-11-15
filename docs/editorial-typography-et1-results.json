@@ -36,7 +36,7 @@
     "exemptControls": "Tab, LF, CR, ZWSP U+200B, ZWNJ U+200C, ZWJ U+200D, LRM/RLM, BOM U+FEFF, bidi embeddings/isolates U+202A–202E and U+2066–2069, variation selectors.",
     "marksAndSpaces": "Combining marks and every other space (U+0020, U+00A0, U+3000 …) must be in the font.",
     "fallbackResolution": "Each missing code point goes to the first declared fallback that has it; not transitive; never a system face. A grapheme cluster drawn by more than one face is font-fallback-cluster.",
-    "limits": "Coverage is necessary evidence, not proof of shaping or mark placement. With fallbacks the browser still shapes; the face per glyph is declared (fallbackResolution: declared-unicode-range), not measured. The fallback face renders at the primary font's weight/style descriptors."
+    "limits": "Coverage is necessary evidence, not proof of shaping or mark placement. With fallbacks the browser still shapes; the face per glyph is declared (fallbackResolution: declared-unicode-range), not measured. The fallback face renders at the primary font's weight/style descriptors; text-style and text-animator axes and OpenType features apply only to the primary font's glyphs, not to code points a fallback draws."
   },
   "o5": {
     "fixture": "ET0 benchmarks/fixtures/editorial-titles/o5-plex-thai.ts (codex/editorial-titles-et0); reproduced as JSON in tests/integration/composition-font-coverage.test.ts",
