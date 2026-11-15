@@ -696,8 +696,11 @@ const text = await format(JSON.stringify(results), { parser: "json" });
 writeFileSync(join(outputDir, "et0-baseline.json"), text);
 if (args.includes("--write")) writeFileSync(baselinePath, text);
 if (args.includes("--check")) {
+  // Compare what --write would store, not the live object: JSON drops
+  // undefined fields and maps -0, NaN and Infinity, which deep equality
+  // would otherwise report as differences.
   const recorded = JSON.parse(readFileSync(baselinePath, "utf8"));
-  if (!isDeepStrictEqual(recorded, results)) {
+  if (!isDeepStrictEqual(recorded, JSON.parse(text))) {
     console.error(
       `ET0 outcomes differ from ${baselinePath}; compare with ${join(outputDir, "et0-baseline.json")}`,
     );
