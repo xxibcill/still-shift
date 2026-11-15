@@ -1,8 +1,8 @@
 # Editorial title overlays: improvement plan
 
 Date: 2026-11-15. Status: **ET0 merged on `main` (PR #60); ET1 merged on `main`
-(PR #61); ET2 complete on `codex/editorial-titles-et2` (not pushed, review
-pending); ET3–ET8 proposed.** ET0 re-baselined every finding on `main`
+(PR #61); ET2 complete and in review as PR #62 (`codex/editorial-titles-et2`);
+ET3–ET8 proposed.** ET0 re-baselined every finding on `main`
 (98a92e92); see [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
 Source evidence: [proof report](./editorial-typography-proof-2026-11-15.md) and
@@ -191,7 +191,15 @@ reserves `decodedCacheBytes`, and the browser LRU stays within
 left a media staging directory, the cache lock, the lint dev-server cache and
 the compiled program. Three causes, all fixed: the CLI never turned
 SIGINT/SIGTERM into the lint's abort; a listening Vite dev server exits the
-process on SIGTERM; Playwright exits on SIGINT after closing browsers. Evidence:
+process on SIGTERM; Playwright exits on SIGINT after closing browsers. Review
+of PR #62 found and fixed more cases. SIGHUP (a closed terminal) skipped
+cleanup once Playwright's handlers were off. A cancel at browser start left
+Vite's `deps_temp_*` until cleanup waited for the dependency optimizer, now
+under one 10 s deadline. A second `browser.close()` returned before Playwright
+removed its temporary folders. Final contract: SIGINT, SIGTERM and SIGHUP
+cancel; after cleanup the CLI reports `comp-program-aborted` and exits 128 +
+the signal number. Repeats within 1 s count as relays of the same request; a
+later signal stops at once and may leave temporary files. Evidence:
 [ET2 results](./editorial-typography-et2-results.json).
 
 **Checks**
@@ -216,8 +224,10 @@ process on SIGTERM; Playwright exits on SIGINT after closing browsers. Evidence:
       and decide separately whether near-static footage should count as motion.
       (Synthetic clip, its no-video control and a 60 s loop of it are tested.
       The proof still reports its footage-only tails frozen, the same as ET0:
-      T1 148–167, T2 154–167, T3 144–167. The near-static policy is unchanged
-      and left to the owner.)
+      T1 148–167, T2 154–167, T3 144–167. Met as revised by ET0 for footage
+      with measurable motion; whether the proof's near-static frames count as
+      frozen is **deferred to owner decision ET2-D1**, and the policy is
+      unchanged until then.)
 - [x] A 60 s clip lints within recorded memory bounds; cancellation leaves no
       temporary cache. (1080×1920 at 24 fps: 155 s, 1.75 GB peak resident,
       decode LRU peak 132,710,400 B within its 134,217,728 B (128 MiB) budget,
