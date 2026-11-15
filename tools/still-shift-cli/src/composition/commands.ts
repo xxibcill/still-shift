@@ -80,6 +80,72 @@ function fontCoverageOption(values: Map<string, string>) {
     );
   return value as "legacy" | "strict" | undefined;
 }
+/**
+ * ET2: own SIGINT/SIGTERM/SIGHUP while `run` works, so media staging, the
+ * media cache lock, the lint dev-server cache and the compiled program are
+ * removed by their owners instead of being left by process exit. All three:
+ * the browser is launched without Playwright's handlers for them, so an
+ * unowned one would end the process with no cleanup (a closed terminal or
+ * dropped SSH session sends SIGHUP). After a cancel and cleanup, report
+ * `comp-program-aborted` and exit as a process ended by that signal would
+ * (130 for SIGINT), so callers can tell an interrupted command from one with
+ * findings.
+ */
+async function withOwnedSignals(
+  command: string,
+  io: CompositionIo,
+  run: (signal: AbortSignal) => Promise<number>,
+): Promise<number> {
+  const controller = new AbortController();
+  let cancelledBy: OwnedSignal | undefined;
+  const aborted = (message: string) => ({
+    code: "comp-program-aborted",
+    severity: "error" as const,
+    path: "input",
+    message,
+  });
+  const releaseSignals = ownProcessSignals({
+    cancel: (signal) => {
+      cancelledBy = signal;
+      controller.abort(
+        new CompositionProgramError([
+          aborted(`Composition ${command} cancelled by ${signal}`),
+        ]),
+      );
+    },
+    // A signal after the relay window means cleanup is taking too long for
+    // the user: stop now, as an unowned signal would. Written synchronously,
+    // because stderr to a pipe is asynchronous on macOS.
+    force: (signal) => {
+      writeSync(
+        2,
+        json({
+          status: "failed",
+          diagnostics: [
+            aborted(
+              `Composition ${command} stopped by repeated ${signal} before cleanup finished; temporary files may remain`,
+            ),
+          ],
+        }),
+      );
+      process.exit(signalExitCode(signal));
+    },
+  });
+  try {
+    return await run(controller.signal);
+  } catch (error) {
+    if (!cancelledBy) throw error;
+    io.stderr(
+      json({
+        status: "failed",
+        diagnostics: diagnostics(controller.signal.reason),
+      }),
+    );
+    return signalExitCode(cancelledBy);
+  } finally {
+    releaseSignals();
+  }
+}
 function diagnostics(error: unknown): CompositionDiagnostic[] {
   if (error instanceof CompositionProgramError) return error.diagnostics;
   if (
@@ -288,78 +354,21 @@ export async function runCompositionCommand(
             JSON.parse(await readFile(resolve(path), "utf8")),
           )
         : {};
-      // ET2: own SIGINT/SIGTERM/SIGHUP while linting so media staging, the
-      // media cache lock, the lint dev-server cache and the compiled program
-      // are removed by their owners instead of being left by process exit.
-      // All three: the browser is launched without Playwright's handlers for
-      // them, so an unowned one would end the process with no cleanup (a
-      // closed terminal or dropped SSH session sends SIGHUP).
-      const controller = new AbortController();
-      let cancelledBy: OwnedSignal | undefined;
-      const lintFailure = (message: string) => ({
-        code: "comp-program-aborted",
-        severity: "error" as const,
-        path: "input",
-        message,
-      });
-      const releaseSignals = ownProcessSignals({
-        cancel: (signal) => {
-          cancelledBy = signal;
-          controller.abort(
-            new CompositionProgramError([
-              lintFailure(`Composition lint cancelled by ${signal}`),
-            ]),
-          );
-        },
-        // A signal after the relay window means cleanup is taking too long
-        // for the user: stop now, as an unowned signal would. Written
-        // synchronously, because stderr to a pipe is asynchronous on macOS.
-        force: (signal) => {
-          writeSync(
-            2,
-            json({
-              status: "failed",
-              diagnostics: [
-                lintFailure(
-                  `Composition lint stopped by repeated ${signal} before cleanup finished; temporary files may remain`,
-                ),
-              ],
-            }),
-          );
-          process.exit(signalExitCode(signal));
-        },
-      });
-      try {
-        const program = await loadProgram(input, {
-          signal: controller.signal,
-        });
-        controller.signal.throwIfAborted();
+      return withOwnedSignals("lint", io, async (signal) => {
+        const program = await loadProgram(input, { signal });
+        signal.throwIfAborted();
         const report = await withProgramFile(program, input, (path) =>
           lintCompositionFile(path, policy, {
             pixels,
             backend,
-            signal: controller.signal,
+            signal,
             ownsProcessSignals: true,
             ...(fontCoverage ? { fontCoverage } : {}),
           }),
         );
         io.stdout(json(report));
         return report.status === "failed" ? 1 : 0;
-      } catch (error) {
-        if (!cancelledBy) throw error;
-        // Cleanup has finished: report the cancel and exit as a process
-        // ended by that signal would (130 for SIGINT), so callers can tell
-        // an interrupted lint from one with findings (exit 1).
-        io.stderr(
-          json({
-            status: "failed",
-            diagnostics: diagnostics(controller.signal.reason),
-          }),
-        );
-        return signalExitCode(cancelledBy);
-      } finally {
-        releaseSignals();
-      }
+      });
     }
     if (command === "render") {
       const values = parseNamedArguments(args.slice(1), [
