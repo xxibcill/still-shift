@@ -279,6 +279,14 @@
             "measured": [1, 1]
           },
           {
+            "code": "text-off-canvas",
+            "severity": "error",
+            "node": "line",
+            "message": "39.9% of the text's settled glyph ink lies outside the frame. `align: \"center\"` places each line relative to the layer origin, not within `textLayout.width`; move the origin or use `align: \"left\"`.",
+            "frames": [[4, 83]],
+            "measured": [0.399, 0.399]
+          },
+          {
             "code": "frozen-pixels",
             "severity": "error",
             "message": "79 unchanged pixel comparisons exceed the 6-frame limit.",
@@ -361,6 +369,17 @@
           "textBounds": true
         },
         "diagnostics": [
+          {
+            "code": "orphaned-decoration",
+            "severity": "error",
+            "node": "tag",
+            "message": "The highlight decoration stays visible while its text is fully transparent; key its `reveal` or set `fadeWithText: true`.",
+            "frames": [
+              [4, 4],
+              [70, 83]
+            ],
+            "measured": [1, 1]
+          },
           {
             "code": "outside-safe-area",
             "severity": "warning",

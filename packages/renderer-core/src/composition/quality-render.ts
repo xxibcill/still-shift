@@ -18,8 +18,10 @@ import {
 } from "./render/index.ts";
 import type {
   TextContrastLayerEvidence,
+  TextFramingEvidence,
   TextLegibilityEvidence,
 } from "./quality-policy.ts";
+import { textEvidenceKey } from "./quality-rules.ts";
 import {
   DEFAULT_CONTRAST_PERCENTILE,
   measureTextContrastPixels,
@@ -175,6 +177,56 @@ async function renderProbe(
   return preview.readPixels();
 }
 
+/**
+ * ET5a evidence from the linted preview: settled glyph ink per text state
+ * (O2) and, for text layers with decorations, the frames on which a
+ * decoration paints while its glyphs are transparent (O3).
+ */
+function textFramingEvidence(
+  comp: Composition,
+  preview: CompositionPreview,
+  policy: CompositionQualityPolicy,
+): TextFramingEvidence | undefined {
+  if (!preview.textInkBounds) return undefined;
+  const decorated = [comp, ...(comp.precomps ?? [])].some((scope) =>
+    scope.layers.some(
+      (layer) => layer.type === "text" && layer.decorations?.length,
+    ),
+  );
+  const orphanedDecorations: Record<
+    string,
+    { frame: number; decorations: number[] }[]
+  > = {};
+  if (decorated && preview.orphanedTextDecorations) {
+    const frames = sampleCompositionQuality(comp, {
+      ...policy.evaluation,
+      ...preview.evaluationOptions,
+      textBounds: preview.textBounds,
+    });
+    frames.forEach((frame, at) => {
+      for (const sample of frame.layers.values()) {
+        const { layer } = sample.state;
+        if (layer.type !== "text" || !layer.decorations?.length) continue;
+        if (!sample.visible) continue;
+        const key = textEvidenceKey(frame, sample);
+        if (!key) continue;
+        const decorations = preview.orphanedTextDecorations!({
+          key,
+          state: sample.state.state ?? 0,
+          reveal: sample.state.reveal ?? 1,
+          time: sample.state.time,
+        });
+        if (decorations.length)
+          (orphanedDecorations[sample.id] ??= []).push({
+            frame: at,
+            decorations,
+          });
+      }
+    });
+  }
+  return { ink: preview.textInkBounds, orphanedDecorations };
+}
+
 /** Full-resolution grayscale changes reuse the continuous-motion 4-level / 200-pixel default gate. */
 export async function analyzeRenderedCompositionQuality(
   comp: Composition,
@@ -294,10 +346,12 @@ export async function analyzeRenderedCompositionQuality(
             : {}),
         }
       : undefined;
+  const framing = textFramingEvidence(comp, preview, policy);
   return {
     ...analyzeCompositionQuality(comp, {
       ...policy,
       ...(textLegibilityEvidence ? { textLegibilityEvidence } : {}),
+      ...(framing ? { textFramingEvidence: framing } : {}),
       pixelChangedCounts: counts,
       evaluation: {
         ...policy.evaluation,

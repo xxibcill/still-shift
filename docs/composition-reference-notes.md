@@ -532,6 +532,12 @@ changing the contract.
   exists so adapted legacy scenes keep their look.
 - Text draws at the layer origin; the typography `anchor` (`top`, `cap`, `baseline`)
   places the first line.
+- `align: "center"` or `"right"` places each line relative to the layer origin,
+  also when `textLayout.width` is set; pixel lint reports text whose settled ink
+  falls largely off-frame (`text-off-canvas`, [ET5a](#title-framing-and-decoration-guards-et5a)).
+- Decorations ignore text-animator opacity unless they set `fadeWithText: true`;
+  pixel lint reports a decoration painting while its text is fully transparent
+  (`orphaned-decoration`).
 - Transitions, decoration reveals, counts and text animators sample **layer time**,
   like keys; signal-driven animator selectors therefore also sample layer time.
   Font-axis and stroke caches prepare the rounded layer times reachable at output
@@ -1992,8 +1998,10 @@ const report = analyzeCompositionQuality(composition, {
 
 The rules are `frozen-run`, `frozen-pixels`, `velocity-discontinuity`,
 `easing-monotony`, `co-start`, `reading-time`, `off-canvas`, `outside-safe-area`,
-`coverage`, `scale-pop` and `opacity-pop`, plus the opt-in legibility rules
-`text-contrast`, `x-height-floor` and `platform-safe-zone`
+`coverage`, `scale-pop` and `opacity-pop`, the pixel-lint title guards
+`text-off-canvas` and `orphaned-decoration`
+([below](#title-framing-and-decoration-guards-et5a)), plus the opt-in legibility
+rules `text-contrast`, `x-height-floor` and `platform-safe-zone`
 ([below](#text-legibility-over-video-et3)). Defaults retain the continuous-motion
 six-frame frozen-run allowance (unchanged adjacent comparisons). Reading uses
 consecutive revealed, opaque, settled text frames, with separate word budgets for
@@ -2198,6 +2206,57 @@ most six layers keep theirs across frames (more on screen together get a pair
 per frame), so long caption runs fit WebGL2's per-page context limit. On
 the 7 s 1080×1920 proof clip, see the
 [ET3 results](./editorial-typography-et3-results.json) for measured runtime.
+
+### Title framing and decoration guards (ET5a)
+
+Two title traps used to pass every check: centred text hanging half off the
+frame (finding O2 in the
+[editorial typography proof](./editorial-typography-proof-2026-11-15.md)) and a
+highlight bar left behind after its text faded (O3). Pixel lint (`--pixels
+true`) now reports both by default; state-only lint measures no glyph ink and
+adds neither. Both are **errors** unless `severities` lowers them.
+
+**`text-off-canvas`.** Preparation records each text state's settled glyph ink:
+one box per line, from the shaped layout, without text-animator excursions,
+container or decorations. On each frame where the layer is visible, those
+boxes follow the layer's own transform (parents and precomp hosts included).
+The finding reports the share of their area outside the canvas as `measured`
+when it reaches `textOffCanvasFraction` (default `0.05`). A glyph entrance
+from off-frame driven by a text animator does not count, while a layer slid
+in by its transform does on the frames it is cut. The `outside-safe-area`
+warning is unchanged, so a few-pixel incursion stays a warning only. Text
+without a pinned font is not measured.
+
+`align: "center"` and `"right"` place each line relative to the layer origin;
+they do not centre or right-align inside `textLayout.width`. To centre a line in
+a 940 px box starting at x = 70, put the origin at x = 540. The finding's
+message names this contract when a centred or right-aligned layer overflows.
+
+**`orphaned-decoration`.** On each visible frame, the renderer's own draw plan
+checks whether a `highlight`, `underline`, `strike` or `box` paints while every
+glyph it decorates (its `span`, if any) is transparent through text-animator
+opacity, a word reveal or the layer's `reveal`. The finding's `path` names the
+decoration. Fix it by keying the decoration's `reveal` or by setting
+`fadeWithText: true` on it: the mark's alpha then follows the highest
+animator opacity of its glyphs on each line, so it fades in and out with the
+text. `fadeWithText` is off by default and existing compositions render
+unchanged.
+
+```json
+{
+  "decorations": [
+    {
+      "kind": "highlight",
+      "color": "#C9D29A",
+      "thickness": 84,
+      "fadeWithText": true
+    }
+  ]
+}
+```
+
+See the [ET5a results](./editorial-typography-et5a-results.json) for the
+fixtures and proof compositions these rules report.
 
 ### Story exposure and passage compilation (CE4a continuation)
 

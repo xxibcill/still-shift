@@ -2,12 +2,13 @@
 // fades to opacity 0 through a line animator (frames 62–70) while its highlight
 // has no reveal keys, so a bare bar stays on screen until the out point (84),
 // as in proof T2 pass 1. Plain background so text and bar pixels are separable.
+// ET5a: o3-highlight-fade-with-text.ts is the same tag with the highlight's
+// `fadeWithText` opt-in, so the bar fades with the text.
 import { comp, text } from "@still-shift/motion";
 import { beats, copy, fonts, frame, paper } from "./shared.ts";
 
-export default comp(
-  { ...frame, background: paper, assets: [fonts.thai] },
-  (c) => {
+export function highlightFade(fadeWithText: boolean) {
+  return comp({ ...frame, background: paper, assets: [fonts.thai] }, (c) => {
     c.textStyle("tag", {
       fontAsset: "thai",
       size: 56,
@@ -34,6 +35,7 @@ export default comp(
               color: "#C9D29A",
               thickness: 84,
               offset: -18,
+              ...(fadeWithText ? { fadeWithText } : {}),
             },
           ],
         }),
@@ -59,5 +61,7 @@ export default comp(
       to: { opacity: 0 },
       layer: "response",
     });
-  },
-);
+  });
+}
+
+export default highlightFade(false);

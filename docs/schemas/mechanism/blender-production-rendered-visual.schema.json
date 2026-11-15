@@ -164,6 +164,11 @@
         },
         "coStartLayers": { "type": "integer", "minimum": 2, "maximum": 2000 },
         "safeAreaFraction": { "type": "number", "minimum": 0, "maximum": 0.49 },
+        "textOffCanvasFraction": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
         "opacityPop": { "type": "number", "minimum": 0, "maximum": 1 },
         "scalePop": { "type": "number", "minimum": 0 },
         "popNeighbourRatio": { "type": "number", "minimum": 0, "maximum": 1 },
@@ -463,6 +468,8 @@
               "reading-time",
               "off-canvas",
               "outside-safe-area",
+              "text-off-canvas",
+              "orphaned-decoration",
               "coverage",
               "scale-pop",
               "opacity-pop",
@@ -660,6 +667,11 @@
         },
         "coStartLayers": { "type": "integer", "minimum": 2, "maximum": 2000 },
         "safeAreaFraction": { "type": "number", "minimum": 0, "maximum": 0.49 },
+        "textOffCanvasFraction": {
+          "type": "number",
+          "exclusiveMinimum": 0,
+          "maximum": 1
+        },
         "opacityPop": { "type": "number", "minimum": 0, "maximum": 1 },
         "scalePop": { "type": "number", "minimum": 0 },
         "popNeighbourRatio": { "type": "number", "minimum": 0, "maximum": 1 },
@@ -959,6 +971,8 @@
               "reading-time",
               "off-canvas",
               "outside-safe-area",
+              "text-off-canvas",
+              "orphaned-decoration",
               "coverage",
               "scale-pop",
               "opacity-pop",

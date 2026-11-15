@@ -1325,3 +1325,206 @@ describe("framing of clipped content", () => {
     expect(framing(input)).toEqual([]);
   });
 });
+
+describe("ET5a text framing and decoration guards", () => {
+  // Layer-local settled ink: one 200×40 line starting at the origin.
+  const line = { left: 0, top: -30, right: 200, bottom: 10 };
+  const title = (
+    position: [number, number],
+    extra: Partial<Extract<CompositionLayer, { type: "text" }>> = {},
+  ): CompositionLayer => ({
+    id: "title",
+    type: "text",
+    text: "Settled title",
+    fontSize: 40,
+    color: "#111111",
+    transform: { position },
+    ...extra,
+  });
+  const lint = (
+    layers: CompositionLayer[],
+    policy: Parameters<typeof analyzeCompositionQuality>[1] = {},
+    ink: Record<
+      string,
+      { left: number; top: number; right: number; bottom: number }[][]
+    > = {
+      title: [[line]],
+    },
+  ) =>
+    analyzeCompositionQuality(composition(layers, { frameCount: 3 }), {
+      ...policy,
+      evaluation: { textBounds: { title: [line] } },
+      textFramingEvidence: { ink },
+    }).diagnostics.filter((d) =>
+      ["text-off-canvas", "outside-safe-area", "orphaned-decoration"].includes(
+        d.code,
+      ),
+    );
+
+  it("reports a large hidden share of settled ink as an error, measured as the share", () => {
+    // 80 of 200 px hang off the left edge: 40%, as in the ET0 O2 fixture.
+    const found = lint([title([-80, 100], { align: "left" })]);
+    expect(found.map((d) => [d.code, d.severity])).toEqual([
+      ["outside-safe-area", "warning"],
+      ["text-off-canvas", "error"],
+    ]);
+    const hidden = found.find((d) => d.code === "text-off-canvas")!;
+    expect(hidden.measured).toBe(0.4);
+    expect(hidden.frames).toEqual([0, 2]);
+    expect(hidden.node).toBe("title");
+    expect(hidden.message).not.toContain("align");
+  });
+
+  it("keeps a few-pixel incursion a safe-area warning", () => {
+    // 5 px of 200 off-frame (2.5%) stays below the 5% default.
+    expect(lint([title([-5, 100])]).map((d) => d.code)).toEqual([
+      "outside-safe-area",
+    ]);
+    // Inside the frame but within the safe inset: unchanged.
+    expect(lint([title([10, 100])]).map((d) => d.code)).toEqual([
+      "outside-safe-area",
+    ]);
+  });
+
+  it("names the align contract when centred text overflows", () => {
+    const centred = lint(
+      [title([-80, 100], { align: "center" })],
+      {},
+      { title: [[{ ...line, left: -100, right: 100 }]] },
+    ).find((d) => d.code === "text-off-canvas")!;
+    // Centred on x = -80: 180 of 200 px are off-frame.
+    expect(centred.measured).toBe(0.9);
+    expect(centred.message).toContain('`align: "center"`');
+    expect(centred.message).toContain("textLayout.width");
+  });
+
+  it("follows the policy threshold and severity overrides", () => {
+    const layers = [title([-80, 100])];
+    expect(
+      lint(layers, { textOffCanvasFraction: 0.5 }).map((d) => d.code),
+    ).not.toContain("text-off-canvas");
+    expect(
+      lint(layers, { severities: { "text-off-canvas": "warning" } }).find(
+        (d) => d.code === "text-off-canvas",
+      )!.severity,
+    ).toBe("warning");
+  });
+
+  it("measures each line, so one overflowing line of two counts by its area", () => {
+    const second = { left: 0, top: 20, right: 1000, bottom: 60 };
+    const found = lint(
+      [title([20, 100])],
+      {},
+      { title: [[line, second]] },
+    ).find((d) => d.code === "text-off-canvas")!;
+    // Line 2 spans x 20–1020 on a 640 px canvas: 380 of its 1000 px are off.
+    expect(found.measured).toBe(
+      Math.round(((380 * 40) / (200 * 40 + 1000 * 40)) * 1000) / 1000,
+    );
+  });
+
+  it("follows the layer transform on each frame", () => {
+    const sliding = title([0, 100]);
+    (sliding as { transform: object }).transform = {
+      position: {
+        keys: [
+          { frame: 0, value: [-150, 100] },
+          { frame: 2, value: [50, 100] },
+        ],
+      },
+    };
+    const found = lint([sliding]).filter((d) => d.code === "text-off-canvas");
+    // Frame 0: 75% off; frame 1: 25% off; frame 2: on-frame.
+    expect(found.map((d) => [d.frames, d.measured])).toEqual([[[0, 1], 0.75]]);
+  });
+
+  it("adds nothing without measured ink or for hidden layers", () => {
+    expect(lint([title([-80, 100])], {}, {}).map((d) => d.code)).toEqual([
+      "outside-safe-area",
+    ]);
+    expect(
+      lint([
+        title([-80, 100], { transform: { position: [-80, 100], opacity: 0 } }),
+      ]).map((d) => d.code),
+    ).toEqual([]);
+    expect(
+      analyzeCompositionQuality(
+        composition([title([-80, 100])], { frameCount: 3 }),
+        { evaluation: { textBounds: { title: [line] } } },
+      ).diagnostics.map((d) => d.code),
+    ).not.toContain("text-off-canvas");
+  });
+
+  it("finds settled ink of precomp text by its source key", () => {
+    const input = composition(
+      [
+        {
+          id: "host",
+          type: "precomp",
+          comp: "inner",
+          // The host anchors the 640×360 source at its centre: a −200 px shift.
+          transform: { position: [120, 180] },
+        },
+      ],
+      { frameCount: 3 },
+    );
+    input.precomps = [
+      {
+        id: "inner",
+        width: 640,
+        height: 360,
+        frameCount: 3,
+        layers: [title([120, 100])],
+      },
+    ];
+    const found = analyzeCompositionQuality(input, {
+      evaluation: { textBounds: { "inner/title": [line] } },
+      textFramingEvidence: { ink: { "inner/title": [[line]] } },
+    }).diagnostics.find((d) => d.code === "text-off-canvas")!;
+    // x 120 − 200 = −80: 40% off-frame.
+    expect(found.node).toBe("host/title");
+    expect(found.measured).toBe(0.4);
+  });
+
+  it("reports orphaned decorations from evidence, by decoration path", () => {
+    const decorated = title([100, 100], {
+      fontAsset: "serif",
+      decorations: [{ kind: "highlight", color: "#c9d29a" }],
+    });
+    const found = analyzeCompositionQuality(
+      composition([decorated], {
+        frameCount: 3,
+        assets: [
+          {
+            id: "serif",
+            type: "font",
+            path: "serif.otf",
+            sha256: `sha256:${"0".repeat(64)}`,
+            weight: "600",
+          },
+        ],
+      }),
+      {
+        evaluation: { textBounds: { title: [line] } },
+        textFramingEvidence: {
+          orphanedDecorations: {
+            title: [
+              { frame: 1, decorations: [0] },
+              { frame: 2, decorations: [0] },
+            ],
+          },
+        },
+      },
+    ).diagnostics.filter((d) => d.code === "orphaned-decoration");
+    expect(found).toEqual([
+      expect.objectContaining({
+        severity: "error",
+        node: "title",
+        frames: [1, 2],
+        path: "layers.0.decorations.0",
+      }),
+    ]);
+    expect(found[0]!.message).toContain("highlight");
+    expect(found[0]!.message).toContain("fadeWithText");
+  });
+});

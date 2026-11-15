@@ -700,7 +700,9 @@ const results = {
     P1: await p1(),
   },
 };
-const text = await format(JSON.stringify(results), { parser: "json" });
+const text = await format(JSON.stringify(results, null, 2), {
+  parser: "json",
+});
 writeFileSync(join(outputDir, "et0-baseline.json"), text);
 if (args.includes("--write")) writeFileSync(baselinePath, text);
 if (args.includes("--check")) {

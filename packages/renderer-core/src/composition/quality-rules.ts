@@ -5,6 +5,9 @@ import {
   normalizedHomography,
 } from "./projective-quality.ts";
 import { boundaryVelocityJump } from "../camera-sampling.ts";
+import { projectBounds } from "./evaluate/geometry.ts";
+import type { Bounds } from "./evaluate/types.ts";
+import { homographicBounds } from "./projective-quality.ts";
 import {
   lintSeverity,
   type MotionLintCode,
@@ -155,6 +158,91 @@ function coverageLayerReference(comp: Composition, id: string) {
   }
   return undefined;
 }
+const TEXT_OFF_CANVAS_FRACTION = 0.05;
+const textOffCanvasLimit = (policy: ResolvedCompositionQualityPolicy) =>
+  policy.textOffCanvasFraction ?? TEXT_OFF_CANVAS_FRACTION;
+/** Evidence key of a text sample: root id or `precomp-id/layer-id`. */
+export function textEvidenceKey(
+  frame: CompositionQualityFrame,
+  sample: CompositionQualitySample,
+) {
+  const slash = sample.id.lastIndexOf("/");
+  if (slash < 0) return sample.id;
+  const host = frame.layers.get(sample.id.slice(0, slash))?.state.layer;
+  return host?.type === "precomp"
+    ? `${host.comp}/${sample.state.layer.id}`
+    : undefined;
+}
+/**
+ * ET5a (O2): share of a visible text layer's settled glyph-ink area, per
+ * line, outside the canvas on this frame. The ink boxes exclude text-animator
+ * excursions, so a glyph entrance from off-frame does not count; the layer's
+ * own transform at this frame does. Undefined without measured ink.
+ */
+export function textOffCanvasShare(
+  comp: Composition,
+  frame: CompositionQualityFrame,
+  sample: CompositionQualitySample,
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  if (
+    sample.state.layer.type !== "text" ||
+    !sample.visible ||
+    sample.state.layer.coverage === "required"
+  )
+    return undefined;
+  const key = textEvidenceKey(frame, sample);
+  const lines = key
+    ? policy.textFramingEvidence?.ink?.[key]?.[sample.state.state ?? 0]
+    : undefined;
+  if (!lines?.length) return undefined;
+  const viewport = { left: 0, top: 0, right: comp.width, bottom: comp.height };
+  let total = 0,
+    outside = 0;
+  for (const line of lines) {
+    const box: Bounds = sample.homography
+      ? homographicBounds(line, sample.homography, viewport)
+      : projectBounds(line, sample.matrix);
+    const area = (box.right - box.left) * (box.bottom - box.top);
+    if (!(area > 0)) continue;
+    const inside =
+      Math.max(0, Math.min(box.right, comp.width) - Math.max(box.left, 0)) *
+      Math.max(0, Math.min(box.bottom, comp.height) - Math.max(box.top, 0));
+    total += area;
+    outside += area - inside;
+  }
+  return total > 0 ? outside / total : undefined;
+}
+/**
+ * ET5a (O3): a highlight, underline, strike or box that paints while every
+ * glyph it decorates is transparent, from the renderer's own draw plan.
+ */
+export function compositionDecorationFindings(
+  frames: readonly CompositionQualityFrame[],
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  const { diagnostics, add } = findingsCollector(policy);
+  const evidence = policy.textFramingEvidence?.orphanedDecorations ?? {};
+  for (const [id, entries] of Object.entries(evidence))
+    for (const { frame: at, decorations } of entries) {
+      const sample = frames[at]?.layers.get(id);
+      if (!sample || !sample.visible) continue;
+      const layer = sample.state.layer;
+      for (const index of decorations) {
+        const mark =
+          layer.type === "text" ? layer.decorations?.[index] : undefined;
+        add(
+          "orphaned-decoration",
+          sample,
+          [at, at],
+          1,
+          `The ${mark?.kind ?? "text"} decoration stays visible while its text is fully transparent; key its \`reveal\` or set \`fadeWithText: true\`.`,
+          `${sample.path}.decorations.${index}`,
+        );
+      }
+    }
+  return diagnostics;
+}
 export function compositionFramingFindings(
   comp: Composition,
   frames: readonly CompositionQualityFrame[],
@@ -268,6 +356,25 @@ export function compositionFramingFindings(
             `Layer leaves the ${(inset * 100).toFixed(1)}% safe inset.`,
           );
       }
+    }
+    for (const sample of frame.layers.values()) {
+      const hidden = textOffCanvasShare(comp, frame, sample, policy);
+      if (hidden === undefined || hidden < textOffCanvasLimit(policy)) continue;
+      const layer = sample.state.layer as Extract<
+        Composition["layers"][number],
+        { type: "text" }
+      >;
+      const align = layer.align ?? "left";
+      add(
+        "text-off-canvas",
+        sample,
+        [at, at],
+        Math.round(hidden * 1000) / 1000,
+        `${(hidden * 100).toFixed(1)}% of the text's settled glyph ink lies outside the frame.` +
+          (align === "left"
+            ? ""
+            : ` \`align: "${align}"\` places each line relative to the layer origin, not within \`textLayout.width\`; move the origin or use \`align: "left"\`.`),
+      );
     }
     for (const id of coverage) {
       const sample = frame.layers.get(id);

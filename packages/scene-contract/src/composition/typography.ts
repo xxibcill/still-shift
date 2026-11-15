@@ -32,6 +32,12 @@ const decoration = TextDecorationSchema.extend({
   span: compositionId.optional(),
   offset: bounded.optional(),
   reveal: CompositionScalarCurveSchema.optional(),
+  /**
+   * ET5a: multiply the mark's alpha by the highest text-animator opacity of
+   * the glyphs it decorates on each line, so a highlight fades out with its
+   * text. Off by default; existing compositions render unchanged.
+   */
+  fadeWithText: z.boolean().optional(),
 });
 const transition = TextTransitionSchema.extend({
   window: TextTransitionSchema.shape.window.safeExtend({

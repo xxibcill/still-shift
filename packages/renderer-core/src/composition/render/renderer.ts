@@ -391,6 +391,15 @@ export type CompositionPreview = {
   readPixels(): Uint8ClampedArray;
   /** Measured local text bounds per state, as supplied to the evaluator. */
   textBounds: Record<string, Bounds[]>;
+  /** ET5a: settled per-line glyph ink boxes per state (lint evidence only). */
+  textInkBounds?: Record<string, Bounds[][]>;
+  /** ET5a: decorations of a text layer painting while all their glyphs are transparent. */
+  orphanedTextDecorations?(content: {
+    key: string;
+    state: number;
+    reveal: number;
+    time: number;
+  }): number[];
   /** Runtime-only immutable native lookup; never serialize into a saved policy. */
   evaluationOptions?: EvaluationOptions;
   /** Still-only frames are ready synchronously; native media returns its loading promise. */
@@ -902,6 +911,8 @@ function prepareCompositionPreviewOnCanvas(
           return backend.readPixels(target);
         },
         textBounds: text.bounds,
+        textInkBounds: text.inkBounds,
+        orphanedTextDecorations: (content) => text.orphanedDecorations(content),
         ...(resources.native3D ? { evaluationOptions } : {}),
         ...(statistics
           ? { renderStatistics: () => statistics.statistics }

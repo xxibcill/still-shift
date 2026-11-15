@@ -12,6 +12,7 @@ import {
   sampleCompositionQuality,
 } from "./composition/quality-samples.ts";
 import {
+  compositionDecorationFindings,
   compositionFramingFindings,
   compositionPopFindings,
   compositionTimingFindings,
@@ -335,6 +336,7 @@ export {
   TEXT_LEGIBILITY_CODES,
   type TextLegibilityCode,
   type TextLegibilityEvidence,
+  type TextFramingEvidence,
   CompositionSemanticAssociationSchema,
   CompositionReadingMemberSchema,
   MOTION_LINT_CODES,
@@ -370,6 +372,7 @@ export function analyzeCompositionQuality(
     ),
     ...analyzeCompositionTypography(frames, comp.fps, resolved),
     ...compositionFramingFindings(comp, frames, resolved),
+    ...compositionDecorationFindings(frames, resolved),
     ...compositionPopFindings(frames, resolved),
     ...compositionTimingFindings(comp, frames, resolved),
     ...compositionVelocityFindings(comp, frames, resolved),
