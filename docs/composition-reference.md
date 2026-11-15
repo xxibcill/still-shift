@@ -3578,8 +3578,13 @@ container or decorations. On each frame where the layer is visible, those
 boxes follow the layer's own transform (parents and precomp hosts included).
 The finding reports the share of their area outside the canvas as `measured`
 when it reaches `textOffCanvasFraction` (default `0.05`). A glyph entrance
-from off-frame driven by a text animator does not count, while a layer slid
-in by its transform does on the frames it is cut. The `outside-safe-area`
+from off-frame driven by a text animator does not count. Neither does a frame
+within half a second, in the same shot, of the layer moving across the edge:
+its hidden share changing by more than half the ink per second between two
+adjacent visible frames, as in a push-on or push-off by the layer's transform.
+The half second keeps an eased entrance's slow start and finish with its fast
+middle. A title that comes to rest cut off is reported from half a second after
+it settles, and a slow drift across the edge is still reported. The `outside-safe-area`
 warning is unchanged, so a few-pixel incursion stays a warning only. Text
 without a pinned font is not measured.
 

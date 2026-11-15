@@ -161,6 +161,41 @@ function coverageLayerReference(comp: Composition, id: string) {
 const TEXT_OFF_CANVAS_FRACTION = 0.05;
 const textOffCanvasLimit = (policy: ResolvedCompositionQualityPolicy) =>
   policy.textOffCanvasFraction ?? TEXT_OFF_CANVAS_FRACTION;
+/**
+ * Hidden-share change per second above which a text layer counts as moving
+ * across the frame edge (a push-on or push-off by its own transform) rather
+ * than cut off at rest. A slow drift across the edge stays well below it.
+ */
+const TEXT_OFF_CANVAS_TRANSIT_RATE = 0.5;
+/** Seconds around such a change that count as the same entrance or exit. */
+const TEXT_OFF_CANVAS_TRANSIT_WINDOW = 0.5;
+/**
+ * Frames on which a text layer is in transit: within the transit window of a
+ * pair of adjacent visible frames, in the same shot, whose hidden share
+ * differs by more than the transit rate. The window keeps the slow eased
+ * start and end of an entrance or exit with its fast middle.
+ */
+function textOffCanvasTransit(
+  comp: Composition,
+  shares: readonly (number | undefined)[],
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  const limit = TEXT_OFF_CANVAS_TRANSIT_RATE / comp.fps;
+  const reach = Math.round(TEXT_OFF_CANVAS_TRANSIT_WINDOW * comp.fps);
+  const transit = new Set<number>();
+  for (let at = 1; at < shares.length; at++) {
+    const before = shares[at - 1],
+      after = shares[at];
+    if (before === undefined || after === undefined || policy.cuts.has(at))
+      continue;
+    if (Math.abs(after - before) <= limit) continue;
+    const shot = policy.shots.find((s) => at >= s.start && at < s.end);
+    const first = Math.max(at - 1 - reach, shot?.start ?? 0);
+    const last = Math.min(at + reach, (shot?.end ?? shares.length) - 1);
+    for (let frame = first; frame <= last; frame++) transit.add(frame);
+  }
+  return transit;
+}
 /** Evidence key of a text sample: root id or `precomp-id/layer-id`. */
 export function textEvidenceKey(
   frame: CompositionQualityFrame,
@@ -259,6 +294,26 @@ export function compositionFramingFindings(
     [...coverage].map((id) => [id, coverageLayerReference(comp, id)]),
   );
   const inset = policy.safeAreaFraction;
+  const textShares = new Map<string, (number | undefined)[]>();
+  frames.forEach((frame, at) => {
+    for (const sample of frame.layers.values()) {
+      const share = textOffCanvasShare(comp, frame, sample, policy);
+      if (share === undefined) continue;
+      let shares = textShares.get(sample.id);
+      if (!shares)
+        textShares.set(
+          sample.id,
+          (shares = Array(frames.length).fill(undefined)),
+        );
+      shares[at] = share;
+    }
+  });
+  const textTransit = new Map(
+    [...textShares].map(([id, shares]) => [
+      id,
+      textOffCanvasTransit(comp, shares, policy),
+    ]),
+  );
   frames.forEach((frame, at) => {
     for (const sample of frame.layers.values()) {
       // Framing measures the painted region after group and precomp clipping.
@@ -358,8 +413,13 @@ export function compositionFramingFindings(
       }
     }
     for (const sample of frame.layers.values()) {
-      const hidden = textOffCanvasShare(comp, frame, sample, policy);
-      if (hidden === undefined || hidden < textOffCanvasLimit(policy)) continue;
+      const hidden = textShares.get(sample.id)?.[at];
+      if (
+        hidden === undefined ||
+        hidden < textOffCanvasLimit(policy) ||
+        textTransit.get(sample.id)?.has(at)
+      )
+        continue;
       const layer = sample.state.layer as Extract<
         Composition["layers"][number],
         { type: "text" }

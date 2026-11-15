@@ -21,7 +21,7 @@
       "evidence": "Preparation records, per text state, the settled glyph-ink box of each line (union of shaped cluster ink boxes; no text-animator excursions, container or decorations). Exposed as preview.textInkBounds and passed to analyzeCompositionQuality as runtime evidence (policy.textFramingEvidence, never saved).",
       "measure": "On each visible frame the line boxes are projected by the sample's matrix (or homography), so parents and precomp hosts count. measured = area outside the canvas / total area, reported when it reaches textOffCanvasFraction (policy, default 0.05). Precomp text uses its precomp-id/layer-id key.",
       "alignContract": "When the layer's align is center or right, the message states that align places each line relative to the layer origin, not within textLayout.width.",
-      "notCovered": "State-only lint measures no glyph ink and adds nothing (unchanged reports). Text without a pinned font is not measured. A layer slid in from off-frame by its transform is reported on the frames it is cut; a text-animator entrance is not."
+      "notCovered": "State-only lint measures no glyph ink and adds nothing (unchanged reports). Text without a pinned font is not measured. A text-animator entrance is not reported, and neither are frames on which the layer is in transit by its own transform (within 0.5 s, in the same shot, of the hidden share changing by more than 0.5 per second between adjacent visible frames; added after the PR #66 review). A title that settles cut off is reported from 0.5 s after it settles; a slow drift across the edge is still reported."
     },
     "orphanedDecoration": {
       "code": "orphaned-decoration (default error; pixel lint only)",

@@ -1423,19 +1423,66 @@ describe("ET5a text framing and decoration guards", () => {
     );
   });
 
-  it("follows the layer transform on each frame", () => {
-    const sliding = title([0, 100]);
-    (sliding as { transform: object }).transform = {
-      position: {
-        keys: [
-          { frame: 0, value: [-150, 100] },
-          { frame: 2, value: [50, 100] },
+  const moving = (
+    keys: { frame: number; value: [number, number] }[],
+    frameCount: number,
+  ) => {
+    const layer = title([0, 100]);
+    (layer as { transform: object }).transform = { position: { keys } };
+    return analyzeCompositionQuality(composition([layer], { frameCount }), {
+      evaluation: { textBounds: { title: [line] } },
+      textFramingEvidence: { ink: { title: [[line]] } },
+    })
+      .diagnostics.filter((d) => d.code === "text-off-canvas")
+      .map((d) => [d.frames, d.measured]);
+  };
+
+  it("skips frames where the layer is in transit by its own transform", () => {
+    // Push-on from fully off-left (320 px over 10 frames) to rest on-frame.
+    expect(
+      moving(
+        [
+          { frame: 0, value: [-220, 100] },
+          { frame: 10, value: [100, 100] },
         ],
-      },
-    };
-    const found = lint([sliding]).filter((d) => d.code === "text-off-canvas");
-    // Frame 0: 75% off; frame 1: 25% off; frame 2: on-frame.
-    expect(found.map((d) => [d.frames, d.measured])).toEqual([[[0, 1], 0.75]]);
+        30,
+      ),
+    ).toEqual([]);
+    // Push-off from rest to fully off-left.
+    expect(
+      moving(
+        [
+          { frame: 0, value: [100, 100] },
+          { frame: 20, value: [-220, 100] },
+        ],
+        21,
+      ),
+    ).toEqual([]);
+  });
+
+  it("reports a title that comes to rest cut off once its entrance is over", () => {
+    // Slides in and stops with 80 of 200 px (40%) off the left edge at frame
+    // 10; the 15 frames (half a second at 30 fps) after the move are skipped.
+    const found = moving(
+      [
+        { frame: 0, value: [-220, 100] },
+        { frame: 10, value: [-80, 100] },
+      ],
+      60,
+    );
+    expect(found).toEqual([[[26, 59], 0.4]]);
+  });
+
+  it("still reports a slow drift across the edge", () => {
+    // 1 px per frame on a 200 px line: 0.5% per frame, 15% per second.
+    const found = moving(
+      [
+        { frame: 0, value: [-20, 100] },
+        { frame: 30, value: [-50, 100] },
+      ],
+      31,
+    );
+    expect(found).toEqual([[[0, 30], 0.25]]);
   });
 
   it("adds nothing without measured ink or for hidden layers", () => {

@@ -429,7 +429,9 @@ unchanged; the only ET0 baseline changes are the two new findings.
       off-frame) fails; a 5 px incursion stays a warning. _`text-off-canvas`,
       `measured` = hidden share of settled glyph ink, threshold
       `textOffCanvasFraction` (default 0.05). Pixel lint only; text animators'
-      excursions are excluded, layer transforms are not._
+      excursions are excluded; layer transforms count except on
+      frames within 0.5 s of the layer crossing the edge (hidden share changing
+      by more than 0.5 per second; PR #66 review)._
 - [x] **Decorations and fades (O3).** Either highlight/box/underline inherit their
       text's animator opacity (versioned), or lint reports a visible decoration
       with fully transparent text. The ET0 O3 fixture (frames 70–83) is caught or
