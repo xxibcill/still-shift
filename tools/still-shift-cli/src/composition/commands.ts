@@ -1,4 +1,5 @@
 import { createProgramPreview } from "./preview.ts";
+import { writeSync } from "node:fs";
 import { readFile, realpath } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import {
@@ -28,6 +29,7 @@ import { parseNamedArguments, requireArgument } from "../named-options.ts";
 import { loadProgram } from "./program.ts";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { withProgramFile, writeComposition } from "./files.ts";
+import { ownProcessSignals, signalExitCode } from "./process-signals.ts";
 import {
   COMPOSITION_OUTPUT_FORMATS,
   type CompositionOutputFormat,
@@ -285,30 +287,41 @@ export async function runCompositionCommand(
       // ET2: own SIGINT/SIGTERM/SIGHUP while linting so media staging, the
       // media cache lock, the lint dev-server cache and the compiled program
       // are removed by their owners instead of being left by process exit.
-      const controller = new AbortController();
-      // Repeated signals are expected (a terminal signals the whole process
-      // group and tsx relays it again); aborting is idempotent.
-      const cancel = (name: NodeJS.Signals) => () => {
-        controller.abort(
-          new CompositionProgramError([
-            {
-              code: "comp-program-aborted",
-              severity: "error",
-              path: "input",
-              message: `Composition lint cancelled by ${name}`,
-            },
-          ]),
-        );
-      };
       // All three: the browser is launched without Playwright's handlers for
-      // SIGINT, SIGTERM and SIGHUP, so an unowned one would end the process
-      // with no cleanup (a closed terminal or dropped SSH session sends SIGHUP).
-      const listeners = (["SIGINT", "SIGTERM", "SIGHUP"] as const).map(
-        (name) => [name, cancel(name)] as const,
-      );
-      // Persistent listeners: tsx's signal relay exits the process when no
-      // listener remains after a signal, before cleanup could finish.
-      for (const [name, listener] of listeners) process.on(name, listener);
+      // them, so an unowned one would end the process with no cleanup (a
+      // closed terminal or dropped SSH session sends SIGHUP).
+      const controller = new AbortController();
+      const lintFailure = (message: string) => ({
+        code: "comp-program-aborted",
+        severity: "error" as const,
+        path: "input",
+        message,
+      });
+      const releaseSignals = ownProcessSignals({
+        cancel: (signal) =>
+          controller.abort(
+            new CompositionProgramError([
+              lintFailure(`Composition lint cancelled by ${signal}`),
+            ]),
+          ),
+        // A signal after the relay window means cleanup is taking too long
+        // for the user: stop now, as an unowned signal would. Written
+        // synchronously, because stderr to a pipe is asynchronous on macOS.
+        force: (signal) => {
+          writeSync(
+            2,
+            json({
+              status: "failed",
+              diagnostics: [
+                lintFailure(
+                  `Composition lint stopped by repeated ${signal} before cleanup finished; temporary files may remain`,
+                ),
+              ],
+            }),
+          );
+          process.exit(signalExitCode(signal));
+        },
+      });
       try {
         const program = await loadProgram(input, {
           signal: controller.signal,
@@ -328,7 +341,7 @@ export async function runCompositionCommand(
       } catch (error) {
         throw controller.signal.aborted ? controller.signal.reason : error;
       } finally {
-        for (const [name, listener] of listeners) process.off(name, listener);
+        releaseSignals();
       }
     }
     if (command === "render") {
