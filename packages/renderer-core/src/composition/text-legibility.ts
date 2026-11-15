@@ -11,9 +11,10 @@
  * `x-height-floor` and `platform-safe-zone` are geometry checks over the same
  * reading window. All three are legibility signals, not visual acceptance.
  */
-import type {
-  Composition,
-  CompositionLayer,
+import {
+  parsePropertyPath,
+  type Composition,
+  type CompositionLayer,
 } from "@still-shift/scene-contract";
 import { resolvedTextStyle } from "../typography-style.ts";
 import { textNode, type TextLayer } from "./render/text-scenes.ts";
@@ -104,21 +105,90 @@ export function decodeWordCode(r: number, g: number, b: number) {
   return high * 32 + low;
 }
 
-const transformOpacityZero = (layer: CompositionLayer): CompositionLayer => ({
+const withTransformOpacity = (
+  layer: CompositionLayer,
+  opacity: number,
+): CompositionLayer => ({
   ...layer,
-  transform: { ...layer.transform, opacity: 0 },
+  transform: { ...layer.transform, opacity },
 });
+
+const OPACITY_PROPERTIES = new Set(["transform.opacity", "opacity"]);
+/** Whether a property path (or layer + suffix) animates the opacity of one of `ids`. */
+function drivesOpacity(
+  ids: ReadonlySet<string>,
+  path: string | undefined,
+): boolean {
+  if (!path) return false;
+  const parsed = parsePropertyPath(path);
+  return (
+    !("code" in parsed) &&
+    !parsed.scope.length &&
+    ids.has(parsed.layer) &&
+    OPACITY_PROPERTIES.has(parsed.segments.map((s) => s.name).join("."))
+  );
+}
+/**
+ * Drop expressions, drivers, periodic motion and behaviours that animate the
+ * opacity of `ids`, so the opacity the mask sets on those layers holds.
+ */
+function withoutOpacityMotion(
+  composition: Composition,
+  ids: ReadonlySet<string>,
+) {
+  if (composition.expressions)
+    composition.expressions = Object.fromEntries(
+      Object.entries(composition.expressions).filter(
+        ([path]) => !drivesOpacity(ids, path),
+      ),
+    );
+  if (composition.drivers)
+    composition.drivers = composition.drivers.filter(
+      (driver) => !drivesOpacity(ids, driver.target),
+    );
+  if (composition.periodic)
+    composition.periodic = composition.periodic.filter(
+      (motion) =>
+        !drivesOpacity(
+          ids,
+          motion.target ??
+            (motion.node && motion.property
+              ? `${motion.node}.${motion.property}`
+              : undefined),
+        ),
+    );
+  if (composition.behaviours)
+    composition.behaviours = composition.behaviours.flatMap(
+      (behaviour): NonNullable<Composition["behaviours"]> => {
+        if (behaviour.type !== "follow-through")
+          return "target" in behaviour && drivesOpacity(ids, behaviour.target)
+            ? []
+            : [behaviour];
+        const leader = parsePropertyPath(behaviour.leader);
+        const suffix =
+          behaviour.property ??
+          ("code" in leader
+            ? undefined
+            : leader.segments.map((s) => s.name).join("."));
+        const followers = behaviour.followers.filter(
+          (follower) => !drivesOpacity(ids, `${follower}.${suffix}`),
+        );
+        return followers.length ? [{ ...behaviour, followers }] : [];
+      },
+    );
+}
 
 /**
  * The glyph mask for one root text layer: every other layer keeps its geometry
  * (attach constraints and parents still resolve) but paints nothing (opacity
- * 0; group ancestors and the layer's track matte stay as they are, since their
- * opacity reaches it), the background is black, and the layer's glyphs are
- * drawn opaque with one colour per word. Effects,
- * decorations and blend modes are dropped, so only fully covered glyph
- * interiors keep an exact word code; text-animator opacity, blur, masks and
- * track mattes stay, as they decide which glyphs are visible. Draw it with the
- * `ink-only` text probe so containers are skipped.
+ * 0), the background is black, and the layer's glyphs are drawn opaque with
+ * one colour per word. The layer and its group ancestors are drawn at opacity 1
+ * with a normal blend, and opacity motion on every root layer except the track
+ * matte is dropped, so a title held below full opacity is still measured.
+ * Effects and decorations are dropped, so only fully covered glyph interiors
+ * keep an exact word code; text-animator opacity, blur, masks and track mattes
+ * stay, as they decide which glyphs are visible. Draw it with the `ink-only`
+ * text probe so containers are skipped.
  */
 export function textLegibilityMask(
   comp: Composition,
@@ -209,15 +279,23 @@ export function textLegibilityMask(
       delete text.spans;
       text.color = wordCode(0);
       if (spans?.length) text.spans = spans;
-      return text;
+      return withTransformOpacity(text, 1);
     }
-    if (
-      layer.id === matte ||
-      (ancestors.has(layer.id) && layer.type === "group")
-    )
-      return layer;
-    return transformOpacityZero(layer);
+    if (layer.id === matte) return layer;
+    if (ancestors.has(layer.id) && layer.type === "group") {
+      delete layer.blendMode;
+      return withTransformOpacity(layer, 1);
+    }
+    return withTransformOpacity(layer, 0);
   });
+  withoutOpacityMotion(
+    mask,
+    new Set(
+      mask.layers
+        .filter((layer) => layer.id !== matte)
+        .map((layer) => layer.id),
+    ),
+  );
   withoutAnimatorColor(mask, layerId);
   return {
     composition: mask,
@@ -515,6 +593,11 @@ export function analyzeTextLegibility(
         if (lowest < target) below.push(sample.frame);
       }
       entry.measuredFrames = measuredFrames;
+      // A frame with no measurable word must not read as a pass.
+      if (measuredFrames < reading.length)
+        limitations.push(
+          `text-contrast of ${layer.id} is unmeasured on ${reading.length - measuredFrames} of ${reading.length} reading frames: no word had ${MINIMUM_WORD_PIXELS} fully covered glyph pixels in the mask (text-animator opacity, blur, a mask or a track matte can cause this).`,
+        );
       entry.words = contrast.words.map((word, i) => ({
         ...word,
         worst: wordWorst[i]

@@ -11,6 +11,7 @@ import { readFile, rm, writeFile, mkdtemp } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { Composition } from "@still-shift/scene-contract";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { contrastRatio } from "../../packages/renderer-core/src/typography-quality.ts";
 import { paper } from "../../benchmarks/fixtures/editorial-titles/shared.ts";
@@ -28,6 +29,7 @@ type Diagnostic = {
   rawSeverity?: string;
 };
 type LegibilityLayer = {
+  readingFrames: number;
   layer: string;
   attribution: string;
   measuredFrames: number;
@@ -72,6 +74,35 @@ const lintFixture = async (name: string, extra: string[] = []) => {
   assert.equal(result.stderr, "", `${name}: ${result.stderr.slice(0, 2000)}`);
   return { code: result.code, report: JSON.parse(result.stdout) as Report };
 };
+
+/** Lint a JSON copy of an ET0 fixture after `edit` changes its composition. */
+const lintVariant = async (
+  directory: string,
+  name: string,
+  edit: (composition: Composition) => void,
+  extra: string[] = [],
+) => {
+  const composition = structuredClone(
+    (
+      (await import(editorialFixture(`${name}.ts`).href)) as {
+        default: Composition;
+      }
+    ).default,
+  );
+  edit(composition);
+  const input = join(directory, `${name}-variant-${variants++}.json`);
+  await writeFile(input, JSON.stringify(composition));
+  const result = await lintCli([
+    "--input",
+    input,
+    "--pixels",
+    "true",
+    ...extra,
+  ]);
+  assert.equal(result.stderr, "", `${name}: ${result.stderr.slice(0, 2000)}`);
+  return { code: result.code, report: JSON.parse(result.stdout) as Report };
+};
+let variants = 0;
 
 const within = (actual: number, expected: number, tolerance = 1) =>
   Math.abs(actual - expected) <= tolerance;
@@ -157,9 +188,40 @@ export async function verifyTextLegibility() {
     ),
   );
 
-  // A per-layer waiver keeps the measurement but never gates; the report shows it.
   const directory = await mkdtemp(join(tmpdir(), "et3-legibility-"));
   try {
+    // A title held below full opacity is still in its reading window
+    // (readingOpacity 0.9) and must still be measured. With the mask drawn at
+    // the layer's own opacity, no glyph pixel decoded and the credit passed
+    // with 0 of 80 frames measured.
+    const faded = await lintVariant(
+      directory,
+      "o6-dark-band",
+      (composition) => {
+        for (const layer of composition.layers)
+          if (layer.id === "credit")
+            layer.transform = { ...layer.transform, opacity: 0.95 };
+      },
+      ["--legibility", "true"],
+    );
+    const fadedCredit = faded.report.textLegibility!.layers.find(
+      (layer) => layer.layer === "credit",
+    )!;
+    assert.ok(
+      fadedCredit.measuredFrames > 40,
+      `ET3: a credit at opacity 0.95 is measured on ${fadedCredit.measuredFrames} of ${fadedCredit.readingFrames} frames`,
+    );
+    const fadedFinding = faded.report.diagnostics.find(
+      (d) => d.code === "text-contrast" && d.node === "credit",
+    );
+    assert.ok(
+      fadedFinding &&
+        fadedFinding.measured < 1.5 &&
+        within(fadedFinding.frames[0], bandFrames.get("credit")![0]![0]),
+      `ET3: the faded credit is flagged over the band: ${JSON.stringify(fadedFinding?.frames)}`,
+    );
+
+    // A per-layer waiver keeps the measurement but never gates; the report shows it.
     const policy = join(directory, "policy.json");
     await writeFile(
       policy,

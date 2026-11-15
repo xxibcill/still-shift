@@ -2126,8 +2126,12 @@ two extra frames from the same prepared resources and backend: the background,
 which is the composition with that layer's glyph colours fully transparent (its
 container and highlight decorations stay), and a glyph mask, which keeps every
 other layer's geometry at opacity 0 on black and draws the layer's glyphs opaque
-with one colour code per word (decorations, effects and blend modes removed;
-text-animator opacity and blur, masks and track mattes kept). A glyph-interior
+with one colour code per word. In the mask the layer and its group ancestors
+are drawn at opacity 1 with a normal blend, and expressions, drivers, periodic
+motion and behaviours on root-layer opacity (except the track matte's) are
+dropped, so a title held at, say, 0.95 opacity is still measured (decorations,
+effects and blend modes removed; text-animator opacity and blur, masks and
+track mattes kept). A glyph-interior
 pixel is a mask pixel with a complete, exact word code (red ≥ 254, so at least
 99.6% coverage), so antialiased edges,
 fading or blurred glyphs and covered text are excluded. At each interior pixel
@@ -2137,7 +2141,9 @@ background frame (8-bit sRGB, the story `contrastRatio` formula). A word's
 contrast on a frame is the `contrastPercentile` (default 5th) of its interior
 pixels' ratios, nearest rank rounded down, as in the story `text-contrast`
 measure; words with fewer than 16 interior pixels are unmeasured on that frame.
-The layer's contrast is its lowest measured word. Frames below the role's target
+When some reading frames have no measured word, `limitations` says how many, so
+an unmeasured layer never reads as a pass. The layer's contrast is its lowest
+measured word. Frames below the role's target
 (WCAG 2 AA: 3:1 for headings as large text, 4.5:1 otherwise) are merged into
 ranges that break at cuts. Each finding gives the frames, the lowest contrast as
 `measured`, and `words`: the words below target in reading order with their worst

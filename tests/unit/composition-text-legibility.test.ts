@@ -180,6 +180,64 @@ describe("legibility words and masks", () => {
     expect(background.textAnimators![0]!.from).toEqual({ opacity: 0 });
   });
 
+  it("draws a layer held below full opacity at opacity 1, through its groups", () => {
+    const input = composition();
+    input.layers[0] = {
+      ...input.layers[0]!,
+      parent: "frame",
+      transform: { position: [100, 300], opacity: 0.95 },
+    } as Composition["layers"][number];
+    input.layers.push({
+      id: "frame",
+      type: "group",
+      blendMode: "multiply",
+      transform: { opacity: 0.9 },
+    } as Composition["layers"][number]);
+    input.expressions = {
+      "title.transform.opacity": { source: "0.95" },
+      "frame.opacity": { source: "0.9" },
+      "plate.transform.opacity": { source: "1" },
+      "title.transform.rotation": { source: "2" },
+    } as Composition["expressions"];
+    input.drivers = [
+      { target: "frame.transform.opacity", signal: "beat" },
+    ] as Composition["drivers"];
+    input.periodic = [
+      { node: "title", property: "opacity", start: 0, end: 9 },
+      { target: "title.transform.rotation", start: 0, end: 9 },
+    ] as Composition["periodic"];
+    input.behaviours = [
+      {
+        type: "follow-through",
+        leader: "plate.transform.opacity",
+        followers: ["title", "other"],
+      },
+    ] as Composition["behaviours"];
+    const { composition: mask } = textLegibilityMask(input, "title");
+    const byId = new Map(mask.layers.map((layer) => [layer.id, layer]));
+    expect(byId.get("title")!.transform?.opacity).toBe(1);
+    expect(byId.get("frame")!.transform?.opacity).toBe(1);
+    expect(byId.get("frame")!.blendMode).toBeUndefined();
+    expect(byId.get("plate")!.transform?.opacity).toBe(0);
+    // Opacity motion cannot override the mask; other motion is kept.
+    expect(mask.expressions).toEqual({
+      "title.transform.rotation": { source: "2" },
+    });
+    expect(mask.drivers).toEqual([]);
+    expect(mask.periodic).toEqual([
+      { target: "title.transform.rotation", start: 0, end: 9 },
+    ]);
+    expect(mask.behaviours).toEqual([
+      {
+        type: "follow-through",
+        leader: "plate.transform.opacity",
+        followers: ["other"],
+      },
+    ]);
+    // The source composition is untouched.
+    expect(input.layers[0]!.transform?.opacity).toBe(0.95);
+  });
+
   it("falls back to whole-layer attribution when words cannot be coded", () => {
     const input = composition();
     (input.layers[0] as { states?: string[] }).states = ["one", "two words"];
@@ -250,6 +308,13 @@ describe("text legibility findings", () => {
     expect(found[0]!.message).toContain('"ways" 1.50:1');
     const layer = report.textLegibility!.layers[0]!;
     expect(layer.measuredFrames).toBe(9);
+    // The unmeasured frame is reported, never read as a pass.
+    expect(layer.readingFrames).toBe(10);
+    expect(report.textLegibility!.limitations).toContainEqual(
+      expect.stringMatching(
+        /^text-contrast of title is unmeasured on 1 of 10 reading frames/,
+      ),
+    );
     expect(layer.worst).toEqual({ contrast: 1.2, frame: 5, word: "three" });
     expect(report.textLegibility!.method.contrastMeasured).toBe(true);
   });
