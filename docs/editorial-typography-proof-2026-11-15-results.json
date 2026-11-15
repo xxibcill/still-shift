@@ -1,0 +1,240 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-proof-2026-11-15",
+  "date": "2026-11-15",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/roadmap-reconciliation",
+  "head": "e6eb7b06",
+  "workingTree": "pre-existing unrelated edits preserved; this investigation added new files and edited only docs/dev-log.md",
+  "runtime": {
+    "node": "22.23.1 (nvm; shell default 24.16.0 was not used)",
+    "pnpm": "10.29.3",
+    "toolchainCheck": "pnpm toolchain:check passed: Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+    "renderer": "composition-canvas-1.47.7",
+    "evaluator": "composition-evaluator-57",
+    "backend": "canvas2d (default)",
+    "package": "local checkout source; not compared with the published 0.1.x/0.2.0 archives"
+  },
+  "inputs": {
+    "clip": {
+      "path": "benchmarks/results/cinematic-illustrated/review-v3/ci-09-layered-parallax.mp4",
+      "sha256": "d5bc5a5236113d13f754b6470cf77f8507fc54889d40add09b52bac3d7e7fdcd",
+      "tracked": false,
+      "note": "Git-ignored local Still Shift render of the repository's generated courtyard kit (assets/cinematic-illustrated/kit-b-courtyard). 1920x1080, 24/1 fps, 168 frames, BT.709 limited. Illustrated, slow parallax, one standing figure. Not fashion footage or live action; no live-action video exists in the repository.",
+      "verticalCrop": "scaled to 1920 px tall and centred on source x=1150 inside a 1080x1920 composition"
+    },
+    "fonts": [
+      {
+        "id": "serif",
+        "path": "assets/story-motion/fonts/source-serif-4-semibold.otf",
+        "sha256": "25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+        "cmapCodePoints": 920,
+        "thaiBlockCodePoints": 0
+      },
+      {
+        "id": "sans",
+        "path": "assets/story-motion/fonts/plex-sans-semibold.ttf",
+        "sha256": "a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+        "cmapCodePoints": 895,
+        "thaiBlockCodePoints": 1
+      },
+      {
+        "id": "mono",
+        "path": "assets/story-motion/fonts/plex-mono-medium.ttf",
+        "sha256": "98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+        "cmapCodePoints": 1049,
+        "thaiBlockCodePoints": 1
+      },
+      {
+        "id": "thai",
+        "path": "assets/ecommerce-motion/fonts/noto-sans-thai.ttf",
+        "sha256": "5a1c559bb539583c8a1fd99d1c5b9491e5e14478c9cd2bd0970d5c3096cc9ef8",
+        "cmapCodePoints": 426,
+        "thaiBlockCodePoints": 87,
+        "basicLatinLetters": 52,
+        "variable": "wght 100-900, wdth 62.5-100"
+      }
+    ],
+    "fontInventoryGap": "No script, italic, display, condensed Latin or decorative face is pinned. The serif-plus-script and minimal-italic directions in the owner's references cannot be reproduced with repository fonts."
+  },
+  "coverage": {
+    "method": "research/editorial-typography-proof/cmap-probe.ts reads cmap formats 4/12; Unicode coverage only, not shaping",
+    "result": "Only Noto Sans Thai covers all proof copy. Source Serif 4, Plex Sans and Plex Mono miss every Thai code point in the copy (for example U+0E25, U+0E38, U+0E04 in '3 ลุค · OLIVE GREEN').",
+    "sourceCheck": "No file under packages/*/src parses cmap; the documented exact-copy coverage gap still holds in this checkout."
+  },
+  "renders": [
+    {
+      "file": "t1-editorial-stack.pass1.mp4",
+      "source": "research/editorial-typography-proof/pass1/t1-editorial-stack.composition.json",
+      "sha256": "9f0f5eb8339774b69d00d3d59e34bde3528b213c504d0997dda12f04af330418"
+    },
+    {
+      "file": "t1-control-static.mp4",
+      "source": "research/editorial-typography-proof/t1-control-static.ts (pass-1 T1 JSON without text animators)",
+      "sha256": "829442c970cf7aac23ad1b606d8954064a61359759aaf491ca5ae51a2cfb7adf"
+    },
+    {
+      "file": "t1-editorial-stack.mp4",
+      "source": "research/editorial-typography-proof/t1-editorial-stack.ts (pass 2)",
+      "sha256": "df14efa49f6bceef34c91e405362fc81b1e4022ecd9905a8457a2d8e982db143"
+    },
+    {
+      "file": "t2-thai-condensed-poster.pass1.mp4",
+      "source": "research/editorial-typography-proof/pass1/t2-thai-condensed-poster.composition.json",
+      "sha256": "11c5f91ad08c2faeca9af6d6190e2f8a47aecee5ed8158125fc36ab569dcdc6a"
+    },
+    {
+      "file": "t2-thai-condensed-poster.mp4",
+      "source": "research/editorial-typography-proof/t2-thai-condensed-poster.ts (pass 2)",
+      "sha256": "23c3efeb0b4aa4776240a90b9199f70c9a384936655f4588c080414870395f3c"
+    },
+    {
+      "file": "t3-minimal-centered.pass1.mp4",
+      "source": "research/editorial-typography-proof/pass1/t3-minimal-centered.composition.json",
+      "sha256": "82dfd94ecfeb3842234f46439b606a8aba8e7e844e509c1b08ce61d18a1b94cc"
+    },
+    {
+      "file": "t3-minimal-centered.mp4",
+      "source": "research/editorial-typography-proof/t3-minimal-centered.ts (pass 2)",
+      "sha256": "9d136847e634c8236ab9cc5f9bfe685c4c8e774d965496e9ecf05c92150f6437"
+    },
+    {
+      "file": "coverage-negative.mp4",
+      "source": "research/editorial-typography-proof/coverage-negative.ts",
+      "sha256": "4c3d14b0203bac289719d0da9c52ca384b77b88cf248b1c5f34d3b0db0bfdf5c"
+    },
+    {
+      "file": "coverage-negative-plex-only.mp4",
+      "source": "PROOF_PLEX_ONLY=1 research/editorial-typography-proof/coverage-negative.ts",
+      "sha256": "b4ee56e4e87c04997d434d3081bca931b3a38ddcf3503ad4582a1033a6590ef4"
+    }
+  ],
+  "rendersDirectory": "benchmarks/results/editorial-typography-proof-2026-11-15 (git-ignored, local only)",
+  "renderTiming": "Each 1080x1920, 168-frame treatment rendered in about 18 s wall time on this machine (single worker, canvas2d).",
+  "reviewFrames": "entrance 16/24/32, hold 60/100, exit 130/138/146 via FFmpeg frame ordinal; phone sheets at 360x640 per frame; native crops for detail. Committed JPEGs: docs/review/editorial-typography-proof-2026-11-15/",
+  "observations": [
+    {
+      "id": "O1",
+      "classification": "observed defect (design-contract gap)",
+      "title": "Attach constraints use line-box bounds widened by animation excursions",
+      "evidence": "Hold frame 60, headline ink 827-1013 px in all T1 renders. Authored gaps kicker 18 px / folio 30 px. Static control: 95 / 109 px (line box: font ascent/descent, not ink or cap height). Animated pass 1: 153 / 213 px (kicker -58 px, folio +104 px more). Folio landed on the stone bench.",
+      "images": [
+        "docs/review/editorial-typography-proof-2026-11-15/t1-pass1-attach-static-vs-animated.jpg"
+      ],
+      "workaround": "Pass 2 uses hand coordinates measured from rendered ink; these do not adapt to other copy.",
+      "source": "packages/renderer-core/src/composition/evaluate/constraints.ts pointInLayer uses rectangle(state) bounds; constraintReference is absolute layer-space, not normalized to the target's own bounds."
+    },
+    {
+      "id": "O2",
+      "classification": "observed defect, not caught by validation or render",
+      "title": "Centred text centres on the layer origin, not inside textLayout width",
+      "evidence": "T3 pass 1 placed align:center lines at x=70 with a 940 px textLayout; half of both lines rendered off-frame. comp validate: valid. comp render: rendered, no warnings. Measured-bounds lint (video removed): outside-safe-area warning only, same severity as a few-pixel incursion; no off-canvas finding.",
+      "images": [
+        "docs/review/editorial-typography-proof-2026-11-15/t3-pass1-phone-sheet.jpg"
+      ],
+      "note": "May be intended semantics ('text draws at the layer origin'); either way it is an unguarded authoring trap."
+    },
+    {
+      "id": "O3",
+      "classification": "observed defect (authoring trap)",
+      "title": "Highlight decoration ignores text-animator opacity",
+      "evidence": "T2 pass 1 exit faded the tag's glyphs; the pale highlight bar stayed fully visible from about frame 130 to the out point. Pass 2 retracts it with explicit reveal keys.",
+      "images": [
+        "docs/review/editorial-typography-proof-2026-11-15/t2-pass1-phone-sheet.jpg"
+      ]
+    },
+    {
+      "id": "O4",
+      "classification": "observed defect (reproduced, not root-caused)",
+      "title": "comp lint --pixels true fails on compositions with a native video layer",
+      "evidence": "6/6 runs (three treatments, pass 1 and pass 2) report invalid-scene 'page.evaluate: Execution context was destroyed, most likely because of a navigation'. The same compositions with only the video layer and asset removed lint successfully with pixels and measured text bounds; examples/composition/05-pinned-text.ts also lints with pixels.",
+      "hypothesis": "packages/animation-engine/src/composition-lint.ts inlines every resolved asset path as a base64 data URL into one page.evaluate payload and serves the renderer through a Vite dev page; prepared video frames may overload or trigger a page reload. Unconfirmed.",
+      "consequence": "No current check measures text over actual video pixels."
+    },
+    {
+      "id": "O5",
+      "classification": "observed defect (reproduced known gap)",
+      "title": "Missing glyphs silently fall back outside the pinned font",
+      "evidence": "coverage-negative: '3 ลุค · OLIVE GREEN' in pinned Plex Sans renders Thai glyphs from a face outside the composition, with only Plex loaded. validate: valid; render: rendered; warnings []; systemFontLayers []. Identity of the fallback face unmeasured.",
+      "images": [
+        "docs/review/editorial-typography-proof-2026-11-15/coverage-negative-plex-thai.jpg"
+      ]
+    },
+    {
+      "id": "O6",
+      "classification": "check gap (source-confirmed)",
+      "title": "Composition lint has no text-contrast rule",
+      "evidence": "Rules are frozen-run, frozen-pixels, velocity-discontinuity, easing-monotony, co-start, reading-time, off-canvas, outside-safe-area, coverage, scale-pop, opacity-pop. text-contrast exists only in packages/renderer-core/src/typography-quality.ts for story specimens. T3 pass 2's credit '· 03' crosses the dark roof edge and the rule crosses a roof line under parallax; nothing reports it.",
+      "images": [
+        "docs/review/editorial-typography-proof-2026-11-15/t3-pass2-top-band-contrast.jpg"
+      ]
+    },
+    {
+      "id": "O7",
+      "classification": "policy conflict, not a renderer defect",
+      "title": "Default reading-time conflicts with continuous hold motion",
+      "evidence": "Every treatment with a gentle hold drift (tracking +25/+30 or 14 px rise over 80 frames) fails reading-time with 0.00-0.13 s readable time. The owner's standing preference is continuous meaningful motion; the policy's displacement budget is configurable but no editorial-title profile exists."
+    },
+    {
+      "id": "O8",
+      "classification": "check limitation",
+      "title": "State lint treats footage-only spans as frozen",
+      "evidence": "After the titles leave (frames 157-167) state lint reports frozen-run although the clip is moving; pixel mode would measure it but fails with video (O4)."
+    },
+    {
+      "id": "O9",
+      "classification": "check limitation",
+      "title": "State lint cannot evaluate attach constraints on text",
+      "evidence": "T1 pass 1 state lint stops with comp-text-layout-missing 'Text constraints need measured layer bounds'; it produces no motion findings."
+    },
+    {
+      "id": "O10",
+      "classification": "validation behaviour, not root-caused",
+      "title": "Axis range validation is more conservative than the timeline",
+      "evidence": "T2 with entrance wght -800, hold to wght -120 and exit to wght -680 failed comp-text-font-axis reporting a -20 worst case; my frame analysis gives 100 as the true minimum. Without the hold delta, entrance -800 plus exit -680 validates. Pass 2 dropped the hold axis change."
+    },
+    {
+      "id": "O11",
+      "classification": "minor observed artefact, not root-caused",
+      "title": "Detached serif fragment during masked per-glyph entrance",
+      "evidence": "T1 frames 30-36 in both passes show a small square fragment beside the 'v' right serif while 'e' rises through the line mask; settled frames are clean.",
+      "images": [
+        "docs/review/editorial-typography-proof-2026-11-15/t1-entrance-serif-fragment.jpg"
+      ]
+    },
+    {
+      "id": "P1",
+      "classification": "observed pass for this copy only",
+      "title": "Thai mark cohesion and variable-axis animation",
+      "evidence": "Per-glyph entrance/exit of 'สามลุค' keeps U+0E38 with its base consonant in inspected frames 24-40 and 128-140; wght/wdth animation from 100/100 to 900/62.5 renders. One word, one font, canvas2d only; does not validate finer Thai units or other copy.",
+      "images": [
+        "docs/review/editorial-typography-proof-2026-11-15/t2-pass1-thai-glyph-marks.jpg"
+      ]
+    }
+  ],
+  "lint": {
+    "commands": [
+      "pnpm --silent still-shift comp lint --input <treatment.ts>",
+      "pnpm --silent still-shift comp lint --input <treatment.ts> --pixels true",
+      "PROOF_TREATMENT=<treatment> pnpm --silent still-shift comp lint --input research/editorial-typography-proof/without-clip.ts --pixels true"
+    ],
+    "pass1": {
+      "t1": "state: comp-text-layout-missing error (attach needs bounds); pixels: invalid-scene; no-clip pixels: reading-time error, 3 outside-safe-area warnings, frozen findings caused by removing the moving clip",
+      "t2": "state: reading-time error, frozen-run 157-167, 2 outside-safe-area (clip, scrim); pixels: invalid-scene; no-clip pixels: reading-time, 2 outside-safe-area",
+      "t3": "state: reading-time error, frozen-run, outside-safe-area (clip only, text unmeasured); pixels: invalid-scene; no-clip pixels: reading-time, outside-safe-area on credit and line (the off-frame title)"
+    },
+    "pass2": {
+      "t1": "state: reading-time error, frozen-run, outside-safe-area (clip); pixels: invalid-scene; no-clip pixels: reading-time, 2 outside-safe-area",
+      "t2": "same findings as pass 1",
+      "t3": "state: reading-time, frozen-run, outside-safe-area (clip); pixels: invalid-scene; no-clip pixels: reading-time; the text safe-area warning is gone"
+    }
+  },
+  "notRun": [
+    "WebGL2 backend renders",
+    "Thai finer-unit (sub-cluster) segmentation probe",
+    "Repository test suites (no package source changed)",
+    "Human aesthetic acceptance: none is claimed; agent review only",
+    "Real fashion/live-action footage, script/italic fonts, subject mattes"
+  ],
+  "reproducibility": "Re-rendering the three pass1/*.composition.json exports and the control reproduced byte-identical MP4s (same SHA-256 as listed)."
+}
