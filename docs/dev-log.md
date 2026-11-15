@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial titles ET0/ET1 (2026-11-15):** ET0 (fixtures, synthetic clip, recorded baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)) is merged on `main` via PR #60. ET1 font gate is [PR #61](https://github.com/xxibcill/still-shift/pull/61) on `codex/editorial-titles-et1`, merged with `main`, O5 re-baselined and ET1 checks ticked (owner review pending): composition `fontCoverage: "strict"` or `--font-coverage strict` blocks wrong-face copy before render; legacy default warns only. O4 fixed; O1, O2, O3, O6, O7, O10, O11 still reproduce. Pending owner decisions: PR #61 review, synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. No human visual acceptance (including fallback Thai). [ET0 results](./editorial-typography-et0-results.json), [ET1 results](./editorial-typography-et1-results.json).
+- **Editorial titles ET0–ET2 (2026-11-15):** ET0 (fixtures, synthetic clip, baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)) and ET1 (exact-copy font gate) are merged on `main` via PR #60 and PR #61. ET2 (pixel lint over native video) is in review as PR #62 on `codex/editorial-titles-et2`, with six first-round and twelve second-round review findings fixed on the branch (owner review pending): video pixel lint has regression tests in `test:browser:composition-quality` and `test:browser:composition-media`, including a proof-scale transport case; `comp lint` cancellation by SIGINT, SIGTERM or SIGHUP cleans up after itself, then exits 128 + the signal number; it is covered by a CLI signal test, and a later signal force-stops a stalled cleanup. The ordered gate and the non-video comparison against `main` pass at eccdbd5e. Still reproduce: O1, O2, O3, O6, O7, O10, O11. Pending owner decisions: ET2-D1 (near-static footage as frozen), ET2-D2 (default `decodedCacheBytes` rejects a 60 s 1080×1920 clip), synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. Follow-up: `comp render` has the same missing signal wiring. No human visual acceptance (including fallback Thai). [ET0](./editorial-typography-et0-results.json), [ET1](./editorial-typography-et1-results.json), [ET2 results](./editorial-typography-et2-results.json).
 
 - **0.2.0 published and registry-verified (2026-10-16):** owner-approved source `ba13d26a` is remote `production` and fixed annotated `v0.2.0`. Public npm `latest` is `0.2.0`; its downloaded archive matches the verified SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f` byte for byte. Technical verification completed in recorded stages; all 28 standard installed checks, both focused mechanism groups and browser bundle pass. Original aggregate/harness failures, npm `EOTP`/browser retry, registry-processing reads and 19 timing deferrals remain retained. PR #59 carries the publication records; its authorized merge preserves release ancestry, with final readback retained separately. MS3 remains experimental: original first-pass 1/10, token savings null, accepted 0/10. [Results](./npm-release-results.json), [plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59).
 
@@ -81,6 +81,51 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-15 — ET2 second review and fixes (PR #62)
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-et2`. The second review of [PR #62](https://github.com/xxibcill/still-shift/pull/62) at 8b995ee8 used two separate reviews, Standards and Spec. It posted twelve inline findings (R2-1…R2-12), fixed one commit per finding.
+- **Fixed:**
+  - R2-1: Vite's dependency-scan wait now has a time limit; one 10 s deadline covers the scan and the bundling.
+  - R2-2: a failed browser close no longer replaces the abort reason.
+  - R2-3: the lint HTTP server has one name.
+  - R2-4: relayed signals are still ignored after an early release.
+  - R2-5: a cancelled lint exits 128 + the signal number, not 1.
+  - R2-6: the signal wiring moved into `withOwnedSignals`.
+  - R2-7, R2-8: shared `directoryBytes`; `lintTemporaryEntries(root)`.
+  - R2-9: the reference describes the final cancellation behaviour.
+  - R2-10: the plan describes the final cancellation behaviour.
+  - R2-11: the results record the review round.
+- **Regression caught:** gate run 1 at 6a752868 failed. R2-6 returned `withOwnedSignals` without `await` inside the command's `try`, so lint errors crashed the CLI instead of reporting. This broke 10 of 17 `composition-lint-cli` tests and `composition-quality`, and made 5 of 105 comparison files differ. Fixed in eccdbd5e before push.
+- **Results (R2-12, Node 22.23.1, eccdbd5e):** in order, all pass:
+  - `check:fast`: 460 files, 4,632 tests.
+  - `composition-quality`.
+  - `composition-media`.
+  - `check:runtime`, with the primary checkout's CE16 runtime symlinked in.
+  - Non-video lint is byte-identical to `main`: 35 runs, 105 files.
+  - Not run: `pnpm check`, `release:check`, WebGL2 with video.
+- **Dropped with reasons:** the script import from `tests/helpers` (there is precedent), the new options' reference docs (they have JSDoc), and the Vite internals (the version is pinned).
+- **Open / next:** owner review of PR #62. ET2-D1 and ET2-D2 are unchanged. Follow-ups: use `withOwnedSignals` in `comp render`; media cache eviction. Consider ESLint `@typescript-eslint/return-await` (`in-try-catch`), which would have caught the regression.
+- **Records:** [second review](https://github.com/xxibcill/still-shift/pull/62#pullrequestreview-5910163200), [ET2 results](./editorial-typography-et2-results.json).
+
+### 2026-11-15 — ET2 review fixes (PR #62)
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-et2`, reviewing and fixing [PR #62](https://github.com/xxibcill/still-shift/pull/62); review comments posted on the PR, one commit per finding.
+- **Found and fixed:** (1) `ownsProcessSignals` disabled Playwright's SIGHUP handler, but `comp lint` listened only for SIGINT/SIGTERM, so a closed terminal left the Vite cache, the compiled program and Playwright's profile and artifacts folders (`main` left none); SIGHUP now aborts too. (5) Found while writing the test for (2): a cancel in the first moments of the browser phase left `composition-lint-vite-*/deps_temp_*`. In Vite 7.3.6 the crawl-end handler takes over the post-scan optimizer run, so `close()` in that window cancels nothing and esbuild's output recreates the folder after lint removed it; cleanup now waits for the dependency scan and discovered dependencies' processing (bounded at 10 s) before closing Vite. (2) No test sent a process signal to `comp lint`; `composition-quality` now spawns it in its own process group and checks SIGINT, SIGTERM and SIGHUP, with `lintTemporaryEntries` also covering Playwright's folders. It fails without (1), with `ownsProcessSignals` false (exit 130) and, in most attempts, without (5). (3) Every repeat signal was ignored, so a stalled cleanup needed `kill -9`; repeats within 1 s are still treated as relays (the rejected "exit on second signal" approach below stays rejected), and a later one force-stops with 128 + signal number. (6) Found while fixing (2)/(4): an aborted lint called `browser.close()` twice, and Playwright's second close force-kills and resolves before removing its profile/artifacts folders (gone ~50 ms later); cleanup now awaits the abort's single close. (4) The browser-phase cancellation in `composition-media` slept a fixed 3 s; it now aborts from the in-process lint server's request for frame 48 (via `diagnostics_channel`) and checks the lint stopped mid-clip.
+- **Results:** on Node 22.23.1, `check:fast` (458 files, 4,626 tests), `test:browser:composition-quality` (2 min, includes the signal test) and `test:browser:composition-media` (warm-cache cancel at frame 48 of 1,440; proof-scale 571 MB clip lints in 35 s) pass. A first `composition-media` run on Node 24.16 failed when the widened leftover check caught (6); it passed after the fix. Cancel-to-exit is 0.2–0.4 s. Not run: `pnpm check`, `release:check`, WebGL2 with video.
+- **Open / next:** owner review of PR #62; ET2-D1 and ET2-D2 unchanged. Follow-ups unchanged: `comp render` signal wiring, media cache eviction. The Vite optimizer race is worth reporting upstream.
+- **Records:** [PR #62 review](https://github.com/xxibcill/still-shift/pull/62#pullrequestreview-5909940198), [ET2 results](./editorial-typography-et2-results.json).
+
+### 2026-11-15 — ET2 pixel lint over native video
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-et2` (from `main` `9db17cf2`); not pushed, no PR.
+- **Scope:** ET2 of the [editorial typography plan](./editorial-typography-improvement-plan.md#et2--pixel-lint-over-native-video), re-scoped because O4 was already fixed; about 1 active day.
+- **Found:** O4 root cause confirmed. Re-inlining prepared frames as base64 (the pre-`6ed1a5d0` lint) reproduces "Execution context was destroyed" on proof T1 and on a 571 MB high-entropy clip, but passes on the 96-frame fixture. `mediaLimits` were already enforced. Cancellation was not: SIGINT/SIGTERM to `comp lint` left `.prepare-*`, `.media.lock`, `composition-lint-vite-*` and `still-shift-compiled-*`.
+- **Done:** the CLI turns signals into the lint's abort (`comp-program-aborted`, exit 1). Lint runs Vite in middleware mode, because a listening dev server exits on SIGTERM, and can launch Chromium without Playwright's signal handlers, because Playwright exits 130 on SIGINT. Opt-in `collectMediaStatistics` reports decode residency. New tests: fixtures and the no-video control in the quality group; a 60 s clip (limits, LRU, cancel during preparation and during browser lint) and the proof-scale clip in the media group.
+- **Results:** 60 s 1080×1920 lints in 155 s at 1.75 GB peak resident, with the decode LRU peaking at 132,710,400 B, within its 128 MiB budget, and 493 MB on disk. That run needs `decodedCacheBytes` 16 GiB, because the default 8 GiB rejects it before decoding (owner decision ET2-D2). The synthetic clip is never frozen; the proof's near-static spans are still frozen (owner decision ET2-D1). Verified on Node 22.23.1: `check:fast` (457 files, 4,622 tests); `composition-quality`; `composition-media`; non-video lint byte-identical to `main` (35 runs). `check:runtime` failed on run 1 for local runtimes only: the CE16 soundtrack Python is missing from a fresh worktree, and the first depth-worker start timed out. It passed on run 2 with the primary checkout's runtime symlinked in. Not run: `pnpm check`, `release:check`, WebGL2 with video.
+- **Rejected / do not repeat:** `process.once` signal listeners (tsx's relay exits once no listener is left); exiting on a second signal (a terminal signals the whole group and tsx relays it again, so the second signal arrives at once).
+- **Open / next:** owner review; ET3 can build on the tested video lint path. Follow-up: `comp render` signal wiring. The default media cache under the OS temp directory has no eviction (per-checkout caches up to 5 GB on this machine; 8 GiB blocks all new preparation).
+- **Records:** [ET2 results](./editorial-typography-et2-results.json), [plan](./editorial-typography-improvement-plan.md#et2--pixel-lint-over-native-video).
 
 ### 2026-11-15 — ET1 re-review: merge ET0, re-baseline O5, covered flag
 

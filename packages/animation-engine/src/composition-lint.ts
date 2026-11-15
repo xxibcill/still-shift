@@ -1,9 +1,12 @@
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import {
   AnimationEngineError,
+  resolveCompositionMediaLimits,
   type Composition,
 } from "@still-shift/scene-contract";
 import { createReadStream } from "node:fs";
+import { createServer as createHttpServer, type Server } from "node:http";
+import type { AddressInfo } from "node:net";
 import { mkdtemp, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { extname, join } from "node:path";
@@ -18,6 +21,7 @@ import {
   type CompositionBackend,
   type CompositionQualityReport,
 } from "@still-shift/renderer-core";
+import type { CompositionMediaResourceStats } from "../../renderer-core/src/composition/render/media-resources.ts";
 import type * as Renderer from "@still-shift/renderer-core";
 import { launchRenderBrowser } from "@still-shift/execution-runtime";
 import {
@@ -39,6 +43,15 @@ export type CompositionLintReport = CompositionQualityReport & {
   textBounds?: NonNullable<
     NonNullable<CompositionQualityPolicy["evaluation"]>["textBounds"]
   >;
+  /**
+   * ET2: native media decode residency after the last linted frame, with the
+   * browser LRU budget (`mediaLimits.decodedFrameBytes`). Present only when
+   * `collectMediaStatistics` is set and the composition has video or sequence
+   * media, so existing reports keep their bytes.
+   */
+  mediaStatistics?: Readonly<CompositionMediaResourceStats> & {
+    decodedFrameBytesLimit: number;
+  };
 };
 
 export type CompositionLintOptions = BrowserRuntimeOptions & {
@@ -46,9 +59,17 @@ export type CompositionLintOptions = BrowserRuntimeOptions & {
   backend?: CompositionBackend;
   collectTextBounds?: boolean;
   collectStatistics?: boolean;
+  /** ET2: report native media decode residency (see `mediaStatistics`). */
+  collectMediaStatistics?: boolean;
   cacheDirectory?: string;
   nodeMemory?: CompositionNodeMemory;
   signal?: AbortSignal | undefined;
+  /**
+   * ET2: the caller turns process signals into an abort of `signal` (the CLI
+   * does). The pinned browser is then launched without Playwright's process
+   * signal handlers, which exit the process before cleanup can finish.
+   */
+  ownsProcessSignals?: boolean;
   /** ET1: raise exact-copy font coverage to strict; findings then fail loading. */
   fontCoverage?: "legacy" | "strict";
 };
@@ -106,13 +127,25 @@ async function lintOwnedComposition(
   const root = options.projectRoot ?? defaultBrowserProjectRoot;
   const cacheDir = await mkdtemp(join(tmpdir(), "composition-lint-vite-"));
   let server: ViteDevServer | undefined;
+  let http: Server | undefined;
   let browser: Browser | undefined;
+  // One close per browser. A second Browser.close() while the first is in
+  // progress force-kills Chromium and resolves before Playwright removes its
+  // profile and artifacts folders, so cleanup awaits the abort's close.
+  let browserClosing: Promise<void> | undefined;
+  const closeBrowser = () => {
+    if (browser && !browserClosing) browserClosing = browser.close();
+    return browserClosing;
+  };
   const abort = () => {
-    void browser?.close().catch(() => {});
+    void closeBrowser()?.catch(() => {});
   };
   options.signal?.addEventListener("abort", abort, { once: true });
   try {
     options.signal?.throwIfAborted();
+    // ET2: middleware mode on an owned HTTP server. A listening Vite dev
+    // server installs a process-wide SIGTERM handler that exits the process,
+    // which would skip this function's cleanup of `cacheDir`.
     server = await createServer({
       root,
       cacheDir,
@@ -120,19 +153,23 @@ async function lintOwnedComposition(
       logLevel: "silent",
       plugins: [lintAssetPlugin(loaded.assetPaths)],
       server: {
-        host: "127.0.0.1",
-        port: 0,
+        middlewareMode: true,
+        hmr: false,
+        ws: false,
         fs: { allow: [root, defaultBrowserProjectRoot] },
       },
     });
     options.signal?.throwIfAborted();
-    await server.listen();
+    http = createHttpServer(server.middlewares);
+    const port = await listenOnLoopback(http);
     options.signal?.throwIfAborted();
-    browser = await launchRenderBrowser();
+    browser = await launchRenderBrowser(
+      options.ownsProcessSignals ? { handleProcessSignals: false } : {},
+    );
     options.signal?.throwIfAborted();
     const page = await browser.newPage();
     await page.goto(
-      runtimeBrowserUrl(server.resolvedUrls!.local[0]!, "composition-compile"),
+      runtimeBrowserUrl(`http://127.0.0.1:${port}/`, "composition-compile"),
     );
     const moduleUrl = `/@fs/${fileURLToPath(new URL("../../renderer-core/src/index.ts", import.meta.url))}`;
     await page.addScriptTag({
@@ -163,6 +200,8 @@ async function lintOwnedComposition(
         backend,
         collectTextBounds,
         collectStatistics,
+        collectMediaStatistics,
+        decodedFrameBytesLimit,
       }) => {
         const comp = JSON.parse(json) as Composition;
         const policy = JSON.parse(policyJson) as CompositionQualityPolicy;
@@ -174,8 +213,11 @@ async function lintOwnedComposition(
         let preview:
           | ReturnType<typeof renderer.createCompositionPreview>
           | undefined;
+        let resources:
+          | Awaited<ReturnType<typeof renderer.loadCompositionResources>>
+          | undefined;
         try {
-          const resources = await renderer.loadCompositionResources(
+          resources = await renderer.loadCompositionResources(
             comp,
             (id: string) => `/_lint/assets/${encodeURIComponent(id)}`,
             {
@@ -203,6 +245,14 @@ async function lintOwnedComposition(
               ? { renderStatistics: preview.renderStatistics?.() }
               : {}),
             ...(collectTextBounds ? { textBounds: preview.textBounds } : {}),
+            ...(collectMediaStatistics && resources.media
+              ? {
+                  mediaStatistics: {
+                    ...resources.media.stats(),
+                    decodedFrameBytesLimit,
+                  },
+                }
+              : {}),
           };
         } catch (error) {
           return {
@@ -222,6 +272,10 @@ async function lintOwnedComposition(
         backend,
         collectTextBounds: options.collectTextBounds ?? false,
         collectStatistics: options.collectStatistics ?? false,
+        collectMediaStatistics: options.collectMediaStatistics ?? false,
+        decodedFrameBytesLimit: resolveCompositionMediaLimits(
+          loaded.composition.mediaLimits,
+        ).decodedFrameBytes,
       },
     );
     options.signal?.throwIfAborted();
@@ -233,6 +287,9 @@ async function lintOwnedComposition(
         : {}),
       validationDiagnostics: loaded.warnings,
       ...(result.textBounds ? { textBounds: result.textBounds } : {}),
+      ...(result.mediaStatistics
+        ? { mediaStatistics: result.mediaStatistics }
+        : {}),
     };
   } catch (error) {
     options.signal?.throwIfAborted();
@@ -240,15 +297,85 @@ async function lintOwnedComposition(
   } finally {
     options.signal?.removeEventListener("abort", abort);
     try {
-      await browser?.close();
+      // The abort started this close and already ignored its failure; the
+      // caller's abort reason, thrown above, stays the result.
+      await closeBrowser()?.catch((error: unknown) => {
+        if (!options.signal?.aborted) throw error;
+      });
     } finally {
       try {
-        await server?.close();
+        if (server) await closeViteServer(server);
       } finally {
-        await rm(cacheDir, { recursive: true, force: true });
+        try {
+          if (http?.listening) await closeHttpServer(http);
+        } finally {
+          await rm(cacheDir, { recursive: true, force: true });
+        }
       }
     }
   }
+}
+
+/**
+ * Close Vite only after its dependency optimizer settles. In Vite 7.3.6 a run
+ * started by the dependency scan is taken over by the crawl-end handler, so a
+ * `close()` in that window has nothing to cancel; when the bundle lands, the
+ * closed optimizer returns without removing it, and `deps_temp_*` reappears in
+ * the lint cache after it was removed (a cancel in the first moments of lint).
+ * Waiting for the scan and for every discovered dependency's processing lets
+ * that run commit first. A completed lint has nothing pending, so this costs
+ * nothing then; one deadline over the scan and the bundling keeps a stuck
+ * optimizer from holding cleanup. Exported for tests.
+ */
+export async function closeViteServer(
+  server: Pick<ViteDevServer, "environments" | "close">,
+  settleTimeoutMs = optimizerSettleTimeoutMs,
+) {
+  const optimizers = Object.values(server.environments).flatMap(
+    (environment) =>
+      environment.depsOptimizer ? [environment.depsOptimizer] : [],
+  );
+  const settled = (async () => {
+    await Promise.allSettled(
+      optimizers.map((optimizer) => optimizer.scanProcessing),
+    );
+    await Promise.allSettled(
+      optimizers.flatMap((optimizer) =>
+        Object.values(optimizer.metadata.discovered).flatMap((dependency) =>
+          dependency.processing ? [dependency.processing] : [],
+        ),
+      ),
+    );
+  })();
+  let timer: NodeJS.Timeout | undefined;
+  await Promise.race([
+    settled,
+    new Promise<void>((resolve) => {
+      timer = setTimeout(resolve, settleTimeoutMs);
+    }),
+  ]);
+  clearTimeout(timer);
+  await server.close();
+}
+
+const optimizerSettleTimeoutMs = 10_000;
+
+/** Listen on an ephemeral loopback port and return it. */
+function listenOnLoopback(server: Server) {
+  return new Promise<number>((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      server.off("error", reject);
+      resolve((server.address() as AddressInfo).port);
+    });
+  });
+}
+
+function closeHttpServer(server: Server) {
+  return new Promise<void>((resolve, reject) => {
+    server.close((error) => (error ? reject(error) : resolve()));
+    server.closeAllConnections();
+  });
 }
 
 /** Serve only already validated resources; native frame decoding retains its bounded LRU. */

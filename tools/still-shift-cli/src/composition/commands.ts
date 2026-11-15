@@ -1,4 +1,5 @@
 import { createProgramPreview } from "./preview.ts";
+import { writeSync } from "node:fs";
 import { readFile, realpath } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import {
@@ -28,6 +29,11 @@ import { parseNamedArguments, requireArgument } from "../named-options.ts";
 import { loadProgram } from "./program.ts";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { withProgramFile, writeComposition } from "./files.ts";
+import {
+  ownProcessSignals,
+  signalExitCode,
+  type OwnedSignal,
+} from "./process-signals.ts";
 import {
   COMPOSITION_OUTPUT_FORMATS,
   type CompositionOutputFormat,
@@ -73,6 +79,72 @@ function fontCoverageOption(values: Map<string, string>) {
       "font-coverage",
     );
   return value as "legacy" | "strict" | undefined;
+}
+/**
+ * ET2: own SIGINT/SIGTERM/SIGHUP while `run` works, so media staging, the
+ * media cache lock, the lint dev-server cache and the compiled program are
+ * removed by their owners instead of being left by process exit. All three:
+ * the browser is launched without Playwright's handlers for them, so an
+ * unowned one would end the process with no cleanup (a closed terminal or
+ * dropped SSH session sends SIGHUP). After a cancel and cleanup, report
+ * `comp-program-aborted` and exit as a process ended by that signal would
+ * (130 for SIGINT), so callers can tell an interrupted command from one with
+ * findings.
+ */
+async function withOwnedSignals(
+  command: string,
+  io: CompositionIo,
+  run: (signal: AbortSignal) => Promise<number>,
+): Promise<number> {
+  const controller = new AbortController();
+  let cancelledBy: OwnedSignal | undefined;
+  const aborted = (message: string) => ({
+    code: "comp-program-aborted",
+    severity: "error" as const,
+    path: "input",
+    message,
+  });
+  const releaseSignals = ownProcessSignals({
+    cancel: (signal) => {
+      cancelledBy = signal;
+      controller.abort(
+        new CompositionProgramError([
+          aborted(`Composition ${command} cancelled by ${signal}`),
+        ]),
+      );
+    },
+    // A signal after the relay window means cleanup is taking too long for
+    // the user: stop now, as an unowned signal would. Written synchronously,
+    // because stderr to a pipe is asynchronous on macOS.
+    force: (signal) => {
+      writeSync(
+        2,
+        json({
+          status: "failed",
+          diagnostics: [
+            aborted(
+              `Composition ${command} stopped by repeated ${signal} before cleanup finished; temporary files may remain`,
+            ),
+          ],
+        }),
+      );
+      process.exit(signalExitCode(signal));
+    },
+  });
+  try {
+    return await run(controller.signal);
+  } catch (error) {
+    if (!cancelledBy) throw error;
+    io.stderr(
+      json({
+        status: "failed",
+        diagnostics: diagnostics(controller.signal.reason),
+      }),
+    );
+    return signalExitCode(cancelledBy);
+  } finally {
+    releaseSignals();
+  }
 }
 function diagnostics(error: unknown): CompositionDiagnostic[] {
   if (error instanceof CompositionProgramError) return error.diagnostics;
@@ -282,16 +354,21 @@ export async function runCompositionCommand(
             JSON.parse(await readFile(resolve(path), "utf8")),
           )
         : {};
-      const program = await loadProgram(input);
-      const report = await withProgramFile(program, input, (path) =>
-        lintCompositionFile(path, policy, {
-          pixels,
-          backend,
-          ...(fontCoverage ? { fontCoverage } : {}),
-        }),
-      );
-      io.stdout(json(report));
-      return report.status === "failed" ? 1 : 0;
+      return await withOwnedSignals("lint", io, async (signal) => {
+        const program = await loadProgram(input, { signal });
+        signal.throwIfAborted();
+        const report = await withProgramFile(program, input, (path) =>
+          lintCompositionFile(path, policy, {
+            pixels,
+            backend,
+            signal,
+            ownsProcessSignals: true,
+            ...(fontCoverage ? { fontCoverage } : {}),
+          }),
+        );
+        io.stdout(json(report));
+        return report.status === "failed" ? 1 : 0;
+      });
     }
     if (command === "render") {
       const values = parseNamedArguments(args.slice(1), [

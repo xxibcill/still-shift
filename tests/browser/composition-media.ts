@@ -14,6 +14,7 @@ import type * as Render from "../../packages/renderer-core/src/composition/rende
 import { verifyNativeMediaExports } from "./composition-media-exports.ts";
 import { verifyNativeAudioAuthoring } from "./composition-audio-authoring.ts";
 import { verifyNativeMediaAuthoring } from "./composition-media-authoring.ts";
+import { verifyLongVideoLint } from "./composition-media-video-lint.ts";
 import {
   mediaPngChunk,
   mediaRgbaPng,
@@ -452,6 +453,7 @@ try {
     root,
     directory,
   );
+  const longVideoLint = await verifyLongVideoLint();
   console.log(
     JSON.stringify(
       {
@@ -461,6 +463,7 @@ try {
         exports,
         authoring,
         audioAuthoring,
+        longVideoLint,
       },
       null,
       2,
