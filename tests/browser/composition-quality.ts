@@ -19,6 +19,9 @@ import type {
   CompositionLayer,
 } from "@still-shift/scene-contract";
 
+import { fileURLToPath } from "node:url";
+import o4VideoPixelLint from "../../benchmarks/fixtures/editorial-titles/o4-video-pixel-lint.ts";
+import { editorialFixture } from "../helpers/editorial-video-lint.ts";
 import {
   collapsedMotionComposition,
   groupEffectMotionComposition,
@@ -730,6 +733,116 @@ try {
   } finally {
     await rm(capacityDirectory, { recursive: true });
   }
+
+  // ET2 (O4 regression): pixel lint over native video, on the tracked
+  // synthetic clip. The no-video control is the same composition without its
+  // video layer, so frozen findings there and none with video show that the
+  // footage's own pixels reach the pixel rule.
+  const et2Lint = async (name: string, pixels = true) => {
+    let stdout = "",
+      stderr = "";
+    const code = await runCli(
+      [
+        "comp",
+        "lint",
+        "--input",
+        fileURLToPath(editorialFixture(`${name}.ts`)),
+        "--pixels",
+        String(pixels),
+      ],
+      {
+        stdout: (text) => {
+          stdout += text;
+        },
+        stderr: (text) => {
+          stderr += text;
+        },
+      },
+    );
+    assert.equal(stderr, "", `${name}: ${stderr.slice(0, 2000)}`);
+    const report = JSON.parse(stdout) as {
+      status: string;
+      measured: Record<string, unknown>;
+      diagnostics: { code: string; node?: string; frames?: number[] }[];
+    };
+    return { code, report };
+  };
+  const pixelMeasured = {
+    evaluatedState: true,
+    pixels: true,
+    pixelMethod: "grayscale-energy",
+    textBounds: true,
+  };
+  const withVideo = await et2Lint("o4-video-pixel-lint");
+  assert.equal(withVideo.code, 0, "ET2: video pixel lint exit");
+  assert.equal(withVideo.report.status, "passed");
+  assert.deepEqual(withVideo.report.measured, pixelMeasured);
+  assert.deepEqual(
+    withVideo.report.diagnostics.map((d) => [d.code, d.node]),
+    [["outside-safe-area", "clip"]],
+    "ET2: moving footage must not be reported frozen",
+  );
+  const withoutVideo = await et2Lint("o4-video-pixel-lint.no-video");
+  assert.equal(withoutVideo.code, 1);
+  assert.deepEqual(withoutVideo.report.measured, pixelMeasured);
+  for (const code of ["frozen-pixels", "frozen-run"])
+    assert.ok(
+      withoutVideo.report.diagnostics.some(
+        (d) => d.code === code && d.frames?.[0] === 5 && d.frames[1] === 83,
+      ),
+      `ET2 control: ${code} over frames 5-83 without the footage`,
+    );
+  const darkBand = await et2Lint("o6-dark-band");
+  assert.deepEqual(darkBand.report.measured, pixelMeasured);
+  assert.ok(
+    !darkBand.report.diagnostics.some(
+      (d) => d.code === "frozen-pixels" || d.code === "frozen-run",
+    ),
+    "ET2: second video fixture is not frozen",
+  );
+  const stateOnlyVideo = await et2Lint("o4-video-pixel-lint", false);
+  assert.equal(stateOnlyVideo.report.measured.pixels, false);
+  const et2Directory = await mkdtemp(join(tmpdir(), "et2-video-lint-"));
+  try {
+    const input = join(et2Directory, "o4.json");
+    await writeFile(input, JSON.stringify(o4VideoPixelLint));
+    const report = await lintCompositionFile(
+      input,
+      {},
+      {
+        pixels: true,
+        projectRoot: root,
+        collectTextBounds: true,
+        collectMediaStatistics: true,
+      },
+    );
+    assert.deepEqual(report.measured, pixelMeasured);
+    const credit = Object.values(report.textBounds ?? {}).flat();
+    assert.ok(
+      credit.length > 0 &&
+        credit.every((b) => b.right > b.left && b.bottom > b.top),
+      "ET2: text bounds are measured over video",
+    );
+    const media = report.mediaStatistics!;
+    assert.equal(media.decodedFrames, o4VideoPixelLint.frameCount);
+    assert.ok(media.peakDecodedBytes > 0);
+    assert.ok(media.peakDecodedBytes <= media.decodedFrameBytesLimit);
+    const plain = await lintCompositionFile(
+      resolve(root, "benchmarks/fixtures/composition/ce12/stillness-fail.json"),
+      {},
+      { pixels: true, collectMediaStatistics: true },
+    );
+    assert.equal(
+      "mediaStatistics" in plain,
+      false,
+      "ET2: media statistics only for native media",
+    );
+  } finally {
+    await rm(et2Directory, { recursive: true, force: true });
+  }
+  console.log(
+    "ET2: video pixel lint measures pixels and text bounds over the tracked clip; footage motion reaches the pixel rule; decode residency stays in budget.",
+  );
 
   const cliPixels = await lintCompositionFile(
     resolve(root, "benchmarks/fixtures/composition/ce12/stillness-fail.json"),
