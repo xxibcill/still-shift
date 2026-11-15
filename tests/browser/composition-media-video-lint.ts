@@ -5,6 +5,8 @@ import assert from "node:assert/strict";
 import { mkdir, mkdtemp, readdir, rm, stat, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { subscribe, unsubscribe } from "node:diagnostics_channel";
+import type { IncomingMessage } from "node:http";
 import { setTimeout as delay } from "node:timers/promises";
 import { lintCompositionFile } from "@still-shift/animation-engine";
 import type { CompositionMediaLimits } from "@still-shift/scene-contract";
@@ -155,10 +157,10 @@ export async function verifyLongVideoLint() {
     );
     assert.deepEqual(await newTemporary(), []);
 
+    // `armed` resolves once it has aborted the lint at the phase it waits for.
     const cancel = async (
       cacheDirectory: string,
-      started: () => Promise<boolean>,
-      settle = 0,
+      armed: (abort: () => void, finished: () => boolean) => Promise<void>,
     ) => {
       const controller = new AbortController();
       const reason = new Error("ET2 cancellation probe");
@@ -172,33 +174,68 @@ export async function verifyLongVideoLint() {
         () => void (finished = true),
         () => void (finished = true),
       );
-      await Promise.race([until(started, () => finished), watched]);
-      await delay(settle);
-      controller.abort(reason);
+      await Promise.race([
+        armed(
+          () => controller.abort(reason),
+          () => finished,
+        ),
+        watched,
+      ]);
+      // A lint that finished before its phase was reached fails here.
       await assert.rejects(work, (error: unknown) => error === reason);
       assert.deepEqual(await mediaCacheTransientEntries(cacheDirectory), []);
       assert.deepEqual(await newTemporary(), []);
     };
     // During FFmpeg decoding into the staging directory.
     const coldCache = join(directory, "cache-cold");
-    await cancel(coldCache, async () =>
-      (await mediaCacheTransientEntries(coldCache)).some((name) =>
-        name.startsWith(".prepare-"),
-      ),
-    );
+    await cancel(coldCache, async (abort, finished) => {
+      await until(
+        async () =>
+          (await mediaCacheTransientEntries(coldCache)).some((name) =>
+            name.startsWith(".prepare-"),
+          ),
+        finished,
+      );
+      abort();
+    });
     assert.deepEqual(
       await readdir(coldCache),
       [],
       "ET2: cancelled preparation publishes no entry",
     );
-    // While the browser lints frames from the warm cache.
-    await cancel(
-      cache,
-      async () =>
-        (await newTemporary()).some((name) =>
-          name.startsWith("composition-lint-vite-"),
-        ),
-      3_000,
+    // While the browser lints frames from the warm cache. The lint server is
+    // in this process, so the abort comes from its request for one frame of
+    // the clip: the lint is mid-run whatever the machine's speed.
+    const cancelAtFrame = 48;
+    const framesRequested = new Set<number>();
+    let atFrame: (() => void) | undefined;
+    const onRequest = (message: unknown) => {
+      const frame = /^\/_lint\/assets\/__media%3Along-clip%3A(\d+)$/.exec(
+        (message as { request: IncomingMessage }).request.url ?? "",
+      );
+      if (!frame) return;
+      framesRequested.add(Number(frame[1]));
+      if (Number(frame[1]) === cancelAtFrame) atFrame?.();
+    };
+    subscribe("http.server.request.start", onRequest);
+    try {
+      await cancel(
+        cache,
+        (abort) =>
+          new Promise<void>((resolve) => {
+            atFrame = () => {
+              abort();
+              resolve();
+            };
+          }),
+      );
+    } finally {
+      unsubscribe("http.server.request.start", onRequest);
+    }
+    assert.ok(
+      framesRequested.has(cancelAtFrame) &&
+        Math.max(...framesRequested) < clip.frameCount - 1,
+      `ET2: browser lint stopped mid-clip (last frame requested ${Math.max(...framesRequested)})`,
     );
     assert.equal(
       await directoryBytes(cache),
