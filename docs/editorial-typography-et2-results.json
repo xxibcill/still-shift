@@ -37,7 +37,11 @@
     },
     {
       "file": "tools/still-shift-cli/src/composition/commands.ts",
-      "change": "comp lint turns SIGINT/SIGTERM into an AbortSignal for program loading and lint, sets ownsProcessSignals, and reports comp-program-aborted ('Composition lint cancelled by SIGINT|SIGTERM') with exit 1. Listeners are persistent while linting because tsx's signal relay exits when no listener remains. Repeated signals are idempotent: a terminal signals the whole process group and tsx relays again."
+      "change": "comp lint turns SIGINT, SIGTERM and SIGHUP into an AbortSignal for program loading and lint and sets ownsProcessSignals (withOwnedSignals in commands.ts; policy in process-signals.ts). After cleanup it reports comp-program-aborted ('Composition lint cancelled by <signal>') and exits 128 + the signal number (130/143/129). Repeats within 1 s are relays and are ignored, including after an early release; a later signal writes a synchronous diagnostic and exits 128 + its number. Listeners stay registered while linting because tsx's signal relay exits when no listener remains. (As first committed in e3562f3e: SIGINT/SIGTERM only, exit 1, every repeat ignored; changed by the PR #62 review, see review.)"
+    },
+    {
+      "file": "packages/animation-engine/src/composition-lint.ts (PR #62 review)",
+      "change": "Cleanup waits for Vite's dependency scan and discovered dependencies' bundling under one 10 s deadline before closing the dev server (closeViteServer), so an early cancel no longer leaves deps_temp_*. The browser is closed exactly once (the abort's close is awaited), so Playwright removes its profile and artifacts folders before lint rejects. Once aborted, a failed close no longer replaces the caller's abort reason."
     },
     {
       "file": "docs/composition-reference-notes.md (+ generated composition-reference.md)",
@@ -130,7 +134,7 @@
   "cancellation": {
     "before": "On the base, SIGINT to comp lint (node --import tsx) during media preparation left .media.lock and a .prepare-<uuid> staging directory in the media cache plus a still-shift-compiled-* program directory. During the browser phase it left composition-lint-vite-*. The CLI never connected process signals to the lint's AbortSignal; Node's default action ended the process before any cleanup.",
     "afterFirstFix": "Wiring signals with process.once still left composition-lint-vite-* on SIGINT (Playwright's handler exits 130 after closing browsers) and on SIGTERM (Vite's listening dev server: close, then process.exit; exit 143 with no report).",
-    "final": "Process-group delivery, like a terminal Ctrl-C. Through node --import tsx and tsx, every SIGINT/SIGTERM in the preparation and browser phases exits 1 with comp-program-aborted and leaves no staging, lock, Vite cache, compiled program or Chromium process. Through pnpm the exit code is pnpm's (130/143), and pnpm can return before its child finishes cleanup; after the child finishes there are no leftovers.",
+    "final": "Process-group delivery, like a terminal Ctrl-C, at the final head. Through node --import tsx and tsx, SIGINT, SIGTERM and SIGHUP in the browser phase exit 128 + the signal number with comp-program-aborted and leave no staging, lock, Vite cache, compiled program, Playwright folder or Chromium process (automated in composition-quality since 5dfe3780). This took the review fixes: before 1a9e2ed7 SIGHUP skipped all cleanup, and before 05e7bfff a cancel in the first moments of the browser phase left composition-lint-vite-*/deps_temp_*. The matrix below was recorded at 71fc5d33 (exit 1, SIGINT/SIGTERM) and is kept as recorded. Through pnpm the exit code is pnpm's (130/143), and pnpm can return before its child finishes cleanup; after the child finishes there are no leftovers.",
     "matrix": {
       "node --import tsx": [
         {
@@ -481,7 +485,7 @@
     "Re-confirmation on base: O4 video/no-video, O6 and proof T1–T3 pixel lints all measured pixels and text bounds (see o4.reconfirmation).",
     "Cancellation probe 1 (base CLI, node --import tsx, SIGINT at 1.5 s and 6 s): 6 s left .media.lock, .prepare-<uuid> and still-shift-compiled-*.",
     "Fix 1 (signals wired with process.once): SIGINT at 10 s exited 130 and left composition-lint-vite-*; SIGTERM at 11/12 s exited 143 with no report and left composition-lint-vite-* and still-shift-compiled-*.",
-    "Fix 2 (persistent listeners, Vite middleware mode, Playwright handlers off, exit on second signal): signalling pnpm and its child separately tripped the second-signal exit and left preparation leftovers; the second-signal rule was removed (a terminal signals the whole process group and tsx relays again).",
+    "Fix 2 (persistent listeners, Vite middleware mode, Playwright handlers off, exit on second signal): signalling pnpm and its child separately tripped the second-signal exit and left preparation leftovers; the second-signal rule was removed (a terminal signals the whole process group and tsx relays again) At the time; the PR #62 review restored a force stop for a signal after a 1 s relay window (a3c2a77f).",
     "Final signal matrix with process-group delivery: clean through node --import tsx and tsx; pnpm exits 130/143 itself, and its child finishes cleanup after pnpm returns (one leftover seen 0.5 s after pnpm exit, none after 6 s).",
     "Long clip: 270×480 × 60 s passed (16.9 s); 1080×1920 × 60 s rejected at default limits (0.04 s, comp-media-limit) and passed with decodedCacheBytes 16 GiB (155.5 s).",
     "test:browser:composition-quality run 1 passed (29 s).",
@@ -493,7 +497,10 @@
     "pnpm check:runtime run 1 failed (571 s). test:runtime passed (63 files / 376 tests); test:integration failed in 5 files / 39 tests: soundtrack, soundtrack-api, passage-audio and passage-native-audio could not start the CE16 soundtrack Python, which lives under git-ignored benchmarks/results/composition-ce16 and is absent from a fresh worktree; depth-worker-protocol hit three 5 s timeouts on the first Python worker start in the .venv toolchain:check had just created. Not a code failure.",
     "Rerun of those 5 files with the primary checkout's existing CE16 runtime symlinked into the worktree (no download): 5 files / 58 tests passed (64 s).",
     "pnpm check:runtime run 2 passed (606 s): test:runtime 63/376, test:integration 62/339, test:depth 14 OK, test:browser:smoke passed.",
-    "Final tree (after the test moved its leftover checks to a private TMPDIR): test:browser:composition-quality passed (29 s), test:browser:composition-media passed (115 s)."
+    "Final tree (after the test moved its leftover checks to a private TMPDIR): test:browser:composition-quality passed (29 s), test:browser:composition-media passed (115 s).",
+    "PR #62 review round 1: four findings on 71fc5d33, two more (5, 6) found while fixing them; see review.round1.",
+    "Review fixes, test:browser:composition-media run 1 on Node 24.16.0 (not the toolchain.json 22.23.1; the worktree shell's default): failed when the widened leftover check (now including Playwright's folders) caught the double browser close (review finding 6). Passed after 014b4dff, on Node 22.23.1.",
+    "Review fixes on Node 22.23.1: check:fast passed (458 files / 4,626 tests); composition-quality passed (2 min, includes the spawn signal test); composition-media passed (frame-48 cancel; proof-scale clip 35 s). check:runtime and the non-video byte comparison were not rerun at that point (review R2-12)."
   ],
   "nonVideoByteIdentity": {
     "method": "comp lint via node --import tsx tools/still-shift-cli/src/cli.ts on main 9db17cf2 (detached temporary worktree) and on this branch at 8879e960; stdout, stderr and exit status of every run compared with diff -r.",
@@ -524,5 +531,148 @@
       "WebGL2 with video",
       "GitHub Actions (prohibited)"
     ]
+  },
+  "review": {
+    "pullRequest": "https://github.com/xxibcill/still-shift/pull/62",
+    "round1": {
+      "review": "https://github.com/xxibcill/still-shift/pull/62#pullrequestreview-5909940198",
+      "reviewedHead": "71fc5d33",
+      "findings": [
+        {
+          "id": 1,
+          "severity": "medium",
+          "status": "confirmed",
+          "title": "SIGHUP skipped all lint cleanup once Playwright's handlers were off",
+          "fix": "1a9e2ed7"
+        },
+        {
+          "id": 2,
+          "severity": "low",
+          "status": "confirmed",
+          "title": "No automated test sent a process signal to comp lint",
+          "fix": "5dfe3780"
+        },
+        {
+          "id": 3,
+          "severity": "low",
+          "status": "plausible",
+          "title": "Repeated Ctrl-C could not force-stop a stalled cleanup",
+          "fix": "a3c2a77f"
+        },
+        {
+          "id": 4,
+          "severity": "low",
+          "status": "plausible",
+          "title": "Browser-phase cancellation test relied on a fixed 3 s delay",
+          "fix": "8b995ee8"
+        },
+        {
+          "id": 5,
+          "severity": "medium",
+          "status": "confirmed",
+          "title": "An early cancel left composition-lint-vite-*/deps_temp_* (Vite 7.3.6 optimizer race)",
+          "fix": "05e7bfff"
+        },
+        {
+          "id": 6,
+          "severity": "low",
+          "status": "confirmed",
+          "title": "A double browser.close() returned before Playwright removed its temporary folders",
+          "fix": "014b4dff"
+        }
+      ]
+    },
+    "round2": {
+      "review": "https://github.com/xxibcill/still-shift/pull/62#pullrequestreview-5910163200",
+      "reviewedHead": "8b995ee8",
+      "method": "Two independent reviews (Standards and Spec); round 1 fixes checked and sound.",
+      "findings": [
+        {
+          "id": "R2-1",
+          "severity": "low",
+          "status": "plausible",
+          "title": "Vite dependency-scan wait had no bound",
+          "fix": "4392fe3f"
+        },
+        {
+          "id": "R2-2",
+          "severity": "low",
+          "status": "confirmed by unit test",
+          "title": "A failed close after abort replaced the abort reason",
+          "fix": "2202b760"
+        },
+        {
+          "id": "R2-3",
+          "severity": "judgement",
+          "title": "Lint HTTP server had two names",
+          "fix": "0c66f09e"
+        },
+        {
+          "id": "R2-4",
+          "severity": "low",
+          "status": "plausible",
+          "title": "Signal listeners released inside the relay window",
+          "fix": "8b08f7aa"
+        },
+        {
+          "id": "R2-5",
+          "severity": "low",
+          "status": "confirmed",
+          "title": "A cancelled lint exited 1, like a lint with findings",
+          "fix": "c4087e61"
+        },
+        {
+          "id": "R2-6",
+          "severity": "judgement",
+          "title": "Signal wiring inline in the lint branch",
+          "fix": "3d52182c"
+        },
+        {
+          "id": "R2-7",
+          "severity": "judgement",
+          "title": "directoryBytes duplicated in test and script",
+          "fix": "e52968ae"
+        },
+        {
+          "id": "R2-8",
+          "severity": "judgement",
+          "title": "Signal test changed process.env.TMPDIR to read a child's folder",
+          "fix": "2db3284b"
+        },
+        {
+          "id": "R2-9",
+          "severity": "medium",
+          "status": "confirmed",
+          "title": "Reference described pre-review cancellation",
+          "fix": "5cf415a1"
+        },
+        {
+          "id": "R2-10",
+          "severity": "low",
+          "status": "confirmed",
+          "title": "ET2 plan text predated the review fixes",
+          "fix": "6ccf0e2e"
+        },
+        {
+          "id": "R2-11",
+          "severity": "medium",
+          "status": "confirmed",
+          "title": "Results JSON omitted the review round and contradicted the final code",
+          "fix": "this record"
+        },
+        {
+          "id": "R2-12",
+          "severity": "medium",
+          "status": "confirmed",
+          "title": "Final gate and non-video byte identity not rerun on the head",
+          "fix": "see finalVerification"
+        }
+      ],
+      "dropped": [
+        "Script imports from tests/helpers: two existing scripts do the same.",
+        "New lintCompositionFile options undocumented in the reference: each has JSDoc, and the reference documents no library lint options.",
+        "closeViteServer reads undocumented optimizer fields: mitigated by the exact vite 7.3.6 pin and the comment naming it."
+      ]
+    }
   }
 }
