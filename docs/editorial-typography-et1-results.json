@@ -8,7 +8,7 @@
   "agent": "Claude Code (Opus 5.5)",
   "branch": "codex/editorial-titles-et1",
   "base": "main 98a92e92 (Merge PR #59, published 0.2.0)",
-  "et0Relationship": "Kept independent of codex/editorial-titles-et0: the merge question was sent to the starting session and had no answer before this record, so ET0 was not merged. ET0 fixtures, the proof programs and et0-baseline.ts were exercised only in a throwaway detached worktree (ET0 e1b79ae0 plus this branch, merge never committed) and then removed.",
+  "et0Relationship": "Kept independent of codex/editorial-titles-et0: the owner decided not to merge ET0 into this branch (asked during the session, answered after the first record). ET0 fixtures, the proof programs and et0-baseline.ts were exercised only in a throwaway detached worktree (ET0 e1b79ae0 plus this branch, merge never committed) and then removed.",
   "runtime": {
     "toolchainCheck": "pnpm toolchain:check passed: Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
     "renderer": "composition-canvas-1.47.7 (unchanged)",
