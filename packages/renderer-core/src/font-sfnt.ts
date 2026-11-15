@@ -19,6 +19,50 @@ function fail(message: string): never {
   return passageError("font-metadata", `font-metadata: ${message}`);
 }
 
+/**
+ * The container a font file's header declares. Only `sfnt` (TrueType 1.0 or
+ * `OTTO`) is readable; WOFF/WOFF2 wrap compressed SFNT tables and collections
+ * hold several faces, so neither can be read in place.
+ */
+export type FontContainer =
+  | "sfnt"
+  | "woff"
+  | "woff2"
+  | "collection"
+  | "unknown";
+export function sfntContainer(bytes: ArrayBuffer): FontContainer {
+  if (bytes.byteLength < 4) return "unknown";
+  switch (new DataView(bytes).getUint32(0)) {
+    case 0x00010000:
+    case 0x4f54544f: // OTTO
+      return "sfnt";
+    case 0x774f4646: // wOFF
+      return "woff";
+    case 0x774f4632: // wOF2
+      return "woff2";
+    case 0x74746366: // ttcf
+      return "collection";
+    default:
+      return "unknown";
+  }
+}
+const containerLabels: Record<Exclude<FontContainer, "sfnt">, string> = {
+  woff: "WOFF font",
+  woff2: "WOFF2 font",
+  collection: "TrueType/OpenType collection",
+  unknown: "file with an unrecognized font header",
+};
+export function fontContainerLabel(
+  container: Exclude<FontContainer, "sfnt">,
+): string {
+  return containerLabels[container];
+}
+/** Why non-SFNT bytes cannot be read, or undefined for readable SFNT. */
+export function unsupportedFontContainer(bytes: ArrayBuffer) {
+  const container = sfntContainer(bytes);
+  return container === "sfnt" ? undefined : containerLabels[container];
+}
+
 export function readSfntTables(bytes: ArrayBuffer): SfntTables {
   if (
     bytes.byteLength < 12 ||
@@ -26,9 +70,9 @@ export function readSfntTables(bytes: ArrayBuffer): SfntTables {
   )
     fail("font byte length outside supported budget");
   const data = new DataView(bytes);
-  const signature = data.getUint32(0);
-  if (signature !== 0x00010000 && signature !== 0x4f54544f)
-    fail("identity requires an SFNT TTF or OTF font");
+  const unsupported = unsupportedFontContainer(bytes);
+  if (unsupported)
+    fail(`identity read a ${unsupported}; it requires an SFNT TTF or OTF font`);
   const count = data.getUint16(4);
   if (count > FONT_IDENTITY_LIMITS.tables || 12 + count * 16 > bytes.byteLength)
     fail("invalid or over-budget table directory");

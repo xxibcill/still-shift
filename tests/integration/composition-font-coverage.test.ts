@@ -569,3 +569,76 @@ it("records fallback runs in render results and leaves covered results unchanged
   expect(result).not.toHaveProperty("fontCoverage");
   expect(result.warnings).toEqual([]);
 }, 120_000);
+
+/** Pinned bytes whose header is a web-font container rather than SFNT. */
+async function webFont(root: string, signature: "wOFF" | "wOF2") {
+  const path = join(root, `title.${signature === "wOFF" ? "woff" : "woff2"}`);
+  const bytes = Buffer.alloc(64);
+  bytes.write(signature, 0, "latin1");
+  await writeFile(path, bytes);
+  return {
+    id: "title",
+    type: "font",
+    path,
+    sha256: `sha256:${createHash("sha256").update(bytes).digest("hex")}`,
+    weight: "600",
+  };
+}
+
+it.each([
+  ["wOFF", "WOFF"],
+  ["wOF2", "WOFF2"],
+] as const)(
+  "rejects a pinned %s font in every command before any browser work",
+  async (signature, label) => {
+    const root = await directory();
+    const { input } = await write({
+      assets: [await plex(), await webFont(root, signature)],
+      layers: [textLayer("title", "OLIVE", "title")],
+    });
+    const finding = expect.objectContaining({
+      code: "font-format",
+      severity: "error",
+      path: "assets[1].path",
+      fontId: "title",
+      message: expect.stringMatching(
+        new RegExp(`Font title is a ${label} font.*TTF or OTF`),
+      ),
+    });
+    // Legacy coverage still rejects it: the renderer cannot read the container.
+    const validated = await run(["validate", "--input", input]);
+    expect(validated.code).toBe(1);
+    expect(JSON.parse(validated.stderr).diagnostics).toEqual([finding]);
+
+    const output = join(root, "out.mp4");
+    const rendered = await run([
+      "render",
+      "--input",
+      input,
+      "--output",
+      output,
+    ]);
+    expect(rendered.code).toBe(2);
+    const failure = JSON.parse(rendered.stderr).error;
+    expect(failure.code).toBe("SCENE_INVALID");
+    expect(JSON.parse(failure.context.diagnosticsJson)).toEqual([finding]);
+    await expect(readFile(output)).rejects.toMatchObject({ code: "ENOENT" });
+
+    const linted = await run(["lint", "--input", input, "--pixels", "true"]);
+    expect(linted.code).not.toBe(0);
+    expect(JSON.parse(linted.stdout || linted.stderr).diagnostics).toEqual([
+      finding,
+    ]);
+  },
+  60_000,
+);
+
+it("does not label captured web fonts as composition font types", async () => {
+  const { compositionAssetTypes } = await import(
+    "../../tools/still-shift-cli/src/composition/captured-assets.ts"
+  );
+  expect(compositionAssetTypes[".ttf"]).toBe("font/ttf");
+  expect(compositionAssetTypes[".otf"]).toBe("font/otf");
+  expect(compositionAssetTypes).not.toHaveProperty(".woff");
+  expect(compositionAssetTypes).not.toHaveProperty(".woff2");
+});

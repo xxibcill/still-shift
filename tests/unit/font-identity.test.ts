@@ -6,6 +6,8 @@ import {
   type FontDeclaration,
 } from "../../packages/renderer-core/src/font-identity.ts";
 import { collectFontTextRuns } from "../../packages/renderer-core/src/font-copy.ts";
+import { readFontMetrics } from "../../packages/renderer-core/src/font-metrics.ts";
+import { sfntContainer } from "../../packages/renderer-core/src/font-sfnt.ts";
 import { PassageError } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import type { TextNode } from "../../packages/renderer-core/src/typography-style.ts";
 
@@ -249,6 +251,35 @@ describe("bounded exact-font identity", () => {
     expect(() => readFontIdentity(withCmap(invalidRangeOffset, 1))).toThrow(
       /font-cmap/,
     );
+  });
+  it("names WOFF, WOFF2 and collection containers instead of reading them as SFNT", () => {
+    const container = (tag: string) => {
+      const font = new ArrayBuffer(64);
+      new Uint8Array(font).set([...tag].map((c) => c.charCodeAt(0)));
+      return font;
+    };
+    expect(sfntContainer(bytes(plexPath))).toBe("sfnt");
+    expect(
+      sfntContainer(
+        bytes("assets/story-motion/fonts/source-serif-4-semibold.otf"),
+      ),
+    ).toBe("sfnt");
+    expect(sfntContainer(container("wOFF"))).toBe("woff");
+    expect(sfntContainer(container("wOF2"))).toBe("woff2");
+    expect(sfntContainer(container("ttcf"))).toBe("collection");
+    expect(sfntContainer(container("true"))).toBe("unknown");
+    expect(sfntContainer(new ArrayBuffer(2))).toBe("unknown");
+    for (const [tag, label] of [
+      ["wOFF", "WOFF"],
+      ["wOF2", "WOFF2"],
+    ] as const) {
+      expect(() => readFontIdentity(container(tag))).toThrow(
+        new RegExp(`font-metadata: .*${label} font.*TTF or OTF`),
+      );
+      expect(() => readFontMetrics(container(tag))).toThrow(
+        new RegExp(`font-metadata: .*${label} font.*TTF or OTF`),
+      );
+    }
   });
   it("rejects over-budget directories and malformed Unicode name strings", () => {
     const overBudget = bytes(plexPath);

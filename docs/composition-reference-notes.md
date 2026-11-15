@@ -594,6 +594,12 @@ against its exact reachable copy in Node, before any browser work, through
   `font-fallback-cluster`. `comp validate` and render results list each run's
   fallback code points in `fontCoverage.fallbackRuns`; the browser still shapes,
   so the face that drew each glyph is declared, not measured.
+- **Font format.** Composition fonts must be SFNT TrueType (`.ttf`) or OpenType
+  (`.otf`) files: layout metrics, identity and coverage read their tables in place.
+  A pinned WOFF, WOFF2 or TrueType collection fails `font-format` at
+  `assets[i].path` in both profiles, before any browser work; convert it first
+  (for example `fonttools ttLib font.woff2 -o font.ttf`) and pin the new path and
+  SHA-256.
 - **Results.** `comp validate` always prints `fontCoverage` with each font's actual
   family, subfamily, PostScript name, weight class, style, axes and `cmap` formats.
   `covered` is `true` only when every font and all reachable copy were inspected;
@@ -610,6 +616,7 @@ against its exact reachable copy in Node, before any browser work, through
 | `font-fallback-cluster` | A grapheme cluster would be drawn partly by its font and partly by a fallback.              |
 | `font-cut-identity`     | Declared weight, style, family, subfamily or PostScript name differs from the pinned bytes. |
 | `font-axis-range`       | A style's axis value is outside the pinned font's axis range.                               |
+| `font-format`           | The pinned bytes are WOFF, WOFF2, a collection or not a font; always an error.              |
 | `font-metadata`         | The font's SFNT directory or name/OS/2 data is malformed or over budget.                    |
 | `font-cmap`             | The font's `cmap` table is malformed or over budget.                                        |
 | `font-cmap-unsupported` | The font has no Unicode format 4 or 12 `cmap` subtable.                                     |

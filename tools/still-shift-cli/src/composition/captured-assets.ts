@@ -20,8 +20,6 @@ export const compositionAssetTypes: Record<string, string> = {
   ".bmp": "image/bmp",
   ".ttf": "font/ttf",
   ".otf": "font/otf",
-  ".woff": "font/woff",
-  ".woff2": "font/woff2",
 };
 
 /** Native originals stay on disk; every preparation verifies their pinned bytes. */

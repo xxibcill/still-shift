@@ -22,6 +22,11 @@ import {
 import type { CollectedFontTextRun } from "../font-copy.ts";
 import { passageDiagnostics } from "../passage-diagnostics.ts";
 import {
+  fontContainerLabel,
+  sfntContainer,
+  type FontContainer,
+} from "../font-sfnt.ts";
+import {
   compositionFontTextRuns,
   pinned,
   scopes,
@@ -100,6 +105,14 @@ export function compositionCopyRuns(comp: Composition): CollectedFontTextRun[] {
   return compositionFontTextRuns(comp, typed);
 }
 
+const fontConversionHints: Record<Exclude<FontContainer, "sfnt">, string> = {
+  woff: "Decompress it, for example `fonttools ttLib font.woff -o font.ttf`",
+  woff2: "Decompress it, for example `fonttools ttLib font.woff2 -o font.ttf`",
+  collection:
+    "Extract one face, for example `fonttools ttLib -y 0 fonts.ttc -o font.ttf`",
+  unknown: "Supply the font's original TTF or OTF file",
+};
+
 /** Inspect every pinned font against its reachable copy. Never throws for font data. */
 export function inspectCompositionFonts(
   comp: Composition,
@@ -118,6 +131,24 @@ export function inspectCompositionFonts(
   const identities = new Map<string, FontIdentity>();
   for (const { asset, index } of fonts) {
     const source = bytes.get(asset.id);
+    const container = source ? sfntContainer(source) : "sfnt";
+    if (container !== "sfnt") {
+      // Every composition font is read as SFNT for layout metrics, so this is
+      // an error in either profile: the browser would otherwise fail opaquely.
+      diagnostics.push({
+        code: "font-format",
+        severity: "error",
+        message:
+          `Font ${asset.id} is a ${fontContainerLabel(container)}; ` +
+          "composition fonts must be SFNT TTF or OTF files. " +
+          `${fontConversionHints[container]}, then pin the converted ` +
+          "file's path and sha256.",
+        path: formatJsonPath(["assets", index, "path"]),
+        fontId: asset.id,
+        fontSha256: asset.sha256,
+      });
+      continue;
+    }
     try {
       if (!source) throw new Error(`font bytes unavailable: ${asset.id}`);
       identities.set(asset.id, readFontIdentity(source));
