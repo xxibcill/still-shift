@@ -28,24 +28,38 @@ import {
   textLegibilityMask,
 } from "./text-legibility.ts";
 
+/**
+ * Probe preview pairs kept alive across frames. A WebGL2 preview holds its own
+ * context and Chromium keeps about 16 per page, so the linted preview, six
+ * live pairs and one per-frame pair (15) stay under the limit; on canvas2d it
+ * bounds the extra full-size canvases.
+ */
+export const MAX_LIVE_CONTRAST_PROBES = 6;
+
+type ProbePreviews = { background: ProbePreview; mask: ProbePreview };
 type ContrastProbe = {
+  id: string;
   reading: Set<number>;
-  background: CompositionPreview;
-  mask: CompositionPreview;
+  /** Last reading frame; the live previews are disposed after it. */
+  last: number;
+  background: Composition;
+  mask: Composition;
+  live?: ProbePreviews | undefined;
   evidence: TextContrastLayerEvidence;
 };
 
 /**
- * ET3: per root text layer, a preview without its glyphs (transparent glyph
- * colours keep its container and highlights) and a word-coded glyph mask,
- * both sharing the linted preview's resources and backend.
+ * ET3: per root text layer, the compositions for a frame without its glyphs
+ * (transparent glyph colours keep its container and highlights) and for a
+ * word-coded glyph mask. Their previews are opened only for the layer's
+ * reading window (`openProbePreviews`), sharing the linted preview's
+ * resources and backend.
  */
 function createContrastProbes(
   comp: Composition,
   preview: CompositionPreview,
   policy: CompositionQualityPolicy,
   resolved: ReturnType<typeof resolveCompositionQualityPolicy>,
-  resources: CompositionResources,
 ) {
   const frames = sampleCompositionQuality(comp, {
     ...policy.evaluation,
@@ -53,39 +67,100 @@ function createContrastProbes(
     textBounds: preview.textBounds,
   });
   const probes = new Map<string, ContrastProbe>();
-  try {
-    for (const [id, reading] of textLegibilityFrames(comp, frames, resolved)) {
-      const mask = textLegibilityMask(comp, id);
-      const probe: Partial<ContrastProbe> = {
-        reading: new Set(reading),
-        evidence: { ...mask.evidence, frames: [] },
-      };
-      if (reading.length) {
-        probe.background = createCompositionPreview(
-          document.createElement("canvas"),
-          textLegibilityBackground(comp, id),
-          resources,
-          { backend: preview.backend },
-        );
-        probes.set(id, probe as ContrastProbe);
-        probe.mask = createCompositionPreview(
-          document.createElement("canvas"),
-          mask.composition,
-          { ...resources, textProbe: { node: id, mode: "ink-only" } },
-          { backend: preview.backend },
-        );
-      } else probes.set(id, probe as ContrastProbe);
-    }
-  } catch (error) {
-    disposeProbes(probes);
-    throw error;
+  for (const [id, reading] of textLegibilityFrames(comp, frames, resolved)) {
+    const mask = textLegibilityMask(comp, id);
+    probes.set(id, {
+      id,
+      reading: new Set(reading),
+      last: reading.at(-1) ?? -1,
+      background: textLegibilityBackground(comp, id),
+      mask: mask.composition,
+      evidence: { ...mask.evidence, frames: [] },
+    });
   }
   return probes;
 }
-function disposeProbes(probes: Map<string, ContrastProbe>) {
-  for (const probe of probes.values()) {
-    probe.background?.dispose();
-    probe.mask?.dispose();
+type ProbePreview = { preview: CompositionPreview; canvas: HTMLCanvasElement };
+function openProbePreview(
+  composition: Composition,
+  resources: CompositionResources,
+  backend: CompositionPreview["backend"],
+): ProbePreview {
+  const canvas = document.createElement("canvas");
+  try {
+    return {
+      preview: createCompositionPreview(canvas, composition, resources, {
+        backend,
+      }),
+      canvas,
+    };
+  } catch (error) {
+    releaseProbeCanvas(canvas);
+    throw error;
+  }
+}
+/**
+ * Disposing a preview frees its resources but not its WebGL2 context, which
+ * otherwise holds one of the page's context slots until garbage collection;
+ * lose it and drop the canvas backing store.
+ */
+function releaseProbeCanvas(canvas: HTMLCanvasElement) {
+  (canvas.getContext("webgl2") as WebGL2RenderingContext | null)
+    ?.getExtension("WEBGL_lose_context")
+    ?.loseContext();
+  canvas.width = canvas.height = 0;
+}
+/**
+ * Probe previews share the linted preview's media but must not dispose it: a
+ * probe closed after its layer's reading window would otherwise stop the
+ * video for every later frame ("Disposed media resources").
+ */
+function sharedProbeResources(
+  resources: CompositionResources,
+): CompositionResources {
+  return resources.media
+    ? {
+        ...resources,
+        media: Object.create(resources.media, {
+          dispose: { value: () => {} },
+        }) as NonNullable<CompositionResources["media"]>,
+      }
+    : resources;
+}
+function openProbePreviews(
+  probe: ContrastProbe,
+  shared: CompositionResources,
+  backend: CompositionPreview["backend"],
+): ProbePreviews {
+  const resources = sharedProbeResources(shared);
+  const background = openProbePreview(probe.background, resources, backend);
+  try {
+    return {
+      background,
+      mask: openProbePreview(
+        probe.mask,
+        { ...resources, textProbe: { node: probe.id, mode: "ink-only" } },
+        backend,
+      ),
+    };
+  } catch (error) {
+    disposeProbePreview(background);
+    throw error;
+  }
+}
+function disposeProbePreview({ preview, canvas }: ProbePreview) {
+  try {
+    preview.dispose();
+  } finally {
+    releaseProbeCanvas(canvas);
+  }
+}
+function disposeProbePreviews(previews: ProbePreviews | undefined) {
+  if (!previews) return;
+  try {
+    disposeProbePreview(previews.background);
+  } finally {
+    disposeProbePreview(previews.mask);
   }
 }
 async function renderProbe(
@@ -130,14 +205,10 @@ export async function analyzeRenderedCompositionQuality(
   );
   const probes =
     resolved.textLegibility && options.legibilityResources
-      ? createContrastProbes(
-          comp,
-          preview,
-          policy,
-          resolved,
-          options.legibilityResources,
-        )
+      ? createContrastProbes(comp, preview, policy, resolved)
       : undefined;
+  const resources = options.legibilityResources;
+  let liveProbes = 0;
   const percentile =
     resolved.textLegibility?.contrastPercentile ?? DEFAULT_CONTRAST_PERCENTILE;
   try {
@@ -165,8 +236,26 @@ export async function analyzeRenderedCompositionQuality(
       for (const probe of probes?.values() ?? []) {
         if (!probe.reading.has(frame)) continue;
         options.signal?.throwIfAborted();
-        const back = await renderProbe(probe.background, frame, native);
-        const mask = await renderProbe(probe.mask, frame, native);
+        // Previews live for the layer's reading window; beyond the live cap,
+        // a layer on screen with many others gets a pair for this frame only.
+        if (!probe.live && liveProbes < MAX_LIVE_CONTRAST_PROBES) {
+          probe.live = openProbePreviews(probe, resources!, preview.backend);
+          liveProbes++;
+        }
+        const previews =
+          probe.live ?? openProbePreviews(probe, resources!, preview.backend);
+        let back: Uint8ClampedArray | Uint8Array, mask: typeof back;
+        try {
+          back = await renderProbe(previews.background.preview, frame, native);
+          mask = await renderProbe(previews.mask.preview, frame, native);
+        } finally {
+          if (previews !== probe.live) disposeProbePreviews(previews);
+        }
+        if (frame === probe.last && probe.live) {
+          disposeProbePreviews(probe.live);
+          probe.live = undefined;
+          liveProbes--;
+        }
         probe.evidence.frames.push({
           frame,
           words: measureTextContrastPixels(
@@ -186,7 +275,10 @@ export async function analyzeRenderedCompositionQuality(
         await new Promise<void>((resolve) => setTimeout(resolve, 0));
     }
   } finally {
-    if (probes) disposeProbes(probes);
+    for (const probe of probes?.values() ?? []) {
+      disposeProbePreviews(probe.live);
+      probe.live = undefined;
+    }
   }
   options.signal?.throwIfAborted();
   const textLegibilityEvidence: TextLegibilityEvidence | undefined =

@@ -14,7 +14,10 @@ import { fileURLToPath } from "node:url";
 import type { Composition } from "@still-shift/scene-contract";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { contrastRatio } from "../../packages/renderer-core/src/typography-quality.ts";
-import { paper } from "../../benchmarks/fixtures/editorial-titles/shared.ts";
+import {
+  fonts,
+  paper,
+} from "../../benchmarks/fixtures/editorial-titles/shared.ts";
 import { editorialFixture } from "../helpers/editorial-video-lint.ts";
 
 type Diagnostic = {
@@ -320,6 +323,85 @@ export async function verifyTextLegibility() {
         `${label}: the saved outside-safe-area severity is kept`,
       );
       assert.equal(saved.code, 1, `${label}: the saved error severity gates`);
+    }
+
+    // WebGL2: each probe preview holds a GL context and Chromium keeps about
+    // 16 per page. Probes used to be opened for every text layer up front and
+    // kept, so 12 captions in turn or 10 on screen together lost contexts
+    // ("comp-webgl-size: surface exceeds MAX_TEXTURE_SIZE"). Now a layer's
+    // previews live for its reading window (at most six pairs at once) and
+    // release their contexts.
+    const ink = "#222222",
+      onPaper = contrastRatio(ink, "#EEEEEE");
+    for (const [label, count, together] of [
+      ["12 captions in turn", 12, false],
+      ["10 captions together", 10, true],
+    ] as const) {
+      const height = together ? 720 : 360,
+        hold = together ? 30 : 6;
+      const input = join(directory, `captions-${count}.json`);
+      await writeFile(
+        input,
+        JSON.stringify({
+          schemaVersion: "composition-1",
+          id: "captions",
+          width: 360,
+          height,
+          fps: 24,
+          frameCount: together ? hold : count * hold,
+          background: "#EEEEEE",
+          assets: [fonts.serif],
+          layers: [
+            ...Array.from({ length: count }, (_, i) => ({
+              id: `cap${i}`,
+              type: "text",
+              text: `Caption ${i}`,
+              fontAsset: fonts.serif.id,
+              fontSize: 48,
+              color: ink,
+              textRole: "heading",
+              inPoint: together ? 0 : i * hold,
+              outPoint: together ? hold : (i + 1) * hold,
+              transform: { position: [40, together ? 60 + 64 * i : 160] },
+            })),
+            {
+              id: "paper",
+              type: "solid",
+              size: [360, height],
+              color: "#EEEEEE",
+            },
+          ],
+        }),
+      );
+      const result = await lintCli([
+        "--input",
+        input,
+        "--pixels",
+        "true",
+        "--legibility",
+        "true",
+        "--backend",
+        "webgl2",
+      ]);
+      assert.equal(
+        result.stderr,
+        "",
+        `${label}: ${result.stderr.slice(0, 2000)}`,
+      );
+      const report = JSON.parse(result.stdout) as Report;
+      assert.ok(
+        !report.diagnostics.some((d) => d.code === "invalid-scene"),
+        `ET3 WebGL2 ${label}: ${JSON.stringify(report.diagnostics.slice(0, 2))}`,
+      );
+      const layers = report.textLegibility!.layers;
+      assert.equal(layers.length, count);
+      for (const layer of layers)
+        assert.ok(
+          layer.measuredFrames === layer.readingFrames &&
+            layer.readingFrames > 0 &&
+            Math.abs(layer.worst!.contrast - onPaper) < 0.05,
+          `ET3 WebGL2 ${label}: ${layer.layer} measured ${layer.measuredFrames}/${layer.readingFrames} at ${layer.worst?.contrast}:1; expected ${onPaper.toFixed(2)}:1`,
+        );
     }
   } finally {
     await rm(directory, { recursive: true, force: true });

@@ -2180,7 +2180,10 @@ any waiver. Text inside precomps is not measured and is listed under
 `limitations`. These are legibility signals, not visual acceptance: they do not
 model blur, halation, motion, colour-vision deficiency or polarity, and a
 textured background's darkest 5% can fail a word a person reads easily. Keep human
-review separate. Contrast adds two renders per text layer and reading frame. On
+review separate. Contrast adds two renders per text layer and reading frame.
+Their two extra previews exist only during the layer's reading window, and at
+most six layers keep theirs across frames (more on screen together get a pair
+per frame), so long caption runs fit WebGL2's per-page context limit. On
 the 7 s 1080×1920 proof clip, see the
 [ET3 results](./editorial-typography-et3-results.json) for measured runtime.
 
