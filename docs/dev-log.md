@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial titles ET0–ET2 (2026-11-15):** ET0 (fixtures, synthetic clip, baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)) and ET1 (exact-copy font gate) are merged on `main` via PR #60 and PR #61. ET2 (pixel lint over native video) is in review as PR #62 on `codex/editorial-titles-et2`, with its six review findings fixed on the branch (owner review pending): video pixel lint has regression tests in `test:browser:composition-quality` and `test:browser:composition-media`, including a proof-scale transport case; `comp lint` cancellation by SIGINT, SIGTERM or SIGHUP cleans up after itself, is covered by a CLI signal test, and a later signal force-stops a stalled cleanup. Still reproduce: O1, O2, O3, O6, O7, O10, O11. Pending owner decisions: ET2-D1 (near-static footage as frozen), ET2-D2 (default `decodedCacheBytes` rejects a 60 s 1080×1920 clip), synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. Follow-up: `comp render` has the same missing signal wiring. No human visual acceptance (including fallback Thai). [ET0](./editorial-typography-et0-results.json), [ET1](./editorial-typography-et1-results.json), [ET2 results](./editorial-typography-et2-results.json).
+- **Editorial titles ET0–ET2 (2026-11-15):** ET0 (fixtures, synthetic clip, baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)) and ET1 (exact-copy font gate) are merged on `main` via PR #60 and PR #61. ET2 (pixel lint over native video) is in review as PR #62 on `codex/editorial-titles-et2`, with six first-round and twelve second-round review findings fixed on the branch (owner review pending): video pixel lint has regression tests in `test:browser:composition-quality` and `test:browser:composition-media`, including a proof-scale transport case; `comp lint` cancellation by SIGINT, SIGTERM or SIGHUP cleans up after itself, then exits 128 + the signal number; it is covered by a CLI signal test, and a later signal force-stops a stalled cleanup. The ordered gate and the non-video comparison against `main` pass at eccdbd5e. Still reproduce: O1, O2, O3, O6, O7, O10, O11. Pending owner decisions: ET2-D1 (near-static footage as frozen), ET2-D2 (default `decodedCacheBytes` rejects a 60 s 1080×1920 clip), synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. Follow-up: `comp render` has the same missing signal wiring. No human visual acceptance (including fallback Thai). [ET0](./editorial-typography-et0-results.json), [ET1](./editorial-typography-et1-results.json), [ET2 results](./editorial-typography-et2-results.json).
 
 - **0.2.0 published and registry-verified (2026-10-16):** owner-approved source `ba13d26a` is remote `production` and fixed annotated `v0.2.0`. Public npm `latest` is `0.2.0`; its downloaded archive matches the verified SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f` byte for byte. Technical verification completed in recorded stages; all 28 standard installed checks, both focused mechanism groups and browser bundle pass. Original aggregate/harness failures, npm `EOTP`/browser retry, registry-processing reads and 19 timing deferrals remain retained. PR #59 carries the publication records; its authorized merge preserves release ancestry, with final readback retained separately. MS3 remains experimental: original first-pass 1/10, token savings null, accepted 0/10. [Results](./npm-release-results.json), [plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59).
 
@@ -81,6 +81,32 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-15 — ET2 second review and fixes (PR #62)
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-et2`. The second review of [PR #62](https://github.com/xxibcill/still-shift/pull/62) at 8b995ee8 used two separate reviews, Standards and Spec. It posted twelve inline findings (R2-1…R2-12), fixed one commit per finding.
+- **Fixed:**
+  - R2-1: Vite's dependency-scan wait now has a time limit; one 10 s deadline covers the scan and the bundling.
+  - R2-2: a failed browser close no longer replaces the abort reason.
+  - R2-3: the lint HTTP server has one name.
+  - R2-4: relayed signals are still ignored after an early release.
+  - R2-5: a cancelled lint exits 128 + the signal number, not 1.
+  - R2-6: the signal wiring moved into `withOwnedSignals`.
+  - R2-7, R2-8: shared `directoryBytes`; `lintTemporaryEntries(root)`.
+  - R2-9: the reference describes the final cancellation behaviour.
+  - R2-10: the plan describes the final cancellation behaviour.
+  - R2-11: the results record the review round.
+- **Regression caught:** gate run 1 at 6a752868 failed. R2-6 returned `withOwnedSignals` without `await` inside the command's `try`, so lint errors crashed the CLI instead of reporting. This broke 10 of 17 `composition-lint-cli` tests and `composition-quality`, and made 5 of 105 comparison files differ. Fixed in eccdbd5e before push.
+- **Results (R2-12, Node 22.23.1, eccdbd5e):** in order, all pass:
+  - `check:fast`: 460 files, 4,632 tests.
+  - `composition-quality`.
+  - `composition-media`.
+  - `check:runtime`, with the primary checkout's CE16 runtime symlinked in.
+  - Non-video lint is byte-identical to `main`: 35 runs, 105 files.
+  - Not run: `pnpm check`, `release:check`, WebGL2 with video.
+- **Dropped with reasons:** the script import from `tests/helpers` (there is precedent), the new options' reference docs (they have JSDoc), and the Vite internals (the version is pinned).
+- **Open / next:** owner review of PR #62. ET2-D1 and ET2-D2 are unchanged. Follow-ups: use `withOwnedSignals` in `comp render`; media cache eviction. Consider ESLint `@typescript-eslint/return-await` (`in-try-catch`), which would have caught the regression.
+- **Records:** [second review](https://github.com/xxibcill/still-shift/pull/62#pullrequestreview-5910163200), [ET2 results](./editorial-typography-et2-results.json).
 
 ### 2026-11-15 — ET2 review fixes (PR #62)
 

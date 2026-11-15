@@ -500,10 +500,12 @@
     "Final tree (after the test moved its leftover checks to a private TMPDIR): test:browser:composition-quality passed (29 s), test:browser:composition-media passed (115 s).",
     "PR #62 review round 1: four findings on 71fc5d33, two more (5, 6) found while fixing them; see review.round1.",
     "Review fixes, test:browser:composition-media run 1 on Node 24.16.0 (not the toolchain.json 22.23.1; the worktree shell's default): failed when the widened leftover check (now including Playwright's folders) caught the double browser close (review finding 6). Passed after 014b4dff, on Node 22.23.1.",
-    "Review fixes on Node 22.23.1: check:fast passed (458 files / 4,626 tests); composition-quality passed (2 min, includes the spawn signal test); composition-media passed (frame-48 cancel; proof-scale clip 35 s). check:runtime and the non-video byte comparison were not rerun at that point (review R2-12)."
+    "Review fixes on Node 22.23.1: check:fast passed (458 files / 4,626 tests); composition-quality passed (2 min, includes the spawn signal test); composition-media passed (frame-48 cancel; proof-scale clip 35 s). check:runtime and the non-video byte comparison were not rerun at that point (review R2-12).",
+    "Review R2-12 gate run 1 at 6a752868 (Node 22.23.1): check:fast passed (141 s); composition-quality failed in 4 s; composition-media passed (108 s); check:runtime failed (546 s; composition-lint-cli 10 of 17 tests); non-video comparison against main differed in 5 of 105 files. One cause: 3d52182c (R2-6) returned withOwnedSignals' promise unawaited inside the command's try block, so program-load and lint errors crashed the CLI instead of reporting JSON. Fixed in eccdbd5e.",
+    "Review R2-12 gate run 2 at eccdbd5e (Node 22.23.1; primary checkout's CE16 runtime symlinked, nothing downloaded): check:fast passed (460 files / 4,632 tests, 138 s); composition-quality passed (114 s, includes the spawn signal test asserting 130/143/129); composition-media passed (108 s); check:runtime passed (596 s: test:runtime 63/376, test:integration 62/339, test:depth 14 OK, test:browser:smoke); non-video comparison 105/105 files identical to main 9db17cf2."
   ],
   "nonVideoByteIdentity": {
-    "method": "comp lint via node --import tsx tools/still-shift-cli/src/cli.ts on main 9db17cf2 (detached temporary worktree) and on this branch at 8879e960; stdout, stderr and exit status of every run compared with diff -r.",
+    "method": "comp lint via node --import tsx tools/still-shift-cli/src/cli.ts on main 9db17cf2 (detached temporary worktree) and on this branch; stdout, stderr and exit status of every run compared with diff -r. First at 8879e960; rerun at eccdbd5e after the PR #62 review fixes.",
     "runs": 35,
     "inputs": [
       "benchmarks/fixtures/composition/ce12/*.json --pixels true (14)",
@@ -511,7 +513,7 @@
       "ET0 non-video fixtures o1-attach-animated, o1-attach-static, o2-center-origin, o2-center-control, o3-highlight-fade, o5-plex-thai, p1-thai-marks, o4-video-pixel-lint.no-video with --pixels true and false (16)",
       "o5-plex-thai --pixels true --font-coverage strict (1)"
     ],
-    "result": "byte-identical: 105/105 files equal; concatenated SHA-256 prefix e723f90f090c1931 on both sides",
+    "result": "byte-identical: 105/105 files equal at 8879e960 (concatenated SHA-256 prefix e723f90f090c1931) and at eccdbd5e (f84dbbd52165f5cd on both sides); the first rerun at 6a752868 differed in 5 files (retained in runs).",
     "videoLint": "O4 video and no-video CLI pixel-lint reports before and after the engine change are also byte-identical (cmp)."
   },
   "observations": [
@@ -519,12 +521,14 @@
     "comp render has the same missing SIGINT/SIGTERM wiring as comp lint had (no AbortSignal from the CLI). Not changed in ET2."
   ],
   "finalVerification": {
-    "toolchain": "pnpm toolchain:check passed (Node 22.23.1)",
-    "checkFast": "passed (457 files / 4,622 tests)",
+    "head": "eccdbd5e",
+    "toolchain": "pnpm toolchain:check passed (Node 22.23.1, pnpm 10.29.3)",
+    "checkFast": "passed (460 files / 4,632 tests)",
     "composition-quality": "passed",
     "composition-media": "passed",
-    "checkRuntime": "passed on run 2; run 1 failed for missing local soundtrack runtime and cold Python worker start (retained above)",
-    "nonVideoByteIdentity": "passed (35 runs, 105 files identical)",
+    "checkRuntime": "passed (test:runtime 63/376, test:integration 62/339, test:depth 14, test:browser:smoke) with the primary checkout's CE16 runtime symlinked into the worktree",
+    "nonVideoByteIdentity": "passed (35 runs, 105 files identical to main)",
+    "previousRuns": "Gate run 1 at 6a752868 failed on the R2-6 regression; earlier final verification at 8879e960 (457 files / 4,622 tests) kept in runs.",
     "notRun": [
       "pnpm check / full pnpm test",
       "pnpm release:check (installed-package pixel lint under middleware-mode Vite not separately exercised)",
@@ -625,7 +629,8 @@
           "id": "R2-6",
           "severity": "judgement",
           "title": "Signal wiring inline in the lint branch",
-          "fix": "3d52182c"
+          "fix": "3d52182c",
+          "regression": "Its unawaited return broke CLI error reporting; caught by the R2-12 gate and fixed in eccdbd5e before push."
         },
         {
           "id": "R2-7",
@@ -658,14 +663,14 @@
           "severity": "medium",
           "status": "confirmed",
           "title": "Results JSON omitted the review round and contradicted the final code",
-          "fix": "this record"
+          "fix": "6a752868"
         },
         {
           "id": "R2-12",
           "severity": "medium",
           "status": "confirmed",
           "title": "Final gate and non-video byte identity not rerun on the head",
-          "fix": "see finalVerification"
+          "fix": "this commit (gate rerun at eccdbd5e)"
         }
       ],
       "dropped": [

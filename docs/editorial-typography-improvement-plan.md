@@ -235,11 +235,14 @@ later signal stops at once and may leave temporary files. Evidence:
       default 8 GiB `decodedCacheBytes` rejects this clip before decoding, so
       the run declares 16 GiB; see the owner decision in the results.)
 - [x] Non-video pixel lint results are byte-identical before and after.
-      (35 runs against `main`: stdout, stderr and exit status identical.)
+      (35 runs against `main`: stdout, stderr and exit status identical, at
+      8879e960 and again at eccdbd5e after the PR #62 review fixes.)
 - [x] `pnpm check:fast`, `pnpm test:browser:composition-quality`,
       `pnpm test:browser:composition-media`, then `pnpm check:runtime`. (The
       first `check:runtime` failed only on local runtimes missing from a
-      fresh worktree; it passed on rerun. See results.)
+      fresh worktree; it passed on rerun. Rerun in order at eccdbd5e after
+      the PR #62 review fixes: all pass. The first rerun at 6a752868 caught a
+      review-fix regression, which was fixed before push. See results.)
 
 ---
 
