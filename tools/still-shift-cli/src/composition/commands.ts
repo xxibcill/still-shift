@@ -14,6 +14,9 @@ import {
   cinematicToComposition,
   legacyToComposition,
   CompositionQualityPolicySchema,
+  type CompositionQualityPolicy,
+  TEXT_LEGIBILITY_CODES,
+  type TextLegibilityCode,
   passageDiagnostics,
   type CompositionBackend,
 } from "@still-shift/renderer-core";
@@ -79,6 +82,64 @@ function fontCoverageOption(values: Map<string, string>) {
       "font-coverage",
     );
   return value as "legacy" | "strict" | undefined;
+}
+/** ET3: `--strict text-contrast[,x-height-floor,platform-safe-zone]`. */
+function strictLegibilityOption(values: Map<string, string>) {
+  const value = values.get("strict");
+  if (value === undefined) return [];
+  const codes = value.split(",").map((code) => code.trim());
+  if (
+    !codes.length ||
+    codes.some(
+      (code) => !TEXT_LEGIBILITY_CODES.includes(code as TextLegibilityCode),
+    )
+  )
+    programError(
+      "comp-program-option",
+      `--strict takes a comma-separated list of ${TEXT_LEGIBILITY_CODES.join(", ")}`,
+      "strict",
+    );
+  return [...new Set(codes)] as TextLegibilityCode[];
+}
+/**
+ * ET3: `--legibility true` declares the legibility rules with their defaults;
+ * `--strict` declares them too and raises the named codes to errors. The
+ * `textLegibility` and severities in effect are kept, except that strict codes
+ * always gate. Lint merges the policy over the composition's saved
+ * `metadata.readingPolicy` one key at a time, so they come from the policy
+ * file when it sets them and otherwise from the saved policy; replacing them
+ * here without the saved values would drop its waivers, safe zones, targets
+ * and unrelated severities.
+ */
+function withLegibilityOptions(
+  policy: CompositionQualityPolicy,
+  legibility: boolean,
+  strict: TextLegibilityCode[],
+  savedPolicy: unknown,
+): CompositionQualityPolicy {
+  if (!legibility && !strict.length) return policy;
+  // An invalid saved policy is rejected later by the lint's own resolution.
+  const saved =
+    savedPolicy &&
+    typeof savedPolicy === "object" &&
+    !Array.isArray(savedPolicy)
+      ? (savedPolicy as Pick<
+          CompositionQualityPolicy,
+          "textLegibility" | "severities"
+        >)
+      : {};
+  return {
+    ...policy,
+    textLegibility: policy.textLegibility ?? saved.textLegibility ?? {},
+    ...(strict.length
+      ? {
+          severities: {
+            ...(policy.severities ?? saved.severities),
+            ...Object.fromEntries(strict.map((code) => [code, "error"])),
+          },
+        }
+      : {}),
+  };
 }
 /**
  * ET2: own SIGINT/SIGTERM/SIGHUP while `run` works, so media staging, the
@@ -343,13 +404,17 @@ export async function runCompositionCommand(
           "pixels",
           "backend",
           "font-coverage",
+          "legibility",
+          "strict",
         ]),
         input = requireArgument(values, "input");
       const backend = backendOption(values);
       const fontCoverage = fontCoverageOption(values);
       const pixels = booleanOption(values, "pixels"),
         path = values.get("policy");
-      const policy = path
+      const strict = strictLegibilityOption(values);
+      const legibility = booleanOption(values, "legibility");
+      const filePolicy = path
         ? CompositionQualityPolicySchema.parse(
             JSON.parse(await readFile(resolve(path), "utf8")),
           )
@@ -357,6 +422,13 @@ export async function runCompositionCommand(
       return await withOwnedSignals("lint", io, async (signal) => {
         const program = await loadProgram(input, { signal });
         signal.throwIfAborted();
+        // After loading: the flags must keep the saved reading policy's values.
+        const policy = withLegibilityOptions(
+          filePolicy,
+          legibility,
+          strict,
+          program.composition.metadata?.readingPolicy,
+        );
         const report = await withProgramFile(program, input, (path) =>
           lintCompositionFile(path, policy, {
             pixels,

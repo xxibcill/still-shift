@@ -6,24 +6,194 @@ import {
 } from "../story-quality.ts";
 import { PassageError } from "../passage-diagnostics.ts";
 import { measureFrameEnergy } from "../story-continuous-quality.ts";
-import { assertCompositionQualityCapacity } from "./quality-samples.ts";
 import {
+  assertCompositionQualityCapacity,
+  sampleCompositionQuality,
+} from "./quality-samples.ts";
+import {
+  createCompositionPreview,
   renderCompositionFrameAsync,
   type CompositionPreview,
+  type CompositionResources,
 } from "./render/index.ts";
+import type {
+  TextContrastLayerEvidence,
+  TextLegibilityEvidence,
+} from "./quality-policy.ts";
+import {
+  DEFAULT_CONTRAST_PERCENTILE,
+  measureTextContrastPixels,
+  textLegibilityBackground,
+  textLegibilityFrames,
+  textLegibilityMask,
+} from "./text-legibility.ts";
+
+/**
+ * Probe preview pairs kept alive across frames. A WebGL2 preview holds its own
+ * context and Chromium keeps about 16 per page, so the linted preview, six
+ * live pairs and one per-frame pair (15) stay under the limit; on canvas2d it
+ * bounds the extra full-size canvases.
+ */
+export const MAX_LIVE_CONTRAST_PROBES = 6;
+
+type ProbePreviews = { background: ProbePreview; mask: ProbePreview };
+type ContrastProbe = {
+  id: string;
+  reading: Set<number>;
+  /** Last reading frame; the live previews are disposed after it. */
+  last: number;
+  background: Composition;
+  mask: Composition;
+  live?: ProbePreviews | undefined;
+  evidence: TextContrastLayerEvidence;
+};
+
+/**
+ * ET3: per root text layer, the compositions for a frame without its glyphs
+ * (transparent glyph colours keep its container and highlights) and for a
+ * word-coded glyph mask. Their previews are opened only for the layer's
+ * reading window (`openProbePreviews`), sharing the linted preview's
+ * resources and backend.
+ */
+function createContrastProbes(
+  comp: Composition,
+  preview: CompositionPreview,
+  policy: CompositionQualityPolicy,
+  resolved: ReturnType<typeof resolveCompositionQualityPolicy>,
+) {
+  const frames = sampleCompositionQuality(comp, {
+    ...policy.evaluation,
+    ...preview.evaluationOptions,
+    textBounds: preview.textBounds,
+  });
+  const probes = new Map<string, ContrastProbe>();
+  for (const [id, reading] of textLegibilityFrames(comp, frames, resolved)) {
+    const mask = textLegibilityMask(comp, id);
+    probes.set(id, {
+      id,
+      reading: new Set(reading),
+      last: reading.at(-1) ?? -1,
+      background: textLegibilityBackground(comp, id),
+      mask: mask.composition,
+      evidence: { ...mask.evidence, frames: [] },
+    });
+  }
+  return probes;
+}
+type ProbePreview = { preview: CompositionPreview; canvas: HTMLCanvasElement };
+function openProbePreview(
+  composition: Composition,
+  resources: CompositionResources,
+  backend: CompositionPreview["backend"],
+): ProbePreview {
+  const canvas = document.createElement("canvas");
+  try {
+    return {
+      preview: createCompositionPreview(canvas, composition, resources, {
+        backend,
+      }),
+      canvas,
+    };
+  } catch (error) {
+    releaseProbeCanvas(canvas);
+    throw error;
+  }
+}
+/**
+ * Disposing a preview frees its resources but not its WebGL2 context, which
+ * otherwise holds one of the page's context slots until garbage collection;
+ * lose it and drop the canvas backing store.
+ */
+function releaseProbeCanvas(canvas: HTMLCanvasElement) {
+  (canvas.getContext("webgl2") as WebGL2RenderingContext | null)
+    ?.getExtension("WEBGL_lose_context")
+    ?.loseContext();
+  canvas.width = canvas.height = 0;
+}
+/**
+ * Probe previews share the linted preview's media but must not dispose it: a
+ * probe closed after its layer's reading window would otherwise stop the
+ * video for every later frame ("Disposed media resources").
+ */
+function sharedProbeResources(
+  resources: CompositionResources,
+): CompositionResources {
+  return resources.media
+    ? {
+        ...resources,
+        media: Object.create(resources.media, {
+          dispose: { value: () => {} },
+        }) as NonNullable<CompositionResources["media"]>,
+      }
+    : resources;
+}
+function openProbePreviews(
+  probe: ContrastProbe,
+  shared: CompositionResources,
+  backend: CompositionPreview["backend"],
+): ProbePreviews {
+  const resources = sharedProbeResources(shared);
+  const background = openProbePreview(probe.background, resources, backend);
+  try {
+    return {
+      background,
+      mask: openProbePreview(
+        probe.mask,
+        { ...resources, textProbe: { node: probe.id, mode: "ink-only" } },
+        backend,
+      ),
+    };
+  } catch (error) {
+    disposeProbePreview(background);
+    throw error;
+  }
+}
+function disposeProbePreview({ preview, canvas }: ProbePreview) {
+  try {
+    preview.dispose();
+  } finally {
+    releaseProbeCanvas(canvas);
+  }
+}
+function disposeProbePreviews(previews: ProbePreviews | undefined) {
+  if (!previews) return;
+  try {
+    disposeProbePreview(previews.background);
+  } finally {
+    disposeProbePreview(previews.mask);
+  }
+}
+async function renderProbe(
+  preview: CompositionPreview,
+  frame: number,
+  native: boolean,
+) {
+  if (native) await preview.prepareFrame(frame);
+  const report = await renderCompositionFrameAsync(preview, frame);
+  if (report.diagnostics.some((d) => d.severity === "error"))
+    throw new PassageError(report.diagnostics);
+  return preview.readPixels();
+}
 
 /** Full-resolution grayscale changes reuse the continuous-motion 4-level / 200-pixel default gate. */
 export async function analyzeRenderedCompositionQuality(
   comp: Composition,
   preview: CompositionPreview,
   policy: CompositionQualityPolicy = {},
-  options: { signal?: AbortSignal; onFrame?: (frame: number) => void } = {},
+  options: {
+    signal?: AbortSignal;
+    onFrame?: (frame: number) => void;
+    /**
+     * ET3: the preview's resources, so `text-contrast` can render each text
+     * layer's background and glyph mask. Without them a declared
+     * `textLegibility` reports contrast as unmeasured.
+     */
+    legibilityResources?: CompositionResources;
+  } = {},
 ) {
   options.signal?.throwIfAborted();
-  const pixelChannelThreshold = resolveCompositionQualityPolicy(
-    comp,
-    policy,
-  ).pixelChannelThreshold;
+  const resolved = resolveCompositionQualityPolicy(comp, policy);
+  const pixelChannelThreshold = resolved.pixelChannelThreshold;
   assertCompositionQualityCapacity(comp.frameCount * comp.layers.length);
   const counts: number[] = [];
   let previous: Uint8Array | undefined;
@@ -33,33 +203,101 @@ export async function analyzeRenderedCompositionQuality(
       asset.type === "sequence" ||
       asset.type === "native3d",
   );
-  for (let frame = 0; frame < comp.frameCount; frame++) {
-    options.signal?.throwIfAborted();
-    if (native) await preview.prepareFrame(frame);
-    options.signal?.throwIfAborted();
-    const report = await renderCompositionFrameAsync(preview, frame);
-    if (report.diagnostics.some((d) => d.severity === "error"))
-      throw new PassageError(report.diagnostics);
-    const rgba = preview.readPixels();
-    const gray = new Uint8Array(comp.width * comp.height);
-    for (let i = 0; i < gray.length; i++)
-      gray[i] = Math.round(
-        0.299 * rgba[i * 4]! +
-          0.587 * rgba[i * 4 + 1]! +
-          0.114 * rgba[i * 4 + 2]!,
+  const probes =
+    resolved.textLegibility && options.legibilityResources
+      ? createContrastProbes(comp, preview, policy, resolved)
+      : undefined;
+  const resources = options.legibilityResources;
+  let liveProbes = 0;
+  const percentile =
+    resolved.textLegibility?.contrastPercentile ?? DEFAULT_CONTRAST_PERCENTILE;
+  try {
+    for (let frame = 0; frame < comp.frameCount; frame++) {
+      options.signal?.throwIfAborted();
+      if (native) await preview.prepareFrame(frame);
+      options.signal?.throwIfAborted();
+      const report = await renderCompositionFrameAsync(preview, frame);
+      if (report.diagnostics.some((d) => d.severity === "error"))
+        throw new PassageError(report.diagnostics);
+      const rgba = preview.readPixels();
+      const gray = new Uint8Array(comp.width * comp.height);
+      for (let i = 0; i < gray.length; i++)
+        gray[i] = Math.round(
+          0.299 * rgba[i * 4]! +
+            0.587 * rgba[i * 4 + 1]! +
+            0.114 * rgba[i * 4 + 2]!,
+        );
+      counts.push(
+        previous
+          ? measureFrameEnergy(previous, gray, pixelChannelThreshold)
+          : 0,
       );
-    counts.push(
-      previous ? measureFrameEnergy(previous, gray, pixelChannelThreshold) : 0,
-    );
-    previous = gray;
-    options.onFrame?.(frame);
-    if (frame % 8 === 0)
-      await new Promise<void>((resolve) => setTimeout(resolve, 0));
+      previous = gray;
+      for (const probe of probes?.values() ?? []) {
+        if (!probe.reading.has(frame)) continue;
+        options.signal?.throwIfAborted();
+        // Previews live for the layer's reading window; beyond the live cap,
+        // a layer on screen with many others gets a pair for this frame only.
+        if (!probe.live && liveProbes < MAX_LIVE_CONTRAST_PROBES) {
+          probe.live = openProbePreviews(probe, resources!, preview.backend);
+          liveProbes++;
+        }
+        const previews =
+          probe.live ?? openProbePreviews(probe, resources!, preview.backend);
+        let back: Uint8ClampedArray | Uint8Array, mask: typeof back;
+        try {
+          back = await renderProbe(previews.background.preview, frame, native);
+          mask = await renderProbe(previews.mask.preview, frame, native);
+        } finally {
+          if (previews !== probe.live) disposeProbePreviews(previews);
+        }
+        if (frame === probe.last && probe.live) {
+          disposeProbePreviews(probe.live);
+          probe.live = undefined;
+          liveProbes--;
+        }
+        probe.evidence.frames.push({
+          frame,
+          words: measureTextContrastPixels(
+            rgba,
+            back,
+            mask,
+            probe.evidence.words.length,
+            percentile,
+            probe.evidence.attribution === "layer",
+          ).map((value) =>
+            value ? [Math.round(value[0] * 1e4) / 1e4, value[1]] : null,
+          ),
+        });
+      }
+      options.onFrame?.(frame);
+      if (frame % 8 === 0)
+        await new Promise<void>((resolve) => setTimeout(resolve, 0));
+    }
+  } finally {
+    for (const probe of probes?.values() ?? []) {
+      disposeProbePreviews(probe.live);
+      probe.live = undefined;
+    }
   }
   options.signal?.throwIfAborted();
+  const textLegibilityEvidence: TextLegibilityEvidence | undefined =
+    probes || policy.textLegibilityEvidence
+      ? {
+          ...policy.textLegibilityEvidence,
+          ...(probes
+            ? {
+                contrast: Object.fromEntries(
+                  [...probes].map(([id, probe]) => [id, probe.evidence]),
+                ),
+              }
+            : {}),
+        }
+      : undefined;
   return {
     ...analyzeCompositionQuality(comp, {
       ...policy,
+      ...(textLegibilityEvidence ? { textLegibilityEvidence } : {}),
       pixelChangedCounts: counts,
       evaluation: {
         ...policy.evaluation,

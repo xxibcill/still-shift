@@ -7,7 +7,7 @@ import {
 import { createReadStream } from "node:fs";
 import { createServer as createHttpServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
-import { mkdtemp, rm, stat } from "node:fs/promises";
+import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -16,6 +16,7 @@ import type { Browser } from "playwright";
 import {
   analyzeCompositionQuality,
   PassageError,
+  textLegibilityFontEvidence,
   type PassageDiagnostic,
   type CompositionQualityPolicy,
   type CompositionBackend,
@@ -112,6 +113,12 @@ async function lintOwnedComposition(
       );
     throw error;
   });
+  options.signal?.throwIfAborted();
+  policy = await withTextLegibilityFonts(
+    loaded.composition,
+    loaded.assetPaths,
+    policy,
+  );
   options.signal?.throwIfAborted();
   if (!options.pixels)
     return {
@@ -237,6 +244,14 @@ async function lintOwnedComposition(
             comp,
             preview,
             policy,
+            policy.textLegibility ||
+              (
+                comp.metadata?.readingPolicy as
+                  | { textLegibility?: unknown }
+                  | undefined
+              )?.textLegibility
+              ? { legibilityResources: resources }
+              : {},
           );
           return {
             ok: true as const,
@@ -314,6 +329,44 @@ async function lintOwnedComposition(
       }
     }
   }
+}
+
+/**
+ * ET3: when the policy (or the composition's saved reading policy) declares
+ * `textLegibility`, read each pinned font's x-height per em from its OS/2
+ * table for the `x-height-floor` rule; fonts that cannot be read are kept as
+ * unmeasured with their reason. Other lints keep their policy as given.
+ */
+async function withTextLegibilityFonts(
+  composition: Composition,
+  assetPaths: Readonly<Record<string, string>>,
+  policy: CompositionQualityPolicy,
+): Promise<CompositionQualityPolicy> {
+  const saved = composition.metadata?.readingPolicy as
+    | { textLegibility?: unknown }
+    | undefined;
+  if (!policy.textLegibility && !saved?.textLegibility) return policy;
+  const fonts: { id: string; bytes: ArrayBuffer }[] = [];
+  for (const asset of composition.assets) {
+    const path = assetPaths[asset.id];
+    if (asset.type !== "font" || !path) continue;
+    const bytes = await readFile(path);
+    fonts.push({
+      id: asset.id,
+      bytes: bytes.buffer.slice(
+        bytes.byteOffset,
+        bytes.byteOffset + bytes.byteLength,
+      ),
+    });
+  }
+  // WOFF/WOFF2 or unreadable fonts are reported as unmeasured, not thrown.
+  return {
+    ...policy,
+    textLegibilityEvidence: {
+      ...policy.textLegibilityEvidence,
+      ...textLegibilityFontEvidence(fonts),
+    },
+  };
 }
 
 /**
