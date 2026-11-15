@@ -1,0 +1,528 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-et2",
+  "milestone": "ET2 — Pixel lint over native video",
+  "plan": "docs/editorial-typography-improvement-plan.md#et2--pixel-lint-over-native-video",
+  "date": "2026-11-15",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/editorial-titles-et2",
+  "base": "main 9db17cf2 (Merge PR #61, ET1; ET0 merged via PR #60)",
+  "runtime": {
+    "toolchainCheck": "pnpm toolchain:check passed: Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+    "renderer": "composition-canvas-1.47.7 (unchanged)",
+    "evaluator": "composition-evaluator-60 (unchanged)",
+    "backend": "canvas2d (webgl2 only in the zipper-qa lint comparison)",
+    "host": "macOS arm64 (darwin), Node 22.23.1"
+  },
+  "reEstimate": "Planned 1–3 days after a root cause; actual about 1 active day. O4 was already fixed, so ET2 became regression coverage, long-clip bounds, and cancellation. Cancellation was not clean on the base and is fixed here.",
+  "o4": {
+    "statusOnBase": "fixed on main; re-confirmed",
+    "reconfirmation": {
+      "o4-video-pixel-lint.ts": "comp lint --pixels true exit 0, passed, measured {evaluatedState, pixels, pixelMethod grayscale-energy, textBounds} all set; only outside-safe-area on the clip layer; 15.3 s, 776 MiB max RSS (CLI process)",
+      "o4-video-pixel-lint.no-video.ts": "exit 1, frozen-pixels and frozen-run over frames 5–83 (the control without footage)",
+      "o6-dark-band.ts": "exit 0, passed, pixels and textBounds measured, no frozen findings",
+      "proof T1/T2/T3 (local git-ignored proof clip, SHA-256 d5bc5a52…7fdcd)": "all three lint with measured.pixels true and textBounds true (exit 1 for reading-time and frozen-pixels findings, unchanged from ET0); ~85 s each"
+    },
+    "rootCause": "Confirmed by experiment: the pre-6ed1a5d0 lint inlined every resource, including each prepared video frame, as a base64 data URL in one page.evaluate payload. Re-applying that inlining to the current lint (prepared media still passed) reproduces the proof's exact O4 error on proof T1 in 9 s: 'page.evaluate: Execution context was destroyed, most likely because of a navigation.' The same inlining passes on the 96-frame synthetic fixture (~0.3 MB PNG frames) and on the 60 s 270×480 loop (62 MB), but fails on a 4 s high-entropy 1080×1920 clip derived from the tracked one (571 MB of prepared PNG, close to the proof's 513 MB). The failure scales with payload size, so it is not a Vite reload. 6ed1a5d0 replaced the inlining with a validated-resource middleware (/_lint/assets/<id>) that streams prepared frames from the media cache; the page fetches each frame on demand into its bounded LRU. a5710b8d (same day) moved the renderer import out of page.evaluate into a bootstrap module script.",
+    "regressionTests": "tests/browser/composition-quality.ts (ET2 section: O4 and O6 fixtures, the no-video control, state-only lint, measured text bounds and decode residency) and tests/browser/composition-media-video-lint.ts (from test:browser:composition-media: a 60 s clip with limits, LRU and cancellation; a proof-scale 571 MB high-entropy clip as the transport regression)."
+  },
+  "changes": [
+    {
+      "file": "packages/animation-engine/src/composition-lint.ts",
+      "change": "Lint's Vite server runs in middleware mode on an owned node:http server bound to 127.0.0.1. A listening Vite dev server installs a process-wide SIGTERM handler that calls process.exit, which skipped the lint's own cleanup. New opt-in options: ownsProcessSignals (launch the pinned browser without Playwright's signal handlers) and collectMediaStatistics (report.mediaStatistics: decode residency plus the decodedFrameBytes budget). Both are absent by default, so existing reports keep their bytes."
+    },
+    {
+      "file": "packages/execution-runtime/src/render-browser.ts",
+      "change": "launchRenderBrowser({ handleProcessSignals: false }) passes handleSIGINT/handleSIGTERM/handleSIGHUP false to Playwright. Default unchanged; launch flags and RENDER_BROWSER_PROFILE unchanged. Playwright's SIGINT handler always exits with 130 after closing browsers, racing the caller's cleanup (probe: own SIGINT listener present, process still exited 130)."
+    },
+    {
+      "file": "tools/still-shift-cli/src/composition/commands.ts",
+      "change": "comp lint turns SIGINT/SIGTERM into an AbortSignal for program loading and lint, sets ownsProcessSignals, and reports comp-program-aborted ('Composition lint cancelled by SIGINT|SIGTERM') with exit 1. Listeners are persistent while linting because tsx's signal relay exits when no listener remains. Repeated signals are idempotent: a terminal signals the whole process group and tsx relays again."
+    },
+    {
+      "file": "docs/composition-reference-notes.md (+ generated composition-reference.md)",
+      "change": "Pixel lint paragraph: video/sequence frames come from the prepared export frames within mediaLimits; cancellation behaviour."
+    }
+  ],
+  "longClip": {
+    "generator": "tests/helpers/editorial-video-lint.ts generateLongClip: FFmpeg 8.0.1 loops the tracked 4 s fixture clip, scales it with bicubic, and encodes libx264 single-threaded with bitexact flags. Written to a temporary directory and never committed. Measurement script: scripts/editorial-titles/et2-long-clip.ts.",
+    "automatedTest": {
+      "where": "test:browser:composition-media → verifyLongVideoLint",
+      "clip": "270×480, 24 fps, 60 s, 1,440 frames, sha256:7ba4f522…19ca (198,861 bytes); regenerated byte-identically in-test and across three separate runs",
+      "assertions": "pixels and textBounds measured; no frozen-pixels/frozen-run; decodedFrames 1,440; peakDecodedBytes ≤ decodedFrameBytes (declared as 3 frames = 1,555,200 B; peak exactly 1,555,200 B, 1,437 evictions); no staging/lock entries; decodedCacheBytes one byte under the reservation and maxDurationSeconds 59 reject with comp-media-limit before anything is written; abort during FFmpeg staging and during browser lint each leaves no .prepare-*, .media.lock, composition-lint-vite-* or still-shift-compiled-* entries, and the cancelled cold preparation publishes no cache entry, while the warm cache is byte-for-byte unchanged",
+      "lintMs": 16623,
+      "preparedCacheBytes": 62108615,
+      "proofScale": {
+        "clip": "1080×1920, 24 fps, 4 s, 96 frames, FFmpeg noise=alls=48:allf=t+u on the tracked clip, crf 24; sha256:d285849c…dfc0 (49,284,843 bytes), regenerated identically in three runs",
+        "preparedCacheBytes": 570590213,
+        "lintMs": 33061,
+        "assertions": "pixels and textBounds measured; decodedFrames 96; peak decode within decodedFrameBytes; prepared bytes > 512 MiB so the case stays proof-scale; no temporary leftovers"
+      }
+    },
+    "measured1080": {
+      "command": "pnpm exec tsx scripts/editorial-titles/et2-long-clip.ts --seconds 60 --decoded-cache-bytes 17179869184",
+      "clip": "1080×1920, 24 fps, 60 s, 1,440 frames, sha256:0a9b5168…2155 (763,178 bytes), generated in 11.8 s",
+      "outcome": {
+        "status": "passed",
+        "measured": {
+          "evaluatedState": true,
+          "pixels": true,
+          "pixelMethod": "grayscale-energy",
+          "textBounds": true
+        },
+        "diagnosticCodes": ["outside-safe-area"],
+        "frozenPixels": [],
+        "textBoundStates": 1,
+        "mediaStatistics": {
+          "decodedBytes": 132710400,
+          "encodedBytes": 0,
+          "peakDecodedBytes": 132710400,
+          "peakEncodedBytes": 371871,
+          "decodedFrames": 1440,
+          "hits": 0,
+          "evictions": 1424,
+          "decodedFrameBytesLimit": 134217728
+        }
+      },
+      "lintSeconds": 155.5,
+      "peakResidentBytes": {
+        "node": 410501120,
+        "descendants": 1345339392,
+        "combined": 1746042880
+      },
+      "preparedCacheBytes": 493450440,
+      "cacheTransientEntries": [],
+      "leftoverTemporaryEntries": [],
+      "notes": "Peak resident memory was sampled with ps every 250 ms (Node process; descendants are the browser and FFmpeg). The decode LRU peaked at 132,710,400 B (16 frames) against its 134,217,728 B decodedFrameBytes budget. The whole wrapper took 170.6 s with 864 MiB max RSS (/usr/bin/time)."
+    },
+    "default1080": {
+      "outcome": {
+        "status": "rejected",
+        "diagnostics": [
+          {
+            "code": "comp-media-limit",
+            "message": "Required decoded source exceeds configured allocation limits",
+            "path": "long-clip"
+          }
+        ]
+      },
+      "explanation": "With default mediaLimits (decodedCacheBytes 8 GiB), preparation rejects the 60 s 1080×1920 clip in 0.04 s, before any decoding. The reservation is raw RGBA per required frame: 1,440 × (1080·1920·4 + 1,920 + 1,024) ≈ 11.95 GB. Actual PNG cache use for the same clip is 493 MB (about 24× less). At defaults, a full-frame 1080×1920 clip fits up to about 1,035 frames (43 s at 24 fps)."
+    },
+    "measured270": {
+      "lintSeconds": 16.9,
+      "peakResidentBytes": {
+        "node": 523812864,
+        "descendants": 1037926400,
+        "combined": 1442201600
+      },
+      "mediaStatistics": {
+        "decodedBytes": 1555200,
+        "encodedBytes": 0,
+        "peakDecodedBytes": 1555200,
+        "peakEncodedBytes": 46541,
+        "decodedFrames": 1440,
+        "hits": 0,
+        "evictions": 1437,
+        "decodedFrameBytesLimit": 1555200
+      }
+    }
+  },
+  "cancellation": {
+    "before": "On the base, SIGINT to comp lint (node --import tsx) during media preparation left .media.lock and a .prepare-<uuid> staging directory in the media cache plus a still-shift-compiled-* program directory. During the browser phase it left composition-lint-vite-*. The CLI never connected process signals to the lint's AbortSignal; Node's default action ended the process before any cleanup.",
+    "afterFirstFix": "Wiring signals with process.once still left composition-lint-vite-* on SIGINT (Playwright's handler exits 130 after closing browsers) and on SIGTERM (Vite's listening dev server: close, then process.exit; exit 143 with no report).",
+    "final": "Process-group delivery, like a terminal Ctrl-C. Through node --import tsx and tsx, every SIGINT/SIGTERM in the preparation and browser phases exits 1 with comp-program-aborted and leaves no staging, lock, Vite cache, compiled program or Chromium process. Through pnpm the exit code is pnpm's (130/143), and pnpm can return before its child finishes cleanup; after the child finishes there are no leftovers.",
+    "matrix": {
+      "node --import tsx": [
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 9.0,
+          "phase": "prepare",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 11.0,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 12.5,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 9.0,
+          "phase": "prepare",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 11.0,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 12.5,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        }
+      ],
+      "tsx": [
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 11.0,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 12.5,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 11.0,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 12.5,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        }
+      ],
+      "pnpm --silent still-shift (0.5 s after exit)": [
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 3.0,
+          "phase": "prepare",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 7.0,
+          "phase": "prepare",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 11.0,
+          "phase": "browser",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 12.5,
+          "phase": "browser",
+          "exit": 130,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 6.0,
+          "phase": "prepare",
+          "exit": 1,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 11.0,
+          "phase": "browser",
+          "exit": 143,
+          "stderr": "",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [
+            "composition-lint-vite-27fcCx",
+            "still-shift-compiled-jrBTmx"
+          ],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 12.5,
+          "phase": "browser",
+          "exit": 143,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        }
+      ],
+      "pnpm --silent still-shift (6 s after exit)": [
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 11.0,
+          "phase": "browser",
+          "exit": 130,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGINT",
+          "afterSeconds": 12.5,
+          "phase": "browser",
+          "exit": 130,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGINT\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 11.0,
+          "phase": "browser",
+          "exit": 143,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 12.5,
+          "phase": "browser",
+          "exit": 143,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        },
+        {
+          "signal": "SIGTERM",
+          "afterSeconds": 11.5,
+          "phase": "browser",
+          "exit": 143,
+          "stderr": "{\"status\":\"failed\",\"diagnostics\":[{\"code\":\"comp-program-aborted\",\"severity\":\"error\",\"path\":\"input\",\"message\":\"Composition lint cancelled by SIGTERM\"}]}\n",
+          "stdoutBytes": 0,
+          "cacheEntries": [
+            "1cbe0803e6056826d8abc88e6d73298216bbf8524a2d7ee9e557c03e2e018b06"
+          ],
+          "newTempEntries": [],
+          "chromeProcesses": 0
+        }
+      ]
+    },
+    "library": "lintCompositionFile with an AbortSignal: covered by the automated long-clip test (preparation and browser phases)."
+  },
+  "o8": {
+    "syntheticClip": "No frozen-pixels or frozen-run with the synthetic clip (O4 and O6 fixtures, 60 s loops at 270×480 and 1080×1920). The no-video control reports both over frames 5–83, so the footage's pixels reach the pixel rule.",
+    "proofClip": "Unchanged from ET0: frozen-pixels over T1 1–15 and 148–167, T2 154–167, T3 1–16 and 144–167 (footage-only spans; mean inter-frame luma ≤ 0.002/255 in 144–167, exactly 0 at 156–157 and 163–167).",
+    "policy": "Unchanged. Near-static footage counts as frozen in pixel mode (channel delta > 4 on ≥ 200 pixels)."
+  },
+  "ownerDecisions": [
+    {
+      "id": "ET2-D1",
+      "question": "Should footage that is near-static in encoded pixels (proof frames 144–167) count as motion for pixel stillness?",
+      "evidence": "Pixel lint reports those spans as frozen-pixels because consecutive encoded frames differ by at most 0.002/255 mean luma, with several identical frames. Moving synthetic footage is never reported. State lint no longer reports footage spans (O8 changed in ET0).",
+      "options": [
+        "Keep: near-static footage is frozen; authors add motion or waive the span in policy (current behaviour; consistent with the owner's every-second-moving direction)",
+        "Treat any native footage layer as motion regardless of measured pixels",
+        "Add an explicit per-layer or per-span stillness waiver for intended footage holds"
+      ],
+      "recommendation": "Keep the current rule; decide separately whether a footage-hold waiver is wanted."
+    },
+    {
+      "id": "ET2-D2",
+      "question": "Should the default media cache reservation admit a 60 s 1080×1920 clip?",
+      "evidence": "The default decodedCacheBytes (8 GiB) rejects it before decoding, because the reservation is raw RGBA per frame (≈ 11.95 GB). Real cache use is 493 MB. Declaring decodedCacheBytes 16 GiB lints it in 155 s at 1.75 GB peak resident.",
+      "options": [
+        "Keep the conservative reservation; long or high-resolution clips declare mediaLimits.decodedCacheBytes",
+        "Raise the default",
+        "Reserve from encoded PNG bounds or per decode batch (engine change; affects export too)"
+      ],
+      "recommendation": "Keep for now and document it; revisit with ET3 or ET8 if real footage hits it."
+    }
+  ],
+  "notRun": [
+    "WebGL2 backend with video",
+    "pnpm check, full pnpm test and pnpm release:check (installed-package pixel lint under middleware-mode Vite was not separately exercised)",
+    "Human visual review (not applicable: no rendered output changed)",
+    "comp render cancellation (follow-up)"
+  ],
+  "brokenPathChecks": {
+    "purpose": "Each new test was run against a deliberately broken lint before being trusted; composition-lint.ts was restored and verified byte-identical (cmp) after every variant.",
+    "variants": [
+      {
+        "variant": "inline-base64 (pre-6ed1a5d0 transport: every resource, including prepared frames, as base64 data URLs in the page.evaluate payload)",
+        "composition-quality": "exit 0 — passes (fixture payload too small to fail)",
+        "composition-media (before the proof-scale case was added)": "exit 0 — passes (60 s 270×480 payload too small)",
+        "composition-media (with the proof-scale case)": "exit 1 — 'page.evaluate: Execution context was destroyed, most likely because of a navigation.'",
+        "proof T1 via CLI": "exit 1, same error in 9 s"
+      },
+      {
+        "variant": "no-prepared-media (page receives no prepared media manifest)",
+        "composition-quality": "exit 1 — comp-media-not-ready 'Capture native source frames before loading composition resources'"
+      },
+      {
+        "variant": "drop-video-layers (lint renders without its video layers)",
+        "composition-quality": "exit 1 — 'ET2: video pixel lint exit' (footage-only span reported frozen)"
+      }
+    ]
+  },
+  "runs": [
+    "Re-confirmation on base: O4 video/no-video, O6 and proof T1–T3 pixel lints all measured pixels and text bounds (see o4.reconfirmation).",
+    "Cancellation probe 1 (base CLI, node --import tsx, SIGINT at 1.5 s and 6 s): 6 s left .media.lock, .prepare-<uuid> and still-shift-compiled-*.",
+    "Fix 1 (signals wired with process.once): SIGINT at 10 s exited 130 and left composition-lint-vite-*; SIGTERM at 11/12 s exited 143 with no report and left composition-lint-vite-* and still-shift-compiled-*.",
+    "Fix 2 (persistent listeners, Vite middleware mode, Playwright handlers off, exit on second signal): signalling pnpm and its child separately tripped the second-signal exit and left preparation leftovers; the second-signal rule was removed (a terminal signals the whole process group and tsx relays again).",
+    "Final signal matrix with process-group delivery: clean through node --import tsx and tsx; pnpm exits 130/143 itself, and its child finishes cleanup after pnpm returns (one leftover seen 0.5 s after pnpm exit, none after 6 s).",
+    "Long clip: 270×480 × 60 s passed (16.9 s); 1080×1920 × 60 s rejected at default limits (0.04 s, comp-media-limit) and passed with decodedCacheBytes 16 GiB (155.5 s).",
+    "test:browser:composition-quality run 1 passed (29 s).",
+    "test:browser:composition-media run 1 failed in the existing verifyNativeMediaAuthoring check (page.waitForFunction 30 s timeout after #save-document) while files were being formatted and linted alongside; main passed the same group (42 s) and branch run 2 passed that check.",
+    "test:browser:composition-media run 2 failed in the new maxDurationSeconds case: two comp-media-limit diagnostics (frameCount and assets[1]) where the test expected one; both are correct, and the test now asserts the exact code/path pairs.",
+    "test:browser:composition-media run 3 passed (66 s); run 4, with the proof-scale case, passed (109 s).",
+    "Broken-path checks: see brokenPathChecks.",
+    "pnpm check:fast passed on 8879e960 (schema, boundaries, format, lint, tsc; 457 test files / 4,622 tests; 146 s).",
+    "pnpm check:runtime run 1 failed (571 s). test:runtime passed (63 files / 376 tests); test:integration failed in 5 files / 39 tests: soundtrack, soundtrack-api, passage-audio and passage-native-audio could not start the CE16 soundtrack Python, which lives under git-ignored benchmarks/results/composition-ce16 and is absent from a fresh worktree; depth-worker-protocol hit three 5 s timeouts on the first Python worker start in the .venv toolchain:check had just created. Not a code failure.",
+    "Rerun of those 5 files with the primary checkout's existing CE16 runtime symlinked into the worktree (no download): 5 files / 58 tests passed (64 s).",
+    "pnpm check:runtime run 2 passed (606 s): test:runtime 63/376, test:integration 62/339, test:depth 14 OK, test:browser:smoke passed.",
+    "Final tree (after the test moved its leftover checks to a private TMPDIR): test:browser:composition-quality passed (29 s), test:browser:composition-media passed (115 s)."
+  ],
+  "nonVideoByteIdentity": {
+    "method": "comp lint via node --import tsx tools/still-shift-cli/src/cli.ts on main 9db17cf2 (detached temporary worktree) and on this branch at 8879e960; stdout, stderr and exit status of every run compared with diff -r.",
+    "runs": 35,
+    "inputs": [
+      "benchmarks/fixtures/composition/ce12/*.json --pixels true (14)",
+      "benchmarks/fixtures/composition/zipper-qa/*.json --pixels true --backend webgl2 (4)",
+      "ET0 non-video fixtures o1-attach-animated, o1-attach-static, o2-center-origin, o2-center-control, o3-highlight-fade, o5-plex-thai, p1-thai-marks, o4-video-pixel-lint.no-video with --pixels true and false (16)",
+      "o5-plex-thai --pixels true --font-coverage strict (1)"
+    ],
+    "result": "byte-identical: 105/105 files equal; concatenated SHA-256 prefix e723f90f090c1931 on both sides",
+    "videoLint": "O4 video and no-video CLI pixel-lint reports before and after the engine change are also byte-identical (cmp)."
+  },
+  "observations": [
+    "The default composition media cache (os.tmpdir()/still-shift-composition-media/<sha256 of cwd>) has no eviction. Every distinct prepared source stays until removed by hand. Preparation reserves against the directory's total bytes, so once a checkout's cache passes decodedCacheBytes (8 GiB by default), every new preparation fails with comp-media-limit ('Existing cumulative media cache exceeds configured bytes'). On this machine, after the ET0–ET2 sessions, the per-checkout caches were 4.9 GB (primary checkout), 5.0 GB, 3.5 GB, 3.5 GB and 1.5 GB (this worktree; removed at the end of ET2).",
+    "comp render has the same missing SIGINT/SIGTERM wiring as comp lint had (no AbortSignal from the CLI). Not changed in ET2."
+  ],
+  "finalVerification": {
+    "toolchain": "pnpm toolchain:check passed (Node 22.23.1)",
+    "checkFast": "passed (457 files / 4,622 tests)",
+    "composition-quality": "passed",
+    "composition-media": "passed",
+    "checkRuntime": "passed on run 2; run 1 failed for missing local soundtrack runtime and cold Python worker start (retained above)",
+    "nonVideoByteIdentity": "passed (35 runs, 105 files identical)",
+    "notRun": [
+      "pnpm check / full pnpm test",
+      "pnpm release:check (installed-package pixel lint under middleware-mode Vite not separately exercised)",
+      "WebGL2 with video",
+      "GitHub Actions (prohibited)"
+    ]
+  }
+}

@@ -1,7 +1,8 @@
 # Editorial title overlays: improvement plan
 
-Date: 2026-11-15. Status: **ET0 merged on `main` (PR #60); ET1 complete on
-`codex/editorial-titles-et1` (PR #61, review pending); ET2–ET8 proposed.** ET0 re-baselined every finding on `main`
+Date: 2026-11-15. Status: **ET0 merged on `main` (PR #60); ET1 merged on `main`
+(PR #61); ET2 complete on `codex/editorial-titles-et2` (not pushed, review
+pending); ET3–ET8 proposed.** ET0 re-baselined every finding on `main`
 (98a92e92); see [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
 Source evidence: [proof report](./editorial-typography-proof-2026-11-15.md) and
@@ -60,17 +61,17 @@ recorded outcomes are in
 
 ## Milestone tracker
 
-| ID  | Milestone                                   | Findings         | Depends on                            | Estimate (active days)                       | Status                         |
-| --- | ------------------------------------------- | ---------------- | ------------------------------------- | -------------------------------------------- | ------------------------------ |
-| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                                          | Merged on `main` (PR #60)      |
-| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5; re-estimate (core gate exists)          | Done on branch, review pending |
-| ET2 | Pixel lint over native video                | O4, O8           | ET0                                   | 1–3 after root cause; re-estimate (O4 fixed) | Proposed; O4 fixed on `main`   |
-| ET3 | Text-over-video legibility checks           | O6               | ET2                                   | 3–5                                          | Proposed                       |
-| ET4 | Measured multi-layer layout anchors         | O1, O9           | ET0                                   | 3–5                                          | Proposed                       |
-| ET5 | Authoring guards and probes                 | O2, O3, O10, O11 | ET0, owner: align                     | 2–4                                          | Proposed                       |
-| ET6 | Measurement API and editorial lint profile  | O7, O9           | ET4, owner: reading rule              | 2–4                                          | Proposed                       |
-| ET7 | External orchestration pilot (outside core) | —                | ET1–ET4, owner: location              | 5–10                                         | Proposed                       |
-| ET8 | Aesthetic proof on authorized real inputs   | —                | ET1–ET3 (ET7 optional), owner: inputs | 2–3                                          | Proposed                       |
+| ID  | Milestone                                   | Findings         | Depends on                            | Estimate (active days)                     | Status                         |
+| --- | ------------------------------------------- | ---------------- | ------------------------------------- | ------------------------------------------ | ------------------------------ |
+| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                                        | Merged on `main` (PR #60)      |
+| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)      |
+| ET2 | Pixel lint over native video                | O4, O8           | ET0                                   | ~1 (O4 fixed; tests, bounds, cancellation) | Done on branch, review pending |
+| ET3 | Text-over-video legibility checks           | O6               | ET2                                   | 3–5                                        | Proposed                       |
+| ET4 | Measured multi-layer layout anchors         | O1, O9           | ET0                                   | 3–5                                        | Proposed                       |
+| ET5 | Authoring guards and probes                 | O2, O3, O10, O11 | ET0, owner: align                     | 2–4                                        | Proposed                       |
+| ET6 | Measurement API and editorial lint profile  | O7, O9           | ET4, owner: reading rule              | 2–4                                        | Proposed                       |
+| ET7 | External orchestration pilot (outside core) | —                | ET1–ET4, owner: location              | 5–10                                       | Proposed                       |
+| ET8 | Aesthetic proof on authorized real inputs   | —                | ET1–ET3 (ET7 optional), owner: inputs | 2–3                                        | Proposed                       |
 
 Recommended order: ET0 → ET1 → ET2 → ET3 → ET4 → ET5/ET6 → ET8 → ET7. ET1, ET2 and
 ET4 touch separate code and can run in parallel after ET0. Estimates are planning
@@ -182,22 +183,53 @@ automated check sees the footage. State lint also reports moving footage as froz
   prepared-media loading instead of inlining assets.
 - Bound memory for long clips; respect `mediaLimits`.
 
+**ET2 re-estimate and outcome (2026-11-15):** about 1 active day. No crash
+remained, so ET2 became regression coverage, long-clip bounds and
+cancellation. Memory and `mediaLimits` were already enforced: the Node cache
+reserves `decodedCacheBytes`, and the browser LRU stays within
+`decodedFrameBytes`. Cancellation was not clean: an interrupted `comp lint`
+left a media staging directory, the cache lock, the lint dev-server cache and
+the compiled program. Three causes, all fixed: the CLI never turned
+SIGINT/SIGTERM into the lint's abort; a listening Vite dev server exits the
+process on SIGTERM; Playwright exits on SIGINT after closing browsers. Evidence:
+[ET2 results](./editorial-typography-et2-results.json).
+
 **Checks**
 
-- [ ] Write the failing reproduction first: ET0 video fixture with `--pixels true`.
-- [ ] All three proof treatments and the ET0 video fixtures lint with pixels
-      (`measured.pixels: true`, `textBounds: true`).
-- [ ] Frames 157–167 of the proof (footage only) are no longer reported frozen
+- [x] Write the failing reproduction first: ET0 video fixture with `--pixels true`.
+      O4 no longer fails on `main`, so the reproduction is a regression test in
+      `test:browser:composition-quality` and `test:browser:composition-media`.
+      Each was shown to fail on a deliberately broken lint path before it was
+      trusted. Re-inlining frames as base64, the pre-`6ed1a5d0` cause, fails
+      only at proof scale. The media group therefore lints a 4 s high-entropy
+      clip derived from the tracked one (571 MB prepared), which reproduces
+      O4's exact error when inlining is put back.
+- [x] All three proof treatments and the ET0 video fixtures lint with pixels
+      (`measured.pixels: true`, `textBounds: true`). (O4 and O6 fixtures plus
+      T1–T3 on this base; the proof clip is local and git-ignored, so only the
+      fixtures are in the automated tests.)
+- [x] Frames 157–167 of the proof (footage only) are no longer reported frozen
       in pixel mode. **Revised by ET0:** the proof clip is effectively static
       there in encoded pixels (mean inter-frame luma change ≤ 0.002/255, several
       frames exactly 0), so the pixel-mode report may be correct. Use footage
       with measurable motion (the ET0 synthetic clip reports no frozen frames)
       and decide separately whether near-static footage should count as motion.
-- [ ] A 60 s clip lints within recorded memory bounds; cancellation leaves no
-      temporary cache.
-- [ ] Non-video pixel lint results are byte-identical before and after.
-- [ ] `pnpm check:fast`, `pnpm test:browser:composition-quality`,
-      `pnpm test:browser:composition-media`, then `pnpm check:runtime`.
+      (Synthetic clip, its no-video control and a 60 s loop of it are tested.
+      The proof still reports its footage-only tails frozen, the same as ET0:
+      T1 148–167, T2 154–167, T3 144–167. The near-static policy is unchanged
+      and left to the owner.)
+- [x] A 60 s clip lints within recorded memory bounds; cancellation leaves no
+      temporary cache. (1080×1920 at 24 fps: 155 s, 1.75 GB peak resident,
+      decode LRU peak 132,710,400 B within its 134,217,728 B (128 MiB) budget,
+      493 MB on disk. The
+      default 8 GiB `decodedCacheBytes` rejects this clip before decoding, so
+      the run declares 16 GiB; see the owner decision in the results.)
+- [x] Non-video pixel lint results are byte-identical before and after.
+      (35 runs against `main`: stdout, stderr and exit status identical.)
+- [x] `pnpm check:fast`, `pnpm test:browser:composition-quality`,
+      `pnpm test:browser:composition-media`, then `pnpm check:runtime`. (The
+      first `check:runtime` failed only on local runtimes missing from a
+      fresh worktree; it passed on rerun. See results.)
 
 ---
 
