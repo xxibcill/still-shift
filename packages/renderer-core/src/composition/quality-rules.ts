@@ -258,6 +258,22 @@ export function textOffCanvasShare(
   return total > 0 ? outside / total : undefined;
 }
 /**
+ * Advice for an orphaned decoration. `fadeWithText` follows only text-animator
+ * opacity, so once it is set the remaining causes need the mark's `reveal`.
+ */
+function orphanedDecorationMessage(
+  mark:
+    | NonNullable<
+        Extract<Composition["layers"][number], { type: "text" }>["decorations"]
+      >[number]
+    | undefined,
+) {
+  const lead = `The ${mark?.kind ?? "text"} decoration stays visible while its text is fully transparent`;
+  return mark?.fadeWithText
+    ? `${lead}. \`fadeWithText\` follows only text-animator opacity, not the layer's \`reveal\`, a word reveal under a highlight or the text colour's alpha; key the decoration's \`reveal\` to match.`
+    : `${lead}; key its \`reveal\` or set \`fadeWithText: true\`.`;
+}
+/**
  * ET5a (O3): a highlight, underline, strike or box that paints while every
  * glyph it decorates is transparent, from the renderer's own draw plan.
  */
@@ -280,7 +296,7 @@ export function compositionDecorationFindings(
           sample,
           [at, at],
           1,
-          `The ${mark?.kind ?? "text"} decoration stays visible while its text is fully transparent; key its \`reveal\` or set \`fadeWithText: true\`.`,
+          orphanedDecorationMessage(mark),
           `${sample.path}.decorations.${index}`,
         );
       }

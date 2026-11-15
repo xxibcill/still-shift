@@ -2244,8 +2244,11 @@ opacity, a word reveal or the layer's `reveal`. The finding's `path` names the
 decoration. Fix it by keying the decoration's `reveal` or by setting
 `fadeWithText: true` on it: the mark's alpha then follows the highest
 animator opacity of its glyphs on each line, so it fades in and out with the
-text. `fadeWithText` is off by default and existing compositions render
-unchanged.
+text. It follows only text-animator opacity: text hidden by the layer's
+`reveal`, by a word reveal under a highlight, or by its colour's alpha still
+needs the decoration's own `reveal` keyed, and the finding says so when
+`fadeWithText` is already set. `fadeWithText` is off by default and existing
+compositions render unchanged.
 
 ```json
 {

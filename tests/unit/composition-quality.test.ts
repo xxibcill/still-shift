@@ -1558,12 +1558,18 @@ describe("ET5a text framing and decoration guards", () => {
     expect(found.measured).toBe(0.4);
   });
 
-  it("reports orphaned decorations from evidence, by decoration path", () => {
+  const orphaned = (fadeWithText?: boolean) => {
     const decorated = title([100, 100], {
       fontAsset: "serif",
-      decorations: [{ kind: "highlight", color: "#c9d29a" }],
+      decorations: [
+        {
+          kind: "highlight",
+          color: "#c9d29a",
+          ...(fadeWithText === undefined ? {} : { fadeWithText }),
+        },
+      ],
     });
-    const found = analyzeCompositionQuality(
+    return analyzeCompositionQuality(
       composition([decorated], {
         frameCount: 3,
         assets: [
@@ -1588,6 +1594,10 @@ describe("ET5a text framing and decoration guards", () => {
         },
       },
     ).diagnostics.filter((d) => d.code === "orphaned-decoration");
+  };
+
+  it("reports orphaned decorations from evidence, by decoration path", () => {
+    const found = orphaned();
     expect(found).toEqual([
       expect.objectContaining({
         severity: "error",
@@ -1597,6 +1607,13 @@ describe("ET5a text framing and decoration guards", () => {
       }),
     ]);
     expect(found[0]!.message).toContain("highlight");
-    expect(found[0]!.message).toContain("fadeWithText");
+    expect(found[0]!.message).toContain("set `fadeWithText: true`");
+  });
+
+  it("points to the decoration's reveal when fadeWithText is already set", () => {
+    const [found] = orphaned(true);
+    expect(found!.message).not.toContain("set `fadeWithText: true`");
+    expect(found!.message).toContain("follows only text-animator opacity");
+    expect(found!.message).toContain("key the decoration's `reveal`");
   });
 });
