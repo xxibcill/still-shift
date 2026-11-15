@@ -291,7 +291,46 @@ export async function verifyGlyphSeams() {
       serifPair("o fi", { offset, span: [2, 4] }, loose),
     );
     const ligature = differing(dropped, expectedFrame(word, line, offset));
-    return { displaced, transparent, separated, neighbours, ligature };
+    // A fill animator drives every glyph to the line's colour over an "e"
+    // whose span is red. The "v" and "e" then share a pose and draw as one
+    // segment, which must be tinted as a whole, not drawn as painted because
+    // its first glyph's span colour happens to be the fill. Only rasters that
+    // keep source colours paint span colours; the colour is case-neutral so
+    // the fill and the normalized node colour are the same string.
+    const sourceColours = (comp: Composition) => {
+      const layer = comp.layers[0] as {
+        color: string;
+        rasterize?: string;
+        spans?: object[];
+      };
+      layer.color = "#405020";
+      layer.rasterize = "source-colors";
+      return { comp, layer };
+    };
+    const unspanned = await frame0(
+      directory,
+      "tint-ve",
+      sourceColours(serifPair("ve")).comp,
+    );
+    const spaced = await frame0(
+      directory,
+      "tint-ve-x",
+      sourceColours(serifPair("ve x")).comp,
+    );
+    const { comp: recoloured, layer } = sourceColours(
+      serifPair("ve x", { offset, span: [3, 4] }),
+    );
+    layer.spans!.unshift({ start: 1, end: 2, color: "#B0302A" });
+    recoloured.textAnimators!.push({
+      ...recoloured.textAnimators![0]!,
+      span: undefined,
+      from: { fill: "#405020" },
+    });
+    const tinted = differing(
+      await frame0(directory, "tint-ve-x-moved", recoloured),
+      expectedFrame(unspanned, spaced, offset),
+    );
+    return { displaced, transparent, separated, neighbours, ligature, tinted };
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
@@ -307,6 +346,7 @@ export async function assertNoGlyphSeams() {
       separated: 0,
       neighbours: { Ol: 0, li: 0, iv: 0 },
       ligature: 0,
+      tinted: 0,
     },
     `ET5b: per-glyph poses must not carry a neighbour's ink (pixels differing from the static oracle: ${JSON.stringify(result)})`,
   );

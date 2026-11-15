@@ -973,7 +973,6 @@ function drawSegment(
   if (pose.opacity <= 0) return;
   raster = axisRaster(raster, pose.axes);
   const { raster: own, x } = isolatedSegment(node, raster, first, last);
-  const cluster = raster.layout.clusters[first]!;
   ctx.save();
   ctx.globalAlpha *= Math.max(0, Math.min(1, pose.opacity));
   posedClusterTransform(ctx, pose);
@@ -984,15 +983,20 @@ function drawSegment(
       own.left + x,
       own.top,
     );
-  // As drawCluster. A segment shares one pose, so one fill: by default the
-  // span colour of all its clusters, otherwise an animator's tint.
+  // As drawCluster, for every cluster: the raster holds each cluster's span
+  // colour, so it draws as painted only when all of them are the pose's fill.
+  // Clusters with different span colours share a pose when an animator drives
+  // their fill to one colour; the segment is then tinted as a whole.
+  const painted = (index: number) =>
+    own.colorCoverage
+      ? "#ffffff"
+      : (node.spans?.[raster.layout.clusters[index]!.spanIndex]?.color ??
+        node.color);
+  let untinted = true;
+  for (let i = first; i <= last && untinted; i++)
+    untinted = painted(i) === pose.fill;
   ctx.drawImage(
-    pose.fill ===
-      (own.colorCoverage
-        ? "#ffffff"
-        : (node.spans?.[cluster.spanIndex]?.color ?? node.color))
-      ? own.canvas
-      : coloredRaster(own, pose.fill),
+    untinted ? own.canvas : coloredRaster(own, pose.fill),
     own.left + x,
     own.top,
   );
