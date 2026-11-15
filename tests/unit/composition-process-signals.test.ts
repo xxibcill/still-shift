@@ -12,16 +12,20 @@ function harness() {
   const target = new EventEmitter();
   let clock = 0;
   const calls: [string, OwnedSignal][] = [];
+  const scheduled: { run: () => void; delayMs: number }[] = [];
   const release = ownProcessSignals({
     cancel: (signal) => calls.push(["cancel", signal]),
     force: (signal) => calls.push(["force", signal]),
     target,
     now: () => clock,
+    schedule: (run, delayMs) => scheduled.push({ run, delayMs }),
   });
   return {
     target,
     calls,
     release,
+    scheduled,
+    setClock: (time: number) => (clock = time),
     at: (time: number, signal: OwnedSignal) => {
       clock = time;
       target.emit(signal);
@@ -60,6 +64,39 @@ describe("comp lint process signals", () => {
 
     for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"])
       expect(target.listenerCount(signal)).toBe(0);
+  });
+
+  it("keeps ignoring relays after an early release until the window ends", () => {
+    const { target, calls, release, scheduled, setClock, at } = harness();
+    at(100, "SIGINT");
+    setClock(400);
+    release();
+
+    expect(scheduled.map(({ delayMs }) => delayMs)).toEqual([
+      signalRelayWindowMs - 300,
+    ]);
+    expect(target.listenerCount("SIGINT")).toBe(1);
+    at(450, "SIGINT");
+    at(100 + signalRelayWindowMs + 5, "SIGTERM");
+    expect(calls).toEqual([["cancel", "SIGINT"]]);
+
+    scheduled[0]!.run();
+    for (const signal of ["SIGINT", "SIGTERM", "SIGHUP"])
+      expect(target.listenerCount(signal)).toBe(0);
+  });
+
+  it("releases at once when no signal arrived or the window has passed", () => {
+    const quiet = harness();
+    quiet.release();
+    expect(quiet.scheduled).toEqual([]);
+    expect(quiet.target.listenerCount("SIGINT")).toBe(0);
+
+    const late = harness();
+    late.at(0, "SIGHUP");
+    late.setClock(signalRelayWindowMs);
+    late.release();
+    expect(late.scheduled).toEqual([]);
+    expect(late.target.listenerCount("SIGHUP")).toBe(0);
   });
 
   it("exits a forced stop with 128 plus the signal number", () => {

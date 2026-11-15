@@ -20,7 +20,10 @@ type SignalTarget = {
  * first signal calls `cancel`; repeats inside the relay window are ignored; a
  * later one calls `force`, so a stalled cleanup can still be interrupted from
  * the keyboard. Listeners stay registered until the returned release runs,
- * because tsx's relay exits the process when no listener remains.
+ * because tsx's relay exits the process when no listener remains. A release
+ * inside the relay window keeps ignoring signals until the window ends, so a
+ * relay that arrives after a fast cleanup cannot kill the process before it
+ * reports; the timer is unreferenced and never delays exit.
  */
 export function ownProcessSignals(options: {
   cancel: (signal: OwnedSignal) => void;
@@ -28,13 +31,21 @@ export function ownProcessSignals(options: {
   target?: SignalTarget;
   now?: () => number;
   relayWindowMs?: number;
+  schedule?: (run: () => void, delayMs: number) => void;
 }): () => void {
   const target = options.target ?? process,
     now = options.now ?? (() => performance.now()),
-    relayWindowMs = options.relayWindowMs ?? signalRelayWindowMs;
-  let first: number | undefined;
+    relayWindowMs = options.relayWindowMs ?? signalRelayWindowMs,
+    schedule =
+      options.schedule ??
+      ((run: () => void, delayMs: number) => {
+        setTimeout(run, delayMs).unref();
+      });
+  let first: number | undefined,
+    released = false;
   const listeners = ownedSignals.map((signal) => {
     const listener = () => {
+      if (released) return;
       if (first === undefined) {
         first = now();
         options.cancel(signal);
@@ -43,8 +54,15 @@ export function ownProcessSignals(options: {
     target.on(signal, listener);
     return [signal, listener] as const;
   });
-  return () => {
+  const remove = () => {
     for (const [signal, listener] of listeners) target.off(signal, listener);
+  };
+  return () => {
+    if (released) return;
+    released = true;
+    const remaining = first === undefined ? 0 : relayWindowMs - (now() - first);
+    if (remaining > 0) schedule(remove, remaining);
+    else remove();
   };
 }
 
