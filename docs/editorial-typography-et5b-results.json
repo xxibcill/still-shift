@@ -47,7 +47,7 @@
     },
     "kerningAndLigatures": {
       "status": "met",
-      "evidence": "Segments are shaped as one run at the layout's kerned positions: the 've', 'li', 'iv', 'Ol' pairs (kern and liga on, tracking −35) and an 'fi' ligature in a word dropping as one unit (tracking 0) match the static oracle with 0 pixels over tolerance; the test first checks that the face really forms the ligature (liga on vs off differ). Chromium drops optional ligatures under non-zero letter-spacing, so the T1 headline (−35) forms none either way. A ligature split across two differently posed glyphs cannot exist in any per-glyph method."
+      "evidence": "Segments are shaped as one run at the layout's kerned positions: the 've', 'li', 'iv', 'Ol' pairs (kern and liga on, tracking −35) and an 'fi' ligature in a word dropping as one unit (tracking 0) match the static oracle with 0 pixels over tolerance; the test first checks that the face really forms the ligature (liga on vs off differ). Chromium drops optional ligatures under non-zero letter-spacing, so the T1 headline (−35) forms none either way. A ligature split across two differently posed glyphs is drawn from one joined-unit raster cut at the layout advance, so it keeps its shape (review fix 3)."
     },
     "versionedAndBaselines": {
       "status": "met",
@@ -103,12 +103,12 @@
     }
   ],
   "limitations": [
-    "Segment rasters are not counted in the 128-megapixel preparation budget; each covers its glyphs plus padding and is made only for lines with distinct poses.",
+    "Segment rasters are not counted in the 128-megapixel preparation budget; each covers its glyphs plus padding and is made only for lines with distinct poses. Since review fix 1 they are bounded per raster to the most recently used max(32, 2 × clusters).",
+    "A ligature whose components have different poses is cut at the layout advance (review fix 3): its pieces move with their own glyphs, as one glyph cannot take two poses. This keeps its settled shape instead of reshaping it as separate letters.",
     "Every animated frame with distinct per-glyph poses changes pixels (the intended fix); the renderer version bump versions it."
   ],
   "notRun": [
     "pnpm check, full pnpm test, pnpm release:check",
-    "WebGL2 browser groups (the change is in the Canvas text drawer that both backends use; WebGL2 version bumped)",
     "Human visual acceptance: the review sheets are for the owner; nothing here is acceptance"
   ],
   "finalVerification": {
@@ -124,5 +124,59 @@
   "baselineSuites": {
     "compositionBaselines": "test:browser:composition-baselines on the unchanged baseline: 6 of 176 items differ, all typography — editorial 40, glyph-performance 60, selectors 146, semantic 176, transitions 1, vertical 133 differing frames; variable-thai and commerce unchanged. Inspection of the stored sample frames: main draws slivers of glyphs before they enter (editorial frame 0/24, selectors frame 24) and cuts overhangs at advance boundaries (semantic/vertical 'r' arm), which this branch draws whole; transitions frame 51 differs by at most 2 levels in 2 pixels. Re-recorded with --write --family typography; the check then passes (176 items, 36,061 frames).",
     "et0": "et0-baseline.ts --check: only rendererVersion and the O1 animated and O6 render hashes changed; re-recorded."
+  },
+  "reviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/67#pullrequestreview-5912258796",
+    "date": "2026-11-16",
+    "agent": "Claude Code (Opus 5.5)",
+    "findings": [
+      {
+        "id": "R1",
+        "finding": "Isolated segment cache grew without bound (keyed first:last, kept until disposal; a stagger adds a wider settled-prefix segment each time it grows, arbitrary motion up to N(N+1)/2).",
+        "fix": "Most-recently-used bound per raster, max(32, 2 × clusters), via cachedRecent (packages/renderer-core/src/recent-cache.ts, unit-tested). Evicted segments release canvas, outlines and local tints through releaseTextRaster, now shared with disposal. No pixel change.",
+        "commit": "fix(typography): bound the isolated-segment cache (ET5b review 1)"
+      },
+      {
+        "id": "R2",
+        "finding": "A segment whose clusters have different span colours but one animated fill was tinted only if the first cluster's span colour differed from the fill.",
+        "fix": "drawSegment draws as painted only when every drawn cluster's span colour is the fill. Reachable only on source-colour rasters (composition layers with rasterize: source-colors); colour-coverage rasters were unaffected. Oracle case 'tinted': 7,776 px off on the previous code, 0 after.",
+        "commit": "fix(typography): tint a mixed-colour segment as a whole (ET5b review 2)"
+      },
+      {
+        "id": "R3",
+        "finding": "Segments are shaped alone, so a ligature or contextual form across a pose boundary was drawn as separate glyphs while poses differed and snapped back on settle.",
+        "fix": "joinsNext measures once per boundary whether shaping joins a cluster to the next (pair shaped together vs each alone, at layout positions; kerning does not count). Clusters joined across a pose boundary draw as advance-cut slices of one joined-unit raster with their own poses. Oracle case 'joined' (fi with only the i displaced; reassembly equals the static ligature): 1,656 px off on the previous code, 0 after. CE0 typography/glyph-performance re-recorded: its 'office' ffi ligature keeps its settled form in frames 0-59 (62-167 px per sampled frame). ET0 --check unchanged.",
+        "commit": "fix(typography): keep joined glyphs whole across pose boundaries (ET5b review 3)"
+      },
+      {
+        "id": "R4",
+        "finding": "WebGL2 version bumped but no WebGL2 group run; export-memory, tint-capacity and parallel groups relevant to the new retained canvases not run.",
+        "fix": "Run on the tree after R1-R3 and recorded here (verification below).",
+        "commit": "docs(editorial-titles): record ET5b review fixes and verification (ET5b review 4)"
+      },
+      {
+        "id": "R5",
+        "finding": "Nits: the typography log claimed exact settled equality although the oracle uses a 24-level tolerance; et0-baseline.ts formatting change unmentioned in the PR body.",
+        "fix": "Separate commit (test wording and the oracle's vacuous ink check); PR body updated.",
+        "commit": "test(typography): state the oracle tolerance and fix its ink check (ET5b review 5)"
+      }
+    ],
+    "verification": {
+      "node": "22.23.1",
+      "order": "Serial, after R1-R3 unless noted.",
+      "compositionWebgl": "passed (350 s)",
+      "compositionWebglBlur": "passed (4 s)",
+      "compositionWebglExport": "passed (40 s)",
+      "compositionExportMemory": "passed (11 s)",
+      "compositionTintCapacity": "passed (169 s)",
+      "compositionParallel": "passed (398 s)",
+      "compositionBaselines": "After R3, before re-record: failed on 1 of 176 items (typography/glyph-performance, 60 frames, the intended ligature change); R1 and R2 alone passed it. Re-recorded with --write --only typography/glyph-performance; the full check then passed (266 s).",
+      "et0Baseline": "--check passes after R3 (no change).",
+      "checkFast": "First run failed at native3d:identity:check (stale native appearance source closure: R1's new module recent-cache.ts was missing from appearance-modules.ts). Regenerated with pnpm native3d:identity:generate and folded into the R1 commit; rerun passed (462 files / 4,651 tests).",
+      "typography": "passed on the final renderer (ET5b oracle all 0, including tinted and joined)",
+      "compositionTypographyAdapter": "passed on the final renderer",
+      "compositionProviderTypography": "passed on the final renderer",
+      "note": "The WebGL2, export-memory, tint-capacity, parallel and baseline groups ran before the appearance-modules.ts list entry was added; that entry only extends the native3d appearance module list and does not change the typography drawing paths."
+    }
   }
 }

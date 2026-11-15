@@ -511,6 +511,16 @@ same-pose glyphs from their own shaped rasters; lines with one pose keep the
 slices, so settled text is unchanged. Renderer versions
 `composition-canvas-1.47.8` and `composition-webgl2-0.68.8`.
 
+**Review (2026-11-16):** the [PR #67](https://github.com/xxibcill/still-shift/pull/67)
+review's findings are fixed on the branch, one commit each: segment rasters
+are bounded to the most recently used per raster; a segment with mixed span
+colours under one animated fill is tinted as a whole; a ligature or
+contextual form whose clusters have different poses keeps its shape (one
+joined-unit raster cut at the layout advance) instead of being reshaped as
+separate glyphs until it settles; and the WebGL2, export-memory,
+tint-capacity and parallel groups were run (all pass). See `reviewFixes` in
+the results.
+
 **Scope and checks**
 
 - [x] Failing test first: the ET0 `o1-attach-animated` fixture at frame 45 and
