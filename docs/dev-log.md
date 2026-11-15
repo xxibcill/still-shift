@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial titles ET0/ET1 (2026-11-15):** ET0 (fixtures, synthetic clip, recorded baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)) is merged on `main` via PR #60. ET1 font gate is [PR #61](https://github.com/xxibcill/still-shift/pull/61) on `codex/editorial-titles-et1`, now merged with `main`: composition `fontCoverage: "strict"` or `--font-coverage strict` blocks wrong-face copy before render; legacy default warns only. O4 fixed; O1, O2, O3, O6, O7, O10, O11 still reproduce. Pending owner decisions: PR #61 review, synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. No human visual acceptance (including fallback Thai). [ET0 results](./editorial-typography-et0-results.json), [ET1 results](./editorial-typography-et1-results.json).
+- **Editorial titles ET0/ET1 (2026-11-15):** ET0 (fixtures, synthetic clip, recorded baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)) is merged on `main` via PR #60. ET1 font gate is [PR #61](https://github.com/xxibcill/still-shift/pull/61) on `codex/editorial-titles-et1`, merged with `main`, O5 re-baselined and ET1 checks ticked (owner review pending): composition `fontCoverage: "strict"` or `--font-coverage strict` blocks wrong-face copy before render; legacy default warns only. O4 fixed; O1, O2, O3, O6, O7, O10, O11 still reproduce. Pending owner decisions: PR #61 review, synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. No human visual acceptance (including fallback Thai). [ET0 results](./editorial-typography-et0-results.json), [ET1 results](./editorial-typography-et1-results.json).
 
 - **0.2.0 published and registry-verified (2026-10-16):** owner-approved source `ba13d26a` is remote `production` and fixed annotated `v0.2.0`. Public npm `latest` is `0.2.0`; its downloaded archive matches the verified SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f` byte for byte. Technical verification completed in recorded stages; all 28 standard installed checks, both focused mechanism groups and browser bundle pass. Original aggregate/harness failures, npm `EOTP`/browser retry, registry-processing reads and 19 timing deferrals remain retained. PR #59 carries the publication records; its authorized merge preserves release ancestry, with final readback retained separately. MS3 remains experimental: original first-pass 1/10, token savings null, accepted 0/10. [Results](./npm-release-results.json), [plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59).
 
@@ -81,6 +81,14 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-15 — ET1 re-review: merge ET0, re-baseline O5, covered flag
+
+- **Branch:** `codex/editorial-titles-et1` ([PR #61](https://github.com/xxibcill/still-shift/pull/61)), now merged with `main` (ET0, PR #60); only this log conflicted.
+- **Done:** `4ead31ac` reports `fontCoverage.covered: false` when a font or the reachable copy could not be inspected (`font-copy-budget`; legacy previously said `covered: true, runs: 0`); `a5a9856e` re-records exactly O5 `validate.diagnostics`/`render.warnings` in `et0-baseline.json`; the ET1 plan checkboxes are ticked.
+- **Correction:** the first review overstated finding 1: the Mac-only-cmap font fails to render with or without fallbacks (also on `main` before ET1), so `5e3533a6` is a consistency fix, not a user-visible one. The browser planner's unguarded copy budget is likewise unreachable in a real render.
+- **Verified (Node 22.23.1):** `check:fast` 457 files / 4,622 tests; font-coverage integration 12 tests; browser `composition-font-fallback`, `typography`, `composition-provider-typography`, `composition-typography-adapter`, `composition-baselines` (176 items, 36,061 frames), `composition-cache-dependencies` (72 exports); ET0 `--check`; nine proof renders byte-identical; T1–T3 pass strict. Not run: full `test:integration`, `check:runtime`, `pnpm check`, WebGL2, human visual review.
+- **Records:** [ET1 results](./editorial-typography-et1-results.json) (`finalVerification`, `reviewFixes`).
 
 ### 2026-11-15 — ET1 review fixes (PR #61)
 

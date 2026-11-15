@@ -2,7 +2,7 @@
   "schema": "still-shift-investigation-results-1",
   "id": "editorial-typography-et1",
   "milestone": "ET1 — Exact-copy font coverage gate (= typography plan MS1 font gate)",
-  "plan": "docs/editorial-typography-improvement-plan.md#et1--exact-copy-font-coverage-gate (on unmerged branch codex/editorial-titles-et0 at e1b79ae0; not on main)",
+  "plan": "docs/editorial-typography-improvement-plan.md#et1--exact-copy-font-coverage-gate (on main since ET0 merged as PR #60; ET1 checkboxes ticked on this branch after the merge)",
   "sharedPlan": "docs/typography-motion-engine-plan.md#exact-copy-font-coverage",
   "date": "2026-11-15",
   "agent": "Claude Code (Opus 5.5)",
@@ -110,5 +110,27 @@
     "Human visual acceptance of fallback Thai (software comparison only).",
     "Per-glyph measurement of which face the browser used under unicode-range.",
     "WOFF/WOFF2 or collection fonts (out of scope; SFNT TTF/OTF only)."
+  ],
+  "finalVerification": {
+    "source": "codex/editorial-titles-et1 after merging main (ET0, PR #60), the PR #61 review fixes and the O5 re-baseline; Node 22.23.1 (pnpm toolchain:check passed)",
+    "results": [
+      "pnpm check:fast: 457 files / 4,622 tests pass",
+      "tests/integration/composition-font-coverage.test.ts: 12 tests pass (adds the fallback-planner and uninspected-copy regressions)",
+      "pnpm test:browser:composition-font-fallback (3 checks), typography, composition-provider-typography (5 frames), composition-typography-adapter (20 items, 3,367 frames), composition-baselines (176 items, 36,061 frames), composition-cache-dependencies (72 exports): pass",
+      "scripts/editorial-titles/et0-baseline.ts --check: matches the re-recorded baseline",
+      "research/editorial-typography-proof/rebaseline-main.sh: all nine proof renders byte-identical to docs/editorial-typography-proof-2026-11-15-results.json; lint outcomes are the recorded reading-time/frozen-pixels findings only, no font finding",
+      "comp validate --font-coverage strict passes (exit 0) for T1, T2 and T3"
+    ],
+    "notRun": [
+      "Full pnpm test:integration, check:runtime and pnpm check",
+      "WebGL2 fallback pixel check",
+      "Human visual acceptance of fallback Thai"
+    ]
+  },
+  "reviewFixes": [
+    "5e3533a6 browser fallback planner reads only fonts that declare or serve as fallbacks and skips unreadable ones (consistency with the Node gate; the cited Mac-only-cmap font fails to render with or without fallbacks, so not a user-visible regression)",
+    "525cefea document that fallback faces ignore text-style/animator axes and OpenType features",
+    "ed2bb60a drop the unused registerFamily descriptors parameter",
+    "4ead31ac fontCoverage.covered is false when a font or the reachable copy could not be inspected (font-copy-budget)"
   ]
 }

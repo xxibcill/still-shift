@@ -1,7 +1,7 @@
 # Editorial title overlays: improvement plan
 
-Date: 2026-11-15. Status: **ET0 complete on `codex/editorial-titles-et0`
-(review pending); ET1–ET8 proposed.** ET0 re-baselined every finding on `main`
+Date: 2026-11-15. Status: **ET0 merged on `main` (PR #60); ET1 complete on
+`codex/editorial-titles-et1` (PR #61, review pending); ET2–ET8 proposed.** ET0 re-baselined every finding on `main`
 (98a92e92); see [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
 Source evidence: [proof report](./editorial-typography-proof-2026-11-15.md) and
@@ -62,8 +62,8 @@ recorded outcomes are in
 
 | ID  | Milestone                                   | Findings         | Depends on                            | Estimate (active days)                       | Status                         |
 | --- | ------------------------------------------- | ---------------- | ------------------------------------- | -------------------------------------------- | ------------------------------ |
-| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                                          | Done on branch, review pending |
-| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5; re-estimate (core gate exists)          | Proposed; partly on `main`     |
+| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                                          | Merged on `main` (PR #60)      |
+| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5; re-estimate (core gate exists)          | Done on branch, review pending |
 | ET2 | Pixel lint over native video                | O4, O8           | ET0                                   | 1–3 after root cause; re-estimate (O4 fixed) | Proposed; O4 fixed on `main`   |
 | ET3 | Text-over-video legibility checks           | O6               | ET2                                   | 3–5                                          | Proposed                       |
 | ET4 | Measured multi-layer layout anchors         | O1, O9           | ET0                                   | 3–5                                          | Proposed                       |
@@ -147,18 +147,18 @@ pinned fallback list and the checks below. Re-estimate at entry.
 
 **Checks**
 
-- [ ] ET0 Plex + Thai negative fails strict validation naming U+0E25, U+0E38,
+- [x] ET0 Plex + Thai negative fails strict validation naming U+0E25, U+0E38,
       U+0E04 and the layer; it does not reach render.
-- [ ] Noto Sans Thai mixed tag and all three proof treatments pass unchanged,
+- [x] Noto Sans Thai mixed tag and all three proof treatments pass unchanged,
       with identical render hashes.
-- [ ] Generated count strings and state text are included (a missing glyph only
+- [x] Generated count strings and state text are included (a missing glyph only
       in state 2 is caught).
-- [ ] Combining marks, ZWJ/ZWNJ and spaces handled per documented rules;
+- [x] Combining marks, ZWJ/ZWNJ and spaces handled per documented rules;
       malformed or unsupported font tables give a clear error.
-- [ ] Explicit pinned fallback renders the missing glyphs from the declared face;
+- [x] Explicit pinned fallback renders the missing glyphs from the declared face;
       result JSON records which runs used it.
-- [ ] CE15 cache keys and existing export baselines unchanged unless versioned.
-- [ ] `pnpm check:fast`, `pnpm test:browser:typography`,
+- [x] CE15 cache keys and existing export baselines unchanged unless versioned.
+- [x] `pnpm check:fast`, `pnpm test:browser:typography`,
       `pnpm test:browser:composition-provider-typography` pass.
 
 ---
