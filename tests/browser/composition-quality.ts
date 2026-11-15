@@ -23,6 +23,7 @@ import { fileURLToPath } from "node:url";
 import o4VideoPixelLint from "../../benchmarks/fixtures/editorial-titles/o4-video-pixel-lint.ts";
 import { editorialFixture } from "../helpers/editorial-video-lint.ts";
 import { verifyLintSignalCleanup } from "./composition-lint-signals.ts";
+import { verifyTextLegibility } from "./composition-text-legibility.ts";
 import {
   collapsedMotionComposition,
   groupEffectMotionComposition,
@@ -847,6 +848,11 @@ try {
   const lintSignals = await verifyLintSignalCleanup();
   console.log(
     `ET2: comp lint cancelled by ${lintSignals.signals.join(", ")} during the browser phase exits 128 + the signal number with comp-program-aborted and leaves no temporary entries or browser process.`,
+  );
+
+  const legibility = await verifyTextLegibility();
+  console.log(
+    `ET3: text-contrast flags the O6 dark band on ${legibility.contrast.map((d) => `${d.node} ${d.frames.join("-")} (${d.measured}:1)`).join(", ")}, naming its words; --strict gates, a waiver is reported and never gates, and reports without the rule keep their shape.`,
   );
 
   const cliPixels = await lintCompositionFile(

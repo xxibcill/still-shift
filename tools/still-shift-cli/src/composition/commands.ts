@@ -14,6 +14,9 @@ import {
   cinematicToComposition,
   legacyToComposition,
   CompositionQualityPolicySchema,
+  type CompositionQualityPolicy,
+  TEXT_LEGIBILITY_CODES,
+  type TextLegibilityCode,
   passageDiagnostics,
   type CompositionBackend,
 } from "@still-shift/renderer-core";
@@ -79,6 +82,49 @@ function fontCoverageOption(values: Map<string, string>) {
       "font-coverage",
     );
   return value as "legacy" | "strict" | undefined;
+}
+/** ET3: `--strict text-contrast[,x-height-floor,platform-safe-zone]`. */
+function strictLegibilityOption(values: Map<string, string>) {
+  const value = values.get("strict");
+  if (value === undefined) return [];
+  const codes = value.split(",").map((code) => code.trim());
+  if (
+    !codes.length ||
+    codes.some(
+      (code) => !TEXT_LEGIBILITY_CODES.includes(code as TextLegibilityCode),
+    )
+  )
+    programError(
+      "comp-program-option",
+      `--strict takes a comma-separated list of ${TEXT_LEGIBILITY_CODES.join(", ")}`,
+      "strict",
+    );
+  return [...new Set(codes)] as TextLegibilityCode[];
+}
+/**
+ * ET3: `--legibility true` declares the legibility rules with their defaults;
+ * `--strict` declares them too and raises the named codes to errors. A
+ * policy's own `textLegibility` and severities are kept, except that strict
+ * codes always gate.
+ */
+function withLegibilityOptions(
+  policy: CompositionQualityPolicy,
+  legibility: boolean,
+  strict: TextLegibilityCode[],
+): CompositionQualityPolicy {
+  if (!legibility && !strict.length) return policy;
+  return {
+    ...policy,
+    textLegibility: policy.textLegibility ?? {},
+    ...(strict.length
+      ? {
+          severities: {
+            ...policy.severities,
+            ...Object.fromEntries(strict.map((code) => [code, "error"])),
+          },
+        }
+      : {}),
+  };
 }
 /**
  * ET2: own SIGINT/SIGTERM/SIGHUP while `run` works, so media staging, the
@@ -343,17 +389,24 @@ export async function runCompositionCommand(
           "pixels",
           "backend",
           "font-coverage",
+          "legibility",
+          "strict",
         ]),
         input = requireArgument(values, "input");
       const backend = backendOption(values);
       const fontCoverage = fontCoverageOption(values);
       const pixels = booleanOption(values, "pixels"),
         path = values.get("policy");
-      const policy = path
-        ? CompositionQualityPolicySchema.parse(
-            JSON.parse(await readFile(resolve(path), "utf8")),
-          )
-        : {};
+      const strict = strictLegibilityOption(values);
+      const policy = withLegibilityOptions(
+        path
+          ? CompositionQualityPolicySchema.parse(
+              JSON.parse(await readFile(resolve(path), "utf8")),
+            )
+          : {},
+        booleanOption(values, "legibility"),
+        strict,
+      );
       return await withOwnedSignals("lint", io, async (signal) => {
         const program = await loadProgram(input, { signal });
         signal.throwIfAborted();

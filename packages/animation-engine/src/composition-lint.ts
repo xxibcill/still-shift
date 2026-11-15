@@ -7,7 +7,7 @@ import {
 import { createReadStream } from "node:fs";
 import { createServer as createHttpServer, type Server } from "node:http";
 import type { AddressInfo } from "node:net";
-import { mkdtemp, rm, stat } from "node:fs/promises";
+import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -15,6 +15,7 @@ import { createServer, type Plugin, type ViteDevServer } from "vite";
 import type { Browser } from "playwright";
 import {
   analyzeCompositionQuality,
+  readFontMetrics,
   PassageError,
   type PassageDiagnostic,
   type CompositionQualityPolicy,
@@ -112,6 +113,12 @@ async function lintOwnedComposition(
       );
     throw error;
   });
+  options.signal?.throwIfAborted();
+  policy = await withTextLegibilityFonts(
+    loaded.composition,
+    loaded.assetPaths,
+    policy,
+  );
   options.signal?.throwIfAborted();
   if (!options.pixels)
     return {
@@ -237,6 +244,14 @@ async function lintOwnedComposition(
             comp,
             preview,
             policy,
+            policy.textLegibility ||
+              (
+                comp.metadata?.readingPolicy as
+                  | { textLegibility?: unknown }
+                  | undefined
+              )?.textLegibility
+              ? { legibilityResources: resources }
+              : {},
           );
           return {
             ok: true as const,
@@ -314,6 +329,36 @@ async function lintOwnedComposition(
       }
     }
   }
+}
+
+/**
+ * ET3: when the policy (or the composition's saved reading policy) declares
+ * `textLegibility`, read each pinned font's x-height per em from its OS/2
+ * table for the `x-height-floor` rule. Other lints keep their policy as given.
+ */
+async function withTextLegibilityFonts(
+  composition: Composition,
+  assetPaths: Readonly<Record<string, string>>,
+  policy: CompositionQualityPolicy,
+): Promise<CompositionQualityPolicy> {
+  const saved = composition.metadata?.readingPolicy as
+    | { textLegibility?: unknown }
+    | undefined;
+  if (!policy.textLegibility && !saved?.textLegibility) return policy;
+  const fontXHeights: Record<string, number> = {};
+  for (const asset of composition.assets) {
+    const path = assetPaths[asset.id];
+    if (asset.type !== "font" || !path) continue;
+    const bytes = await readFile(path);
+    const metrics = readFontMetrics(
+      bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
+    );
+    fontXHeights[asset.id] = metrics.xHeight / metrics.unitsPerEm;
+  }
+  return {
+    ...policy,
+    textLegibilityEvidence: { ...policy.textLegibilityEvidence, fontXHeights },
+  };
 }
 
 /**
