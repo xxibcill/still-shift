@@ -1,0 +1,113 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-et1",
+  "milestone": "ET1 — Exact-copy font coverage gate (= typography plan MS1 font gate)",
+  "plan": "docs/editorial-typography-improvement-plan.md#et1--exact-copy-font-coverage-gate (on unmerged branch codex/editorial-titles-et0 at e1b79ae0; not on main)",
+  "sharedPlan": "docs/typography-motion-engine-plan.md#exact-copy-font-coverage",
+  "date": "2026-11-15",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/editorial-titles-et1",
+  "base": "main 98a92e92 (Merge PR #59, published 0.2.0)",
+  "et0Relationship": "Kept independent of codex/editorial-titles-et0: the merge question was sent to the starting session and had no answer before this record, so ET0 was not merged. ET0 fixtures, the proof programs and et0-baseline.ts were exercised only in a throwaway detached worktree (ET0 e1b79ae0 plus this branch, merge never committed) and then removed.",
+  "runtime": {
+    "toolchainCheck": "pnpm toolchain:check passed: Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+    "renderer": "composition-canvas-1.47.7 (unchanged)",
+    "evaluator": "composition-evaluator-60 (unchanged)",
+    "backend": "canvas2d"
+  },
+  "authoringSurface": {
+    "decision": "Both a composition field and a CLI flag, additive within composition-1 (no schema version change; old JSON keeps its meaning).",
+    "compositionFields": [
+      "Top-level fontCoverage: \"legacy\" | \"strict\" (optional; default legacy). The document itself can require exact faces for any renderer.",
+      "Font asset fallbacks: 1–4 other pinned font asset ids (optional). It changes rendering, so it must live in the composition, not a flag."
+    ],
+    "cliFlag": "--font-coverage legacy|strict on comp validate, render and lint; also the fontCoverage option of readCompositionSource, renderComposition and lintCompositionFile. The effective profile is the stricter of composition and caller: a flag can raise but never lower.",
+    "mechanismFormat": "mechanism-narrated-cycle-1 omits fallbacks from its embedded font schema; its generated schema is byte-identical. Mechanism episodes keep their own strict font gate (mechanism/io.ts)."
+  },
+  "engineChanges": [
+    "packages/renderer-core/src/composition/font-coverage.ts: pure inspectCompositionFonts / compositionFontFallbacks over the existing readFontIdentity, inspectFontText and collectFontTextRuns (no second cmap parser).",
+    "packages/renderer-core/src/composition/render/text-scenes.ts: Node-safe text-layer → typography-scene mapping moved out of render/text.ts so Node coverage and browser preparation read identical reachable copy.",
+    "packages/animation-engine/src/composition-font-coverage.ts + composition-source.ts: gate runs after asset checksums, before media/audio preparation and any browser work; strict errors throw PassageError, legacy findings join warnings; source.fontCoverage report.",
+    "packages/renderer-core/src/prepared-fonts.ts + render/text.ts: declared fallbacks register as extra FontFaces under a distinct family `StillShift-<sha>-fallback-<digest>` with unicode-range of exactly the resolved code points, at the primary's weight/style descriptors, including derived style/axis families. Only compositions declaring fallbacks take this path.",
+    "CLI help and option parsing; render result fontCoverage (conditional); scene-contract fields, comp-font-fallback code, generated schema and composition reference."
+  ],
+  "rules": {
+    "unit": "Unicode code point against the font's selected Unicode cmap (format 4 or 12).",
+    "exemptControls": "Tab, LF, CR, ZWSP U+200B, ZWNJ U+200C, ZWJ U+200D, LRM/RLM, BOM U+FEFF, bidi embeddings/isolates U+202A–202E and U+2066–2069, variation selectors.",
+    "marksAndSpaces": "Combining marks and every other space (U+0020, U+00A0, U+3000 …) must be in the font.",
+    "fallbackResolution": "Each missing code point goes to the first declared fallback that has it; not transitive; never a system face. A grapheme cluster drawn by more than one face is font-fallback-cluster.",
+    "limits": "Coverage is necessary evidence, not proof of shaping or mark placement. With fallbacks the browser still shapes; the face per glyph is declared (fallbackResolution: declared-unicode-range), not measured. The fallback face renders at the primary font's weight/style descriptors."
+  },
+  "o5": {
+    "fixture": "ET0 benchmarks/fixtures/editorial-titles/o5-plex-thai.ts (codex/editorial-titles-et0); reproduced as JSON in tests/integration/composition-font-coverage.test.ts",
+    "before": {
+      "validate": "exit 0, status valid, diagnostics [] (ET0 baseline; also the failing first run of the new test, retained below)",
+      "render": "exit 0, rendered, warnings [], systemFontLayers [], sha256 381f678e…a524; 4,040 Thai ink pixels painted by a face outside the composition",
+      "strictOption": "none: --font-coverage rejected as an unknown option (invalid-scene); fontCoverage field rejected by the schema"
+    },
+    "after": {
+      "validateStrict": "exit 1 before render. Two font-coverage errors, fontId sans, fontSha256 sha256:a20caf82…7bb1, missingCodepoints [U+0E04, U+0E25, U+0E38]: 'Font sans lacks U+0E04, U+0E25, U+0E38 in layer \"mixed\" (layers[0].text)' and the same for \"thai-only\" (layers[1].text).",
+      "renderStrict": "exit 2 with the same diagnostics; no output file is created and no browser is launched.",
+      "compositionStrict": "fontCoverage: \"strict\" in the document fails identically; --font-coverage legacy does not lower it.",
+      "legacyDefault": "validate exit 0 with the two findings as warnings; render byte-identical (sha256 381f678e…a524 in the ET0 check) with the warnings and a fontCoverage report in its result.",
+      "withFallback": "fallbacks: [\"thai\"] passes strict; fontCoverage.fallbackRuns names the layer, path, font, fallback and its sha256 and the three code points; the Thai cluster's pixels equal the same Noto bytes drawn directly (exact tier, maxChannelDelta 0) and differ from the unpinned system face (maxChannelDelta 215, PSNR 20.56)."
+    }
+  },
+  "checks": [
+    {
+      "check": "ET0 Plex + Thai negative fails strict validation naming U+0E25, U+0E38, U+0E04 and the layer; it does not reach render.",
+      "status": "done",
+      "evidence": "tests/integration/composition-font-coverage.test.ts 'fails the O5 Plex + Thai negative…'; the proof's coverage-negative program (with and without Noto) also fails strict naming layer plex and the same code points."
+    },
+    {
+      "check": "Noto Sans Thai mixed tag and all three proof treatments pass unchanged, with identical render hashes.",
+      "status": "done",
+      "evidence": "Noto mixed tag passes strict (integration test). T1, T2, T3 pass comp validate --font-coverage strict (exit 0). All nine proof renders (T1/T2/T3 pass 1 and 2, T1 static control, coverage-negative with and without Noto) are byte-identical to docs/editorial-typography-proof-2026-11-15-results.json; all eight ET0 fixture render hashes unchanged."
+    },
+    {
+      "check": "Generated count strings and state text are included (a missing glyph only in state 2 is caught).",
+      "status": "done",
+      "evidence": "Integration test: state 2 'ลุค' caught at layers[0].states[1]; Thai digits generated only by a count transition (locale th-u-nu-thai) caught at layers[0].transitions[0] (U+0E50, U+0E59); correction replacement caught at layers[0].corrections[0].replacement; span with its own style font names span 'word'; precomp layer named 'card/thai' at precomps[0].layers[0].text. Case transforms reuse the existing per-grapheme collection already unit-tested in tests/unit/font-identity.test.ts."
+    },
+    {
+      "check": "Combining marks, ZWJ/ZWNJ and spaces handled per documented rules; malformed or unsupported font tables give a clear error.",
+      "status": "done",
+      "evidence": "Rules documented in docs/composition-reference-notes.md (Exact-copy font coverage). Integration test: ZWJ/ZWNJ/ZWSP/LRM/tab pass; U+0E38 mark and U+3000 space reported. A truncated font with a matching checksum gives a font-* error at assets[0] 'Font sans cannot be inspected…' in strict and a warning (valid, covered false) in legacy. Malformed cmap/directory variants remain covered by the existing font-identity unit tests."
+    },
+    {
+      "check": "Explicit pinned fallback renders the missing glyphs from the declared face; result JSON records which runs used it.",
+      "status": "done",
+      "evidence": "tests/browser/composition-font-fallback.ts (pnpm test:browser:composition-font-fallback): Thai via fallback equals direct Noto exactly; Latin copy with a declared fallback is byte-identical to no fallback. Integration test renders through comp render and finds fontCoverage.fallbackRuns in the result. Resolution is declared, not measured per glyph."
+    },
+    {
+      "check": "CE15 cache keys and existing export baselines unchanged unless versioned.",
+      "status": "done",
+      "evidence": "Scene manifest and cache identity untouched; render results add fontCoverage only when strict, fallbacks are declared or gaps exist. pnpm test:browser:composition-baselines: 176 items, 36,061 frames match darwin-arm64. pnpm test:browser:composition-cache-dependencies: passed, 72 exports. The native appearance code closure (a source-identity list regenerated by native3d:identity:generate) adds the two new renderer modules, as any renderer source change does; it is not a pixel or CE15 frame-cache change."
+    },
+    {
+      "check": "pnpm check:fast, pnpm test:browser:typography, pnpm test:browser:composition-provider-typography pass.",
+      "status": "done",
+      "evidence": "check:fast: 457 files / 4,622 tests pass (second run; first run failed once, see runs). typography and composition-provider-typography pass; also composition-typography-adapter, the new composition-font-fallback, and seven composition integration files (74 tests, including the new font-coverage file)."
+    }
+  ],
+  "identityRecording": "comp validate always prints fontCoverage.fonts with each pinned font's actual family, subfamily, PostScript name, OS/2 weight class, style, axes and cmap formats (the shared MS1 identity work). Declared-vs-actual weight/style/name mismatches use the existing font-cut-identity code (warning in legacy, error in strict).",
+  "et0Baseline": {
+    "command": "pnpm exec tsx scripts/editorial-titles/et0-baseline.ts --check (in the throwaway ET0+ET1 worktree)",
+    "result": "exit 1 as expected: the only differences are O5 validate.diagnostics ([] → two font-coverage warnings) and O5 render.warnings ([] → the same two warnings). Every render hash, lint outcome and measurement of O1–O6 and P1 is unchanged.",
+    "toDoOnMerge": "When ET0 and ET1 meet, re-record et0-baseline.json with --write for exactly these two O5 fields, and tick the ET1 checkboxes in the improvement plan (that plan file is not on this branch)."
+  },
+  "runs": [
+    "Failing reproduction first: the new integration test failed 3/3 on the unmodified engine (unknown --font-coverage option, fontCoverage rejected by schema, legacy diagnostics []).",
+    "First wiring pass: 3/3 pass. Extended tests initially failed on test-authoring errors (count transitions need tabular figures; a span ran past the 8-grapheme text) and on counts reporting one finding per generated value; tests corrected, engine unchanged.",
+    "schema:check first failed: prose belongs in docs/composition-reference-notes.md (the reference is generated) and the native appearance closure needed regeneration.",
+    "check:fast run 1 failed 1 test: the CE1 every-field fixture must exercise every top-level and font-asset field; fixture gained fontCoverage: \"legacy\" and a fallback on a font that already covers its copy (no rendering change). Run 2 passed.",
+    "Browser groups, baselines and the proof/ET0 re-runs each passed on their first run."
+  ],
+  "notRun": [
+    "Full pnpm test:integration, check:runtime and pnpm check (ran seven composition integration files and the browser groups listed above).",
+    "WebGL2 backend for the fallback pixel check (canvas2d only).",
+    "Human visual acceptance of fallback Thai (software comparison only).",
+    "Per-glyph measurement of which face the browser used under unicode-range.",
+    "WOFF/WOFF2 or collection fonts (out of scope; SFNT TTF/OTF only)."
+  ]
+}
