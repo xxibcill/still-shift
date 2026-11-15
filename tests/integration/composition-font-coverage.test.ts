@@ -6,6 +6,8 @@ import { tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { afterEach, expect, it } from "vitest";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
+import { compositionFontFallbacks } from "../../packages/renderer-core/src/composition/font-coverage.ts";
+import type { Composition } from "@still-shift/scene-contract";
 
 const directories: string[] = [];
 afterEach(async () => {
@@ -447,6 +449,53 @@ it("resolves missing code points through declared pinned fallbacks only", async 
       }),
     ]);
   }
+});
+
+it("plans fallbacks in the browser around fonts legacy only warns about", async () => {
+  // Plex with every cmap encoding record rewritten to Mac Roman: the browser
+  // can load it, but it has no Unicode format 4 or 12 subtable.
+  const plexBytes = await readFile(
+    resolve("assets/story-motion/fonts/plex-sans-semibold.ttf"),
+  );
+  const macOnly = Buffer.from(plexBytes);
+  for (let i = 0; i < macOnly.readUInt16BE(4); i++) {
+    const record = 12 + i * 16;
+    if (macOnly.toString("latin1", record, record + 4) !== "cmap") continue;
+    const table = macOnly.readUInt32BE(record + 8);
+    for (let j = 0; j < macOnly.readUInt16BE(table + 2); j++) {
+      macOnly.writeUInt16BE(1, table + 4 + j * 8);
+      macOnly.writeUInt16BE(0, table + 6 + j * 8);
+    }
+  }
+  const root = await directory(),
+    path = join(root, "mac-only.ttf");
+  await writeFile(path, macOnly);
+  const assets = [
+    await plex().then((f) => ({ ...f, fallbacks: ["thai"] })),
+    await noto(),
+    await font("mac", path, { weight: "600" }),
+  ];
+  const layers = [
+    textLayer("mixed", "3 ลุค · OLIVE GREEN", "sans"),
+    textLayer("other", "OLIVE", "mac"),
+  ];
+  const { input } = await write({ assets, layers });
+  const legacy = await run(["validate", "--input", input]);
+  expect(legacy.code).toBe(0);
+  expect(JSON.parse(legacy.stdout).diagnostics).toEqual([
+    expect.objectContaining({
+      code: "font-cmap-unsupported",
+      severity: "warning",
+      fontId: "mac",
+    }),
+  ]);
+  const bytes = new Map<string, ArrayBuffer>();
+  for (const asset of assets)
+    bytes.set(asset.id, Uint8Array.from(await readFile(asset.path)).buffer);
+  const composition = JSON.parse(await readFile(input, "utf8")) as Composition;
+  expect([...compositionFontFallbacks(composition, bytes)]).toEqual([
+    ["sans", [{ fallback: "thai", codePoints: [0x0e04, 0x0e25, 0x0e38] }]],
+  ]);
 });
 
 it("records fallback runs in render results and leaves covered results unchanged", async () => {

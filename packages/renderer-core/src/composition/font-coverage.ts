@@ -289,19 +289,34 @@ export function inspectCompositionFonts(
 /**
  * Assign each reachable code point a font lacks to the first declared fallback
  * that has it. Fallbacks are never followed transitively.
+ *
+ * Only fonts that declare or serve as fallbacks are read, and a font whose
+ * identity cannot be read is skipped exactly as `inspectCompositionFonts` skips
+ * it, so the browser plan matches the Node gate and legacy inputs that the gate
+ * only warns about still render.
  */
 export function compositionFontFallbacks(
   comp: Composition,
   bytes: ReadonlyMap<string, ArrayBuffer>,
 ): CompositionFontFallbackPlan {
-  const declared = comp.assets.filter(
-    (asset) => asset.type === "font" && asset.fallbacks?.length,
+  const involved = new Set(
+    comp.assets.flatMap((asset) =>
+      asset.type === "font" && asset.fallbacks?.length
+        ? [asset.id, ...asset.fallbacks]
+        : [],
+    ),
   );
-  if (!declared.length) return new Map();
+  if (!involved.size) return new Map();
   const identities = new Map<string, FontIdentity>();
-  for (const asset of comp.assets)
-    if (asset.type === "font" && bytes.has(asset.id))
-      identities.set(asset.id, readFontIdentity(bytes.get(asset.id)!));
+  for (const id of involved) {
+    const source = bytes.get(id);
+    if (!source) continue;
+    try {
+      identities.set(id, readFontIdentity(source));
+    } catch {
+      // Reported by the Node gate; such a font neither has nor draws fallbacks.
+    }
+  }
   return fallbackPlan(comp, identities, compositionCopyRuns(comp));
 }
 
