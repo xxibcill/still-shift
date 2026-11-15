@@ -15,6 +15,7 @@ Not a product, template set or fixture suite.
 | `t1-control-static.ts`        | Pass-1 T1 JSON without text animators, isolating attach-bound drift          |
 | `coverage-negative.ts`        | Thai copy in pinned Plex Sans; `PROOF_PLEX_ONLY=1` loads no Thai face        |
 | `without-clip.ts`             | Lint probe: a treatment with the video removed (`PROOF_TREATMENT=<name>`)    |
+| `t2-without-scrim.ts`         | ET3 probe: treatment 2 with its gradient scrim disabled                      |
 | `cmap-probe.ts`               | Reads cmap 4/12 and lists missing code points per font and copy              |
 | `review-frames.sh`            | Extracts frames 16/24/32/60/100/130/138/146 and a 360×640 phone sheet        |
 

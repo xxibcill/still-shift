@@ -1985,7 +1985,9 @@ const report = analyzeCompositionQuality(composition, {
 
 The rules are `frozen-run`, `frozen-pixels`, `velocity-discontinuity`,
 `easing-monotony`, `co-start`, `reading-time`, `off-canvas`, `outside-safe-area`,
-`coverage`, `scale-pop` and `opacity-pop`. Defaults retain the continuous-motion
+`coverage`, `scale-pop` and `opacity-pop`, plus the opt-in legibility rules
+`text-contrast`, `x-height-floor` and `platform-safe-zone`
+([below](#text-legibility-over-video-et3)). Defaults retain the continuous-motion
 six-frame frozen-run allowance (unchanged adjacent comparisons). Reading uses
 consecutive revealed, opaque, settled text frames, with separate word budgets for
 heading, label, qualification and body. Off-canvas/safe-area checks use conservative
@@ -2073,6 +2075,104 @@ delivered; regenerate evidence to assess current state-rule coverage. A report
 never treats unsupported or unmeasured rules as passed.
 The acceptance command measures the existing v013 review MP4 and a fresh continuous
 prototype export; other craft findings remain in its report.
+
+### Text legibility over video (ET3)
+
+Declaring `textLegibility` in the lint policy (or in the composition's saved
+`metadata.readingPolicy`), or passing `--legibility true`, adds three rules for
+root text layers. They are **warnings** unless `severities` raises them;
+`--strict text-contrast` (a comma-separated list of `text-contrast`,
+`x-height-floor` and `platform-safe-zone`) declares the rules and makes the named
+codes errors. Without any of these, reports are unchanged.
+
+```sh
+pnpm --silent still-shift comp lint --input title.ts --pixels true --legibility true
+pnpm --silent still-shift comp lint --input title.ts --pixels true --strict text-contrast
+```
+
+```json
+{
+  "textLegibility": {
+    "contrast": {
+      "heading": 3,
+      "label": 4.5,
+      "qualification": 4.5,
+      "body": 4.5
+    },
+    "contrastPercentile": 0.05,
+    "reviewWidth": 360,
+    "minimumXHeight": 6,
+    "safeZones": [{ "id": "caption-ui", "edge": "bottom", "fraction": 0.2 }],
+    "waivers": [
+      {
+        "layer": "credit",
+        "reason": "Decorative watermark",
+        "codes": ["text-contrast"]
+      }
+    ]
+  }
+}
+```
+
+The values above are the defaults, except `safeZones` and `waivers` (none).
+
+**Reading window.** A layer is checked on frames where it is on screen with
+layer opacity ≥ `readingOpacity` (0.9) and reveal ≥ `readingReveal` (0.95),
+showing one copy with any state mix finished. Motion does not end the window:
+drift during a hold must stay legible too.
+
+**`text-contrast`** (pixel lint only). For each frame in the window, lint renders
+two extra frames from the same prepared resources and backend: the background,
+which is the composition with that layer's glyph colours fully transparent (its
+container and highlight decorations stay), and a glyph mask, which keeps every
+other layer's geometry at opacity 0 on black and draws the layer's glyphs opaque
+with one colour code per word (decorations, effects and blend modes removed;
+text-animator opacity and blur, masks and track mattes kept). A glyph-interior
+pixel is a mask pixel with a complete, exact word code, so antialiased edges,
+fading or blurred glyphs and covered text are excluded. At each interior pixel
+the WCAG 2 contrast is `(L1 + 0.05) / (L2 + 0.05)`, where `L1` and `L2` are the
+lighter and darker WCAG relative luminances of the rendered frame and the
+background frame (8-bit sRGB, the story `contrastRatio` formula). A word's
+contrast on a frame is the `contrastPercentile` (default 5th) of its interior
+pixels' ratios, nearest rank rounded down, as in the story `text-contrast`
+measure; words with fewer than 16 interior pixels are unmeasured on that frame.
+The layer's contrast is its lowest measured word. Frames below the role's target
+(WCAG 2 AA: 3:1 for headings as large text, 4.5:1 otherwise) are merged into
+ranges that break at cuts. Each finding gives the frames, the lowest contrast as
+`measured`, and `words`: the words below target in reading order with their worst
+contrast and frame. Words are maximal runs of non-whitespace characters, so Thai
+without spaces is reported as one run. Layers with `states`, transitions,
+corrections or animators that select spans by id fall back to whole-layer
+attribution, and the report says why.
+
+**`x-height-floor`.** The x-height per em from each pinned font's OS/2 `sxHeight`
+(as the typography renderer uses), times the style's size and the layer's
+evaluated vertical scale, scaled from the composition width to `reviewWidth` CSS
+pixels. The default floor, 6 px at 360 px, is about the x-height of 12 px CSS
+type. Span styles are included; system fonts are listed as unmeasured.
+Per-glyph animator scale is not included.
+
+**`platform-safe-zone`.** Each declared band (`top`, `bottom`, `left` or `right`,
+`fraction` of the frame) is policy data, not a built-in per-platform preset. A
+finding reports the frames where the layer's text box (the measured text bounds
+used for framing, not ink) overlaps the band and its largest overlapped fraction.
+
+**Waivers.** `waivers` keep a layer measured and reported. Matching findings stay
+in `diagnostics` as warnings with `classification: "legibility-waiver"`,
+`waiver.reason` and their unwaived severity in `rawSeverity`, so a waived layer
+never gates. The `textLegibility` report section lists every waiver with the codes
+it applied to.
+
+The report's `textLegibility` section (`composition-text-legibility-1`) records
+the method, the resolved policy, and per layer the reading-window and measured
+frame counts, the worst word, per-word worst contrast, the smallest x-height and
+any waiver. Text inside precomps is not measured and is listed under
+`limitations`. These are legibility signals, not visual acceptance: they do not
+model blur, halation, motion, colour-vision deficiency or polarity, and a
+textured background's darkest 5% can fail a word a person reads easily. Keep human
+review separate. Contrast adds two renders per text layer and reading frame. On
+the 7 s 1080×1920 proof clip, see the
+[ET3 results](./editorial-typography-et3-results.json) for measured runtime.
 
 ### Story exposure and passage compilation (CE4a continuation)
 
