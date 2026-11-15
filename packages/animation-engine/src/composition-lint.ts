@@ -330,31 +330,37 @@ async function lintOwnedComposition(
  * the lint cache after it was removed (a cancel in the first moments of lint).
  * Waiting for the scan and for every discovered dependency's processing lets
  * that run commit first. A completed lint has nothing pending, so this costs
- * nothing then; the bound keeps a stuck optimizer from holding cleanup.
+ * nothing then; one deadline over the scan and the bundling keeps a stuck
+ * optimizer from holding cleanup. Exported for tests.
  */
-async function closeViteServer(server: ViteDevServer) {
+export async function closeViteServer(
+  server: Pick<ViteDevServer, "environments" | "close">,
+  settleTimeoutMs = optimizerSettleTimeoutMs,
+) {
   const optimizers = Object.values(server.environments).flatMap(
     (environment) =>
       environment.depsOptimizer ? [environment.depsOptimizer] : [],
   );
-  await Promise.allSettled(
-    optimizers.map((optimizer) => optimizer.scanProcessing),
-  );
-  const processing = optimizers.flatMap((optimizer) =>
-    Object.values(optimizer.metadata.discovered).flatMap((dependency) =>
-      dependency.processing ? [dependency.processing] : [],
-    ),
-  );
-  if (processing.length) {
-    let timer: NodeJS.Timeout | undefined;
-    await Promise.race([
-      Promise.allSettled(processing),
-      new Promise<void>((resolve) => {
-        timer = setTimeout(resolve, optimizerSettleTimeoutMs);
-      }),
-    ]);
-    clearTimeout(timer);
-  }
+  const settled = (async () => {
+    await Promise.allSettled(
+      optimizers.map((optimizer) => optimizer.scanProcessing),
+    );
+    await Promise.allSettled(
+      optimizers.flatMap((optimizer) =>
+        Object.values(optimizer.metadata.discovered).flatMap((dependency) =>
+          dependency.processing ? [dependency.processing] : [],
+        ),
+      ),
+    );
+  })();
+  let timer: NodeJS.Timeout | undefined;
+  await Promise.race([
+    settled,
+    new Promise<void>((resolve) => {
+      timer = setTimeout(resolve, settleTimeoutMs);
+    }),
+  ]);
+  clearTimeout(timer);
   await server.close();
 }
 
