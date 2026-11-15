@@ -1,0 +1,128 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-et5b",
+  "milestone": "ET5b — Serif seam fix",
+  "plan": "docs/editorial-typography-improvement-plan.md#et5b--serif-seam-fix",
+  "date": "2026-11-16",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/editorial-titles-et5b",
+  "base": "main 0af3a405 (Merge PR #65, plan direction review; ET0–ET3 merged)",
+  "toolchain": "Node 22.23.1, pnpm 10.29.3 (nvm), Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+  "reEstimate": "Planned 1–3 active days after root cause; root cause and fix in one session.",
+  "rootCause": {
+    "summary": "Every glyph cluster is drawn by slicing the line's single raster (one fillText of the whole shaped run) at the cluster's rounded advance boundaries (drawCluster). A glyph whose ink overhangs its advance (Source Serif's v and i serifs at tracking −35) is split: the overhang belongs to the neighbour's slice. While all clusters share one pose the slices tile the raster exactly, so static text is correct. As soon as neighbours have different poses (per-glyph entrance offsets or opacity, the hold's tracking animator, roll transitions), the overhang moves and fades with the neighbour: a detached fragment beside it and a seam in the glyph it was cut from. This matches the plan's candidate (overhang clipping when per-glyph slices change position).",
+    "evidence": "Oracle test on main 0af3a405 (tests/browser/composition-glyph-seams.ts, lossless PNG renders, 'v' + 'e' in the T1 style): with the 'e' transparent, 188 px of the 'v' are missing; with the 'e' dropped 300 px or spread 40 px, 376 px differ (the 188 missing plus the same 188 px travelling with the 'e'). Pairs 'li' 70 px, 'iv' 164 px, 'Ol' 0 px. A zero-offset animator renders pixel-identically to the static draw. The proof's t1-entrance-serif-fragment.jpg shows the travelling piece of the 'v' serif left of the rising 'e'."
+  },
+  "fix": {
+    "summary": "drawRaster finds lines whose clusters are not all drawn with one pose (position, transform, opacity, blur, stroke, fill, font axes, mask). On those lines, each run of neighbouring clusters that share a pose (a glyph under per-glyph motion, a word under word motion) is drawn from its own raster: the segment's text shaped and painted as one run at its layout position, shifted by an integer so subpixel phases and the unscaled draw are kept. The segment raster holds only its own glyphs' ink, overhangs included. Lines with one shared pose keep the line raster's slices, so settled text is unchanged.",
+    "details": [
+      "Segment rasters are made on first use while drawing, cached per segment (first:last) on the line raster or its font-axis variant, and released with it. They are painted locally rather than through the shared preparation pixel source, which only admits requests during preparation, and retained so a frame's scratch memory does not reclaim them.",
+      "Their tints and outlines are local caches on the segment raster, as the existing colour cache does when shared capacity is exceeded.",
+      "A first version isolated each cluster separately; it was replaced before commit because a ligature inside a word moving as one would have been drawn unligated (see rejectedExperiments)."
+    ],
+    "versioning": "COMPOSITION_RENDERER_VERSION composition-canvas-1.47.7 → 1.47.8 and COMPOSITION_WEBGL_RENDERER_VERSION composition-webgl2-0.68.7 → 0.68.8 (export manifests and cache identity). Story and commerce scenes draw text through the composition renderer, so these two cover every path."
+  },
+  "changes": [
+    "packages/renderer-core/src/typography-renderer.ts: rasterizeSegment / isolatedSegment / isolatedStroke, drawPoseKey, linesWithDistinctPoses, poseSegments, drawSegment, shared posedClusterTransform; disposal of segment rasters.",
+    "packages/renderer-core/src/composition/render/version.ts and webgl2.ts: renderer version bumps.",
+    "tests/browser/composition-glyph-seams.ts (static-render oracle, run from test:browser:typography).",
+    "benchmarks/fixtures/editorial-titles/et0-baseline.json re-recorded (renderer version; O1 animated and O6 render hashes).",
+    "scripts/editorial-titles/et0-baseline.ts: --write keeps the expanded JSON layout (same change as on the ET5a branch).",
+    "tests/unit/batch-identity.test.ts: pinned checkpoint identity updated for the renderer version (as in 5d52e703).",
+    "tests/visual/composition-baselines/darwin-arm64.json and benchmarks/composition-baseline.json: typography family re-recorded (--write --family typography).",
+    "docs/review/editorial-typography-et5-2026-11-16/: before/after sheets for the owner."
+  ],
+  "checks": {
+    "failingTestFirst": {
+      "status": "met",
+      "evidence": "The oracle test fails on main (numbers in rootCause.evidence) and passes on this branch with 0 pixels off the oracle in every case (tolerance 24 per channel; the rest case is exact), including an fi ligature in a dropping word. The plan's named frames: lossless PNG renders of o1-attach-animated frames 30–36 and 45 and of a footage-free pass-1 T1 frames 30–36 and 100 change on this branch (renderComparison); the clip-backed sheets show the fragments and seams on main and none here. o1-attach-static is byte-identical in all 96 frames."
+    },
+    "rootCauseFixed": {
+      "status": "met",
+      "evidence": "Fixed in the drawing path that produced the fragments (cluster ink ownership), not by masking or offsetting."
+    },
+    "settledPixelIdentical": {
+      "status": "met",
+      "evidence": "o1-attach-static: all 96 lossless frames byte-identical before/after; P1 Thai per-glyph entrance render hash unchanged; O2, O3, O5 render hashes unchanged; the oracle's zero-offset animator frame equals the static draw exactly. Settled frames of animated text use the unchanged slice path."
+    },
+    "kerningAndLigatures": {
+      "status": "met",
+      "evidence": "Segments are shaped as one run at the layout's kerned positions: the 've', 'li', 'iv', 'Ol' pairs (kern and liga on, tracking −35) and an 'fi' ligature in a word dropping as one unit (tracking 0) match the static oracle with 0 pixels over tolerance; the test first checks that the face really forms the ligature (liga on vs off differ). Chromium drops optional ligatures under non-zero letter-spacing, so the T1 headline (−35) forms none either way. A ligature split across two differently posed glyphs cannot exist in any per-glyph method."
+    },
+    "versionedAndBaselines": {
+      "status": "met",
+      "evidence": "Renderer versions bumped; affected baselines listed in et0BaselineChanges and baselineSuites."
+    },
+    "verificationTier": {
+      "status": "met",
+      "evidence": "check:fast, test:browser:typography (includes the oracle), test:browser:composition-typography-adapter, test:browser:composition-provider-typography and test:browser:composition-baselines (after the typography re-record) pass; see finalVerification."
+    }
+  },
+  "renderComparison": {
+    "lossless": {
+      "method": "comp render --format png8 of the ET0 o1-attach fixtures and a footage-free pass-1 T1 copy (video asset and layer removed), 'before' on the ET5a branch (its glyph drawing is identical to main 0af3a405; ET5a changes only opt-in decorations and lint) and 'after' on this branch; per-frame pixel differences.",
+      "o1AttachStatic": "0 of 96 frames differ (settled control).",
+      "o1AttachAnimated": "68 of 96 frames differ (entrance, tracking hold, exit); frame 45: 382 pixels, 334 over 24; frames 30–36: 119–171 pixels.",
+      "t1Pass1FootageFree": "118 of 168 frames differ; frames 30–36: 251–613 pixels (64–562 over 24); frame 100: 463 (432 over 24)."
+    },
+    "clipBacked": {
+      "clip": "benchmarks/results/cinematic-illustrated/review-v3/ci-09-layered-parallax.mp4 (git-ignored local clip, SHA-256 d5bc5a52…7fdcd verified; linked from the primary checkout into the worktrees)",
+      "method": "H.264 renders with comp render on main 0af3a405 (detached temporary worktree) and on this branch; pass-1 T1/T2 JSON copied with absolute asset paths, pass-2 programs run as committed. Frames by FFmpeg ordinal.",
+      "sheets": [
+        "docs/review/editorial-typography-et5-2026-11-16/t1-pass1-seams-main-vs-et5b.jpg (headline, frames 30/33/36/100; left main, right ET5b)",
+        "docs/review/editorial-typography-et5-2026-11-16/t1-pass2-seams-main-vs-et5b.jpg (same frames, pass 2)",
+        "docs/review/editorial-typography-et5-2026-11-16/typography-baselines-main-vs-et5b.jpg (CE0 typography baseline frames that changed)"
+      ],
+      "pixelsOver24": "T1 pass 1: frames 30/33/36/100 = 553/437/104/433; pass 2: 300/273/69/241.",
+      "unchanged": "T2 pass 1 and T2 pass 2 (Thai per-glyph poster, animated wght/wdth) render byte-identically to main (same output SHA-256; pass 2 23c3efeb…); the Thai glyphs here have no overhang across their advances.",
+      "notAcceptance": "For the owner's review only; no visual acceptance is inferred."
+    }
+  },
+  "et0BaselineChanges": [
+    "All render records: rendererVersion composition-canvas-1.47.7 → 1.47.8.",
+    "findings.O1.animated.render.sha256 29add382… → 26ecb535… (per-glyph entrance and tracking hold).",
+    "findings.O6.render.sha256 23263218… → 0cc02749…",
+    "Unchanged: every measured outcome (O1 gaps, O2 share, O3 pixel counts, O5 fallback ink, O6 contrast frames, P1 mark gap) and the O1 static, O2, O3, O5 and P1 render hashes."
+  ],
+  "rejectedExperiments": [
+    {
+      "experiment": "Isolate every cluster separately (a raster per glyph).",
+      "reason": "Removed the seams, but a ligature inside a word moving as one unit would be drawn as separate glyphs while the word moves and as a ligature once settled. Replaced by same-pose segments, which keep shaping inside the unit."
+    },
+    {
+      "experiment": "Segment rasters through the shared preparation pixel source (CanvasPixelSource), like line rasters.",
+      "reason": "The composition export's source cache admits new requests only inside the preparation retry loop; a request made while drawing throws a pending source ('Unexpected failure' on P1 export). Isolated rasters are painted locally instead."
+    },
+    {
+      "experiment": "Local segment canvases without retaining them.",
+      "reason": "The managed render memory reclaims canvases allocated during a frame's scratch phase; the cached canvas was zero-sized on a later frame (P1 export: drawImage of a canvas with width or height 0). Retained like local tints."
+    },
+    {
+      "experiment": "Even/odd phase rasters (two extra full-line rasters).",
+      "reason": "Not built: an overhang can reach past a narrow neighbour (i, l) into the next cluster of the same phase, so it does not isolate glyphs in general."
+    }
+  ],
+  "limitations": [
+    "Segment rasters are not counted in the 128-megapixel preparation budget; each covers its glyphs plus padding and is made only for lines with distinct poses.",
+    "Every animated frame with distinct per-glyph poses changes pixels (the intended fix); the renderer version bump versions it."
+  ],
+  "notRun": [
+    "pnpm check, full pnpm test, pnpm release:check",
+    "WebGL2 browser groups (the change is in the Canvas text drawer that both backends use; WebGL2 version bumped)",
+    "Human visual acceptance: the review sheets are for the owner; nothing here is acceptance"
+  ],
+  "finalVerification": {
+    "node": "22.23.1",
+    "checkFast": "passed (461 files / 4,648 tests) on the segment version, and again on the final tree (after the baseline re-records) before commit",
+    "typography": "passed (ET5b oracle: all 0)",
+    "compositionTypographyAdapter": "passed",
+    "compositionProviderTypography": "passed",
+    "compositionBaselines": "failed on 6 typography items before re-record (expected, listed above); passed after it (176 items)",
+    "et0Baseline": "--check passes after re-record",
+    "earlierFailure": "The first full check:fast (per-cluster version) failed one test, tests/unit/batch-identity.test.ts, on the pinned checkpoint identity that includes the renderer version; updated."
+  },
+  "baselineSuites": {
+    "compositionBaselines": "test:browser:composition-baselines on the unchanged baseline: 6 of 176 items differ, all typography — editorial 40, glyph-performance 60, selectors 146, semantic 176, transitions 1, vertical 133 differing frames; variable-thai and commerce unchanged. Inspection of the stored sample frames: main draws slivers of glyphs before they enter (editorial frame 0/24, selectors frame 24) and cuts overhangs at advance boundaries (semantic/vertical 'r' arm), which this branch draws whole; transitions frame 51 differs by at most 2 levels in 2 pixels. Re-recorded with --write --family typography; the check then passes (176 items, 36,061 frames).",
+    "et0": "et0-baseline.ts --check: only rendererVersion and the O1 animated and O6 render hashes changed; re-recorded."
+  }
+}
