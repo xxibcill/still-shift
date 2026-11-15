@@ -2017,9 +2017,12 @@ temporary Vite cache for each call and cleans it after measurement. Video and
 sequence layers are linted from the same prepared frames as export, within the
 composition's `mediaLimits`: preparation reserves `decodedCacheBytes` before
 decoding, and the page keeps at most `decodedFrameBytes` of decoded frames
-resident. SIGINT or SIGTERM cancels `comp lint` with `comp-program-aborted` after
-its media staging, cache lock, Vite cache and compiled program are removed;
-completed media cache entries stay reusable. Pixel lint's
+resident. SIGINT, SIGTERM or SIGHUP cancels `comp lint`: after its media
+staging, cache lock, Vite cache and compiled program are removed, it reports
+`comp-program-aborted` and exits 128 + the signal number (130 for SIGINT);
+completed media cache entries stay reusable. Repeats within 1 s are treated as
+relays of the same request. A later signal stops at once with exit 128 + its
+number and may leave temporary files. Pixel lint's
 shared grayscale-energy defaults are a channel delta **> 4** and **≥ 200** changed
 pixels, configurable via `pixelChannelThreshold` and `pixelMinimumChanges`.
 `analyzeRenderedCompositionQuality(comp, preview, policy?, { signal, onFrame })`
