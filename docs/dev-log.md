@@ -43,6 +43,8 @@ still hold before relying on them.
 
 ## Current state
 
+- **Editorial title overlays (2026-11-15):** ET0 of the [editorial typography plan](./editorial-typography-improvement-plan.md) is committed on `codex/editorial-titles-et0` (from `98a92e92`; not pushed, no PR). Tracked synthetic clip, fixtures and recorded baseline live in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md). On `main`: O4 (pixel lint over video) is fixed; O1, O2, O3, O5 (composition route), O6, O7, O10 still reproduce; O11 seams also persist through the hold. ET1 is partly on `main` (font gate exists, not wired into `comp`). Pending owner decisions: synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. No human visual acceptance. [ET0 results](./editorial-typography-et0-results.json).
+
 - **0.2.0 published and registry-verified (2026-10-16):** owner-approved source `ba13d26a` is remote `production` and fixed annotated `v0.2.0`. Public npm `latest` is `0.2.0`; its downloaded archive matches the verified SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f` byte for byte. Technical verification completed in recorded stages; all 28 standard installed checks, both focused mechanism groups and browser bundle pass. Original aggregate/harness failures, npm `EOTP`/browser retry, registry-processing reads and 19 timing deferrals remain retained. PR #59 carries the publication records; its authorized merge preserves release ancestry, with final readback retained separately. MS3 remains experimental: original first-pass 1/10, token savings null, accepted 0/10. [Results](./npm-release-results.json), [plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59).
 
 - **Integrated feature baseline:** PR #58 is owner-merged as `9c94101d`; its review/fix/conflict records retain their original source and staged verification bindings. The released source includes that merged source plus committed 0.2.0 metadata and guidance. Earlier published tags remain fixed. Primary checkout edits are preserved. [PR #58](https://github.com/xxibcill/still-shift/pull/58), [fix record](./pr-58-fix-results.json).
@@ -79,6 +81,17 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-15 — Editorial titles ET0: fixtures and re-baseline on main
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-et0` (from `main` `98a92e92`).
+- **Scope:** ET0 of the [editorial typography plan](./editorial-typography-improvement-plan.md); no engine source changed.
+- **Done:** `52d1cfe7` imports the 2026-11-15 proof, plan and review images (previously untracked in the primary checkout); `0375c920` adds the synthetic clip (70,569 bytes, byte-identical regeneration with FFmpeg 8.0.1), eight fixture compositions, the measuring baseline script and review crops; this commit records results and plan updates.
+- **Re-baseline:** all nine proof renders are byte-identical on `main`. O4 fixed (`6ed1a5d0` replaced base64 inlining with prepared media). Still reproduced: O1 (18/30 px authored → 92/107 static, 150/239 animated), O2 (39.9% off-frame, `outside-safe-area` only), O3 (bar on frames 70–83 with no text), O5 on `comp` (valid, rendered, no warnings; the strict library gate names U+0E04/U+0E25/U+0E38 but the composition renderer passes no validation), O6 (contrast 1.16:1, no finding), O7, O10. Changed: O8 (state lint no longer flags footage; pixel mode flags near-static footage), O9 (pixel mode can evaluate `attach`). P1 passes (mark gap 11–12 px).
+- **New:** O11 serif seams persist through the hold under a per-glyph tracking animator (proof T1 frame 100, fixture frame 45). ET2's frames 157–167 check revised: that footage is effectively static in encoded pixels.
+- **Results:** `et0-baseline.ts --check` reproduced every hash and measurement on a second run; `pnpm check:fast` passes (457 files, 4,622 tests). Two failed baseline-script runs and one re-recorded P1 criterion retained in the results file.
+- **Open / next:** owner review of ET0 and the committed clip; ET1 = wire the existing gate into `comp validate`/`render` (re-estimate). Not run: WebGL2, human visual acceptance.
+- **Records:** [ET0 results](./editorial-typography-et0-results.json), [fixture baseline](../benchmarks/fixtures/editorial-titles/et0-baseline.json), [proof](./editorial-typography-proof-2026-11-15.md).
 
 ### 2026-10-16 — Publish and verify 0.2.0
 

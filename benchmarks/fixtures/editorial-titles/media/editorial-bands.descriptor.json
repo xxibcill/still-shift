@@ -1,0 +1,29 @@
+{
+  "schema": "still-shift-fixture-media-1",
+  "id": "editorial-bands",
+  "description": "Synthetic license-free vertical clip: bright field (rows 0-899, RGB 232), drifting mid-tone sinusoidal texture (rows 900-1919), dark band (RGB 24, 220 px) moving down at 285 px/s centred on y = 285t - 120.",
+  "license": "Generated arithmetic test pattern; no third-party content. Same terms as the repository.",
+  "generator": "scripts/editorial-titles/generate-fixture-clip.ts",
+  "ffmpeg": "ffmpeg version 8.0.1 Copyright (c) 2000-2025 the FFmpeg developers",
+  "filter": "if(lt(abs(Y-(285*T-120)),110),24,if(lt(Y,900),232,128+40*sin(X/18+2.4*T)*sin(Y/26)))",
+  "bytes": 70569,
+  "asset": {
+    "id": "editorial-bands",
+    "type": "video",
+    "path": "editorial-bands.mp4",
+    "sha256": "sha256:c4daea53d7de6239bd37eee01f31649417257e870d052611eee05c4f34924019",
+    "width": 1080,
+    "height": 1920,
+    "frameCount": 96,
+    "frameRate": {
+      "numerator": 24,
+      "denominator": 1
+    },
+    "color": {
+      "primaries": "bt709",
+      "transfer": "bt709",
+      "matrix": "bt709",
+      "range": "tv"
+    }
+  }
+}

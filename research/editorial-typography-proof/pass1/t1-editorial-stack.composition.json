@@ -1,0 +1,344 @@
+{
+  "schemaVersion": "composition-1",
+  "id": "composition",
+  "width": 1080,
+  "height": 1920,
+  "frameCount": 168,
+  "layers": [
+    {
+      "id": "kicker",
+      "inPoint": 12,
+      "outPoint": 150,
+      "transform": {
+        "anchor": [0, 0],
+        "position": [0, 0],
+        "scale": [1, 1],
+        "rotation": 0,
+        "opacity": 1
+      },
+      "type": "text",
+      "text": "THREE WAYS TO WEAR",
+      "fontSize": 30,
+      "color": "#2F3520",
+      "textRole": "label",
+      "style": "kicker",
+      "anchor": "baseline"
+    },
+    {
+      "id": "headline",
+      "inPoint": 12,
+      "outPoint": 150,
+      "transform": {
+        "anchor": [0, 0],
+        "position": [56, 1010],
+        "scale": [1, 1],
+        "rotation": 0,
+        "opacity": 1
+      },
+      "type": "text",
+      "text": "Olive",
+      "fontSize": 250,
+      "color": "#4A5A23",
+      "textRole": "heading",
+      "style": "headline",
+      "anchor": "baseline"
+    },
+    {
+      "id": "folio",
+      "inPoint": 12,
+      "outPoint": 150,
+      "transform": {
+        "anchor": [0, 0],
+        "position": [0, 0],
+        "scale": [1, 1],
+        "rotation": 0,
+        "opacity": 1
+      },
+      "type": "text",
+      "text": "No. 03 — Courtyard Edit",
+      "fontSize": 32,
+      "color": "#2F3520",
+      "textRole": "label",
+      "style": "folio",
+      "anchor": "cap"
+    },
+    {
+      "id": "clip",
+      "transform": {
+        "anchor": [1706.6666666666665, 960],
+        "position": [202.22222222222223, 960],
+        "scale": [1, 1],
+        "rotation": 0,
+        "opacity": 1
+      },
+      "type": "video",
+      "asset": "courtyard-clip",
+      "size": [3413.333333333333, 1920],
+      "fit": "stretch"
+    }
+  ],
+  "markers": [
+    {
+      "id": "read",
+      "frame": 44,
+      "duration": 80,
+      "label": "Title held"
+    }
+  ],
+  "constraints": [
+    {
+      "type": "attach",
+      "target": "kicker",
+      "anchor": "headline",
+      "point": [0, 0],
+      "offset": [8, -18]
+    },
+    {
+      "type": "attach",
+      "target": "folio",
+      "anchor": "headline",
+      "point": [0, 1],
+      "offset": [8, 30]
+    }
+  ],
+  "textAnimators": [
+    {
+      "node": "headline",
+      "unit": "glyph",
+      "start": 12,
+      "end": 38,
+      "stagger": 3,
+      "selector": {
+        "start": 0,
+        "end": 1
+      },
+      "from": {
+        "opacity": 0,
+        "offset": [0, 210]
+      },
+      "anchor": "glyph",
+      "mask": "line",
+      "feather": 0.2,
+      "layer": "action"
+    },
+    {
+      "node": "kicker",
+      "unit": "glyph",
+      "start": 20,
+      "end": 42,
+      "stagger": 0,
+      "selector": {
+        "start": 0,
+        "end": 1
+      },
+      "from": {
+        "opacity": 0,
+        "tracking": 900
+      },
+      "layer": "action"
+    },
+    {
+      "node": "folio",
+      "unit": "word",
+      "start": 30,
+      "end": 46,
+      "stagger": 3,
+      "selector": {
+        "start": 0,
+        "end": 1
+      },
+      "from": {
+        "opacity": 0,
+        "offset": [0, 24]
+      },
+      "layer": "action"
+    },
+    {
+      "node": "headline",
+      "unit": "glyph",
+      "start": 44,
+      "end": 124,
+      "stagger": 0,
+      "selector": {
+        "start": 0,
+        "end": 1
+      },
+      "from": {
+        "tracking": 0
+      },
+      "to": {
+        "tracking": 25
+      },
+      "layer": "current"
+    },
+    {
+      "node": "headline",
+      "unit": "glyph",
+      "start": 124,
+      "end": 150,
+      "stagger": 3,
+      "selector": {
+        "start": 0,
+        "end": 1,
+        "order": "reverse"
+      },
+      "from": {
+        "opacity": 1,
+        "offset": [0, 0],
+        "blur": 0
+      },
+      "to": {
+        "opacity": 0,
+        "offset": [0, -90],
+        "blur": 14
+      },
+      "anchor": "glyph",
+      "layer": "response"
+    },
+    {
+      "node": "kicker",
+      "unit": "line",
+      "start": 118,
+      "end": 134,
+      "stagger": 0,
+      "selector": {
+        "start": 0,
+        "end": 1
+      },
+      "from": {
+        "opacity": 1
+      },
+      "to": {
+        "opacity": 0
+      },
+      "layer": "response"
+    },
+    {
+      "node": "folio",
+      "unit": "line",
+      "start": 118,
+      "end": 134,
+      "stagger": 0,
+      "selector": {
+        "start": 0,
+        "end": 1
+      },
+      "from": {
+        "opacity": 1
+      },
+      "to": {
+        "opacity": 0
+      },
+      "layer": "response"
+    }
+  ],
+  "fps": 24,
+  "assets": [
+    {
+      "id": "serif",
+      "type": "font",
+      "path": "../../../assets/story-motion/fonts/source-serif-4-semibold.otf",
+      "sha256": "sha256:25e034392847d9965c92f98971b3646436b7ab919ece9118b0c0e5ec94c02efc",
+      "weight": "600"
+    },
+    {
+      "id": "mono",
+      "type": "font",
+      "path": "../../../assets/story-motion/fonts/plex-mono-medium.ttf",
+      "sha256": "sha256:98fbd727aae340b236955879dabed4d991aac9e8e90b3b2a67ce4a59221cc97c",
+      "weight": "500"
+    },
+    {
+      "id": "sans",
+      "type": "font",
+      "path": "../../../assets/story-motion/fonts/plex-sans-semibold.ttf",
+      "sha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+      "weight": "600"
+    },
+    {
+      "id": "courtyard-clip",
+      "path": "../../../benchmarks/results/cinematic-illustrated/review-v3/ci-09-layered-parallax.mp4",
+      "sha256": "sha256:d5bc5a5236113d13f754b6470cf77f8507fc54889d40add09b52bac3d7e7fdcd",
+      "width": 1920,
+      "height": 1080,
+      "frameCount": 168,
+      "frameRate": {
+        "numerator": 24,
+        "denominator": 1
+      },
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "matrix": "bt709",
+        "range": "tv"
+      },
+      "type": "video"
+    }
+  ],
+  "textStyles": {
+    "headline": {
+      "fontAsset": "serif",
+      "size": 250,
+      "tracking": -35,
+      "features": {
+        "kern": 1,
+        "liga": 1
+      }
+    },
+    "kicker": {
+      "fontAsset": "mono",
+      "size": 30,
+      "tracking": 320
+    },
+    "folio": {
+      "fontAsset": "sans",
+      "size": 32,
+      "tracking": 40
+    }
+  },
+  "metadata": {
+    "builder": {
+      "version": "motion-builder-1",
+      "files": [
+        "research/editorial-typography-proof/t1-editorial-stack.ts",
+        "research/editorial-typography-proof/shared.ts"
+      ],
+      "sites": [
+        [0, 12, 16],
+        [0, 29, 7],
+        [0, 33, 7],
+        [0, 38, 7],
+        [1, 46, 10],
+        [1, 55, 3],
+        [0, 41, 7],
+        [0, 83, 7],
+        [0, 45, 7],
+        [0, 46, 7],
+        [0, 49, 7],
+        [0, 54, 7],
+        [0, 59, 7],
+        [0, 65, 7],
+        [0, 71, 7],
+        [0, 78, 9],
+        [0, 18, 7],
+        [0, 24, 7],
+        [0, 25, 7]
+      ],
+      "nodes": {
+        "comp": 0,
+        "layers": [1, 2, 3, 4],
+        "assets": [5, 5, 5, 6],
+        "markers": [7],
+        "precomps": [],
+        "drivers": [],
+        "behaviours": [],
+        "periodic": [],
+        "signals": [],
+        "constraints": [8, 9],
+        "textAnimators": [10, 11, 12, 13, 14, 15, 15],
+        "textStyles": [16, 17, 18],
+        "expressions": []
+      }
+    }
+  }
+}

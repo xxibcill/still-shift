@@ -1,0 +1,151 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-et0",
+  "milestone": "ET0 — Tracked fixtures and baseline",
+  "plan": "docs/editorial-typography-improvement-plan.md#et0--tracked-fixtures-and-baseline",
+  "date": "2026-11-15",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/editorial-titles-et0",
+  "base": "main 98a92e92 (Merge PR #59, published 0.2.0)",
+  "proofSource": "e6eb7b06, an ancestor of main 424 commits earlier; 325 package files differ",
+  "runtime": {
+    "toolchainCheck": "pnpm toolchain:check passed: Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+    "renderer": "composition-canvas-1.47.7 (unchanged from the proof)",
+    "evaluator": "composition-evaluator-60 (proof: composition-evaluator-57)",
+    "backend": "canvas2d (default)"
+  },
+  "engineChanges": "None. ET0 adds fixtures, scripts and records only; no package source changed.",
+  "proofRebaseline": {
+    "script": "research/editorial-typography-proof/rebaseline-main.sh",
+    "clip": "Git-ignored proof clip copied into this worktree's benchmarks/results tree for the re-run only; sha256 d5bc5a5236113d13f754b6470cf77f8507fc54889d40add09b52bac3d7e7fdcd verified. Not committed.",
+    "renders": "All nine proof renders (T1/T2/T3 pass 1 and pass 2, T1 static control, coverage-negative with and without Noto) are byte-identical on main to the SHA-256 values in docs/editorial-typography-proof-2026-11-15-results.json. Pixel behaviour of every rendered finding (O1, O2, O3, O5, O11, P1) is therefore unchanged.",
+    "cmapProbe": "Unchanged: Source Serif 4, Plex Sans and Plex Mono miss U+0E25, U+0E38, U+0E04 of the mixed tag; Noto Sans Thai covers all proof copy.",
+    "validate": "T1, T2, T3 and coverage-negative: valid, no diagnostics.",
+    "lint": {
+      "stateMode": "T1 pass 1: exit 1, comp-text-layout-missing 'Text constraints need measured layer bounds' (stderr). T1/T2/T3 pass 2 and T2/T3 pass 1: reading-time errors, outside-safe-area warnings, per-frame comp-text-layout-missing warnings; no frozen-run over footage-only spans.",
+      "pixelMode": "All six video-backed runs complete with measured.pixels true and textBounds true (proof: 6/6 invalid-scene). Findings: reading-time errors; outside-safe-area warnings (T3 pass 1 credit/line only, no off-canvas); frozen-pixels over footage-only spans (T1 1–15 and 148–167, T2 154–167, T3 1–16 and 144–167); no text-contrast rule."
+    }
+  },
+  "findings": [
+    {
+      "id": "O1",
+      "status": "still reproduced",
+      "evidence": "Proof T1 renders byte-identical. ET0 fixture (o1-attach-*.ts): authored 18/30 px gaps render as 92/107 px with no animators and 150/239 px with entrance/hold/exit animators, constant at hold frames 30, 45 and 60. State lint still stops with comp-text-layout-missing.",
+      "fixture": "benchmarks/fixtures/editorial-titles/o1-attach-animated.ts, o1-attach-static.ts",
+      "milestone": "ET4"
+    },
+    {
+      "id": "O2",
+      "status": "still reproduced",
+      "evidence": "Proof T3 pass 1 render byte-identical; its pixel lint now runs with the clip and gives only outside-safe-area warnings for the credit and line. ET0 fixture: 410 of 682 px of the line's ink visible (off-frame fraction 0.399), clipped at x = 0; validate valid, render rendered, pixel lint outside-safe-area warning only, no off-canvas.",
+      "fixture": "benchmarks/fixtures/editorial-titles/o2-center-origin.ts, o2-center-control.ts",
+      "milestone": "ET5"
+    },
+    {
+      "id": "O3",
+      "status": "still reproduced",
+      "evidence": "Proof T2 pass 1 render byte-identical. ET0 fixture: at frames 70, 76 and 83 the tag has 0 text-ink pixels and 50,483 highlight pixels (frame 40: 8,755 text, 41,089 highlight). Pixel lint reports nothing about the bar.",
+      "fixture": "benchmarks/fixtures/editorial-titles/o3-highlight-fade.ts",
+      "milestone": "ET5"
+    },
+    {
+      "id": "O4",
+      "status": "fixed on main",
+      "evidence": "6/6 proof pixel-lint runs and the ET0 video fixture complete with measured.pixels true and textBounds true; the ET0 fixture with video passes (exit 0). The proof's hypothesis is confirmed in history: 6ed1a5d0 (2026-10-10, 'add supported episode CLI and native overlay lifecycle') removed the base64 data-URL inlining from composition-lint.ts and passes prepared media instead. Not bisected beyond that search.",
+      "fixture": "benchmarks/fixtures/editorial-titles/o4-video-pixel-lint.ts (now-passing regression), o4-video-pixel-lint.no-video.ts",
+      "milestone": "ET2 (root cause no longer needed; memory bounds and O8 remain)"
+    },
+    {
+      "id": "O5",
+      "status": "still reproduced on the composition route; core gate exists on main",
+      "evidence": "ET0 fixture (Plex Sans only): comp validate valid, comp render rendered, warnings [], systemFontLayers []; the Thai-only line has 4,040 ink pixels painted by a face outside the composition. main already has the cmap reader (font-cmap.ts, formats 4/12, added fbf9460c 2026-10-10), font identity and inspectFontText with legacy/strict profiles, and reachable-copy collection including compositionFontTextRuns. Called directly in strict mode, inspectFontText reports font-coverage errors naming U+0E04, U+0E25, U+0E38 for each layer. It is enforced for mechanism-episode font dependencies (packages/animation-engine/src/mechanism/io.ts), but the composition renderer calls loadCompositionFonts(composition, assetUrl, undefined, ...) and comp validate/render have no strict font option, so the composition route never runs it.",
+      "fixture": "benchmarks/fixtures/editorial-titles/o5-plex-thai.ts",
+      "milestone": "ET1 (wire the existing gate into the composition route)"
+    },
+    {
+      "id": "O6",
+      "status": "still reproduced",
+      "evidence": "Composition quality rules still have no text-contrast rule. ET0 fixture: the band is under the credit on frames 27–47 and under the line on frames 33–55, exactly as the generator predicts; ink-to-background contrast falls to 1.16:1, below 3:1 on frames 29–45 (credit) and 37–51 (line). State and pixel lint report no finding about it (pixel lint passes).",
+      "fixture": "benchmarks/fixtures/editorial-titles/o6-dark-band.ts",
+      "milestone": "ET3"
+    },
+    {
+      "id": "O7",
+      "status": "still reproduced",
+      "evidence": "reading-time errors in both modes: T1 0.125 s, T2 0.083 s, T3 0 s of readable time against 1.00 s.",
+      "milestone": "ET6"
+    },
+    {
+      "id": "O8",
+      "status": "changed",
+      "evidence": "State lint with the clip no longer reports frozen-run over footage-only spans (the proof's T2 157–167 finding is gone). Pixel mode, now working, reports frozen-pixels over footage-only spans (T1 1–15 and 148–167, T2 154–167, T3 1–16 and 144–167). Measured on the proof clip: mean absolute inter-frame luma difference is at most 0.002 of 255 over frames 144–167 and exactly 0 at frames 156–157 and 163–167, so the encoded footage is effectively static there and the pixel-mode report is plausibly correct. The ET0 synthetic clip, which drifts every frame, produces no frozen-pixels finding with video.",
+      "milestone": "ET2 (revise its frames 157–167 check; see plan)"
+    },
+    {
+      "id": "O9",
+      "status": "changed",
+      "evidence": "State lint still cannot evaluate attach on text (T1 pass 1 and the ET0 O1 fixture exit 1 with comp-text-layout-missing 'Text constraints need measured layer bounds'). Pixel mode, now working with video, evaluates the same compositions with measured text bounds.",
+      "milestone": "ET4/ET6"
+    },
+    {
+      "id": "O10",
+      "status": "still reproduced",
+      "evidence": "research/editorial-typography-proof/o10-axis-hold.ts (T2 pass 2 plus the dropped hold wght 0 → -120): comp validate fails with comp-text-font-axis 'animator axis wght may reach -20–900, outside the pinned font's 100–900 range' at textAnimators[7].to.axes.wght.",
+      "milestone": "ET5"
+    },
+    {
+      "id": "O11",
+      "status": "still reproduced; wider than recorded",
+      "evidence": "Proof T1 renders are byte-identical, so the entrance fragment (frames 30–36) remains. New: thin vertical fragments at the i, v and e serif edges persist through the hold while the per-glyph tracking animator runs: proof T1 pass 1 frame 100, pass 2 frame 100 (fainter) and the ET0 o1-attach-animated fixture frame 45; the static control shows none. Not root-caused; a candidate is overhang clipping by per-glyph slices when glyph positions change.",
+      "images": [
+        "docs/review/editorial-titles-et0/o11-hold-seams-o1-animated-f45.jpg"
+      ],
+      "milestone": "ET5"
+    },
+    {
+      "id": "P1",
+      "status": "still passes",
+      "evidence": "Proof T2 renders byte-identical. ET0 control (p1-thai-marks.ts): U+0E38 stays under ล with a 11–12 px gap and full horizontal overlap in every evaluated entrance frame (21–34) and the settled frame 40, while wght/wdth animate. Earlier frames show other units only. One word, one font, canvas2d.",
+      "fixture": "benchmarks/fixtures/editorial-titles/p1-thai-marks.ts",
+      "milestone": "ET5 Thai probes"
+    }
+  ],
+  "fixtureClip": {
+    "path": "benchmarks/fixtures/editorial-titles/media/editorial-bands.mp4",
+    "descriptor": "benchmarks/fixtures/editorial-titles/media/editorial-bands.descriptor.json",
+    "sha256": "c4daea53d7de6239bd37eee01f31649417257e870d052611eee05c4f34924019",
+    "bytes": 70569,
+    "format": "1080x1920, 24/1 fps, 96 frames, H.264 yuv420p, BT.709 limited",
+    "generator": "scripts/editorial-titles/generate-fixture-clip.ts (FFmpeg 8.0.1 lavfi geq arithmetic; no footage, font or third-party content)",
+    "regeneration": "--check regenerated the clip twice into temporary files; both byte-identical to the committed bytes, and the probed descriptor matched.",
+    "descriptorVerification": "comp validate on an export with a zeroed video sha256 fails with comp-media-checksum 'Video bytes differ from their authored identity'; the committed descriptor validates."
+  },
+  "fixtureRenders": {
+    "baseline": "benchmarks/fixtures/editorial-titles/et0-baseline.json",
+    "script": "scripts/editorial-titles/et0-baseline.ts",
+    "sha256": {
+      "o1-attach-animated": "29add3829dea83d25234ff72a4207f93fd1ee8cb0e7ae17eff223637a008e328",
+      "o1-attach-static": "e1e2ff62bada2e9c32307c17bf4e9c33f0c3ff1a5a36ccba9d0cf83e1cfac738",
+      "o2-center-origin": "eb28dab63a5a25cf896a46aa0a1312b029981d8d8eb575ff9c321ff4d5df5e48",
+      "o2-center-control": "b54a06f4b7b5accfbb710123df44ce1bbb96c2e07f315de664e5aee276acf981",
+      "o3-highlight-fade": "18eb506e6d6a8d306b05d930864d53846b6eb773e7a0bf4bf0afe492e5690bfe",
+      "o5-plex-thai": "381f678ea29e2be2f5c8f68341e879af997a4d1e1cb9a347c6040921d2a4a524",
+      "o6-dark-band": "23263218984f0f5c0d5868773c1a8c0f76dd3e536dd7ed0d7bacebac085bd405",
+      "p1-thai-marks": "e701938fa79a9fdb69595a4f882f51d556a62daea2ce869702473d3e50327bf3"
+    },
+    "reproducibility": "A second full run with --check reproduced every render hash, lint outcome and measurement exactly (about 65 s on this machine).",
+    "reviewImages": "docs/review/editorial-titles-et0/ (agent-inspected crops; no human visual acceptance claimed)"
+  },
+  "runs": [
+    "Fixture baseline run 1 failed before writing: the O6 glyph-box search included the dark band's rows (3 ink groups instead of 2). Fixed by starting the search below the band at frame 20.",
+    "Run 2 attempt failed: cropping 4:2:0 frames to odd sizes before RGB conversion decoded the wrong byte count. Fixed by converting to RGB before cropping.",
+    "Run 2 then recorded the baseline; P1 was first recorded as not attached because the criterion required the mark in frames before its unit is visible. The criterion now evaluates frames where a mark-sized component exists, and the baseline was re-recorded.",
+    "Run 3 (--check) matched the recorded baseline exactly."
+  ],
+  "notRun": [
+    "WebGL2 backend",
+    "Human visual acceptance (agent review only)",
+    "Root-cause work for O2, O3, O10, O11 (ET5) and any engine fix (ET1–ET5)",
+    "Full verification tiers beyond pnpm check:fast (no package source changed)"
+  ]
+}

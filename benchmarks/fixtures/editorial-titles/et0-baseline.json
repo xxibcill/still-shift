@@ -1,0 +1,1870 @@
+{
+  "schema": "still-shift-editorial-titles-et0-baseline-1",
+  "fixtureClip": "sha256:c4daea53d7de6239bd37eee01f31649417257e870d052611eee05c4f34924019",
+  "findings": {
+    "O1": {
+      "finding": "O1",
+      "authoredGapsPx": {
+        "kicker": 18,
+        "folio": 30
+      },
+      "gapDefinition": "Blank rows between ink: kicker ink bottom (its baseline, all caps) to headline ink top; headline ink bottom (baseline) to folio ink top (cap). Luma < 160 on #F4EFE2, ±1 px after H.264.",
+      "validate": {
+        "animated": {
+          "exit": 0,
+          "status": "valid",
+          "diagnostics": []
+        },
+        "static": {
+          "exit": 0,
+          "status": "valid",
+          "diagnostics": []
+        }
+      },
+      "lintState": {
+        "pixels": false,
+        "exit": 1,
+        "status": "failed",
+        "measured": null,
+        "diagnostics": [
+          {
+            "code": "comp-text-layout-missing",
+            "severity": "error",
+            "node": "headline",
+            "message": "Text constraints need measured layer bounds",
+            "frames": []
+          }
+        ]
+      },
+      "animated": {
+        "render": {
+          "exit": 0,
+          "status": "rendered",
+          "rendererVersion": "composition-canvas-1.47.7",
+          "evaluatorVersion": "composition-evaluator-60",
+          "warnings": [],
+          "systemFontLayers": [],
+          "sha256": "29add3829dea83d25234ff72a4207f93fd1ee8cb0e7ae17eff223637a008e328"
+        },
+        "hold": [
+          {
+            "frame": 30,
+            "ink": {
+              "kicker": {
+                "x0": 31,
+                "y0": 653,
+                "x1": 516,
+                "y1": 675
+              },
+              "headline": {
+                "x0": 66,
+                "y0": 826,
+                "x1": 591,
+                "y1": 1013
+              },
+              "folio": {
+                "x0": 32,
+                "y0": 1253,
+                "x1": 407,
+                "y1": 1283
+              }
+            },
+            "kickerGapPx": 150,
+            "folioGapPx": 239
+          },
+          {
+            "frame": 45,
+            "ink": {
+              "kicker": {
+                "x0": 31,
+                "y0": 653,
+                "x1": 516,
+                "y1": 675
+              },
+              "headline": {
+                "x0": 66,
+                "y0": 826,
+                "x1": 603,
+                "y1": 1013
+              },
+              "folio": {
+                "x0": 32,
+                "y0": 1253,
+                "x1": 407,
+                "y1": 1283
+              }
+            },
+            "kickerGapPx": 150,
+            "folioGapPx": 239
+          },
+          {
+            "frame": 60,
+            "ink": {
+              "kicker": {
+                "x0": 31,
+                "y0": 653,
+                "x1": 516,
+                "y1": 675
+              },
+              "headline": {
+                "x0": 66,
+                "y0": 826,
+                "x1": 615,
+                "y1": 1013
+              },
+              "folio": {
+                "x0": 32,
+                "y0": 1253,
+                "x1": 407,
+                "y1": 1283
+              }
+            },
+            "kickerGapPx": 150,
+            "folioGapPx": 239
+          }
+        ]
+      },
+      "static": {
+        "render": {
+          "exit": 0,
+          "status": "rendered",
+          "rendererVersion": "composition-canvas-1.47.7",
+          "evaluatorVersion": "composition-evaluator-60",
+          "warnings": [],
+          "systemFontLayers": [],
+          "sha256": "e1e2ff62bada2e9c32307c17bf4e9c33f0c3ff1a5a36ccba9d0cf83e1cfac738"
+        },
+        "hold": [
+          {
+            "frame": 30,
+            "ink": {
+              "kicker": {
+                "x0": 64,
+                "y0": 711,
+                "x1": 549,
+                "y1": 733
+              },
+              "headline": {
+                "x0": 66,
+                "y0": 826,
+                "x1": 590,
+                "y1": 1013
+              },
+              "folio": {
+                "x0": 66,
+                "y0": 1121,
+                "x1": 441,
+                "y1": 1152
+              }
+            },
+            "kickerGapPx": 92,
+            "folioGapPx": 107
+          },
+          {
+            "frame": 45,
+            "ink": {
+              "kicker": {
+                "x0": 64,
+                "y0": 711,
+                "x1": 549,
+                "y1": 733
+              },
+              "headline": {
+                "x0": 66,
+                "y0": 826,
+                "x1": 590,
+                "y1": 1013
+              },
+              "folio": {
+                "x0": 66,
+                "y0": 1121,
+                "x1": 441,
+                "y1": 1152
+              }
+            },
+            "kickerGapPx": 92,
+            "folioGapPx": 107
+          },
+          {
+            "frame": 60,
+            "ink": {
+              "kicker": {
+                "x0": 64,
+                "y0": 711,
+                "x1": 549,
+                "y1": 733
+              },
+              "headline": {
+                "x0": 66,
+                "y0": 826,
+                "x1": 590,
+                "y1": 1013
+              },
+              "folio": {
+                "x0": 66,
+                "y0": 1121,
+                "x1": 441,
+                "y1": 1152
+              }
+            },
+            "kickerGapPx": 92,
+            "folioGapPx": 107
+          }
+        ]
+      }
+    },
+    "O2": {
+      "finding": "O2",
+      "frame": 40,
+      "validate": {
+        "exit": 0,
+        "status": "valid",
+        "diagnostics": []
+      },
+      "centred": {
+        "render": {
+          "exit": 0,
+          "status": "rendered",
+          "rendererVersion": "composition-canvas-1.47.7",
+          "evaluatorVersion": "composition-evaluator-60",
+          "warnings": [],
+          "systemFontLayers": [],
+          "sha256": "eb28dab63a5a25cf896a46aa0a1312b029981d8d8eb575ff9c321ff4d5df5e48"
+        },
+        "ink": {
+          "x0": 0,
+          "y0": 212,
+          "x1": 409,
+          "y1": 258
+        }
+      },
+      "control": {
+        "render": {
+          "exit": 0,
+          "status": "rendered",
+          "rendererVersion": "composition-canvas-1.47.7",
+          "evaluatorVersion": "composition-evaluator-60",
+          "warnings": [],
+          "systemFontLayers": [],
+          "sha256": "b54a06f4b7b5accfbb710123df44ce1bbb96c2e07f315de664e5aee276acf981"
+        },
+        "ink": {
+          "x0": 70,
+          "y0": 212,
+          "x1": 751,
+          "y1": 272
+        }
+      },
+      "fullInkWidthPx": 682,
+      "visibleInkWidthPx": 410,
+      "offFrameFraction": 0.399,
+      "clippedAtLeftEdge": true,
+      "lintPixels": {
+        "pixels": true,
+        "exit": 1,
+        "status": "failed",
+        "measured": {
+          "evaluatedState": true,
+          "pixels": true,
+          "pixelMethod": "grayscale-energy",
+          "textBounds": true
+        },
+        "diagnostics": [
+          {
+            "code": "outside-safe-area",
+            "severity": "warning",
+            "node": "line",
+            "message": "Layer leaves the 5.0% safe inset.",
+            "frames": [[4, 83]],
+            "measured": [1, 1]
+          },
+          {
+            "code": "frozen-pixels",
+            "severity": "error",
+            "message": "79 unchanged pixel comparisons exceed the 6-frame limit.",
+            "frames": [[5, 83]],
+            "measured": [79, 79]
+          },
+          {
+            "code": "frozen-run",
+            "severity": "error",
+            "message": "79 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+            "frames": [[5, 83]],
+            "measured": [79, 79]
+          },
+          {
+            "code": "frozen-pixels",
+            "severity": "error",
+            "message": "11 unchanged pixel comparisons exceed the 6-frame limit.",
+            "frames": [[85, 95]],
+            "measured": [11, 11]
+          },
+          {
+            "code": "frozen-run",
+            "severity": "error",
+            "message": "11 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+            "frames": [[85, 95]],
+            "measured": [11, 11]
+          }
+        ]
+      }
+    },
+    "O3": {
+      "finding": "O3",
+      "textOpacityZeroFromFrame": 70,
+      "outPoint": 84,
+      "validate": {
+        "exit": 0,
+        "status": "valid",
+        "diagnostics": []
+      },
+      "render": {
+        "exit": 0,
+        "status": "rendered",
+        "rendererVersion": "composition-canvas-1.47.7",
+        "evaluatorVersion": "composition-evaluator-60",
+        "warnings": [],
+        "systemFontLayers": [],
+        "sha256": "18eb506e6d6a8d306b05d930864d53846b6eb773e7a0bf4bf0afe492e5690bfe"
+      },
+      "pixelCounts": [
+        {
+          "frame": 40,
+          "textInkPixels": 8755,
+          "highlightPixels": 41089
+        },
+        {
+          "frame": 70,
+          "textInkPixels": 0,
+          "highlightPixels": 50483
+        },
+        {
+          "frame": 76,
+          "textInkPixels": 0,
+          "highlightPixels": 50483
+        },
+        {
+          "frame": 83,
+          "textInkPixels": 0,
+          "highlightPixels": 50483
+        }
+      ],
+      "barVisibleAfterTextOpacityZero": true,
+      "lintPixels": {
+        "pixels": true,
+        "exit": 1,
+        "status": "failed",
+        "measured": {
+          "evaluatedState": true,
+          "pixels": true,
+          "pixelMethod": "grayscale-energy",
+          "textBounds": true
+        },
+        "diagnostics": [
+          {
+            "code": "outside-safe-area",
+            "severity": "warning",
+            "node": "tag",
+            "message": "Layer leaves the 5.0% safe inset.",
+            "frames": [[4, 83]],
+            "measured": [1, 1]
+          },
+          {
+            "code": "frozen-pixels",
+            "severity": "error",
+            "message": "49 unchanged pixel comparisons exceed the 6-frame limit.",
+            "frames": [[15, 63]],
+            "measured": [49, 49]
+          },
+          {
+            "code": "frozen-run",
+            "severity": "error",
+            "message": "43 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+            "frames": [[18, 60]],
+            "measured": [43, 43]
+          },
+          {
+            "code": "frozen-pixels",
+            "severity": "error",
+            "message": "14 unchanged pixel comparisons exceed the 6-frame limit.",
+            "frames": [[70, 83]],
+            "measured": [14, 14]
+          },
+          {
+            "code": "frozen-run",
+            "severity": "error",
+            "message": "12 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+            "frames": [[72, 83]],
+            "measured": [12, 12]
+          },
+          {
+            "code": "frozen-pixels",
+            "severity": "error",
+            "message": "11 unchanged pixel comparisons exceed the 6-frame limit.",
+            "frames": [[85, 95]],
+            "measured": [11, 11]
+          },
+          {
+            "code": "frozen-run",
+            "severity": "error",
+            "message": "11 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+            "frames": [[85, 95]],
+            "measured": [11, 11]
+          }
+        ]
+      }
+    },
+    "O4": {
+      "finding": "O4",
+      "validate": {
+        "exit": 0,
+        "status": "valid",
+        "diagnostics": []
+      },
+      "withVideo": {
+        "pixels": true,
+        "exit": 0,
+        "status": "passed",
+        "measured": {
+          "evaluatedState": true,
+          "pixels": true,
+          "pixelMethod": "grayscale-energy",
+          "textBounds": true
+        },
+        "diagnostics": [
+          {
+            "code": "outside-safe-area",
+            "severity": "warning",
+            "node": "clip",
+            "message": "Layer leaves the 5.0% safe inset.",
+            "frames": [[0, 95]],
+            "measured": [1, 1]
+          }
+        ]
+      },
+      "withoutVideo": {
+        "pixels": true,
+        "exit": 1,
+        "status": "failed",
+        "measured": {
+          "evaluatedState": true,
+          "pixels": true,
+          "pixelMethod": "grayscale-energy",
+          "textBounds": true
+        },
+        "diagnostics": [
+          {
+            "code": "frozen-pixels",
+            "severity": "error",
+            "message": "79 unchanged pixel comparisons exceed the 6-frame limit.",
+            "frames": [[5, 83]],
+            "measured": [79, 79]
+          },
+          {
+            "code": "frozen-run",
+            "severity": "error",
+            "message": "79 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+            "frames": [[5, 83]],
+            "measured": [79, 79]
+          },
+          {
+            "code": "frozen-pixels",
+            "severity": "error",
+            "message": "11 unchanged pixel comparisons exceed the 6-frame limit.",
+            "frames": [[85, 95]],
+            "measured": [11, 11]
+          },
+          {
+            "code": "frozen-run",
+            "severity": "error",
+            "message": "11 unchanged evaluated-state comparisons exceed the 6-frame limit.",
+            "frames": [[85, 95]],
+            "measured": [11, 11]
+          }
+        ]
+      },
+      "withVideoStateOnly": {
+        "pixels": false,
+        "exit": 0,
+        "status": "passed",
+        "measured": {
+          "evaluatedState": true,
+          "pixels": false,
+          "pixelMethod": "unmeasured",
+          "textBounds": false
+        },
+        "diagnostics": [
+          {
+            "code": "outside-safe-area",
+            "severity": "warning",
+            "node": "clip",
+            "message": "Layer leaves the 5.0% safe inset.",
+            "frames": [[0, 95]],
+            "measured": [1, 1]
+          },
+          {
+            "code": "comp-text-layout-missing",
+            "severity": "warning",
+            "node": "credit",
+            "message": "Supply measured text bounds for culling and diagnostics",
+            "frames": [[4, 83]],
+            "measured": [1, 1]
+          }
+        ]
+      }
+    },
+    "O5": {
+      "finding": "O5",
+      "validate": {
+        "exit": 0,
+        "status": "valid",
+        "diagnostics": []
+      },
+      "render": {
+        "exit": 0,
+        "status": "rendered",
+        "rendererVersion": "composition-canvas-1.47.7",
+        "evaluatorVersion": "composition-evaluator-60",
+        "warnings": [],
+        "systemFontLayers": [],
+        "sha256": "381f678ea29e2be2f5c8f68341e879af997a4d1e1cb9a347c6040921d2a4a524"
+      },
+      "thaiOnlyLineInkPixels": 4040,
+      "fallbackInkPainted": true,
+      "fontFace": {
+        "family": "IBM Plex Sans",
+        "subfamily": "SemiBold",
+        "cmapFormats": [4]
+      },
+      "libraryStrictInspection": [
+        {
+          "code": "font-coverage",
+          "severity": "error",
+          "node": "mixed",
+          "message": "Font sans lacks U+0E04, U+0E25, U+0E38",
+          "missingCodepoints": ["U+0E04", "U+0E25", "U+0E38"]
+        },
+        {
+          "code": "font-coverage",
+          "severity": "error",
+          "node": "thai-only",
+          "message": "Font sans lacks U+0E04, U+0E25, U+0E38",
+          "missingCodepoints": ["U+0E04", "U+0E25", "U+0E38"]
+        }
+      ],
+      "compositionRoute": "packages/renderer-core/src/composition/render/renderer.ts calls loadCompositionFonts(composition, assetUrl, undefined, ...): the font gate is not invoked for compositions, and comp validate/render expose no strict font profile."
+    },
+    "O6": {
+      "finding": "O6",
+      "readingWindow": [14, 83],
+      "inkColor": "#1E2716",
+      "method": "Glyph boxes from the rendered frame 20 (before the band arrives); background sampled from the decoded source clip under each box; WCAG 2 contrast of ink against the mean background.",
+      "validate": {
+        "exit": 0,
+        "status": "valid",
+        "diagnostics": []
+      },
+      "render": {
+        "exit": 0,
+        "status": "rendered",
+        "rendererVersion": "composition-canvas-1.47.7",
+        "evaluatorVersion": "composition-evaluator-60",
+        "warnings": [],
+        "systemFontLayers": [],
+        "sha256": "23263218984f0f5c0d5868773c1a8c0f76dd3e536dd7ed0d7bacebac085bd405"
+      },
+      "layers": [
+        {
+          "layer": "credit",
+          "glyphBox": {
+            "x0": 82,
+            "y0": 301,
+            "x1": 677,
+            "y1": 330
+          },
+          "bandUnderGlyphFrames": [[27, 47]],
+          "predictedFromGenerator": [[27, 47]],
+          "minimumContrast": 1.16,
+          "framesBelow3To1": [[29, 45]],
+          "perFrame": [
+            {
+              "frame": 14,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 15,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 16,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 17,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 18,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 19,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 20,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 21,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 22,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 23,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 24,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 25,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 26,
+              "meanLuma": 229.9,
+              "bandFraction": 0,
+              "contrast": 12.39
+            },
+            {
+              "frame": 27,
+              "meanLuma": 161.6,
+              "bandFraction": 0.333,
+              "contrast": 8.56
+            },
+            {
+              "frame": 28,
+              "meanLuma": 78.7,
+              "bandFraction": 0.733,
+              "contrast": 3.93
+            },
+            {
+              "frame": 29,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 30,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 31,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 32,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 33,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 34,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 35,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 36,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 37,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 38,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 39,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 40,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 41,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 42,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 43,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 44,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 45,
+              "meanLuma": 50.6,
+              "bandFraction": 0.867,
+              "contrast": 2.4
+            },
+            {
+              "frame": 46,
+              "meanLuma": 133.4,
+              "bandFraction": 0.467,
+              "contrast": 7.02
+            },
+            {
+              "frame": 47,
+              "meanLuma": 216.2,
+              "bandFraction": 0.067,
+              "contrast": 11.63
+            },
+            {
+              "frame": 48,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 49,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 50,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 51,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 52,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 53,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 54,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 55,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 56,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 57,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 58,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 59,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 60,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 61,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 62,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 63,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 64,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 65,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 66,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 67,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 68,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 69,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 70,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 71,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 72,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 73,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 74,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 75,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 76,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 77,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 78,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 79,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 80,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 81,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 82,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 83,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            }
+          ]
+        },
+        {
+          "layer": "line",
+          "glyphBox": {
+            "x0": 80,
+            "y0": 374,
+            "x1": 761,
+            "y1": 434
+          },
+          "bandUnderGlyphFrames": [[33, 55]],
+          "predictedFromGenerator": [[33, 55]],
+          "minimumContrast": 1.16,
+          "framesBelow3To1": [[37, 51]],
+          "perFrame": [
+            {
+              "frame": 14,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 15,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 16,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 17,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 18,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 19,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 20,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 21,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 22,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 23,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 24,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 25,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 26,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 27,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 28,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 29,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 30,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 31,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 32,
+              "meanLuma": 230.3,
+              "bandFraction": 0,
+              "contrast": 12.43
+            },
+            {
+              "frame": 33,
+              "meanLuma": 202.9,
+              "bandFraction": 0.131,
+              "contrast": 10.86
+            },
+            {
+              "frame": 34,
+              "meanLuma": 162.3,
+              "bandFraction": 0.328,
+              "contrast": 8.6
+            },
+            {
+              "frame": 35,
+              "meanLuma": 121.6,
+              "bandFraction": 0.525,
+              "contrast": 6.33
+            },
+            {
+              "frame": 36,
+              "meanLuma": 80.9,
+              "bandFraction": 0.721,
+              "contrast": 4.06
+            },
+            {
+              "frame": 37,
+              "meanLuma": 39.6,
+              "bandFraction": 0.918,
+              "contrast": 1.8
+            },
+            {
+              "frame": 38,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 39,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 40,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 41,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 42,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 43,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 44,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 45,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 46,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 47,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 48,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 49,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 50,
+              "meanLuma": 23,
+              "bandFraction": 1,
+              "contrast": 1.16
+            },
+            {
+              "frame": 51,
+              "meanLuma": 29.8,
+              "bandFraction": 0.967,
+              "contrast": 1.24
+            },
+            {
+              "frame": 52,
+              "meanLuma": 70.5,
+              "bandFraction": 0.77,
+              "contrast": 3.51
+            },
+            {
+              "frame": 53,
+              "meanLuma": 111.2,
+              "bandFraction": 0.574,
+              "contrast": 5.78
+            },
+            {
+              "frame": 54,
+              "meanLuma": 152,
+              "bandFraction": 0.377,
+              "contrast": 8.05
+            },
+            {
+              "frame": 55,
+              "meanLuma": 192.7,
+              "bandFraction": 0.18,
+              "contrast": 10.32
+            },
+            {
+              "frame": 56,
+              "meanLuma": 229.2,
+              "bandFraction": 0,
+              "contrast": 12.32
+            },
+            {
+              "frame": 57,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 58,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 59,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 60,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 61,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 62,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 63,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 64,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 65,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 66,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 67,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 68,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 69,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 70,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 71,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 72,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 73,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 74,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 75,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 76,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 77,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 78,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 79,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 80,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 81,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 82,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            },
+            {
+              "frame": 83,
+              "meanLuma": 230,
+              "bandFraction": 0,
+              "contrast": 12.4
+            }
+          ]
+        }
+      ],
+      "lintState": {
+        "pixels": false,
+        "exit": 0,
+        "status": "passed",
+        "measured": {
+          "evaluatedState": true,
+          "pixels": false,
+          "pixelMethod": "unmeasured",
+          "textBounds": false
+        },
+        "diagnostics": [
+          {
+            "code": "outside-safe-area",
+            "severity": "warning",
+            "node": "clip",
+            "message": "Layer leaves the 5.0% safe inset.",
+            "frames": [[0, 95]],
+            "measured": [1, 1]
+          },
+          {
+            "code": "comp-text-layout-missing",
+            "severity": "warning",
+            "node": "credit",
+            "message": "Supply measured text bounds for culling and diagnostics",
+            "frames": [[4, 83]],
+            "measured": [1, 1]
+          },
+          {
+            "code": "comp-text-layout-missing",
+            "severity": "warning",
+            "node": "line",
+            "message": "Supply measured text bounds for culling and diagnostics",
+            "frames": [[4, 83]],
+            "measured": [1, 1]
+          }
+        ]
+      },
+      "lintPixels": {
+        "pixels": true,
+        "exit": 0,
+        "status": "passed",
+        "measured": {
+          "evaluatedState": true,
+          "pixels": true,
+          "pixelMethod": "grayscale-energy",
+          "textBounds": true
+        },
+        "diagnostics": [
+          {
+            "code": "outside-safe-area",
+            "severity": "warning",
+            "node": "clip",
+            "message": "Layer leaves the 5.0% safe inset.",
+            "frames": [[0, 95]],
+            "measured": [1, 1]
+          }
+        ]
+      }
+    },
+    "P1": {
+      "finding": "P1",
+      "validate": {
+        "exit": 0,
+        "status": "valid",
+        "diagnostics": []
+      },
+      "render": {
+        "exit": 0,
+        "status": "rendered",
+        "rendererVersion": "composition-canvas-1.47.7",
+        "evaluatorVersion": "composition-evaluator-60",
+        "warnings": [],
+        "systemFontLayers": [],
+        "sha256": "e701938fa79a9fdb69595a4f882f51d556a62daea2ce869702473d3e50327bf3"
+      },
+      "method": "Connected ink components (luma >= 96) per frame; U+0E38 is the settled frame's smallest component, and in entrance frames the smallest component of 0.5–1.6× that area (earlier frames show other units only). Attached when it lies under its base (horizontal overlap >= 0.5) at the settled gap ±6 px; wght/wdth vary during the entrance, so the gap is not exact.",
+      "settledMarkGapPx": 11,
+      "evaluatedFrames": [
+        [21, 34],
+        [40, 40]
+      ],
+      "perFrame": [
+        {
+          "frame": 12,
+          "components": 1
+        },
+        {
+          "frame": 13,
+          "components": 1
+        },
+        {
+          "frame": 14,
+          "components": 1
+        },
+        {
+          "frame": 15,
+          "components": 2
+        },
+        {
+          "frame": 16,
+          "components": 2
+        },
+        {
+          "frame": 17,
+          "components": 11
+        },
+        {
+          "frame": 18,
+          "components": 3
+        },
+        {
+          "frame": 19,
+          "components": 3
+        },
+        {
+          "frame": 20,
+          "components": 3
+        },
+        {
+          "frame": 21,
+          "components": 5,
+          "mark": {
+            "x0": 462,
+            "y0": 949,
+            "x1": 491,
+            "y1": 994,
+            "area": 1067
+          },
+          "base": {
+            "x0": 400,
+            "y0": 806,
+            "x1": 491,
+            "y1": 936,
+            "area": 6877
+          },
+          "markGapPx": 12,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 22,
+          "components": 5,
+          "mark": {
+            "x0": 461,
+            "y0": 938,
+            "x1": 495,
+            "y1": 983,
+            "area": 1259
+          },
+          "base": {
+            "x0": 400,
+            "y0": 794,
+            "x1": 495,
+            "y1": 925,
+            "area": 8032
+          },
+          "markGapPx": 12,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 23,
+          "components": 6,
+          "mark": {
+            "x0": 462,
+            "y0": 929,
+            "x1": 499,
+            "y1": 974,
+            "area": 1413
+          },
+          "base": {
+            "x0": 402,
+            "y0": 785,
+            "x1": 499,
+            "y1": 916,
+            "area": 8827
+          },
+          "markGapPx": 12,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 24,
+          "components": 6,
+          "mark": {
+            "x0": 457,
+            "y0": 923,
+            "x1": 495,
+            "y1": 968,
+            "area": 1500
+          },
+          "base": {
+            "x0": 398,
+            "y0": 779,
+            "x1": 495,
+            "y1": 910,
+            "area": 9156
+          },
+          "markGapPx": 12,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 25,
+          "components": 6,
+          "mark": {
+            "x0": 453,
+            "y0": 918,
+            "x1": 493,
+            "y1": 964,
+            "area": 1596
+          },
+          "base": {
+            "x0": 396,
+            "y0": 774,
+            "x1": 493,
+            "y1": 906,
+            "area": 9437
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 26,
+          "components": 6,
+          "mark": {
+            "x0": 451,
+            "y0": 916,
+            "x1": 491,
+            "y1": 961,
+            "area": 1589
+          },
+          "base": {
+            "x0": 394,
+            "y0": 772,
+            "x1": 491,
+            "y1": 903,
+            "area": 9418
+          },
+          "markGapPx": 12,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 27,
+          "components": 6,
+          "mark": {
+            "x0": 450,
+            "y0": 914,
+            "x1": 490,
+            "y1": 960,
+            "area": 1634
+          },
+          "base": {
+            "x0": 393,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9515
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 28,
+          "components": 6,
+          "mark": {
+            "x0": 449,
+            "y0": 914,
+            "x1": 490,
+            "y1": 959,
+            "area": 1620
+          },
+          "base": {
+            "x0": 392,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9547
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 29,
+          "components": 6,
+          "mark": {
+            "x0": 449,
+            "y0": 914,
+            "x1": 490,
+            "y1": 959,
+            "area": 1621
+          },
+          "base": {
+            "x0": 392,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9549
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 30,
+          "components": 6,
+          "mark": {
+            "x0": 449,
+            "y0": 914,
+            "x1": 490,
+            "y1": 959,
+            "area": 1621
+          },
+          "base": {
+            "x0": 392,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9548
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 31,
+          "components": 6,
+          "mark": {
+            "x0": 449,
+            "y0": 914,
+            "x1": 490,
+            "y1": 959,
+            "area": 1621
+          },
+          "base": {
+            "x0": 392,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9548
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 32,
+          "components": 6,
+          "mark": {
+            "x0": 449,
+            "y0": 914,
+            "x1": 490,
+            "y1": 959,
+            "area": 1621
+          },
+          "base": {
+            "x0": 392,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9547
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 33,
+          "components": 6,
+          "mark": {
+            "x0": 449,
+            "y0": 914,
+            "x1": 490,
+            "y1": 959,
+            "area": 1621
+          },
+          "base": {
+            "x0": 392,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9547
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 34,
+          "components": 6,
+          "mark": {
+            "x0": 449,
+            "y0": 914,
+            "x1": 490,
+            "y1": 959,
+            "area": 1621
+          },
+          "base": {
+            "x0": 392,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9547
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        },
+        {
+          "frame": 40,
+          "components": 6,
+          "mark": {
+            "x0": 449,
+            "y0": 914,
+            "x1": 490,
+            "y1": 959,
+            "area": 1621
+          },
+          "base": {
+            "x0": 392,
+            "y0": 770,
+            "x1": 490,
+            "y1": 902,
+            "area": 9547
+          },
+          "markGapPx": 11,
+          "horizontalOverlap": 1
+        }
+      ],
+      "marksAttachedInEvaluatedFrames": true
+    }
+  }
+}
