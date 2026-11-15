@@ -160,15 +160,8 @@ async function lintOwnedComposition(
       },
     });
     options.signal?.throwIfAborted();
-    const listening = createHttpServer(server.middlewares);
-    http = listening;
-    await new Promise<void>((resolve, reject) => {
-      listening.once("error", reject);
-      listening.listen(0, "127.0.0.1", () => {
-        listening.off("error", reject);
-        resolve();
-      });
-    });
+    http = createHttpServer(server.middlewares);
+    const port = await listenOnLoopback(http);
     options.signal?.throwIfAborted();
     browser = await launchRenderBrowser(
       options.ownsProcessSignals ? { handleProcessSignals: false } : {},
@@ -176,10 +169,7 @@ async function lintOwnedComposition(
     options.signal?.throwIfAborted();
     const page = await browser.newPage();
     await page.goto(
-      runtimeBrowserUrl(
-        `http://127.0.0.1:${(listening.address() as AddressInfo).port}/`,
-        "composition-compile",
-      ),
+      runtimeBrowserUrl(`http://127.0.0.1:${port}/`, "composition-compile"),
     );
     const moduleUrl = `/@fs/${fileURLToPath(new URL("../../renderer-core/src/index.ts", import.meta.url))}`;
     await page.addScriptTag({
@@ -369,6 +359,17 @@ export async function closeViteServer(
 }
 
 const optimizerSettleTimeoutMs = 10_000;
+
+/** Listen on an ephemeral loopback port and return it. */
+function listenOnLoopback(server: Server) {
+  return new Promise<number>((resolve, reject) => {
+    server.once("error", reject);
+    server.listen(0, "127.0.0.1", () => {
+      server.off("error", reject);
+      resolve((server.address() as AddressInfo).port);
+    });
+  });
+}
 
 function closeHttpServer(server: Server) {
   return new Promise<void>((resolve, reject) => {
