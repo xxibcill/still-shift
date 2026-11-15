@@ -415,8 +415,9 @@ describe("text legibility findings", () => {
   });
 
   it("keeps fonts it cannot read as unmeasured instead of failing", () => {
-    // Compositions may pin WOFF/WOFF2 fonts (the browser loads them), but
-    // the x-height reader takes SFNT TTF/OTF only. Lint must not throw.
+    // The x-height reader takes SFNT TTF/OTF only. The CLI font gate rejects
+    // WOFF/WOFF2 first (font-format), but this evidence builder must still
+    // keep a font it cannot read as unmeasured rather than throw.
     const ttf = readFileSync("assets/story-motion/fonts/plex-mono-medium.ttf");
     const woff2 = new Uint8Array(64);
     woff2.set([0x77, 0x4f, 0x46, 0x32]); // "wOF2"
@@ -433,7 +434,8 @@ describe("text legibility findings", () => {
     expect(fonts.fontXHeights.mono).toBeCloseTo(0.516, 3);
     expect(fonts.fontXHeights).not.toHaveProperty("brand");
     expect(fonts.fontXHeightErrors).toEqual({
-      brand: "font-metadata: typography requires an SFNT TTF or OTF font",
+      brand:
+        "font-metadata: typography read a WOFF2 font; it requires an SFNT TTF or OTF font",
     });
 
     const font = (id: string, path: string) => ({
@@ -471,7 +473,7 @@ describe("text legibility findings", () => {
         { textLegibility: {}, textLegibilityEvidence: fonts },
       );
     const reason =
-      'x-height of title is not measured for font "brand": font-metadata: typography requires an SFNT TTF or OTF font.';
+      'x-height of title is not measured for font "brand": font-metadata: typography read a WOFF2 font; it requires an SFNT TTF or OTF font.';
     const only = run();
     expect(only.textLegibility!.limitations).toContain(reason);
     expect(only.textLegibility!.limitations).not.toContain(

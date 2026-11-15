@@ -1,4 +1,5 @@
 import type { FontAxes } from "../../scene-contract/src/typography.ts";
+import { unsupportedFontContainer } from "./font-sfnt.ts";
 
 export type FontMetrics = {
   unitsPerEm: number;
@@ -18,10 +19,10 @@ export function readFontMetrics(bytes: ArrayBuffer): FontMetrics {
   const tag = (at: number) =>
     String.fromCharCode(...new Uint8Array(bytes, at, 4));
   const tables = new Map<string, { offset: number; length: number }>();
-  const signature = data.getUint32(0);
-  if (signature !== 0x00010000 && tag(0) !== "OTTO")
+  const unsupported = unsupportedFontContainer(bytes);
+  if (unsupported)
     throw new Error(
-      "font-metadata: typography requires an SFNT TTF or OTF font",
+      `font-metadata: typography read a ${unsupported}; it requires an SFNT TTF or OTF font`,
     );
   const count = data.getUint16(4);
   if (12 + count * 16 > bytes.byteLength)
