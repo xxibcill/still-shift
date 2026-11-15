@@ -213,7 +213,11 @@ function condense(diagnostics: readonly LintDiagnostic[]) {
 
 type Frame = { width: number; height: number; data: Buffer };
 
-/** Decode frames by ordinal to 8-bit sRGB (BT.709 limited range input). */
+/**
+ * Decode frames by ordinal to 8-bit sRGB (BT.709 limited range input).
+ * `select` emits frames in decode order and results are paired with
+ * `ordinals` by position, so the ordinals must be strictly ascending.
+ */
 async function frames(
   path: string,
   width: number,
@@ -221,6 +225,10 @@ async function frames(
   ordinals: readonly number[],
   crop?: { x: number; y: number; width: number; height: number },
 ): Promise<Frame[]> {
+  if (ordinals.some((n, i) => i > 0 && n <= ordinals[i - 1]!))
+    throw new Error(
+      `${path}: frame ordinals must be strictly ascending: ${ordinals.join(", ")}`,
+    );
   const select = ordinals.map((n) => `eq(n\\,${n})`).join("+");
   const w = crop?.width ?? width,
     h = crop?.height ?? height;
