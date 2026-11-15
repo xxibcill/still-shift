@@ -616,7 +616,7 @@ try {
   );
   const seams = await assertNoGlyphSeams();
   console.log(
-    `ET5b: per-glyph poses keep each serif glyph's own ink (pixels off the static oracle: ${JSON.stringify(seams)}); settled glyphs match the static draw exactly.`,
+    `ET5b: per-glyph poses keep each serif glyph's own ink (pixels more than 24 levels off the static oracle: ${JSON.stringify(seams)}); settled frames are pinned by the CE0 and ET0 baselines.`,
   );
   console.log(
     JSON.stringify({

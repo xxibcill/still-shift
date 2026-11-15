@@ -20,8 +20,7 @@ import { fonts } from "../../benchmarks/fixtures/editorial-titles/shared.ts";
 
 const run = promisify(execFile);
 const W = 640,
-  H = 640,
-  PAPER = [0xf4, 0xef, 0xe2] as const;
+  H = 640;
 
 type Motion = {
   /** Displacement of the moving part; the first glyph stays at rest. */
@@ -152,8 +151,13 @@ async function frame0(directory: string, name: string, comp: Composition) {
   return stdout;
 }
 
+/**
+ * Whether a pixel is the frame's background, read from its corner: encoded
+ * paper can differ from the composition's nominal #F4EFE2 (it renders as
+ * #F3EDDF), so a fixed colour would count every pixel as ink.
+ */
 const isPaper = (rgb: Buffer, i: number) =>
-  rgb[i] === PAPER[0] && rgb[i + 1] === PAPER[1] && rgb[i + 2] === PAPER[2];
+  rgb.subarray(i, i + 3).equals(rgb.subarray(0, 3));
 
 /**
  * Expected frame for "ve" with the "e" displaced by `offset`: the lone "v",
@@ -190,17 +194,14 @@ function expectedFrame(
  * A frame whose lower part was displaced by `offset` (vertically, clear of
  * the rest), moved back: every pixel from row `split` down returns by the
  * offset. When the parts are cut from one static line, this rebuilds it.
- * The background is the frame's own corner pixel (encoded paper can differ
- * from the composition's nominal colour).
  */
 function reassembled(moved: Buffer, offset: [number, number], split: number) {
-  const paper = moved.subarray(0, 3),
-    out = Buffer.alloc(moved.length);
-  for (let i = 0; i < out.length; i += 3) out.set(paper, i);
+  const out = Buffer.alloc(moved.length);
+  for (let i = 0; i < out.length; i += 3) moved.copy(out, i, 0, 3);
   for (let y = 0; y < H; y++)
     for (let x = 0; x < W; x++) {
       const i = (y * W + x) * 3;
-      if (moved.subarray(i, i + 3).equals(paper)) continue;
+      if (isPaper(moved, i)) continue;
       const ty = y >= split ? y - offset[1] : y,
         tx = y >= split ? x - offset[0] : x;
       if (tx < 0 || ty < 0 || tx >= W || ty >= H) continue;
@@ -230,7 +231,10 @@ export async function verifyGlyphSeams() {
     const pair = await frame0(directory, "ve", serifPair("ve"));
     let pairInk = 0;
     for (let i = 0; i < pair.length; i += 3) if (!isPaper(pair, i)) pairInk++;
-    assert.ok(pairInk > 10_000, "the static pair paints both glyphs");
+    assert.ok(
+      pairInk > 10_000 && pairInk < (W * H) / 4,
+      `the static pair paints both glyphs on paper (${pairInk} ink pixels)`,
+    );
 
     // Rest: a span and a zero-offset animator change nothing.
     const rest = await frame0(
