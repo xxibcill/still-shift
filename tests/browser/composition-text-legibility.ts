@@ -12,6 +12,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
+import { contrastRatio } from "../../packages/renderer-core/src/typography-quality.ts";
+import { paper } from "../../benchmarks/fixtures/editorial-titles/shared.ts";
 import { editorialFixture } from "../helpers/editorial-video-lint.ts";
 
 type Diagnostic = {
@@ -30,6 +32,7 @@ type LegibilityLayer = {
   attribution: string;
   measuredFrames: number;
   worst?: { contrast: number; frame: number; word?: string };
+  role: string;
   xHeight?: { reviewPixels: number; frame: number };
   waiver?: { reason: string; codes: string[] };
 };
@@ -210,6 +213,42 @@ export async function verifyTextLegibility() {
   } finally {
     await rm(directory, { recursive: true, force: true });
   }
+
+  // On a plain background every glyph-interior pixel has the ink/paper ratio.
+  // Attach constraints must resolve in the glyph mask as in the frame: with
+  // the animated attach target hidden by `enabled: false`, the labels moved
+  // and read 1.00:1 (found on proof T1 pass 1).
+  const attached = await lintFixture("o1-attach-animated", [
+    "--legibility",
+    "true",
+  ]);
+  const inks = { kicker: "#2F3520", headline: "#4A5A23", folio: "#2F3520" };
+  for (const layer of attached.report.textLegibility!.layers) {
+    const expected = contrastRatio(
+      inks[layer.layer as keyof typeof inks],
+      paper,
+    );
+    assert.ok(layer.measuredFrames > 0, `${layer.layer} measured`);
+    assert.ok(
+      // Animated glyphs are resampled, so interiors may be a level off.
+      Math.abs(layer.worst!.contrast - expected) < expected * 0.03,
+      `ET3: attached ${layer.layer} measures ${layer.worst!.contrast}:1 on paper; expected ${expected.toFixed(2)}:1`,
+    );
+  }
+  // A highlight is the text's own backdrop: the background frame keeps it.
+  // Dropping it (the container-only text probe) measured the ink against the
+  // paper (and on proof T2, against dark paving at 1.95:1).
+  const highlighted = await lintFixture("o3-highlight-fade", [
+    "--legibility",
+    "true",
+  ]);
+  const tag = highlighted.report.textLegibility!.layers[0]!;
+  const onHighlight = contrastRatio("#1D2410", "#C9D29A");
+  assert.ok(
+    Math.abs(tag.worst!.contrast - onHighlight) < 0.05 &&
+      onHighlight < contrastRatio("#1D2410", paper) - 1,
+    `ET3: highlighted tag measures ${tag.worst!.contrast}:1; ink on its highlight is ${onHighlight.toFixed(2)}:1`,
+  );
 
   // Option errors are reported before any work starts.
   for (const [option, value] of [

@@ -74,6 +74,8 @@ describe("contrast measure", () => {
       expect(decodeWordCode(rgb[0]! >> 1, rgb[1]! >> 1, rgb[2]! >> 1)).toBe(-1);
     }
     expect(decodeWordCode(255, 8, 4)).toBe(-1);
+    expect(decodeWordCode(251, 4, 4)).toBe(-1);
+    expect(decodeWordCode(254, 4, 4)).toBe(0);
     expect(decodeWordCode(0, 0, 0)).toBe(-1);
   });
 

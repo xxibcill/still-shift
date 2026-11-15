@@ -87,7 +87,9 @@ export const wordCode = (index: number) =>
   `#ff${hex(4 + 8 * (index % 32))}${hex(4 + 8 * Math.floor(index / 32))}`;
 /** Word index of an opaque glyph-interior mask pixel, or -1. */
 export function decodeWordCode(r: number, g: number, b: number) {
-  if (r < 250) return -1;
+  // Full coverage only: an edge pixel at 98% coverage over black still reads
+  // R 250, and its rendered colour then carries 2% of the background.
+  if (r < 254) return -1;
   const low = Math.round((g - 4) / 8),
     high = Math.round((b - 4) / 8);
   if (

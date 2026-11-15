@@ -3484,7 +3484,8 @@ container and highlight decorations stay), and a glyph mask, which keeps every
 other layer's geometry at opacity 0 on black and draws the layer's glyphs opaque
 with one colour code per word (decorations, effects and blend modes removed;
 text-animator opacity and blur, masks and track mattes kept). A glyph-interior
-pixel is a mask pixel with a complete, exact word code, so antialiased edges,
+pixel is a mask pixel with a complete, exact word code (red ≥ 254, so at least
+99.6% coverage), so antialiased edges,
 fading or blurred glyphs and covered text are excluded. At each interior pixel
 the WCAG 2 contrast is `(L1 + 0.05) / (L2 + 0.05)`, where `L1` and `L2` are the
 lighter and darker WCAG relative luminances of the rendered frame and the
