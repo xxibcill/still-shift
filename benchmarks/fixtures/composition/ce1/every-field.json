@@ -52,7 +52,8 @@
       "type": "font",
       "path": "../../../../assets/story-motion/fonts/plex-sans-medium.ttf",
       "sha256": "sha256:331c8639d7598b2cde62a911a71db195e30cb655cd6bdf2e324a7e984955f907",
-      "weight": "500"
+      "weight": "500",
+      "fallbacks": ["body"]
     },
     {
       "id": "body",
@@ -183,6 +184,7 @@
   ],
   "expressions": {},
   "behaviours": [],
+  "fontCoverage": "legacy",
   "camera2d": {
     "keys": [
       {

@@ -1016,6 +1016,26 @@ export function validateCompositionSemantics(
   checkMediaAssets(comp, fail);
   checkProtectedNarration(comp, fail);
   const signals = new Set(comp.signals?.map((s) => s.id));
+  comp.assets.forEach((font, i) => {
+    if (font.type !== "font" || !font.fallbacks) return;
+    font.fallbacks.forEach((id, j) => {
+      const path = ["assets", i, "fallbacks", j];
+      const fallback = assets.get(id);
+      if (id === font.id || font.fallbacks!.indexOf(id) !== j)
+        fail(
+          "comp-font-fallback",
+          path,
+          `font "${font.id}" lists "${id}" as a fallback more than once or for itself`,
+        );
+      else if (!fallback) fail("comp-asset-missing", path, `no asset "${id}"`);
+      else if (fallback.type !== "font")
+        fail(
+          "comp-asset-type",
+          path,
+          `asset "${id}" is a ${fallback.type}, not a font`,
+        );
+    });
+  });
   for (const [id, style] of Object.entries(comp.textStyles ?? {})) {
     if (!style.fontAsset) continue;
     const font = assets.get(style.fontAsset);
