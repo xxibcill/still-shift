@@ -55,6 +55,12 @@ const rejectsWith = async (
 
 export async function verifyLongVideoLint() {
   const directory = await mkdtemp(join(tmpdir(), "et2-long-video-lint-"));
+  // A private temporary root, so lint runs elsewhere on the machine cannot
+  // make the leftover checks flaky. tmpdir() reads TMPDIR on every call, and
+  // the browser and FFmpeg inherit it.
+  const previousTmpdir = process.env.TMPDIR;
+  process.env.TMPDIR = join(directory, "tmp");
+  await mkdir(process.env.TMPDIR);
   const tempBefore = await lintTemporaryEntries();
   const newTemporary = async () =>
     (await lintTemporaryEntries()).filter((name) => !tempBefore.includes(name));
@@ -255,6 +261,8 @@ export async function verifyLongVideoLint() {
       cancelled: ["prepare", "browser"],
     };
   } finally {
+    if (previousTmpdir === undefined) delete process.env.TMPDIR;
+    else process.env.TMPDIR = previousTmpdir;
     await rm(directory, { recursive: true, force: true });
   }
 }
