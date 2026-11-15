@@ -1,0 +1,1166 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-et3",
+  "milestone": "ET3 — Text-over-video legibility checks",
+  "plan": "docs/editorial-typography-improvement-plan.md#et3--text-over-video-legibility-checks",
+  "date": "2026-11-15",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/editorial-titles-et3",
+  "base": "main d510b7b6 (Merge PR #62, ET2; ET0 #60 and ET1 #61 merged)",
+  "toolchain": "pnpm toolchain:check passed: Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+  "reEstimate": "Planned 3–5 active days; done in one session. The composition renderer already had the story measure's pieces (WCAG contrastRatio, a glyph-suppressing text probe, OS/2 x-height); the work was word attribution over video, opt-in wiring, and finding three measurement defects on real treatments.",
+  "failingTestFirst": {
+    "test": "tests/browser/composition-text-legibility.ts (O6 dark band, run before any implementation)",
+    "result": "failed: comp lint rejected --legibility (\"Unknown or duplicate CLI option\"). The same fixture's pixel lint on main passes with only outside-safe-area (ET0 baseline lintPixels), so O6 was unreported.",
+    "afterImplementation": "passed on the first run: credit 27–47, line 33–54 against the ET0 band-under-glyph frames 27–47 and 33–55."
+  },
+  "measure": {
+    "readingWindow": "Root text layer on screen with layer opacity ≥ readingOpacity (0.9), reveal ≥ readingReveal (0.95), one displayed copy, state mix ≥ 0.95. Motion does not end the window.",
+    "background": "The composition with only that layer's glyph colours (layer, spans, corrections, animator color/fill/stroke) set to #00000000 and its non-highlight decorations removed: its container and highlight stay as backdrop.",
+    "glyphMask": "Same composition on black, other layers at transform opacity 0 (geometry and attach constraints still resolve; group ancestors and the track matte unchanged), the layer drawn with the ink-only text probe, effects/decorations/blend mode removed, one colour per word: R 255, G/B 4 + 8k (1,024 words). Interior pixel: R ≥ 254 and G/B within ±2 of a code.",
+    "contrast": "Per interior pixel: WCAG 2 (L1 + 0.05)/(L2 + 0.05) between the rendered frame and the background frame, 8-bit sRGB relative luminance (the story contrastRatio formula, shared LUT). Word value: 5th percentile, nearest rank rounded down (the story text-contrast statistic); fewer than 16 interior pixels = unmeasured. Layer value: lowest measured word.",
+    "targets": "WCAG 2 AA: heading 3:1 (large text), label/qualification/body 4.5:1; configurable per role.",
+    "words": "Maximal runs of non-whitespace graphemes (Thai without spaces is one run). Whole-layer attribution, with the reason reported, for states, transitions, corrections, animators selecting spans by id, or more than 1,024 words.",
+    "xHeight": "OS/2 sxHeight / unitsPerEm (readFontMetrics, as the typography renderer uses) × style size × |layer vertical scale| × reviewWidth / composition width; default floor 6 px at 360 px (about the x-height of 12 px CSS type). Per-glyph animator scale not included.",
+    "safeZones": "Policy bands {id, edge, fraction}; finding when the layer's text box (framing bounds, not ink) overlaps a band in the reading window. No built-in platform presets.",
+    "limits": "A legibility signal, not visual acceptance: no blur/halation/motion/colour-vision/polarity model; textured footage's darkest 5% can fail a word a person reads easily; precomp text is not measured."
+  },
+  "changes": [
+    {
+      "file": "packages/renderer-core/src/composition/text-legibility.ts",
+      "change": "New: word segmentation and colour codes, background and glyph-mask compositions, per-word percentile contrast, reading frames, and the three rules with waivers and the composition-text-legibility-1 report section."
+    },
+    {
+      "file": "packages/renderer-core/src/composition/quality-policy.ts",
+      "change": "MOTION_LINT_CODES gains text-contrast, x-height-floor, platform-safe-zone (warning by default); textLegibility policy schema; runtime textLegibilityEvidence; legibility-waiver classification."
+    },
+    {
+      "file": "packages/renderer-core/src/composition/quality-render.ts",
+      "change": "When textLegibility is declared and resources are supplied, renders each text layer's background and mask per reading frame from the linted preview's resources and backend."
+    },
+    {
+      "file": "packages/renderer-core/src/story-quality.ts",
+      "change": "analyzeCompositionQuality adds the legibility diagnostics and report section only when textLegibility is declared."
+    },
+    {
+      "file": "packages/animation-engine/src/composition-lint.ts",
+      "change": "Reads pinned fonts' x-heights in Node when legibility is declared (policy or saved readingPolicy) and passes resources for contrast in pixel mode."
+    },
+    {
+      "file": "tools/still-shift-cli/src/composition/commands.ts",
+      "change": "comp lint --legibility true and --strict <codes>."
+    },
+    {
+      "file": "docs/composition-reference-notes.md (+ generated reference)",
+      "change": "Text legibility over video (ET3) section."
+    },
+    {
+      "file": "docs/schemas/mechanism/blender-production-rendered-visual.schema.json",
+      "change": "Regenerated: it embeds the lint policy, which gained textLegibility and the three codes. No other schema changed."
+    },
+    {
+      "file": "tests/unit/composition-text-legibility.test.ts, tests/browser/composition-text-legibility.ts (in test:browser:composition-quality)",
+      "change": "Unit tests for the measure, codes, masks and findings; browser tests for O6, attach geometry, highlight backdrop, strict, waiver, option errors and unchanged reports."
+    },
+    {
+      "file": "research/editorial-typography-proof/t2-without-scrim.ts, scripts/editorial-titles/et3-proof-checks.ts",
+      "change": "T2 probe with the scrim disabled; script running the local-only proof checks with timings."
+    }
+  ],
+  "checks": {
+    "darkBandFixture": {
+      "status": "met",
+      "evidence": "Credit flagged 27–47, line 33–54; ET0 band-under-glyph frames 27–47 and 33–55 (±1). Every word named; worst 1.04 and 1.05:1. Automated in test:browser:composition-quality (tests/browser/composition-text-legibility.ts)."
+    },
+    "t3RoofEdgeAndT1": {
+      "status": "T3 met; T1 not met as written",
+      "evidence": "T3 pass 2 credit frames 44–120: \"03\" 1.53:1, \"·\" 3.21:1, \"EDIT\" 3.40:1; line passes (worst 6.86:1). T1 pass 2 is reported: \"Olive\" 2.72:1 (3:1) over the shadowed wall, folio \"No.\"/\"—\" 3.74/3.76:1 (4.5:1). Owner decision ET3-D1."
+    },
+    "t2Scrim": {
+      "status": "met for the poster; subline reported with the scrim",
+      "evidence": "Poster 3.60:1 with the scrim, 1.52:1 without; Thai subline 4.37:1 with, 1.31:1 without (target 4.5:1). The tag, measured against its own highlight, passes in both (worst 4.60 and 6.10:1)."
+    },
+    "phoneScaleFloor": {
+      "status": "met; T3 pass-2 credit also flagged",
+      "evidence": "Pass 1: T1 kicker 30 px 5.16 px, folio 32 px 5.57 px, T3 credit 26 px 4.47 px (fail at 6 px). T1 pass 2 kicker 38 px 6.54 px, folio 40 px 6.96 px (pass). T3 pass 2 credit stays 32 px Plex Mono: 5.50 px (flagged). T2 tag 36 px Noto Sans Thai 6.67 px in both passes. Owner decision ET3-D2."
+    },
+    "waiver": {
+      "status": "met",
+      "evidence": "textLegibility.waivers [{layer, reason, codes?}]: findings stay as warnings with classification legibility-waiver, waiver.reason and rawSeverity; the report lists each waiver and the codes it applied to. Browser test: under --strict text-contrast the waived credit stays a warning while the line fails."
+    },
+    "runtimeAndRender": {
+      "status": "met",
+      "evidence": "T3 pass 2 (7 s, 168 frames, 1080×1920, two text layers): 12.4 s without the rules and 20.9 s with them in the proof-check run; a separately timed run took 21.23 s wall with 1,277,083,648 bytes peak resident. No renderer, export or media file changed; et0-baseline --check: \"ET0 outcomes match the recorded baseline\" (render hashes unchanged)."
+    },
+    "verificationTiers": {
+      "status": "met",
+      "evidence": "check:fast, test:browser:composition-quality, test:browser:composition-media and check:runtime (rerun) pass at b7328f72; see finalVerification."
+    }
+  },
+  "proofChecks": {
+    "run1": {
+      "version": "et3-proof-checks-1",
+      "clip": "benchmarks/results/cinematic-illustrated/review-v3/ci-09-layered-parallax.mp4 (git-ignored; linked from the primary checkout; sha256:d5bc5a52…7fdcd)",
+      "o6DarkBand": {
+        "seconds": 6.4,
+        "status": "passed",
+        "findings": [
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "credit",
+            "frames": [27, 47],
+            "measured": 1.04,
+            "words": ["COURTYARD 1.04", "EDIT 1.05", "· 1.04", "03 1.04"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "line",
+            "frames": [33, 54],
+            "measured": 1.02,
+            "words": [
+              "three 1.05",
+              "ways 1.02",
+              "to 1.05",
+              "wear 1.05",
+              "olive 1.05"
+            ]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "credit",
+            "role": "label",
+            "readingFrames": 80,
+            "measuredFrames": 71,
+            "worst": {
+              "contrast": 1.04,
+              "frame": 27,
+              "word": "COURTYARD"
+            },
+            "xHeightAt360": 6.88
+          },
+          {
+            "layer": "line",
+            "role": "heading",
+            "readingFrames": 80,
+            "measuredFrames": 71,
+            "worst": {
+              "contrast": 1.02,
+              "frame": 34,
+              "word": "ways"
+            },
+            "xHeightAt360": 9.9
+          }
+        ]
+      },
+      "t1Pass2": {
+        "seconds": 24.1,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "headline",
+            "frames": [24, 138],
+            "measured": 2.71,
+            "words": ["Olive 2.71"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "folio",
+            "frames": [36, 120],
+            "measured": 3.73,
+            "words": ["No. 3.73", "— 3.76"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "kicker",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 82,
+            "worst": {
+              "contrast": 4.76,
+              "frame": 76,
+              "word": "THREE"
+            },
+            "xHeightAt360": 6.54
+          },
+          {
+            "layer": "headline",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 115,
+            "worst": {
+              "contrast": 2.71,
+              "frame": 138,
+              "word": "Olive"
+            },
+            "xHeightAt360": 39.92
+          },
+          {
+            "layer": "folio",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 85,
+            "worst": {
+              "contrast": 3.73,
+              "frame": 96,
+              "word": "No."
+            },
+            "xHeightAt360": 6.96
+          }
+        ]
+      },
+      "t2Pass2": {
+        "seconds": 21.4,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "tag",
+            "frames": [22, 22],
+            "measured": 4.46,
+            "words": ["GREEN 4.46"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "sub",
+            "frames": [42, 120],
+            "measured": 4.29,
+            "words": ["โทนเขียวมะกอก 4.29"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "tag",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 99,
+            "worst": {
+              "contrast": 4.46,
+              "frame": 22,
+              "word": "GREEN"
+            },
+            "xHeightAt360": 6.67
+          },
+          {
+            "layer": "poster",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 111,
+            "worst": {
+              "contrast": 3.6,
+              "frame": 105,
+              "word": "สามลุค"
+            },
+            "xHeightAt360": 42.63
+          },
+          {
+            "layer": "sub",
+            "role": "qualification",
+            "readingFrames": 138,
+            "measuredFrames": 79,
+            "worst": {
+              "contrast": 4.29,
+              "frame": 45,
+              "word": "โทนเขียวมะกอก"
+            },
+            "xHeightAt360": 11.86
+          }
+        ]
+      },
+      "t2WithoutScrim": {
+        "seconds": 19.8,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "poster",
+            "frames": [28, 138],
+            "measured": 1.52,
+            "words": ["สามลุค 1.52"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "sub",
+            "frames": [42, 120],
+            "measured": 1.3,
+            "words": ["โทนเขียวมะกอก 1.3"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "tag",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 99,
+            "worst": {
+              "contrast": 5.93,
+              "frame": 22,
+              "word": "GREEN"
+            },
+            "xHeightAt360": 6.67
+          },
+          {
+            "layer": "poster",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 111,
+            "worst": {
+              "contrast": 1.52,
+              "frame": 37,
+              "word": "สามลุค"
+            },
+            "xHeightAt360": 42.63
+          },
+          {
+            "layer": "sub",
+            "role": "qualification",
+            "readingFrames": 138,
+            "measuredFrames": 79,
+            "worst": {
+              "contrast": 1.3,
+              "frame": 42,
+              "word": "โทนเขียวมะกอก"
+            },
+            "xHeightAt360": 11.86
+          }
+        ]
+      },
+      "t3Pass2": {
+        "seconds": 21.3,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "x-height-floor",
+            "severity": "warning",
+            "node": "credit",
+            "frames": [12, 149],
+            "measured": 5.5
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "credit",
+            "frames": [42, 121],
+            "measured": 1.51,
+            "words": ["EDIT 2.72", "· 3.21", "03 1.51"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "credit",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 80,
+            "worst": {
+              "contrast": 1.51,
+              "frame": 121,
+              "word": "03"
+            },
+            "xHeightAt360": 5.5
+          },
+          {
+            "layer": "line",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 105,
+            "worst": {
+              "contrast": 6.83,
+              "frame": 128,
+              "word": "olive"
+            },
+            "xHeightAt360": 9.9
+          }
+        ]
+      },
+      "t3Pass2WithoutRules": {
+        "seconds": 12.4,
+        "status": "failed",
+        "findings": []
+      },
+      "t1Pass1": {
+        "seconds": 23.9,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "x-height-floor",
+            "severity": "warning",
+            "node": "kicker",
+            "frames": [12, 149],
+            "measured": 5.16
+          },
+          {
+            "code": "x-height-floor",
+            "severity": "warning",
+            "node": "folio",
+            "frames": [12, 149],
+            "measured": 5.57
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "headline",
+            "frames": [24, 138],
+            "measured": 2.71,
+            "words": ["Olive 2.71"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "folio",
+            "frames": [36, 120],
+            "measured": 1.51,
+            "words": [
+              "No. 1.51",
+              "03 1.78",
+              "— 1.76",
+              "Courtyard 1.52",
+              "Edit 1.72"
+            ]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "kicker",
+            "frames": [76, 82],
+            "measured": 4.37,
+            "words": ["THREE 4.37"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "kicker",
+            "frames": [86, 86],
+            "measured": 4.49,
+            "words": ["THREE 4.49"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "kicker",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 82,
+            "worst": {
+              "contrast": 4.37,
+              "frame": 80,
+              "word": "THREE"
+            },
+            "xHeightAt360": 5.16
+          },
+          {
+            "layer": "headline",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 115,
+            "worst": {
+              "contrast": 2.71,
+              "frame": 138,
+              "word": "Olive"
+            },
+            "xHeightAt360": 39.92
+          },
+          {
+            "layer": "folio",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 85,
+            "worst": {
+              "contrast": 1.51,
+              "frame": 49,
+              "word": "No."
+            },
+            "xHeightAt360": 5.57
+          }
+        ]
+      },
+      "t3Pass1": {
+        "seconds": 20.6,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "x-height-floor",
+            "severity": "warning",
+            "node": "credit",
+            "frames": [12, 149],
+            "measured": 4.47
+          }
+        ],
+        "layers": [
+          {
+            "layer": "credit",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 80,
+            "worst": {
+              "contrast": 9.12,
+              "frame": 42,
+              "word": "EDIT"
+            },
+            "xHeightAt360": 4.47
+          },
+          {
+            "layer": "line",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 105,
+            "worst": {
+              "contrast": 9.46,
+              "frame": 128,
+              "word": "to"
+            },
+            "xHeightAt360": 9.9
+          }
+        ]
+      }
+    },
+    "final": {
+      "version": "et3-proof-checks-1",
+      "clip": "benchmarks/results/cinematic-illustrated/review-v3/ci-09-layered-parallax.mp4 (git-ignored; linked from the primary checkout; sha256:d5bc5a52…7fdcd)",
+      "o6DarkBand": {
+        "seconds": 6.3,
+        "status": "passed",
+        "findings": [
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "credit",
+            "frames": [27, 47],
+            "measured": 1.04,
+            "words": ["COURTYARD 1.04", "EDIT 1.05", "· 1.04", "03 1.04"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "line",
+            "frames": [33, 54],
+            "measured": 1.05,
+            "words": [
+              "three 1.05",
+              "ways 1.05",
+              "to 1.05",
+              "wear 1.05",
+              "olive 1.05"
+            ]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "credit",
+            "role": "label",
+            "readingFrames": 80,
+            "measuredFrames": 71,
+            "worst": {
+              "contrast": 1.04,
+              "frame": 27,
+              "word": "COURTYARD"
+            },
+            "xHeightAt360": 6.88
+          },
+          {
+            "layer": "line",
+            "role": "heading",
+            "readingFrames": 80,
+            "measuredFrames": 71,
+            "worst": {
+              "contrast": 1.05,
+              "frame": 34,
+              "word": "three"
+            },
+            "xHeightAt360": 9.9
+          }
+        ]
+      },
+      "t1Pass2": {
+        "seconds": 23.5,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "headline",
+            "frames": [25, 137],
+            "measured": 2.72,
+            "words": ["Olive 2.72"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "folio",
+            "frames": [37, 119],
+            "measured": 3.74,
+            "words": ["No. 3.74", "— 3.76"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "kicker",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 80,
+            "worst": {
+              "contrast": 4.76,
+              "frame": 76,
+              "word": "THREE"
+            },
+            "xHeightAt360": 6.54
+          },
+          {
+            "layer": "headline",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 113,
+            "worst": {
+              "contrast": 2.72,
+              "frame": 137,
+              "word": "Olive"
+            },
+            "xHeightAt360": 39.92
+          },
+          {
+            "layer": "folio",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 83,
+            "worst": {
+              "contrast": 3.74,
+              "frame": 94,
+              "word": "No."
+            },
+            "xHeightAt360": 6.96
+          }
+        ]
+      },
+      "t2Pass2": {
+        "seconds": 20.6,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "sub",
+            "frames": [43, 119],
+            "measured": 4.37,
+            "words": ["โทนเขียวมะกอก 4.37"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "tag",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 97,
+            "worst": {
+              "contrast": 4.6,
+              "frame": 23,
+              "word": "GREEN"
+            },
+            "xHeightAt360": 6.67
+          },
+          {
+            "layer": "poster",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 109,
+            "worst": {
+              "contrast": 3.6,
+              "frame": 105,
+              "word": "สามลุค"
+            },
+            "xHeightAt360": 42.63
+          },
+          {
+            "layer": "sub",
+            "role": "qualification",
+            "readingFrames": 138,
+            "measuredFrames": 77,
+            "worst": {
+              "contrast": 4.37,
+              "frame": 46,
+              "word": "โทนเขียวมะกอก"
+            },
+            "xHeightAt360": 11.86
+          }
+        ]
+      },
+      "t2WithoutScrim": {
+        "seconds": 19.2,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "poster",
+            "frames": [29, 137],
+            "measured": 1.52,
+            "words": ["สามลุค 1.52"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "sub",
+            "frames": [43, 119],
+            "measured": 1.31,
+            "words": ["โทนเขียวมะกอก 1.31"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "tag",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 97,
+            "worst": {
+              "contrast": 6.1,
+              "frame": 23,
+              "word": "GREEN"
+            },
+            "xHeightAt360": 6.67
+          },
+          {
+            "layer": "poster",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 109,
+            "worst": {
+              "contrast": 1.52,
+              "frame": 38,
+              "word": "สามลุค"
+            },
+            "xHeightAt360": 42.63
+          },
+          {
+            "layer": "sub",
+            "role": "qualification",
+            "readingFrames": 138,
+            "measuredFrames": 77,
+            "worst": {
+              "contrast": 1.31,
+              "frame": 43,
+              "word": "โทนเขียวมะกอก"
+            },
+            "xHeightAt360": 11.86
+          }
+        ]
+      },
+      "t3Pass2": {
+        "seconds": 20.9,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "x-height-floor",
+            "severity": "warning",
+            "node": "credit",
+            "frames": [12, 149],
+            "measured": 5.5
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "credit",
+            "frames": [44, 120],
+            "measured": 1.53,
+            "words": ["EDIT 3.4", "· 3.21", "03 1.53"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "credit",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 77,
+            "worst": {
+              "contrast": 1.53,
+              "frame": 118,
+              "word": "03"
+            },
+            "xHeightAt360": 5.5
+          },
+          {
+            "layer": "line",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 102,
+            "worst": {
+              "contrast": 6.86,
+              "frame": 96,
+              "word": "olive"
+            },
+            "xHeightAt360": 9.9
+          }
+        ]
+      },
+      "t3Pass2WithoutRules": {
+        "seconds": 12.4,
+        "status": "failed",
+        "findings": []
+      },
+      "t1Pass1": {
+        "seconds": 23.6,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "x-height-floor",
+            "severity": "warning",
+            "node": "kicker",
+            "frames": [12, 149],
+            "measured": 5.16
+          },
+          {
+            "code": "x-height-floor",
+            "severity": "warning",
+            "node": "folio",
+            "frames": [12, 149],
+            "measured": 5.57
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "headline",
+            "frames": [25, 137],
+            "measured": 2.72,
+            "words": ["Olive 2.72"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "folio",
+            "frames": [37, 119],
+            "measured": 1.51,
+            "words": [
+              "No. 1.51",
+              "03 1.78",
+              "— 1.76",
+              "Courtyard 1.54",
+              "Edit 1.72"
+            ]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "kicker",
+            "frames": [71, 87],
+            "measured": 4.24,
+            "words": ["THREE 4.24"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "kicker",
+            "frames": [102, 102],
+            "measured": 4.49,
+            "words": ["THREE 4.49"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "kicker",
+            "frames": [109, 114],
+            "measured": 4.38,
+            "words": ["THREE 4.38"]
+          },
+          {
+            "code": "text-contrast",
+            "severity": "warning",
+            "node": "kicker",
+            "frames": [117, 119],
+            "measured": 4.41,
+            "words": ["THREE 4.41"]
+          }
+        ],
+        "layers": [
+          {
+            "layer": "kicker",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 80,
+            "worst": {
+              "contrast": 4.24,
+              "frame": 80,
+              "word": "THREE"
+            },
+            "xHeightAt360": 5.16
+          },
+          {
+            "layer": "headline",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 113,
+            "worst": {
+              "contrast": 2.72,
+              "frame": 137,
+              "word": "Olive"
+            },
+            "xHeightAt360": 39.92
+          },
+          {
+            "layer": "folio",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 83,
+            "worst": {
+              "contrast": 1.51,
+              "frame": 49,
+              "word": "No."
+            },
+            "xHeightAt360": 5.57
+          }
+        ]
+      },
+      "t3Pass1": {
+        "seconds": 20.8,
+        "status": "failed",
+        "findings": [
+          {
+            "code": "x-height-floor",
+            "severity": "warning",
+            "node": "credit",
+            "frames": [12, 149],
+            "measured": 4.47
+          }
+        ],
+        "layers": [
+          {
+            "layer": "credit",
+            "role": "label",
+            "readingFrames": 138,
+            "measuredFrames": 77,
+            "worst": {
+              "contrast": 9.4,
+              "frame": 97,
+              "word": "EDIT"
+            },
+            "xHeightAt360": 4.47
+          },
+          {
+            "layer": "line",
+            "role": "heading",
+            "readingFrames": 138,
+            "measuredFrames": 102,
+            "worst": {
+              "contrast": 9.67,
+              "frame": 32,
+              "word": "ways"
+            },
+            "xHeightAt360": 9.9
+          }
+        ]
+      }
+    },
+    "command": "pnpm exec tsx scripts/editorial-titles/et3-proof-checks.ts --output <file>; run1 used the red ≥ 250 interior, final is b7328f72"
+  },
+  "percentileSensitivity": {
+    "note": "Separate runs with contrastPercentile 0.10 and 0.25 (policy file), before the R ≥ 254 interior change and partly before the mask-opacity change; pass-2 treatments have no attach constraints, so only the interior threshold differs from the final measure. Worst contrast per layer:",
+    "t1Pass2": {
+      "0.05": {
+        "headline": 2.71,
+        "folio": 3.73,
+        "kicker": 4.76
+      },
+      "0.10": {
+        "headline": 2.77,
+        "folio": 4.04,
+        "kicker": 5.06
+      },
+      "0.25": {
+        "headline": 2.91,
+        "folio": 4.37,
+        "kicker": 6.42
+      }
+    },
+    "t2Pass2": {
+      "0.05": {
+        "poster": 3.6,
+        "sub": 4.29,
+        "tag": 4.46
+      },
+      "0.10": {
+        "poster": 3.8,
+        "sub": 4.35,
+        "tag": 4.53
+      },
+      "0.25": {
+        "poster": 4.26,
+        "sub": 4.42,
+        "tag": 4.74
+      }
+    },
+    "t3Pass2": {
+      "0.05": {
+        "credit": 1.51,
+        "line": 6.83
+      },
+      "0.10": {
+        "credit": 2.35,
+        "line": 7.2
+      }
+    },
+    "reading": "T1's headline stays below 3:1 even at the 25th percentile: the shadowed wall under \"Ol\" is a real, marginal shortfall, not an outlier statistic."
+  },
+  "rejectedExperiments": [
+    {
+      "experiment": "Background from the existing container-only text probe (as the story measure uses)",
+      "result": "Rejected. It also skips highlight decorations, so T2's tag was measured against the dark paving (1.95:1) instead of its own highlight (9.68:1). It also disabled text image reuse: T1–T3 lints took 91–93 s and 1.23–1.43 GB peak RSS, against about 21–24 s with the transparent-colour background.",
+      "regression": "o3-highlight-fade check fails on this path (13.94:1 against an expected 10.04:1)."
+    },
+    {
+      "experiment": "Glyph mask with every other layer enabled: false",
+      "result": "Rejected. When the attach target animates, hiding it moves attached labels, so mask and frame disagree: T1 pass 1 kicker and folio read 1.00:1. Other layers now keep their geometry at opacity 0.",
+      "regression": "o1-attach-animated check fails on this path (kicker 1:1 against 11.08:1)."
+    },
+    {
+      "experiment": "Interior pixels from mask red ≥ 250",
+      "result": "Rejected. Admits ~98%-coverage edge pixels whose rendered colour carries 2% of the background: dark ink on flat paper read 10.6:1 against 11.08:1. Now red ≥ 254."
+    },
+    {
+      "experiment": "Pass-1 JSON exports linted through a symlinked clip",
+      "result": "comp-media-format (JSON inputs take only regular files; programs resolve their own paths). The script writes copies with absolute asset paths under the git-ignored benchmarks/results/editorial-titles-et3/pass1/."
+    },
+    {
+      "experiment": "Pass-1 T1 in state-only lint (x-height needs no pixels)",
+      "result": "comp-text-layout-missing: attach constraints need measured bounds (O9, ET4/ET6). Run in pixel mode instead."
+    }
+  ],
+  "ownerDecisions": [
+    {
+      "id": "ET3-D1",
+      "question": "Which contrast targets should editorial titles over footage use?",
+      "evidence": "With WCAG 2 AA targets and the story 5th percentile, T1 pass 2 is reported: the 250 px \"Olive\" headline at 2.72:1 (target 3:1) over the shadowed wall, and the folio's \"No.\" and \"—\" at 3.74/3.76:1 (target 4.5:1). T2's Thai subline is 4.37:1 (target 4.5:1) with its scrim. The plan expected T1 pass 2 to pass from visual review.",
+      "options": [
+        "Keep WCAG 2 AA defaults; findings stay advisory and the owner waives or adjusts per title (recommended: it is a published standard and the measure does not know taste)",
+        "Add an editorial profile with lower display targets (for example 2.5:1 for headings above a size), set from the owner's review"
+      ],
+      "status": "pending"
+    },
+    {
+      "id": "ET3-D2",
+      "question": "Is 6 px x-height at a 360 px review width the right phone floor?",
+      "evidence": "It fails the proof's pass-1 labels (T1 kicker 30 px 5.16 px, folio 32 px 5.57 px; T3 credit 26 px 4.47 px) and passes T1's pass-2 labels (38 px 6.54 px, 40 px 6.96 px). It also flags T3's pass-2 credit, 32 px Plex Mono (5.50 px): the proof called 30–32 px too small, but T3 pass 2 kept its credit at 32 px.",
+      "options": [
+        "Keep 6 px (recommended)",
+        "Change the default or set it per project in the policy"
+      ],
+      "status": "pending"
+    }
+  ],
+  "notRun": [
+    "WebGL2 backend with --legibility before the PR 63 review fixes (since covered by caption tests; see reviewFixes)",
+    "pnpm check, full pnpm test and pnpm release:check",
+    "Human visual or listening review (not inferred from lint)",
+    "Platform safe-zone presets: none are built in; bands are policy data, covered by unit tests only"
+  ],
+  "finalVerification": {
+    "head": "b7328f72",
+    "toolchain": "pnpm toolchain:check passed (Node 22.23.1, pnpm 10.29.3)",
+    "checkFast": "passed (461 files / 4,643 tests, 145 s)",
+    "composition-quality": "passed (124 s; includes the ET3 legibility tests)",
+    "composition-media": "passed (115 s)",
+    "checkRuntime": "run 1 failed (590 s): test:runtime 63/376 passed; test:integration 4 of 339 failed — composition-preview \"recovers TypeScript resolution candidates for initially missing ./missing.js\" (matcher timeout) and three depth-worker-protocol tests (5 s timeouts on a cold Python depth worker); neither area is touched by ET3. Both files then passed alone (22 tests). Rerun passed (593 s): test:runtime 63/376, test:integration 62/339, test:depth OK, test:browser:smoke. The primary checkout's CE16 runtime was symlinked into the worktree (no download).",
+    "et0Baseline": "pnpm exec tsx scripts/editorial-titles/et0-baseline.ts --check: ET0 outcomes match the recorded baseline (71 s)",
+    "byteIdentityWithoutRules": "38 comp lint runs (stdout, stderr, exit) on main d510b7b6 (detached temporary worktree) and on b7328f72: 114/114 files identical (diff -r). Inputs: ce12/*.json --pixels true (14); zipper-qa/*.json --pixels true --backend webgl2 (4); ET0 non-video fixtures o1-attach-animated, o1-attach-static, o2-center-origin, o2-center-control, o3-highlight-fade, o5-plex-thai, p1-thai-marks, o4-video-pixel-lint.no-video with --pixels true and false (16); o5-plex-thai --font-coverage strict (1); video: o4-video-pixel-lint and o6-dark-band --pixels true, o6-dark-band --pixels false (3).",
+    "notRun": "pnpm check, full pnpm test, pnpm release:check, WebGL2 with --legibility"
+  },
+  "runs": [
+    "Red run: tests/browser/composition-text-legibility.ts before implementation failed (unknown --legibility option); O6 pixel lint on main reports only outside-safe-area.",
+    "First implementation (container-only probe background, enabled:false mask, red ≥ 250): O6 test passed first time (credit 27–47 1.04:1, line 33–54 1.02:1). Proof T1–T3 lints: 92.96/91.42/93.22 s, 1.38/1.43/1.23 GB peak RSS; T2 tag 1.95:1 (highlight dropped).",
+    "Background switched to transparent glyph colours: T2 tag 9.68:1 against its highlight; T1–T3 lints about 21–24 s.",
+    "Percentile sensitivity batch (0.10, 0.25) and pass-1 runs: T1 pass 1 kicker/folio read 1.00:1 with the enabled:false mask (labels attached to the animated headline moved). Mask switched to opacity 0.",
+    "Proof checks run 1 (red ≥ 250): see proofChecks.run1.",
+    "o1-attach-static regression check first failed on the edge-pixel dilution (10.6 vs 11.08:1); interior raised to red ≥ 254. The enabled:false broken path did not fail on the static fixture (its attach target does not animate), so the regression uses o1-attach-animated, which fails at 1:1 on that path.",
+    "Broken-path checks: enabled:false mask → o1-attach-animated check fails (kicker 1:1 vs 11.08:1); container-only background → o3-highlight-fade check fails (13.94:1 vs 10.04:1). Sources restored and verified with cmp.",
+    "Gate run 1 at ec115f69 was stopped during check:fast to add the regression tests; no results kept.",
+    "Gate run 2 at b7328f72: all steps pass except check:runtime run 1 (cold-start timeouts, see finalVerification); its rerun passed. Proof checks final: see proofChecks.final."
+  ],
+  "reviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/63#pullrequestreview-5910915546",
+    "base": "40886a8b",
+    "note": "Five review findings on PR 63, one commit each. Findings 1–3 were reproduced with comp lint --pixels true before fixing; every new test was run against the previous source and failed there.",
+    "findings": [
+      {
+        "id": 1,
+        "commit": "a841c954",
+        "finding": "Text held below full opacity was never measured: the glyph mask kept the layer and group-ancestor opacity, so no mask pixel reached red ≥ 254.",
+        "reproduced": "O6 with credit opacity 0.95: 80 reading frames, 0 measured, no finding, lint passed.",
+        "fix": "Mask draws the layer and its group ancestors at opacity 1 with a normal blend and drops opacity expressions, drivers, periodic motion and behaviours on root layers (except the track matte). Reading frames with no measured word are listed under limitations.",
+        "tests": "Unit: mask opacity and opacity-motion stripping; unmeasured-frame limitation. Browser: O6 credit at 0.95 measured and flagged over the band."
+      },
+      {
+        "id": 2,
+        "commit": "ebfc9055",
+        "finding": "--legibility and --strict replaced the saved metadata.readingPolicy textLegibility and severities (shallow merge), dropping saved waivers, safe zones and unrelated severities.",
+        "reproduced": "O6 with saved waivers: no flags applied them; --legibility true gave waivers []; --strict text-contrast exited 1 with both findings as errors.",
+        "fix": "The CLI builds the policy after loading the program; textLegibility and severities come from the --policy file when set, otherwise from the saved policy, and --strict codes are added on top.",
+        "tests": "Browser: saved waiver and saved outside-safe-area error kept under --legibility true and --strict text-contrast."
+      },
+      {
+        "id": 3,
+        "commit": "86b77e3d",
+        "finding": "All probe previews were created up front and kept; each WebGL2 preview holds a GL context (Chromium keeps about 16 per page).",
+        "reproduced": "WebGL2: 12 captions in turn and 10 captions together failed with comp-webgl-size: surface exceeds MAX_TEXTURE_SIZE (lost context); 4 captions and 12 without --legibility passed.",
+        "fix": "Previews open for each layer's reading window only; at most six pairs stay live, extra simultaneous layers get a per-frame pair. Closing a probe loses its WebGL context and drops the canvas backing store. Probe previews get a view of the shared media whose dispose is a no-op (closing one mid-run otherwise stopped the video: 'Disposed media resources').",
+        "tests": "Browser: WebGL2 12 captions in turn and 10 together, every layer measured on all reading frames at 13.71:1 (#222222 on #EEEEEE)."
+      },
+      {
+        "id": 4,
+        "commit": "7f3b8119",
+        "finding": "x-height-floor and platform-safe-zone reported the whole reading window's worst value on every range.",
+        "fix": "Each finding reports the smallest x-height or deepest overlap within its own range.",
+        "tests": "Unit: two ranges split by a cut report 4.95 and 2.75 px, and increasing band depth."
+      },
+      {
+        "id": 5,
+        "commit": "this commit (see git log)",
+        "finding": "Contrast compares each glyph pixel with the frame behind it, so shadows or glows added for legibility are not credited, and the report did not say so.",
+        "fix": "Per-layer limitation for text layers with an enabled light.drop-shadow or light.glow effect; documented. Measurement unchanged.",
+        "tests": "Unit: limitation for enabled shadow and glow, none for a disabled one or for blur."
+      }
+    ],
+    "verification": {
+      "node": "22.23.1",
+      "checkFast": "passed (461 files / 4,646 tests)",
+      "composition-quality": "passed (114 s; includes the new ET3 browser cases, WebGL2 included)",
+      "composition-media": "passed (114 s)"
+    },
+    "notRun": [
+      "pnpm check:runtime, pnpm check and pnpm release:check",
+      "The 38-run off-by-default byte-identity comparison against main was not repeated; the changes only run when legibility rules are declared",
+      "WebGL2 with video and the proof treatments (T1–T3) after the fixes",
+      "Human visual review"
+    ]
+  },
+  "reReviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/63#pullrequestreview-5911096375",
+    "base": "43269d3f",
+    "note": "Re-review after the five review fixes; they hold. One new finding, one commit. The inline comment's first wording overstated the regression; its appended correction states the scope below.",
+    "findings": [
+      {
+        "id": 1,
+        "commit": "this commit (see git log)",
+        "finding": "Declaring textLegibility made lint read every pinned font with the SFNT-only readFontMetrics, so a composition pinning a WOFF or WOFF2 font (accepted by captured-assets.ts) failed with invalid-scene instead of producing a report.",
+        "scope": "Non-pixel lint only. Pixel lint and rendering already reject a pinned WOFF2 font on the base, with or without the rules (composition typography reads SFNT metrics in prepared-fonts.ts); that renderer gap is pre-existing and not changed here.",
+        "reproduced": "Temporary composition with plex-sans-semibold converted to WOFF2 (fontTools), comp lint --pixels false: without rules a normal report; with --legibility true on 43269d3f only invalid-scene 'font-metadata: typography requires an SFNT TTF or OTF font'. After the fix the report is produced and lists 'x-height of title is not measured for font \"brand\": font-metadata: ...'. --pixels true still fails the same way with or without the rules, and comp render of the WOFF2 title fails (RENDER_FAILED, no detail) while the same title in the TTF renders.",
+        "fix": "textLegibilityFontEvidence reads each font in a try/catch and keeps fontXHeightErrors; analyzeTextLegibility names each unreadable pinned font a layer's styles use, while readable span fonts are still measured. The unused readFontMetrics re-export added by this PR is removed. Reference notes updated and regenerated.",
+        "tests": "Unit: a tracked TTF and a WOFF2 header give one x-height and one error; a layer in the WOFF2 font gets the named limitation (not 'uses no pinned font'); a span in the TTF is still measured. The test failed before the helper existed and again before the limitation was added."
+      }
+    ],
+    "verification": {
+      "node": "22.23.1",
+      "checkFast": "passed (461 files / 4,647 tests)",
+      "composition-quality": "passed"
+    },
+    "notRun": [
+      "pnpm test:browser:composition-media, pnpm check:runtime, pnpm check and pnpm release:check",
+      "A tracked WOFF2 fixture (the repro composition and font stayed outside the repository)",
+      "Human visual review"
+    ]
+  }
+}

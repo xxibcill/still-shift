@@ -25,7 +25,17 @@ export const MOTION_LINT_CODES = [
   "semantic-context-incomplete",
   "semantic-copy-changed",
   "semantic-member-reference",
+  "text-contrast",
+  "x-height-floor",
+  "platform-safe-zone",
 ] as const;
+/** ET3 legibility rules; they run only when `textLegibility` is declared. */
+export const TEXT_LEGIBILITY_CODES = [
+  "text-contrast",
+  "x-height-floor",
+  "platform-safe-zone",
+] as const satisfies readonly (typeof MOTION_LINT_CODES)[number][];
+export type TextLegibilityCode = (typeof TEXT_LEGIBILITY_CODES)[number];
 export type MotionLintCode = (typeof MOTION_LINT_CODES)[number];
 export type MotionLintDiagnostic = PassageDiagnostic & {
   frames: [number, number];
@@ -34,6 +44,7 @@ export type MotionLintDiagnostic = PassageDiagnostic & {
   shot?: string;
   readingPurposes?: { id: string; purpose: string }[];
   classification?:
+    | "legibility-waiver"
     | "declared-reading-hold"
     | "speech-following-caption"
     | "declared-physical-proof-hold";
@@ -45,6 +56,10 @@ export type MotionLintDiagnostic = PassageDiagnostic & {
   };
   proofPurposes?: { id: string; purpose: string; evidenceSha256: string }[];
   rawSeverity?: "error" | "warning";
+  /** ET3: words of a text layer below the contrast target, worst first. */
+  words?: { word: string; index: number; contrast: number; frame: number }[];
+  /** ET3: the declared per-layer waiver that kept this finding advisory. */
+  waiver?: { reason: string };
 };
 const nonnegative = z.number().finite().nonnegative();
 const positive = z.number().finite().positive();
@@ -137,6 +152,66 @@ export const CompositionPhysicalProofHoldSchema = z
 export type CompositionPhysicalProofHold = z.infer<
   typeof CompositionPhysicalProofHoldSchema
 >;
+const contrastTarget = z.number().finite().min(1).max(21);
+/**
+ * ET3 text legibility over the rendered frames. Declaring it (even `{}`)
+ * enables `text-contrast` (pixel lint only), `x-height-floor` and, when
+ * `safeZones` are declared, `platform-safe-zone`. Findings are warnings
+ * unless `severities` raises them.
+ */
+export const CompositionTextLegibilitySchema = z
+  .object({
+    /** Minimum WCAG 2 contrast per text role. */
+    contrast: z
+      .object({
+        heading: contrastTarget.optional(),
+        label: contrastTarget.optional(),
+        qualification: contrastTarget.optional(),
+        body: contrastTarget.optional(),
+      })
+      .strict()
+      .optional(),
+    /** Lower percentile of a word's per-pixel contrasts taken as its contrast. */
+    contrastPercentile: fraction.max(0.5).optional(),
+    /** Output width shown at phone scale, in CSS pixels (default 360). */
+    reviewWidth: positive.int().max(COMPOSITION_LIMITS.maxSize).optional(),
+    /** Minimum x-height at `reviewWidth`, in pixels (default 6). */
+    minimumXHeight: positive.max(1000).optional(),
+    /** Platform UI bands that text should avoid, as data; none by default. */
+    safeZones: z
+      .array(
+        z
+          .object({
+            id: z.string().min(1).max(200),
+            edge: z.enum(["top", "bottom", "left", "right"]),
+            /** Band depth as a fraction of the frame height (top/bottom) or width. */
+            fraction: positive.max(0.5),
+          })
+          .strict(),
+      )
+      .max(16)
+      .optional(),
+    waivers: z
+      .array(
+        z
+          .object({
+            layer: z.string().min(1).max(1024),
+            reason: z.string().min(1).max(400),
+            codes: z
+              .array(z.enum(TEXT_LEGIBILITY_CODES))
+              .min(1)
+              .max(TEXT_LEGIBILITY_CODES.length)
+              .optional(),
+          })
+          .strict(),
+      )
+      .max(COMPOSITION_LIMITS.maxLayers)
+      .optional(),
+  })
+  .strict();
+export type CompositionTextLegibility = z.infer<
+  typeof CompositionTextLegibilitySchema
+>;
 export const CompositionQualityPolicySchema = z
   .object({
     semanticProfile: z.enum(["legacy", "require-declared-context"]).optional(),
@@ -203,6 +278,7 @@ export const CompositionQualityPolicySchema = z
     severities: z
       .partialRecord(z.enum(MOTION_LINT_CODES), z.enum(["error", "warning"]))
       .optional(),
+    textLegibility: CompositionTextLegibilitySchema.optional(),
   })
   .strict();
 export type CompositionQualityPolicy = z.infer<
@@ -211,12 +287,45 @@ export type CompositionQualityPolicy = z.infer<
   pixelHashes?: readonly string[];
   pixelChangedCounts?: readonly number[];
   evaluation?: EvaluationOptions;
+  /** ET3 runtime evidence; never part of a saved policy. */
+  textLegibilityEvidence?: TextLegibilityEvidence;
+};
+/** Measured inputs for the ET3 legibility rules, supplied by the lint runner. */
+export type TextLegibilityEvidence = {
+  /** Per root text layer: per-frame contrast samples from rendered pixels. */
+  contrast?: Record<string, TextContrastLayerEvidence>;
+  /** x-height per em for each pinned font asset, read from its OS/2 table. */
+  fontXHeights?: Record<string, number>;
+  /**
+   * Why a pinned font's x-height could not be read (for example a WOFF or
+   * WOFF2 font, which the SFNT reader does not parse); its layers are listed
+   * as unmeasured.
+   */
+  fontXHeightErrors?: Record<string, string>;
+};
+export type TextContrastLayerEvidence = {
+  attribution: "word" | "layer";
+  /** Present when attribution falls back to the whole layer. */
+  attributionReason?: string;
+  words: { index: number; word: string }[];
+  /** Frames in the layer's reading window, in order. */
+  frames: {
+    frame: number;
+    /** Per word index: [percentile contrast, glyph-interior pixels]; null when unmeasured. */
+    words: ([number, number] | null)[];
+  }[];
 };
 export function resolveCompositionQualityPolicy(
   comp: Composition,
   input: CompositionQualityPolicy,
 ) {
-  const { pixelHashes, pixelChangedCounts, evaluation, ...settings } = input;
+  const {
+    pixelHashes,
+    pixelChangedCounts,
+    evaluation,
+    textLegibilityEvidence,
+    ...settings
+  } = input;
   const savedPolicy = comp.metadata?.readingPolicy;
   if (
     savedPolicy !== undefined &&
@@ -526,6 +635,7 @@ export function resolveCompositionQualityPolicy(
     shots,
     cuts,
     evaluation: evaluation ?? {},
+    ...(textLegibilityEvidence ? { textLegibilityEvidence } : {}),
     pixelHashes: pixelSignatures,
     pixelMethod: pixelChangedCounts
       ? ("grayscale-energy" as const)

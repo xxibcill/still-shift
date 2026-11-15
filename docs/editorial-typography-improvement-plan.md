@@ -1,8 +1,8 @@
 # Editorial title overlays: improvement plan
 
-Date: 2026-11-15. Status: **ET0 merged on `main` (PR #60); ET1 merged on `main`
-(PR #61); ET2 complete and in review as PR #62 (`codex/editorial-titles-et2`);
-ET3–ET8 proposed.** ET0 re-baselined every finding on `main`
+Date: 2026-11-15. Status: **ET0, ET1 and ET2 merged on `main` (PR #60, #61,
+#62); ET3 done on `codex/editorial-titles-et3` (not pushed, no PR); ET4–ET8
+proposed.** ET0 re-baselined every finding on `main`
 (98a92e92); see [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
 Source evidence: [proof report](./editorial-typography-proof-2026-11-15.md) and
@@ -61,17 +61,17 @@ recorded outcomes are in
 
 ## Milestone tracker
 
-| ID  | Milestone                                   | Findings         | Depends on                            | Estimate (active days)                     | Status                         |
-| --- | ------------------------------------------- | ---------------- | ------------------------------------- | ------------------------------------------ | ------------------------------ |
-| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                                        | Merged on `main` (PR #60)      |
-| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)      |
-| ET2 | Pixel lint over native video                | O4, O8           | ET0                                   | ~1 (O4 fixed; tests, bounds, cancellation) | Done on branch, review pending |
-| ET3 | Text-over-video legibility checks           | O6               | ET2                                   | 3–5                                        | Proposed                       |
-| ET4 | Measured multi-layer layout anchors         | O1, O9           | ET0                                   | 3–5                                        | Proposed                       |
-| ET5 | Authoring guards and probes                 | O2, O3, O10, O11 | ET0, owner: align                     | 2–4                                        | Proposed                       |
-| ET6 | Measurement API and editorial lint profile  | O7, O9           | ET4, owner: reading rule              | 2–4                                        | Proposed                       |
-| ET7 | External orchestration pilot (outside core) | —                | ET1–ET4, owner: location              | 5–10                                       | Proposed                       |
-| ET8 | Aesthetic proof on authorized real inputs   | —                | ET1–ET3 (ET7 optional), owner: inputs | 2–3                                        | Proposed                       |
+| ID  | Milestone                                   | Findings         | Depends on                            | Estimate (active days)                     | Status                     |
+| --- | ------------------------------------------- | ---------------- | ------------------------------------- | ------------------------------------------ | -------------------------- |
+| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                                        | Merged on `main` (PR #60)  |
+| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)  |
+| ET2 | Pixel lint over native video                | O4, O8           | ET0                                   | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)  |
+| ET3 | Text-over-video legibility checks           | O6               | ET2                                   | 3–5; actual 1 session                      | Done on branch, not pushed |
+| ET4 | Measured multi-layer layout anchors         | O1, O9           | ET0                                   | 3–5                                        | Proposed                   |
+| ET5 | Authoring guards and probes                 | O2, O3, O10, O11 | ET0, owner: align                     | 2–4                                        | Proposed                   |
+| ET6 | Measurement API and editorial lint profile  | O7, O9           | ET4, owner: reading rule              | 2–4                                        | Proposed                   |
+| ET7 | External orchestration pilot (outside core) | —                | ET1–ET4, owner: location              | 5–10                                       | Proposed                   |
+| ET8 | Aesthetic proof on authorized real inputs   | —                | ET1–ET3 (ET7 optional), owner: inputs | 2–3                                        | Proposed                   |
 
 Recommended order: ET0 → ET1 → ET2 → ET3 → ET4 → ET5/ET6 → ET8 → ET7. ET1, ET2 and
 ET4 touch separate code and can run in parallel after ET0. Estimates are planning
@@ -263,17 +263,67 @@ and rule crossed a dark roof edge under parallax with no finding.
   hard-coded per platform.
 - Findings are advisory by default; `--strict text-contrast` gates.
 
+**ET3 outcome (2026-11-15):** three opt-in rules, `text-contrast`,
+`x-height-floor` and `platform-safe-zone`, enabled by a `textLegibility` policy,
+`--legibility true` or `--strict <codes>`. Reports without them are unchanged.
+The contrast measure reuses the story `text-contrast` measure. At every fully
+covered glyph pixel, it takes the WCAG 2 contrast between the rendered frame and
+the same frame with that layer's glyph colours made transparent, so the layer's
+container and highlight stay as its backdrop. A word's value is the 5th
+percentile. A colour-coded glyph mask attributes pixels to words; whitespace
+separates words. Targets are WCAG 2 AA: 3:1 for headings, 4.5:1 for other
+roles. The x-height floor uses the font's OS/2 x-height at a 360 px review
+width, with a 6 px floor. Safe-zone bands are policy data; none are built in.
+Per-layer waivers keep findings measured but never gating, and the report lists
+them. Real treatments exposed three defects in the first measure, all fixed with
+tracked regression tests: the story's `container-only` probe dropped highlights;
+hiding layers in the mask moved attach-constrained labels; and edge pixels
+diluted interiors. Definitions and limits are in the
+[composition reference](./composition-reference.md#text-legibility-over-video-et3);
+evidence is in the [ET3 results](./editorial-typography-et3-results.json).
+
 **Checks**
 
-- [ ] ET0 dark-band fixture: flagged on exactly the frames where the band is
-      under the text (±1 frame), naming the word.
-- [ ] Proof T3 pass 2: `· 03` reported over the roof edge; T1 pass 2 passes.
-- [ ] T2 passes with its scrim and fails with the scrim removed.
-- [ ] Pass-1 label sizes (30–32 px) fail the phone-scale floor; pass-2 sizes pass.
-- [ ] Intentional low-contrast decorative text can be waived per layer, and the
-      waiver appears in the report.
-- [ ] Runtime on a 7 s 1080×1920 clip recorded; no change to rendered output.
-- [ ] `pnpm check:fast`, `pnpm test:browser:composition-quality`.
+- [x] ET0 dark-band fixture: flagged on exactly the frames where the band is
+      under the text (±1 frame), naming the word. (Test written first and run
+      red. Credit 27–47 and line 33–54, against band-under-glyph frames 27–47
+      and 33–55; every word named, worst 1.04/1.05:1. In
+      `test:browser:composition-quality`.)
+- [x] Proof T3 pass 2: `· 03` reported over the roof edge; T1 pass 2 passes.
+      **T3 met; T1 not met as written.** T3's credit is reported on frames
+      44–120: "03" 1.53:1, "·" 3.21:1 and "EDIT" 3.40:1 (its T touches the
+      roof). Its line passes (worst 6.86:1). T1 pass 2 is reported, not passed:
+      "Olive" falls to 2.72:1 against 3:1 over the shadowed wall, and the
+      folio's "No."/"—" to 3.74/3.76:1 against 4.5:1. In a sensitivity run at
+      the 25th percentile (before the final interior threshold), "Olive"
+      still read 2.91:1. This is a real, marginal shortfall, not an outlier
+      statistic. The targets are owner decision ET3-D1.
+- [x] T2 passes with its scrim and fails with the scrim removed. (The poster
+      passes at 3.60:1 with the scrim and fails at 1.52:1 without it; the Thai
+      subline rises from 1.31:1 to 4.37:1. With the scrim, the subline is
+      still below its 4.5:1 target and is reported; see ET3-D1. The tag,
+      measured against its own highlight, passes in both.)
+- [x] Pass-1 label sizes (30–32 px) fail the phone-scale floor; pass-2 sizes pass.
+      (Pass 1: T1 kicker 30 px is 5.16 px and folio 32 px is 5.57 px; T3
+      credit 26 px is 4.47 px; all fail the 6 px floor. T1 pass 2, at 38/40 px,
+      passes with 6.54/6.96 px. T3's pass-2 credit is still 32 px Plex Mono, so
+      it fails at 5.50 px, consistent with the proof's own "30–32 px too
+      small". Floor: owner decision ET3-D2.)
+- [x] Intentional low-contrast decorative text can be waived per layer, and the
+      waiver appears in the report. (`textLegibility.waivers`; the finding
+      stays, as a warning with `waiver.reason` and `rawSeverity`; under
+      `--strict` the other layer still fails.)
+- [x] Runtime on a 7 s 1080×1920 clip recorded; no change to rendered output.
+      (T3, 168 frames, two text layers: 12.4 s without the rules and 20.9 s
+      with them; a separately timed run took 21.2 s at 1.28 GB peak resident. No renderer or export file changed; the ET0 render hashes match.
+      Lint without the rules is byte-identical to `main` d510b7b6 over 38
+      runs, including video.)
+- [x] `pnpm check:fast`, `pnpm test:browser:composition-quality`. (Also
+      `composition-media` and `check:runtime`; see results.)
+
+**Owner decisions:** ET3-D1, the contrast targets for editorial titles over
+footage (recommended: keep WCAG 2 AA and waive per title). ET3-D2, the
+x-height floor (recommended: keep 6 px at 360 px).
 
 ---
 
