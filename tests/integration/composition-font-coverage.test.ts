@@ -570,11 +570,11 @@ it("records fallback runs in render results and leaves covered results unchanged
   expect(result.warnings).toEqual([]);
 }, 120_000);
 
-/** Pinned bytes whose header is a web-font container rather than SFNT. */
-async function webFont(root: string, signature: "wOFF" | "wOF2") {
-  const path = join(root, `title.${signature === "wOFF" ? "woff" : "woff2"}`);
+/** Pinned bytes whose header is not a readable SFNT TTF or OTF. */
+async function unreadableFont(root: string, file: string, header: string) {
+  const path = join(root, file);
   const bytes = Buffer.alloc(64);
-  bytes.write(signature, 0, "latin1");
+  bytes.write(header, 0, "latin1");
   await writeFile(path, bytes);
   return {
     id: "title",
@@ -585,15 +585,43 @@ async function webFont(root: string, signature: "wOFF" | "wOF2") {
   };
 }
 
+const pinConverted = "then pin the converted file's path and sha256.";
 it.each([
-  ["wOFF", "WOFF", "woff"],
-  ["wOF2", "WOFF2", "woff2"],
+  [
+    "WOFF",
+    "title.woff",
+    "wOFF",
+    "a WOFF font",
+    `Decompress it, for example \`fonttools ttLib font.woff -o font.ttf\`, ${pinConverted}`,
+  ],
+  [
+    "WOFF2",
+    "title.woff2",
+    "wOF2",
+    "a WOFF2 font",
+    `Decompress it, for example \`fonttools ttLib font.woff2 -o font.ttf\`, ${pinConverted}`,
+  ],
+  [
+    "collection",
+    "title.ttc",
+    "ttcf",
+    "a TrueType/OpenType collection",
+    `Extract one face, for example \`fonttools ttLib -y 0 fonts.ttc -o font.ttf\`, ${pinConverted}`,
+  ],
+  // Non-font bytes were a legacy warning before font-format; now an error.
+  [
+    "non-font file",
+    "title.ttf",
+    "not a font",
+    "a file with an unrecognized font header",
+    "Supply the font's original TTF or OTF file and pin that file's path and sha256.",
+  ],
 ] as const)(
-  "rejects a pinned %s font in every command before any browser work",
-  async (signature, label, extension) => {
+  "rejects a pinned %s in every command before any browser work",
+  async (_name, file, header, label, hint) => {
     const root = await directory();
     const { input } = await write({
-      assets: [await plex(), await webFont(root, signature)],
+      assets: [await plex(), await unreadableFont(root, file, header)],
       layers: [textLayer("title", "OLIVE", "title")],
     });
     const finding = expect.objectContaining({
@@ -601,11 +629,7 @@ it.each([
       severity: "error",
       path: "assets[1].path",
       fontId: "title",
-      message:
-        `Font title is a ${label} font; composition fonts must be SFNT TTF ` +
-        `or OTF files. Decompress it, for example \`fonttools ttLib ` +
-        `font.${extension} -o font.ttf\`, then pin the converted file's ` +
-        "path and sha256.",
+      message: `Font title is ${label}; composition fonts must be SFNT TTF or OTF files. ${hint}`,
     });
     // Legacy coverage still rejects it: the renderer cannot read the container.
     const validated = await run(["validate", "--input", input]);
