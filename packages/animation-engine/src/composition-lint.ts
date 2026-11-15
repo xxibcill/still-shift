@@ -15,8 +15,8 @@ import { createServer, type Plugin, type ViteDevServer } from "vite";
 import type { Browser } from "playwright";
 import {
   analyzeCompositionQuality,
-  readFontMetrics,
   PassageError,
+  textLegibilityFontEvidence,
   type PassageDiagnostic,
   type CompositionQualityPolicy,
   type CompositionBackend,
@@ -334,7 +334,8 @@ async function lintOwnedComposition(
 /**
  * ET3: when the policy (or the composition's saved reading policy) declares
  * `textLegibility`, read each pinned font's x-height per em from its OS/2
- * table for the `x-height-floor` rule. Other lints keep their policy as given.
+ * table for the `x-height-floor` rule; fonts that cannot be read are kept as
+ * unmeasured with their reason. Other lints keep their policy as given.
  */
 async function withTextLegibilityFonts(
   composition: Composition,
@@ -345,19 +346,26 @@ async function withTextLegibilityFonts(
     | { textLegibility?: unknown }
     | undefined;
   if (!policy.textLegibility && !saved?.textLegibility) return policy;
-  const fontXHeights: Record<string, number> = {};
+  const fonts: { id: string; bytes: ArrayBuffer }[] = [];
   for (const asset of composition.assets) {
     const path = assetPaths[asset.id];
     if (asset.type !== "font" || !path) continue;
     const bytes = await readFile(path);
-    const metrics = readFontMetrics(
-      bytes.buffer.slice(bytes.byteOffset, bytes.byteOffset + bytes.byteLength),
-    );
-    fontXHeights[asset.id] = metrics.xHeight / metrics.unitsPerEm;
+    fonts.push({
+      id: asset.id,
+      bytes: bytes.buffer.slice(
+        bytes.byteOffset,
+        bytes.byteOffset + bytes.byteLength,
+      ),
+    });
   }
+  // WOFF/WOFF2 or unreadable fonts are reported as unmeasured, not thrown.
   return {
     ...policy,
-    textLegibilityEvidence: { ...policy.textLegibilityEvidence, fontXHeights },
+    textLegibilityEvidence: {
+      ...policy.textLegibilityEvidence,
+      ...textLegibilityFontEvidence(fonts),
+    },
   };
 }
 

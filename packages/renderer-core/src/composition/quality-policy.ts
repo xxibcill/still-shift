@@ -296,6 +296,12 @@ export type TextLegibilityEvidence = {
   contrast?: Record<string, TextContrastLayerEvidence>;
   /** x-height per em for each pinned font asset, read from its OS/2 table. */
   fontXHeights?: Record<string, number>;
+  /**
+   * Why a pinned font's x-height could not be read (for example a WOFF or
+   * WOFF2 font, which the SFNT reader does not parse); its layers are listed
+   * as unmeasured.
+   */
+  fontXHeightErrors?: Record<string, string>;
 };
 export type TextContrastLayerEvidence = {
   attribution: "word" | "layer";

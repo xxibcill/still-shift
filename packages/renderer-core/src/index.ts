@@ -146,11 +146,11 @@ export {
   type CompositionPhysicalProofHold,
 } from "./composition/quality-policy.ts";
 export { analyzeRenderedCompositionQuality } from "./composition/quality-render.ts";
-export { readFontMetrics } from "./font-metrics.ts";
 export {
   analyzeTextLegibility,
   legibilityWords,
   measureTextContrastPixels,
+  textLegibilityFontEvidence,
   textLegibilityMask,
   TEXT_LEGIBILITY_VERSION,
   type TextLegibilityReport,

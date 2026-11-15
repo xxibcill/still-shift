@@ -1,5 +1,6 @@
 // ET3 text legibility: pure measurement, mask construction and findings
 // (docs/editorial-typography-improvement-plan.md#et3--text-over-video-legibility-checks).
+import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import type { Composition } from "@still-shift/scene-contract";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
@@ -9,6 +10,7 @@ import {
   legibilityWords,
   measureTextContrastPixels,
   relativeLuminance,
+  textLegibilityFontEvidence,
   textLegibilityBackground,
   textLegibilityMask,
   wcagContrast,
@@ -410,6 +412,76 @@ describe("text legibility findings", () => {
     expect(
       run(38, 300).diagnostics.some((d) => d.code === "x-height-floor"),
     ).toBe(true);
+  });
+
+  it("keeps fonts it cannot read as unmeasured instead of failing", () => {
+    // Compositions may pin WOFF/WOFF2 fonts (the browser loads them), but
+    // the x-height reader takes SFNT TTF/OTF only. Lint must not throw.
+    const ttf = readFileSync("assets/story-motion/fonts/plex-mono-medium.ttf");
+    const woff2 = new Uint8Array(64);
+    woff2.set([0x77, 0x4f, 0x46, 0x32]); // "wOF2"
+    const fonts = textLegibilityFontEvidence([
+      {
+        id: "mono",
+        bytes: ttf.buffer.slice(
+          ttf.byteOffset,
+          ttf.byteOffset + ttf.byteLength,
+        ),
+      },
+      { id: "brand", bytes: woff2.buffer },
+    ]);
+    expect(fonts.fontXHeights.mono).toBeCloseTo(0.516, 3);
+    expect(fonts.fontXHeights).not.toHaveProperty("brand");
+    expect(fonts.fontXHeightErrors).toEqual({
+      brand: "font-metadata: typography requires an SFNT TTF or OTF font",
+    });
+
+    const font = (id: string, path: string) => ({
+      id,
+      type: "font",
+      path,
+      sha256: `sha256:${"0".repeat(64)}`,
+      weight: "500",
+    });
+    const run = (spanStyle?: string) =>
+      analyzeCompositionQuality(
+        composition({
+          assets: [
+            font("mono", "mono.ttf"),
+            font("brand", "brand.woff2"),
+          ] as Composition["assets"],
+          ...(spanStyle
+            ? {
+                textStyles: {
+                  [spanStyle]: { fontAsset: "mono" },
+                } as Composition["textStyles"],
+              }
+            : {}),
+          layers: [
+            {
+              ...composition().layers[0]!,
+              fontAsset: "brand",
+              fontSize: 32,
+              ...(spanStyle
+                ? { spans: [{ start: 0, end: 5, style: spanStyle }] }
+                : {}),
+            } as Composition["layers"][number],
+          ],
+        }),
+        { textLegibility: {}, textLegibilityEvidence: fonts },
+      );
+    const reason =
+      'x-height of title is not measured for font "brand": font-metadata: typography requires an SFNT TTF or OTF font.';
+    const only = run();
+    expect(only.textLegibility!.limitations).toContain(reason);
+    expect(only.textLegibility!.limitations).not.toContain(
+      "x-height of title is not measured: it uses no pinned font.",
+    );
+    expect(only.textLegibility!.layers[0]!.xHeight).toBeUndefined();
+    // A span in a readable font is still measured; the unreadable one is named.
+    const mixed = run("mono-span");
+    expect(mixed.textLegibility!.limitations).toContain(reason);
+    expect(mixed.textLegibility!.layers[0]!.xHeight?.fonts).toEqual(["mono"]);
   });
 
   it("reports each range's own worst x-height and safe-zone depth", () => {

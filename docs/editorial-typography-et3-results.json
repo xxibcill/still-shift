@@ -1136,5 +1136,31 @@
       "WebGL2 with video and the proof treatments (T1–T3) after the fixes",
       "Human visual review"
     ]
+  },
+  "reReviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/63#pullrequestreview-5911096375",
+    "base": "43269d3f",
+    "note": "Re-review after the five review fixes; they hold. One new finding, one commit. The inline comment's first wording overstated the regression; its appended correction states the scope below.",
+    "findings": [
+      {
+        "id": 1,
+        "commit": "this commit (see git log)",
+        "finding": "Declaring textLegibility made lint read every pinned font with the SFNT-only readFontMetrics, so a composition pinning a WOFF or WOFF2 font (accepted by captured-assets.ts) failed with invalid-scene instead of producing a report.",
+        "scope": "Non-pixel lint only. Pixel lint and rendering already reject a pinned WOFF2 font on the base, with or without the rules (composition typography reads SFNT metrics in prepared-fonts.ts); that renderer gap is pre-existing and not changed here.",
+        "reproduced": "Temporary composition with plex-sans-semibold converted to WOFF2 (fontTools), comp lint --pixels false: without rules a normal report; with --legibility true on 43269d3f only invalid-scene 'font-metadata: typography requires an SFNT TTF or OTF font'. After the fix the report is produced and lists 'x-height of title is not measured for font \"brand\": font-metadata: ...'. --pixels true still fails the same way with or without the rules, and comp render of the WOFF2 title fails (RENDER_FAILED, no detail) while the same title in the TTF renders.",
+        "fix": "textLegibilityFontEvidence reads each font in a try/catch and keeps fontXHeightErrors; analyzeTextLegibility names each unreadable pinned font a layer's styles use, while readable span fonts are still measured. The unused readFontMetrics re-export added by this PR is removed. Reference notes updated and regenerated.",
+        "tests": "Unit: a tracked TTF and a WOFF2 header give one x-height and one error; a layer in the WOFF2 font gets the named limitation (not 'uses no pinned font'); a span in the TTF is still measured. The test failed before the helper existed and again before the limitation was added."
+      }
+    ],
+    "verification": {
+      "node": "22.23.1",
+      "checkFast": "passed (461 files / 4,647 tests)",
+      "composition-quality": "passed"
+    },
+    "notRun": [
+      "pnpm test:browser:composition-media, pnpm check:runtime, pnpm check and pnpm release:check",
+      "A tracked WOFF2 fixture (the repro composition and font stayed outside the repository)",
+      "Human visual review"
+    ]
   }
 }

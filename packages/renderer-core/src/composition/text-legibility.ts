@@ -16,6 +16,7 @@ import {
   type Composition,
   type CompositionLayer,
 } from "@still-shift/scene-contract";
+import { readFontMetrics } from "../font-metrics.ts";
 import { resolvedTextStyle } from "../typography-style.ts";
 import { textNode, type TextLayer } from "./render/text-scenes.ts";
 import type { CompositionQualityFrame } from "./quality-samples.ts";
@@ -26,6 +27,7 @@ import {
   type ResolvedCompositionQualityPolicy,
   type TextContrastLayerEvidence,
   type TextLegibilityCode,
+  type TextLegibilityEvidence,
 } from "./quality-policy.ts";
 
 export const TEXT_LEGIBILITY_VERSION = "composition-text-legibility-1";
@@ -62,6 +64,31 @@ export function relativeLuminance(r: number, g: number, b: number) {
 }
 export function wcagContrast(a: number, b: number) {
   return (Math.max(a, b) + 0.05) / (Math.min(a, b) + 0.05);
+}
+
+/**
+ * x-height per em of each pinned font, from its OS/2 table. Fonts the SFNT
+ * reader cannot parse (WOFF and WOFF2, which compositions may pin, or a
+ * damaged file) keep their reason instead of failing the lint, so their
+ * layers are reported as unmeasured.
+ */
+export function textLegibilityFontEvidence(
+  fonts: readonly { id: string; bytes: ArrayBuffer }[],
+): Required<
+  Pick<TextLegibilityEvidence, "fontXHeights" | "fontXHeightErrors">
+> {
+  const fontXHeights: Record<string, number> = {};
+  const fontXHeightErrors: Record<string, string> = {};
+  for (const { id, bytes } of fonts) {
+    try {
+      const metrics = readFontMetrics(bytes);
+      fontXHeights[id] = metrics.xHeight / metrics.unitsPerEm;
+    } catch (error) {
+      fontXHeightErrors[id] =
+        error instanceof Error ? error.message : String(error);
+    }
+  }
+  return { fontXHeights, fontXHeightErrors };
 }
 
 /** Maximal runs of non-whitespace characters, in grapheme indices (text spans index graphemes). */
@@ -696,6 +723,22 @@ export function analyzeTextLegibility(
         ? []
         : [{ font: style.fontAsset!, xHeight: perEm * style.size }];
     });
+    // Pinned fonts whose metrics could not be read are named, not skipped.
+    const unreadable = [
+      ...new Set(
+        styles.flatMap((style) =>
+          style.fontAsset &&
+          evidence.fontXHeights?.[style.fontAsset] === undefined &&
+          evidence.fontXHeightErrors?.[style.fontAsset] !== undefined
+            ? [style.fontAsset]
+            : [],
+        ),
+      ),
+    ];
+    for (const font of unreadable)
+      limitations.push(
+        `x-height of ${layer.id} is not measured for font "${font}": ${evidence.fontXHeightErrors![font]}.`,
+      );
     if (measuredStyles.length && reading.length) {
       const smallest = measuredStyles.reduce((a, b) =>
         b.xHeight < a.xHeight ? b : a,
@@ -732,7 +775,7 @@ export function analyzeTextLegibility(
           { path: `${path}.fontSize` },
         );
       }
-    } else if (!measuredStyles.length)
+    } else if (!measuredStyles.length && !unreadable.length)
       limitations.push(
         `x-height of ${layer.id} is not measured: it uses no pinned font.`,
       );

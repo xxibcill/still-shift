@@ -2159,7 +2159,8 @@ attribution, and the report says why.
 (as the typography renderer uses), times the style's size and the layer's
 evaluated vertical scale, scaled from the composition width to `reviewWidth` CSS
 pixels. The default floor, 6 px at 360 px, is about the x-height of 12 px CSS
-type. Span styles are included; system fonts are listed as unmeasured.
+type. Span styles are included; system fonts, and pinned fonts whose metrics
+cannot be read (a WOFF or WOFF2 file), are listed as unmeasured with the reason.
 Per-glyph animator scale is not included.
 
 **`platform-safe-zone`.** Each declared band (`top`, `bottom`, `left` or `right`,
