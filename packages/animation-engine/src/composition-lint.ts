@@ -302,7 +302,7 @@ async function lintOwnedComposition(
       await browser?.close();
     } finally {
       try {
-        await server?.close();
+        if (server) await closeViteServer(server);
       } finally {
         try {
           if (http?.listening) await closeHttpServer(http);
@@ -313,6 +313,44 @@ async function lintOwnedComposition(
     }
   }
 }
+
+/**
+ * Close Vite only after its dependency optimizer settles. In Vite 7.3.6 a run
+ * started by the dependency scan is taken over by the crawl-end handler, so a
+ * `close()` in that window has nothing to cancel; when the bundle lands, the
+ * closed optimizer returns without removing it, and `deps_temp_*` reappears in
+ * the lint cache after it was removed (a cancel in the first moments of lint).
+ * Waiting for the scan and for every discovered dependency's processing lets
+ * that run commit first. A completed lint has nothing pending, so this costs
+ * nothing then; the bound keeps a stuck optimizer from holding cleanup.
+ */
+async function closeViteServer(server: ViteDevServer) {
+  const optimizers = Object.values(server.environments).flatMap(
+    (environment) =>
+      environment.depsOptimizer ? [environment.depsOptimizer] : [],
+  );
+  await Promise.allSettled(
+    optimizers.map((optimizer) => optimizer.scanProcessing),
+  );
+  const processing = optimizers.flatMap((optimizer) =>
+    Object.values(optimizer.metadata.discovered).flatMap((dependency) =>
+      dependency.processing ? [dependency.processing] : [],
+    ),
+  );
+  if (processing.length) {
+    let timer: NodeJS.Timeout | undefined;
+    await Promise.race([
+      Promise.allSettled(processing),
+      new Promise<void>((resolve) => {
+        timer = setTimeout(resolve, optimizerSettleTimeoutMs);
+      }),
+    ]);
+    clearTimeout(timer);
+  }
+  await server.close();
+}
+
+const optimizerSettleTimeoutMs = 10_000;
 
 function closeHttpServer(server: Server) {
   return new Promise<void>((resolve, reject) => {
