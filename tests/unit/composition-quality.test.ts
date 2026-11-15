@@ -1485,6 +1485,31 @@ describe("ET5a text framing and decoration guards", () => {
     expect(found).toEqual([[[0, 30], 0.25]]);
   });
 
+  it("writes the message from the run's peak share", () => {
+    const layer = title([0, 100]);
+    (layer as { transform: object }).transform = {
+      position: {
+        keys: [
+          { frame: 0, value: [-20, 100] },
+          { frame: 30, value: [-50, 100] },
+        ],
+      },
+    };
+    const [drift] = analyzeCompositionQuality(
+      composition([layer], { frameCount: 31 }),
+      {
+        evaluation: { textBounds: { title: [line] } },
+        textFramingEvidence: { ink: { title: [[line]] } },
+      },
+    ).diagnostics.filter((d) => d.code === "text-off-canvas");
+    // 10% off on frame 0, 25% at the end of the run.
+    expect(drift!.message).toMatch(/^Up to 25\.0% of the text's/u);
+    const [held] = lint([title([-80, 100])]).filter(
+      (d) => d.code === "text-off-canvas",
+    );
+    expect(held!.message).toMatch(/^40\.0% of the text's/u);
+  });
+
   it("adds nothing without measured ink or for hidden layers", () => {
     expect(lint([title([-80, 100])], {}, {}).map((d) => d.code)).toEqual([
       "outside-safe-area",

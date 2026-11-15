@@ -90,7 +90,7 @@ still hold before relying on them.
 
 - **Agent / branch:** Claude Code on `codex/editorial-titles-et5a` (from PR head 76c17f96)
 - **Scope:** four inline review findings on [PR #66](https://github.com/xxibcill/still-shift/pull/66), one fix commit each.
-- **Done:** (1) `text-off-canvas` skips frames within 0.5 s of the layer crossing the edge by its own transform (hidden share changing by more than 0.5/s between adjacent visible frames in a shot), so push-on/push-off titles are no longer errors; a title at rest cut off, and a slow drift, still are.
+- **Done:** (1) `text-off-canvas` skips frames within 0.5 s of the layer crossing the edge by its own transform (hidden share changing by more than 0.5/s between adjacent visible frames in a shot), so push-on/push-off titles are no longer errors; a title at rest cut off, and a slow drift, still are. (2) A merged `text-off-canvas` finding's message is written from the run's peak share, prefixed "Up to" when the share varies (it kept the first frame's share before); constant runs such as ET0 O2 keep their recorded message.
 - **Results:** composition-quality unit tests and `pnpm test:browser:composition-quality` pass on Node 22.23.1; O2 still frames 4–83 at 0.399, pass-1 T3 and T2 unchanged.
 - **Records:** [ET5a results](./editorial-typography-et5a-results.json), [plan](./editorial-typography-improvement-plan.md#et5a--framing-and-decoration-guards).
 

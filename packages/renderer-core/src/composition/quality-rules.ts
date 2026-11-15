@@ -161,6 +161,15 @@ function coverageLayerReference(comp: Composition, id: string) {
 const TEXT_OFF_CANVAS_FRACTION = 0.05;
 const textOffCanvasLimit = (policy: ResolvedCompositionQualityPolicy) =>
   policy.textOffCanvasFraction ?? TEXT_OFF_CANVAS_FRACTION;
+/** Message for a merged run, from its peak hidden share. */
+function textOffCanvasMessage(peak: number, varies: boolean, align: string) {
+  return (
+    `${varies ? "Up to " : ""}${(peak * 100).toFixed(1)}% of the text's settled glyph ink lies outside the frame.` +
+    (align === "left"
+      ? ""
+      : ` \`align: "${align}"\` places each line relative to the layer origin, not within \`textLayout.width\`; move the origin or use \`align: "left"\`.`)
+  );
+}
 /**
  * Hidden-share change per second above which a text layer counts as moving
  * across the frame edge (a push-on or push-off by its own transform) rather
@@ -308,6 +317,7 @@ export function compositionFramingFindings(
       shares[at] = share;
     }
   });
+  const textAlign = new Map<string, string>();
   const textTransit = new Map(
     [...textShares].map(([id, shares]) => [
       id,
@@ -424,16 +434,14 @@ export function compositionFramingFindings(
         Composition["layers"][number],
         { type: "text" }
       >;
-      const align = layer.align ?? "left";
+      textAlign.set(sample.id, layer.align ?? "left");
+      // The message is written from the run's peak share once frames merge.
       add(
         "text-off-canvas",
         sample,
         [at, at],
         Math.round(hidden * 1000) / 1000,
-        `${(hidden * 100).toFixed(1)}% of the text's settled glyph ink lies outside the frame.` +
-          (align === "left"
-            ? ""
-            : ` \`align: "${align}"\` places each line relative to the layer origin, not within \`textLayout.width\`; move the origin or use \`align: "left"\`.`),
+        "",
       );
     }
     for (const id of coverage) {
@@ -499,6 +507,20 @@ export function compositionFramingFindings(
         );
     }
   });
+  for (const diagnostic of diagnostics) {
+    if (diagnostic.code !== "text-off-canvas") continue;
+    const [first, last] = diagnostic.frames;
+    const id = diagnostic.nodes[0]!;
+    const run = textShares
+      .get(id)!
+      .slice(first, last + 1)
+      .map((share) => Math.round(share! * 1000));
+    diagnostic.message = textOffCanvasMessage(
+      diagnostic.measured,
+      Math.min(...run) !== Math.max(...run),
+      textAlign.get(id) ?? "left",
+    );
+  }
   return diagnostics;
 }
 const scaleDelta = (
