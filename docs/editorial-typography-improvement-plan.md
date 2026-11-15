@@ -1,9 +1,10 @@
 # Editorial title overlays: improvement plan
 
-Date: 2026-11-15. Status: **ET0, ET1 and ET2 merged on `main` (PR #60, #61,
-#62); ET3 done on `codex/editorial-titles-et3` (not pushed, no PR); ET4–ET8
-proposed.** ET0 re-baselined every finding on `main`
-(98a92e92); see [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
+Date: 2026-11-15. Status: **ET0–ET3 merged on `main` (PR #60, #61, #62, #63);
+remaining milestones reordered by the
+[direction review](#direction-review-2026-11-15) and still proposed.** ET0
+re-baselined every finding on `main` (98a92e92); see
+[Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
 Source evidence: [proof report](./editorial-typography-proof-2026-11-15.md) and
 [results JSON](./editorial-typography-proof-2026-11-15-results.json). Finding IDs
@@ -12,10 +13,16 @@ Source evidence: [proof report](./editorial-typography-proof-2026-11-15.md) and
 ## Goal
 
 Make Still Shift a dependable renderer and checker for editorial and kinetic title
-overlays on video, so a person or an external AI planner can produce varied
-treatments that are correct (exact copy and glyphs), placed by measurement rather
-than hand coordinates, and checked against the actual moving frames. Taste,
-footage understanding and candidate search stay outside the core (ET7).
+overlays on video, so a person or an AI planner can produce varied treatments that
+are correct (exact copy and glyphs), placed by measurement rather than hand
+coordinates, and checked against the actual moving frames. Taste, footage
+understanding and candidate search stay outside `packages/` (ET7a, ET7b).
+
+**Success measure (proposed; the owner confirms it in G1):** on at least two
+authorized clips, an AI-written batch of eight candidate titles per clip passes
+strict font coverage and the legibility checks, needs no person to edit
+coordinates, and the owner accepts at least three of the eight on each clip.
+Engine milestones are worth doing to the extent they move this number.
 
 ## Rules for every milestone
 
@@ -33,7 +40,7 @@ footage understanding and candidate search stay outside the core (ET7).
   JSON beside this plan.
 - Shared work is implemented once. ET1 **is** the font gate already scoped as MS1
   in the [typography plan](./typography-motion-engine-plan.md#exact-copy-font-coverage);
-  ET5 reuses that plan's MS2 Thai probes.
+  ET5c reuses that plan's MS2 Thai probes.
 
 ## Re-baseline on `main` (ET0)
 
@@ -59,22 +66,55 @@ recorded outcomes are in
 | O11 | Still reproduced and wider: serif seams persist through the hold                                                        | ET5 probe includes hold frames                                                                                                                                                    |
 | P1  | Still passes: mark gap 11–12 px in frames 21–34                                                                         | ET5 Thai probes unchanged                                                                                                                                                         |
 
+Milestone IDs in this table predate the direction review below: ET5 is now
+ET5a/ET5b/ET5c, ET6 is ET6a/ET6b, and ET4 is reduced.
+
+## Direction review (2026-11-15)
+
+After ET0–ET3 the remaining plan was reviewed against its results. The foundation
+held: each finished milestone fixed or guarded an observed failure. The remaining
+order did not, for these reasons.
+
+- **No person has judged any output.** ET3 flags a headline that agent review had
+  passed (2.72:1 against 3:1). Thresholds and priorities need the owner's view of
+  real frames first (G1).
+- **The goal itself was last.** Candidate generation and the aesthetic proof came
+  after four more engine milestones. ET1–ET3 are enough to run a thin pilot now,
+  and its evidence should order the engine work (ET7a, which absorbs ET8).
+- **Measurement beats new anchors for a planner.** A planner that can measure text
+  can place it; ET4 shrinks to repairing the defect and ET6a moves ahead of it.
+- **One ET6 check was not achievable as written.** Text is shaped by the browser's
+  canvas, so "without launching a render" becomes "browser preparation only, no
+  frames rendered".
+- **ET5 mixed priorities.** The serif seams persist through the hold on an
+  animated serif headline, a visible defect (ET5b). The framing and decoration
+  guards are cheap and come first (ET5a). Probes wait for a real need (ET5c).
+- **Fonts limit variety more than any engine gap.** Four pinned faces cannot give
+  "attractive and varied". G1 asks the owner to approve fonts and a clip.
+- **Verification debt and follow-ups were untracked** (ET9).
+
 ## Milestone tracker
 
-| ID  | Milestone                                   | Findings         | Depends on                            | Estimate (active days)                     | Status                     |
-| --- | ------------------------------------------- | ---------------- | ------------------------------------- | ------------------------------------------ | -------------------------- |
-| ET0 | Tracked fixtures and baseline               | O1–O6            | owner: ET0 clip                       | 1–2                                        | Merged on `main` (PR #60)  |
-| ET1 | Exact-copy font coverage gate (= MS1)       | O5               | ET0                                   | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)  |
-| ET2 | Pixel lint over native video                | O4, O8           | ET0                                   | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)  |
-| ET3 | Text-over-video legibility checks           | O6               | ET2                                   | 3–5; actual 1 session                      | Done on branch, not pushed |
-| ET4 | Measured multi-layer layout anchors         | O1, O9           | ET0                                   | 3–5                                        | Proposed                   |
-| ET5 | Authoring guards and probes                 | O2, O3, O10, O11 | ET0, owner: align                     | 2–4                                        | Proposed                   |
-| ET6 | Measurement API and editorial lint profile  | O7, O9           | ET4, owner: reading rule              | 2–4                                        | Proposed                   |
-| ET7 | External orchestration pilot (outside core) | —                | ET1–ET4, owner: location              | 5–10                                       | Proposed                   |
-| ET8 | Aesthetic proof on authorized real inputs   | —                | ET1–ET3 (ET7 optional), owner: inputs | 2–3                                        | Proposed                   |
+| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                    |
+| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | ------------------------- |
+| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60) |
+| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61) |
+| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62) |
+| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63) |
+| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Waiting on owner          |
+| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Proposed                  |
+| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5                                        | Proposed                  |
+| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                  |
+| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Proposed                  |
+| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                  |
+| ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                  |
+| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                  |
+| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                  |
+| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                  |
 
-Recommended order: ET0 → ET1 → ET2 → ET3 → ET4 → ET5/ET6 → ET8 → ET7. ET1, ET2 and
-ET4 touch separate code and can run in parallel after ET0. Estimates are planning
+Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence)
+ET6a, ET5b, ET4, ET6b → ET9 before any release → ET7b. ET5a and ET5b do not depend
+on G1's visual review and can run while it is pending. Estimates are planning
 ranges, not deadlines; re-estimate at entry against the then-current code.
 
 ---
@@ -327,145 +367,261 @@ x-height floor (recommended: keep 6 px at 360 px).
 
 ---
 
-## ET4 — Measured multi-layer layout anchors
+## G1 — Owner review and inputs (no code)
 
-**Why:** `attach` follows the line box widened by animation excursions, so label
-gaps of 18/30 px became 153/213 px (O1), and the target reference point is in
-absolute pixels. Hand coordinates were the only workaround, and they do not adapt
-to new copy.
+**Why:** four milestones in, no person has judged any output, and every remaining
+threshold and priority depends on that judgement. ET3 flags the proof's "Olive"
+headline at 2.72:1, which agent review had passed; only the owner's eyes can say
+which of the two is right.
 
 **Scope**
 
-- Separate **rest** bounds (settled layout) from **motion-union** bounds (culling,
-  safe-area); attach chooses, defaulting to current behaviour for old JSON.
-- Reference boxes: `line` (current), `ink`, `cap` (cap height to baseline) and
-  `baseline` points, from shaped layout and font metrics.
-- Target alignment by a normalized point on the target's own reference box
-  (for example align the kicker's bottom-left baseline to the headline's
-  cap-top-left).
-- State lint able to evaluate these constraints using Node-side measurement
-  (shared with ET6) or a clear "needs measurement" limitation instead of failing
-  outright (O9).
+- Review the three existing pass-2 treatments (entrance, hold, exit and phone
+  sheets in [`docs/review/editorial-typography-proof-2026-11-15/`](./review/editorial-typography-proof-2026-11-15/);
+  the MP4s are in the primary checkout's git-ignored
+  `benchmarks/results/editorial-typography-proof-2026-11-15/`).
+- Settle the open decisions listed under [Decisions needed](#decisions-needed).
+- Approve inputs for the pilot: one authorized vertical clip, and a short list of
+  fonts to pin. Open-licence faces are enough to start; candidates to verify at
+  pin time (licence text, source URL and SHA-256 recorded): a high-contrast
+  display serif with italic (for example Playfair Display, Cormorant Garamond,
+  Bodoni Moda), a script (for example Pinyon Script), a condensed Latin display
+  (for example Anton, Oswald) and a Thai display or serif (for example Noto Serif
+  Thai, Prompt, Kanit). Downloading any of them needs the owner's go-ahead.
+  Pin TTF or OTF files: WOFF and WOFF2 are rejected before render (PR #64).
 
 **Checks**
 
-- [ ] Write the failing case first: ET0 attach fixture measures 18/30 px gaps
-      within ±1 px at rest, with entrance and exit animators present.
-- [ ] Same layout with changed copy ("Olive" → "Ochre & Olive", and a Thai
-      headline) keeps the gaps; nothing is hand-moved.
-- [ ] Gaps stay fixed during the hold while the headline animates its tracking.
-- [ ] Old compositions using `attach` render byte-identically.
-- [ ] Reverse seeks and repeated exports match.
-- [ ] `pnpm check:fast`, `pnpm test:browser:composition-typography-adapter`,
-      `pnpm test:browser:composition`, composition baselines unchanged.
+- [ ] Acceptance or rejection of T1, T2 and T3 recorded per treatment, in the
+      owner's words, with what should change.
+- [ ] ET3-D1 and ET3-D2 decided against those frames.
+- [ ] Clip and font list approved; rights and licences recorded beside the inputs.
+- [ ] Success measure (see [Goal](#goal)) confirmed or replaced.
 
 ---
 
-## ET5 — Authoring guards and probes
+## ET5a — Framing and decoration guards
 
-**Why:** two traps passed every check (O2, O3); two behaviours are unexplained
-(O10, O11); Thai finer-unit risks remain untested.
+**Why:** two traps passed every check (O2, O3), and a generator will hit both
+repeatedly. They are cheap and independent of the pilot's outcome.
 
 **Scope and checks**
 
 - [ ] **Align contract (O2).** Owner decides: keep origin centring (document it
       and warn when `align` is not `left` and the text overflows the frame) or
-      centre within `textLayout.width` behind a versioned field. Proof T3 pass 1
-      produces an error-level finding proportional to the hidden fraction.
-- [ ] **Partial off-canvas severity.** A layer 50% off-frame is reported
-      differently from a 5 px safe-inset incursion.
+      centre within `textLayout.width` behind a versioned field.
+- [ ] **Partial off-canvas severity.** A layer with a large share of its ink
+      off-frame is reported as an error proportional to the hidden fraction,
+      distinct from a few-pixel safe-inset incursion. The ET0 O2 fixture (39.9%
+      off-frame) fails; a 5 px incursion stays a warning.
 - [ ] **Decorations and fades (O3).** Either highlight/box/underline inherit their
       text's animator opacity (versioned), or lint reports a visible decoration
-      with fully transparent text. Proof T2 pass 1 is caught or fixed.
-- [ ] **Axis validation (O10).** Reproduce the T2 pass-1 rejection; validate
-      reachable axis values over time, or document the conservative rule in the
-      diagnostic text. No out-of-range value may reach rendering.
-- [ ] **Serif fragment (O11).** Reproduce at frames 30–36 with masked per-glyph
-      entrance; classify as overhang clipping, mask feather or other, then fix or
-      record as accepted. ET0 found the seams also persist through the hold while
-      a per-glyph tracking animator runs (proof T1 frame 100; ET0
-      `o1-attach-animated.ts` frame 45); include hold frames.
-- [ ] **Thai probes.** Run the typography plan's MS2 finer-segmentation and
-      script-sensitive tracking probes with the ET0 Thai fixture; record supported
-      units. No blanket claim either way.
+      with fully transparent text. The ET0 O3 fixture (frames 70–83) is caught or
+      fixed.
+- [ ] Existing outputs and default lint results unchanged unless versioned.
 - [ ] `pnpm check:fast` plus the browser groups for each touched area.
+
+Estimate: 1–2 days.
 
 ---
 
-## ET6 — Measurement API and editorial lint profile
+## ET7a — Generator pilot and aesthetic proof (absorbs ET8)
 
-**Why:** an external planner needs text sizes before rendering (fit, layout
-search), and the default reading rule fails every title with gentle hold motion
-(O7), which conflicts with the owner's continuous-motion preference.
+**Why:** this is the first test of the actual goal. ET1–ET3 already give an AI
+agent a strict copy check, a legibility signal over real frames and fast renders.
+Running the loop on real inputs shows whether the results are attractive and
+varied, and which engine gaps cost the most, before more engine work is designed.
 
-**Scope**
+**Scope** (in this repository, outside `packages/`)
 
-- Node API (and CLI `comp measure`) returning prepared rest/motion bounds, line
-  and cluster boxes, and coverage results for a composition or a single text
-  request, identical to what rendering uses.
-- `editorial-title` lint policy profile: reading windows that allow bounded slow
-  drift (displacement and velocity budgets), set from the owner's rule.
+- A skill beside [`skills/compose-with-still-shift`](../skills/compose-with-still-shift/SKILL.md)
+  (working name `design-editorial-titles`): a small design grammar (roles,
+  hierarchy, pairing, placement zones, treatments, entrance/hold/exit timing),
+  the check loop, and what to record. The agent is the candidate generator.
+- A thin script that, for one clip and copy, renders each candidate, runs
+  `--font-coverage strict` and `--legibility true`, and builds contact sheets
+  (entrance, hold, exit; native and phone scale).
+- Inputs from G1: the authorized clip and pinned fonts.
+- For each candidate, record the number of render-and-fix iterations and which
+  problem caused each one (placement, overflow, contrast, collision, seams,
+  missing measurement). This is the evidence that orders ET4, ET5b and ET6a.
 
 **Checks**
 
-- [ ] `comp measure` bounds equal render-time `textBounds` for all ET0 fixtures
-      and proof treatments (exact match).
-- [ ] Measuring 100 copy variants completes without launching a render, with
-      timing recorded.
-- [ ] Under the profile, proof T1–T3 hold drift passes reading-time; a fast or
+- [ ] At least 8 visually distinct candidates for one clip and copy, on at least
+      two clips or copies, including one Thai or mixed title.
+- [ ] Every candidate passes strict font coverage; legibility findings are fixed
+      or waived with a reason.
+- [ ] No person edits coordinates; the agent's iterations are counted.
+- [ ] Contact sheets committed; rights and licences recorded beside the inputs.
+- [ ] Owner's acceptance or rejection recorded per candidate, in the owner's
+      words. Agent scores are labelled as such and never treated as acceptance.
+- [ ] Result against the success measure stated, pass or fail.
+- [ ] `packages/` gains no taste or footage-analysis code.
+- [ ] Ranked list of engine gaps by iterations cost, with a recommendation for
+      the order of ET6a, ET5b and ET4.
+
+Estimate: 3–5 days after G1. Not attempted here: subject mattes for text behind a
+subject, automatic footage analysis and preference learning (ET7b).
+
+---
+
+## ET6a — Text measurement command
+
+**Why:** a planner that can measure copy before rendering can compute positions
+itself, which removes hand coordinates without new attach features. Start only
+if ET7a shows measurement or placement iterations are a leading cost.
+
+**Scope**
+
+- CLI `comp measure` and a Node API returning, for a composition or a single text
+  request, the same prepared rest and motion bounds, line and cluster boxes, ink
+  and cap boxes, and font coverage that rendering uses.
+- Text is shaped by the browser's canvas, so measuring runs the pinned headless
+  browser's preparation step only. No frames are rendered or encoded.
+
+**Checks**
+
+- [ ] `comp measure` bounds equal render-time `textBounds` exactly for all ET0
+      fixtures and proof treatments.
+- [ ] Measuring 100 copy variants renders no frames; timing and peak memory
+      recorded.
+- [ ] Ink and cap boxes match rendered ink within ±1 px on the ET0 attach fixture.
+- [ ] Cancellation leaves no temporary files (reuse the ET2 checks).
+- [ ] `pnpm check:fast`, `pnpm test:browser:composition-quality`.
+
+Estimate: 2–3 days.
+
+---
+
+## ET5b — Serif seam fix
+
+**Why:** thin vertical fragments at serif edges appear during masked per-glyph
+entrances and, as ET0 found, persist through the whole hold while a per-glyph
+tracking animator runs (O11). That is a visible defect in a title's main element,
+not a minor probe. It can run in parallel with ET7a.
+
+**Scope and checks**
+
+- [ ] Failing test first: the ET0 `o1-attach-animated` fixture at frame 45 and
+      the proof T1 at frames 30–36 and 100 show the fragments; the static control
+      shows none.
+- [ ] Root cause identified (candidate: overhang clipping when per-glyph slices
+      change position) and fixed at the cause.
+- [ ] Settled frames remain pixel-identical to the static draw path; kerning and
+      ligatures inside a unit are preserved.
+- [ ] Any intended pixel change is versioned and its affected baselines listed.
+- [ ] `pnpm check:fast`, `pnpm test:browser:typography`,
+      `pnpm test:browser:composition-typography-adapter`, composition baselines.
+
+Estimate: 1–3 days after root cause.
+
+---
+
+## ET4 — Attach bounds repair (reduced)
+
+**Why:** `attach` follows the line box widened by animation excursions, so label
+gaps of 18/30 px render as 150/239 px (O1). The original scope also added new
+anchor types; with ET6a a planner can place by measurement, so only the defect is
+fixed here unless ET7a shows runtime-adaptive layout is needed.
+
+**Scope**
+
+- Separate **rest** bounds (settled layout) from **motion-union** bounds (culling,
+  safe-area); `attach` can choose rest bounds. Old JSON keeps current behaviour.
+- `ink` and `cap` reference boxes alongside the current `line` box.
+- Deferred until evidence asks for it: target alignment by a normalized point on
+  the target's own box, and state lint evaluating `attach` (O9).
+
+**Checks**
+
+- [ ] Failing case first: the ET0 attach fixture measures 18/30 px gaps within
+      ±1 px at rest, with entrance and exit animators present.
+- [ ] Gaps stay fixed during the hold while the headline animates its tracking.
+- [ ] Same layout with changed copy ("Olive" → "Ochre & Olive", and a Thai
+      headline) keeps the gaps for left-aligned followers.
+- [ ] Old compositions using `attach` render byte-identically.
+- [ ] Reverse seeks and repeated exports match.
+- [ ] `pnpm check:fast`, `pnpm test:browser:composition-typography-adapter`,
+      `pnpm test:browser:composition`, composition baselines unchanged.
+
+Estimate: 2–3 days.
+
+---
+
+## ET6b — Editorial title lint profile
+
+**Why:** the default reading rule fails every title with gentle hold motion (O7),
+which conflicts with the owner's continuous-motion preference; ET3's targets may
+also need an editorial setting (ET3-D1).
+
+**Scope**
+
+- An `editorial-title` policy profile: reading windows that allow bounded slow
+  drift (displacement and velocity budgets), plus the contrast and phone-scale
+  values the owner chose in G1.
+
+**Checks**
+
+- [ ] Under the profile, proof T1–T3 hold drift passes `reading-time`; a fast or
       jittery hold still fails.
+- [ ] Contrast and x-height results match the G1 decisions on the proof frames.
 - [ ] Default policy results unchanged.
 - [ ] `pnpm check:fast`, `pnpm test:browser:composition-quality`.
 
-**Owner decision:** how much hold motion counts as readable.
+Estimate: 1–2 days after the owner's rule.
 
 ---
 
-## ET7 — External orchestration pilot (outside the core)
+## ET5c — Deferred probes
 
-**Why:** hierarchy, font pairing, footage-aware placement and taste are not
-engine features. Build them outside Still Shift, using ET1–ET4 and ET6 as the
-deterministic contract.
+Run only when a real title needs them; each is a probe before any repair.
 
-**Scope** (separate package or repository, as the owner decides)
+- [ ] **Axis validation (O10).** Reproduce the `-20–900` rejection; validate
+      reachable axis values over time, or state the conservative rule in the
+      diagnostic. No out-of-range value may reach rendering.
+- [ ] **Thai finer units and script-sensitive tracking.** The typography plan's
+      MS2 probes with the ET0 Thai fixture and a pinned Thai display face; record
+      supported units. No blanket claim either way.
+- [ ] **Text behind a subject.** A subject matte supplied as a `sequence` used as
+      a track matte over a title; record whether it renders and lints correctly.
 
-- Font library manifest: licensed pinned files, roles, pairing tags, scripts covered.
+---
+
+## ET9 — Release verification and carried follow-ups
+
+**Why:** ET1–ET3 ran the fast and targeted tiers only. ET2 changed how lint
+serves its page, and the installed-package route for that is untested.
+
+**Checks**
+
+- [ ] `pnpm check` on the then-current `main`, failures and reruns retained.
+- [ ] `pnpm release:check` before any release that includes ET1–ET3, including
+      `comp lint --pixels true` and `--legibility true` from an installed package.
+- [ ] WebGL2 backend: one video-backed title fixture rendered and linted with
+      legibility on both backends.
+- [ ] `comp render` handles SIGINT/SIGTERM with the same cleanup ET2 gave
+      `comp lint`.
+- [ ] Default media cache in the OS temp folder: eviction or a clear failure
+      message with the path to clear (it currently fails every new preparation
+      once full).
+- [ ] ET2-D1 and ET2-D2 decided and applied.
+
+This is not a release. Publishing still needs the owner's explicit request.
+
+---
+
+## ET7b — External orchestration (after the pilot)
+
+Only if ET7a meets the success measure or shows a clear path to it.
+
+- Font library manifest with roles, pairing tags and scripts covered.
 - Footage analysis: free-space and contrast maps over the title's visible frames;
-  subject matte delivered to Still Shift as a `sequence` used as a track matte.
-- Candidate generator that writes builder programs from a small design grammar.
-- Render candidates, contact sheets, ET3 diagnostics, human selection; record
-  choices for possible later preference learning.
-
-**Checks**
-
-- [ ] Generates at least 8 visually distinct candidates for one clip and copy;
-      every candidate passes ET1 strictly and is linted by ET2/ET3.
-- [ ] No candidate needs hand-edited coordinates.
-- [ ] Contact sheet and human selection recorded; agent scores are labelled as
-      such and never treated as acceptance.
-- [ ] Still Shift core gains no taste or footage-analysis code from this pilot.
-
----
-
-## ET8 — Aesthetic proof on authorized real inputs
-
-**Why:** the proof used an illustrated stand-in and the repository's four fonts;
-the owner's reference looks need real footage and display/italic/script faces.
-
-**Scope**
-
-- Owner supplies authorized vertical fashion footage (with motion and cuts) and
-  licensed fonts, with permitted use recorded.
-- Repeat the three-treatment review (entrance, hold, exit; native and phone
-  scale), using ET1–ET3 checks.
-
-**Checks**
-
-- [ ] Rights and font licences recorded beside the inputs.
-- [ ] All treatments pass ET1 strictly and ET2/ET3 with any waivers explained.
-- [ ] Review frames and phone sheets committed.
-- [ ] Owner's visual acceptance or rejection recorded per treatment, in the
-      owner's words.
+  subject mattes.
+- Candidate search, a visual critic and recorded human choices for possible
+  preference learning.
+- Whether this stays an in-repository skill and scripts or moves to a separate
+  package or repository is decided here, from the pilot's size.
 
 ---
 
@@ -475,10 +631,20 @@ Text on a path, per-character 3D extrusion, a new shaping engine, automatic font
 licensing, AI video generation, publishing or release. Paid generation is not
 needed; any ElevenLabs use still requires batch-specific approval.
 
-## Decisions needed before starting
+## Decisions needed
 
-1. Approve the plan and the first milestone (recommended: ET0, then ET1).
-2. Allow a small synthetic video fixture to be committed (ET0).
-3. Align contract (ET5) and title reading rule (ET6).
-4. Where the orchestration layer lives (ET7).
-5. Authorized footage and licensed fonts (ET8).
+All are the owner's. G1 collects them.
+
+| ID      | Decision                                                                                | Needed by | Recommendation                                           |
+| ------- | --------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------- |
+| D-view  | Visual acceptance of proof T1, T2, T3                                                   | G1        | —                                                        |
+| ET3-D1  | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level) | G1, ET6b  | Decide after looking at T1's "Olive" (2.72:1)            |
+| ET3-D2  | Phone-scale floor: 6 px x-height at 360 px                                              | G1, ET6b  | Keep                                                     |
+| D-meas  | Success measure for the pilot                                                           | G1        | 3 of 8 accepted per clip, on two clips                   |
+| D-input | One authorized vertical clip; fonts to pin (open-licence list or licensed files)        | G1, ET7a  | Start with open-licence faces                            |
+| D-align | `align` contract: centre on origin, or within `textLayout.width`                        | ET5a      | Keep origin, document and guard                          |
+| D-read  | How much hold motion counts as readable                                                 | ET6b      | —                                                        |
+| ET2-D1  | Near-static footage counted as frozen                                                   | ET9       | Keep current rule                                        |
+| ET2-D2  | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding               | ET9       | —                                                        |
+| D-clip  | Keep the committed synthetic fixture clip (merged with ET0)                             | Any time  | Keep                                                     |
+| D-home  | Where orchestration lives long-term                                                     | ET7b      | In-repository skill for the pilot; decide after its size |
