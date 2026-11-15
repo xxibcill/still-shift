@@ -123,19 +123,12 @@ async function cancelCliLint(signal: (typeof signals)[number]) {
         },
       ],
     });
-    const previous = process.env.TMPDIR;
-    process.env.TMPDIR = temporary;
-    try {
-      const left = await lintTemporaryEntries();
-      assert.deepEqual(
-        left,
-        [],
-        `${signal}: lint temporary entries ${left.join(", ")}`,
-      );
-    } finally {
-      if (previous === undefined) delete process.env.TMPDIR;
-      else process.env.TMPDIR = previous;
-    }
+    const left = await lintTemporaryEntries(temporary);
+    assert.deepEqual(
+      left,
+      [],
+      `${signal}: lint temporary entries ${left.join(", ")}`,
+    );
     assert.deepEqual(
       await mediaCacheTransientEntries(
         join(temporary, "still-shift-composition-media"),

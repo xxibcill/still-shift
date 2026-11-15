@@ -190,8 +190,8 @@ const lintTemporaryPrefixes = [
   "playwright-artifacts-",
 ];
 
-export async function lintTemporaryEntries(): Promise<string[]> {
-  return (await readdir(tmpdir()))
+export async function lintTemporaryEntries(root = tmpdir()): Promise<string[]> {
+  return (await readdir(root))
     .filter((name) =>
       lintTemporaryPrefixes.some((prefix) => name.startsWith(prefix)),
     )
