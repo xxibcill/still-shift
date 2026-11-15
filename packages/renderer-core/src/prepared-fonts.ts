@@ -188,13 +188,8 @@ async function registerFamily(
   family: string,
   source: LoadedFont,
   fallbackFaces: NonNullable<LoadedFont["fallbackFaces"]>,
-  descriptors: FontFaceDescriptors = {},
 ) {
-  const base = {
-    weight: source.weight,
-    style: source.style ?? "normal",
-    ...descriptors,
-  };
+  const base = { weight: source.weight, style: source.style ?? "normal" };
   const initialize = async (face: FontFace) => {
     await face.load();
     document.fonts.add(face);

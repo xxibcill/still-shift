@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial titles ET0/ET1 (2026-11-15, unmerged, not pushed):** ET0 fixtures/plan on `codex/editorial-titles-et0`; ET1 font gate on `codex/editorial-titles-et1` (independent of ET0). Composition `fontCoverage: "strict"` or `--font-coverage strict` now blocks wrong-face copy before render; legacy default warns only. Owner decided (2026-11-15) to keep the branches separate. Pending: owner review of both branches; when they eventually meet, re-record only O5 in `et0-baseline.json` and tick the ET1 plan boxes; human visual review of fallback Thai. [ET1 results](./editorial-typography-et1-results.json).
+- **Editorial titles ET0/ET1 (2026-11-15, unmerged; ET1 is PR #61):** ET0 fixtures/plan on `codex/editorial-titles-et0`; ET1 font gate on `codex/editorial-titles-et1` (independent of ET0). Composition `fontCoverage: "strict"` or `--font-coverage strict` now blocks wrong-face copy before render; legacy default warns only. Owner decided (2026-11-15) to keep the branches separate. ET1 review findings (fallback planner crash, fallback axis/feature limit, unused parameter) fixed on the branch and pushed to PR #61. Pending: owner review of both branches; when they eventually meet, re-record only O5 in `et0-baseline.json` and tick the ET1 plan boxes; human visual review of fallback Thai. [ET1 results](./editorial-typography-et1-results.json).
 
 - **0.2.0 published and registry-verified (2026-10-16):** owner-approved source `ba13d26a` is remote `production` and fixed annotated `v0.2.0`. Public npm `latest` is `0.2.0`; its downloaded archive matches the verified SHA-256 `232e17f91c565b3d1d886a03399c0597dbaaaa29f4227e45276029d755c7e85f` byte for byte. Technical verification completed in recorded stages; all 28 standard installed checks, both focused mechanism groups and browser bundle pass. Original aggregate/harness failures, npm `EOTP`/browser retry, registry-processing reads and 19 timing deferrals remain retained. PR #59 carries the publication records; its authorized merge preserves release ancestry, with final readback retained separately. MS3 remains experimental: original first-pass 1/10, token savings null, accepted 0/10. [Results](./npm-release-results.json), [plan](./npm-release-plan.md), [PR #59](https://github.com/xxibcill/still-shift/pull/59).
 
@@ -81,6 +81,13 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-15 — ET1 review fixes (PR #61)
+
+- Review findings posted inline on [PR #61](https://github.com/xxibcill/still-shift/pull/61#pullrequestreview-5909333414); one commit per finding.
+- Fixed: the browser fallback planner threw on fonts the legacy Node gate only warns about (e.g. no Unicode format 4/12 cmap); it now reads only fonts that declare or serve as fallbacks and skips unreadable ones. Regression test added to `composition-font-coverage.test.ts`.
+- Documented: fallback faces ignore text-style/animator axes and OpenType features. Removed an unused `registerFamily` parameter.
+- Verified on Node 22.23.1: `pnpm check:fast` (457 files / 4,622 tests), the integration file (11 tests) and browser groups `composition-font-fallback`, `typography`, `composition-provider-typography`, `composition-typography-adapter`. A first `check:fast` on Node 24.16 failed only the CE9 bake snapshot by one float ulp, identically on `main`; not a PR regression. Not run: full `test:integration`, `check:runtime`, `pnpm check`, human visual review.
 
 ### 2026-11-15 — ET1 exact-copy font coverage gate
 
