@@ -518,14 +518,84 @@
       "validate": {
         "exit": 0,
         "status": "valid",
-        "diagnostics": []
+        "diagnostics": [
+          {
+            "code": "font-coverage",
+            "severity": "warning",
+            "message": "Font sans lacks U+0E04, U+0E25, U+0E38 in layer \"mixed\" (layers[0].text)"
+          },
+          {
+            "code": "font-coverage",
+            "severity": "warning",
+            "message": "Font sans lacks U+0E04, U+0E25, U+0E38 in layer \"thai-only\" (layers[1].text)"
+          }
+        ]
       },
       "render": {
         "exit": 0,
         "status": "rendered",
         "rendererVersion": "composition-canvas-1.47.7",
         "evaluatorVersion": "composition-evaluator-60",
-        "warnings": [],
+        "warnings": [
+          {
+            "code": "font-coverage",
+            "message": "Font sans lacks U+0E04, U+0E25, U+0E38 in layer \"mixed\" (layers[0].text)",
+            "severity": "warning",
+            "fontId": "sans",
+            "fontSha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+            "path": "layers[0].text",
+            "node": "mixed",
+            "text": "3 ลุค · OLIVE GREEN",
+            "missingCodepoints": [3588, 3621, 3640],
+            "missingGlyphs": [
+              {
+                "codePoint": 3588,
+                "glyphId": 0,
+                "character": "ค"
+              },
+              {
+                "codePoint": 3621,
+                "glyphId": 0,
+                "character": "ล"
+              },
+              {
+                "codePoint": 3640,
+                "glyphId": 0,
+                "character": "ุ"
+              }
+            ],
+            "layer": "mixed"
+          },
+          {
+            "code": "font-coverage",
+            "message": "Font sans lacks U+0E04, U+0E25, U+0E38 in layer \"thai-only\" (layers[1].text)",
+            "severity": "warning",
+            "fontId": "sans",
+            "fontSha256": "sha256:a20caf8286023a6a7a85e40b1d2a4ae9fc3e3b1f9eda8f4c542dd4986af67bb1",
+            "path": "layers[1].text",
+            "node": "thai-only",
+            "text": "ลุค",
+            "missingCodepoints": [3588, 3621, 3640],
+            "missingGlyphs": [
+              {
+                "codePoint": 3588,
+                "glyphId": 0,
+                "character": "ค"
+              },
+              {
+                "codePoint": 3621,
+                "glyphId": 0,
+                "character": "ล"
+              },
+              {
+                "codePoint": 3640,
+                "glyphId": 0,
+                "character": "ุ"
+              }
+            ],
+            "layer": "thai-only"
+          }
+        ],
         "systemFontLayers": [],
         "sha256": "381f678ea29e2be2f5c8f68341e879af997a4d1e1cb9a347c6040921d2a4a524"
       },

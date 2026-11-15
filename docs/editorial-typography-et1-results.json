@@ -94,7 +94,8 @@
   "et0Baseline": {
     "command": "pnpm exec tsx scripts/editorial-titles/et0-baseline.ts --check (in the throwaway ET0+ET1 worktree)",
     "result": "exit 1 as expected: the only differences are O5 validate.diagnostics ([] → two font-coverage warnings) and O5 render.warnings ([] → the same two warnings). Every render hash, lint outcome and measurement of O1–O6 and P1 is unchanged.",
-    "toDoOnMerge": "When ET0 and ET1 meet, re-record et0-baseline.json with --write for exactly these two O5 fields, and tick the ET1 checkboxes in the improvement plan (that plan file is not on this branch)."
+    "toDoOnMerge": "When ET0 and ET1 meet, re-record et0-baseline.json with --write for exactly these two O5 fields, and tick the ET1 checkboxes in the improvement plan (that plan file is not on this branch).",
+    "recordedOnMerge": "2026-11-15, after merging main (ET0, PR #60) into this branch: et0-baseline.ts --write changed exactly findings.O5.validate.diagnostics and findings.O5.render.warnings (two font-coverage warnings each); the file was kept in its committed JSON layout. A following --check passed: every other hash, lint outcome and measurement is unchanged."
   },
   "runs": [
     "Failing reproduction first: the new integration test failed 3/3 on the unmodified engine (unknown --font-coverage option, fontCoverage rejected by schema, legacy diagnostics []).",
