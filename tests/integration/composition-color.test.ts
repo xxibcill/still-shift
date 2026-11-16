@@ -262,7 +262,7 @@ describe("CGA look from an example", () => {
     for (const [name, value] of Object.entries(look))
       expect(Math.abs(fitted.params[name]! - value)).toBeLessThan(0.01);
     expect(fitted.fit.residual.rms).toBeLessThan(0.6);
-    expect(fitted.fit.heldOut.rmsMax).toBeLessThan(1);
+    expect(fitted.fit.heldOut!.rmsMax).toBeLessThan(1);
     expect(fitted.fit.afterInterpretation).toBe("media-path");
     // Applied looks default to 0.6 (the owner's pick); full strength stays available.
     for (const [lookStrength, expected] of [
@@ -280,6 +280,42 @@ describe("CGA look from an example", () => {
       expect(report.effects[0]!.params.strength).toBe(expected);
       expect(report.look!.strength).toBe(expected);
     }
+  });
+});
+
+describe("CGA look held-out residuals", () => {
+  it("reports no held-out figure when only one shot matches", async () => {
+    const before = join(root, "single-before.mkv");
+    await writeCgaClip(before, reference);
+    const after = join(root, "single-after.mkv");
+    await writeCgaClip(
+      after,
+      cgaDegrade(reference, {
+        kind: "matrix",
+        params: {
+          rr: 1.1,
+          rg: 0,
+          rb: 0,
+          gr: 0,
+          gg: 1.05,
+          gb: 0,
+          br: 0,
+          bg: 0,
+          bb: 0.95,
+          ro: 0,
+          go: 0,
+          bo: 0,
+        },
+      }),
+    );
+    const fitted = await fitColorLook([before], after, {
+      cacheDirectory: cache(),
+      step: 4,
+    });
+    expect(fitted.fit.shots).toHaveLength(1);
+    expect(fitted.fit.shots[0]!.heldOut).toBeNull();
+    expect(fitted.fit.heldOut).toBeNull();
+    expect(fitted.fit.residual.rms).toBeLessThan(1);
   });
 });
 

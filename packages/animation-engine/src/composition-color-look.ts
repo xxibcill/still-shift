@@ -72,6 +72,7 @@ export const ColorLookSchema = z
         pairs: z.number().int().min(1),
         pixels: z.number().int().min(1),
         residual: Residual,
+        /** Leave-one-shot-out residuals; null with fewer than two shots. */
         heldOut: z
           .object({
             rmsMean: z.number(),
@@ -80,7 +81,8 @@ export const ColorLookSchema = z
             blockRmsMean: z.number(),
             blockRmsMax: z.number(),
           })
-          .strict(),
+          .strict()
+          .nullable(),
         shots: z.array(
           z
             .object({
@@ -89,7 +91,7 @@ export const ColorLookSchema = z
               correlation: z.number(),
               pairs: z.array(z.tuple([z.number(), z.number(), z.number()])),
               residual: Residual,
-              heldOut: Residual,
+              heldOut: Residual.nullable(),
             })
             .strict(),
         ),
@@ -711,17 +713,20 @@ export async function fitColorLook(
   const shotsReport = matches.map((match, shotIndex) => {
     const own = sets.filter((set) => set.shot === shotIndex);
     const others = sets.filter((set) => set.shot !== shotIndex);
-    const heldOutParams = others.length ? robustFit(others) : params;
     return {
       after: match.shot,
       before: befores[match.clip]!.name,
       correlation: match.correlation,
       pairs: match.pairs,
       residual: colorLookResidual(params, own),
-      heldOut: colorLookResidual(heldOutParams, own),
+      // With one shot there is nothing to hold it out against: an in-sample
+      // residual reported as held-out would overstate the look's accuracy.
+      heldOut: others.length ? colorLookResidual(robustFit(others), own) : null,
     };
   });
-  const heldOut = shotsReport.map((shot) => shot.heldOut);
+  const heldOut = shotsReport.flatMap((shot) =>
+    shot.heldOut ? [shot.heldOut] : [],
+  );
   // Descriptive summary of what the look does.
   const row = (c: number) => [
     params[COLOR_MATRIX_COEFFICIENTS[c]![0]!]!,
@@ -775,20 +780,23 @@ export async function fitColorLook(
       pairs: matches.reduce((count, match) => count + match.pairs.length, 0),
       pixels: sets.reduce((sum, set) => sum + set.count * BLOCK * BLOCK, 0),
       residual: colorLookResidual(params, sets),
-      heldOut: {
-        rmsMean: round(
-          heldOut.reduce((sum, value) => sum + value.rms, 0) / heldOut.length,
-          4,
-        ),
-        rmsMax: Math.max(...heldOut.map((value) => value.rms)),
-        p99Max: Math.max(...heldOut.map((value) => value.p99)),
-        blockRmsMean: round(
-          heldOut.reduce((sum, value) => sum + value.blockRms, 0) /
-            heldOut.length,
-          4,
-        ),
-        blockRmsMax: Math.max(...heldOut.map((value) => value.blockRms)),
-      },
+      heldOut: heldOut.length
+        ? {
+            rmsMean: round(
+              heldOut.reduce((sum, value) => sum + value.rms, 0) /
+                heldOut.length,
+              4,
+            ),
+            rmsMax: Math.max(...heldOut.map((value) => value.rms)),
+            p99Max: Math.max(...heldOut.map((value) => value.p99)),
+            blockRmsMean: round(
+              heldOut.reduce((sum, value) => sum + value.blockRms, 0) /
+                heldOut.length,
+              4,
+            ),
+            blockRmsMax: Math.max(...heldOut.map((value) => value.blockRms)),
+          }
+        : null,
       shots: shotsReport,
       unmatchedShots: unmatched,
     },

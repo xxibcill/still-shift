@@ -367,7 +367,8 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   concatenation of shots cut from those clips with the same framing. It detects
   cuts, matches each shot to its source clip and frames, fits one encoded-sRGB
   3×3 + offset transform and writes a `still-shift-look-1` file with per-pixel
-  and 4×4-block residuals, overall and with each shot held out. A graded edit
+  and 4×4-block residuals, overall and with each shot held out (`null` when
+  only one shot matched, so there is nothing to hold out). A graded edit
   tagged BT.709 transfer is compared in its code values (as players show it and
   as `comp render` writes it); `--after-interpretation media-path` converts it
   as composition video instead.
