@@ -3,23 +3,30 @@
  *
  *   node --import tsx scripts/color/cga-owner-evaluation.ts \
  *     --raw <folder of raw clips> --graded <graded edit> --held-out <clip name> \
- *     --output dist/cga-owner
+ *     --output dist/cga-owner [--look <existing look.json>]
  *
- * Writes, under --output (git-ignored dist/): the fitted look, per-clip look
- * and adaptive renders with their reports, BT.601 decode checks, before/after
- * contact sheets (raw | look | adaptive at 25/50/75%) and summary.json. It
- * records software measurements only; it is not visual acceptance.
+ * Writes under --output (git-ignored dist/): the fitted look, renders per clip
+ * (look at 50% and 100%, auto with the current defaults; look 25% and 75% for
+ * the held-out clip), their reports, BT.601 decode checks, labelled contact
+ * sheets (Raw | Look 50% | Look 100% | Auto at 25/50/75% of each clip), a
+ * strength ladder for the held-out clip and summary.json. Existing renders are
+ * reused. Software measurements only; not visual acceptance.
  */
 import { spawnSync } from "node:child_process";
-import { mkdir, readdir, writeFile } from "node:fs/promises";
+import { access, mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { basename, extname, join, resolve } from "node:path";
 import {
   autoColorClip,
+  colorSampleOrdinals,
   fitColorLook,
+  measureColorFrames,
   openColorClip,
+  parseColorLook,
+  readColorCodeValueFrames,
   readColorFrames,
-  type AutoColorReport,
+  type ColorStatistics,
 } from "@still-shift/animation-engine";
+import { launchRenderBrowser } from "@still-shift/execution-runtime";
 
 const args = new Map<string, string>();
 for (let i = 2; i < process.argv.length; i += 2)
@@ -36,6 +43,11 @@ const rawDirectory = resolve(need("raw")),
 const cacheDirectory = join(output, "media-cache");
 const log = (message: string) =>
   console.error(`[${new Date().toISOString().slice(11, 19)}] ${message}`);
+const exists = (path: string) =>
+  access(path).then(
+    () => true,
+    () => false,
+  );
 await mkdir(output, { recursive: true });
 const clips = (await readdir(rawDirectory))
   .filter((name) => /\.(mp4|mov|m4v|mkv)$/i.test(name))
@@ -68,12 +80,10 @@ async function decodeCheck(path: string) {
       ],
       { maxBuffer: 64 * 1024 * 1024 },
     ).stdout;
-  // FFmpeg's own conversion with default swscale flags and the tagged matrix.
   const reference = ffmpeg(
     "scale=in_range=tv:out_range=pc:in_color_matrix=bt601",
     "rgb24",
   );
-  // Chroma upsampled by FFmpeg, matrix in float64 here.
   const yuv = ffmpeg(
     "scale=flags=accurate_rnd+bitexact:in_range=tv:out_range=tv",
     "yuv444p",
@@ -114,131 +124,214 @@ async function decodeCheck(path: string) {
   };
 }
 
-/** One contact sheet per clip: rows 25/50/75%, columns raw | look | adaptive. */
-function contactSheet(
-  raw: string,
-  look: string,
-  adaptive: string,
+const browser = await launchRenderBrowser();
+/** One cell: a frame in display code values (range/matrix only), 360×640 PNG. */
+function cell(path: string, ordinal: number) {
+  const matrix = path.startsWith(rawDirectory) ? "bt601" : "bt709";
+  const result = spawnSync(
+    "ffmpeg",
+    [
+      "-v",
+      "error",
+      "-i",
+      path,
+      "-vf",
+      `select=eq(n\\,${ordinal}),scale=360:640:in_range=tv:out_range=pc:in_color_matrix=${matrix}:flags=area,format=rgb24`,
+      "-frames:v",
+      "1",
+      "-f",
+      "image2pipe",
+      "-vcodec",
+      "png",
+      "pipe:1",
+    ],
+    { maxBuffer: 16 * 1024 * 1024 },
+  );
+  if (result.status !== 0) throw Error(result.stderr.toString());
+  return result.stdout.toString("base64");
+}
+/** A labelled grid: one column per source, rows at 25/50/75% of the clip. */
+async function sheet(
+  title: string,
+  columns: { label: string; detail: string; path: string }[],
+  frameCount: number,
   out: string,
 ) {
-  const probe = spawnSync("ffprobe", [
-    "-v",
-    "error",
-    "-select_streams",
-    "v:0",
-    "-show_entries",
-    "stream=nb_frames",
-    "-of",
-    "csv=p=0",
-    raw,
-  ]).stdout.toString();
-  const frames = Number(probe.trim()) || 72;
-  const picks = [0.25, 0.5, 0.75].map((q) => Math.floor(q * frames));
-  const inputs: string[] = [];
-  const filters: string[] = [];
-  let index = 0;
-  for (const [row, ordinal] of picks.entries())
-    for (const [column, path] of [raw, look, adaptive].entries()) {
-      inputs.push("-i", path);
-      // Code values, as players show them: range/matrix only, no transfer.
-      const matrix = column === 0 ? "bt601" : "bt709";
-      filters.push(
-        `[${index}:v]select=eq(n\\,${ordinal}),scale=360:640:in_range=tv:out_range=pc:in_color_matrix=${matrix}:flags=area,format=rgb24,setpts=PTS-STARTPTS[c${row}${column}]`,
-      );
-      index++;
-    }
-  for (const row of [0, 1, 2])
-    filters.push(`[c${row}0][c${row}1][c${row}2]hstack=inputs=3[r${row}]`);
-  filters.push("[r0][r1][r2]vstack=inputs=3[sheet]");
-  const result = spawnSync("ffmpeg", [
-    "-v",
-    "error",
-    "-y",
-    ...inputs,
-    "-filter_complex",
-    filters.join(";"),
-    "-map",
-    "[sheet]",
-    "-frames:v",
-    "1",
-    out,
-  ]);
-  if (result.status !== 0) throw Error(result.stderr.toString());
+  const picks = [0.25, 0.5, 0.75].map((q) => Math.floor(q * frameCount));
+  const header = columns
+    .map(
+      (column) =>
+        `<div class="label"><b>${column.label}</b><span>${column.detail}</span></div>`,
+    )
+    .join("");
+  const rows = picks
+    .map((ordinal) =>
+      columns
+        .map(
+          (column) =>
+            `<img src="data:image/png;base64,${cell(column.path, ordinal)}">`,
+        )
+        .join(""),
+    )
+    .join("");
+  const page = await browser.newPage({
+    viewport: { width: columns.length * 368 + 8, height: 400 },
+  });
+  try {
+    await page.setContent(`<!doctype html><style>
+      body{margin:0;background:#111;color:#eee;font:15px -apple-system,Helvetica,Arial,sans-serif}
+      h1{font-size:17px;margin:10px 8px 4px;font-weight:600}
+      .grid{display:grid;grid-template-columns:repeat(${columns.length},360px);gap:8px;padding:8px}
+      .label{display:flex;flex-direction:column;gap:2px}
+      .label b{font-size:20px}.label span{color:#aaa;font-size:13px}
+      img{width:360px;height:640px;display:block}
+    </style><h1>${title}</h1><div class="grid">${header}${rows}</div>`);
+    await page.screenshot({ path: out, fullPage: true });
+  } finally {
+    await page.close();
+  }
 }
 
-log(`fitting the look from ${clips.length} clips and ${basename(graded)}`);
-const look = await fitColorLook(clips, graded, {
-  cacheDirectory,
-  progress: log,
-});
-await writeFile(join(output, "owner.look.json"), JSON.stringify(look, null, 2));
+const lookPath = args.get("look") ?? join(output, "owner.look.json");
+let look;
+if (await exists(lookPath))
+  look = parseColorLook(JSON.parse(await readFile(lookPath, "utf8")));
+else {
+  log(`fitting the look from ${clips.length} clips and ${basename(graded)}`);
+  look = await fitColorLook(clips, graded, { cacheDirectory, progress: log });
+  await writeFile(lookPath, JSON.stringify(look, null, 2));
+}
 const decode = await decodeCheck(
   clips.find((path) => basename(path) === heldOut) ?? clips[0]!,
 );
 log(`decode check: ${JSON.stringify(decode)}`);
+
+type Mode = { folder: string; lookStrength?: number };
+const modes: Mode[] = [
+  { folder: "look-50", lookStrength: 0.5 },
+  { folder: "look-100", lookStrength: 1 },
+  { folder: "auto" },
+];
+const ladder: Mode[] = [
+  { folder: "look-25", lookStrength: 0.25 },
+  { folder: "look-75", lookStrength: 0.75 },
+];
+const render = async (path: string, mode: Mode) => {
+  const out = join(output, mode.folder, `${basename(path, extname(path))}.mp4`);
+  if (await exists(out)) return out;
+  log(`${mode.folder}: ${basename(path)}`);
+  await autoColorClip({
+    input: path,
+    output: out,
+    ...(mode.lookStrength === undefined
+      ? {}
+      : { look, lookStrength: mode.lookStrength, adaptive: false }),
+    cacheDirectory,
+  });
+  return out;
+};
+/** Statistics of a rendered output in code values, or of the raw clip. */
+async function stats(path: string, raw: boolean): Promise<ColorStatistics> {
+  const clip = await openColorClip(path, { cacheDirectory });
+  const ordinals = colorSampleOrdinals(clip.probe.frameCount, 12);
+  const frames = raw
+    ? await readColorFrames(clip, ordinals, { cacheDirectory })
+    : [...(await readColorCodeValueFrames(clip, ordinals))].map(
+        ([ordinal, rgba]) => ({ ordinal, rgba }),
+      );
+  return measureColorFrames(frames, clip.probe.width);
+}
+const summarize = (s: ColorStatistics) => ({
+  medianLuma: s.luma.p50,
+  spread595: Math.round((s.luma.p95 - s.luma.p05) * 1e4) / 1e4,
+  saturationP50: s.saturation.p50,
+  saturationP90: s.saturation.p90,
+  clipped: s.clippedFraction,
+  crushed: s.crushedFraction,
+});
+
+await mkdir(join(output, "sheets"), { recursive: true });
 const rows: unknown[] = [];
 for (const path of clips) {
   const stem = basename(path, extname(path));
-  const reports: Record<string, AutoColorReport> = {};
-  for (const mode of ["look", "adaptive"] as const) {
-    const out = join(output, mode, `${stem}.mp4`);
-    log(`${mode}: ${stem}`);
-    reports[mode] = await autoColorClip({
-      input: path,
-      output: out,
-      look: mode === "look" ? look : undefined,
-      adaptive: mode === "adaptive",
-      cacheDirectory,
-    });
-  }
-  await mkdir(join(output, "sheets"), { recursive: true });
-  contactSheet(
-    path,
-    join(output, "look", `${stem}.mp4`),
-    join(output, "adaptive", `${stem}.mp4`),
+  const outputs: Record<string, string> = {};
+  for (const mode of modes) outputs[mode.folder] = await render(path, mode);
+  const frameCount = (await openColorClip(path, { cacheDirectory })).probe
+    .frameCount;
+  await sheet(
+    stem,
+    [
+      { label: "Raw", detail: "the Flow clip as delivered", path },
+      {
+        label: "Look 50%",
+        detail: "your grade, half strength (new default)",
+        path: outputs["look-50"]!,
+      },
+      {
+        label: "Look 100%",
+        detail: "your grade, full strength",
+        path: outputs["look-100"]!,
+      },
+      {
+        label: "Auto",
+        detail: "automatic correction, new defaults",
+        path: outputs.auto!,
+      },
+    ],
+    frameCount,
     join(output, "sheets", `${stem}.png`),
   );
-  const summarize = (report: AutoColorReport) => ({
-    effects: report.effects.map((effect) => ({
-      effect: effect.effect,
-      params: effect.params,
-    })),
-    medianLuma: [report.before.luma.p50, report.predicted.luma.p50],
-    medianLumaChange: report.change.medianLuma,
-    saturation: [
-      [report.before.saturation.p50, report.before.saturation.p90],
-      [report.predicted.saturation.p50, report.predicted.saturation.p90],
-    ],
-    clipped: [report.before.clippedFraction, report.predicted.clippedFraction],
-    crushed: [report.before.crushedFraction, report.predicted.crushedFraction],
-    neutralTemperature: [
-      report.before.neutral.temperature,
-      report.predicted.neutral.temperature,
-    ],
-    output: {
-      frameCount: report.output!.frameCount,
-      sourceFrameCount: report.input.frameCount,
-      durationSeconds: report.output!.durationSeconds,
-      predictedRms: report.output!.predictedRms,
-      measuredMedianLuma: report.output!.measured.luma.p50,
-      continuity: [
-        report.before.medianLumaContinuity,
-        report.output!.measured.medianLumaContinuity,
-      ],
-      audio: report.output!.audio,
-    },
-  });
+  const report = JSON.parse(
+    await readFile(outputs.auto!.replace(/\.mp4$/, ".auto-color.json"), "utf8"),
+  );
   rows.push({
     clip: basename(path),
-    inGradedEdit: look.sources.before.some(
-      (source) =>
-        source.name === basename(path) &&
-        look.fit.shots.some((shot) => shot.before === source.name),
-    ),
-    look: summarize(reports.look!),
-    adaptive: summarize(reports.adaptive!),
+    inGradedEdit: look.fit.shots.some((shot) => shot.before === basename(path)),
+    raw: summarize(await stats(path, true)),
+    look50: summarize(await stats(outputs["look-50"]!, false)),
+    look100: summarize(await stats(outputs["look-100"]!, false)),
+    auto: {
+      ...summarize(await stats(outputs.auto!, false)),
+      effects: report.effects.map(
+        (effect: { effect: string; params: unknown }) => ({
+          effect: effect.effect,
+          params: effect.params,
+        }),
+      ),
+      frameCount: report.output.frameCount,
+      sourceFrameCount: report.input.frameCount,
+      durationSeconds: report.output.durationSeconds,
+      predictedRms: report.output.predictedRms,
+      continuity: [
+        report.before.medianLumaContinuity,
+        report.output.measured.medianLumaContinuity,
+      ],
+      audio: report.output.audio,
+    },
   });
 }
+const held = clips.find((path) => basename(path) === heldOut)!;
+const heldStem = basename(held, extname(held));
+for (const mode of ladder) await render(held, mode);
+await sheet(
+  `${heldStem}: look strength ladder`,
+  [
+    { label: "Raw", detail: "as delivered", path: held },
+    ...[25, 50, 75, 100].map((percent) => ({
+      label: `Look ${percent}%`,
+      detail: percent === 50 ? "new default" : "your grade",
+      path: join(output, `look-${percent}`, `${heldStem}.mp4`),
+    })),
+    {
+      label: "Auto",
+      detail: "new defaults",
+      path: join(output, "auto", `${heldStem}.mp4`),
+    },
+  ],
+  (await openColorClip(held, { cacheDirectory })).probe.frameCount,
+  join(output, "sheets", `${heldStem}-strength-ladder.png`),
+);
+await browser.close();
 const summary = {
   look: {
     params: look.params,

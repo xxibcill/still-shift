@@ -354,8 +354,8 @@ next small slice if neutral-but-correct is still too plain.
       2.30 (max 2.69, above 2: the edit is softer and re-encoded). `color.matrix`
       has exact Canvas/WebGL parity.
 - [x] The adaptive mode changes the owner's high-key clips' median luma by less
-      than a stated limit (limit 0.02; largest 0.0107 on 12 clips, predicted and
-      measured on the render).
+      than a stated limit (limit 0.02; largest 0.0107 on 12 clips with the first
+      defaults, 0.0122 after the visibility retune, measured on the renders).
 - [x] At least five owner-supplied Flow clips: before/after statistics and
       contact sheets recorded (12 clips, local). Owner review is pending and is
       the only visual acceptance.
@@ -370,7 +370,7 @@ means; a graded edit tagged BT.709 transfer is compared in code values, because
 converts BT.709 transfer on import (a pre-existing asymmetry, not changed). The
 adaptive solver works in stages (white balance → tone → saturation) on the
 measured frames and re-measures the exact predicted result after each; it
-removes 40–90% of the near-neutral cast depending on how much the near-neutral
+removes 20–90% of the near-neutral cast depending on how much the near-neutral
 pixels agree, never brightens a high-key clip, and keeps a dead band on every
 correction.
 

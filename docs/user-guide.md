@@ -450,8 +450,10 @@ npx still-shift comp look fit --before raw-clips/ --after my-graded-edit.mp4 --o
 npx still-shift comp look apply --look my.look.json --input raw-clips/ --output fixed/
 ```
 
-The adaptive mode is conservative: it leaves a balanced clip alone, never
-brightens high-key footage and keeps each clip's correction constant. Each run
+The adaptive mode adds visible vibrance and a gentle S-curve to flat clips, but
+it leaves a balanced clip alone, never brightens high-key footage and keeps each
+clip's correction constant. An applied look defaults to half strength
+(`--strength 0.5`); pass `--strength 1` for the full learned grade. Each run
 writes a before/after report; `--write-composition` saves the editable
 composition. See the [CLI reference](../tools/still-shift-cli/README.md#automatic-color-for-flat-clips)
 for options and folders. Review the result yourself: the report's numbers are not

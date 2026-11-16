@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Color grading CGA (2026-11-16):** built on `codex/cga-auto-color` (from `main` a897acb4), PR not opened (owner asks first). Flow clips (BT.601 `smpte170m`) now decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three new exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). All CGA checks met except the owner-look bound: held-out 2.30 RMS per pixel (block means 1.82). Pending owner decisions: review the 12 local contact sheets in `dist/cga-owner/sheets` and the conservative solver defaults; whether block-mean RMS is the right look bound; the pre-existing BT.709-transfer import/export asymmetry. CG0–CG15 not started. [CGA results](./color-grading-cga-results.json).
+- **Color grading CGA (2026-11-16):** built on `codex/cga-auto-color` (from `main` a897acb4), PR not opened (owner asks first). Flow clips (BT.601 `smpte170m`) now decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three new exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). All CGA checks met except the owner-look bound: held-out 2.30 RMS per pixel (block means 1.82). After owner feedback the Auto defaults were made visibly stronger and looks default to 50% strength. Pending owner decisions: review the labelled sheets and strength ladder in `dist/cga-owner/sheets` and pick a look strength; whether block-mean RMS is the right look bound; the pre-existing BT.709-transfer import/export asymmetry. CG0–CG15 not started. [CGA results](./color-grading-cga-results.json).
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
@@ -89,6 +89,14 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-16 — Color grading CGA: visible auto defaults, half-strength looks
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga-auto-color`, at the request of the planning session relaying owner feedback on the sheets ("no different between Left and Right column"; "middle is too heavy grade").
+- **Done:** adaptive defaults retuned for visibility: saturation targets 0.15/0.30 → 0.22/0.42 (median/90%), gain ≤ 1.8, vibrance ≤ 100; median-pivoted S-curve whenever the 5–95% luma spread is below 0.75 (≤ 0.16, was 0.5/≤ 0.10); white balance removes 20–90% of the cast (was 40–90%), ≤ 10–35. High-key clips are still never brightened. Applied looks default to `--strength 0.5` (`look apply`, `auto-color --look`); full strength stays available, adaptive corrections after a look use `--adaptive-strength`. Sheets are now labelled (Raw | Look 50% | Look 100% | Auto), rendered through the pinned Chromium because this FFmpeg has no drawtext, plus a strength ladder for the held-out clip.
+- **Results (renders, 12 clips):** Auto median luma −0.012…+0.002 (limit 0.02), 5–95% spread −0.001…+0.089, median saturation +0.008…+0.063, 90% saturation +0.028…+0.164, clipped ≤ 0.31%; 72/72 frames, audio unchanged. Retune checks: `check:fast`, `composition-grade-effects`, `composition-baselines` and the color/media integration tests rerun (see results JSON).
+- **Open / next:** owner picks a look strength from the ladder and judges the new Auto; observation (not acceptance): Auto keeps and boosts some of the warm cast, so cream reads warmer, while the look cools.
+- **Records:** [CGA results `retune`](./color-grading-cga-results.json), local sheets `dist/cga-owner/sheets/`.
 
 ### 2026-11-16 — Color grading CGA: auto color and look from an example
 
