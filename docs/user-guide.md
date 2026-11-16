@@ -74,6 +74,7 @@ instead of treating a contract-only fixture as a playable clip.
 | Move a camera through layered artwork                        | Native 2.5D camera and flat lights | Artwork planes, xyz layout and a camera path                    | [Native camera](#native-camera-and-25d-planes)                                   |
 | Bend an illustrated arm or distort a drawing                 | Puppet pins or mesh warp           | A supplied image, fixed rest pins or grid, and target keys      | [Puppet animation](#mesh-warp-and-puppet-animation)                              |
 | Combine supplied video, image sequences and sound            | Native composition media           | Checked media descriptors, source files and trim/timing         | [Native media](#video-image-sequences-and-native-audio)                          |
+| Fix flat, neutral AI-generated clips                         | Automatic color (CGA)              | SDR clips; optionally one of your own graded edits              | [Automatic color](#correct-flat-clips-automatically)                             |
 | Mix narration, music, SFX and ambience                       | Saved soundtrack project           | Local audio, a track/clip plan and optional audio runtime       | [Soundtrack workflow](#saved-soundtrack-layers)                                  |
 | Deliver transparency or editing masters                      | Composition export profiles        | A valid composition and a fresh output path                     | [Formats and rendering](#composition-export-formats-and-rendering-options)       |
 | Animate many independent images                              | Image batch                        | A JSONL list of images and animation settings                   | [Batch command](#batch-animation)                                                |
@@ -434,6 +435,27 @@ Narration preserves its full authorized source interval and disallows time
 stretch, hold/loop and remap changes. Native mixing uses FFmpeg and does not need
 the optional soundtrack runtime; use a [saved soundtrack](#saved-soundtrack-layers)
 for the additional track/bus/filter/ducking workflow.
+
+### Correct flat clips automatically
+
+Generated clips (for example from Google Flow) often come out flat and neutral.
+`comp auto-color` measures a clip through the media path and applies one static,
+bounded correction — white balance, exposure, contrast and vibrance — as editable
+effects, keeping the source audio. To reproduce your own grade instead, fit a
+look from one of your graded edits and apply it to new clips.
+
+```sh
+npx still-shift comp auto-color --input clip.mp4 --output fixed.mp4
+npx still-shift comp look fit --before raw-clips/ --after my-graded-edit.mp4 --output my.look.json
+npx still-shift comp look apply --look my.look.json --input raw-clips/ --output fixed/
+```
+
+The adaptive mode is conservative: it leaves a balanced clip alone, never
+brightens high-key footage and keeps each clip's correction constant. Each run
+writes a before/after report; `--write-composition` saves the editable
+composition. See the [CLI reference](../tools/still-shift-cli/README.md#automatic-color-for-flat-clips)
+for options and folders. Review the result yourself: the report's numbers are not
+visual acceptance.
 
 ### Mesh warp and puppet animation
 
