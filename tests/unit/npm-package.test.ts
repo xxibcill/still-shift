@@ -37,7 +37,7 @@ describe("installed package references", () => {
     );
   });
 
-  it("ships guides, release records, skills and examples without historical measurements/media", async () => {
+  it("ships guides, release records, skills and examples without historical measurements/media or repository-only skills", async () => {
     const root = await mkdtemp(join(tmpdir(), "still-shift-guides-"));
     directories.push(root);
     const files = {
@@ -54,6 +54,8 @@ describe("installed package references", () => {
       "skills/ask-still-shift/agents/openai.yaml": "name: ask-still-shift",
       "skills/compose-with-still-shift/SKILL.md":
         "../../docs/composition-reference.md",
+      "skills/design-editorial-titles/SKILL.md":
+        "../../research/editorial-titles-et7a/README.md",
       "examples/composition/12-puppet-acting/composition.json": "actor.svg",
       "examples/composition/12-puppet-acting/actor.svg": "<svg/>",
       "docs/node_modules/private.md": "dependency",
@@ -74,7 +76,12 @@ describe("installed package references", () => {
           "docs/npm-release-results.json",
           "docs/release-branch-setup-results.json",
         ].includes(path);
-      if (historicalJson || /\.mp4$|\/(node_modules|dist)\//.test(path))
+      const repositoryOnly = path.startsWith("skills/design-editorial-titles/");
+      if (
+        historicalJson ||
+        repositoryOnly ||
+        /\.mp4$|\/(node_modules|dist)\//.test(path)
+      )
         await expect(readFile(target, "utf8")).rejects.toMatchObject({
           code: "ENOENT",
         });
