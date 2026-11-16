@@ -21,7 +21,9 @@ import {
   hasStableTypographyImage,
   prepareTypography,
   prepareTypographyColors,
+  typographyOrphanedDecorations,
   type PreparedTypography,
+  type TextRaster,
 } from "../../typography-renderer.ts";
 import type { TextNode } from "../../typography-style.ts";
 import {
@@ -64,6 +66,16 @@ export type CompositionText = {
   dispose(): void;
   /** Local bounds per text state, for `EvaluationOptions.textBounds`. */
   bounds: Record<string, Bounds[]>;
+  /**
+   * ET5a: settled glyph-ink box of each line, per text state, in layer-local
+   * pixels: shaped layout only, no text-animator excursion, container or
+   * decoration. Pinned-font text only.
+   */
+  inkBounds: Record<string, Bounds[][]>;
+  /** ET5a: decoration indices painting while all their glyphs are transparent. */
+  orphanedDecorations(
+    content: Pick<TextContent, "key" | "state" | "reveal" | "time">,
+  ): number[];
   draw: CanvasTextDrawer;
   preparePixels(content: TextContent): void;
   contentKey(content: TextContent): string | undefined;
@@ -207,6 +219,17 @@ function compositionTextFrames(
   }
 }
 
+/** Union of each line's glyph ink boxes; lines without ink are omitted. */
+function lineInkBounds(raster: TextRaster): Bounds[] {
+  return raster.layout.lines.flatMap((line) => {
+    const boxes = line.clusters.flatMap((index) => {
+      const ink = raster.layout.clusters[index]!.ink;
+      return ink && ink.width > 0 && ink.height > 0 ? [rectBounds(ink)] : [];
+    });
+    return boxes.length ? [union(boxes)] : [];
+  });
+}
+
 function rectBounds(rect: {
   x: number;
   y: number;
@@ -254,6 +277,7 @@ export function prepareCompositionText(
   frames ??= compositionTextFrames(comp, fonts, measureContext, evaluation);
   const entries = new Map<string, Entry>();
   const bounds: Record<string, Bounds[]> = {};
+  const inkBounds: Record<string, Bounds[][]> = {};
   for (const [scope, prefix] of scopes(comp)) {
     const nodes = textLayers(scope).map((layer) => ({
       layer,
@@ -296,6 +320,9 @@ export function prepareCompositionText(
           ? pad(union([...measured.values()]), node.fontSize)
           : undefined;
         bounds[key] = perState.map((box) => all ?? box);
+        inkBounds[key] = texts.map((text) =>
+          lineInkBounds(prepared.nodes.get(node.id)!.get(text)!),
+        );
         entries.set(key, {
           kind: "typography",
           node,
@@ -401,6 +428,18 @@ export function prepareCompositionText(
       for (const value of prepared) disposeTypography(value);
     },
     bounds,
+    inkBounds,
+    orphanedDecorations(content) {
+      const entry = entries.get(content.key);
+      if (entry?.kind !== "typography" || !entry.node.decorations?.length)
+        return [];
+      return typographyOrphanedDecorations(
+        entry.node,
+        { state: content.state, reveal: content.reveal },
+        entry.prepared,
+        content.time,
+      );
+    },
     draw,
     preparePixels(content) {
       const entry = entries.get(content.key);

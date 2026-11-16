@@ -37,7 +37,12 @@ import {
   correctionReplacementStart,
   transitionSlideLimit,
 } from "./typography-transition.ts";
-import { drawTextDecorations } from "./typography-decorations.ts";
+import {
+  decorationFadesWithText,
+  decorationReveal,
+  decorationSegments,
+  drawTextDecorations,
+} from "./typography-decorations.ts";
 import { drawTextContainerShape } from "./text-container.ts";
 import type { Rect } from "./text-container-layout.ts";
 import { typographyTextValues } from "./typography-text-values.ts";
@@ -1436,6 +1441,64 @@ export function typographyDrawPlan(
   return { kind: "blend" as const, from, to, before, after };
 }
 
+/**
+ * ET5a: indices of `node.decorations` that paint at `frame` while every glyph
+ * they decorate is transparent (text-animator opacity, word reveal or the
+ * layer's reveal), using the same draw plan and poses as the renderer.
+ */
+export function typographyOrphanedDecorations(
+  node: TextNode,
+  state: { state: number; reveal: number },
+  prepared: PreparedTypography,
+  frame: number,
+) {
+  const marks = node.decorations ?? [];
+  if (!marks.length) return [];
+  const plan = typographyDrawPlan(node, state, prepared, frame);
+  const draws =
+    plan.kind === "blend"
+      ? [
+          { raster: plan.from, poses: plan.before },
+          { raster: plan.to, poses: plan.after },
+        ]
+      : [{ raster: plan.raster, poses: plan.poses }];
+  const painted = new Set<number>(),
+    inked = new Set<number>();
+  for (const { raster, poses } of draws) {
+    const revealed = typographyRevealPoses(node, raster, poses, state.reveal);
+    for (const [index, mark] of marks.entries()) {
+      const behind = mark.kind === "highlight";
+      // Highlights draw before the word reveal adjusts poses, other marks after.
+      const segments = decorationSegments(
+        node,
+        raster.layout,
+        mark.span,
+        behind ? poses : revealed.poses,
+      );
+      const reveal = decorationReveal(mark, frame, prepared.scene.fps);
+      if (
+        reveal > 0 &&
+        segments.some(
+          (segment) =>
+            segment.width > 0 &&
+            (!decorationFadesWithText(mark) || segment.opacity > 0),
+        )
+      )
+        painted.add(index);
+      if (
+        revealed.reveal > 0 &&
+        raster.layout.clusters.some(
+          (cluster, i) =>
+            /\S/u.test(cluster.text) &&
+            (!mark.span || node.spans?.[cluster.spanIndex]?.id === mark.span) &&
+            (revealed.poses[i]?.opacity ?? 0) > 0,
+        )
+      )
+        inked.add(index);
+    }
+  }
+  return [...painted].filter((index) => !inked.has(index));
+}
 function drawTypographyContent(
   ctx: CanvasRenderingContext2D,
   node: TextNode,

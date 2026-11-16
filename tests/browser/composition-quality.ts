@@ -24,6 +24,7 @@ import o4VideoPixelLint from "../../benchmarks/fixtures/editorial-titles/o4-vide
 import { editorialFixture } from "../helpers/editorial-video-lint.ts";
 import { verifyLintSignalCleanup } from "./composition-lint-signals.ts";
 import { verifyTextLegibility } from "./composition-text-legibility.ts";
+import { verifyFramingGuards } from "./composition-framing-guards.ts";
 import {
   collapsedMotionComposition,
   groupEffectMotionComposition,
@@ -853,6 +854,11 @@ try {
   const legibility = await verifyTextLegibility();
   console.log(
     `ET3: text-contrast flags the O6 dark band on ${legibility.contrast.map((d) => `${d.node} ${d.frames.join("-")} (${d.measured}:1)`).join(", ")}, naming its words; --strict gates, a waiver is reported and never gates, and reports without the rule keep their shape.`,
+  );
+
+  const framing = await verifyFramingGuards();
+  console.log(
+    `ET5a: text-off-canvas reports O2 at ${framing.o2} of its settled ink (pass-1 T3: ${framing.t3.join(", ")}) while a 5 px incursion stays outside-safe-area; orphaned-decoration reports O3 on frames ${framing.o3.map((f) => f.join("-")).join(", ")} and pass-1 T2 on ${framing.t2.map((f) => f.join("-")).join(", ")}; fadeWithText keeps the held bar (${framing.bar.heldNew} vs ${framing.bar.heldOld} px) and clears it after the fade (${framing.bar.goneOld} -> ${framing.bar.goneNew} px).`,
   );
 
   const cliPixels = await lintCompositionFile(

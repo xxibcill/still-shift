@@ -18,6 +18,7 @@ import {
 } from "./render/index.ts";
 import type {
   TextContrastLayerEvidence,
+  TextFramingEvidence,
   TextLegibilityEvidence,
 } from "./quality-policy.ts";
 import {
@@ -175,6 +176,23 @@ async function renderProbe(
   return preview.readPixels();
 }
 
+/**
+ * ET5a evidence from the linted preview: settled glyph ink per text state
+ * (O2) and the prepared text's orphaned-decoration probe (O3), which the
+ * analysis asks on the frames it samples.
+ */
+function textFramingEvidence(
+  preview: CompositionPreview,
+): TextFramingEvidence | undefined {
+  if (!preview.textInkBounds) return undefined;
+  return {
+    ink: preview.textInkBounds,
+    ...(preview.orphanedTextDecorations
+      ? { orphanedDecorations: preview.orphanedTextDecorations }
+      : {}),
+  };
+}
+
 /** Full-resolution grayscale changes reuse the continuous-motion 4-level / 200-pixel default gate. */
 export async function analyzeRenderedCompositionQuality(
   comp: Composition,
@@ -294,10 +312,12 @@ export async function analyzeRenderedCompositionQuality(
             : {}),
         }
       : undefined;
+  const framing = textFramingEvidence(preview);
   return {
     ...analyzeCompositionQuality(comp, {
       ...policy,
       ...(textLegibilityEvidence ? { textLegibilityEvidence } : {}),
+      ...(framing ? { textFramingEvidence: framing } : {}),
       pixelChangedCounts: counts,
       evaluation: {
         ...policy.evaluation,

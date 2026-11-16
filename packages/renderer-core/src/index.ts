@@ -133,6 +133,7 @@ export {
   TEXT_LEGIBILITY_CODES,
   type TextLegibilityCode,
   type TextLegibilityEvidence,
+  type TextFramingEvidence,
   type CompositionQualityPolicy,
   type CompositionQualityReport,
   type CompositionSemanticAssociation,

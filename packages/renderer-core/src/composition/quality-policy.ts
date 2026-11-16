@@ -7,7 +7,7 @@ import {
   passageError,
   type PassageDiagnostic,
 } from "../passage-diagnostics.ts";
-import type { EvaluationOptions } from "./evaluate/types.ts";
+import type { Bounds, EvaluationOptions } from "./evaluate/types.ts";
 
 export const MOTION_LINT_CODES = [
   "frozen-run",
@@ -18,6 +18,8 @@ export const MOTION_LINT_CODES = [
   "reading-time",
   "off-canvas",
   "outside-safe-area",
+  "text-off-canvas",
+  "orphaned-decoration",
   "coverage",
   "scale-pop",
   "opacity-pop",
@@ -234,6 +236,11 @@ export const CompositionQualityPolicySchema = z
       .max(COMPOSITION_LIMITS.maxLayers)
       .optional(),
     safeAreaFraction: nonnegative.max(0.49).optional(),
+    /**
+     * ET5a: share of a text layer's settled glyph-ink area outside the frame
+     * at which `text-off-canvas` is reported (default 0.05).
+     */
+    textOffCanvasFraction: positive.max(1).optional(),
     opacityPop: fraction.optional(),
     scalePop: nonnegative.optional(),
     popNeighbourRatio: fraction.optional(),
@@ -289,6 +296,27 @@ export type CompositionQualityPolicy = z.infer<
   evaluation?: EvaluationOptions;
   /** ET3 runtime evidence; never part of a saved policy. */
   textLegibilityEvidence?: TextLegibilityEvidence;
+  /** ET5a runtime evidence; never part of a saved policy. */
+  textFramingEvidence?: TextFramingEvidence;
+};
+/** Measured inputs for the ET5a framing and decoration rules (pixel lint). */
+export type TextFramingEvidence = {
+  /**
+   * Per text layer key (root id or `precomp-id/layer-id`), per text state: the
+   * settled glyph-ink box of each line in layer-local pixels.
+   */
+  ink?: Record<string, readonly (readonly Bounds[])[]>;
+  /**
+   * Indices of a text layer's decorations that paint while every glyph they
+   * decorate is transparent. Asked for each visible frame of a decorated text
+   * layer, from the frames the analysis already sampled.
+   */
+  orphanedDecorations?: (content: {
+    key: string;
+    state: number;
+    reveal: number;
+    time: number;
+  }) => readonly number[];
 };
 /** Measured inputs for the ET3 legibility rules, supplied by the lint runner. */
 export type TextLegibilityEvidence = {
@@ -324,6 +352,7 @@ export function resolveCompositionQualityPolicy(
     pixelChangedCounts,
     evaluation,
     textLegibilityEvidence,
+    textFramingEvidence,
     ...settings
   } = input;
   const savedPolicy = comp.metadata?.readingPolicy;
@@ -636,6 +665,7 @@ export function resolveCompositionQualityPolicy(
     cuts,
     evaluation: evaluation ?? {},
     ...(textLegibilityEvidence ? { textLegibilityEvidence } : {}),
+    ...(textFramingEvidence ? { textFramingEvidence } : {}),
     pixelHashes: pixelSignatures,
     pixelMethod: pixelChangedCounts
       ? ("grayscale-energy" as const)
@@ -658,6 +688,8 @@ export function lintSeverity(
       "frozen-pixels",
       "reading-time",
       "coverage",
+      "text-off-canvas",
+      "orphaned-decoration",
       "scale-pop",
       "opacity-pop",
       "semantic-context-required",
