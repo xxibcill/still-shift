@@ -903,6 +903,24 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `color.gradient-ramp`          | `amount`         | scalar | `1`                         | 0–1                                          |
 | `color.invert`                 | `amount`         | scalar | `1`                         | 0–1                                          |
 | `color.posterize`              | `levels`         | scalar | `8`                         | 2–256 (integer)                              |
+| `color.matrix`                 | `rr`             | scalar | `1`                         | -4–4                                         |
+| `color.matrix`                 | `rg`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `rb`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `gr`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `gg`             | scalar | `1`                         | -4–4                                         |
+| `color.matrix`                 | `gb`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `br`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `bg`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `bb`             | scalar | `1`                         | -4–4                                         |
+| `color.matrix`                 | `ro`             | scalar | `0`                         | -1–1                                         |
+| `color.matrix`                 | `go`             | scalar | `0`                         | -1–1                                         |
+| `color.matrix`                 | `bo`             | scalar | `0`                         | -1–1                                         |
+| `color.matrix`                 | `strength`       | scalar | `1`                         | 0–1                                          |
+| `color.white-balance`          | `temperature`    | scalar | `0`                         | -100–100                                     |
+| `color.white-balance`          | `tint`           | scalar | `0`                         | -100–100                                     |
+| `color.vibrance`               | `vibrance`       | scalar | `0`                         | -100–100                                     |
+| `color.vibrance`               | `saturation`     | scalar | `0`                         | -100–100                                     |
+| `color.vibrance`               | `protectSkin`    | scalar | `0.7`                       | 0–1                                          |
 | `transition.linear-wipe`       | `progress`       | scalar | `0`                         | 0–1                                          |
 | `transition.linear-wipe`       | `softness`       | scalar | `0`                         | 0–1                                          |
 | `transition.linear-wipe`       | `angle`          | scalar | `0`                         | -36000–36000                                 |

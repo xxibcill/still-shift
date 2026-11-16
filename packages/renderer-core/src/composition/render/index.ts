@@ -85,3 +85,20 @@ export {
   type CompositionSurfaceIdentity,
   type CompositionSurfaceClaim,
 } from "./surface-cache.ts";
+export {
+  GRADE_EFFECT_IDS,
+  GRADE_LUMA_WEIGHTS,
+  applyGradeToRgba,
+  colorMatrixControls,
+  gradeBytes,
+  gradeControls,
+  isGradeEffect,
+  linearToSrgb,
+  srgbToLinear,
+  vibranceFactors,
+  vibranceSkinWeight,
+  whiteBalanceGains,
+  whiteBalanceTable,
+  type GradeControls,
+  type GradeEffectId,
+} from "./grade-effects.ts";

@@ -83,7 +83,8 @@ parameters and versions; executable callbacks belong to each rendering host.
 
 The current color slice provides `color.levels`, `color.tint`,
 `color.hue-saturation`, `color.exposure`, `color.brightness-contrast`, `color.fill`,
-`color.gradient-ramp`, `color.invert`, `color.posterize` and `color.curves`. See the generated
+`color.gradient-ramp`, `color.invert`, `color.posterize` and `color.curves`, plus
+the CGA [grade corrections](#grade-corrections-cga). See the generated
 [parameter reference](./composition-reference.md) for bounds and defaults.
 
 Corrections evaluate encoded sRGB channels and preserve input coverage. Color
@@ -110,6 +111,38 @@ spaced controls and sixteen-point curves.
 
 The final CE6 audits and full milestone acceptance are tracked in
 [CE6 results](./composition-ce6-completion-results.json).
+
+### Grade corrections (CGA)
+
+`color.matrix`, `color.white-balance` and `color.vibrance` correct flat SDR
+footage ([color grading plan, CGA](./color-grading-engine-plan.md#cga--automatic-exposure-contrast-saturation-and-white-balance-for-flat-sdr-clips)).
+They map straight encoded-sRGB bytes to bytes with integer arithmetic or a
+host-built byte table, so Canvas, WebGL and Node-side measurement
+(`gradeBytes`, `applyGradeToRgba`) give identical bytes. Neutral controls are an
+exact identity. Straight bytes are recovered from stored premultiplied bytes
+with the half-up rule above; alpha is preserved.
+
+- `color.matrix` applies `(I + strength·(M − I))·rgb + strength·offset`. The nine
+  coefficients are named output-then-input (`rr`, `rg`, … `bb`, −4…4) and offsets
+  `ro`/`go`/`bo` (−1…1, normalized code values). The effective coefficients are
+  quantized to 1/4096 and offsets to 1/4096 code value, then each channel is
+  `clamp((Σ + 2048) >> 12)`. Look files apply through this effect.
+- `color.white-balance` multiplies linear light by channel gains: temperature
+  ±100 is a one-stop red/blue ratio (positive amber), tint ±100 moves green by
+  half a stop (positive magenta), and the gains are normalized so a neutral
+  keeps its BT.709 luminance. Each channel is a 256-entry table computed in
+  float64.
+- `color.vibrance` scales each channel's distance from encoded byte luma
+  (weights 54/183/19 of 256) by `(1 + saturation)·(1 + vibrance·(1 − s)·(1 −
+protectSkin·skin))`, with `s` the HSV saturation index `floor(255·chroma/max)`
+  and `skin` a smooth 0–1 weight over 0–50° hues in the `r ≥ g ≥ b` sector
+  (peak at 25°). Factors are bounded to 0–4 and tabulated in 1/4096 over
+  256 saturation × 256 hue rows; channel output is
+  `clamp((luma·4096 + (c·256 − luma)·factor + 2¹⁹) >> 20)`.
+
+`pnpm test:browser:composition-grade-effects` checks 524,288 opaque colors per
+case, all 32,895 premultiplied byte pairs and the color-effect layer/seek
+matrix: every byte matches between backends and the integer reference.
 
 ## Native transitions
 
