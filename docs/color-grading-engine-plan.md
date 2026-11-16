@@ -295,7 +295,8 @@ existing 8-bit pipeline.
   the before/after report. `--strength`, `--exposure`, `--contrast` and
   `--saturation` switch or scale each correction; `--write-composition` saves the
   editable program instead of rendering. A folder of clips runs through the
-  existing batch path.
+  existing batch path. _As built: folders run clip by clip in the command
+  itself (see the implementation notes)._
 - **Guards.** Near-identity on clips that are already well balanced; a clipping
   budget; a limit on stretch so 8-bit sources do not band visibly; clear
   diagnostics for sources the media contract rejects.
@@ -392,6 +393,17 @@ clips (median ≥ 0.6) keep their exposure. Added after review (PR #70, A1): the
 first version only lifted the white point and could never darken. A fitted look records its edit's measured
 targets (median luma, median and 90% saturation); with that look the adaptive
 solver aims for them instead of its defaults (PR #70, A2).
+
+**Folders (deviation, PR #70 review A3).** The existing `batch` command is the
+v0.1 still-image pipeline: it renders `AnimationRequest` manifests (one image
+in, one animation out) with resume markers and per-item locks, and cannot carry
+video clips, looks or composition effects. Extending that contract for CGA was
+out of proportion, so `auto-color` and `look apply` take a folder directly and
+follow batch's conventions instead: every clip is attempted, a failing clip is
+recorded with its diagnostics and does not stop the run, one
+`auto-color-summary.json` lists every item (`complete` or `partial`), the exit
+code is 1 when any clip failed, and nothing is overwritten. Moving folders onto
+a composition batch path is a follow-up if one is built.
 
 **Owner inputs:** five or more representative Flow clips (kept local unless
 licensed for the repository), and optionally one or two frames showing the
