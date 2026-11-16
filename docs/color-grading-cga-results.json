@@ -313,7 +313,32 @@
       "detail": "12 clips × (look, adaptive) renders and sheets in 37 min 44 s"
     },
     {
-      "notRun": "pnpm check, full pnpm test, release:check, test:runtime"
+      "run": "pnpm check:runtime (after PR #70 review fixes, 3f2470b1)",
+      "result": "failed",
+      "reason": "toolchain:check and test:runtime (63 files) passed; test:integration had 39 failures: 36 in soundtrack, soundtrack-api, passage-audio and passage-native-audio because the DawDreamer soundtrack runtime is not installed on this machine (~/.cache/still-shift/soundtrack missing; 'Cannot start soundtrack Python'), and 3 depth-worker-protocol 5 s timeouts under load. test:depth and test:browser:smoke did not run (the script stops at the first failure)."
+    },
+    {
+      "run": "vitest depth-worker-protocol and passage-audio (isolated rerun)",
+      "result": "passed except the soundtrack adapter case",
+      "detail": "depth-worker-protocol 5/5; passage-audio 5/6, the failure is the missing soundtrack runtime"
+    },
+    {
+      "run": "pnpm test:depth; pnpm test:browser:smoke; pnpm test:integration (rerun)",
+      "result": "test:depth and test:browser:smoke passed; test:integration failed",
+      "detail": "test:integration 60/64 files, 335/371 tests: the 36 failures are all the missing soundtrack runtime, none in color, media or CLI tests. The soundtrack runtime (GPL DawDreamer, local-only) was not installed for this run."
+    },
+    {
+      "run": "pnpm check:fast (after review fixes)",
+      "result": "passed",
+      "detail": "463 files / 4,675 tests"
+    },
+    {
+      "run": "pnpm test:browser:composition-grade-effects, composition-effects, composition-media, composition-baselines (after review fixes)",
+      "result": "passed",
+      "detail": "grade parity max delta 0; baselines 176 items, 36,061 frames unchanged"
+    },
+    {
+      "notRun": "pnpm check, full pnpm test, release:check; the soundtrack-runtime integration tests (runtime not installed)"
     }
   ],
   "ownerClips": [
