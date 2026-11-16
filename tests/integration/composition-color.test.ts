@@ -479,6 +479,66 @@ describe("CGA look held-out residuals", () => {
   });
 });
 
+describe("CGA look targets", () => {
+  it("a fitted look records the graded edit's targets and the solver uses them", async () => {
+    const before = join(root, "targets-before.mkv"),
+      after = join(root, "targets-after.mkv");
+    await writeCgaClip(before, reference);
+    // A darker, more saturated grade.
+    const graded = cgaDegrade(
+      cgaDegrade(reference, { kind: "exposure", stops: -0.5 }),
+      { kind: "saturation", scale: 1.4 },
+    );
+    await writeCgaClip(after, graded);
+    const look = await fitColorLook([before], after, {
+      cacheDirectory: cache(),
+      step: 4,
+    });
+    const edit = measureColorFrames(
+      graded.map((rgba, ordinal) => ({ ordinal, rgba })),
+      W,
+    );
+    expect(look.targets!.medianLuma).toBeCloseTo(edit.luma.p50, 1);
+    expect(look.targets!.saturation).toBeCloseTo(edit.saturation.p50, 1);
+    expect(look.targets!.strongSaturation).toBeCloseTo(edit.saturation.p90, 1);
+    // Looks written before targets existed still load.
+    const older: Record<string, unknown> = { ...look };
+    delete older.targets;
+    expect(parseColorLook(older).targets).toBeUndefined();
+    // On the raw clip, the look's targets darken and saturate more than the
+    // defaults do (the look itself is not applied here).
+    const { read } = await clipFrames("targets-raw", reference);
+    const small = colorSolverFrames(read);
+    const defaults = solveColorCorrection(small.frames, small.width);
+    const supplied = solveColorCorrection(small.frames, small.width, {
+      targets: look.targets,
+    });
+    expect(supplied.predicted.luma.p50).toBeLessThan(
+      defaults.predicted.luma.p50,
+    );
+    expect(supplied.predicted.saturation.p50).toBeGreaterThan(
+      defaults.predicted.saturation.p50,
+    );
+    expect(
+      supplied.decisions.some((decision) =>
+        decision.reason.includes("supplied"),
+      ),
+    ).toBe(true);
+    // auto-color with the look (at strength 0) and adaptive on uses them.
+    const report = await autoColorClip({
+      input: before,
+      look,
+      lookStrength: 0,
+      adaptive: true,
+      writeComposition: join(root, "targets", "clip.json"),
+      cacheDirectory: cache(),
+    });
+    expect(
+      report.decisions.some((decision) => decision.reason.includes("supplied")),
+    ).toBe(true);
+  });
+});
+
 describe("CGA one-command correction", () => {
   it("renders the corrected clip with the source frame count, duration and audio", async () => {
     const degraded = cgaDegrade(reference, { kind: "exposure", stops: -0.6 });

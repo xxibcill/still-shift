@@ -33,9 +33,24 @@ export type ColorSolveToggles = {
 export type ColorSolveSettings = {
   [K in keyof ColorSolveToggles]?: boolean | number;
 };
+/** Targets that replace the defaults, e.g. measured from a look's edit. */
+export type ColorSolveTargets = {
+  /** Median luma: the midtone range is centered on it. */
+  medianLuma?: number | undefined;
+  /** Median and 90th-percentile HSV saturation. */
+  saturation?: number | undefined;
+  strongSaturation?: number | undefined;
+};
 export type ColorSolveOptions = ColorSolveSettings & {
   /** Scales every correction, 0–1 (default 1). */
   strength?: number;
+  targets?: ColorSolveTargets | undefined;
+};
+type SolverTargets = {
+  midtoneRange: readonly [number, number];
+  saturation: number;
+  strongSaturation: number;
+  source: "default" | "supplied";
 };
 export type ColorSolveDecision = {
   correction: keyof ColorSolveToggles | "clipping";
@@ -207,6 +222,7 @@ function solveTone(
   stats: ColorStatistics,
   strength: { exposure: number; contrast: number },
   toggles: ColorSolveToggles,
+  targets: SolverTargets,
 ): [ColorCorrectionEffect[], ColorSolveDecision[]] {
   const L = COLOR_SOLVER_LIMITS;
   const luma = stats.luma,
@@ -285,7 +301,7 @@ function solveTone(
   let target = clamp((median - black) / (white - black), 0.02, 0.98);
   if (exposure) {
     // Place the midtones: gamma moves the median after levels into range.
-    const [low, high] = L.midtoneRange;
+    const [low, high] = targets.midtoneRange;
     const goal =
       target < low
         ? Math.max(target, Math.min(low, median + L.medianRiseMax))
@@ -299,7 +315,7 @@ function solveTone(
       decisions.push({
         correction: "exposure",
         applied: true,
-        reason: `median ${round(target, 3)} after levels is ${target < low ? "below" : "above"} the midtone range ${low}–${high}; gamma moves it to ${round(placed, 3)}`,
+        reason: `median ${round(target, 3)} after levels is ${target < low ? "below" : "above"} the ${targets.source === "supplied" ? "supplied" : "default"} midtone range ${round(low, 3)}–${round(high, 3)}; gamma moves it to ${round(placed, 3)}`,
         values: { gamma, median: round(target, 4), placed: round(placed, 4) },
       });
       target = placed;
@@ -353,6 +369,7 @@ function solveSaturation(
   stats: ColorStatistics,
   strength: number,
   enabled: boolean,
+  targets: SolverTargets,
 ): [ColorCorrectionEffect[], ColorSolveDecision] {
   const L = COLOR_SOLVER_LIMITS;
   if (!enabled)
@@ -363,7 +380,7 @@ function solveSaturation(
   const s50 = Math.max(0.02, stats.saturation.p50),
     s90 = Math.max(0.04, stats.saturation.p90);
   const gain = clamp(
-    Math.max(L.saturationTarget / s50, L.strongSaturationTarget / s90),
+    Math.max(targets.saturation / s50, targets.strongSaturation / s90),
     1,
     L.saturationMaxGain,
   );
@@ -389,11 +406,46 @@ function solveSaturation(
       correction: "saturation",
       applied,
       reason: applied
-        ? `median/90% saturation ${stats.saturation.p50}/${stats.saturation.p90} below ${L.saturationTarget}/${L.strongSaturationTarget}; vibrance (strong colors and skin protected), ≤ ×${L.saturationMaxGain}`
+        ? `median/90% saturation ${stats.saturation.p50}/${stats.saturation.p90} below the ${targets.source === "supplied" ? "supplied" : "default"} ${round(targets.saturation, 3)}/${round(targets.strongSaturation, 3)}; vibrance (strong colors and skin protected), ≤ ×${L.saturationMaxGain}`
         : `saturation ${stats.saturation.p50}/${stats.saturation.p90} meets the targets`,
       values: { vibrance },
     },
   ];
+}
+
+/**
+ * Supplied targets replace the defaults within sane bounds: the midtone range
+ * keeps its width around the supplied median (never reaching high key), and
+ * saturation targets stay within what vibrance can reach.
+ */
+function solverTargets(supplied: ColorSolveTargets | undefined): SolverTargets {
+  const L = COLOR_SOLVER_LIMITS;
+  const [low, high] = L.midtoneRange;
+  const half = (high - low) / 2;
+  const median =
+    supplied?.medianLuma === undefined
+      ? undefined
+      : clamp(supplied.medianLuma, 0.3, L.highKey - half);
+  const saturation = clamp(
+      supplied?.saturation ?? L.saturationTarget,
+      0.05,
+      0.5,
+    ),
+    strong = clamp(
+      supplied?.strongSaturation ?? L.strongSaturationTarget,
+      saturation,
+      0.8,
+    );
+  return {
+    midtoneRange:
+      median === undefined ? L.midtoneRange : [median - half, median + half],
+    saturation,
+    strongSaturation: strong,
+    source:
+      supplied && Object.values(supplied).some((value) => value !== undefined)
+        ? "supplied"
+        : "default",
+  };
 }
 
 /** Quarter-resolution copies (every second pixel and row) for solving. */
@@ -451,6 +503,7 @@ export function solveColorCorrection(
     saturation: scales.saturation > 0,
     whiteBalance: scales.whiteBalance > 0,
   };
+  const targets = solverTargets(options.targets);
   const prefix = options.prefix ?? [];
   const measure = (effects: readonly ColorCorrectionEffect[]) =>
     measureColorFrames(
@@ -475,11 +528,13 @@ export function solveColorCorrection(
       measure(balance),
       { exposure: s * scales.exposure, contrast: s * scales.contrast },
       toggles,
+      targets,
     );
     const [vivid, vividDecision] = solveSaturation(
       measure([...balance, ...tone]),
       s * scales.saturation,
       toggles.saturation,
+      targets,
     );
     const effects = [...balance, ...tone, ...vivid];
     const predicted = measure(effects);

@@ -423,6 +423,8 @@ export async function autoColorClip(
       ...request.toggles,
       strength,
       prefix: effects,
+      // A look measured from a graded edit supplies the solver's targets.
+      ...(request.look?.targets ? { targets: request.look.targets } : {}),
     });
     effects.push(...solution.effects);
     decisions = solution.decisions;

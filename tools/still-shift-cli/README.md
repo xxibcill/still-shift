@@ -368,7 +368,8 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   cuts, matches each shot to its source clip and frames, fits one encoded-sRGB
   3×3 + offset transform and writes a `still-shift-look-1` file with per-pixel
   and 4×4-block residuals, overall and with each shot held out (`null` when
-  only one shot matched, so there is nothing to hold out). A graded edit
+  only one shot matched, so there is nothing to hold out), plus the graded
+  edit's measured `targets` (median luma, median and 90% saturation). A graded edit
   tagged BT.709 transfer is compared in its code values (as players show it and
   as `comp render` writes it); `--after-interpretation media-path` converts it
   as composition video instead.
@@ -388,7 +389,10 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   that correction alone (`--saturation 0.5` halves the vibrance boost). With
   `--look`, `--strength` scales the look (default 0.6) and only the look is
   applied unless a correction is switched on or `--adaptive true` is given;
-  adaptive corrections then follow the look, scaled by `--adaptive-strength`.
+  adaptive corrections then follow the look, scaled by `--adaptive-strength`,
+  and aim for the look's `targets` instead of the defaults (the midtone range is
+  centered on its median). `--strength 0 --adaptive true` uses only the
+  targets.
   Default targets: median/90% HSV saturation 0.185/0.36 (vibrance ≤ 80, gain
   ≤ 1.65), an S-curve of 0.75 × (0.625 − spread), at most 0.13, when the 5–95%
   luma spread is below 0.625, and 50–90% of the near-neutral cast removed

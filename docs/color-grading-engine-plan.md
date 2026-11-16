@@ -389,7 +389,9 @@ correction. Exposure lifts a dim white point and then places the median in the
 0.40–0.52 midtone range with the levels gamma (raise ≤ 0.08 in all, lower
 ≤ 0.05), so an over-exposed or dark-midtone clip is corrected too; high-key
 clips (median ≥ 0.6) keep their exposure. Added after review (PR #70, A1): the
-first version only lifted the white point and could never darken.
+first version only lifted the white point and could never darken. A fitted look records its edit's measured
+targets (median luma, median and 90% saturation); with that look the adaptive
+solver aims for them instead of its defaults (PR #70, A2).
 
 **Owner inputs:** five or more representative Flow clips (kept local unless
 licensed for the repository), and optionally one or two frames showing the

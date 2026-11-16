@@ -13,6 +13,7 @@ import {
 import { gradeBytes, gradeControls } from "@still-shift/renderer-core";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { compositionMediaColorFilter } from "./composition-media-color.ts";
+import { measureColorFrames } from "./composition-color-measure.ts";
 import {
   openColorClip,
   readColorFrames,
@@ -106,6 +107,18 @@ export const ColorLookSchema = z
         unmatchedShots: z.array(z.tuple([z.number().int(), z.number().int()])),
       })
       .strict(),
+    /**
+     * Statistics of the graded edit's matched frames. The adaptive solver
+     * uses them as its targets when it runs with this look.
+     */
+    targets: z
+      .object({
+        medianLuma: z.number().min(0).max(1),
+        saturation: z.number().min(0).max(1),
+        strongSaturation: z.number().min(0).max(1),
+      })
+      .strict()
+      .optional(),
     sources: z
       .object({
         before: z.array(
@@ -682,6 +695,9 @@ export async function fitColorLook(
   const width = after.probe.width,
     height = after.probe.height;
   const sets: ColorBlockSet[] = [];
+  // Every fourth pixel and row of the graded frames, for the look's targets.
+  const graded: { ordinal: number; rgba: Uint8Array }[] = [];
+  const gradedWidth = Math.ceil(width / 4);
   for (const [shotIndex, match] of matches.entries()) {
     options.signal?.throwIfAborted();
     const afterOrdinals = match.pairs.map((pair) => pair[0]);
@@ -702,6 +718,21 @@ export async function fitColorLook(
         )
       ).map((frame) => [frame.ordinal, frame.rgba] as const),
     );
+    for (const [afterOrdinal] of match.pairs) {
+      const rgba = afterFrames.get(afterOrdinal)!,
+        rows = Math.ceil(height / 4),
+        small = new Uint8Array(gradedWidth * rows * 4);
+      for (let y = 0; y < rows; y++)
+        for (let x = 0; x < gradedWidth; x++)
+          small.set(
+            rgba.subarray(
+              (y * 4 * width + x * 4) * 4,
+              (y * 4 * width + x * 4) * 4 + 4,
+            ),
+            (y * gradedWidth + x) * 4,
+          );
+      graded.push({ ordinal: afterOrdinal, rgba: small });
+    }
     for (const [afterOrdinal, beforeOrdinal] of match.pairs)
       sets.push(
         colorBlocks(
@@ -808,6 +839,14 @@ export async function fitColorLook(
       shots: shotsReport,
       unmatchedShots: unmatched,
     },
+    targets: (() => {
+      const stats = measureColorFrames(graded, gradedWidth, { step: 1 });
+      return {
+        medianLuma: stats.luma.p50,
+        saturation: stats.saturation.p50,
+        strongSaturation: stats.saturation.p90,
+      };
+    })(),
     sources: {
       before: befores.map((clip) => ({
         name: clip.name,
