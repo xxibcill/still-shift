@@ -19,6 +19,8 @@ export * from "./effect-definition.ts";
 export {
   COLOR_MATRIX_COEFFICIENTS,
   COLOR_MATRIX_OFFSETS,
+  GRADE_EFFECT_IDS,
+  type GradeEffectId,
 } from "./grade-effects.ts";
 
 function defineEffect(

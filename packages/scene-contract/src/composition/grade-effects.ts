@@ -24,6 +24,13 @@ export const COLOR_MATRIX_COEFFICIENTS = [
   ["br", "bg", "bb"],
 ] as const;
 export const COLOR_MATRIX_OFFSETS = ["ro", "go", "bo"] as const;
+/** The CGA grade effects, in catalogue order: the one list every layer uses. */
+export const GRADE_EFFECT_IDS = [
+  "color.matrix",
+  "color.white-balance",
+  "color.vibrance",
+] as const;
+export type GradeEffectId = (typeof GRADE_EFFECT_IDS)[number];
 
 /**
  * CGA primary corrections for flat SDR clips. They evaluate encoded-sRGB
@@ -31,7 +38,7 @@ export const COLOR_MATRIX_OFFSETS = ["ro", "go", "bo"] as const;
  * WebGL produce identical bytes; neutral controls preserve the input exactly.
  */
 export const GRADE_EFFECT_DEFINITIONS: Readonly<
-  Record<string, CompositionEffectDefinition>
+  Record<GradeEffectId, CompositionEffectDefinition>
 > = {
   /** out = (I + strength·(M − I))·rgb + strength·offset, in encoded sRGB. */
   "color.matrix": effect({

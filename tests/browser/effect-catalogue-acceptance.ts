@@ -8,6 +8,7 @@ import { format } from "prettier";
 import type { Page } from "playwright";
 import {
   compositionEffectDefinition,
+  GRADE_EFFECT_IDS,
   type Composition,
 } from "@still-shift/scene-contract";
 import {
@@ -353,7 +354,7 @@ export async function runEffectCatalogueAcceptance(
         `${environment.platform}-${environment.arch}-grade-1.json`,
       );
       const gradeVersions = Object.fromEntries(
-        ["color.matrix", "color.white-balance", "color.vibrance"].map((id) => [
+        GRADE_EFFECT_IDS.map((id) => [
           id,
           compositionEffectDefinition(id)!.version,
         ]),

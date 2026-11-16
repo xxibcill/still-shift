@@ -2,7 +2,9 @@ import { readRenderImageData } from "../../managed-memory-context.ts";
 import {
   COLOR_MATRIX_COEFFICIENTS,
   COLOR_MATRIX_OFFSETS,
+  GRADE_EFFECT_IDS,
   compositionEffectDefinition,
+  type GradeEffectId,
 } from "@still-shift/scene-contract";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import { linearToSrgb, srgbToLinear } from "./linear-color.ts";
@@ -32,12 +34,7 @@ export type GradeControls =
   | { id: "color.white-balance"; table: Uint8Array }
   | { id: "color.vibrance"; factors: Uint16Array };
 
-export const GRADE_EFFECT_IDS = [
-  "color.matrix",
-  "color.white-balance",
-  "color.vibrance",
-] as const;
-export type GradeEffectId = (typeof GRADE_EFFECT_IDS)[number];
+export { GRADE_EFFECT_IDS, type GradeEffectId };
 export const isGradeEffect = (id: string): id is GradeEffectId =>
   (GRADE_EFFECT_IDS as readonly string[]).includes(id);
 

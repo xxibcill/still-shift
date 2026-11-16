@@ -1,3 +1,4 @@
+import { GRADE_EFFECT_IDS } from "@still-shift/scene-contract";
 import type {
   Composition,
   CompositionLayer,
@@ -198,7 +199,7 @@ export const CE6_NATIVE_FIXTURES = [
   "catalogue-grade",
 ] as const;
 /** CGA grade effects, kept out of the frozen color catalogue cell layout. */
-const GRADE_EFFECTS = ["color.matrix", "color.white-balance", "color.vibrance"];
+const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
 
 /** Each catalogue cell is a native isolated group with independently moving paints. */
 export function ce6NativeFixtures(): [string, Composition][] {
@@ -223,7 +224,7 @@ export function ce6NativeFixtures(): [string, Composition][] {
       Object.keys(cases).filter((id) => id.startsWith("transition.")),
       ["time.echo", "distort.displacement-map", "transition.gradient-wipe"],
       ["distort.mesh-warp", "distort.puppet"],
-      GRADE_EFFECTS,
+      [...GRADE_EFFECTS],
     ];
   return families.map((effects, family) => {
     const doc: Composition = {
