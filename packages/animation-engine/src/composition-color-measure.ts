@@ -93,13 +93,17 @@ export function neutralizingWhiteBalance(mean: readonly number[]) {
 }
 
 export type ColorFrameLike = { ordinal: number; rgba: Uint8Array };
+/** Straight RGBA8 frames that share one width (rows follow from length). */
+export type ColorFrameSet = {
+  frames: readonly ColorFrameLike[];
+  width: number;
+};
 /**
  * `step` subsamples pixels on a grid (every step-th column and row) for speed;
  * the default 2 keeps a quarter of each frame.
  */
 export function measureColorFrames(
-  frames: readonly ColorFrameLike[],
-  width: number,
+  { frames, width }: ColorFrameSet,
   options: { step?: number } = {},
 ): ColorStatistics {
   const step = options.step ?? 2;

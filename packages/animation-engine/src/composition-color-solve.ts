@@ -19,6 +19,7 @@ import { colorEffectPixel } from "../../renderer-core/src/composition/render/col
 import {
   measureColorFrames,
   type ColorFrameLike,
+  type ColorFrameSet,
   type ColorStatistics,
 } from "./composition-color-measure.ts";
 
@@ -452,7 +453,7 @@ function solverTargets(supplied: ColorSolveTargets | undefined): SolverTargets {
 /** Quarter-resolution copies (every second pixel and row) for solving. */
 export function colorSolverFrames(
   frames: readonly (ColorFrameLike & { width: number })[],
-): { frames: ColorFrameLike[]; width: number } {
+): ColorFrameSet {
   const width = Math.ceil(frames[0]!.width / 2);
   return {
     width,
@@ -479,8 +480,7 @@ export function colorSolverFrames(
  * optionally after a fixed `prefix` (e.g. a look) that is applied first.
  */
 export function solveColorCorrection(
-  frames: readonly ColorFrameLike[],
-  width: number,
+  { frames, width }: ColorFrameSet,
   options: ColorSolveOptions & {
     prefix?: readonly ColorCorrectionEffect[];
   } = {},
@@ -508,11 +508,13 @@ export function solveColorCorrection(
   const prefix = options.prefix ?? [];
   const measure = (effects: readonly ColorCorrectionEffect[]) =>
     measureColorFrames(
-      frames.map((frame) => ({
-        ordinal: frame.ordinal,
-        rgba: applyColorEffects([...prefix, ...effects], frame.rgba),
-      })),
-      width,
+      {
+        frames: frames.map((frame) => ({
+          ordinal: frame.ordinal,
+          rgba: applyColorEffects([...prefix, ...effects], frame.rgba),
+        })),
+        width: width,
+      },
       { step: 1 },
     );
   const source = measure([]);

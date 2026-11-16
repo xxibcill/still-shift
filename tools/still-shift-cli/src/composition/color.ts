@@ -258,10 +258,10 @@ export async function runColorCommand(
       clip.probe.frameCount,
       count(values, "frames", 100_000) ?? 12,
     );
-    const statistics = measureColorFrames(
-      await readColorFrames(clip, ordinals),
-      clip.probe.width,
-    );
+    const statistics = measureColorFrames({
+      frames: await readColorFrames(clip, ordinals),
+      width: clip.probe.width,
+    });
     const report = {
       input: { name: clip.name, sha256: clip.probe.sourceHash },
       color: clip.probe.color,

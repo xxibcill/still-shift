@@ -376,7 +376,10 @@ export async function autoColorClip(
   );
   progress(`measuring ${clip.name} (${ordinals.length} frames)`);
   const frames = await readColorFrames(clip, ordinals, request);
-  const before = measureColorFrames(frames, clip.probe.width);
+  const before = measureColorFrames({
+    frames: frames,
+    width: clip.probe.width,
+  });
   const effects: ColorCorrectionEffect[] = [];
   if (request.look)
     effects.push({
@@ -387,7 +390,7 @@ export async function autoColorClip(
   let decisions: ColorSolveDecision[] = [];
   if (adaptive) {
     const small = colorSolverFrames(frames);
-    const solution = solveColorCorrection(small.frames, small.width, {
+    const solution = solveColorCorrection(small, {
       ...request.toggles,
       strength,
       prefix: effects,
@@ -401,7 +404,10 @@ export async function autoColorClip(
     ordinal: frame.ordinal,
     rgba: applyColorEffects(effects, frame.rgba),
   }));
-  const predicted = measureColorFrames(predictedFrames, clip.probe.width);
+  const predicted = measureColorFrames({
+    frames: predictedFrames,
+    width: clip.probe.width,
+  });
   const audio = await clipAudio(clip.path, request.signal);
   const compositionPath = request.writeComposition
     ? resolve(request.writeComposition)
@@ -493,13 +499,13 @@ export async function autoColorClip(
         ordinals,
         request.signal,
       );
-      const measured = measureColorFrames(
-        ordinals.map((ordinal) => ({
+      const measured = measureColorFrames({
+        frames: ordinals.map((ordinal) => ({
           ordinal,
           rgba: codeValues.get(ordinal)!,
         })),
-        clip.probe.width,
-      );
+        width: clip.probe.width,
+      });
       let squares = 0;
       for (const frame of predictedFrames)
         squares +=

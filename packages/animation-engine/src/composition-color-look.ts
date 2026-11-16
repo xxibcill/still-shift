@@ -800,7 +800,10 @@ export async function fitColorLook(
       unmatchedShots: unmatched,
     },
     targets: (() => {
-      const stats = measureColorFrames(graded, gradedWidth, { step: 1 });
+      const stats = measureColorFrames(
+        { frames: graded, width: gradedWidth },
+        { step: 1 },
+      );
       return {
         medianLuma: stats.luma.p50,
         saturation: stats.saturation.p50,

@@ -75,7 +75,7 @@ const rms = (a: readonly Uint8Array[], b: readonly Uint8Array[]) => {
 };
 const solve = (frames: ColorFrame[]) => {
   const small = colorSolverFrames(frames);
-  return solveColorCorrection(small.frames, small.width);
+  return solveColorCorrection(small);
 };
 
 describe("CGA measurement", () => {
@@ -84,13 +84,17 @@ describe("CGA measurement", () => {
     read.forEach((frame) =>
       expect(frame.rgba).toEqual(reference[frame.ordinal]),
     );
-    const first = JSON.stringify(measureColorFrames(read, W));
+    const first = JSON.stringify(
+      measureColorFrames({ frames: read, width: W }),
+    );
     // A second, cold preparation cache gives byte-identical statistics.
     const clip = await openColorClip(path);
     const again = await readColorFrames(clip, colorSampleOrdinals(12, 12), {
       cacheDirectory: join(root, "second-cache"),
     });
-    expect(JSON.stringify(measureColorFrames(again, W))).toBe(first);
+    expect(
+      JSON.stringify(measureColorFrames({ frames: again, width: W })),
+    ).toBe(first);
     const stats = JSON.parse(first);
     expect(stats.neutral.temperature).toBe(0);
     expect(stats.neutral.tint).toBe(0);
@@ -137,11 +141,11 @@ describe("CGA adaptive solver", () => {
       ).toBeGreaterThan(before);
       expect(rms(fixed, original)).toBeLessThan(after);
       // Clipping budget and the banding bound on the neutral ramp.
-      const source = measureColorFrames(read, W);
-      const result = measureColorFrames(
-        fixed.map((rgba, ordinal) => ({ ordinal, rgba })),
-        W,
-      );
+      const source = measureColorFrames({ frames: read, width: W });
+      const result = measureColorFrames({
+        frames: fixed.map((rgba, ordinal) => ({ ordinal, rgba })),
+        width: W,
+      });
       expect(
         result.clippedFraction - source.clippedFraction,
       ).toBeLessThanOrEqual(COLOR_SOLVER_LIMITS.clippedBudget);
@@ -163,7 +167,7 @@ describe("CGA adaptive solver", () => {
     const over = await clipFrames("over-exposed", bright);
     const darkened = solve(over.read);
     expect(levels(darkened)!.gamma).toBeLessThan(1);
-    const before = measureColorFrames(over.read, W).luma.p50;
+    const before = measureColorFrames({ frames: over.read, width: W }).luma.p50;
     expect(darkened.predicted.luma.p50).toBeLessThan(before - 0.03);
     expect(before - darkened.predicted.luma.p50).toBeLessThanOrEqual(
       COLOR_SOLVER_LIMITS.medianDropMax + 0.005,
@@ -193,7 +197,7 @@ describe("CGA adaptive solver", () => {
     const lifted = solve(low.read);
     expect(levels(lifted)!.inputWhite).toBe(1);
     expect(levels(lifted)!.gamma).toBeGreaterThan(1);
-    const lowBefore = measureColorFrames(low.read, W).luma;
+    const lowBefore = measureColorFrames({ frames: low.read, width: W }).luma;
     expect(lowBefore.p50).toBeLessThan(COLOR_SOLVER_LIMITS.midtoneRange[0]);
     expect(lifted.predicted.luma.p50).toBeGreaterThan(lowBefore.p50 + 0.03);
     expect(lifted.predicted.luma.p50 - lowBefore.p50).toBeLessThanOrEqual(
@@ -214,7 +218,8 @@ describe("CGA adaptive solver", () => {
       (effect) => effect.effect === "color.vibrance",
     );
     expect(vibrance?.params.vibrance).toBeGreaterThan(30);
-    const before = measureColorFrames(read, W).saturation.p50;
+    const before = measureColorFrames({ frames: read, width: W }).saturation
+      .p50;
     expect(before).toBeLessThan(0.15);
     expect(solution.predicted.saturation.p50).toBeGreaterThanOrEqual(0.15);
     const fixed = read.map((frame) =>
@@ -238,14 +243,20 @@ describe("CGA adaptive solver", () => {
       return [{ ordinal: 0, rgba }];
     };
     const options = { whiteBalance: false, saturation: false };
-    const fits = solveColorCorrection(frame(240), 32, options);
+    const fits = solveColorCorrection(
+      { frames: frame(240), width: 32 },
+      options,
+    );
     const added = (solution: typeof fits) =>
       solution.predicted.clippedFraction -
-      solveColorCorrection(frame(240), 32, {
-        ...options,
-        exposure: false,
-        contrast: false,
-      }).predicted.clippedFraction;
+      solveColorCorrection(
+        { frames: frame(240), width: 32 },
+        {
+          ...options,
+          exposure: false,
+          contrast: false,
+        },
+      ).predicted.clippedFraction;
     expect(added(fits)).toBeLessThanOrEqual(COLOR_SOLVER_LIMITS.clippedBudget);
     expect(fits.effects.map((effect) => effect.effect)).toContain(
       "color.levels",
@@ -254,7 +265,10 @@ describe("CGA adaptive solver", () => {
       fits.decisions.filter((decision) => decision.correction === "clipping")
         .length,
     ).toBeGreaterThan(0);
-    const over = solveColorCorrection(frame(252), 32, options);
+    const over = solveColorCorrection(
+      { frames: frame(252), width: 32 },
+      options,
+    );
     expect(over.decisions.at(-1)).toMatchObject({
       correction: "clipping",
       applied: false,
@@ -263,7 +277,10 @@ describe("CGA adaptive solver", () => {
   it("reports a finite vibrance when the median pixel is fully saturated", () => {
     const rgba = new Uint8Array(16 * 16 * 4);
     for (let i = 0; i < rgba.length; i += 4) rgba.set([200, 0, 0, 255], i);
-    const solution = solveColorCorrection([{ ordinal: 0, rgba }], 16);
+    const solution = solveColorCorrection({
+      frames: [{ ordinal: 0, rgba }],
+      width: 16,
+    });
     const saturation = solution.decisions.find(
       (decision) => decision.correction === "saturation",
     )!;
@@ -280,7 +297,7 @@ describe("CGA adaptive solver", () => {
       (frame) => cgaDegrade([frame], { kind: "exposure", stops: 0.9 })[0]!,
     );
     const { read } = await clipFrames("high-key", highKey);
-    const before = measureColorFrames(read, W);
+    const before = measureColorFrames({ frames: read, width: W });
     expect(before.luma.p50).toBeGreaterThan(0.6);
     const solution = solve(read);
     expect(
@@ -299,11 +316,11 @@ describe("CGA adaptive solver", () => {
     const { read } = await clipFrames("rerun", degraded);
     expect(JSON.stringify(solve(read))).toBe(JSON.stringify(solve(read)));
     const small = colorSolverFrames(read);
-    const none = solveColorCorrection(small.frames, small.width, {
+    const none = solveColorCorrection(small, {
       strength: 0,
     });
     expect(none.effects).toEqual([]);
-    const off = solveColorCorrection(small.frames, small.width, {
+    const off = solveColorCorrection(small, {
       exposure: false,
       contrast: false,
     });
@@ -319,14 +336,14 @@ describe("CGA adaptive solver", () => {
     const { read } = await clipFrames("per-correction", degraded);
     const small = colorSolverFrames(read);
     const params = (
-      options: Parameters<typeof solveColorCorrection>[2],
+      options: Parameters<typeof solveColorCorrection>[1],
       effect: string,
     ) =>
-      solveColorCorrection(small.frames, small.width, options).effects.find(
+      solveColorCorrection(small, options).effects.find(
         (candidate) => candidate.effect === effect,
       )!.params as Record<string, number>;
     const value = (
-      options: Parameters<typeof solveColorCorrection>[2],
+      options: Parameters<typeof solveColorCorrection>[1],
       effect: string,
       name: string,
     ) => params(options, effect)[name]!;
@@ -343,14 +360,12 @@ describe("CGA adaptive solver", () => {
       value(full, "color.vibrance", "vibrance"),
     );
     // 0 is the same as false; 1 the same as true.
-    expect(
-      solveColorCorrection(small.frames, small.width, { saturation: 0 }),
-    ).toEqual(
-      solveColorCorrection(small.frames, small.width, { saturation: false }),
+    expect(solveColorCorrection(small, { saturation: 0 })).toEqual(
+      solveColorCorrection(small, { saturation: false }),
     );
-    expect(
-      solveColorCorrection(small.frames, small.width, { contrast: 1 }),
-    ).toEqual(solveColorCorrection(small.frames, small.width, {}));
+    expect(solveColorCorrection(small, { contrast: 1 })).toEqual(
+      solveColorCorrection(small, {}),
+    );
   });
 });
 
@@ -494,10 +509,10 @@ describe("CGA look targets", () => {
       cacheDirectory: cache(),
       step: 4,
     });
-    const edit = measureColorFrames(
-      graded.map((rgba, ordinal) => ({ ordinal, rgba })),
-      W,
-    );
+    const edit = measureColorFrames({
+      frames: graded.map((rgba, ordinal) => ({ ordinal, rgba })),
+      width: W,
+    });
     expect(look.targets!.medianLuma).toBeCloseTo(edit.luma.p50, 1);
     expect(look.targets!.saturation).toBeCloseTo(edit.saturation.p50, 1);
     expect(look.targets!.strongSaturation).toBeCloseTo(edit.saturation.p90, 1);
@@ -509,8 +524,8 @@ describe("CGA look targets", () => {
     // defaults do (the look itself is not applied here).
     const { read } = await clipFrames("targets-raw", reference);
     const small = colorSolverFrames(read);
-    const defaults = solveColorCorrection(small.frames, small.width);
-    const supplied = solveColorCorrection(small.frames, small.width, {
+    const defaults = solveColorCorrection(small);
+    const supplied = solveColorCorrection(small, {
       targets: look.targets,
     });
     expect(supplied.predicted.luma.p50).toBeLessThan(

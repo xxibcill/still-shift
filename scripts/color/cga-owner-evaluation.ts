@@ -239,7 +239,7 @@ async function stats(path: string, raw: boolean): Promise<ColorStatistics> {
     : [...(await readColorCodeValueFrames(clip, ordinals))].map(
         ([ordinal, rgba]) => ({ ordinal, rgba }),
       );
-  return measureColorFrames(frames, clip.probe.width);
+  return measureColorFrames({ frames: frames, width: clip.probe.width });
 }
 const summarize = (s: ColorStatistics) => ({
   medianLuma: s.luma.p50,
