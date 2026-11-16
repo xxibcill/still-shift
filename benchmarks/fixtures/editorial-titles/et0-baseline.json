@@ -40,11 +40,11 @@
         "render": {
           "exit": 0,
           "status": "rendered",
-          "rendererVersion": "composition-canvas-1.47.7",
+          "rendererVersion": "composition-canvas-1.47.8",
           "evaluatorVersion": "composition-evaluator-60",
           "warnings": [],
           "systemFontLayers": [],
-          "sha256": "29add3829dea83d25234ff72a4207f93fd1ee8cb0e7ae17eff223637a008e328"
+          "sha256": "26ecb5350e0db6f2bb230d5e9892616bd3e285a724a9df327f31c011a4599b50"
         },
         "hold": [
           {
@@ -128,7 +128,7 @@
         "render": {
           "exit": 0,
           "status": "rendered",
-          "rendererVersion": "composition-canvas-1.47.7",
+          "rendererVersion": "composition-canvas-1.47.8",
           "evaluatorVersion": "composition-evaluator-60",
           "warnings": [],
           "systemFontLayers": [],
@@ -225,7 +225,7 @@
         "render": {
           "exit": 0,
           "status": "rendered",
-          "rendererVersion": "composition-canvas-1.47.7",
+          "rendererVersion": "composition-canvas-1.47.8",
           "evaluatorVersion": "composition-evaluator-60",
           "warnings": [],
           "systemFontLayers": [],
@@ -242,7 +242,7 @@
         "render": {
           "exit": 0,
           "status": "rendered",
-          "rendererVersion": "composition-canvas-1.47.7",
+          "rendererVersion": "composition-canvas-1.47.8",
           "evaluatorVersion": "composition-evaluator-60",
           "warnings": [],
           "systemFontLayers": [],
@@ -329,7 +329,7 @@
       "render": {
         "exit": 0,
         "status": "rendered",
-        "rendererVersion": "composition-canvas-1.47.7",
+        "rendererVersion": "composition-canvas-1.47.8",
         "evaluatorVersion": "composition-evaluator-60",
         "warnings": [],
         "systemFontLayers": [],
@@ -553,7 +553,7 @@
       "render": {
         "exit": 0,
         "status": "rendered",
-        "rendererVersion": "composition-canvas-1.47.7",
+        "rendererVersion": "composition-canvas-1.47.8",
         "evaluatorVersion": "composition-evaluator-60",
         "warnings": [
           {
@@ -656,11 +656,11 @@
       "render": {
         "exit": 0,
         "status": "rendered",
-        "rendererVersion": "composition-canvas-1.47.7",
+        "rendererVersion": "composition-canvas-1.47.8",
         "evaluatorVersion": "composition-evaluator-60",
         "warnings": [],
         "systemFontLayers": [],
-        "sha256": "23263218984f0f5c0d5868773c1a8c0f76dd3e536dd7ed0d7bacebac085bd405"
+        "sha256": "0cc02749c57cff00cd38f00d919a7ddec534ae480bd5be14ee21be019374578b"
       },
       "layers": [
         {
@@ -1603,7 +1603,7 @@
       "render": {
         "exit": 0,
         "status": "rendered",
-        "rendererVersion": "composition-canvas-1.47.7",
+        "rendererVersion": "composition-canvas-1.47.8",
         "evaluatorVersion": "composition-evaluator-60",
         "warnings": [],
         "systemFontLayers": [],

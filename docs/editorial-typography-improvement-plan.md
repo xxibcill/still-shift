@@ -106,7 +106,7 @@ order did not, for these reasons.
 | ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Implemented (PR pending)  |
 | ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5                                        | Proposed                  |
 | ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                  |
-| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Proposed                  |
+| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Implemented (PR pending)  |
 | ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                  |
 | ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                  |
 | ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                  |
@@ -522,17 +522,43 @@ entrances and, as ET0 found, persist through the whole hold while a per-glyph
 tracking animator runs (O11). That is a visible defect in a title's main element,
 not a minor probe. It can run in parallel with ET7a.
 
+**Result (2026-11-15):** implemented on `codex/editorial-titles-et5b`; see the
+[ET5b results](./editorial-typography-et5b-results.json). Root cause: each
+glyph was drawn as a slice of the line's raster cut at its advance, so a
+serif overhanging into the neighbour's slice moved and faded with the
+neighbour. Lines whose glyphs have different poses now draw runs of
+same-pose glyphs from their own shaped rasters; lines with one pose keep the
+slices, so settled text is unchanged. Renderer versions
+`composition-canvas-1.47.8` and `composition-webgl2-0.68.8`.
+
+**Review (2026-11-16):** the [PR #67](https://github.com/xxibcill/still-shift/pull/67)
+review's findings are fixed on the branch, one commit each: segment rasters
+are bounded to the most recently used per raster; a segment with mixed span
+colours under one animated fill is tinted as a whole; a ligature or
+contextual form whose clusters have different poses keeps its shape (one
+joined-unit raster cut at the layout advance) instead of being reshaped as
+separate glyphs until it settles; and the WebGL2, export-memory,
+tint-capacity and parallel groups were run (all pass). See `reviewFixes` in
+the results.
+
 **Scope and checks**
 
-- [ ] Failing test first: the ET0 `o1-attach-animated` fixture at frame 45 and
+- [x] Failing test first: the ET0 `o1-attach-animated` fixture at frame 45 and
       the proof T1 at frames 30–36 and 100 show the fragments; the static control
-      shows none.
-- [ ] Root cause identified (candidate: overhang clipping when per-glyph slices
-      change position) and fixed at the cause.
-- [ ] Settled frames remain pixel-identical to the static draw path; kerning and
-      ligatures inside a unit are preserved.
-- [ ] Any intended pixel change is versioned and its affected baselines listed.
-- [ ] `pnpm check:fast`, `pnpm test:browser:typography`,
+      shows none. _A static-render oracle (`tests/browser/composition-glyph-seams.ts`)
+      fails on `main` (the "v" loses 188 px of serif that travel with the "e";
+      "li" 70 px, "iv" 164 px) and passes at 0. Lossless before/after renders
+      of the O1 fixtures and pass-1 T1 are in the results; the static control is
+      byte-identical in all 96 frames._
+- [x] Root cause identified (candidate: overhang clipping when per-glyph slices
+      change position) and fixed at the cause. _Confirmed._
+- [x] Settled frames remain pixel-identical to the static draw path; kerning and
+      ligatures inside a unit are preserved. _Uniform lines keep the slice path;
+      segments are shaped as one run at the layout's kerned positions (an "fi"
+      ligature dropping as a word matches the static oracle). Chromium drops
+      optional ligatures under non-zero tracking, so T1 (−35) forms none._
+- [x] Any intended pixel change is versioned and its affected baselines listed.
+- [x] `pnpm check:fast`, `pnpm test:browser:typography`,
       `pnpm test:browser:composition-typography-adapter`, composition baselines.
 
 Estimate: 1–3 days after root cause.

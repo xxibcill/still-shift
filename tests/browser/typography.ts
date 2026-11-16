@@ -6,6 +6,7 @@ import { chromium } from "playwright";
 import { createServer } from "vite";
 import { StorySceneSchema } from "../../packages/scene-contract/src/story.ts";
 import { compileStoryScene } from "../../packages/renderer-core/src/story-scene.ts";
+import { assertNoGlyphSeams } from "./composition-glyph-seams.ts";
 
 const root = resolve("."),
   output = resolve(
@@ -612,6 +613,10 @@ try {
       null,
       2,
     ),
+  );
+  const seams = await assertNoGlyphSeams();
+  console.log(
+    `ET5b: per-glyph poses keep each serif glyph's own ink (pixels more than 24 levels off the static oracle: ${JSON.stringify(seams)}); settled frames are pinned by the CE0 and ET0 baselines.`,
   );
   console.log(
     JSON.stringify({

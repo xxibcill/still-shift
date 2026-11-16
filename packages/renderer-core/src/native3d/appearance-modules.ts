@@ -1113,6 +1113,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../product-layer.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/recent-cache.ts",
+    url: new URL("../recent-cache.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/reveal-validation.ts",
     url: new URL("../reveal-validation.ts", import.meta.url),
   },
