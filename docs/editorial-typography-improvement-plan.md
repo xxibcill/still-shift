@@ -5,7 +5,9 @@ Date: 2026-11-15. Status: **ET0–ET3, ET5a and ET5b merged on `main` (PR #60,
 ([record](./editorial-typography-g1-review-2026-11-16.md)): all three proof
 treatments rejected on style, and the aesthetic target is now the owner's social
 fashion-reel references. Remaining milestones as reordered by the
-[direction review](#direction-review-2026-11-15); ET7a is next.** ET0
+[direction review](#direction-review-2026-11-15). ET7a's 16 candidates
+are ready for owner review on `codex/editorial-titles-et7a`
+([results](./editorial-typography-et7a-results.json)).** ET0
 re-baselined every finding on `main` (98a92e92); see
 [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
@@ -111,7 +113,7 @@ order did not, for these reasons.
 | ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63) |
 | G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16           |
 | ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66) |
-| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5                                        | Proposed                  |
+| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Sheets await owner review |
 | ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                  |
 | ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67) |
 | ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                  |
@@ -120,8 +122,10 @@ order did not, for these reasons.
 | ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                  |
 | ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                  |
 
-Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence)
-ET6a, ET5b, ET4, ET6b → ET9 before any release → ET7b. ET5a and ET5b do not depend
+Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence, see
+[ET7a](#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8)) ET6a → ET6b
+(widened to treated display text) → small fixes ET7a found → ET4 → ET9 before
+any release → ET7b. ET5a and ET5b do not depend
 on G1's visual review and can run while it is pending. Estimates are planning
 ranges, not deadlines; re-estimate at entry against the then-current code.
 
@@ -517,22 +521,75 @@ varied, and which engine gaps cost the most, before more engine work is designed
   problem caused each one (placement, overflow, contrast, collision, seams,
   missing measurement). This is the evidence that orders ET4, ET5b and ET6a.
 
+**Result (2026-11-16, awaiting owner review):** implemented on
+`codex/editorial-titles-et7a`; see the
+[ET7a results](./editorial-typography-et7a-results.json), the
+[skill](../skills/design-editorial-titles/SKILL.md), the
+[pilot sources](../research/editorial-titles-et7a/README.md) and the
+[check script](../scripts/editorial-titles/et7a-check.ts). Twenty-five fonts are
+pinned with licences in `assets/editorial-titles/fonts/`. Two 7 s segments of
+the owner's reels (local only) carry 8 candidates each, 4 of the 16 with Thai or
+mixed Thai/English titles. The mapping held when rendered: a stroke animator
+held at its end state draws a static outline behind the fill, and spans with
+named styles, drop shadow, highlight boxes, word reveals and native sparkles
+work. `light.glow` has no colour, so a halo is a zero-offset drop shadow.
+
+- **Iterations:** 11 render-and-fix iterations over 16 candidates; 7 were
+  right first time. Causes: missing measurement 5 (4 widths, 1 decoration
+  offset), a highlight that ignores a glyph-by-glyph build 2, thin scripts
+  with only a halo seen as weak by the agent 2, and one each for face
+  placement, a font the metadata reader rejects, span-style axis inheritance,
+  a boxed label that lint measured at 2.03:1 while its glyphs typed in, and a
+  script ampersand that read poorly at phone size. In all: 43 renders (26
+  design, 16 verification, 1 fix after verification).
+- **Checks:** every candidate passes strict coverage and pixel lint
+  (no errors). Boxed labels measure 6.1–17.2:1. Every treated display layer
+  measures about 1.0–1.2:1 and is waived with a reason: the contrast mask
+  counts the outline ring as glyph pixels and credits no shadow or halo
+  (a new gap, below).
+- **Engine fix needed to run the loop:** `--legibility` pixel lint failed
+  schema validation on any text with spans; fixed in `text-legibility.ts`
+  with a unit test.
+- **Cost:** shadows and halos make Canvas renders and legibility lint about
+  10 and 20 times slower (a01 15 s + 16 s; a03 130 s + 453 s).
+
+**Ranked gaps** (by iterations and checks they cost):
+
+1. **ET6a measure** — 5 of 11 fix iterations, plus font metrics read
+   outside the engine for every stacked lockup.
+2. **ET6b, widened** — contrast for treated display text: all 16 candidates
+   needed waivers, and the two weak-script cases were caught by eye, not lint.
+   Measure fill against its outline/shadow ring, and set the G1 display level.
+3. **New small fixes** — font name budget (Prompt Black), span-style axis
+   inheritance, decoration reveal under per-glyph builds (two iterations),
+   highlight padding, coloured glow.
+4. **New: effect render cost** — before candidate search at scale (ET7b).
+5. **ET4** — no candidate used `attach`; zero iterations. Defer until a
+   layout needs runtime-adaptive anchoring.
+
+ET5b needed nothing: no seams in any glyph-animated serif.
+
 **Checks**
 
-- [ ] At least 8 visually distinct candidates for one clip and copy, on at least
-      two clips or copies, including one Thai or mixed title.
-- [ ] Every candidate passes strict font coverage; legibility findings are fixed
-      or waived with a reason.
-- [ ] No person edits coordinates; the agent's iterations are counted.
-- [ ] Contact sheets built for owner review (local only over the reference reels;
+- [x] At least 8 visually distinct candidates for one clip and copy, on at least
+      two clips or copies, including one Thai or mixed title. _8 per reel on two
+      reels; 4 Thai or mixed._
+- [x] Every candidate passes strict font coverage; legibility findings are fixed
+      or waived with a reason. _Labels pass on boxes; treated display layers
+      waived (reason in each composition)._
+- [x] No person edits coordinates; the agent's iterations are counted.
+- [x] Contact sheets built for owner review (local only over the reference reels;
       committed only for owner-shot, licensed or synthetic footage); font
-      licences recorded beside the pinned fonts.
+      licences recorded beside the pinned fonts. _Both clips are third-party
+      reels, so no sheet is committed (D-auth still open)._
 - [ ] Owner's acceptance or rejection recorded per candidate, in the owner's
       words. Agent scores are labelled as such and never treated as acceptance.
-- [ ] Result against the success measure stated, pass or fail.
-- [ ] `packages/` gains no taste or footage-analysis code.
-- [ ] Ranked list of engine gaps by iterations cost, with a recommendation for
-      the order of ET6a, ET5b and ET4.
+      _Pending owner review._
+- [ ] Result against the success measure stated, pass or fail. _Pending._
+- [x] `packages/` gains no taste or footage-analysis code. _One lint bug fix
+      only._
+- [x] Ranked list of engine gaps by iterations cost, with a recommendation for
+      the order of ET6a, ET5b and ET4. _Above._
 
 Estimate: 3–5 days after G1. Not attempted here: subject mattes for text behind a
 subject, automatic footage analysis and preference learning (ET7b).
