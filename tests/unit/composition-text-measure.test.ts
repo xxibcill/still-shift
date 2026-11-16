@@ -91,6 +91,37 @@ describe("measuredLayerOrigin", () => {
     expect(
       measuredLayerOrigin(camera, camera, camera.layers[0]!).originReason,
     ).toBe("composition has a camera");
+    const depth = compWith(textLayer({ position: [0, 0, 40] }));
+    expect(
+      measuredLayerOrigin(depth, depth, depth.layers[0]!).originReason,
+    ).toBe("position has a depth component");
+  });
+
+  it("refuses layers that follow the composition's 2D camera", () => {
+    const camera2d = {
+      keys: [
+        { frame: 0, position: [0, 0] },
+        { frame: 30, position: [300, 0] },
+      ],
+    };
+    const follows = {
+      ...compWith(textLayer({ position: [100, 200] })),
+      camera2d,
+    } as unknown as Composition;
+    expect(measuredLayerOrigin(follows, follows, follows.layers[0]!)).toEqual({
+      origin: null,
+      originReason: "composition has camera2d",
+    });
+    const fixed = {
+      ...compWith({
+        ...textLayer({ position: [100, 200] }),
+        cameraDepth: 0,
+      } as unknown as CompositionLayer),
+      camera2d,
+    } as unknown as Composition;
+    expect(measuredLayerOrigin(fixed, fixed, fixed.layers[0]!)).toEqual({
+      origin: [100, 200],
+    });
   });
 });
 

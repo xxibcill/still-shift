@@ -234,8 +234,9 @@ export type TextLayerMeasure = {
   locale: string;
   /**
    * Composition position of the layer-local origin when the layer is placed
-   * by a static translation alone (no anchor, scale, rotation, skew, parent
-   * or camera): composition = local + origin. Otherwise null, with the reason.
+   * by a static translation alone (no anchor, scale, rotation, skew, parent,
+   * camera layer, or `camera2d` the layer follows): composition = local +
+   * origin. Otherwise null, with the reason.
    */
   origin: [number, number] | null;
   originReason?: string;
@@ -821,10 +822,13 @@ export function textColors(
 
 const isPair = (value: unknown, x: number, y: number) =>
   Array.isArray(value) && value[0] === x && value[1] === y;
-const staticPair = (value: unknown): value is [number, number] =>
+const staticVector = (value: unknown, length: number) =>
   Array.isArray(value) &&
-  value.length === 2 &&
+  value.length === length &&
   value.every((v) => typeof v === "number");
+const staticPair = (value: unknown): value is [number, number] =>
+  staticVector(value, 2);
+const staticTriple = (value: unknown) => staticVector(value, 3);
 
 /** Where the layer-local origin sits in the composition, when that is static. */
 export function measuredLayerOrigin(
@@ -837,8 +841,12 @@ export function measuredLayerOrigin(
   if ("parent" in layer && layer.parent) return none("layer has a parent");
   if (comp.layers.some((l) => l.type === "camera"))
     return none("composition has a camera");
+  // Unparented layers follow the 2D camera unless their cameraDepth is 0.
+  if (comp.camera2d && (layer.cameraDepth ?? 1) !== 0)
+    return none("composition has camera2d");
   const t = (layer.transform ?? {}) as Record<string, unknown>;
   const position = t.position ?? [0, 0];
+  if (staticTriple(position)) return none("position has a depth component");
   if (!staticPair(position)) return none("position is animated");
   if (t.anchor !== undefined && !isPair(t.anchor, 0, 0))
     return none("layer has an anchor");
