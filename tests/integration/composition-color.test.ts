@@ -254,6 +254,22 @@ describe("CGA look from an example", () => {
     expect(fitted.fit.residual.rms).toBeLessThan(0.6);
     expect(fitted.fit.heldOut.rmsMax).toBeLessThan(1);
     expect(fitted.fit.afterInterpretation).toBe("media-path");
+    // Applied looks default to half strength; full strength stays available.
+    for (const [lookStrength, expected] of [
+      [undefined, 0.5],
+      [1, 1],
+    ] as const) {
+      const report = await autoColorClip({
+        input: before[0]!,
+        look: fitted,
+        ...(lookStrength === undefined ? {} : { lookStrength }),
+        writeComposition: join(root, `look-${expected}`, "clip.json"),
+        cacheDirectory: cache(),
+      });
+      expect(report.effects).toHaveLength(1);
+      expect(report.effects[0]!.params.strength).toBe(expected);
+      expect(report.look!.strength).toBe(expected);
+    }
   });
 });
 

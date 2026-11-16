@@ -50,9 +50,10 @@ export type ColorSolution = {
 
 /**
  * Solver limits and targets. Every correction is bounded and has a dead band,
- * so a balanced clip is left unchanged. Defaults are conservative: the owner's
- * own grade of Flow clips removed about a third of the measured warm cast and
- * kept the median saturation while raising strong colors.
+ * so a balanced clip is left unchanged. Defaults (retuned 2026-11-16 after the
+ * owner found the first version invisible on flat Flow clips) give a visible
+ * vibrance boost and a median-pivoted S-curve, keep high-key brightness, and
+ * remove only part of a warm cast that mixes real beige with neutrals.
  */
 export const COLOR_SOLVER_LIMITS = {
   /**
@@ -61,8 +62,8 @@ export const COLOR_SOLVER_LIMITS = {
    * colors such as beige and white) to the second when they share one cast
    * (spread ≤ 5, true neutrals under a colored light).
    */
-  whiteBalanceShare: [0.4, 0.9] as const,
-  whiteBalanceMax: [20, 35] as const,
+  whiteBalanceShare: [0.2, 0.9] as const,
+  whiteBalanceMax: [10, 35] as const,
   tintMax: [12, 25] as const,
   castSpread: [5, 15] as const,
   whiteBalanceDeadBand: 3,
@@ -86,14 +87,17 @@ export const COLOR_SOLVER_LIMITS = {
   flatBlackMaxMove: 0.12,
   /** Largest tonal stretch 1/(w − b), so 8-bit sources do not band visibly. */
   maxStretch: 1.3,
-  /** S-curve when the 5–95% spread is still narrower than this. */
-  spreadTarget: 0.5,
-  sCurveMax: 0.1,
+  /**
+   * S-curve, pivoting on the median so the key is kept, when the 5–95% spread
+   * is narrower than this; strength (spreadTarget − spread), at most sCurveMax.
+   */
+  spreadTarget: 0.75,
+  sCurveMax: 0.16,
   /** Saturation targets (median and 90th percentile) and boost bounds. */
-  saturationTarget: 0.15,
-  strongSaturationTarget: 0.3,
-  saturationMaxGain: 1.5,
-  vibranceMax: 60,
+  saturationTarget: 0.22,
+  strongSaturationTarget: 0.42,
+  saturationMaxGain: 1.8,
+  vibranceMax: 100,
   /** Extra clipped share a correction may add before it is scaled back. */
   clippedBudget: 0.003,
 } as const;
@@ -263,7 +267,7 @@ function solveTone(
   const spread = (luma.p95 - luma.p05) / (white - black);
   const sCurve =
     toggles.contrast && spread < L.spreadTarget
-      ? Math.min(L.sCurveMax, (L.spreadTarget - spread) * 0.5) * strength
+      ? Math.min(L.sCurveMax, L.spreadTarget - spread) * strength
       : 0;
   if (sCurve > 0.005) {
     const m = clamp(target, 0.15, 0.85);

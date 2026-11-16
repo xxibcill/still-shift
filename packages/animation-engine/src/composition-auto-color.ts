@@ -47,6 +47,8 @@ import {
 } from "./composition-color-solve.ts";
 
 export const AUTO_COLOR_REPORT_VERSION = "still-shift-auto-color-report-1";
+/** Default look strength: half of the learned transform. */
+export const AUTO_COLOR_LOOK_STRENGTH = 0.5;
 const round = (value: number, digits = 4) => {
   const scale = 10 ** digits;
   const rounded = Math.round(value * scale) / scale;
@@ -58,8 +60,10 @@ export type AutoColorRequest = ColorFrameOptions & {
   /** Rendered MP4. Optional when only `writeComposition` is requested. */
   output?: string | undefined;
   look?: ColorLook | undefined;
-  /** Scales the look and every adaptive correction, 0–1 (default 1). */
+  /** Scales the adaptive corrections, 0–1 (default 1). */
   strength?: number | undefined;
+  /** Scales the look, 0–1 (default 0.5; the learned look at 1 is strong). */
+  lookStrength?: number | undefined;
   /** Adaptive corrections; defaults on without a look and off with one. */
   adaptive?: boolean | undefined;
   toggles?: Partial<ColorSolveToggles> | undefined;
@@ -353,6 +357,10 @@ export async function autoColorClip(
 ): Promise<AutoColorReport> {
   const progress = request.progress ?? (() => undefined);
   const strength = Math.max(0, Math.min(1, request.strength ?? 1));
+  const lookStrength = Math.max(
+    0,
+    Math.min(1, request.lookStrength ?? AUTO_COLOR_LOOK_STRENGTH),
+  );
   const adaptive = request.adaptive ?? !request.look;
   if (!request.output && !request.writeComposition)
     passageError(
@@ -397,7 +405,7 @@ export async function autoColorClip(
     effects.push({
       id: "look",
       effect: "color.matrix",
-      params: colorLookEffectParams(request.look, strength),
+      params: colorLookEffectParams(request.look, lookStrength),
     });
   let decisions: ColorSolveDecision[] = [];
   if (adaptive) {
@@ -435,7 +443,7 @@ export async function autoColorClip(
               ...request.look.sources.before.map((source) => source.sha256),
               request.look.sources.after.sha256,
             ],
-            strength,
+            strength: lookStrength,
           },
         }
       : {}),

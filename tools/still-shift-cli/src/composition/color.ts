@@ -284,7 +284,7 @@ export async function runColorCommand(
       {
         look,
         adaptive: false,
-        strength: unit(values, "strength"),
+        lookStrength: unit(values, "strength"),
         report: values.get("report"),
         backend: backend(values),
       },
@@ -296,6 +296,7 @@ export async function runColorCommand(
       "output",
       "look",
       "strength",
+      "adaptive-strength",
       "adaptive",
       "exposure",
       "contrast",
@@ -326,7 +327,17 @@ export async function runColorCommand(
         toggles: Object.fromEntries(
           Object.entries(toggles).filter(([, value]) => value !== undefined),
         ),
-        strength: unit(values, "strength"),
+        // --strength scales the look when one is given (default 0.5), and
+        // the adaptive corrections otherwise (default 1).
+        ...(look
+          ? {
+              lookStrength: unit(values, "strength"),
+              strength: unit(values, "adaptive-strength"),
+            }
+          : {
+              strength:
+                unit(values, "strength") ?? unit(values, "adaptive-strength"),
+            }),
         report: values.get("report"),
         sampleFrames: count(values, "frames", 10_000),
         backend: backend(values),
