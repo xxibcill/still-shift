@@ -337,8 +337,10 @@ next small slice if neutral-but-correct is still too plain.
       continuity equals the source's within codec noise (synthetic |Δ| < 0.01;
       owner clips 0.0004–0.0025 before and after).
 - [x] After correction, clipped and crushed fractions stay within the budget
-      (< 0.4% added on the fixtures; solver guard 0.3%) and the gradient fixture
-      stays within the banding bound (no step over 2 codes; stretch ≤ 1.3).
+      (≤ 0.3% added on the fixtures: the solver scales every correction, tone
+      included, until it fits, and records a decision when four rounds are not
+      enough) and the gradient fixture stays within the banding bound (no step
+      over 2 codes; stretch ≤ 1.3).
 - [x] `color.vibrance` has exact Canvas/WebGL parity and a neutral identity.
 - [x] Output frame count, duration and audio match the source (72/72 frames,
       3.0 s, audio correlation ≥ 0.9987 on the 11 owner clips with sound; the

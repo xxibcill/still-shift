@@ -421,11 +421,7 @@ export function solveColorCorrection(
       s,
       toggles.whiteBalance,
     );
-    const [tone, toneDecisions] = solveTone(
-      measure(balance),
-      strength,
-      toggles,
-    );
+    const [tone, toneDecisions] = solveTone(measure(balance), s, toggles);
     const [vivid, vividDecision] = solveSaturation(
       measure([...balance, ...tone]),
       s,
@@ -434,19 +430,23 @@ export function solveColorCorrection(
     const effects = [...balance, ...tone, ...vivid];
     const predicted = measure(effects);
     const added = predicted.clippedFraction - source.clippedFraction;
-    if (
-      added > COLOR_SOLVER_LIMITS.clippedBudget &&
-      attempt < 4 &&
-      (balance.length || vivid.length)
-    ) {
+    const over = added > COLOR_SOLVER_LIMITS.clippedBudget && effects.length;
+    if (over && attempt < 4) {
       decisions.push({
         correction: "clipping",
         applied: true,
-        reason: `corrections added ${round(added * 100, 2)}% clipped pixels (budget ${COLOR_SOLVER_LIMITS.clippedBudget * 100}%); white balance and vibrance scaled ×0.75`,
+        reason: `corrections added ${round(added * 100, 2)}% clipped pixels (budget ${COLOR_SOLVER_LIMITS.clippedBudget * 100}%); all corrections scaled ×0.75`,
       });
       scale *= 0.75;
       continue;
     }
+    if (over)
+      decisions.push({
+        correction: "clipping",
+        applied: false,
+        reason: `still ${round(added * 100, 2)}% added clipped pixels after scaling corrections to ×${round(scale, 3)}; over the ${COLOR_SOLVER_LIMITS.clippedBudget * 100}% budget`,
+        values: { addedClipped: round(added, 6), scale: round(scale, 4) },
+      });
     return {
       version: COLOR_SOLVER_VERSION,
       strength,

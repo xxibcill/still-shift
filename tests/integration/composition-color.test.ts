@@ -21,6 +21,7 @@ import {
   autoColorClip,
   colorSampleOrdinals,
   compareClipAudio,
+  COLOR_SOLVER_LIMITS,
   colorSolverFrames,
   fitColorLook,
   measureColorFrames,
@@ -141,9 +142,9 @@ describe("CGA adaptive solver", () => {
         fixed.map((rgba, ordinal) => ({ ordinal, rgba })),
         W,
       );
-      expect(result.clippedFraction - source.clippedFraction).toBeLessThan(
-        0.004,
-      );
+      expect(
+        result.clippedFraction - source.clippedFraction,
+      ).toBeLessThanOrEqual(COLOR_SOLVER_LIMITS.clippedBudget);
       expect(result.crushedFraction - source.crushedFraction).toBeLessThan(
         0.004,
       );
@@ -175,6 +176,37 @@ describe("CGA adaptive solver", () => {
           original,
         ),
     );
+  });
+  it("scales tone back within the clipping budget, or says it could not", () => {
+    // Bright warm pixels: lifting the dim white point clips their red channel.
+    const frame = (red: number) => {
+      const rgba = new Uint8Array(32 * 32 * 4);
+      for (let i = 0; i < rgba.length; i += 4)
+        rgba.set((i >> 2) % 2 ? [red, 200, 180, 255] : [70, 75, 80, 255], i);
+      return [{ ordinal: 0, rgba }];
+    };
+    const options = { whiteBalance: false, saturation: false };
+    const fits = solveColorCorrection(frame(240), 32, options);
+    const added = (solution: typeof fits) =>
+      solution.predicted.clippedFraction -
+      solveColorCorrection(frame(240), 32, {
+        ...options,
+        exposure: false,
+        contrast: false,
+      }).predicted.clippedFraction;
+    expect(added(fits)).toBeLessThanOrEqual(COLOR_SOLVER_LIMITS.clippedBudget);
+    expect(fits.effects.map((effect) => effect.effect)).toContain(
+      "color.levels",
+    );
+    expect(
+      fits.decisions.filter((decision) => decision.correction === "clipping")
+        .length,
+    ).toBeGreaterThan(0);
+    const over = solveColorCorrection(frame(252), 32, options);
+    expect(over.decisions.at(-1)).toMatchObject({
+      correction: "clipping",
+      applied: false,
+    });
   });
   it("reports a finite vibrance when the median pixel is fully saturated", () => {
     const rgba = new Uint8Array(16 * 16 * 4);

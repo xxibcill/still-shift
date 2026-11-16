@@ -64,7 +64,7 @@
     {
       "check": "Clipped/crushed fractions within budget; gradient within the banding bound",
       "status": "met",
-      "detail": "Synthetic cases add < 0.4% clipped and < 0.4% crushed pixels; every ramp step after correction ≤ 2 codes (stretch ≤ 1.3). Solver clipping guard: +0.3% budget."
+      "detail": "Synthetic cases add ≤ 0.3% clipped and < 0.4% crushed pixels; every ramp step after correction ≤ 2 codes (stretch ≤ 1.3). Solver clipping guard: +0.3% budget, enforced by scaling every correction (tone included) after review (PR #70 C1); a final clipping decision records any remaining overrun."
     },
     {
       "check": "color.vibrance exact Canvas/WebGL parity and neutral identity",
