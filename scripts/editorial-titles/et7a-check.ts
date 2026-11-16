@@ -186,13 +186,25 @@ async function check(input: string) {
     "--output",
     join(out, "composition.json"),
   ]);
+  summary.export = {
+    status: exported.code === 0 ? "ok" : "failed",
+    seconds: exported.seconds,
+    exit: exported.code,
+  };
+  if (exported.code !== 0) {
+    await writeFile(join(out, "export.json"), JSON.stringify(exported.report));
+    await writeFile(
+      join(out, "summary.json"),
+      JSON.stringify(summary, null, 2),
+    );
+    return summary;
+  }
   const composition = JSON.parse(
     await readFile(join(out, "composition.json"), "utf8"),
   ) as {
     frameCount: number;
     markers?: { id: string; frame: number; duration?: number }[];
   };
-  void exported;
   const marker = (id: string) => composition.markers?.find((m) => m.id === id);
 
   const video = join(out, `${name}-${iteration}.mp4`);
