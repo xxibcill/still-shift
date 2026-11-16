@@ -5,9 +5,10 @@ Date: 2026-11-15. Status: **ET0–ET3, ET5a and ET5b merged on `main` (PR #60,
 ([record](./editorial-typography-g1-review-2026-11-16.md)): all three proof
 treatments rejected on style, and the aesthetic target is now the owner's social
 fashion-reel references. Remaining milestones as reordered by the
-[direction review](#direction-review-2026-11-15). ET7a's 16 candidates
-are ready for owner review on `codex/editorial-titles-et7a`
-([results](./editorial-typography-et7a-results.json)).** ET0
+[direction review](#direction-review-2026-11-15). ET7a on
+`codex/editorial-titles-et7a`: the owner accepted all 16 candidates ("all
+yes"), so the success measure is met on the local-only reels (D-auth open;
+[results](./editorial-typography-et7a-results.json)).** ET0
 re-baselined every finding on `main` (98a92e92); see
 [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
@@ -105,22 +106,22 @@ order did not, for these reasons.
 
 ## Milestone tracker
 
-| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                    |
-| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | ------------------------- |
-| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60) |
-| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61) |
-| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62) |
-| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63) |
-| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16           |
-| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66) |
-| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Sheets await owner review |
-| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                  |
-| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67) |
-| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                  |
-| ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                  |
-| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                  |
-| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                  |
-| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                  |
+| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                     |
+| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | -------------------------- |
+| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60)  |
+| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)  |
+| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)  |
+| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63)  |
+| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16            |
+| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66)  |
+| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Done: owner accepted 16/16 |
+| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                   |
+| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67)  |
+| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                   |
+| ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                   |
+| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                   |
+| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                   |
+| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                   |
 
 Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence, see
 [ET7a](#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8)) ET6a → ET6b
@@ -521,7 +522,7 @@ varied, and which engine gaps cost the most, before more engine work is designed
   problem caused each one (placement, overflow, contrast, collision, seams,
   missing measurement). This is the evidence that orders ET4, ET5b and ET6a.
 
-**Result (2026-11-16, awaiting owner review):** implemented on
+**Result (2026-11-16):** implemented on
 `codex/editorial-titles-et7a`; see the
 [ET7a results](./editorial-typography-et7a-results.json), the
 [skill](../skills/design-editorial-titles/SKILL.md), the
@@ -569,6 +570,15 @@ work. `light.glow` has no colour, so a halo is a zero-offset drop shadow.
 
 ET5b needed nothing: no seams in any glyph-animated serif.
 
+**Owner review (2026-11-16):** the owner reviewed the contact sheets and
+answered "all yes": all 16 candidates accepted, 8/8 on each reel, with no
+per-candidate comments. The success measure (at least 3 of 8 per clip, on two
+clips) is **met**, with caveats: both clips are third-party reels used local
+only, so D-auth stays open and nothing visual is committed; the reels' own
+burned-in text (reel A's small labels) was visible during review; and one
+blanket answer does not rank the styles. Agent judgements stay separate from
+this acceptance.
+
 **Checks**
 
 - [x] At least 8 visually distinct candidates for one clip and copy, on at least
@@ -582,10 +592,11 @@ ET5b needed nothing: no seams in any glyph-animated serif.
       committed only for owner-shot, licensed or synthetic footage); font
       licences recorded beside the pinned fonts. _Both clips are third-party
       reels, so no sheet is committed (D-auth still open)._
-- [ ] Owner's acceptance or rejection recorded per candidate, in the owner's
+- [x] Owner's acceptance or rejection recorded per candidate, in the owner's
       words. Agent scores are labelled as such and never treated as acceptance.
-      _Pending owner review._
-- [ ] Result against the success measure stated, pass or fail. _Pending._
+      _"all yes": 16/16 accepted; no agent scores were given._
+- [x] Result against the success measure stated, pass or fail. _Pass: 8/8
+      per reel on two reels, on local-only third-party clips (D-auth open)._
 - [x] `packages/` gains no taste or footage-analysis code. _One lint bug fix
       only._
 - [x] Ranked list of engine gaps by iterations cost, with a recommendation for
@@ -805,4 +816,4 @@ All are the owner's. G1 collects them.
 | ET2-D2  | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding               | ET9       | —                                                                                                                          |
 | D-clip  | Keep the committed synthetic fixture clip (merged with ET0)                             | Any time  | Keep                                                                                                                       |
 | D-home  | Where orchestration lives long-term                                                     | ET7b      | In-repository skill for the pilot; decide after its size                                                                   |
-| D-auth  | Whether local-only third-party reels count as authorized clips for the success measure  | ET7a      | Use at least one owner-shot, licensed or synthetic clip so its contact sheets can be committed                             |
+| D-auth  | Whether local-only third-party reels count as authorized clips for the success measure  | ET7a      | ET7a passed on two such reels; still open. Recommended: confirm on one owner-shot, licensed or synthetic clip              |

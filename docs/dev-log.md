@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
-- **Editorial titles ET7a (2026-11-16):** generator pilot on `codex/editorial-titles-et7a` (not pushed). 16 candidates (8 per reel, 4 Thai or mixed) pass strict coverage and pixel lint. Local contact sheets are listed in the [ET7a results](./editorial-typography-et7a-results.json) and await owner review in the owner's words. D-auth is still open. Gap order from the pilot: ET6a, then ET6b widened to treated display text, then small fixes, then ET4.
+- **Editorial titles ET7a (2026-11-16):** generator pilot on `codex/editorial-titles-et7a` (not pushed, no PR). 16 candidates (8 per reel, 4 Thai or mixed) pass strict coverage and pixel lint. The owner reviewed the local contact sheets and answered "all yes": 16/16 accepted, so the success measure (at least 3 of 8 per clip, two clips) is met. Caveats: both clips are third-party reels used local only, so D-auth stays open and nothing visual is committed; the reels' burned-in labels were visible during review; one blanket answer does not rank styles. Next by the pilot's evidence: ET6a, then ET6b widened to treated display text, then small fixes, then ET4. [ET7a results](./editorial-typography-et7a-results.json).
 
 - **Editorial titles G1 (2026-11-16):** owner review done; recorded in [PR #68](https://github.com/xxibcill/still-shift/pull/68) on `codex/editorial-titles-g1`.
   - **Treatments:** the owner watched T1–T3 re-rendered from `main` a897acb4 (with ET5a/ET5b) and rejected all three on text style and animation, not on engine defects.
@@ -57,7 +57,7 @@ still hold before relying on them.
     - The fonts are approved: the list plus popular free Thai families.
   - **Clips:** the owner's reference reels, local only ("Yes, local only"). They are third-party, so nothing made from them is committed; the repository is public.
   - **Pending owner decision:** D-auth, whether the local-only reels count as the success measure's authorized clips (recommended: at least one owner-shot, licensed or synthetic clip).
-  - **Next:** owner review of the ET7a candidates.
+  - **Next:** ET6a (ET7a done; owner accepted 16/16).
   - Records: [G1 record](./editorial-typography-g1-review-2026-11-16.md) and [G1 results](./editorial-typography-g1-results.json).
 - **Editorial titles ET5b (2026-11-16):** serif seam fix (O11) merged on `main` via [PR #67](https://github.com/xxibcill/still-shift/pull/67) from `codex/editorial-titles-et5b` (from `main` 0af3a405). Root cause: each glyph was drawn as a slice of its line's raster cut at the advance, so a serif overhanging the advance moved and faded with the neighbouring glyph. Lines whose glyphs have different poses now draw runs of same-pose glyphs from their own shaped rasters; settled lines keep the slices and are pixel-identical. The review's findings are fixed, one commit each (bounded segment cache, mixed-colour tint, joined glyphs kept whole across poses, WebGL2/memory/parallel groups run, test wording); `typography/glyph-performance` re-recorded once more. Renderer versions `composition-canvas-1.47.8` / `composition-webgl2-0.68.8`. `main` (with ET5a, PR #66) was merged into the branch before merge, and ET0 `--check` rerun. The owner watched the re-rendered treatments in G1; no engine defect was named. [ET5b results](./editorial-typography-et5b-results.json).
 
@@ -102,7 +102,7 @@ still hold before relying on them.
 
 ## Entries
 
-### 2026-11-16 — Editorial titles ET7a: generator pilot, sheets ready for owner review
+### 2026-11-16 — Editorial titles ET7a: generator pilot, owner accepted 16/16
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-et7a` (from `main` 2febd1f2).
 - **Scope:** ET7a, the generator pilot and aesthetic proof against the owner's fashion-reel style.
@@ -123,8 +123,8 @@ still hold before relying on them.
   - Prompt Black: `font-metadata` rejects its 8.7 KB name-table licence.
   - A halo alone on thin scripts: it reads weakly, so give them an outline.
 - **Open / next:**
-  - Owner review of the 16 candidates, recorded in the owner's words (success measure: at least 3 of 8 per reel).
-  - D-auth is still open: both clips are third-party reels, so no sheet is committed.
+  - Owner review done: "all yes", 16/16 accepted with no per-candidate comments. Success measure met: 8/8 per reel, against at least 3 of 8 on two clips. No agent scores were given.
+  - Caveats: D-auth is still open, because both clips are third-party reels used local only and no sheet is committed. The reels' burned-in labels were visible during review.
   - Recommended engine order: ET6a, then ET6b widened to treated display text, then the small fixes, then ET4.
 - **Records:** [ET7a results](./editorial-typography-et7a-results.json), [plan ET7a](./editorial-typography-improvement-plan.md#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8), [skill](../skills/design-editorial-titles/SKILL.md), [pilot](../research/editorial-titles-et7a/README.md).
 
