@@ -5,6 +5,7 @@ import {
   compositionEffectDefinition,
 } from "@still-shift/scene-contract";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
+import { linearToSrgb, srgbToLinear } from "./linear-color.ts";
 
 /**
  * CGA grade effects: `color.matrix`, `color.white-balance` and
@@ -62,10 +63,7 @@ export function colorMatrixControls(p: Params): Int32Array {
   return matrix;
 }
 
-export const srgbToLinear = (value: number) =>
-  value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
-export const linearToSrgb = (value: number) =>
-  value <= 0.0031308 ? value * 12.92 : 1.055 * value ** (1 / 2.4) - 0.055;
+export { linearToSrgb, srgbToLinear };
 
 /**
  * Linear-light channel gains. Temperature ±100 is a one-stop red/blue ratio

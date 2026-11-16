@@ -4,23 +4,17 @@ import { BLEND_FUNCTIONS, BLEND_MODES } from "./webgl-blend.ts";
 const clamp = (value: number) => Math.max(0, Math.min(1, value));
 const divide = (value: number, denominator: number) =>
   Math.floor((value + Math.floor(denominator / 2)) / denominator);
+/** The sRGB transfer functions (0–1), shared by every linear-light table. */
+export const srgbToLinear = (value: number) =>
+  value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4;
+export const linearToSrgb = (value: number) =>
+  value <= 0.0031308 ? value * 12.92 : 1.055 * value ** (1 / 2.4) - 0.055;
 const decode = new Uint16Array(256);
 const encode = new Uint8Array(65536);
-for (let byte = 0; byte < 256; byte++) {
-  const value = byte / 255;
-  decode[byte] = Math.round(
-    (value <= 0.04045 ? value / 12.92 : ((value + 0.055) / 1.055) ** 2.4) *
-      65535,
-  );
-}
-for (let word = 0; word < 65536; word++) {
-  const value = word / 65535;
-  encode[word] = Math.round(
-    clamp(
-      value <= 0.0031308 ? 12.92 * value : 1.055 * value ** (1 / 2.4) - 0.055,
-    ) * 255,
-  );
-}
+for (let byte = 0; byte < 256; byte++)
+  decode[byte] = Math.round(srgbToLinear(byte / 255) * 65535);
+for (let word = 0; word < 65536; word++)
+  encode[word] = Math.round(clamp(linearToSrgb(word / 65535)) * 255);
 export const decodeSrgb = (byte: number) => decode[byte]!;
 export const encodeSrgb = (word: number) =>
   encode[Math.max(0, Math.min(65535, word))]!;
