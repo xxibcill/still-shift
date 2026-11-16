@@ -359,10 +359,13 @@ writing only to git-ignored `dist/`).
       enough) and the gradient fixture stays within the banding bound (no step
       over 2 codes; stretch ≤ 1.3).
 - [x] `color.vibrance` has exact Canvas/WebGL parity and a neutral identity.
-- [x] Output frame count, duration and audio match the source (72/72 frames,
-      3.0 s, audio correlation ≥ 0.9987 on the 11 owner clips with sound; the
-      output audio track is 3.00 s against the source's 2.98 s because the master
-      spans the picture).
+- [ ] **Partly met.** Output frame count, duration and audio match the source.
+      Met for frames, picture duration and audio content (72/72 frames, 3.0 s,
+      audio correlation ≥ 0.9987 on the 11 owner clips with sound). Not met for
+      the audio track length: 3.00 s against the source's 2.98 s, because the
+      export's audio master spans the picture and pads the last 20 ms with
+      silence. Trimming the audio stream to the source length is an export
+      change outside CGA.
 - [x] A `smpte170m`-tagged source decodes to the same RGB as a reference
       BT.601 conversion within one code value (4:4:4 fixture, max 1; BT.709
       coefficients would be 19 off); on the owner's 4:2:0 clip 99.5% of values

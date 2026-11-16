@@ -73,7 +73,7 @@
     },
     {
       "check": "Output frame count, duration and audio match the source",
-      "status": "met (audio container is 0.02 s longer: the composition master spans the picture)",
+      "status": "partly met: frames, picture duration and audio content match; the audio track is 3.00 s against 2.98 s (the export's audio master spans the picture)",
       "detail": {
         "frameCount": "72 = 72 on all 24 owner renders; 12 = 12 synthetic",
         "durationSeconds": [3],
