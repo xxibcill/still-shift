@@ -2297,9 +2297,10 @@ step. `effects` covers each enabled `light.drop-shadow` and `light.glow` on
 the layer, which grow from everything the layer draws (ink, outline and
 decorations): its Gaussian `sigma` (shadow `blur`, glow `radius`), offset (on
 the renderer's 1/16 px grid) and strength (shadow opacity × colour alpha; glow
-intensity × the brightest glyph colour's thresholded luminance), a
-conservative `paint` box from the renderer's own bounds rule (shadow kernel
-⌈3σ⌉ + 1, glow 3σ + 2), and a `visible` box where a long straight edge's
+intensity × the brightest thresholded luminance among glyph, outline and
+decoration colours), a conservative `paint` box from the renderer's own bounds
+rule (shadow kernel ⌈3σ⌉ + 1, glow 3σ + 2, applied whatever the strength), and
+a `visible` box where a long straight edge's
 effect falls to 5% coverage (`σ·Q⁻¹(0.05 / strength)` past the edge). Keyed
 effect parameters use their keyed extremes. Not measured: text without a
 pinned font (listed with the reason), other layer effects, and compositions

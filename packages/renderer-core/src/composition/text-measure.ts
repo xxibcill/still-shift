@@ -166,7 +166,11 @@ export type TextEffectMeasure = {
   offset?: { min: [number, number]; max: [number, number] };
   /** Gaussian standard deviation: drop-shadow `blur`, glow `radius`. */
   sigma: number;
-  /** Peak strength: shadow opacity × colour alpha, or glow intensity × the brightest source colour's thresholded luminance. */
+  /**
+   * Peak strength: shadow opacity × colour alpha, or glow intensity × the
+   * brightest source colour's thresholded luminance (glyphs, outlines and
+   * decorations). Strength sets `visible` only; `paint` does not depend on it.
+   */
   strength: number;
   /**
    * The renderer's own bound for the effect (kernel radius ⌈3σ⌉ + 1 for a
@@ -761,7 +765,9 @@ export function measureTextEffects(
         strength <= TEXT_EFFECT_VISIBLE_COVERAGE || sigma === 0
           ? null
           : sigma * normalTailInverse(TEXT_EFFECT_VISIBLE_COVERAGE / strength);
-      const own = reach > 0 && strength > 0 ? padBounds(paint, reach) : null;
+      // The renderer's bound (`effectBounds`) pads by the radius whatever the
+      // colours: glow thresholds every painted pixel, not just these colours.
+      const own = reach > 0 ? padBounds(paint, reach) : null;
       const shown =
         visibleReach === null ? null : padBounds(visible, visibleReach);
       list.push({
@@ -789,13 +795,17 @@ export function measureTextEffects(
   };
 }
 
-/** Colours the layer's glyphs can paint in: fill, span fills, animated fills and outlines. */
+/**
+ * Colours the layer can paint in: fill, span fills, animated fills and
+ * outlines, and decorations (including those text events lower into).
+ */
 export function textColors(
   node: TextNode,
   prepared: PreparedTypography,
 ): string[] {
   const colors = new Set<string>([node.color]);
   for (const span of node.spans ?? []) if (span.color) colors.add(span.color);
+  for (const mark of node.decorations ?? []) colors.add(mark.color);
   for (const animator of prepared.scene.textAnimators ?? []) {
     if (animator.node !== node.id) continue;
     for (const props of [animator.from, animator.to])

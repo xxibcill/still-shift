@@ -15,6 +15,7 @@ import {
   measuredLayerOrigin,
   measureTextEffects,
   normalTailInverse,
+  textColors,
 } from "../../packages/renderer-core/src/composition/text-measure.ts";
 import type {
   MeasureBox,
@@ -331,5 +332,57 @@ describe("effect extents", () => {
     expect(glow(["#111111"]).visibleReach).toBeLessThan(0);
     // Below 5% strength: never visible at that coverage.
     expect(glow(["#0A0A0A"]).visibleReach).toBeNull();
+  });
+
+  it("bounds a glow by its radius even when no measured colour passes the threshold", () => {
+    const measured = measureTextEffects(
+      [
+        {
+          id: "g",
+          effect: "light.glow",
+          params: { radius: 8, intensity: 1, threshold: 0.5 },
+        },
+      ] as Effects,
+      state(),
+      ["#111111"],
+    )!;
+    expect(measured.list[0]).toMatchObject({ strength: 0, reach: 26 });
+    expect(measured.list[0]!.visible).toBeNull();
+    // Source (−100, −6, 116, 125) padded by 3σ + 2, as `effectBounds` does.
+    expect(measured.paint).toMatchObject({
+      left: -126,
+      top: -32,
+      right: 142,
+      bottom: 151,
+    });
+  });
+
+  it("counts decoration colours as glow sources", () => {
+    const node = {
+      id: "title",
+      color: "#111111",
+      decorations: [{ kind: "highlight", color: "#FFE600" }],
+    } as unknown as Parameters<typeof textColors>[0];
+    const prepared = { scene: { textAnimators: [] } } as unknown as Parameters<
+      typeof textColors
+    >[1];
+    expect(textColors(node, prepared)).toEqual(["#111111", "#FFE600"]);
+    const glow = measureTextEffects(
+      [
+        {
+          id: "g",
+          effect: "light.glow",
+          params: { radius: 8, intensity: 1, threshold: 0.5 },
+        },
+      ] as Effects,
+      state(),
+      textColors(node, prepared),
+    )!.list[0]!;
+    // #FFE600: 0.2126 + 0.7152 × 230/255 ≈ 0.858, so (0.858 − 0.5) / 0.5.
+    expect(glow.strength).toBeCloseTo(
+      (0.2126 + (0.7152 * 230) / 255 - 0.5) / 0.5,
+      6,
+    );
+    expect(glow.visible).not.toBeNull();
   });
 });
