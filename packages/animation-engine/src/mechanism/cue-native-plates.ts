@@ -100,7 +100,7 @@ const renderResult = z
         nativeObservations: closure,
         output: z
           .object({
-            version: z.literal("composition-output-1"),
+            version: z.literal("composition-output-2"),
             format: z.literal("png16"),
             alpha: z.literal(true),
             renderSourceBitDepth: z.literal(8),
@@ -109,7 +109,8 @@ const renderResult = z
             color: z
               .object({
                 primaries: z.literal("bt709"),
-                transfer: z.literal("bt709"),
+                // PNG16 plates hold sRGB samples (composition-output-2).
+                transfer: z.literal("iec61966-2-1"),
                 matrix: z.literal("gbr"),
                 range: z.literal("pc"),
               })

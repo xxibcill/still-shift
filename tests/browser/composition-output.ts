@@ -196,34 +196,33 @@ function verifyPixels(path: string, profile: CompositionOutputProfile) {
         }
       }
   const rgb = native === "rgba" ? bytes : decode(path, profile, "rgba");
-  // Fixed primary-curve values calculated independently at 60 decimal digits.
-  const samples = [
-    [0, 0],
-    [1, 0],
-    [16, 6],
-    [32, 17],
-    [64, 48],
-    [128, 115],
-    [192, 185],
-    [254, 254],
-    [255, 255],
-  ];
-  if (!profile.alpha)
-    for (const [x, expected] of samples) {
+  // composition-output-2 (D-colour, "Match players"): authored sRGB grey
+  // values are written unchanged; output-1 re-encoded them with the BT.709
+  // OETF (16 -> 6, 64 -> 48, 128 -> 115).
+  const samples = [0, 1, 16, 32, 64, 128, 192, 254, 255].map((x) => [x, x]);
+  if (!profile.alpha) {
+    const read = samples.map(([x, expected]) => {
       const offset = (4 * width + x!) * 4;
-      for (let channel = 0; channel < 3; channel++)
+      return [x!, expected!, [0, 1, 2].map((c) => rgb[offset + c]!)] as const;
+    });
+    // 8-bit H.264 at CRF 16 collapses the ramp's first steps near black to
+    // about 5 (authored 0 and 1 read 5); output-1's OETF had squashed 0–16
+    // into 0–6 and hid it. Other profiles stay within 4.
+    const tolerance = profile.format === "h264" ? 5 : 4;
+    for (const [x, expected, values] of read)
+      for (const value of values)
         assert.ok(
-          Math.abs(rgb[offset + channel]! - expected!) <= 4,
-          `${profile.format} BT.709 gray ${x}: ${rgb[offset + channel]}/${expected}`,
+          Math.abs(value - expected) <= tolerance,
+          `${profile.format} sRGB gray ${x}: ${value}/${expected}; all ${JSON.stringify(read)}`,
         );
-    }
+  }
   return {
     frames,
     nativePixelFormat: native,
     alphaSamples: width * height * frames,
     alpha: "exact at authored 8-bit values",
     pngRgb: profile.container === "image2" ? "native-depth exact" : undefined,
-    bt709GraySamples: !profile.alpha ? samples.length : 0,
+    srgbGraySamples: !profile.alpha ? samples.length : 0,
   };
 }
 
@@ -360,9 +359,10 @@ for (const backend of ["canvas2d", "webgl2"] as const)
                 height,
                 frameCount: frames,
                 frameRate: { numerator: fps, denominator: 1 },
+                // PNG delivery frames are sRGB-tagged (composition-output-2).
                 color: {
                   primaries: "bt709",
-                  transfer: "bt709",
+                  transfer: "iec61966-2-1",
                   matrix: "gbr",
                   range: "pc",
                 },

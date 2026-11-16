@@ -257,7 +257,7 @@ export type ExportMetrics = {
     decodedChecksum?: string;
   };
   output?: {
-    version: "composition-output-1";
+    version: "composition-output-2";
     format: CompositionOutputFormat;
     alpha: boolean;
     renderSourceBitDepth: 8;
@@ -265,7 +265,7 @@ export type ExportMetrics = {
     encodedBitDepth: 8 | 10 | 12 | 16;
     color: {
       primaries: "bt709";
-      transfer: "bt709";
+      transfer: "bt709" | "iec61966-2-1";
       matrix: "bt709" | "gbr";
       range: "pc" | "tv";
     };
@@ -1805,7 +1805,7 @@ export const exportScene = async (
               encodedBitDepth: profile.encodedBitDepth,
               color: {
                 primaries: "bt709" as const,
-                transfer: "bt709" as const,
+                transfer: profile.transfer,
                 matrix:
                   profile.matrix === "rgb"
                     ? ("gbr" as const)

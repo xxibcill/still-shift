@@ -184,19 +184,12 @@ function independentSrgbOver(source: Uint8Array) {
   return output;
 }
 
-/** Independent delivery oracle: PNG8 declares BT.709 RGB transfer rather than sRGB. */
-function independentBt709Transfer(source: Uint8Array) {
-  return Buffer.from(
-    source.map((byte, index) => {
-      if (index % 4 === 3) return byte;
-      const srgb = byte / 255;
-      const linear =
-        srgb <= 0.04045 ? srgb / 12.92 : ((srgb + 0.055) / 1.055) ** 2.4;
-      const encoded =
-        linear < 0.018 ? 4.5 * linear : 1.099 * linear ** 0.45 - 0.099;
-      return Math.round(encoded * 255);
-    }),
-  );
+/**
+ * Independent delivery oracle: PNG8 carries the renderer's sRGB bytes
+ * unchanged and tags them sRGB (composition-output-2, D-colour "Match players").
+ */
+function independentSrgbDelivery(source: Uint8Array) {
+  return Buffer.from(source);
 }
 
 beforeAll(async () => {
@@ -507,7 +500,7 @@ describe("actual Three plate bridge", () => {
           const original = preview.frames.find((row) => row.frame === frame)!;
           const error = difference(
             pixels,
-            independentBt709Transfer(
+            independentSrgbDelivery(
               Buffer.from(original.pixelsBase64, "base64"),
             ),
           );
@@ -522,7 +515,7 @@ describe("actual Three plate bridge", () => {
           expect(
             difference(
               pixels,
-              independentBt709Transfer(
+              independentSrgbDelivery(
                 independentSrgbOver(sourcePixels[frame]!),
               ),
             ),
