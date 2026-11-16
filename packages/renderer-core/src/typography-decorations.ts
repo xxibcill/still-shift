@@ -7,6 +7,14 @@ import { brushStroke } from "./brush-path.ts";
 import { inkStrokeOutline } from "./ink-path.ts";
 import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
 
+/**
+ * A decoration as drawn: the prepared shape plus the composition-only
+ * `fadeWithText` opt-in (ET5a), which `textNode` carries through.
+ */
+export type DrawnTextDecoration = NonNullable<
+  TextNode["decorations"]
+>[number] & { fadeWithText?: boolean };
+
 export function decorationSegments(
   node: TextNode,
   layout: ShapedLayout,
@@ -30,9 +38,31 @@ export function decorationSegments(
       ),
     );
     const baseline = line.baseline + (poses?.[indices[0]!]?.y ?? 0);
-    return [{ x: left, width: right - left, baseline }];
+    // Highest animator opacity of the decorated glyphs on this line (ET5a).
+    const opacity = poses
+      ? Math.max(
+          0,
+          ...indices
+            .filter((i) => /\S/u.test(layout.clusters[i]!.text))
+            .map((i) => poses[i]?.opacity ?? 1),
+        )
+      : 1;
+    return [{ x: left, width: right - left, baseline, opacity }];
   });
 }
+/** Revealed share of a decoration at `frame`, 0–1. */
+export function decorationReveal(
+  mark: NonNullable<TextNode["decorations"]>[number],
+  frame: number,
+  fps: number,
+) {
+  return mark.reveal
+    ? Math.max(0, Math.min(1, sampleCurve(scalarKeys(mark.reveal), frame, fps)))
+    : 1;
+}
+/** ET5a: the mark follows its text's animator opacity (composition opt-in). */
+export const decorationFadesWithText = (mark: DrawnTextDecoration) =>
+  mark.fadeWithText === true;
 export function drawTextDecorations(
   ctx: CanvasRenderingContext2D,
   node: TextNode,
@@ -45,18 +75,16 @@ export function drawTextDecorations(
   for (const [index, mark] of (node.decorations ?? []).entries()) {
     if ((mark.kind === "highlight") !== behind) continue;
     const segments = decorationSegments(node, layout, mark.span, poses);
-    const reveal = mark.reveal
-      ? Math.max(
-          0,
-          Math.min(1, sampleCurve(scalarKeys(mark.reveal), frame, fps)),
-        )
-      : 1;
+    const reveal = decorationReveal(mark, frame, fps);
+    const fades = decorationFadesWithText(mark);
     let remaining =
       segments.reduce((sum, segment) => sum + segment.width, 0) * reveal;
     for (const [line, segment] of segments.entries()) {
       const width = Math.min(segment.width, Math.max(0, remaining));
       remaining -= segment.width;
       if (!width) continue;
+      const alpha = fades ? Math.min(1, segment.opacity) : 1;
+      if (alpha <= 0) continue;
       const thickness =
         mark.thickness ??
         (mark.kind === "highlight"
@@ -71,6 +99,7 @@ export function drawTextDecorations(
             ? -layout.xHeight * 0.5
             : -layout.capHeight);
       ctx.save();
+      if (alpha < 1) ctx.globalAlpha *= alpha;
       ctx.fillStyle = mark.color;
       ctx.strokeStyle = mark.color;
       ctx.lineWidth = thickness;

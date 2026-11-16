@@ -1794,7 +1794,8 @@
                       "type": "string",
                       "enum": ["uniform", "ink", "brush"]
                     },
-                    "reveal": { "$ref": "#/$defs/__schema98" }
+                    "reveal": { "$ref": "#/$defs/__schema98" },
+                    "fadeWithText": { "type": "boolean" }
                   },
                   "required": ["kind", "color"],
                   "additionalProperties": false

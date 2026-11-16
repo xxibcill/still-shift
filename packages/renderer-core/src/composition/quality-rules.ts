@@ -1,10 +1,13 @@
 import type { Composition } from "@still-shift/scene-contract";
 import {
+  homographicBounds,
   homographicPoint,
   affineViewportCovered,
   normalizedHomography,
 } from "./projective-quality.ts";
 import { boundaryVelocityJump } from "../camera-sampling.ts";
+import { projectBounds } from "./evaluate/geometry.ts";
+import type { Bounds } from "./evaluate/types.ts";
 import {
   lintSeverity,
   type MotionLintCode,
@@ -155,6 +158,158 @@ function coverageLayerReference(comp: Composition, id: string) {
   }
   return undefined;
 }
+const TEXT_OFF_CANVAS_FRACTION = 0.05;
+const textOffCanvasLimit = (policy: ResolvedCompositionQualityPolicy) =>
+  policy.textOffCanvasFraction ?? TEXT_OFF_CANVAS_FRACTION;
+/** Message for a merged run, from its peak hidden share. */
+function textOffCanvasMessage(peak: number, varies: boolean, align: string) {
+  return (
+    `${varies ? "Up to " : ""}${(peak * 100).toFixed(1)}% of the text's settled glyph ink lies outside the frame.` +
+    (align === "left"
+      ? ""
+      : ` \`align: "${align}"\` places each line relative to the layer origin, not within \`textLayout.width\`; move the origin or use \`align: "left"\`.`)
+  );
+}
+/**
+ * Hidden-share change per second above which a text layer counts as moving
+ * across the frame edge (a push-on or push-off by its own transform) rather
+ * than cut off at rest. A slow drift across the edge stays well below it.
+ */
+const TEXT_OFF_CANVAS_TRANSIT_RATE = 0.5;
+/** Seconds around such a change that count as the same entrance or exit. */
+const TEXT_OFF_CANVAS_TRANSIT_WINDOW = 0.5;
+/**
+ * Frames on which a text layer is in transit: within the transit window of a
+ * pair of adjacent visible frames, in the same shot, whose hidden share
+ * differs by more than the transit rate. The window keeps the slow eased
+ * start and end of an entrance or exit with its fast middle.
+ */
+function textOffCanvasTransit(
+  comp: Composition,
+  shares: readonly (number | undefined)[],
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  const limit = TEXT_OFF_CANVAS_TRANSIT_RATE / comp.fps;
+  const reach = Math.round(TEXT_OFF_CANVAS_TRANSIT_WINDOW * comp.fps);
+  const transit = new Set<number>();
+  for (let at = 1; at < shares.length; at++) {
+    const before = shares[at - 1],
+      after = shares[at];
+    if (before === undefined || after === undefined || policy.cuts.has(at))
+      continue;
+    if (Math.abs(after - before) <= limit) continue;
+    const shot = policy.shots.find((s) => at >= s.start && at < s.end);
+    const first = Math.max(at - 1 - reach, shot?.start ?? 0);
+    const last = Math.min(at + reach, (shot?.end ?? shares.length) - 1);
+    for (let frame = first; frame <= last; frame++) transit.add(frame);
+  }
+  return transit;
+}
+/** Evidence key of a text sample: root id or `precomp-id/layer-id`. */
+export function textEvidenceKey(
+  frame: CompositionQualityFrame,
+  sample: CompositionQualitySample,
+) {
+  const slash = sample.id.lastIndexOf("/");
+  if (slash < 0) return sample.id;
+  const host = frame.layers.get(sample.id.slice(0, slash))?.state.layer;
+  return host?.type === "precomp"
+    ? `${host.comp}/${sample.state.layer.id}`
+    : undefined;
+}
+/**
+ * ET5a (O2): share of a visible text layer's settled glyph-ink area, per
+ * line, outside the canvas on this frame. The ink boxes exclude text-animator
+ * excursions, so a glyph entrance from off-frame does not count; the layer's
+ * own transform at this frame does. Undefined without measured ink.
+ */
+export function textOffCanvasShare(
+  comp: Composition,
+  frame: CompositionQualityFrame,
+  sample: CompositionQualitySample,
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  if (
+    sample.state.layer.type !== "text" ||
+    !sample.visible ||
+    sample.state.layer.coverage === "required"
+  )
+    return undefined;
+  const key = textEvidenceKey(frame, sample);
+  const lines = key
+    ? policy.textFramingEvidence?.ink?.[key]?.[sample.state.state ?? 0]
+    : undefined;
+  if (!lines?.length) return undefined;
+  const viewport = { left: 0, top: 0, right: comp.width, bottom: comp.height };
+  let total = 0,
+    outside = 0;
+  for (const line of lines) {
+    const box: Bounds = sample.homography
+      ? homographicBounds(line, sample.homography, viewport)
+      : projectBounds(line, sample.matrix);
+    const area = (box.right - box.left) * (box.bottom - box.top);
+    if (!(area > 0)) continue;
+    const inside =
+      Math.max(0, Math.min(box.right, comp.width) - Math.max(box.left, 0)) *
+      Math.max(0, Math.min(box.bottom, comp.height) - Math.max(box.top, 0));
+    total += area;
+    outside += area - inside;
+  }
+  return total > 0 ? outside / total : undefined;
+}
+/**
+ * Advice for an orphaned decoration. `fadeWithText` follows only text-animator
+ * opacity, so once it is set the remaining causes need the mark's `reveal`.
+ */
+function orphanedDecorationMessage(
+  mark:
+    | NonNullable<
+        Extract<Composition["layers"][number], { type: "text" }>["decorations"]
+      >[number]
+    | undefined,
+) {
+  const lead = `The ${mark?.kind ?? "text"} decoration stays visible while its text is fully transparent`;
+  return mark?.fadeWithText
+    ? `${lead}. \`fadeWithText\` follows only text-animator opacity, not the layer's \`reveal\`, a word reveal under a highlight or the text colour's alpha; key the decoration's \`reveal\` to match.`
+    : `${lead}; key its \`reveal\` or set \`fadeWithText: true\`.`;
+}
+/**
+ * ET5a (O3): a highlight, underline, strike or box that paints while every
+ * glyph it decorates is transparent, from the renderer's own draw plan.
+ */
+export function compositionDecorationFindings(
+  frames: readonly CompositionQualityFrame[],
+  policy: ResolvedCompositionQualityPolicy,
+) {
+  const { diagnostics, add } = findingsCollector(policy);
+  const probe = policy.textFramingEvidence?.orphanedDecorations;
+  if (!probe) return diagnostics;
+  frames.forEach((frame, at) => {
+    for (const sample of frame.layers.values()) {
+      const layer = sample.state.layer;
+      if (layer.type !== "text" || !layer.decorations?.length) continue;
+      if (!sample.visible) continue;
+      const key = textEvidenceKey(frame, sample);
+      if (!key) continue;
+      const orphaned = probe({
+        key,
+        state: sample.state.state ?? 0,
+        reveal: sample.state.reveal ?? 1,
+        time: sample.state.time,
+      });
+      for (const index of orphaned)
+        add(
+          "orphaned-decoration",
+          sample,
+          [at, at],
+          1,
+          orphanedDecorationMessage(layer.decorations[index]),
+          `${sample.path}.decorations.${index}`,
+        );
+    }
+  });
+  return diagnostics;
+}
 export function compositionFramingFindings(
   comp: Composition,
   frames: readonly CompositionQualityFrame[],
@@ -171,6 +326,27 @@ export function compositionFramingFindings(
     [...coverage].map((id) => [id, coverageLayerReference(comp, id)]),
   );
   const inset = policy.safeAreaFraction;
+  const textShares = new Map<string, (number | undefined)[]>();
+  frames.forEach((frame, at) => {
+    for (const sample of frame.layers.values()) {
+      const share = textOffCanvasShare(comp, frame, sample, policy);
+      if (share === undefined) continue;
+      let shares = textShares.get(sample.id);
+      if (!shares)
+        textShares.set(
+          sample.id,
+          (shares = Array(frames.length).fill(undefined)),
+        );
+      shares[at] = share;
+    }
+  });
+  const textAlign = new Map<string, string>();
+  const textTransit = new Map(
+    [...textShares].map(([id, shares]) => [
+      id,
+      textOffCanvasTransit(comp, shares, policy),
+    ]),
+  );
   frames.forEach((frame, at) => {
     for (const sample of frame.layers.values()) {
       // Framing measures the painted region after group and precomp clipping.
@@ -269,6 +445,28 @@ export function compositionFramingFindings(
           );
       }
     }
+    for (const sample of frame.layers.values()) {
+      const hidden = textShares.get(sample.id)?.[at];
+      if (
+        hidden === undefined ||
+        hidden < textOffCanvasLimit(policy) ||
+        textTransit.get(sample.id)?.has(at)
+      )
+        continue;
+      const layer = sample.state.layer as Extract<
+        Composition["layers"][number],
+        { type: "text" }
+      >;
+      textAlign.set(sample.id, layer.align ?? "left");
+      // The message is written from the run's peak share once frames merge.
+      add(
+        "text-off-canvas",
+        sample,
+        [at, at],
+        Math.round(hidden * 1000) / 1000,
+        "",
+      );
+    }
     for (const id of coverage) {
       const sample = frame.layers.get(id);
       if (!sample) {
@@ -332,6 +530,20 @@ export function compositionFramingFindings(
         );
     }
   });
+  for (const diagnostic of diagnostics) {
+    if (diagnostic.code !== "text-off-canvas") continue;
+    const [first, last] = diagnostic.frames;
+    const id = diagnostic.nodes[0]!;
+    const run = textShares
+      .get(id)!
+      .slice(first, last + 1)
+      .map((share) => Math.round(share! * 1000));
+    diagnostic.message = textOffCanvasMessage(
+      diagnostic.measured,
+      Math.min(...run) !== Math.max(...run),
+      textAlign.get(id) ?? "left",
+    );
+  }
   return diagnostics;
 }
 const scaleDelta = (
