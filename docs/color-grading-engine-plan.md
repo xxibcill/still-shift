@@ -355,12 +355,23 @@ next small slice if neutral-but-correct is still too plain.
       has exact Canvas/WebGL parity.
 - [x] The adaptive mode changes the owner's high-key clips' median luma by less
       than a stated limit (limit 0.02; largest 0.0107 on 12 clips with the first
-      defaults, 0.0122 after the visibility retune, measured on the renders).
+      defaults, 0.0122 after the visibility retune; final defaults below).
 - [x] At least five owner-supplied Flow clips: before/after statistics and
       contact sheets recorded (12 clips, local). Owner review is pending and is
       the only visual acceptance.
 - [x] `pnpm check:fast` passes; existing baselines unchanged; CLI README and the
       generated reference updated.
+
+**Owner tuning (2026-11-16).** Three rounds on the owner's 12 clips: the first
+adaptive defaults were invisible ("no different"), the second too heavy and too
+warm, and the look at full strength "too heavy". From a strength ladder the
+owner chose 50–75%; **the look default is 0.6** (`--strength 1` keeps the full
+grade). Final Auto defaults sit halfway between the first two: median/90%
+saturation targets 0.185/0.36 (vibrance ≤ 80, gain ≤ 1.65), S-curve
+0.75 × (0.625 − spread) up to 0.13, 50–90% of the cast removed with a coupled
+magenta tint so cream stays beige. On the renders: median luma −0.012…+0.002,
+5–95% spread −0.001…+0.063, 90% saturation +0.025…+0.131, median saturation
+−0.035…+0.027 (cooling removes beige chroma), clipped ≤ 0.42%.
 
 **Implementation notes.** BT.601 sources decode through `in_color_matrix=bt601`.
 The three effects are integer/table exact on both backends. `comp look fit`
@@ -370,7 +381,7 @@ means; a graded edit tagged BT.709 transfer is compared in code values, because
 converts BT.709 transfer on import (a pre-existing asymmetry, not changed). The
 adaptive solver works in stages (white balance → tone → saturation) on the
 measured frames and re-measures the exact predicted result after each; it
-removes 20–90% of the near-neutral cast depending on how much the near-neutral
+removes 50–90% of the near-neutral cast (with a coupled magenta tint when it is unsure) depending on how much the near-neutral
 pixels agree, never brightens a high-key clip, and keeps a dead band on every
 correction.
 

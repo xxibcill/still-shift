@@ -6,9 +6,9 @@
  *     --output dist/cga-owner [--look <existing look.json>]
  *
  * Writes under --output (git-ignored dist/): the fitted look, renders per clip
- * (look at 50% and 100%, auto with the current defaults; look 25% and 75% for
- * the held-out clip), their reports, BT.601 decode checks, labelled contact
- * sheets (Raw | Look 50% | Look 100% | Auto at 25/50/75% of each clip), a
+ * (look at the default 60% and auto with the current defaults; look 50%, 65%
+ * and 75% for the held-out clip), their reports, BT.601 decode checks,
+ * labelled contact sheets (Raw | Look 60% | Auto at 25/50/75% of each clip), a
  * strength ladder for the held-out clip and summary.json. Existing renders are
  * reused. Software measurements only; not visual acceptance.
  */
@@ -208,14 +208,14 @@ log(`decode check: ${JSON.stringify(decode)}`);
 
 type Mode = { folder: string; lookStrength?: number };
 const modes: Mode[] = [
-  { folder: "look-50", lookStrength: 0.5 },
-  { folder: "look-100", lookStrength: 1 },
+  { folder: "look-60", lookStrength: 0.6 },
   { folder: "auto" },
 ];
-const ladder: Mode[] = [
-  { folder: "look-25", lookStrength: 0.25 },
-  { folder: "look-75", lookStrength: 0.75 },
-];
+const ladderStrengths = [50, 60, 65, 75];
+const ladder: Mode[] = ladderStrengths.map((percent) => ({
+  folder: `look-${percent}`,
+  lookStrength: percent / 100,
+}));
 const render = async (path: string, mode: Mode) => {
   const out = join(output, mode.folder, `${basename(path, extname(path))}.mp4`);
   if (await exists(out)) return out;
@@ -263,14 +263,9 @@ for (const path of clips) {
     [
       { label: "Raw", detail: "the Flow clip as delivered", path },
       {
-        label: "Look 50%",
-        detail: "your grade, half strength (new default)",
-        path: outputs["look-50"]!,
-      },
-      {
-        label: "Look 100%",
-        detail: "your grade, full strength",
-        path: outputs["look-100"]!,
+        label: "Look 60%",
+        detail: "your grade at 60% (new default)",
+        path: outputs["look-60"]!,
       },
       {
         label: "Auto",
@@ -288,8 +283,7 @@ for (const path of clips) {
     clip: basename(path),
     inGradedEdit: look.fit.shots.some((shot) => shot.before === basename(path)),
     raw: summarize(await stats(path, true)),
-    look50: summarize(await stats(outputs["look-50"]!, false)),
-    look100: summarize(await stats(outputs["look-100"]!, false)),
+    look60: summarize(await stats(outputs["look-60"]!, false)),
     auto: {
       ...summarize(await stats(outputs.auto!, false)),
       effects: report.effects.map(
@@ -317,9 +311,9 @@ await sheet(
   `${heldStem}: look strength ladder`,
   [
     { label: "Raw", detail: "as delivered", path: held },
-    ...[25, 50, 75, 100].map((percent) => ({
+    ...ladderStrengths.map((percent) => ({
       label: `Look ${percent}%`,
-      detail: percent === 50 ? "new default" : "your grade",
+      detail: percent === 60 ? "new default" : "your grade",
       path: join(output, `look-${percent}`, `${heldStem}.mp4`),
     })),
     {

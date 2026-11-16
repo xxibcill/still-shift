@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Color grading CGA (2026-11-16):** built on `codex/cga-auto-color` (from `main` a897acb4), PR not opened (owner asks first). Flow clips (BT.601 `smpte170m`) now decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three new exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). All CGA checks met except the owner-look bound: held-out 2.30 RMS per pixel (block means 1.82). After owner feedback the Auto defaults were made visibly stronger and looks default to 50% strength. Pending owner decisions: review the labelled sheets and strength ladder in `dist/cga-owner/sheets` and pick a look strength; whether block-mean RMS is the right look bound; the pre-existing BT.709-transfer import/export asymmetry. CG0–CG15 not started. [CGA results](./color-grading-cga-results.json).
+- **Color grading CGA (2026-11-16):** built on `codex/cga-auto-color` (from `main` a897acb4), PR not opened (owner asks first). Flow clips (BT.601 `smpte170m`) now decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three new exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). All CGA checks met except the owner-look bound: held-out 2.30 RMS per pixel (block means 1.82). After two rounds of owner feedback the look defaults to strength 0.6 (owner's pick) and Auto is moderate and cooler. Pending owner decisions: review the final sheets in `dist/cga-owner/sheets`; whether block-mean RMS is the right look bound; the pre-existing BT.709-transfer import/export asymmetry. CG0–CG15 not started. [CGA results](./color-grading-cga-results.json).
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
@@ -89,6 +89,15 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-16 — Color grading CGA: owner pick, look 0.6, calmer and cooler Auto
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga-auto-color`, relayed owner feedback on the strength ladder: "Auto seem too heavy for me. I think somewhere between 50% and 75% is good".
+- **Done:** look default strength 0.6 (owner's pick from 50–75%; `--strength` overrides). Auto halfway between the first two default sets: saturation targets 0.185/0.36, gain ≤ 1.65, vibrance ≤ 80; S-curve 0.75 × (0.625 − spread) ≤ 0.13; white balance removes 50–90% of the cast (≤ 20–35) plus a magenta tint of 0.4 × cooling × (1 − confidence). Sheets: Raw | Look 60% | Auto per clip; ladder Raw | Look 50% | 60% | 65% | 75% | Auto.
+- **Finding:** temperature alone trades red for blue, so partly cooled cream turned lemon-yellow (bright near-neutral R−B/G−B 10.1/9.8 vs look 60% 14.9/6.5); with the coupled tint 9.1/4.3, beige like the look.
+- **Results (renders, 12 clips):** Auto median luma −0.012…+0.002, spread −0.001…+0.063, 90% saturation +0.025…+0.131, median saturation −0.035…+0.027, clipped ≤ 0.42%; 72/72 frames, audio unchanged. A first check chain on the pre-tint solver was stopped (superseded, not failed); reruns on the final code below.
+- **Open / next:** owner review of the final sheets; PR when asked.
+- **Records:** [CGA results `finalTuning`](./color-grading-cga-results.json).
 
 ### 2026-11-16 — Color grading CGA: visible auto defaults, half-strength looks
 
