@@ -11,7 +11,11 @@ import type {
   Composition,
   CompositionLayer,
 } from "@still-shift/scene-contract";
-import { measuredLayerOrigin } from "../../packages/renderer-core/src/composition/text-measure.ts";
+import {
+  measuredLayerOrigin,
+  measureTextEffects,
+  normalTailInverse,
+} from "../../packages/renderer-core/src/composition/text-measure.ts";
 import type {
   MeasureBox,
   TextStateMeasure,
@@ -234,5 +238,98 @@ describe("saved measurements", () => {
     );
     expect(() => measured(report, "plain")).toThrow(/system font/);
     expect(() => measured(report, "missing")).toThrow(/no text layer/);
+  });
+});
+
+describe("effect extents", () => {
+  it("inverts the normal upper tail", () => {
+    expect(normalTailInverse(0.5)).toBeCloseTo(0, 9);
+    expect(normalTailInverse(0.05)).toBeCloseTo(1.644854, 5);
+    expect(normalTailInverse(0.0625)).toBeCloseTo(1.534121, 5);
+    expect(normalTailInverse(0.001)).toBeCloseTo(3.090232, 5);
+    expect(normalTailInverse(0.99)).toBeCloseTo(-2.326348, 5);
+  });
+
+  const shadow = (params: Record<string, unknown>) => ({
+    id: "s",
+    effect: "light.drop-shadow",
+    params,
+  });
+  type Effects = Parameters<typeof measureTextEffects>[0];
+
+  it("shifts and pads a drop shadow from the outlined ink", () => {
+    const measured = measureTextEffects(
+      [
+        shadow({ offset: [10, 14], blur: 6, opacity: 0.8, color: "#B3261E" }),
+      ] as Effects,
+      state(),
+      ["#111111"],
+    )!;
+    // Source: the outline ink (−96, −6, 116, 106) and the highlight's paint.
+    expect(measured.source).toMatchObject({ left: -100, top: -6, right: 116 });
+    const [effect] = measured.list;
+    expect(effect).toMatchObject({ sigma: 6, reach: 19, strength: 0.8 });
+    // 6 × Q⁻¹(0.05 / 0.8)
+    expect(effect!.visibleReach).toBeCloseTo(6 * 1.534121, 4);
+    expect(effect!.paint).toMatchObject({
+      left: -100 + 10 - 19,
+      top: -6 + 14 - 19,
+    });
+    expect(measured.paint.left).toBe(-109);
+    expect(measured.paint.right).toBe(116 + 10 + 19);
+  });
+
+  it("takes the extremes of keyed parameters and skips faint or disabled effects", () => {
+    const keyed = measureTextEffects(
+      [
+        shadow({
+          offset: {
+            keys: [
+              { frame: 0, value: [-4, 0] },
+              { frame: 10, value: [8, 2] },
+            ],
+          },
+          blur: {
+            keys: [
+              { frame: 0, value: 2 },
+              { frame: 10, value: 5 },
+            ],
+          },
+          opacity: 0.03,
+        }),
+        { id: "off", effect: "light.drop-shadow", enabled: false, params: {} },
+      ] as Effects,
+      state(),
+      ["#111111"],
+    )!;
+    expect(keyed.list).toHaveLength(1);
+    expect(keyed.list[0]).toMatchObject({
+      offset: { min: [-4, 0], max: [8, 2] },
+      sigma: 5,
+      visibleReach: null,
+      visible: null,
+    });
+    expect(measureTextEffects([], state(), [])).toBeUndefined();
+  });
+
+  it("scales glow strength by the brightest source colour", () => {
+    const glow = (colors: string[]) =>
+      measureTextEffects(
+        [
+          {
+            id: "g",
+            effect: "light.glow",
+            params: { radius: 10, intensity: 0.8, threshold: 0 },
+          },
+        ] as Effects,
+        state(),
+        colors,
+      )!.list[0]!;
+    expect(glow(["#FFFFFF"])).toMatchObject({ reach: 32, strength: 0.8 });
+    expect(glow(["#111111"]).strength).toBeCloseTo(0.8 * (17 / 255), 6);
+    // Just over 5%: the 5% contour lies inside the edge (negative reach).
+    expect(glow(["#111111"]).visibleReach).toBeLessThan(0);
+    // Below 5% strength: never visible at that coverage.
+    expect(glow(["#0A0A0A"]).visibleReach).toBeNull();
   });
 });

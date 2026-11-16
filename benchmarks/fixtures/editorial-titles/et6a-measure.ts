@@ -319,3 +319,104 @@ export const scripts = {
     ) as Composition;
   },
 };
+
+/**
+ * Drop shadows and glows. Glyphs are filled in the background colour so the
+ * frame shows only what each effect paints: a soft offset shadow, the
+ * pilot's halo (a zero-offset drop shadow, here around a held outline), a
+ * hard shadow, and `light.glow` on bright text over a dark frame.
+ */
+export const effects = {
+  shadow: "#B3261E",
+  halo: "#2F6F6A",
+  hard: "#4A2716",
+  night: "#101418",
+  glowText: "#FFD54A",
+  params: {
+    shadow: { offset: [10, 14] as [number, number], blur: 6, opacity: 0.8 },
+    halo: { offset: [0, 0] as [number, number], blur: 12, opacity: 0.9 },
+    hard: { offset: [8, 8] as [number, number], blur: 0, opacity: 1 },
+    outline: 12,
+    glow: { radius: 10, intensity: 0.8, threshold: 0 },
+  },
+  shadows() {
+    const p = effects.params;
+    return comp(base("et6a-shadows", [latin.anton, latin.bebas]), (c) => {
+      const shadow = (
+        id: string,
+        color: string,
+        s: { offset: [number, number]; blur: number; opacity: number },
+      ) => ({
+        id,
+        effect: "light.drop-shadow" as const,
+        params: { ...s, color },
+      });
+      c.add(
+        text("IT", {
+          id: "shadow",
+          fontAsset: "anton",
+          fontSize: 200,
+          color: paper,
+        })
+          .at(360, 120)
+          .with({
+            align: "center",
+            anchor: "cap",
+            effects: [shadow("s", effects.shadow, p.shadow)],
+          }),
+      );
+      c.add(
+        text("UP", {
+          id: "halo",
+          fontAsset: "anton",
+          fontSize: 200,
+          color: paper,
+        })
+          .at(360, 520)
+          .with({
+            align: "center",
+            anchor: "cap",
+            effects: [shadow("h", effects.halo, p.halo)],
+          }),
+      );
+      outline(c, "halo", paper, p.outline);
+      c.add(
+        text("BOX", {
+          id: "hard",
+          fontAsset: "bebas",
+          fontSize: 160,
+          color: paper,
+        })
+          .at(360, 920)
+          .with({
+            align: "center",
+            anchor: "cap",
+            effects: [shadow("k", effects.hard, p.hard)],
+          }),
+      );
+    }) as Composition;
+  },
+  glow() {
+    return comp(
+      { ...base("et6a-glow", [latin.anton]), background: effects.night },
+      (c) => {
+        c.add(
+          text("GLOW", {
+            id: "glow",
+            fontAsset: "anton",
+            fontSize: 200,
+            color: effects.glowText,
+          })
+            .at(360, 400)
+            .with({
+              align: "center",
+              anchor: "cap",
+              effects: [
+                { id: "g", effect: "light.glow", params: effects.params.glow },
+              ],
+            }),
+        );
+      },
+    ) as Composition;
+  },
+};

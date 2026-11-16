@@ -56,7 +56,9 @@ import { typographyClock } from "./text-clock.ts";
 import {
   COMPOSITION_TEXT_MEASURE_VERSION,
   measuredLayerOrigin,
+  measureTextEffects,
   measureTextState,
+  textColors,
   type CompositionTextMeasure,
   type TextLayerMeasure,
 } from "../text-measure.ts";
@@ -486,8 +488,8 @@ export function prepareCompositionText(
           return {
             ...common,
             measured: true,
-            states: texts.map((text, state) =>
-              measureTextState(
+            states: texts.map((text, state) => {
+              const measuredState = measureTextState(
                 measureContext,
                 entry.node,
                 entry.prepared,
@@ -495,8 +497,14 @@ export function prepareCompositionText(
                 state,
                 text,
                 bounds[key]![state]!,
-              ),
-            ),
+              );
+              const effects = measureTextEffects(
+                layer.effects,
+                measuredState,
+                textColors(entry.node, entry.prepared),
+              );
+              return effects ? { ...measuredState, effects } : measuredState;
+            }),
           } satisfies TextLayerMeasure;
         }),
       };

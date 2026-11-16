@@ -864,7 +864,7 @@ try {
 
   const measured = await verifyTextMeasure();
   console.log(
-    `ET6a: comp measure fits ${measured.widths.map((w) => `${w.name} at ${w.size} px (${w.margin} px margins; guess ${w.guess} px left ${w.guessMargin})`).join(", ")}; highlight offsets ${JSON.stringify(measured.highlight.offsets)} centre their boxes (guess off by ${Math.round(measured.highlight.guessedError.caps)} px); the stacked lockup renders a ${measured.stacked.gap} px gap (guess ${measured.stacked.guessGap}); ${measured.edges.within1px}/${measured.edges.compared} edges within 1 px, worst ${measured.edges.worst} px; motionBounds equal render textBounds on ${measured.boundsEqual.length} layers (ET0 fixtures and proof T1–T3).`,
+    `ET6a: comp measure fits ${measured.widths.map((w) => `${w.name} at ${w.size} px (${w.margin} px margins; guess ${w.guess} px left ${w.guessMargin})`).join(", ")}; highlight offsets ${JSON.stringify(measured.highlight.offsets)} centre their boxes (guess off by ${Math.round(measured.highlight.guessedError.caps)} px); the stacked lockup renders a ${measured.stacked.gap} px gap (guess ${measured.stacked.guessGap}); ${measured.edges.within1px}/${measured.edges.compared} edges within 1 px, worst ${measured.edges.worst} px; shadow, halo and glow visible edges within ${measured.effects.tolerance} px at 5% (worst ${measured.effects.worst.toFixed(2)}); motionBounds equal render textBounds on ${measured.boundsEqual.length} layers (ET0 fixtures and proof T1–T3).`,
   );
 
   const cliPixels = await lintCompositionFile(

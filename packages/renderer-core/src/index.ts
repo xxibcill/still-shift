@@ -159,7 +159,9 @@ export {
 export { measureCompositionText } from "./composition/measure-text.ts";
 export {
   COMPOSITION_TEXT_MEASURE_VERSION,
+  TEXT_EFFECT_VISIBLE_COVERAGE,
   type CompositionTextMeasure,
+  type TextEffectMeasure,
   type MeasureBox,
   type TextDecorationMeasure,
   type TextFontMetrics,

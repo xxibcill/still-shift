@@ -24,7 +24,12 @@ export type Edge =
   /** Glyph ink plus a text animator outline (ink when there is none). */
   | "outline"
   /** First line's cap line to last line's baseline, ink width. */
-  | "cap";
+  | "cap"
+  /**
+   * Everything the layer visibly paints: ink, outline, decorations and drop
+   * shadows or glows to 5% coverage (`effects.visible`; outline when none).
+   */
+  | "visible";
 
 /** A saved `comp measure` report beside a program, or undefined before the first run. */
 export function readMeasure(url: URL): Measure | undefined {
@@ -74,6 +79,8 @@ export function edgeBox(state: TextStateMeasure, edge: Edge): MeasureBox {
   if (!ink) throw new Error(`measure: "${state.text}" has no ink`);
   if (edge === "ink") return ink;
   if (edge === "outline") return state.outline?.ink ?? ink;
+  if (edge === "visible")
+    return state.effects?.visible ?? state.outline?.ink ?? ink;
   const top = state.lines[0]!.capTop,
     bottom = state.lines.at(-1)!.baseline;
   return { ...ink, top, bottom, height: bottom - top };

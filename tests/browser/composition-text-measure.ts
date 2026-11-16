@@ -5,21 +5,25 @@
 // (benchmarks/fixtures/editorial-titles/et6a-measure.ts), built once as the
 // pilot placed it without measurement and once placed from `comp measure`
 // with research/editorial-titles-et7a/layout.ts, with no hand-tuned numbers.
-// Both are rendered to PNG; the guesses miss their targets in pixels, the
-// measured placements hit them, and every measured box checked agrees with
-// the rendered pixels within ±1 px (TOLERANCE). Also: measure bounds equal
+// Both are rendered and read straight from the renderer canvas (before any
+// export encoding; tests/helpers/renderer-frame.ts); the guesses miss their
+// targets in pixels, the measured placements hit them, and every measured box
+// checked agrees with the rendered pixels within TOLERANCE. Also: measure bounds equal
 // render-time textBounds on the ET0 fixtures, measuring renders no frames,
 // and a cancelled `comp measure` leaves no temporary files.
 import assert from "node:assert/strict";
-import { execFile, spawn } from "node:child_process";
+import { spawn } from "node:child_process";
 import { mkdtemp, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { constants, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { setTimeout as delay } from "node:timers/promises";
 import { fileURLToPath, pathToFileURL } from "node:url";
-import { promisify } from "node:util";
 import type { Composition } from "@still-shift/scene-contract";
-import type { MeasureBox, TextStateMeasure } from "@still-shift/renderer-core";
+import {
+  TEXT_EFFECT_VISIBLE_COVERAGE,
+  type MeasureBox,
+  type TextStateMeasure,
+} from "@still-shift/renderer-core";
 import {
   lintCompositionFile,
   measureCompositionFile,
@@ -30,6 +34,7 @@ import { runCli } from "../../tools/still-shift-cli/src/cli.ts";
 import { thai as thaiFonts } from "../../research/editorial-titles-et7a/fonts.ts";
 import {
   boxes,
+  effects,
   frame,
   leather,
   lockup,
@@ -53,8 +58,8 @@ import {
   PASS1_TREATMENTS,
   writeFootageFreePass1,
 } from "../helpers/editorial-proof-pass1.ts";
+import { rendererFrame } from "../helpers/renderer-frame.ts";
 
-const run = promisify(execFile);
 const root = resolve(import.meta.dirname, "../..");
 /**
  * Measured box edges agree with rendered pixel edges within this many pixels.
@@ -95,67 +100,27 @@ async function measure(composition: Composition) {
 async function render(composition: Composition) {
   const input = join(directory, `${composition.id}-${count++}.json`);
   await writeFile(input, JSON.stringify(composition));
-  const output = join(directory, `${composition.id}-${count}-%06d.png`);
-  let stderr = "";
-  const code = await runCli(
-    [
-      "comp",
-      "render",
-      "--input",
-      input,
-      "--output",
-      output,
-      "--format",
-      "png8",
-    ],
-    { stdout: () => {}, stderr: (text) => (stderr += text) },
-  );
-  assert.equal(code, 0, `render ${composition.id}: ${stderr}`);
+  const { width, height, rgb } = await rendererFrame(input);
+  assert.deepEqual([width, height], [frame.width, frame.height]);
   timings.renders++;
-  const { stdout } = await run(
-    "ffmpeg",
-    [
-      "-v",
-      "error",
-      "-i",
-      output.replace("%06d", "000000"),
-      "-f",
-      "rawvideo",
-      "-pix_fmt",
-      "rgb24",
-      "-",
-    ],
-    { encoding: "buffer", maxBuffer: 64 * 1024 * 1024 },
-  );
-  assert.equal(stdout.length, frame.width * frame.height * 3);
-  return stdout;
+  return rgb;
 }
 
 /**
- * The colour the frame shows for an authored colour: the most frequent pixel
- * value within 90 levels (summed) of it. Rendered PNG colours differ from
- * authored hex values by a few levels (the export's colour conversion), so
- * classification uses the rendered values.
+ * The colour the canvas shows for an authored colour. The canvas holds the
+ * authored sRGB bytes exactly; this asserts it, so a colour change would fail
+ * here instead of silently moving edges.
  */
 function rendered(pixels: Buffer, color: string): Rgb {
   const target = rgb(color);
-  const counts = new Map<number, number>();
-  for (let i = 0; i < pixels.length; i += 3) {
+  for (let i = 0; i < pixels.length; i += 3)
     if (
-      Math.abs(pixels[i]! - target[0]) +
-        Math.abs(pixels[i + 1]! - target[1]) +
-        Math.abs(pixels[i + 2]! - target[2]) >
-      90
+      pixels[i] === target[0] &&
+      pixels[i + 1] === target[1] &&
+      pixels[i + 2] === target[2]
     )
-      continue;
-    const key = (pixels[i]! << 16) | (pixels[i + 1]! << 8) | pixels[i + 2]!;
-    counts.set(key, (counts.get(key) ?? 0) + 1);
-  }
-  let best = -1,
-    most = 0;
-  for (const [key, n] of counts) if (n > most) [best, most] = [key, n];
-  assert.ok(best >= 0, `no pixels near ${color}`);
-  return [best >> 16, (best >> 8) & 255, best & 255];
+      return target;
+  assert.fail(`${color} is not drawn exactly anywhere in the frame`);
 }
 
 /**
@@ -671,6 +636,118 @@ async function verifyHundredVariants() {
   return { layers: 100, ms: Math.round(ms) };
 }
 
+/** Effect edges agree with rendered pixels within this many pixels at the stated coverage. */
+export const EFFECT_TOLERANCE = 2;
+
+/**
+ * Drop shadows (soft, the pilot's zero-offset halo around an outline, hard)
+ * and `light.glow`. Glyphs are filled in the background colour, so every
+ * changed pixel is the effect's. Two checks per effect: no changed pixel lies
+ * outside its conservative `paint` box (the renderer's own bound), and the
+ * pixels at TEXT_EFFECT_VISIBLE_COVERAGE or more along the background→effect
+ * colour line span its `visible` box within EFFECT_TOLERANCE.
+ */
+async function verifyEffects() {
+  const results: Record<string, unknown> = {};
+  let worst = 0;
+  for (const [composition, background] of [
+    [effects.shadows(), paper],
+    [effects.glow(), effects.night],
+  ] as const) {
+    const path = join(directory, `${composition.id}.json`);
+    await writeFile(path, JSON.stringify(composition));
+    const report = await measureCompositionFile(path);
+    const { width, height, rgb } = await rendererFrame(path);
+    const bg = rgb_(background);
+    for (const layer of report.layers) {
+      assert.ok(layer.measured, layer.key);
+      const state = layer.states[0]!;
+      const measuredEffects = state.effects!;
+      assert.ok(measuredEffects, `${layer.key}: effects measured`);
+      assert.deepEqual(measuredEffects.unmeasured, []);
+      assert.equal(measuredEffects.coverage, TEXT_EFFECT_VISIBLE_COVERAGE);
+      const [effect] = measuredEffects.list;
+      assert.ok(effect && measuredEffects.list.length === 1);
+      const origin = { x: layer.origin![0], y: layer.origin![1] };
+      const paint = placed(effect.paint, origin);
+      const color = rgb_(
+        layer.layer === "glow"
+          ? effects.glowText
+          : effects[layer.layer as "shadow" | "halo" | "hard"],
+      );
+      const region = near(paint, 30);
+      const d = color.map((c, k) => c - bg[k]!);
+      const dd = d.reduce((sum, v) => sum + v * v, 0);
+      let changed: PixelBox | null = null,
+        shown: PixelBox | null = null;
+      const grow = (b: PixelBox | null, x: number, y: number) =>
+        b
+          ? {
+              left: Math.min(b.left, x),
+              top: Math.min(b.top, y),
+              right: Math.max(b.right, x + 1),
+              bottom: Math.max(b.bottom, y + 1),
+            }
+          : { left: x, top: y, right: x + 1, bottom: y + 1 };
+      for (let y = region.top; y < Math.min(height, region.bottom); y++)
+        for (let x = region.left; x < Math.min(width, region.right); x++) {
+          const i = (y * width + x) * 3;
+          const v = [
+            rgb[i]! - bg[0]!,
+            rgb[i + 1]! - bg[1]!,
+            rgb[i + 2]! - bg[2]!,
+          ];
+          if (v.every((c) => c === 0)) continue;
+          changed = grow(changed, x, y);
+          const a = v.reduce((sum, c, k) => sum + c * d[k]!, 0) / dd;
+          if (a >= TEXT_EFFECT_VISIBLE_COVERAGE) shown = grow(shown, x, y);
+        }
+      assert.ok(changed && shown, `${layer.key}: effect pixels`);
+      // Conservative: nothing painted outside the reported paint box.
+      for (const side of ["left", "top"] as const)
+        assert.ok(
+          changed[side] >= Math.floor(paint[side]),
+          `${layer.key} paint ${side}`,
+        );
+      for (const side of ["right", "bottom"] as const)
+        assert.ok(
+          changed[side] <= Math.ceil(paint[side]),
+          `${layer.key} paint ${side}`,
+        );
+      const visible = placed(effect.visible!, origin);
+      for (const side of ["left", "top", "right", "bottom"] as const) {
+        const error = Math.abs(shown[side] - visible[side]);
+        worst = Math.max(worst, error);
+        assert.ok(
+          error <= EFFECT_TOLERANCE,
+          `${layer.key} visible ${side}: measured ${visible[side].toFixed(2)}, rendered ${shown[side]}`,
+        );
+      }
+      results[layer.key] = {
+        effect: effect.effect,
+        sigma: effect.sigma,
+        strength: Math.round(effect.strength * 1000) / 1000,
+        reach: effect.reach,
+        visibleReach:
+          effect.visibleReach === null
+            ? null
+            : Math.round(effect.visibleReach * 100) / 100,
+      };
+      if (layer.layer === "halo") {
+        // The halo grows from the outline, not the bare ink.
+        assert.deepEqual(measuredEffects.source, state.outline!.ink);
+        assert.deepEqual(effect.offset, { min: [0, 0], max: [0, 0] });
+      }
+      if (layer.layer === "shadow")
+        assert.deepEqual(effect.offset, { min: [10, 14], max: [10, 14] });
+      if (layer.layer === "hard") assert.equal(effect.visibleReach, 0);
+    }
+  }
+  return { layers: results, worst, tolerance: EFFECT_TOLERANCE };
+}
+const rgb_ = (hex: string) =>
+  [1, 3, 5].map((i) => parseInt(hex.slice(i, i + 2), 16));
+
 /** Plan check: SIGINT during the browser phase leaves no temporary files. */
 async function verifyCancellation() {
   const temporary = await mkdtemp(join(tmpdir(), "et6a-measure-signal-"));
@@ -807,6 +884,7 @@ export async function verifyTextMeasure() {
     const highlight = await verifyBoxes();
     const stacked = await verifyLockup();
     const scriptsResult = await verifyScripts();
+    const effectResult = await verifyEffects();
     const bounds = await verifyRenderBounds();
     const hundred = await verifyHundredVariants();
     const cancellation = await verifyCancellation();
@@ -816,6 +894,7 @@ export async function verifyTextMeasure() {
       highlight,
       stacked,
       scripts: scriptsResult,
+      effects: effectResult,
       boundsEqual: bounds,
       hundred,
       cancellation,

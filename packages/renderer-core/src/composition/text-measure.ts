@@ -146,6 +146,45 @@ export type TextOutlineMeasure = {
   lines: { line: number; ink: MeasureBox | null }[];
 };
 
+/**
+ * Coverage (alpha) at which `visible` boxes of soft effects are measured. A
+ * Gaussian tail has no hard edge; this is where it fades below about 13/255.
+ */
+export const TEXT_EFFECT_VISIBLE_COVERAGE = 0.05;
+
+/**
+ * How a `light.drop-shadow` or `light.glow` on the layer extends what it
+ * paints. Effects apply to everything the layer draws (ink, outline and
+ * decorations), so both boxes grow from `source`. Values are in layer pixels,
+ * which are the effect's pixels when the layer is not scaled (see `origin`).
+ */
+export type TextEffectMeasure = {
+  index: number;
+  id: string;
+  effect: "light.drop-shadow" | "light.glow";
+  /** Drop shadow: offset as drawn (1/16 px grid); the extremes when keyed. */
+  offset?: { min: [number, number]; max: [number, number] };
+  /** Gaussian standard deviation: drop-shadow `blur`, glow `radius`. */
+  sigma: number;
+  /** Peak strength: shadow opacity × colour alpha, or glow intensity × the brightest source colour's thresholded luminance. */
+  strength: number;
+  /**
+   * The renderer's own bound for the effect (kernel radius ⌈3σ⌉ + 1 for a
+   * shadow, 3σ + 2 for glow): no effect pixel lies outside `paint`.
+   */
+  reach: number;
+  paint: MeasureBox;
+  /**
+   * Distance outside a long straight edge of `source` (shifted by the offset)
+   * at which the effect falls to TEXT_EFFECT_VISIBLE_COVERAGE: σ·Q⁻¹(c / strength).
+   * Negative when it reaches that coverage only inside the edge (strength
+   * below twice the coverage); null when it never does. Thin strokes and
+   * corners carry less mass, so their visible edge lies inside this.
+   */
+  visibleReach: number | null;
+  visible: MeasureBox | null;
+};
+
 export type TextStateMeasure = {
   state: number;
   text: string;
@@ -166,6 +205,19 @@ export type TextStateMeasure = {
   words: TextWordMeasure[];
   decorations: TextDecorationMeasure[];
   outline?: TextOutlineMeasure;
+  /**
+   * Drop shadows and glows on the layer, in stack order. `source` is what
+   * they grow from: ink, outline and decorations at full reveal; `paint` and
+   * `visible` are the layer's whole painted box including them.
+   */
+  effects?: {
+    coverage: typeof TEXT_EFFECT_VISIBLE_COVERAGE;
+    source: MeasureBox;
+    list: TextEffectMeasure[];
+    paint: MeasureBox;
+    visible: MeasureBox;
+    unmeasured: { id: string; effect: string; reason: string }[];
+  };
 };
 
 export type TextLayerMeasure = {
@@ -529,6 +581,232 @@ export function measureTextState(
         }
       : {}),
   };
+}
+
+/** Upper-tail inverse of the standard normal: z with 1 − Φ(z) = p (0 < p < 1). */
+export function normalTailInverse(p: number): number {
+  // Acklam's rational approximation of Φ⁻¹(1 − p), |error| < 1.2e-9.
+  const a = [
+    -3.969683028665376e1, 2.209460984245205e2, -2.759285104469687e2,
+    1.38357751867269e2, -3.066479806614716e1, 2.506628277459239,
+  ];
+  const b = [
+    -5.447609879822406e1, 1.615858368580409e2, -1.556989798598866e2,
+    6.680131188771972e1, -1.328068155288572e1,
+  ];
+  const c = [
+    -7.784894002430293e-3, -3.223964580411365e-1, -2.400758277161838,
+    -2.549732539343734, 4.374664141464968, 2.938163982698783,
+  ];
+  const d = [
+    7.784695709041462e-3, 3.224671290700398e-1, 2.445134137142996,
+    3.754408661907416,
+  ];
+  const q = 1 - p;
+  const tail = (r: number) =>
+    (((((c[0]! * r + c[1]!) * r + c[2]!) * r + c[3]!) * r + c[4]!) * r +
+      c[5]!) /
+    ((((d[0]! * r + d[1]!) * r + d[2]!) * r + d[3]!) * r + 1);
+  if (q < 0.02425) return tail(Math.sqrt(-2 * Math.log(q)));
+  if (q > 1 - 0.02425) return -tail(Math.sqrt(-2 * Math.log(1 - q)));
+  const r = q - 0.5,
+    t = r * r;
+  return (
+    ((((((a[0]! * t + a[1]!) * t + a[2]!) * t + a[3]!) * t + a[4]!) * t +
+      a[5]!) *
+      r) /
+    (((((b[0]! * t + b[1]!) * t + b[2]!) * t + b[3]!) * t + b[4]!) * t + 1)
+  );
+}
+
+type EffectInstance = NonNullable<CompositionLayer["effects"]>[number];
+/** Static value, or every keyed value; undefined for anything else. */
+function keyedValues<T>(value: unknown, fallback: T): T[] | undefined {
+  if (value === undefined) return [fallback];
+  if (
+    value &&
+    typeof value === "object" &&
+    "keys" in value &&
+    Array.isArray((value as { keys: unknown[] }).keys)
+  )
+    return (value as { keys: { value: T }[] }).keys.map((key) => key.value);
+  if (
+    typeof value === "number" ||
+    Array.isArray(value) ||
+    typeof value === "string"
+  )
+    return [value as T];
+  return undefined;
+}
+const luminance = (hex: string) => {
+  const [r, g, b, a] = [1, 3, 5, 7].map((at) =>
+    at === 7 && hex.length === 7
+      ? 1
+      : parseInt(hex.slice(at, at + 2), 16) / 255,
+  ) as [number, number, number, number];
+  return { value: 0.2126 * r + 0.7152 * g + 0.0722 * b, alpha: a };
+};
+
+/**
+ * Measure the layer's drop shadows and glows from `source` (ink, outline and
+ * decorations), with the kernels and bounds rules the renderer uses
+ * (shadow-effects.ts, pixel-effects.ts glow, evaluate/effects.ts bounds).
+ */
+export function measureTextEffects(
+  effects: readonly EffectInstance[] | undefined,
+  state: TextStateMeasure,
+  colors: string[],
+): TextStateMeasure["effects"] | undefined {
+  const own = (effects ?? []).filter(
+    (effect) =>
+      effect.enabled !== false &&
+      (effect.effect === "light.drop-shadow" || effect.effect === "light.glow"),
+  );
+  if (!own.length) return undefined;
+  const sourceBox = unionBounds([
+    ...(state.outline?.ink
+      ? [state.outline.ink]
+      : state.ink
+        ? [state.ink]
+        : []),
+    ...state.decorations.flatMap((d) => (d.paint ? [d.paint] : [])),
+  ]);
+  if (!sourceBox) return undefined;
+  let paint: Bounds = sourceBox,
+    visible: Bounds = sourceBox;
+  const list: TextEffectMeasure[] = [];
+  const unmeasured: { id: string; effect: string; reason: string }[] = [];
+  const brightest = Math.max(0, ...colors.map((c) => luminance(c).value));
+  for (const [index, effect] of (effects ?? []).entries()) {
+    if (!own.includes(effect)) continue;
+    const params = (effect.params ?? {}) as Record<string, unknown>;
+    if (effect.effect === "light.drop-shadow") {
+      const offsets = keyedValues<number[]>(params.offset, [6, 6]);
+      const blurs = keyedValues<number>(params.blur, 8);
+      const opacities = keyedValues<number>(params.opacity, 1);
+      const colours = keyedValues<string>(params.color, "#000000");
+      if (!offsets || !blurs || !opacities || !colours) {
+        unmeasured.push({
+          id: effect.id,
+          effect: effect.effect,
+          reason: "parameters are neither static nor keyed values",
+        });
+        continue;
+      }
+      const grid = (v: number) => Math.round(v * 16) / 16;
+      const xs = offsets.map((o) => grid(o[0]!)),
+        ys = offsets.map((o) => grid(o[1]!));
+      const sigma = Math.max(...blurs);
+      const strength =
+        Math.max(...opacities) *
+        Math.max(...colours.map((c) => luminance(c).alpha));
+      const min: [number, number] = [Math.min(...xs), Math.min(...ys)],
+        max: [number, number] = [Math.max(...xs), Math.max(...ys)];
+      const shifted: Bounds = {
+        left: paint.left + min[0],
+        right: paint.right + max[0],
+        top: paint.top + min[1],
+        bottom: paint.bottom + max[1],
+      };
+      const reach = Math.ceil(sigma * 3) + 1;
+      const visibleReach =
+        strength <= TEXT_EFFECT_VISIBLE_COVERAGE
+          ? null
+          : sigma === 0
+            ? 0
+            : sigma *
+              normalTailInverse(TEXT_EFFECT_VISIBLE_COVERAGE / strength);
+      const own = strength > 0 ? padBounds(shifted, reach) : null;
+      const shownSource: Bounds = {
+        left: visible.left + min[0],
+        right: visible.right + max[0],
+        top: visible.top + min[1],
+        bottom: visible.bottom + max[1],
+      };
+      const shown =
+        visibleReach === null ? null : padBounds(shownSource, visibleReach);
+      list.push({
+        index,
+        id: effect.id,
+        effect: "light.drop-shadow",
+        offset: { min, max },
+        sigma,
+        strength,
+        reach,
+        paint: box(own ?? paint),
+        visibleReach,
+        visible: maybeBox(shown),
+      });
+      if (own) paint = unionBounds([paint, own])!;
+      if (shown) visible = unionBounds([visible, shown])!;
+    } else {
+      const radii = keyedValues<number>(params.radius, 0);
+      const intensities = keyedValues<number>(params.intensity, 1);
+      const thresholds = keyedValues<number>(params.threshold, 0);
+      if (!radii || !intensities || !thresholds) {
+        unmeasured.push({
+          id: effect.id,
+          effect: effect.effect,
+          reason: "parameters are neither static nor keyed values",
+        });
+        continue;
+      }
+      const sigma = Math.max(...radii);
+      const threshold = Math.min(...thresholds);
+      const strength =
+        Math.max(...intensities) *
+        Math.max(0, (brightest - threshold) / Math.max(0.001, 1 - threshold));
+      const reach = sigma > 0 ? 3 * sigma + 2 : 0;
+      const visibleReach =
+        strength <= TEXT_EFFECT_VISIBLE_COVERAGE || sigma === 0
+          ? null
+          : sigma * normalTailInverse(TEXT_EFFECT_VISIBLE_COVERAGE / strength);
+      const own = reach > 0 && strength > 0 ? padBounds(paint, reach) : null;
+      const shown =
+        visibleReach === null ? null : padBounds(visible, visibleReach);
+      list.push({
+        index,
+        id: effect.id,
+        effect: "light.glow",
+        sigma,
+        strength,
+        reach,
+        paint: box(own ?? paint),
+        visibleReach,
+        visible: maybeBox(shown),
+      });
+      if (own) paint = unionBounds([paint, own])!;
+      if (shown) visible = unionBounds([visible, shown])!;
+    }
+  }
+  return {
+    coverage: TEXT_EFFECT_VISIBLE_COVERAGE,
+    source: box(sourceBox),
+    list,
+    paint: box(paint),
+    visible: box(visible),
+    unmeasured,
+  };
+}
+
+/** Colours the layer's glyphs can paint in: fill, span fills, animated fills and outlines. */
+export function textColors(
+  node: TextNode,
+  prepared: PreparedTypography,
+): string[] {
+  const colors = new Set<string>([node.color]);
+  for (const span of node.spans ?? []) if (span.color) colors.add(span.color);
+  for (const animator of prepared.scene.textAnimators ?? []) {
+    if (animator.node !== node.id) continue;
+    for (const props of [animator.from, animator.to])
+      for (const key of ["fill", "stroke"] as const) {
+        const value = (props as Record<string, unknown> | undefined)?.[key];
+        if (typeof value === "string") colors.add(value);
+      }
+  }
+  return [...colors].filter((c) =>
+    /^#[\da-fA-F]{6}(?:[\da-fA-F]{2})?$/u.test(c),
+  );
 }
 
 const isPair = (value: unknown, x: number, y: number) =>

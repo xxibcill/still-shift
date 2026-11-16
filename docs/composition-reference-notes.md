@@ -2293,10 +2293,20 @@ that would centre the band on the cap band or on the decorated ink. `origin`
 gives the layer origin in the composition when the layer is placed by a plain
 translation (no anchor, scale, rotation, skew, parent, camera or precomp).
 `--output` writes the report only after measuring, replacing the file in one
-step. Not measured: text without a pinned font (listed with the reason), layer
-effects such as drop shadows, and compositions with native 3D (refused).
-Measured ink agrees with rendered pixels within 2 px per edge on the ET6a
-fixtures (most edges within 1 px). The Node API is `measureCompositionFile`.
+step. `effects` covers each enabled `light.drop-shadow` and `light.glow` on
+the layer, which grow from everything the layer draws (ink, outline and
+decorations): its Gaussian `sigma` (shadow `blur`, glow `radius`), offset (on
+the renderer's 1/16 px grid) and strength (shadow opacity × colour alpha; glow
+intensity × the brightest glyph colour's thresholded luminance), a
+conservative `paint` box from the renderer's own bounds rule (shadow kernel
+⌈3σ⌉ + 1, glow 3σ + 2), and a `visible` box where a long straight edge's
+effect falls to 5% coverage (`σ·Q⁻¹(0.05 / strength)` past the edge). Keyed
+effect parameters use their keyed extremes. Not measured: text without a
+pinned font (listed with the reason), other layer effects, and compositions
+with native 3D (refused). Measured ink agrees with rendered pixels within 2 px
+per edge on the ET6a fixtures (most edges within 1 px), and effect `visible`
+edges within 2 px at 5% coverage; no effect pixel lies outside `paint`. The
+Node API is `measureCompositionFile`.
 
 ### Story exposure and passage compilation (CE4a continuation)
 
