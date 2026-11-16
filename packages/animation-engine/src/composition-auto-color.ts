@@ -3,8 +3,8 @@
  * path, apply a fitted look and/or the adaptive solver as ordinary effects on
  * a video layer, keep the source audio, render, and report before/after.
  */
+import { ffmpegBytes } from "./composition-color-ffmpeg.ts";
 import { roundTo } from "./composition-color-round.ts";
-import { spawn } from "node:child_process";
 import { access, link, mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, dirname, join, relative, resolve } from "node:path";
@@ -131,67 +131,38 @@ async function decodeAudio(
   channels: number,
   signal?: AbortSignal,
 ): Promise<Float32Array> {
-  signal?.throwIfAborted();
-  return new Promise((accept, reject) => {
-    const child = spawn(
-      "ffmpeg",
-      [
-        "-v",
-        "error",
-        "-nostdin",
-        "-threads",
-        "1",
-        "-i",
-        path,
-        "-map",
-        "0:a:0",
-        "-vn",
-        "-ar",
-        "48000",
-        "-ac",
-        String(channels),
-        "-codec:a",
-        "pcm_f32le",
-        "-f",
-        "f32le",
-        "pipe:1",
-      ],
-      { stdio: ["ignore", "pipe", "pipe"] },
-    );
-    const chunks: Buffer[] = [];
-    let size = 0,
-      errors = "";
-    const abort = () => child.kill("SIGKILL");
-    signal?.addEventListener("abort", abort, { once: true });
-    child.stdout.on("data", (chunk: Buffer) => {
-      size += chunk.length;
-      if (size > 2 ** 31) child.kill("SIGKILL");
-      else chunks.push(chunk);
-    });
-    // Drain stderr (keeping a bounded tail): an unread pipe fills on a noisy
-    // stream, FFmpeg blocks writing to it and the decode never finishes.
-    child.stderr.on("data", (chunk) => {
-      errors = (errors + String(chunk)).slice(-2000);
-    });
-    child.on("error", reject);
-    child.on("close", (code) => {
-      signal?.removeEventListener("abort", abort);
-      if (signal?.aborted) return reject(signal.reason);
-      if (code !== 0)
-        return reject(
-          Error(`comp-auto-color: audio decode failed (${code}): ${errors}`),
-        );
-      const bytes = Buffer.concat(chunks);
-      accept(
-        new Float32Array(
-          bytes.buffer.slice(
-            bytes.byteOffset,
-            bytes.byteOffset + (bytes.length & ~3),
-          ),
-        ),
-      );
-    });
-  });
+  const bytes = await ffmpegBytes(
+    [
+      "-v",
+      "error",
+      "-nostdin",
+      "-threads",
+      "1",
+      "-i",
+      path,
+      "-map",
+      "0:a:0",
+      "-vn",
+      "-ar",
+      "48000",
+      "-ac",
+      String(channels),
+      "-codec:a",
+      "pcm_f32le",
+      "-f",
+      "f32le",
+      "pipe:1",
+    ],
+    2 ** 31,
+    "comp-auto-color: audio decode failed",
+    signal,
+  );
+  return new Float32Array(
+    bytes.buffer.slice(
+      bytes.byteOffset,
+      bytes.byteOffset + (bytes.length & ~3),
+    ),
+  );
 }
 async function clipAudio(
   path: string,

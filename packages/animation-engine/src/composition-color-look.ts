@@ -3,8 +3,8 @@
  * encoded-sRGB 3×3 + offset transform and report its residuals through the
  * exact `color.matrix` integer path.
  */
+import { ffmpegBytes } from "./composition-color-ffmpeg.ts";
 import { roundTo } from "./composition-color-round.ts";
-import { spawn } from "node:child_process";
 import { z } from "zod";
 import {
   COLOR_MATRIX_COEFFICIENTS,
@@ -139,45 +139,6 @@ export function parseColorLook(value: unknown): ColorLook {
   return parsed.data;
 }
 
-/** Binary FFmpeg stdout, bounded. */
-async function ffmpegBytes(
-  args: string[],
-  maxBytes: number,
-  signal?: AbortSignal,
-): Promise<Buffer> {
-  signal?.throwIfAborted();
-  return new Promise((accept, reject) => {
-    const child = spawn("ffmpeg", args, {
-      stdio: ["ignore", "pipe", "pipe"],
-    });
-    const chunks: Buffer[] = [];
-    let size = 0,
-      errors = "";
-    const abort = () => child.kill("SIGKILL");
-    signal?.addEventListener("abort", abort, { once: true });
-    child.stdout.on("data", (chunk: Buffer) => {
-      size += chunk.length;
-      if (size > maxBytes) child.kill("SIGKILL");
-      else chunks.push(chunk);
-    });
-    child.stderr.on("data", (chunk) => {
-      errors = (errors + String(chunk)).slice(-2000);
-    });
-    child.on("error", reject);
-    child.on("close", (code) => {
-      signal?.removeEventListener("abort", abort);
-      if (signal?.aborted) return reject(signal.reason);
-      if (code !== 0 || size > maxBytes)
-        return reject(
-          Error(
-            `comp-look-decode: FFmpeg proxy decode failed (${code}): ${errors}`,
-          ),
-        );
-      accept(Buffer.concat(chunks));
-    });
-  });
-}
-
 /**
  * Frames as display code values: the media path's range/matrix conversion
  * without its BT.709-transfer re-encoding. A graded edit tagged BT.709 transfer
@@ -216,6 +177,7 @@ export async function readColorCodeValueFrames(
         "pipe:1",
       ],
       size * selected.length,
+      "comp-look-decode: FFmpeg proxy decode failed",
       signal,
     );
     if (bytes.length !== size * selected.length)
@@ -262,6 +224,7 @@ export async function colorLumaProxies(
       "pipe:1",
     ],
     width * height * 3 * (clip.probe.frameCount + 8),
+    "comp-look-decode: FFmpeg proxy decode failed",
     signal,
   );
   const size = width * height,
