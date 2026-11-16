@@ -366,11 +366,14 @@ writing only to git-ignored `dist/`).
       export's audio master spans the picture and pads the last 20 ms with
       silence. Trimming the audio stream to the source length is an export
       change outside CGA.
-- [x] A `smpte170m`-tagged source decodes to the same RGB as a reference
-      BT.601 conversion within one code value (4:4:4 fixture, max 1; BT.709
-      coefficients would be 19 off); on the owner's 4:2:0 clip 99.5% of values
-      are within one (p99 1, max 6 at chroma edges, from chroma upsampling).
-      Rotated and variable-rate sources produce the documented diagnostic.
+- [ ] **Partly met.** A `smpte170m`-tagged source decodes to the same RGB as a
+      reference BT.601 conversion within one code value. Met on the 4:4:4
+      fixture (max 1; BT.709 coefficients would be 19 off). Not met on the
+      owner's 4:2:0 clip: 99.5% of values are within one, p99 1, max 6 at chroma
+      edges, because the reference and FFmpeg upsample chroma differently. The
+      matrix is right; a 4:2:0 bound (for example p99 ≤ 1) would have to be
+      stated before this can be ticked. Rotated and variable-rate sources
+      produce the documented diagnostic (met).
 - [ ] **Partly met.** A look fitted from the owner's pair, applied to each raw
       clip, matches the owner's grade within the measured bound (about 2 RMS of 255) on held-out clips: held-out 4×4 block means 1.82 (max 2.24), per pixel
       2.30 (max 2.69, above 2: the edit is softer and re-encoded). `color.matrix`

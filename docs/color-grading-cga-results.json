@@ -85,7 +85,7 @@
     },
     {
       "check": "smpte170m source decodes to the same RGB as a BT.601 reference within one code value; rotated and VFR keep their diagnostics",
-      "status": "met on 4:4:4; on the owner's 4:2:0 clip 99.5% within one code value (p99 1, max 6 at chroma edges)",
+      "status": "partly met: met on 4:4:4 (max 1); on the owner's 4:2:0 clip 99.5% within one code value (p99 1, max 6 at chroma edges, chroma upsampling); diagnostics for rotated and variable-rate sources met",
       "detail": {
         "synthetic444": "limited-range BT.601 chroma ramp: max 1 code value against an independent float64 BT.601 conversion; BT.709 coefficients would be 19 off (tests/integration/composition-media-cache.test.ts)",
         "ownerClip": {
