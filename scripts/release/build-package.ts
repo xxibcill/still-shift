@@ -204,6 +204,18 @@ async function copyRuntimeAssets(root: string, output: string) {
   );
 }
 
+/**
+ * Skills that only work from a repository checkout: they drive research
+ * pilots, scripts and assets that the package does not ship, so they stay out
+ * of the installed source.
+ */
+const repositoryOnlySkills = new Set(["design-editorial-titles"]);
+
+function packagedSkillPath(root: string, file: string): boolean {
+  const [top, skill] = relative(root, file).split(sep);
+  return !(top === "skills" && skill && repositoryOnlySkills.has(skill));
+}
+
 /** Keep installed feature guides and agent skills together with their references. */
 export async function copyPackageGuides(root: string, output: string) {
   const releaseRecords = new Set([
@@ -224,7 +236,8 @@ export async function copyPackageGuides(root: string, output: string) {
   for (const directory of ["skills", "examples"])
     await cp(resolve(root, directory), resolve(output, "source", directory), {
       recursive: true,
-      filter: (file) => includeSourcePath(root, file),
+      filter: (file) =>
+        includeSourcePath(root, file) && packagedSkillPath(root, file),
     });
 }
 

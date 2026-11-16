@@ -47,9 +47,23 @@ still hold before relying on them.
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
-- **Editorial titles ET5b (2026-11-16):** serif seam fix (O11) in review as [PR #67](https://github.com/xxibcill/still-shift/pull/67) on `codex/editorial-titles-et5b` (from `main` 0af3a405). Root cause: each glyph was drawn as a slice of its line's raster cut at the advance, so a serif overhanging the advance moved and faded with the neighbouring glyph. Lines whose glyphs have different poses now draw runs of same-pose glyphs from their own shaped rasters; settled lines keep the slices and are pixel-identical. The review's findings are fixed, one commit each (bounded segment cache, mixed-colour tint, joined glyphs kept whole across poses, WebGL2/memory/parallel groups run, test wording); `typography/glyph-performance` re-recorded once more. Renderer versions `composition-canvas-1.47.8` / `composition-webgl2-0.68.8`. `main` (with ET5a, PR #66) is merged into the branch; the dev-log conflict is resolved and ET0 `--check` rerun. Owner review of the PR and the before/after sheets pending. [ET5b results](./editorial-typography-et5b-results.json).
+- **Editorial titles ET7a (2026-11-16):** generator pilot in review as [PR #69](https://github.com/xxibcill/still-shift/pull/69) on `codex/editorial-titles-et7a`. 16 candidates (8 per reel, 4 Thai or mixed) pass strict coverage and pixel lint. The [PR review](https://github.com/xxibcill/still-shift/pull/69#pullrequestreview-5918679207)'s five findings are fixed on the branch, one commit each. The owner reviewed the local contact sheets and answered "all yes": 16/16 accepted, so the success measure (at least 3 of 8 per clip, two clips) is met. Caveats: both clips are third-party reels used local only, so D-auth stays open and nothing visual is committed; the reels' burned-in labels were visible during review; one blanket answer does not rank styles. Next by the pilot's evidence: ET6a, then ET6b widened to treated display text, then small fixes, then ET4. [ET7a results](./editorial-typography-et7a-results.json).
 
-- **Editorial titles ET0–ET3 (2026-11-15):** ET0 (fixtures, synthetic clip, baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)), ET1 (exact-copy font gate) and ET2 (pixel lint over native video) are merged on `main` via PR #60, #61 and #62. ET3 (text-over-video legibility) is in review as [PR #63](https://github.com/xxibcill/still-shift/pull/63) on `codex/editorial-titles-et3`, with its five review findings fixed and one re-review finding fixed (`--legibility` no longer fails non-pixel lint on a pinned WOFF/WOFF2 font). It adds opt-in `text-contrast`, `x-height-floor` and `platform-safe-zone` rules (`--legibility true`, `--strict text-contrast`, or a `textLegibility` policy). Lint without them is byte-identical to `main`. O6 is now detectable; still reproduced: O1, O2, O3, O7, O10, O11. Pending owner decisions: ET3-D1 (contrast targets; T1 pass 2 and T2's Thai subline fall marginally below WCAG AA), ET3-D2 (6 px x-height floor at 360 px), ET2-D1 (near-static footage as frozen), ET2-D2 (default `decodedCacheBytes` rejects a 60 s 1080×1920 clip), synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. Follow-up: `comp render` has the same missing signal wiring; pinned WOFF/WOFF2 fonts are accepted by asset capture but rejected by composition typography (pixel lint and render), pre-existing; addressed by [PR #64](https://github.com/xxibcill/still-shift/pull/64), in review, which rejects them with a located `font-format` error before any browser work. No human visual acceptance (including fallback Thai). Results: [ET0](./editorial-typography-et0-results.json), [ET1](./editorial-typography-et1-results.json), [ET2](./editorial-typography-et2-results.json), [ET3](./editorial-typography-et3-results.json). **Direction review (2026-11-15):** the remaining plan is reordered on `codex/editorial-titles-plan-review` (rebased onto `main`, PR pending): G1 owner review of the existing renders and inputs → ET5a guards → ET7a generator pilot (absorbs ET8) → ET6a measure, ET5b serif seams, reduced ET4, ET6b profile by pilot evidence → ET9 release verification → ET7b. A success measure (3 of 8 candidates accepted per clip, two clips) is proposed for the owner to confirm. [Plan](./editorial-typography-improvement-plan.md#direction-review-2026-11-15).
+- **Editorial titles G1 (2026-11-16):** owner review done; recorded in [PR #68](https://github.com/xxibcill/still-shift/pull/68) on `codex/editorial-titles-g1`.
+  - **Treatments:** the owner watched T1–T3 re-rendered from `main` a897acb4 (with ET5a/ET5b) and rejected all three on text style and animation, not on engine defects.
+  - **New target:** the owner's social fashion-reel references. Each is one large mixed-type lockup over the subject, made legible by outline, shadow or box, built word by word and held across fast cuts.
+  - **Decisions:**
+    - ET3-D1 is split by size: display text may go below 3:1, and small text keeps 4.5:1.
+    - ET3-D2 is kept.
+    - The success measure is confirmed.
+    - The fonts are approved: the list plus popular free Thai families.
+  - **Clips:** the owner's reference reels, local only ("Yes, local only"). They are third-party, so nothing made from them is committed; the repository is public.
+  - **Pending owner decision:** D-auth, whether the local-only reels count as the success measure's authorized clips (recommended: at least one owner-shot, licensed or synthetic clip).
+  - **Next:** ET6a (ET7a done; owner accepted 16/16).
+  - Records: [G1 record](./editorial-typography-g1-review-2026-11-16.md) and [G1 results](./editorial-typography-g1-results.json).
+- **Editorial titles ET5b (2026-11-16):** serif seam fix (O11) merged on `main` via [PR #67](https://github.com/xxibcill/still-shift/pull/67) from `codex/editorial-titles-et5b` (from `main` 0af3a405). Root cause: each glyph was drawn as a slice of its line's raster cut at the advance, so a serif overhanging the advance moved and faded with the neighbouring glyph. Lines whose glyphs have different poses now draw runs of same-pose glyphs from their own shaped rasters; settled lines keep the slices and are pixel-identical. The review's findings are fixed, one commit each (bounded segment cache, mixed-colour tint, joined glyphs kept whole across poses, WebGL2/memory/parallel groups run, test wording); `typography/glyph-performance` re-recorded once more. Renderer versions `composition-canvas-1.47.8` / `composition-webgl2-0.68.8`. `main` (with ET5a, PR #66) was merged into the branch before merge, and ET0 `--check` rerun. The owner watched the re-rendered treatments in G1; no engine defect was named. [ET5b results](./editorial-typography-et5b-results.json).
+
+- **Editorial titles ET0–ET3 (2026-11-15):** ET0 (fixtures, synthetic clip, baseline in [`benchmarks/fixtures/editorial-titles/`](../benchmarks/fixtures/editorial-titles/README.md)), ET1 (exact-copy font gate) and ET2 (pixel lint over native video) are merged on `main` via PR #60, #61 and #62. ET3 (text-over-video legibility) is merged on `main` via [PR #63](https://github.com/xxibcill/still-shift/pull/63), with its five review findings fixed and one re-review finding fixed (`--legibility` no longer fails non-pixel lint on a pinned WOFF/WOFF2 font). It adds opt-in `text-contrast`, `x-height-floor` and `platform-safe-zone` rules (`--legibility true`, `--strict text-contrast`, or a `textLegibility` policy). Lint without them is byte-identical to `main`. O6 is now detectable; still reproduced: O1, O2, O3, O7, O10, O11. Owner decisions at the time (ET3-D1, ET3-D2 and the success measure are now decided in G1): ET3-D1 (contrast targets; T1 pass 2 and T2's Thai subline fall marginally below WCAG AA), ET3-D2 (6 px x-height floor at 360 px), ET2-D1 (near-static footage as frozen), ET2-D2 (default `decodedCacheBytes` rejects a 60 s 1080×1920 clip), synthetic clip acceptance, ET5 align contract, ET6 reading rule, ET7 location, ET8 inputs. Follow-up: `comp render` has the same missing signal wiring; pinned WOFF/WOFF2 fonts are accepted by asset capture but rejected by composition typography (pixel lint and render), pre-existing; addressed by [PR #64](https://github.com/xxibcill/still-shift/pull/64), in review, which rejects them with a located `font-format` error before any browser work. No human visual acceptance (including fallback Thai). Results: [ET0](./editorial-typography-et0-results.json), [ET1](./editorial-typography-et1-results.json), [ET2](./editorial-typography-et2-results.json), [ET3](./editorial-typography-et3-results.json). **Direction review (2026-11-15):** the remaining plan is reordered on `main` via PR #65: G1 owner review of the existing renders and inputs → ET5a guards → ET7a generator pilot (absorbs ET8) → ET6a measure, ET5b serif seams, reduced ET4, ET6b profile by pilot evidence → ET9 release verification → ET7b. A success measure (3 of 8 candidates accepted per clip, two clips) is set; the owner confirmed it in G1. [Plan](./editorial-typography-improvement-plan.md#direction-review-2026-11-15).
 
 - **Editorial titles ET5a (2026-11-16):** framing and decoration guards merged on `main` via [PR #66](https://github.com/xxibcill/still-shift/pull/66) (`67b5648d`), with the first review's findings fixed one commit each. Pixel lint now reports O2 and O3 by default as errors: `text-off-canvas` (share of a text layer's settled glyph ink outside the frame, threshold `textOffCanvasFraction` 0.05; names the `align` origin contract) and `orphaned-decoration` (a highlight/underline/strike/box painting while its text is fully transparent). Opt-in decoration field `fadeWithText` fades the bar with its text. Renders unchanged; the ET0 baseline gains only the two new findings. D-align is still the owner's: the guard follows the recommendation, a versioned centring field was not built. Still reproduced on `main`: O1, O7, O10, O11 (O11 is fixed on the ET5b branch, PR #67). [ET5a results](./editorial-typography-et5a-results.json).
 
@@ -116,6 +130,86 @@ still hold before relying on them.
 - **Rejected / do not repeat:** fitting the BT.709-transfer graded edit through the media path (its sRGB re-encode is a tone change a 3×3 cannot model); single-pixel fits (codec noise and softening; use 4×4 block means); removing 75% of the neutral cast (beige scenes went grey: median saturation 0.12 → 0.05); a median-keeping gamma with the black point (overshoots symmetric compression); brightening any clip with dim highlights (high-key medians +0.10); AAC in the synthetic MKV (priming offset; PCM now).
 - **Open / next:** owner review of `dist/cga-owner/sheets` (raw | look | adaptive) and the solver defaults; the per-pixel look target is not met (decide whether block-mean RMS is the right bound, or a quadratic look model in CG2+); pre-existing asymmetry: import converts BT.709 transfer to sRGB but `comp render` tags sRGB pixels BT.709 (round trip brightens) — owner decision; open the PR when asked.
 - **Records:** [CGA results](./color-grading-cga-results.json), [plan checks](./color-grading-engine-plan.md#cga--automatic-exposure-contrast-saturation-and-white-balance-for-flat-sdr-clips), [grade effects](./composition-effect-plugins.md#grade-corrections-cga), [CLI](../tools/still-shift-cli/README.md#automatic-color-for-flat-clips).
+
+### 2026-11-16 — Editorial titles ET7a: PR #69 review fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-et7a` (from PR head e9fcee08).
+- **Scope:** the five findings of the [PR #69 review](https://github.com/xxibcill/still-shift/pull/69#pullrequestreview-5918679207), one commit each.
+- **Done:**
+  - 1/5: the npm package leaves out `skills/design-editorial-titles`, whose links point at unpackaged `research/`, `scripts/` and `assets/` paths. The package test covers this, and the skill says it is repository-only.
+  - 2/5: `tsconfig.json` and the prettier globs now cover `research/`. One existing research note was reformatted.
+  - 3/5: `et7a-check.ts --lint-only true` refuses any change other than `metadata.readingPolicy`, so a render and its lint always match.
+  - 4/5: a failed `export-json` is recorded in the check summary instead of throwing ENOENT.
+  - 5/5: `grammar.ts` `leave()` throws for keys with no rest value (colours, stroke width, axes, leading).
+- **Results:**
+  - `pnpm check:fast` passed on Node 22.23.1 (462 test files, 4,665 tests); `tsc` now includes `research/`.
+  - The check-script paths were exercised on scratch copies of b07: refusal, waiver-only re-lint, export failure, and a normal render byte-identical to the recorded r02.
+  - All 16 candidate exports are unchanged apart from `metadata.builder` source line numbers.
+  - Not run: `pnpm check`, browser groups, baselines.
+- **Open / next:** owner merge of PR #69, then ET6a.
+
+### 2026-11-16 — Editorial titles ET7a: generator pilot, owner accepted 16/16
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-et7a` (from `main` 2febd1f2).
+- **Scope:** ET7a, the generator pilot and aesthetic proof against the owner's fashion-reel style.
+- **Done:**
+  - Pinned 25 open-licence fonts (Latin display, scripts, brush, and Thai families), with licences, source URLs at a fixed google/fonts commit, and SHA-256s.
+  - Confirmed the G1 engine mapping by rendering. A held stroke animator gives a static outline. Spans with named styles, drop shadow, highlight boxes, word reveals and native sparkles also work. `light.glow` has no colour, so a halo is a zero-offset drop shadow.
+  - Fixed `--legibility` pixel lint, which failed on any text with spans, with a unit test.
+  - Added the `design-editorial-titles` skill, the `et7a-check.ts` loop and the pilot sources.
+  - Wrote 16 candidates, 8 on each of two 7 s reel segments; 4 are Thai or mixed.
+- **Results:**
+  - 11 render-and-fix iterations over 16 candidates (43 renders including verification). Missing measurement caused 5 of them.
+  - Every candidate passes strict coverage and pixel lint without errors.
+  - Treated display text measures about 1:1 and is waived with a reason; boxed labels measure 6.1–17.2:1. Lint caught one label (2.03:1 while it typed in), fixed.
+  - The final pass ran on Node 22.23.1. Earlier iterations ran on Node 24.16.0 by mistake; their renders are byte-identical.
+  - Shadows and halos make renders about 10 times slower and lint about 20 times slower.
+  - `pnpm check:fast` passed on Node 22.23.1, as did the ET3 legibility and composition-quality browser groups. Not run: `pnpm check` and the composition baselines; the package change touches only lint's background composition.
+- **Rejected / do not repeat:**
+  - Prompt Black: `font-metadata` rejects its 8.7 KB name-table licence.
+  - A halo alone on thin scripts: it reads weakly, so give them an outline.
+- **Open / next:**
+  - Owner review done: "all yes", 16/16 accepted with no per-candidate comments. Success measure met: 8/8 per reel, against at least 3 of 8 on two clips. No agent scores were given.
+  - Caveats: D-auth is still open, because both clips are third-party reels used local only and no sheet is committed. The reels' burned-in labels were visible during review.
+  - Recommended engine order: ET6a, then ET6b widened to treated display text, then the small fixes, then ET4.
+- **Records:** [ET7a results](./editorial-typography-et7a-results.json), [plan ET7a](./editorial-typography-improvement-plan.md#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8), [skill](../skills/design-editorial-titles/SKILL.md), [pilot](../research/editorial-titles-et7a/README.md).
+
+### 2026-11-16 — Editorial titles G1: PR #68 review fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-g1` (from PR head 0b406aca).
+- **Scope:** the six findings (R1–R6) of the [PR #68 review](https://github.com/xxibcill/still-shift/pull/68#pullrequestreview-5916227754), one commit each.
+- **Done:**
+  - R1: dev-log status for ET3, ET5b and G1 corrected.
+  - R2: ET5a and ET5b Result lines say merged.
+  - R3: D-auth recorded as an open owner decision.
+  - R4: git-ignored paths named for the reels and pilot outputs.
+  - R5: the Thai font reading labelled as the agent's.
+  - R6: a held stroke animator is ET7a's first outline test.
+- **Results:** Prettier passes on the changed documents; the G1 results JSON parses. No code changed.
+- **Open / next:** D-auth (owner). ET7a pilot.
+
+### 2026-11-16 — Editorial titles G1: owner review and inputs
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-g1` (from `main` a897acb4).
+- **Scope:** G1, the owner's review of the proof treatments, plus the open decisions and pilot inputs.
+- **Done:**
+  - Re-rendered T1–T3 from `main` with the ET5 fixes, each with a phone sheet: T1 and T3 changed, and T2 is byte-identical.
+  - Recorded the owner's answers and decisions.
+  - Studied the owner's six reference reels and three screenshots, and described their shared style in words.
+  - Mapped each reference technique to current engine features from the docs.
+  - Updated the plan's tracker, G1, ET7a and decisions.
+- **Results:**
+  - All three treatments are rejected on style; the owner's words are in the record.
+  - "Olive" at 2.72:1 is easy to read.
+  - The folio at about 3.7:1 is readable in size but hard to read against the background.
+  - The success measure is confirmed.
+  - Fonts are approved, including all popular free Thai families.
+  - Not run: no code changed, so no verification tier applies. Prettier only.
+- **Rejected / do not repeat:** editorial magazine minimalism (small, quiet titles placed in empty areas) as the pilot's target style.
+- **Open / next:**
+  - Reference reels: the owner chose local-only use. Renders and sheets over them stay git-ignored.
+  - ET7a pilot against the reference style. Its first task is to confirm the engine mapping, starting with a static glyph outline.
+- **Records:** [G1 record](./editorial-typography-g1-review-2026-11-16.md), [G1 results](./editorial-typography-g1-results.json), [plan G1](./editorial-typography-improvement-plan.md#g1--owner-review-and-inputs-no-code).
 
 ### 2026-11-16 — Editorial titles ET5b: PR #67 review fixes
 

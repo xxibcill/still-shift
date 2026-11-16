@@ -1,0 +1,1512 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-et7a",
+  "milestone": "ET7a — Generator pilot and aesthetic proof (absorbs ET8)",
+  "plan": "docs/editorial-typography-improvement-plan.md#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8",
+  "date": "2026-11-16",
+  "agent": "Claude Code (Opus 5.5) as the candidate generator; acceptance is the owner's and is pending",
+  "branch": "codex/editorial-titles-et7a",
+  "base": "main 2febd1f2 (Merge PR #68; G1 recorded)",
+  "toolchain": {
+    "verificationRuns": "Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
+    "designIterations": "Node 24.16.0 by mistake (the shell lost the pinned PATH). Every candidate was re-rendered and linted on Node 22.23.1; each Node 22 render is byte-identical to the Node 24 render before it.",
+    "renderer": "composition-canvas-1.47.8"
+  },
+  "status": "Owner reviewed the contact sheets and accepted all 16 candidates (\"all yes\"). Success measure met.",
+  "deliverables": {
+    "skill": "skills/design-editorial-titles/SKILL.md",
+    "checkScript": "scripts/editorial-titles/et7a-check.ts",
+    "pilot": "research/editorial-titles-et7a/ (fonts.ts, clips.ts, grammar.ts, candidates/, probes/, README.md)",
+    "fonts": "assets/editorial-titles/fonts/ (25 TTFs, licence files, sources.json)",
+    "engineFix": "packages/renderer-core/src/composition/text-legibility.ts + tests/unit/composition-text-legibility.test.ts (legibility lint failed on text with spans)"
+  },
+  "fonts": {
+    "source": "https://github.com/google/fonts",
+    "sourceCommit": "cc39c4c2c304bc368c9b7c311ea2bcc6013299fe",
+    "manifest": "assets/editorial-titles/fonts/sources.json",
+    "pinned": [
+      "playfair-display-var.ttf",
+      "playfair-display-italic-var.ttf",
+      "bodoni-moda-var.ttf",
+      "bodoni-moda-italic-var.ttf",
+      "dm-serif-display-italic.ttf",
+      "abril-fatface.ttf",
+      "pinyon-script.ttf",
+      "great-vibes.ttf",
+      "anton.ttf",
+      "oswald-var.ttf",
+      "bebas-neue.ttf",
+      "archivo-var.ttf",
+      "caveat-brush.ttf",
+      "permanent-marker.ttf",
+      "kanit-black.ttf",
+      "kanit-extrabold-italic.ttf",
+      "prompt-black.ttf",
+      "mitr-bold.ttf",
+      "ibm-plex-sans-thai-bold.ttf",
+      "chonburi.ttf",
+      "sriracha.ttf",
+      "charm-bold.ttf",
+      "itim.ttf",
+      "pattaya.ttf",
+      "noto-serif-thai-var.ttf"
+    ],
+    "licences": "OFL-1.1 for all but Permanent Marker (Apache-2.0); each family's licence file is beside the fonts with its SHA-256",
+    "reused": "assets/ecommerce-motion/fonts/noto-sans-thai.ttf (not used by any candidate)",
+    "rejected": {
+      "prompt-black.ttf": "font-metadata: invalid name string extent (name ID 13 licence text, 8,716 bytes, over the 2,048-byte name budget). Pinned to reproduce the gap; not used."
+    },
+    "strictValidation": "research/editorial-titles-et7a/probes/all-fonts.ts: the other 24 fonts valid, covered true (Latin sample; Thai sample for Thai faces)"
+  },
+  "clips": {
+    "rule": "G1: the owner's third-party reference reels, local only (\"Yes, local only\"). The repository is public: reels, their original names, renders, frames and sheets stay in git-ignored benchmarks/results/ and are never committed.",
+    "reelA": {
+      "description": "try-on reel, 720×1280, 30 fps source",
+      "segment": "7.0–14.0 s, 210 frames at 30 fps, seven cuts, wide shots and close-ups; small burned-in labels from the source remain",
+      "sourceSha256": "d25b02f067cf70aa86e163636c85f53fe5829ed561e4e08dc28f2c946dc48f1d",
+      "segmentSha256": "8faae488ffc7481bc5d9bc60b232616db7d2b12be85c359c705846567adb3bd4"
+    },
+    "reelB": {
+      "description": "outfit-change reel, 720×1280, 23.976 fps source",
+      "segment": "3.3–10.3 s, retimed to 24 fps (0.1% faster), 168 frames, jump cuts between outfits; no burned-in text",
+      "sourceSha256": "1a26ea0d1a78855bec2ac14f981b31aee881d8817ac9abfbbd9bc39214bc8ae5",
+      "segmentSha256": "4c5b8075d029452bbdfee606658c9211ca7078a13d6561e0380afbb2b7ef10d2"
+    },
+    "dAuth": "Open. Both pilot clips are third-party reels, so no visual evidence of the pilot can be committed."
+  },
+  "engineMapping": {
+    "method": "research/editorial-titles-et7a/probes/mapping.ts rendered over reel B; frames inspected by the agent. Its sample copy was later changed to original words and the probe re-rendered on Node 22.23.1 with the same results.",
+    "staticOutline": "Works without a style field: a stroke/strokeWidth text animator held at its end state (from == to) draws a static outline behind the fill (strokeWidth ≈ 2× the visible outline). Confirmed first, as G1 asked.",
+    "mixedFontsViaSpans": "Works: spans with named styles and colours mix fonts within one layer. A span style inherits the base style's axes (needs axes: {} for a font without that axis).",
+    "dropShadow": "Works (light.drop-shadow); blur 0 gives a hard sticker shadow.",
+    "glow": "light.glow brightens the layer's own pixels and has no colour; a coloured halo is a zero-offset drop shadow.",
+    "textBoxes": "`textBox` is wrapping only. Boxes behind text are `highlight` decorations (`box` is a stroked outline). Highlights centre on baseline − x-height/2 + offset, default thickness 1.25 × cap height, no horizontal padding.",
+    "wordReveals": "Works: word, glyph and line text animators; Thai clusters stayed intact under glyph builds.",
+    "hollowCaps": "Works: transparent fill with an outline animator.",
+    "sparkles": "Works: native polystar shapes.",
+    "cutSyncedColour": "Not attempted (needs cut times; external).",
+    "textBehindSubject": "Out of scope (ET7b)."
+  },
+  "loop": {
+    "perCandidate": "comp validate --font-coverage strict; comp render --font-coverage strict; comp lint --pixels true --legibility true --font-coverage strict; entrance/hold/exit sheets at native size and 360×640, from the build/hold/exit markers",
+    "visualPass": "--lint false while iterating on looks; lint once a candidate looked right; Node 22 verification run for all",
+    "noCoordinateEditsByPeople": true,
+    "measurementWorkaround": "With no measure command, the agent read cap height, x-height and advance widths from the font files with fontTools to stack lines and estimate widths before rendering."
+  },
+  "summary": {
+    "candidates": 16,
+    "perReel": 8,
+    "thaiOrMixed": [
+      "a03-thai-get-dressed",
+      "a04-thai-look-slay",
+      "b03-thai-one-pant",
+      "b05-thai-steal-look"
+    ],
+    "renders": 43,
+    "rendersNote": "26 design renders on Node 24, 16 Node 22 verification renders, 1 fix after verification lint",
+    "fixIterations": 11,
+    "rightFirstTime": [
+      "a01-layer-it-up",
+      "a03-thai-get-dressed",
+      "a04-thai-look-slay",
+      "a05-plaid-season",
+      "a07-black-cami-era",
+      "b01-one-pant",
+      "b07-chocolate-trousers"
+    ],
+    "iterationCauses": {
+      "missing-measurement (widths)": 4,
+      "missing-measurement (decoration offset)": 1,
+      "contrast seen by the agent (thin script with halo only)": 2,
+      "decoration-sync (highlight vs glyph-by-glyph build)": 2,
+      "placement (face)": 1,
+      "font-pin (metadata reader rejects font)": 1,
+      "engine-behaviour (span style inherits axes)": 1,
+      "contrast found by lint (boxed label)": 1,
+      "legibility of a glyph (script ampersand at phone size)": 1
+    },
+    "iterationCausesNote": "11 fix iterations, 14 causes: b06 r01 and a02 r02 had two causes each, b06 r03 had two.",
+    "checks": "All 16: strict coverage valid and covered; pixel lint passed with no errors. Labels on boxes 6.1–17.2:1 (target 4.5). Treated display layers 1.0–1.75:1, waived with a reason.",
+    "renderSeconds": {
+      "noEffects": "10.8–56.2 (a01 15.0, b07 10.8, b03 11.1)",
+      "withShadowOrHalo": "103–164 (a03 129.6, a06 163.6)"
+    },
+    "lintSeconds": {
+      "noEffects": "13.8–65.2",
+      "withShadowOrHalo": "137–530 (a07 529.8, a03 452.7)"
+    },
+    "runtimeNote": "Timings with 4–5 candidates in parallel on 15 cores; relative cost, not a benchmark."
+  },
+  "legibility": {
+    "policy": "--legibility true defaults (heading 3:1, label 4.5:1, 6 px x-height at 360 px). Waivers saved per composition in metadata.readingPolicy (grammar.ts displayWaivers), text-contrast only, treated display layers only; labels never waived.",
+    "outlineFinding": "The contrast mask strips animator stroke colour, so the held outline is drawn in the word's code colour and its ring counts as glyph pixels; the measure compares outline and fill with the footage behind. A dark outline over dark clothing reads about 1:1 while the fill reads clearly against its outline. Shadows and halos are not credited (as ET3 documents).",
+    "xHeight": "All measured layers ≥ 6.3 px at 360 px (smallest: 24 px Archivo labels, 6.31).",
+    "hollowCaps": "a06 SUNDAY (transparent fill) is unmeasured: no glyph-interior pixels."
+  },
+  "gaps": [
+    {
+      "rank": 1,
+      "gap": "ET6a text measurement",
+      "cost": "5 of 11 fix iterations (4 widths, 1 decoration offset) and font metrics read outside the engine for every stacked lockup",
+      "recommendation": "Do next. Expose line, ink and cap boxes and decoration geometry so a planner can stack and fit lines before rendering."
+    },
+    {
+      "rank": 2,
+      "gap": "ET6b widened: contrast for treated display text",
+      "cost": "All 16 candidates needed waivers; the two weak-script cases (b04, a06) were caught by eye, not lint",
+      "recommendation": "Measure fill against its own outline/shadow/halo ring and the ring against the footage, and set the G1 display level; keep 4.5:1 for labels (lint caught b06's label correctly)."
+    },
+    {
+      "rank": 3,
+      "gap": "New small fixes",
+      "cost": "One iteration each at most",
+      "items": [
+        "font name budget: skip name IDs not used for identity (Prompt Black)",
+        "span style axes: do not inherit axes the span font lacks, or say so in the diagnostic",
+        "decorations under per-glyph builds: let a highlight grow with its glyphs (b06 needed two iterations)",
+        "highlight horizontal padding",
+        "coloured glow"
+      ],
+      "recommendation": "Bundle after ET6b."
+    },
+    {
+      "rank": 4,
+      "gap": "New: effect render cost",
+      "cost": "No iterations; drop shadows and halos make Canvas renders about 10× and legibility lint about 20× slower",
+      "recommendation": "Profile the isolate pass before candidate search at scale (ET7b)."
+    },
+    {
+      "rank": 5,
+      "gap": "ET4 attach bounds repair",
+      "cost": "0 iterations: no candidate used attach; stacking by measured metrics is the planner's need",
+      "recommendation": "Defer until a layout needs runtime-adaptive anchoring."
+    },
+    {
+      "rank": null,
+      "gap": "ET5b serif seams (merged)",
+      "cost": "0: no seams seen in glyph-animated Bodoni, Playfair, Abril or DM Serif",
+      "recommendation": "None."
+    }
+  ],
+  "recommendedOrder": "ET6a → ET6b (widened to treated display text) → small fixes bundle → ET4 (deferred) → ET9 before any release → ET7b",
+  "candidates": [
+    {
+      "id": "a01-layer-it-up",
+      "reel": "A",
+      "copy": "layer / IT UP",
+      "language": "en",
+      "fonts": ["pinyon", "anton"],
+      "treatments": ["outline"],
+      "build": "script glyph build, caps word pops",
+      "source": "research/editorial-titles-et7a/candidates/a01-layer-it-up.ts",
+      "sourceSha256": "de99ab9e65bde00d8abf4046daae22d8d5fa6a5359152070496a8c34e2fa5131",
+      "renders": 2,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 22.23.1"
+      },
+      "fixIterations": 0,
+      "iterations": [],
+      "verificationRun": {
+        "iteration": "r02",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 15,
+        "renderSha256": "75d21a4febc696dbe5dba5b369b3bd0831c9ffd88baf6c472a8301252767ddc4",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r02",
+          "node24": "r01",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 16.4,
+        "lintErrors": [],
+        "lintWarnings": [
+          "outside-safe-area footage ×1",
+          "text-contrast script ×1",
+          "text-contrast caps ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "script",
+            "role": "heading",
+            "worstContrast": 1.08,
+            "worstWord": "layer",
+            "xHeightAt360": 35.25,
+            "measuredFrames": "189/210",
+            "waived": true
+          },
+          {
+            "layer": "caps",
+            "role": "heading",
+            "worstContrast": 1,
+            "worstWord": "IT",
+            "xHeightAt360": 62.26,
+            "measuredFrames": "165/210",
+            "waived": true
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "a02-lace-leather",
+      "reel": "A",
+      "copy": "lace & / LEATHER",
+      "language": "en",
+      "fonts": ["playfair-italic", "bodoni-italic (span)", "archivo wdth 125"],
+      "treatments": ["soft shadow", "outline"],
+      "build": "word slide-in, glyph cascade",
+      "source": "research/editorial-titles-et7a/candidates/a02-lace-leather.ts",
+      "sourceSha256": "cd7bc2d8f95fe70f170a9dea6f3fdc2ad7204a63840209299f6a9cede419a37b",
+      "renders": 4,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 24.16.0",
+        "r04": "node 22.23.1"
+      },
+      "fixIterations": 2,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["engine-behaviour"],
+          "found": "comp validate (comp-text-font-axis)",
+          "change": "The '&' span style (Pinyon, no wght axis) inherited the base style's wght 900; the span style got axes: {}."
+        },
+        {
+          "after": "r02",
+          "causes": ["legibility (agent visual)", "missing-measurement"],
+          "found": "agent, phone sheet",
+          "change": "Pinyon's ampersand read as a small squiggle at phone size; replaced by a heavy Bodoni italic one via a span style. LEATHER at 96 px left ~20 px margins; 84 px."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r04",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 139.3,
+        "renderSha256": "a0bbed1e748469e4e2272b2ed22d9feffe09350fe5f45e29f5d9016a3e0fa97e",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r04",
+          "node24": "r03",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 375.5,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing ital ×210",
+          "outside-safe-area wide ×1",
+          "outside-safe-area footage ×1",
+          "text-contrast ital ×1",
+          "text-contrast wide ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "ital",
+            "role": "heading",
+            "worstContrast": 1.07,
+            "worstWord": "&",
+            "xHeightAt360": 41.12,
+            "measuredFrames": "177/210",
+            "waived": true
+          },
+          {
+            "layer": "wide",
+            "role": "heading",
+            "worstContrast": 1.01,
+            "worstWord": "LEATHER",
+            "xHeightAt360": 22.09,
+            "measuredFrames": "163/210",
+            "waived": true
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "a03-thai-get-dressed",
+      "reel": "A",
+      "copy": "แต่งตัว / with me / ลุคไปคาเฟ่",
+      "language": "th+en",
+      "fonts": ["kanit-black", "great-vibes", "plex-thai"],
+      "treatments": ["outline", "halo", "box"],
+      "build": "line pop, script typewriter, label rise",
+      "source": "research/editorial-titles-et7a/candidates/a03-thai-get-dressed.ts",
+      "sourceSha256": "5e709a09136e11466e7b7779c9c8b520596c0377080de4ae4fcc03dbe2d94bac",
+      "renders": 2,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 22.23.1"
+      },
+      "fixIterations": 0,
+      "iterations": [],
+      "verificationRun": {
+        "iteration": "r02",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 129.6,
+        "renderSha256": "1aa0c7b3139be77f603fadaf2dd1407c72d421630c8a86ed14235ccceda3680e",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r02",
+          "node24": "r01",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 452.7,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing script ×210",
+          "outside-safe-area thai ×1",
+          "outside-safe-area footage ×1",
+          "text-contrast thai ×1",
+          "text-contrast script ×2"
+        ],
+        "legibility": [
+          {
+            "layer": "thai",
+            "role": "heading",
+            "worstContrast": 1.19,
+            "worstWord": "แต่งตัว",
+            "xHeightAt360": 40.29,
+            "measuredFrames": "180/210",
+            "waived": true
+          },
+          {
+            "layer": "script",
+            "role": "heading",
+            "worstContrast": 1.01,
+            "worstWord": "with",
+            "xHeightAt360": 22.96,
+            "measuredFrames": "170/210",
+            "waived": true
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "worstContrast": 17.23,
+            "worstWord": "ลุคไปคาเฟ่",
+            "xHeightAt360": 7.88,
+            "measuredFrames": "143/210",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "a04-thai-look-slay",
+      "reel": "A",
+      "copy": "ลุคนี้ / ปังมาก",
+      "language": "th",
+      "fonts": ["chonburi", "sriracha"],
+      "treatments": ["outline", "halo", "sparkles"],
+      "build": "line slam, line rise",
+      "source": "research/editorial-titles-et7a/candidates/a04-thai-look-slay.ts",
+      "sourceSha256": "295de9c969e0c3fcb6a2426a48c1464eca3c67ccae0aa876a902d7f6221b2870",
+      "renders": 2,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 22.23.1"
+      },
+      "fixIterations": 0,
+      "iterations": [],
+      "verificationRun": {
+        "iteration": "r02",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 141.7,
+        "renderSha256": "df308b3ee8f2c9bc1edf32a32c9eb3fde1067991801dc5e96dd39950985763e6",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r02",
+          "node24": "r01",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 377,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing l2 ×210",
+          "outside-safe-area l1 ×1",
+          "outside-safe-area footage ×1",
+          "text-contrast l1 ×1",
+          "text-contrast l2 ×2",
+          "co-start ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "l1",
+            "role": "heading",
+            "worstContrast": 1.02,
+            "worstWord": "ลุคนี้",
+            "xHeightAt360": 45.56,
+            "measuredFrames": "180/210",
+            "waived": true
+          },
+          {
+            "layer": "l2",
+            "role": "heading",
+            "worstContrast": 1.12,
+            "worstWord": "ปังมาก",
+            "xHeightAt360": 33.18,
+            "measuredFrames": "159/210",
+            "waived": true
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "a05-plaid-season",
+      "reel": "A",
+      "copy": "plaid / season / OUTFIT 01",
+      "language": "en",
+      "fonts": ["abril", "caveat-brush", "bebas"],
+      "treatments": ["outline", "box"],
+      "build": "glyph drop, brush spin-in",
+      "source": "research/editorial-titles-et7a/candidates/a05-plaid-season.ts",
+      "sourceSha256": "9e9ec02dfd72d8f3baaeec37f74be41d1da6ac921c64a4225ca2765f27ca30ed",
+      "renders": 2,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 22.23.1"
+      },
+      "fixIterations": 0,
+      "iterations": [],
+      "verificationRun": {
+        "iteration": "r02",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 37.6,
+        "renderSha256": "6378624345c439dd6f8f687ab9795fc31497cd8731ce9a9d6221dd95151b9bde",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r02",
+          "node24": "r01",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 21.2,
+        "lintErrors": [],
+        "lintWarnings": [
+          "outside-safe-area footage ×1",
+          "text-contrast fat ×1",
+          "text-contrast brush ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "fat",
+            "role": "heading",
+            "worstContrast": 1.05,
+            "worstWord": "plaid",
+            "xHeightAt360": 42.84,
+            "measuredFrames": "185/210",
+            "waived": true
+          },
+          {
+            "layer": "brush",
+            "role": "heading",
+            "worstContrast": 1.12,
+            "worstWord": "season",
+            "xHeightAt360": 29.4,
+            "measuredFrames": "160/210",
+            "waived": true
+          },
+          {
+            "layer": "tag",
+            "role": "label",
+            "worstContrast": 17.23,
+            "worstWord": "OUTFIT",
+            "xHeightAt360": 16.1,
+            "measuredFrames": "147/210",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "a06-soft-sunday",
+      "reel": "A",
+      "copy": "soft girl / SUNDAY",
+      "language": "en",
+      "fonts": ["great-vibes", "bebas"],
+      "treatments": ["halo", "outline", "hollow caps"],
+      "build": "script typewriter, caps track-in",
+      "source": "research/editorial-titles-et7a/candidates/a06-soft-sunday.ts",
+      "sourceSha256": "d113444f3c96e5ebecf493a12096c1376161a40c7a073608e80fbe1ac6df4032",
+      "renders": 3,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 22.23.1"
+      },
+      "fixIterations": 1,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["contrast (agent visual)"],
+          "found": "agent, phone sheet",
+          "change": "Blush script with only a dark halo was faint over the cream lace in close-ups; added a thin plum outline."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r03",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 163.6,
+        "renderSha256": "faa850f76e80ddf4c8cd88fbf92b827dc8d69fad15cb21837ec89de7f4b6541d",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r03",
+          "node24": "r02",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 257.8,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing script ×210",
+          "outside-safe-area footage ×1",
+          "text-contrast script ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "script",
+            "role": "heading",
+            "worstContrast": 1.02,
+            "worstWord": "girl",
+            "xHeightAt360": 26.24,
+            "measuredFrames": "185/210",
+            "waived": true
+          },
+          {
+            "layer": "caps",
+            "role": "heading",
+            "worstContrast": null,
+            "worstWord": null,
+            "xHeightAt360": null,
+            "measuredFrames": "0/0",
+            "waived": true
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "a07-black-cami-era",
+      "reel": "A",
+      "copy": "black cami / ERA / LACE UNDERNEATH",
+      "language": "en",
+      "fonts": ["dm-serif-italic", "anton", "archivo"],
+      "treatments": ["soft shadow", "outline", "box"],
+      "build": "word rise, letter drop",
+      "source": "research/editorial-titles-et7a/candidates/a07-black-cami-era.ts",
+      "sourceSha256": "b6c1a627436232c8d56aed4b1890d9de8c4e691751522cf89e7f3a8bff45f95f",
+      "renders": 2,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 22.23.1"
+      },
+      "fixIterations": 0,
+      "iterations": [],
+      "verificationRun": {
+        "iteration": "r02",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 149.8,
+        "renderSha256": "4a4f8d50fda81d93a146acfb509dd28b79828b8baf1a4906c9bb66a830b50c70",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r02",
+          "node24": "r01",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 529.8,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing ital ×210",
+          "outside-safe-area footage ×1",
+          "text-contrast ital ×1",
+          "text-contrast caps ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "ital",
+            "role": "heading",
+            "worstContrast": 1.07,
+            "worstWord": "cami",
+            "xHeightAt360": 26.94,
+            "measuredFrames": "184/210",
+            "waived": true
+          },
+          {
+            "layer": "caps",
+            "role": "heading",
+            "worstContrast": 1.01,
+            "worstWord": "ERA",
+            "xHeightAt360": 95.21,
+            "measuredFrames": "167/210",
+            "waived": true
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "worstContrast": 6.25,
+            "worstWord": "LACE",
+            "xHeightAt360": 6.31,
+            "measuredFrames": "139/210",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "a08-todays-ootd",
+      "reel": "A",
+      "copy": "today's / OOTD / LACE · CAMI · PLAID",
+      "language": "en",
+      "fonts": ["pinyon", "bodoni", "archivo"],
+      "treatments": ["outline", "box", "sparkle"],
+      "build": "caps typewriter, script spin-in",
+      "source": "research/editorial-titles-et7a/candidates/a08-todays-ootd.ts",
+      "sourceSha256": "f955875bce6f348f14e4ee1b41b01202125ca4b5c9fc4ff720634a8e4ca12b83",
+      "renders": 3,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 22.23.1"
+      },
+      "fixIterations": 1,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["overflow", "missing-measurement"],
+          "found": "agent, native sheet",
+          "change": "Black Didone OOTD at 200 px ran to ~25 px from both edges; 170 px."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r03",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 13.2,
+        "renderSha256": "94b968b11f6632272699b3e41247fc0954b776a7dc079a2ecec145c5ec5f4d6d",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r03",
+          "node24": "r02",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 19.7,
+        "lintErrors": [],
+        "lintWarnings": [
+          "outside-safe-area footage ×1",
+          "text-contrast didone ×1",
+          "text-contrast script ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "script",
+            "role": "heading",
+            "worstContrast": 1.08,
+            "worstWord": "today's",
+            "xHeightAt360": 24.12,
+            "measuredFrames": "158/210",
+            "waived": true
+          },
+          {
+            "layer": "didone",
+            "role": "heading",
+            "worstContrast": 1.03,
+            "worstWord": "OOTD",
+            "xHeightAt360": 39.1,
+            "measuredFrames": "185/210",
+            "waived": true
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "worstContrast": 17.23,
+            "worstWord": "LACE",
+            "xHeightAt360": 6.31,
+            "measuredFrames": "150/210",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "b01-one-pant",
+      "reel": "B",
+      "copy": "ONE PANT / five ways / TEE · KNIT · MOCK NECK",
+      "language": "en",
+      "fonts": ["anton", "pinyon", "archivo wdth 125"],
+      "treatments": ["outline", "box", "sparkles"],
+      "build": "word pops, script drop, label rise",
+      "source": "research/editorial-titles-et7a/candidates/b01-one-pant.ts",
+      "sourceSha256": "aa9b39bf0a38274ed5dea3b98636f6d577b88c9ca2561fb2e08d685fd100e015",
+      "renders": 2,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 22.23.1"
+      },
+      "fixIterations": 0,
+      "iterations": [],
+      "verificationRun": {
+        "iteration": "r02",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 56.2,
+        "renderSha256": "7aa62c72fe8ab4c8e46f1d6956ffe1da41b9de573bf6e5e454f345143adf1313",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r02",
+          "node24": "r01",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 13.8,
+        "lintErrors": [],
+        "lintWarnings": [
+          "outside-safe-area footage ×1",
+          "text-contrast caps ×1",
+          "text-contrast script ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "caps",
+            "role": "heading",
+            "worstContrast": 1.05,
+            "worstWord": "ONE",
+            "xHeightAt360": 54.93,
+            "measuredFrames": "147/168",
+            "waived": true
+          },
+          {
+            "layer": "script",
+            "role": "heading",
+            "worstContrast": 1,
+            "worstWord": "five",
+            "xHeightAt360": 24.12,
+            "measuredFrames": "131/168",
+            "waived": true
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "worstContrast": 13.4,
+            "worstWord": "TEE",
+            "xHeightAt360": 6.84,
+            "measuredFrames": "112/168",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "b02-brown-new-black",
+      "reel": "B",
+      "copy": "brown / IS THE NEW / BLACK",
+      "language": "en",
+      "fonts": ["bodoni-italic", "bebas"],
+      "treatments": ["soft shadow", "box", "outline"],
+      "build": "glyph cascade, word slide, slam",
+      "source": "research/editorial-titles-et7a/candidates/b02-brown-new-black.ts",
+      "sourceSha256": "87c5965531de17bf6cee3996633328fbf6a24d43e8aa107333575da4d757e0e4",
+      "renders": 3,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 22.23.1"
+      },
+      "fixIterations": 1,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["missing-measurement (decoration geometry)"],
+          "found": "agent, phone sheet",
+          "change": "Highlight box drawn above the caps: offset -30 was guessed. Highlights centre on baseline minus half the x-height; Bebas has x = cap, so offset 0."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r03",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 132.9,
+        "renderSha256": "0fae79abc1d2f0da666de701c0de9c9ce94e36f3367cf818be529095cfbc683e",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r03",
+          "node24": "r02",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 424.6,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing brown ×168",
+          "outside-safe-area mid ×1",
+          "outside-safe-area footage ×1",
+          "text-contrast brown ×1",
+          "text-contrast black ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "brown",
+            "role": "heading",
+            "worstContrast": 1.44,
+            "worstWord": "brown",
+            "xHeightAt360": 39.1,
+            "measuredFrames": "152/168",
+            "waived": true
+          },
+          {
+            "layer": "mid",
+            "role": "heading",
+            "worstContrast": 10.75,
+            "worstWord": "IS",
+            "xHeightAt360": 32.2,
+            "measuredFrames": "132/168",
+            "waived": false
+          },
+          {
+            "layer": "black",
+            "role": "heading",
+            "worstContrast": 1.29,
+            "worstWord": "BLACK",
+            "xHeightAt360": 32.2,
+            "measuredFrames": "117/168",
+            "waived": true
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "b03-thai-one-pant",
+      "reel": "B",
+      "copy": "กางเกง / ตัวเดียว / 5 ลุค / ONE PANT · FIVE LOOKS",
+      "language": "th+en",
+      "fonts": ["kanit-black", "charm", "mitr", "plex-thai"],
+      "treatments": ["outline", "box"],
+      "build": "line pop, Thai glyph typewriter, word spin",
+      "source": "research/editorial-titles-et7a/candidates/b03-thai-one-pant.ts",
+      "sourceSha256": "da10e60ab051987dc544aa9891abecb5becb9ccafb9cc56384be1b100ab4d362",
+      "renders": 3,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 22.23.1"
+      },
+      "fixIterations": 1,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["font-pin"],
+          "found": "comp validate (font-metadata)",
+          "change": "Prompt Black rejected: its name ID 13 licence string is 8,716 bytes, over the 2,048-byte name budget. Mitr Bold instead."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r03",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 11.1,
+        "renderSha256": "3d0365ba2864c33b3e7564f76014020c0cf0d7353bc5050d6ef8daee5a16d84a",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r03",
+          "node24": "r02",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 65.2,
+        "lintErrors": [],
+        "lintWarnings": [
+          "outside-safe-area l1 ×1",
+          "outside-safe-area footage ×1",
+          "text-contrast l1 ×1",
+          "text-contrast l2 ×1",
+          "text-contrast l3 ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "l1",
+            "role": "heading",
+            "worstContrast": 1.07,
+            "worstWord": "กางเกง",
+            "xHeightAt360": 35.55,
+            "measuredFrames": "142/168",
+            "waived": true
+          },
+          {
+            "layer": "l2",
+            "role": "heading",
+            "worstContrast": 1,
+            "worstWord": "ตัวเดียว",
+            "xHeightAt360": 30.29,
+            "measuredFrames": "138/168",
+            "waived": true
+          },
+          {
+            "layer": "l3",
+            "role": "heading",
+            "worstContrast": 1,
+            "worstWord": "5",
+            "xHeightAt360": 40.2,
+            "measuredFrames": "121/168",
+            "waived": true
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "worstContrast": 13.45,
+            "worstWord": "ONE",
+            "xHeightAt360": 6.83,
+            "measuredFrames": "107/168",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "b04-golden-hour",
+      "reel": "B",
+      "copy": "golden hour / FITS",
+      "language": "en",
+      "fonts": ["great-vibes", "archivo wdth 125"],
+      "treatments": ["halo", "outline", "sparkles"],
+      "build": "script glyph build, slam",
+      "source": "research/editorial-titles-et7a/candidates/b04-golden-hour.ts",
+      "sourceSha256": "87cd6961334e21365f0e425fe2b74e65570e8bb4fc96780e034db3d3178549ac",
+      "renders": 3,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 22.23.1"
+      },
+      "fixIterations": 1,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["contrast (agent visual)"],
+          "found": "agent, phone sheet",
+          "change": "Gold formal script with only a halo read weakly on the sunlit door; added a brown outline."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r03",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 138.1,
+        "renderSha256": "77f3abd7a82d1c73877ac99ee2e8f15eea36ed7f8b7ac9316949765f88636c32",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r03",
+          "node24": "r02",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 320.6,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing script ×168",
+          "easing-monotony ×1",
+          "outside-safe-area wide ×1",
+          "outside-safe-area footage ×1",
+          "text-contrast script ×1",
+          "text-contrast wide ×1",
+          "co-start ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "script",
+            "role": "heading",
+            "worstContrast": 1.04,
+            "worstWord": "golden",
+            "xHeightAt360": 24.6,
+            "measuredFrames": "158/168",
+            "waived": true
+          },
+          {
+            "layer": "wide",
+            "role": "heading",
+            "worstContrast": 1.08,
+            "worstWord": "FITS",
+            "xHeightAt360": 39.45,
+            "measuredFrames": "121/168",
+            "waived": true
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "b05-thai-steal-look",
+      "reel": "B",
+      "copy": "ขโมยลุคนี้ / ไปเลย! / STEAL THIS LOOK",
+      "language": "th+en",
+      "fonts": ["kanit-black", "pattaya", "bebas"],
+      "treatments": ["outline", "halo", "box"],
+      "build": "Thai glyph drop, spin-in, word tag",
+      "source": "research/editorial-titles-et7a/candidates/b05-thai-steal-look.ts",
+      "sourceSha256": "e6f9513d5880612890290aeab45fa491e20d72c6e897077dc7c790cf8ddd8722",
+      "renders": 3,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 22.23.1"
+      },
+      "fixIterations": 1,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["placement (face)"],
+          "found": "agent, hold frames",
+          "change": "Thai tone marks touched the chin when the subject bends; lockup moved down 30 px."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r03",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 113.9,
+        "renderSha256": "85a57f859af06ad1081421ede5deacb9639abb9f547de3c72689427bba9d2de5",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r03",
+          "node24": "r02",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 388.1,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing l2 ×168",
+          "outside-safe-area footage ×1",
+          "text-contrast l1 ×1",
+          "text-contrast l2 ×2"
+        ],
+        "legibility": [
+          {
+            "layer": "l1",
+            "role": "heading",
+            "worstContrast": 1.02,
+            "worstWord": "ขโมยลุคนี้",
+            "xHeightAt360": 29.39,
+            "measuredFrames": "151/168",
+            "waived": true
+          },
+          {
+            "layer": "l2",
+            "role": "heading",
+            "worstContrast": 1.64,
+            "worstWord": "ไปเลย!",
+            "xHeightAt360": 30,
+            "measuredFrames": "124/168",
+            "waived": true
+          },
+          {
+            "layer": "tag",
+            "role": "label",
+            "worstContrast": 6.13,
+            "worstWord": "LOOK",
+            "xHeightAt360": 15.4,
+            "measuredFrames": "120/168",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "b06-fit-check",
+      "reel": "B",
+      "copy": "fit check / No. 05",
+      "language": "en",
+      "fonts": ["marker", "bebas"],
+      "treatments": ["hard shadow", "box", "sparkle"],
+      "build": "word pops with twist, tag typewriter",
+      "source": "research/editorial-titles-et7a/candidates/b06-fit-check.ts",
+      "sourceSha256": "13776682ac3ff0c76baf03d1da22828ebba34483c6dc5ba5f15f576228a2dd68",
+      "renders": 4,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 22.23.1",
+        "r04": "node 22.23.1"
+      },
+      "fixIterations": 2,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["overflow", "missing-measurement", "decoration-sync"],
+          "found": "agent, phone sheet",
+          "change": "Marker face at 150 px ran off both edges; 124 px. The tag's highlight showed in full behind the first typed glyph (it follows line opacity, not per-glyph build); its reveal is keyed to the typing."
+        },
+        {
+          "after": "r03",
+          "causes": ["contrast (lint)", "decoration-sync"],
+          "found": "comp lint text-contrast: tag 2.03:1 on frames 23-29 (Node 22 verification run)",
+          "change": "Typed glyphs appeared before the keyed box reached them; the box reveal now leads the typing (6.8:1 after)."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r04",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 48,
+        "renderSha256": "dd1168d1a914032a0c512722cd548e950dab770c7af36913be1ed663057b9280",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r03",
+          "node24": "r02",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 137.2,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing marker ×168",
+          "outside-safe-area footage ×1",
+          "text-contrast marker ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "marker",
+            "role": "heading",
+            "worstContrast": 1.74,
+            "worstWord": "check",
+            "xHeightAt360": 37.84,
+            "measuredFrames": "149/168",
+            "waived": true
+          },
+          {
+            "layer": "tag",
+            "role": "label",
+            "worstContrast": 6.8,
+            "worstWord": "05",
+            "xHeightAt360": 19.6,
+            "measuredFrames": "129/168",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "b07-chocolate-trousers",
+      "reel": "B",
+      "copy": "chocolate / trousers / THE ONE PIECE I REWEAR",
+      "language": "en",
+      "fonts": ["abril", "caveat-brush", "archivo"],
+      "treatments": ["outline", "box"],
+      "build": "glyph cascade, brush slide",
+      "source": "research/editorial-titles-et7a/candidates/b07-chocolate-trousers.ts",
+      "sourceSha256": "3a05e93bc6d89c7d14615034e3093055a457bb250f4e18cb3ca14c04db3adb74",
+      "renders": 2,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 22.23.1"
+      },
+      "fixIterations": 0,
+      "iterations": [],
+      "verificationRun": {
+        "iteration": "r02",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 10.8,
+        "renderSha256": "abad37f6caa0a02828bfbda1dcf95f6073ae33b4ad648b44e81a5d9a4a62cf31",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r02",
+          "node24": "r01",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 16.8,
+        "lintErrors": [],
+        "lintWarnings": [
+          "outside-safe-area fat ×1",
+          "outside-safe-area brush ×1",
+          "outside-safe-area footage ×1",
+          "text-contrast fat ×1",
+          "text-contrast brush ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "fat",
+            "role": "heading",
+            "worstContrast": 1.02,
+            "worstWord": "chocolate",
+            "xHeightAt360": 28.56,
+            "measuredFrames": "149/168",
+            "waived": true
+          },
+          {
+            "layer": "brush",
+            "role": "heading",
+            "worstContrast": 1,
+            "worstWord": "trousers",
+            "xHeightAt360": 27.3,
+            "measuredFrames": "124/168",
+            "waived": true
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "worstContrast": 9.88,
+            "worstWord": "THE",
+            "xHeightAt360": 6.31,
+            "measuredFrames": "113/168",
+            "waived": false
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    },
+    {
+      "id": "b08-main-character",
+      "reel": "B",
+      "copy": "main character / ENERGY",
+      "language": "en",
+      "fonts": ["playfair-italic", "anton"],
+      "treatments": ["soft shadow", "outline"],
+      "build": "italic typewriter, letters pop centre-out",
+      "source": "research/editorial-titles-et7a/candidates/b08-main-character.ts",
+      "sourceSha256": "d75bbc48a24562509dfb5dfb51a3ce3e599863ea37f403b4c69bd657bfe7d7ad",
+      "renders": 3,
+      "runs": {
+        "r01": "node 24.16.0",
+        "r02": "node 24.16.0",
+        "r03": "node 22.23.1"
+      },
+      "fixIterations": 1,
+      "iterations": [
+        {
+          "after": "r01",
+          "causes": ["overflow", "missing-measurement"],
+          "found": "agent, phone sheet",
+          "change": "Bold italic serif at 96 px ran edge to edge (width estimated from regular-weight advances); 80 px."
+        }
+      ],
+      "verificationRun": {
+        "iteration": "r03",
+        "node": "v22.23.1",
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "renderSeconds": 103,
+        "renderSha256": "6579012940f8919b35426b9fcb3522e6e6e40f2367315a98999f90bfb2db71aa",
+        "node22RenderSameBytesAsNode24": {
+          "node22": "r03",
+          "node24": "r02",
+          "same": true
+        },
+        "lintStatus": "passed",
+        "lintSeconds": 255.8,
+        "lintErrors": [],
+        "lintWarnings": [
+          "comp-text-layout-missing ital ×168",
+          "outside-safe-area footage ×1",
+          "text-contrast ital ×2",
+          "text-contrast caps ×1"
+        ],
+        "legibility": [
+          {
+            "layer": "ital",
+            "role": "heading",
+            "worstContrast": 1.75,
+            "worstWord": "character",
+            "xHeightAt360": 20.56,
+            "measuredFrames": "150/168",
+            "waived": true
+          },
+          {
+            "layer": "caps",
+            "role": "heading",
+            "worstContrast": 1.02,
+            "worstWord": "ENERGY",
+            "xHeightAt360": 73.24,
+            "measuredFrames": "127/168",
+            "waived": true
+          }
+        ]
+      },
+      "agentScore": null,
+      "ownerVerdict": {
+        "accepted": true,
+        "ownerWords": "all yes",
+        "scope": "one answer covering all 16 candidates; no per-candidate comments"
+      }
+    }
+  ],
+  "ownerReview": {
+    "status": "done",
+    "localSheets": {
+      "worktree": "benchmarks/results/editorial-titles-et7a/review/ (git-ignored)",
+      "primaryCheckoutCopy": "benchmarks/results/editorial-titles-et7a-review/ in the primary checkout (git-ignored)",
+      "layout": "reel-a-overview.png and reel-b-overview.png (one hold frame per candidate, 360×640); per candidate <id>/<id>.mp4, phone-sheet.png (entrance, hold and exit rows at 360×640), and entrance/hold/exit sheets at native and phone size"
+    },
+    "successMeasure": {
+      "bar": "At least 3 of 8 AI candidates accepted per clip, on two clips",
+      "result": "pass",
+      "reelA": "8/8 accepted",
+      "reelB": "8/8 accepted",
+      "caveats": [
+        "Both clips are the owner's third-party reference reels, used local-only. Whether they count as the success measure's \"authorized clips\" (D-auth) is still open, and no visual evidence of the pilot can be committed.",
+        "The reels' own burned-in text was visible during review (reel A's small source labels throughout; reel B's segment has none, but the source reel carries a burned-in title outside the segment). It may have shaped the owner's impression.",
+        "One blanket answer gives no per-candidate signal for ranking styles or for preference learning (ET7b)."
+      ]
+    },
+    "verdicts": "All 16 accepted (a01–a08, b01–b08) in one answer, \"all yes\". No per-candidate comments, so the review does not rank candidates or say what made them acceptable.",
+    "date": "2026-11-16",
+    "ownerWords": "all yes",
+    "relayedBy": "the coordinating Claude session (Still Shift editorial typography investigation), quoting the owner"
+  },
+  "notRun": [
+    "pnpm check, release checks and the composition baselines: the only package change is the lint-only background composition, which no render path uses"
+  ],
+  "verification": {
+    "pnpm check:fast": "passed on Node 22.23.1 (462 test files, 4,665 tests)",
+    "tests/browser/composition-text-legibility.ts": "passed (ET3 legibility browser group)",
+    "pnpm test:browser:composition-quality": "passed on Node 22.23.1",
+    "unit": "tests/unit/composition-text-legibility.test.ts: background spans drop their colour and validate (failed on the old #00000000)",
+    "prettier": "changed documents and sources pass"
+  },
+  "agentScores": "None given. The agent's own visual passes (recorded as iteration causes) are the agent's judgement and are not acceptance."
+}

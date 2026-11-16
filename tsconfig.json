@@ -53,6 +53,7 @@
     "apps/**/*.ts",
     "benchmarks/**/*.ts",
     "packages/**/*.ts",
+    "research/**/*.ts",
     "scripts/**/*.ts",
     "tests/**/*.ts",
     "tools/**/*.ts",
