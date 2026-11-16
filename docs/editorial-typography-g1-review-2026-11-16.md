@@ -27,7 +27,8 @@ These are recorded in the owner's words, lightly trimmed.
    of text and animation is not satisfy me." All three treatments are rejected
    on style. No engine defect is named. Earlier, after looking at the proof
    frames, the owner said the Thai text lacks aesthetic quality but "that's not
-   the point". That is a font-choice issue.
+   the point". The agent reads this as a font-choice issue; the owner did not
+   say so.
 2. **T1 "Olive" (2.72:1 over the shadowed wall):** "yes, it's easy to read".
 3. **Small text (T1 folio "No. 03 — Courtyard Edit"):** "I can read … without
    zoom but background make it hard to read." The size is acceptable, but the
