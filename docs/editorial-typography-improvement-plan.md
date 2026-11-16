@@ -664,7 +664,7 @@ every stacked lockup.)
   The canvas is exact; explicit `--format` profiles re-encode sRGB with the
   BT.709 OETF by design, while the default MP4 does not under the same tags
   and lifts BT.709 footage. The test now reads the renderer canvas (results
-  unchanged); the export inconsistency is decision D-colour.
+  unchanged); the export inconsistency was decision D-colour, decided "Match players" (2026-11-16).
 
 **Checks**
 
@@ -902,4 +902,4 @@ All are the owner's. G1 collects them.
 | D-clip   | Keep the committed synthetic fixture clip (merged with ET0)                                                                                | Any time  | Keep                                                                                                                                                                                                         |
 | D-home   | Where orchestration lives long-term                                                                                                        | ET7b      | In-repository skill for the pilot; decide after its size                                                                                                                                                     |
 | D-auth   | Whether local-only third-party reels count as authorized clips for the success measure                                                     | ET7a      | ET7a passed on two such reels; still open. Recommended: confirm on one owner-shot, licensed or synthetic clip                                                                                                |
-| D-colour | Default MP4 and `--format` profiles carry the same BT.709 tags but different code values; default MP4 lifts BT.709 footage up to 16 levels | Any time  | Treat BT.709 SDR as display-equivalent to sRGB in and out, versioned, baselines listed ([evidence](./editorial-typography-et6a-results.json))                                                                |
+| D-colour | Default MP4 and `--format` profiles carry the same BT.709 tags but different code values; default MP4 lifts BT.709 footage up to 16 levels | Any time  | **Decided (2026-11-16):** "Match players": treat BT.709-tagged video as equivalent to sRGB, with no transfer conversion in or out. Implemented on `codex/composition-colour-accuracy` (see its results)      |
