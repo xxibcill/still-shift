@@ -5,6 +5,7 @@
  * the measured frames — white balance, then tone, then saturation — and
  * re-measures the exact predicted result after each stage.
  */
+import { roundTo } from "./composition-color-round.ts";
 import {
   applyGradeToRgba,
   gradeControls,
@@ -138,11 +139,7 @@ export const COLOR_SOLVER_LIMITS = {
   clippedBudget: 0.003,
 } as const;
 
-const round = (value: number, digits = 4) => {
-  const scale = 10 ** digits;
-  const rounded = Math.round(value * scale) / scale;
-  return Object.is(rounded, -0) ? 0 : rounded;
-};
+const round = (value: number, digits = 4) => roundTo(value, digits);
 const clamp = (value: number, min: number, max: number) =>
   Math.max(min, Math.min(max, value));
 

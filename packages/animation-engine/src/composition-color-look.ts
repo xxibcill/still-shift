@@ -3,6 +3,7 @@
  * encoded-sRGB 3×3 + offset transform and report its residuals through the
  * exact `color.matrix` integer path.
  */
+import { roundTo } from "./composition-color-round.ts";
 import { spawn } from "node:child_process";
 import { z } from "zod";
 import {
@@ -22,11 +23,7 @@ import {
 } from "./composition-color-frames.ts";
 
 export const COLOR_LOOK_VERSION = "still-shift-look-1";
-const round = (value: number, digits = 6) => {
-  const scale = 10 ** digits;
-  const rounded = Math.round(value * scale) / scale;
-  return Object.is(rounded, -0) ? 0 : rounded;
-};
+const round = (value: number, digits = 6) => roundTo(value, digits);
 
 const Residual = z
   .object({

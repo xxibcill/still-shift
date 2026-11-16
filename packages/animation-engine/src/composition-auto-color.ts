@@ -3,6 +3,7 @@
  * path, apply a fitted look and/or the adaptive solver as ordinary effects on
  * a video layer, keep the source audio, render, and report before/after.
  */
+import { roundTo } from "./composition-color-round.ts";
 import { spawn } from "node:child_process";
 import { access, link, mkdtemp, mkdir, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
@@ -49,11 +50,7 @@ import {
 export const AUTO_COLOR_REPORT_VERSION = "still-shift-auto-color-report-1";
 /** Default look strength, chosen by the owner from a 50–75% ladder. */
 export const AUTO_COLOR_LOOK_STRENGTH = 0.6;
-const round = (value: number, digits = 4) => {
-  const scale = 10 ** digits;
-  const rounded = Math.round(value * scale) / scale;
-  return Object.is(rounded, -0) ? 0 : rounded;
-};
+const round = (value: number, digits = 4) => roundTo(value, digits);
 
 export type AutoColorRequest = ColorFrameOptions & {
   input: string;

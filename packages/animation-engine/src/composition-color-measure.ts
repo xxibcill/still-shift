@@ -3,6 +3,7 @@
  * over straight encoded-sRGB RGBA8 frames. Pure functions; frames come from
  * `readColorFrames` (the engine's media path) or from a predicted correction.
  */
+import { roundTo } from "./composition-color-round.ts";
 import { srgbToLinear } from "@still-shift/renderer-core";
 
 export const COLOR_STATISTICS_VERSION = "still-shift-color-statistics-1";
@@ -64,11 +65,7 @@ export type ColorStatistics = {
   medianLumaContinuity: number;
 };
 
-const round = (value: number, digits = 6) => {
-  const scale = 10 ** digits;
-  const rounded = Math.round(value * scale) / scale;
-  return Object.is(rounded, -0) ? 0 : rounded;
-};
+const round = (value: number, digits = 6) => roundTo(value, digits);
 function percentile(histogram: Float64Array, total: number, q: number) {
   // Lower nearest-rank on bin centres of a 4096-bin histogram over 0–1.
   const target = Math.max(1, Math.ceil(q * total));
