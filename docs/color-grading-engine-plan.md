@@ -322,6 +322,15 @@ existing 8-bit pipeline.
 animated correction, secondary corrections, LUTs. Look presets are the natural
 next small slice if neutral-but-correct is still too plain.
 
+**Added beyond this scope (recorded after review, PR #70 B1).** Built while
+measuring and tuning with the owner, kept as accepted additions:
+`comp color-stats` (the statistics report on its own), `--adaptive` and
+`--adaptive-strength` (adaptive corrections on top of a look), `--frames`
+(sample count), `--backend` (Canvas or WebGL render), `--pairs-per-shot` and
+`--after-interpretation` (look fitting controls), and
+`scripts/color/cga-owner-evaluation.ts` (local owner sheets and measurements,
+writing only to git-ignored `dist/`).
+
 **Checks** (2026-11-16, `codex/cga-auto-color`; numbers in
 [CGA results](./color-grading-cga-results.json); RMS is of 255)
 
