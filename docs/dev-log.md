@@ -45,7 +45,7 @@ still hold before relying on them.
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
-- **Editorial titles ET7a (2026-11-16):** generator pilot in review as [PR #69](https://github.com/xxibcill/still-shift/pull/69) on `codex/editorial-titles-et7a`. 16 candidates (8 per reel, 4 Thai or mixed) pass strict coverage and pixel lint. The owner reviewed the local contact sheets and answered "all yes": 16/16 accepted, so the success measure (at least 3 of 8 per clip, two clips) is met. Caveats: both clips are third-party reels used local only, so D-auth stays open and nothing visual is committed; the reels' burned-in labels were visible during review; one blanket answer does not rank styles. Next by the pilot's evidence: ET6a, then ET6b widened to treated display text, then small fixes, then ET4. [ET7a results](./editorial-typography-et7a-results.json).
+- **Editorial titles ET7a (2026-11-16):** generator pilot in review as [PR #69](https://github.com/xxibcill/still-shift/pull/69) on `codex/editorial-titles-et7a`. 16 candidates (8 per reel, 4 Thai or mixed) pass strict coverage and pixel lint. The [PR review](https://github.com/xxibcill/still-shift/pull/69#pullrequestreview-5918679207)'s five findings are fixed on the branch, one commit each. The owner reviewed the local contact sheets and answered "all yes": 16/16 accepted, so the success measure (at least 3 of 8 per clip, two clips) is met. Caveats: both clips are third-party reels used local only, so D-auth stays open and nothing visual is committed; the reels' burned-in labels were visible during review; one blanket answer does not rank styles. Next by the pilot's evidence: ET6a, then ET6b widened to treated display text, then small fixes, then ET4. [ET7a results](./editorial-typography-et7a-results.json).
 
 - **Editorial titles G1 (2026-11-16):** owner review done; recorded in [PR #68](https://github.com/xxibcill/still-shift/pull/68) on `codex/editorial-titles-g1`.
   - **Treatments:** the owner watched T1–T3 re-rendered from `main` a897acb4 (with ET5a/ET5b) and rejected all three on text style and animation, not on engine defects.
@@ -101,6 +101,23 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-16 — Editorial titles ET7a: PR #69 review fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-et7a` (from PR head e9fcee08).
+- **Scope:** the five findings of the [PR #69 review](https://github.com/xxibcill/still-shift/pull/69#pullrequestreview-5918679207), one commit each.
+- **Done:**
+  - 1/5: the npm package leaves out `skills/design-editorial-titles`, whose links point at unpackaged `research/`, `scripts/` and `assets/` paths. The package test covers this, and the skill says it is repository-only.
+  - 2/5: `tsconfig.json` and the prettier globs now cover `research/`. One existing research note was reformatted.
+  - 3/5: `et7a-check.ts --lint-only true` refuses any change other than `metadata.readingPolicy`, so a render and its lint always match.
+  - 4/5: a failed `export-json` is recorded in the check summary instead of throwing ENOENT.
+  - 5/5: `grammar.ts` `leave()` throws for keys with no rest value (colours, stroke width, axes, leading).
+- **Results:**
+  - `pnpm check:fast` passed on Node 22.23.1 (462 test files, 4,665 tests); `tsc` now includes `research/`.
+  - The check-script paths were exercised on scratch copies of b07: refusal, waiver-only re-lint, export failure, and a normal render byte-identical to the recorded r02.
+  - All 16 candidate exports are unchanged apart from `metadata.builder` source line numbers.
+  - Not run: `pnpm check`, browser groups, baselines.
+- **Open / next:** owner merge of PR #69, then ET6a.
 
 ### 2026-11-16 — Editorial titles ET7a: generator pilot, owner accepted 16/16
 
