@@ -94,4 +94,26 @@ describe("CGA CLI output safety", () => {
       "keep\n",
     );
   });
+  it("look fit checks --output before reading any clip", async () => {
+    const output = join(root, "look.json");
+    await writeFile(output, "keep\n");
+    const missing = join(root, "no-such-clip.mkv");
+    for (const [args, code] of [
+      [["--output", output], "comp-program-output"],
+      [[], "invalid-scene"], // missing --output, not a media error
+    ] as const) {
+      const result = await run([
+        "look",
+        "fit",
+        "--before",
+        missing,
+        "--after",
+        missing,
+        ...args,
+      ]);
+      expect(result.code).not.toBe(0);
+      expect(failure(result.stderr).diagnostics[0]!.code).toBe(code);
+    }
+    expect(await readFile(output, "utf8")).toBe("keep\n");
+  });
 });

@@ -279,6 +279,8 @@ export async function runColorCommand(
         "--after-interpretation must be code-values or media-path",
         "after-interpretation",
       );
+    // Check the output before decoding and fitting (minutes on real clips).
+    const output = await newOutput(requireArgument(values, "output"), "output");
     const before: string[] = [];
     for (const entry of requireArgument(values, "before").split(","))
       before.push(...(await videos(entry)));
@@ -293,7 +295,6 @@ export async function runColorCommand(
         : {}),
       progress: progress(io),
     });
-    const output = resolve(requireArgument(values, "output"));
     await writeNew(output, JSON.stringify(look, null, 2) + "\n", "output");
     io.stdout(
       json({
