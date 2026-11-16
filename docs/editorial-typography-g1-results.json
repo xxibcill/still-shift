@@ -56,7 +56,7 @@
       "native shapes for decorations"
     ],
     "possibleGaps": [
-      "static glyph outline as a text-style field (outline found only on text animators)",
+      "static glyph outline as a text-style field (outline found only on text animators; a stroke/strokeWidth animator held at its end state with `to` may already give one, test first)",
       "cut-synchronised changes (needs external cut detection)"
     ],
     "outOfScopeForET7a": ["text behind the subject (subject matte)"]

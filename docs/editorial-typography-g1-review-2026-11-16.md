@@ -102,7 +102,7 @@ confirm it with real candidates and count the iterations each gap costs.
 | Reference technique                     | Current engine (per docs)                                                             | Status for ET7a        |
 | --------------------------------------- | ------------------------------------------------------------------------------------- | ---------------------- |
 | Mixed fonts, sizes and colours per word | `spans` may reference another named style (with its own `fontAsset`)                  | Test                   |
-| Outline around glyphs                   | Text animator `stroke` and `strokeWidth` (glyph outline). No static style field found | Test; possible gap     |
+| Outline around glyphs                   | Text animators `stroke`/`strokeWidth`; `to` may hold it static. No style field found. | Test; possible gap     |
 | Drop shadow, glow                       | Layer effects `light.drop-shadow` and `light.glow`                                    | Test                   |
 | Box behind a subtitle                   | `textBox` and caption containers; highlight and box decorations                       | Test                   |
 | Word-by-word build                      | `revealMode: "words"`, text animators per word                                        | Test                   |

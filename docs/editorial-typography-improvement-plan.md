@@ -501,8 +501,9 @@ varied, and which engine gaps cost the most, before more engine work is designed
 
   The [G1 record](./editorial-typography-g1-review-2026-11-16.md#engine-capability-against-the-references)
   maps each technique to current engine features. Confirm that mapping
-  first, starting with whether a static glyph outline is possible without a text
-  animator.
+  first, starting with the static glyph outline: try a `stroke`/`strokeWidth`
+  text animator held at its end state with `to`, and only if that fails treat
+  the outline as an engine gap.
 
 - Inputs from G1: pinned fonts (the approved list plus popular free Thai
   families) and the owner's reference reels as **local-only** test footage.
