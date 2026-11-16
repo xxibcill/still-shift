@@ -73,14 +73,13 @@ sub-label is 24–46 px, which keeps an x-height of at least 6 px at 360 px
 review width. Two or three lines; stack them with slight horizontal offsets
 (zig-zag) and let the script overlap the caps a little.
 
-**Placement.** Centre lines with `align: "center"` and the origin at the line's
-centre x (alignment is around the origin, not inside a box). Put the stack's
-top below the face's lowest point over the whole clip plus about 30 px; keep
-it above the hips. Without a measuring command, estimate widths before
-rendering: about 0.44 em per capital in Anton, 0.37 in Bebas, 0.66 in Abril,
-0.65–0.8 in Archivo at `wdth` 125, 0.27–0.32 per lowercase letter in the
-scripts, and 0.55–0.75 per Thai base consonant in the heavy Thai faces. Keep
-at least 40 px from each edge, then let lint confirm.
+**Placement.** Place by measurement, never by estimate (see
+[Measure](#measure)): fit each line's ink to the width you chose, centre it on
+its ink (not its advance: tracking and italic overhang move the ink off the
+origin), and stack lines on measured ink, outline or cap edges with the gap
+you chose. Put the stack's top below the face's lowest point over the whole
+clip plus about 30 px; keep it above the hips and at least 40 px from each
+edge, then let lint confirm.
 
 **Colour.** Two or three colours taken from the outfit or the room (cranberry,
 cream, chocolate, gold, lavender, teal…), plus one dark or cream outline
@@ -96,9 +95,11 @@ colour that separates every word from the footage.
 - _Halo_: a drop shadow with offset `[0, 0]` in a dark or accent colour.
   `light.glow` has no colour; it brightens the layer's own pixels.
 - _Box_: a `highlight` decoration (the `box` kind is a stroked outline). It
-  centres on the baseline minus half the x-height, plus `offset`; use offset 0
-  for caps-only faces such as Bebas, about −4 for mixed-case label faces.
-  Default thickness is 1.25 × cap height. It has no horizontal padding.
+  centres on the baseline minus half the x-height, plus `offset`. Take the
+  offset from the measurement (`highlightOffset` centres it on the cap band
+  or on the label's ink): 0 for caps-only faces such as Bebas, −4.29 for a
+  46 px Archivo label. Default thickness is 1.25 × cap height; the measured
+  decoration `paint` box is what it covers. It has no horizontal padding.
   Set `fadeWithText: true`, and key its `reveal` when the text types in
   glyph by glyph (the box does not follow per-glyph opacity).
 - _Hollow caps_: a transparent fill (`#FFFFFF00`) with an outline animator.
@@ -109,6 +110,56 @@ stagger 1–3), a drop or slide cascade, or caps tracking in. Hold untouched
 through the cuts. Exit in 0.3–0.5 s (fade with a small move, or reverse glyph
 order). Use the markers from the `research/editorial-titles-et7a/grammar.ts`
 helpers (`build`, `hold`, `exit`) so the check script picks the right frames.
+
+## Measure
+
+Ask Still Shift for the geometry before rendering; do not read font files
+with outside tools or estimate widths from per-letter tables (the pilot's
+guesses cost 5 of its 11 fix iterations):
+
+```bash
+pnpm --silent still-shift comp measure --input <candidate.ts> --font-coverage strict --output <candidate>.measure.json
+```
+
+It runs the pinned browser's font loading and text preparation only (no
+frames, no footage, about 0.7 s) and reports, for every text layer and
+state, in **layer-local pixels** (origin at the layer's position, y down):
+
+- `ink` and `advance` boxes for the layer, each line, each span (with that
+  span's own font metrics) and each word (the units a `word` animator moves);
+- each line's `baseline`, `capTop` and `xTop`, and the font's `ascent`,
+  `descent`, `capHeight`, `xHeight` and `lineHeight` at the size used;
+- `outline`: the held stroke's width, its `extent` outside the ink
+  (`strokeWidth / 2`) and the outlined ink box;
+- `decorations`: each mark's painted box per line, and the `offset` that
+  would centre a highlight on the cap band or on the ink;
+- `motionBounds`: the render-time bounds, including every animator pose
+  (for culling and safe areas, not for placing);
+- `origin`: where the layer-local origin sits in the frame, when the layer
+  is placed by a plain translation.
+
+Measurements do not depend on a layer's position, so a candidate can place
+itself from its own measurement with the helpers in
+[`research/editorial-titles-et7a/layout.ts`](../../research/editorial-titles-et7a/layout.ts):
+
+```ts
+const m = readMeasure(new URL("./b02.measure.json", import.meta.url));
+const ital = m && measured(m, "brown", { text: "brown", size: 170 });
+// fitSize(ital, 170, 520) → the size whose ink is about 520 px wide;
+// centreOn(ital, 360) and topAt(ital, 420) → whole-pixel origin x and y;
+// bottomOf(ital, y) + gap, then topAt(next, …, "outline") stacks the next line;
+// highlightOffset(mid, 0, "cap") → the box offset that centres on the caps.
+```
+
+Write the first draft with any origins, measure, then place and fit. After
+changing copy, font, size, tracking or the outline, measure again:
+`measured(…, { text, size })` refuses a stale file. Glyph widths scale with
+size but not exactly, so after `fitSize` measure again and step down a pixel
+while the ink is still too wide. Rendered pixels agree with the measured
+boxes within 2 px per edge (most within 1). Origins from `centreOn` and
+`topAt` are whole pixels, which keeps glyph edges sharp. The measurement
+file holds only the candidate's own copy and geometry, nothing from the
+footage.
 
 ## Check loop
 
@@ -128,6 +179,7 @@ render, sheets); the second adds `comp lint --pixels true --legibility true
 `benchmarks/results/editorial-titles-et7a/<candidate>/`.
 
 1. **Validate.** Strict coverage must pass. Fix located errors first.
+   (`comp measure --font-coverage strict` runs the same gate.)
 2. **Look at the phone sheet** (entrance, hold, exit rows at 360×640) and the
    native sheets: face clear on every hold frame, nothing cut off, every word
    readable at phone size, the build reads in order, nothing orphaned.
@@ -147,7 +199,8 @@ render, sheets); the second adds `comp lint --pixels true --legibility true
 4. **Record** each iteration: what you changed and the cause, from this list:
    _placement_ (face, framing), _overflow_ (off-canvas), _contrast_,
    _collision_ (words or marks overlapping badly), _seams_, _missing
-   measurement_ (a width, line height or decoration offset you had to guess),
+   measurement_ (a width, line height or decoration offset `comp measure`
+   could not give you; say what was missing),
    _font pin_, _engine behaviour_ (a surprise in an existing feature),
    _decoration sync_. Never move coordinates by hand outside a recorded
    iteration; no person edits coordinates.

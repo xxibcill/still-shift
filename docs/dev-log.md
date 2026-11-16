@@ -45,7 +45,9 @@ still hold before relying on them.
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
-- **Editorial titles ET7a (2026-11-16):** generator pilot in review as [PR #69](https://github.com/xxibcill/still-shift/pull/69) on `codex/editorial-titles-et7a`. 16 candidates (8 per reel, 4 Thai or mixed) pass strict coverage and pixel lint. The [PR review](https://github.com/xxibcill/still-shift/pull/69#pullrequestreview-5918679207)'s five findings are fixed on the branch, one commit each. The owner reviewed the local contact sheets and answered "all yes": 16/16 accepted, so the success measure (at least 3 of 8 per clip, two clips) is met. Caveats: both clips are third-party reels used local only, so D-auth stays open and nothing visual is committed; the reels' burned-in labels were visible during review; one blanket answer does not rank styles. Next by the pilot's evidence: ET6a, then ET6b widened to treated display text, then small fixes, then ET4. [ET7a results](./editorial-typography-et7a-results.json).
+- **Editorial titles ET6a (2026-11-16):** `comp measure` done on `codex/editorial-titles-et6a` (not pushed; owner asked to push or open a PR only on request). Measured geometry comes from the renderer's own text preparation and agrees with rendered pixels within ±2 px per edge (most within 1). The design skill uses it instead of fontTools and width tables. Next: ET6b, which needs the owner's reading rule (D-read) and the G1 display contrast level; then the small-fixes bundle; EC (effect render cost) before ET7b. [ET6a results](./editorial-typography-et6a-results.json).
+
+- **Editorial titles ET7a (2026-11-16):** generator pilot merged on `main` via [PR #69](https://github.com/xxibcill/still-shift/pull/69) (9d69a4f7) from `codex/editorial-titles-et7a`. 16 candidates (8 per reel, 4 Thai or mixed) pass strict coverage and pixel lint. The [PR review](https://github.com/xxibcill/still-shift/pull/69#pullrequestreview-5918679207)'s five findings are fixed on the branch, one commit each. The owner reviewed the local contact sheets and answered "all yes": 16/16 accepted, so the success measure (at least 3 of 8 per clip, two clips) is met. Caveats: both clips are third-party reels used local only, so D-auth stays open and nothing visual is committed; the reels' burned-in labels were visible during review; one blanket answer does not rank styles. Next by the pilot's evidence: ET6a (done on its branch, above), then ET6b widened to treated display text, then small fixes, then ET4. [ET7a results](./editorial-typography-et7a-results.json).
 
 - **Editorial titles G1 (2026-11-16):** owner review done; recorded in [PR #68](https://github.com/xxibcill/still-shift/pull/68) on `codex/editorial-titles-g1`.
   - **Treatments:** the owner watched T1–T3 re-rendered from `main` a897acb4 (with ET5a/ET5b) and rejected all three on text style and animation, not on engine defects.
@@ -57,7 +59,7 @@ still hold before relying on them.
     - The fonts are approved: the list plus popular free Thai families.
   - **Clips:** the owner's reference reels, local only ("Yes, local only"). They are third-party, so nothing made from them is committed; the repository is public.
   - **Pending owner decision:** D-auth, whether the local-only reels count as the success measure's authorized clips (recommended: at least one owner-shot, licensed or synthetic clip).
-  - **Next:** ET6a (ET7a done; owner accepted 16/16).
+  - **Next:** ET6b (ET7a done, owner accepted 16/16; ET6a done on its branch).
   - Records: [G1 record](./editorial-typography-g1-review-2026-11-16.md) and [G1 results](./editorial-typography-g1-results.json).
 - **Editorial titles ET5b (2026-11-16):** serif seam fix (O11) merged on `main` via [PR #67](https://github.com/xxibcill/still-shift/pull/67) from `codex/editorial-titles-et5b` (from `main` 0af3a405). Root cause: each glyph was drawn as a slice of its line's raster cut at the advance, so a serif overhanging the advance moved and faded with the neighbouring glyph. Lines whose glyphs have different poses now draw runs of same-pose glyphs from their own shaped rasters; settled lines keep the slices and are pixel-identical. The review's findings are fixed, one commit each (bounded segment cache, mixed-colour tint, joined glyphs kept whole across poses, WebGL2/memory/parallel groups run, test wording); `typography/glyph-performance` re-recorded once more. Renderer versions `composition-canvas-1.47.8` / `composition-webgl2-0.68.8`. `main` (with ET5a, PR #66) was merged into the branch before merge, and ET0 `--check` rerun. The owner watched the re-rendered treatments in G1; no engine defect was named. [ET5b results](./editorial-typography-et5b-results.json).
 
@@ -101,6 +103,26 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-16 — Editorial titles ET6a: `comp measure`
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-et6a` (from `main` 9d69a4f7).
+- **Scope:** ET6a, the text measurement command, ordered first by the ET7a pilot (5 of 11 fix iterations, plus fontTools for every stacked lockup).
+- **Done:**
+  - `comp measure` (CLI, `--output`, `--font-coverage strict`), `measureCompositionFile` (Node) and `measureCompositionText` (browser). Node validates the document, font files and coverage without preparing media; the browser runs `loadCompositionFonts` and `prepareCompositionText` and reads the shaped layouts. No frame is drawn.
+  - Report `composition-measure-1`, layer-local: render-time `motionBounds`, ink and advance boxes per layer, line, span (with its own font metrics) and word; baselines, cap and x-height lines; outline width and extent; decoration boxes and the offsets that centre a highlight.
+  - Lint's browser page setup moved unchanged into `composition-browser-page.ts`, shared by lint and measure.
+  - `research/editorial-titles-et7a/layout.ts` (fit, centre, stack, highlight offset over a measurement); the design skill now measures instead of estimating or reading fonts with fontTools.
+- **Results:**
+  - Failing first: on `main`, `comp measure` is an unknown command and the test cannot import the API. The pilot's guesses miss in pixels: LEATHER at 96 px keeps 57 px margins against a 72 px target, main character 17 px, the −30 highlight sits about 20 px off the caps, and the metric stack overlaps by 55 px instead of a 24 px gap. Placed from measurement, all hit their targets.
+  - Pixels: 49 of 57 measured edges within 1 px, worst 1.82 px; stated tolerance ±2 px per edge. Latin, Thai, mixed Thai/English and three-font spans covered.
+  - `motionBounds` equals render-time `textBounds` exactly on every text layer of the ten ET0 fixtures and pass-1 T1–T3.
+  - 100 layers measure in about 0.7 s; one measure call about 0.65 s. SIGINT leaves no temporary files.
+  - The native appearance module list gains `text-measure.ts` (identity hash changes, as for any `text.ts` edit); no render changes.
+  - Verification on Node 22.23.1: `pnpm check:fast` (463 files, 4,672 tests), `test:browser:composition-quality` (with the ET2/ET3/ET5a lint groups), `typography`, `composition-typography-adapter`, and `composition-baselines` with every render hash unchanged. Four failed `check:fast` runs and the test's first failures are kept in the results. Not run: `pnpm check`, release checks, WebGL2.
+- **Rejected / do not repeat:** a separate "single text request" JSON format (one schema is simpler: a one-layer composition); a builder API (programs run in Node and cannot shape text). A shell `>` redirect to a file the program reads leaves it empty while measuring; use `--output`.
+- **Open / next:** owner review and merge; then ET6b (needs the owner's reading rule, D-read). The pilot's effect-cost finding is now tracked as EC. Noted, not investigated: rendered PNG colours differ from authored hex by a few levels (for example `#2F6F6A` renders as (31,97,92)).
+- **Records:** [plan](./editorial-typography-improvement-plan.md#et6a--text-measurement-command), [ET6a results](./editorial-typography-et6a-results.json).
 
 ### 2026-11-16 — Editorial titles ET7a: PR #69 review fixes
 

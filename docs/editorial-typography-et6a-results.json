@@ -1,0 +1,163 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-et6a",
+  "milestone": "ET6a — Text measurement command",
+  "plan": "docs/editorial-typography-improvement-plan.md#et6a--text-measurement-command",
+  "date": "2026-11-16",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/editorial-titles-et6a",
+  "base": "main 9d69a4f7 (Merge PR #69; ET7a)",
+  "toolchain": "Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed before any work)",
+  "why": "ET7a ranked measurement first: 5 of its 11 fix iterations (4 guessed widths: a02, a08, b06, b08; 1 guessed highlight offset: b02), and the agent read cap height, x-height and advances from the font files with fontTools for every stacked lockup.",
+  "failingFirst": {
+    "onMain": "On main 9d69a4f7, `comp measure --input benchmarks/fixtures/editorial-titles/o5-plex-thai.ts` fails with comp-program-command \"Unknown composition command measure\" (exit 1), and tests/browser/composition-text-measure.ts fails to load: '@still-shift/animation-engine' has no export measureCompositionFile. Run in a scratch worktree of 9d69a4f7 with the new test and fixture files copied in.",
+    "pilotGuesses": "Each case renders once as the pilot placed it without measurement; the test asserts the guess misses its target in pixels and the measured placement hits it. Numbers are in `cases`."
+  },
+  "surface": {
+    "cli": "comp measure --input <composition.json|program.ts> [--output <measure.json>] [--font-coverage legacy|strict]",
+    "nodeApi": "measureCompositionFile(path, { signal, fontCoverage, ownsProcessSignals }) in @still-shift/animation-engine",
+    "browserApi": "measureCompositionText(composition, assetUrl) in @still-shift/renderer-core; CompositionText.measure()",
+    "schema": "composition-measure-1 (report) wrapping composition-text-measure-1 (layers)",
+    "decisions": [
+      "One schema for a composition and for a single text request: a single request is a one-layer composition, so there is no second input format to keep in step with text layers.",
+      "No builder API: builder programs run in Node and cannot shape text. Measurements are layer-local and do not depend on a layer's position, so a program places itself from its own saved measurement (`--output`, then readMeasure/measured in research/editorial-titles-et7a/layout.ts, which refuses a measurement made for other copy or size).",
+      "`--output` writes the report only once measured, replacing the file in one step: a shell `>` redirect empties the file the program reads before measuring finishes (found when the two-pass flow failed with \"Unexpected end of JSON input\").",
+      "The browser page setup (Vite middleware server, pinned Chromium, cleanup on abort) moved from composition-lint.ts into composition-browser-page.ts unchanged and is shared; lint keeps its composition-lint-vite- cache prefix, measure uses composition-measure-vite-.",
+      "Measure prepares no video, sequence, image or audio media (text layout does not depend on them) and refuses compositions with native 3D (comp-measure-unsupported)."
+    ]
+  },
+  "samePath": "Node: readCompositionDocument, validatePreparedAssets (fonts), checkCompositionFonts (ET1 coverage), as comp validate. Browser: loadCompositionFonts and prepareCompositionText, exactly as rendering calls them, with a bounds-only canvas source (the one text frame discovery already uses), then the shaped layouts of prepared typography. Ink boxes are the shaped clusters' measureText bounds; motionBounds is the same `bounds` the renderer passes as textBounds.",
+  "output": {
+    "coordinates": "layer-local pixels: origin at the layer's position, y down; `origin` gives the composition position when the layer is a plain translation (no anchor, scale, rotation, skew, parent, camera or precomp)",
+    "perState": "motionBounds (render textBounds), advance, ink, base-font metrics (size, ascent, descent, capHeight, xHeight, lineHeight, tracking)",
+    "perLine": "advance box, ink, baseline, capTop, xTop",
+    "perSpan": "the span's own font metrics; per line: text, advance, ink, capTop, xTop",
+    "perWord": "word units as `word` animators move them (Unicode word segmentation; punctuation joins the word before it): text, line, spans, advance, ink",
+    "outline": "largest drawn strokeWidth over reachable visible frames (0.25 px grid), extent = strokeWidth / 2, outlined ink per layer and line",
+    "decorations": "kind, thickness, offset, painted box per line at full reveal, and for highlight/strike centredOffset {cap, ink}; brush and ink line styles flagged approximate",
+    "notMeasured": "text without a pinned font (listed with the reason); layer effects such as drop shadows and halos; native 3D compositions"
+  },
+  "cases": {
+    "fixtures": "benchmarks/fixtures/editorial-titles/et6a-measure.ts (paper frame 720×1280, pinned fonts in assets/editorial-titles/fonts)",
+    "test": "tests/browser/composition-text-measure.ts (also run by pnpm test:browser:composition-quality)",
+    "widths": [
+      {
+        "pilot": "a02 r02",
+        "copy": "LEATHER (Archivo wght 900 wdth 125, tracking 40)",
+        "guess": "96 px; the skill's table (0.65–0.8 em per capital) predicted 437–538 px wide",
+        "guessRendered": "605 px ink, 57 px margins (target 72)",
+        "measured": "fitted to 91 px: 573 px ink, 73 px margins",
+        "note": "The pilot recorded about 20 px margins for its layer, which also carried an outline and a soft shadow; this fixture has neither, so its guess keeps 57 px."
+      },
+      {
+        "pilot": "b08 r01",
+        "copy": "main character (Playfair Display italic wght 800)",
+        "guess": "96 px, estimated from regular-weight advances",
+        "guessRendered": "685 px ink, 17 px margins",
+        "measured": "fitted to 80 px: 572 px ink, 74 px margins (the pilot also settled on 80 px)"
+      }
+    ],
+    "highlightOffset": {
+      "pilot": "b02 r01",
+      "guess": "offset −30 on Bebas caps; the box centre rendered 19.7 px from the caps' ink centre",
+      "measured": "highlightOffset(…, \"cap\") = 0 (Bebas x-height equals cap height): 0.3 px; mixed-case Archivo label highlightOffset(…, \"ink\") = −4.29: 0.11 px (the skill's \"about −4\" guess was close; the pilot's −30 was not)",
+      "paint": "measured decoration paint boxes agree with the rendered box pixels within 0.8 px"
+    },
+    "stackedLockup": {
+      "copy": "layer (Pinyon Script 170 px) over IT UP (Anton 210 px, 12 px held outline)",
+      "guess": "the pilot's metric stack: caps cap line a 24 px gap below the script baseline, both centred on their advance; rendered gap −55 px (the script's descender and the outline are outside that model), centres 355.5 and 361.5",
+      "measured": "script ink centred on 360 and its top at 420; caps outline top = script ink bottom + 24 (layout.ts centreOn/topAt/bottomOf): rendered gap 22 px, centres 360.5 and 360.5",
+      "outline": "strokeWidth 12, extent 6; outlined ink agrees with the rendered ring within 1 px"
+    },
+    "scripts": {
+      "thai": "แต่งตัวปัง in Kanit Black 120 px: ink (marks above and below included) agrees within 1.2 px",
+      "mixedThaiEnglish": "ลุค OOTD with an Anton span: each span's ink agrees within 1 px; spans report kanit-black and anton metrics",
+      "latinSpans": "lace & LEATHER in Playfair italic, a Bodoni italic ampersand span and an Archivo span: each span's ink within 1.03 px; Archivo span cap line and baseline within 0.88 px",
+      "words": "Bebas \"THE\" word box agrees with its pixels within 1 px, cap line to baseline"
+    },
+    "pixelAgreement": {
+      "rule": "A rendered edge is the first or last pixel row or column with at least 12% coverage of the element's rendered colour over its background (on the blend line between the two, within 24 levels), as a half-open box; measured boxes are placed by their layer origins.",
+      "tolerance": "±2 px per edge (stated)",
+      "result": "49 of 57 edges within 1 px; worst 1.82 px (LEATHER ink top)",
+      "why2px": "An exact edge reads up to 1 px outside under the half-open, 12% rule; Chrome's antialiasing and its glyph bounds add the rest. Fractional layer origins spread edges further (worst 1.82 px before origins were rounded, with tops about 1 px high), so layout.ts centreOn/topAt return whole pixels."
+    }
+  },
+  "planChecks": {
+    "boundsEqualTextBounds": {
+      "status": "met",
+      "evidence": "motionBounds equals pixel lint's render-time textBounds exactly (deepEqual) for every text layer of the ten ET0 fixtures (o1 static/animated, o2 origin/control, o3 fade/fade-with-text, o4 video pixel lint, o5, o6, p1) and footage-free copies of pass-1 T1–T3."
+    },
+    "hundredVariants": {
+      "status": "met (timing); peak memory not measured separately",
+      "evidence": "100 Kanit Black layers of varied copy and size in one measure call: about 0.71 s including browser launch; no preview is created and no frame is evaluated. A single measure call takes about 0.65 s."
+    },
+    "inkAndCapBoxes": {
+      "status": "changed",
+      "evidence": "Checked on the ET6a synthetic fixtures at ±2 px instead of the ET0 attach fixture at ±1 px: the attach fixture's footage makes per-colour pixel boxes unreliable, and ±1 px is not met by Chrome's rendering under a coverage rule (see cases.pixelAgreement)."
+    },
+    "cancellation": {
+      "status": "met",
+      "evidence": "SIGINT to the CLI's process group in the browser phase (private TMPDIR with composition-measure-vite- and the Chromium profile present): exit 130, comp-program-aborted on stderr, no report, TMPDIR empty afterwards (apart from tsx's own cache)."
+    },
+    "verification": {
+      "status": "met",
+      "evidence": "pnpm check:fast and pnpm test:browser:composition-quality passed; also typography, composition-typography-adapter and composition-baselines (see finalVerification)."
+    }
+  },
+  "changes": [
+    "packages/renderer-core/src/composition/text-measure.ts: measurement types and measureTextState, measuredLayerOrigin (new).",
+    "packages/renderer-core/src/composition/measure-text.ts: browser entry measureCompositionText (new).",
+    "packages/renderer-core/src/composition/render/text.ts: CompositionText.measure(); no change to bounds, drawing or preparation.",
+    "packages/renderer-core/src/index.ts: exports.",
+    "packages/renderer-core/src/native3d/appearance-modules.ts: regenerated; the closure gains text-measure.ts because text.ts imports it.",
+    "packages/animation-engine/src/composition-measure.ts: measureCompositionFile (new).",
+    "packages/animation-engine/src/composition-browser-page.ts: lint's browser page setup and helpers, moved unchanged (new); composition-lint.ts uses it and re-exports closeViteServer.",
+    "tools/still-shift-cli: comp measure command, usage and README section.",
+    "docs/composition-reference-notes.md: Text measurement (ET6a); docs/composition-reference.md and skills/compose-with-still-shift/SKILL.md regenerated (one command line added).",
+    "research/editorial-titles-et7a/layout.ts: readMeasure, measured, edgeBox, fitSize, centreOn, topAt, bottomOf, highlightOffset (new).",
+    "skills/design-editorial-titles/SKILL.md: Measure section; placement and box offsets from measurement; width table and fontTools removed.",
+    "benchmarks/fixtures/editorial-titles/et6a-measure.ts and README note; tests/browser/composition-text-measure.ts; package.json test:browser:composition-text-measure; composition-quality.ts runs it.",
+    "tests/unit/composition-text-measure.test.ts: origin rule and layout helpers (new)."
+  ],
+  "unchangedOutputs": {
+    "renders": "No render path calls the new code; composition baselines are checked in finalVerification.",
+    "lint": "Lint's browser setup moved without change; the ET2, ET3 and ET5a lint groups inside composition-quality pass.",
+    "identity": "The native appearance code identity (appearance-modules.ts closure and its hash) changes, as for any edit to text.ts (ET5a and ET5b also changed it). This is identity metadata, not pixels."
+  },
+  "observations": [
+    "Rendered PNG colours differ from authored hex values by a few levels (for example #2F6F6A renders as (31,97,92), #4A2716 as (59,23,9)); the test reads rendered colours from the frame. Not investigated; outside ET6a.",
+    "The skill's mixed-case label offset (about −4) was close to the measured −4.29 for a 46 px Archivo label; the pilot's caps guess (−30) was not."
+  ],
+  "limitations": [
+    "Drop shadows, halos and other layer effects are not measured.",
+    "The outline width is the largest any visible glyph reaches over the reachable frames; an outline animated between widths reports its widest.",
+    "Decorations with brush or ink line styles report their nominal band (approximate: true).",
+    "Highlight thickness defaults use the layer's base font cap height, as drawing does, even over a span in another font.",
+    "Compositions with native 3D are refused."
+  ],
+  "notRun": [
+    "Peak memory of the 100-variant measure (only wall time recorded).",
+    "WebGL2: measurement does not depend on the backend (text is prepared by the same Canvas shaping for both); no WebGL2 render was compared with measured pixels.",
+    "pnpm check, full pnpm test, release checks.",
+    "Measuring the ET7a candidates over the local-only reels (not needed: the cases reproduce their failures on committed inputs).",
+    "Human visual acceptance: nothing here is acceptance."
+  ],
+  "finalVerification": {
+    "node": "22.23.1 (pnpm toolchain:check passed)",
+    "checkFast": "passed on the final tree: 463 test files, 4,672 tests",
+    "compositionQuality": "pnpm test:browser:composition-quality passed (316 s); includes the ET2, ET3 and ET5a lint groups and the ET6a test",
+    "compositionTextMeasure": "pnpm test:browser:composition-text-measure passed (about 90 s alone)",
+    "typography": "pnpm test:browser:typography passed (25 s)",
+    "compositionTypographyAdapter": "pnpm test:browser:composition-typography-adapter passed (198 s)",
+    "compositionBaselines": "pnpm test:browser:composition-baselines passed (275 s): every render hash unchanged on darwin-arm64",
+    "lintCleanup": "tests/runtime/mechanism-check-cancellation.test.ts and tests/integration/composition-lint-cache.test.ts passed after the lint page setup moved",
+    "unit": "tests/unit/composition-text-measure.test.ts: origin rule and layout helpers (7 tests)"
+  },
+  "failedRuns": [
+    "check:fast 1: schema:check failed, \"Stale native appearance source closure\": render/text.ts now imports text-measure.ts. Regenerated with pnpm native3d:identity:generate (adds one module).",
+    "check:fast 2: eslint, unused `_w`/`_h` destructuring in the browser test. Fixed.",
+    "check:fast 3: passed (462 files, 4,665 tests) before the reference, README and record edits.",
+    "check:fast 4: tsc, a unit test added during the run passed `outline: undefined` under exactOptionalPropertyTypes. Fixed; check:fast 5 passed.",
+    "ET6a browser test, first runs: strict coverage refused ET0 O5 (kept as a check: measuring under strict fails with font-coverage); the a02 guess left 57 px rather than the pilot's ~20 px (assertion changed to the 72 px target, numbers recorded); nearest-colour pixel classification miscounted antialiased blends and used authored instead of rendered colours (replaced by blend-line classification on rendered colours, searched near each box); the three-font fixture line was wider than the frame (sizes reduced); fractional origins smeared edges to 1.82 px, so layout.ts rounds origins."
+  ]
+}
