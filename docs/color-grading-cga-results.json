@@ -1,0 +1,1371 @@
+{
+  "schema": "still-shift-milestone-results-1",
+  "milestone": "CGA",
+  "title": "Automatic exposure, contrast, saturation and white balance for flat SDR clips, plus look from an example",
+  "date": "2026-11-16",
+  "branch": "codex/cga-auto-color",
+  "base": "main a897acb4",
+  "plan": "docs/color-grading-engine-plan.md#cga--automatic-exposure-contrast-saturation-and-white-balance-for-flat-sdr-clips",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "ffmpeg": "8.0.1",
+    "browser": "pinned Chromium 151 / SwiftShader (chromium-software-2)",
+    "platform": "darwin-arm64"
+  },
+  "visualAcceptance": "none — software measurements only; the owner reviews the contact sheets in dist/cga-owner/sheets",
+  "checks": [
+    {
+      "check": "Synthetic fixture: known exposure / contrast / desaturation / white-balance changes restored within stated residuals",
+      "status": "met (saturation restored to the solver's targets, not to the reference)",
+      "fixture": "benchmarks/fixtures/color/cga-synthetic.ts (96x160, 12 frames, FFV1 lossless)",
+      "rmsOf255AgainstReference": {
+        "exposure": {
+          "degraded": 24.37,
+          "corrected": 2.35,
+          "statedBound": 3
+        },
+        "contrast": {
+          "degraded": 14.42,
+          "corrected": 1.81,
+          "statedBound": 2.5
+        },
+        "whiteBalance": {
+          "degraded": 5.67,
+          "corrected": 0.66,
+          "statedBound": 1
+        },
+        "saturation": {
+          "degraded": 16.76,
+          "corrected": 13.66,
+          "statedBound": "≤ 0.85 × degraded; median saturation lifted to ≥ 0.15",
+          "medianSaturation": {
+            "reference": 0.3,
+            "degraded": 0.125,
+            "corrected": 0.172
+          }
+        }
+      },
+      "test": "tests/integration/composition-color.test.ts"
+    },
+    {
+      "check": "A well-balanced fixture changes by less than a stated threshold",
+      "status": "met: no effect applied (exact identity); threshold 0"
+    },
+    {
+      "check": "Same input gives a byte-identical report and parameters on rerun",
+      "status": "met: statistics with a cold second cache, solutions and auto-color reports (minus the composition path) are byte-identical"
+    },
+    {
+      "check": "Parameters constant over the clip; frame-to-frame luma continuity equals the source's",
+      "status": "met within codec noise",
+      "detail": "One static effect stack per clip. Synthetic: |Δ median-luma continuity| < 0.01. Owner clips (12 sampled frames, source → rendered output): Woman_lowers_arms_beside 0.000601→0.000362; Woman_releasing_fabric_h 0.000843→0.001317; Woman_rising_from_stool_ 0.00107→0.001285; Woman_shifting_weight_in 0.001347→0.001577; Woman_shifting_weight_in 0.001033→0.001583; Woman_smiling_at_camera_ 0.002534→0.002178; Woman_stepping_forward_f 0.000356→0.000341; Woman_taking_side_step_3 0.001092→0.001668; Woman_taking_step_toward 0.000401→0.000504; Woman_turning_shoulders_ 0.000692→0.000698; Woman_turns_toward_camer 0.002015→0.002417; Woman_waving_in_continuo 0.000928→0.000579"
+    },
+    {
+      "check": "Clipped/crushed fractions within budget; gradient within the banding bound",
+      "status": "met",
+      "detail": "Synthetic cases add < 0.4% clipped and < 0.4% crushed pixels; every ramp step after correction ≤ 2 codes (stretch ≤ 1.3). Solver clipping guard: +0.3% budget."
+    },
+    {
+      "check": "color.vibrance exact Canvas/WebGL parity and neutral identity",
+      "status": "met",
+      "detail": "pnpm test:browser:composition-grade-effects: 10 cases × 524,288 opaque colors, 32,895 premultiplied byte pairs, 81 layer-kind/seek cases; max delta 0 between backends and against the integer reference (gradeBytes). Same for color.matrix and color.white-balance. CE6 catalogue-grade fixture: exact parity, new baseline darwin-arm64-grade-1.json."
+    },
+    {
+      "check": "Output frame count, duration and audio match the source",
+      "status": "met (audio container is 0.02 s longer: the composition master spans the picture)",
+      "detail": {
+        "frameCount": "72 = 72 on all 24 owner renders; 12 = 12 synthetic",
+        "durationSeconds": [3],
+        "audioContainerSeconds": "source 2.98, output 3.00 (silence after the source ends)",
+        "audioCorrelationMin": "0.99869 over the 11 clips with sound; one clip is digital silence in both (difference -120 dBFS)",
+        "audioDifferenceDbMax": -79.81,
+        "decodedSamples": "source 143,360, output 144,384 (AAC frame padding in decode)"
+      }
+    },
+    {
+      "check": "smpte170m source decodes to the same RGB as a BT.601 reference within one code value; rotated and VFR keep their diagnostics",
+      "status": "met on 4:4:4; on the owner's 4:2:0 clip 99.5% within one code value (p99 1, max 6 at chroma edges)",
+      "detail": {
+        "synthetic444": "limited-range BT.601 chroma ramp: max 1 code value against an independent float64 BT.601 conversion; BT.709 coefficients would be 19 off (tests/integration/composition-media-cache.test.ts)",
+        "ownerClip": {
+          "clip": "Woman_stepping_forward_fdfc351e_1080p.mp4",
+          "ordinal": 36,
+          "color": {
+            "primaries": "bt709",
+            "transfer": "iec61966-2-1",
+            "matrix": "smpte170m",
+            "range": "tv"
+          },
+          "ffmpegDefaultSwscale": {
+            "max": 7,
+            "p99": 3,
+            "withinOneShare": 0.5311165766460906
+          },
+          "float64Bt601OnFfmpegChroma": {
+            "max": 6,
+            "p99": 1,
+            "withinOneShare": 0.9954775913065843
+          }
+        },
+        "note": "4:2:0 differences come from chroma upsampling (the media path upsamples inside one swscale step; the reference upsamples to yuv444p first), not the matrix. FFmpeg's default swscale flags (no accurate_rnd) differ by up to 7.",
+        "diagnostics": "Flow-style tags probe successfully; rotated → comp-media-rotation, VFR → comp-media-vfr (tests/integration/composition-media-probe.test.ts)"
+      }
+    },
+    {
+      "check": "A look fitted from the owner's pair matches the owner's grade on held-out clips within ~2 RMS/255; color.matrix exact parity",
+      "status": "partly met: 4×4 block means 1.82 RMS (max 2.24) held out; per pixel 2.30 RMS (max 2.69) is above 2 — color.matrix parity met",
+      "detail": {
+        "shots": 11,
+        "unmatchedShots": 0,
+        "afterInterpretation": "code-values",
+        "fitResidual": {
+          "pixels": 22809600,
+          "rms": 2.29,
+          "p95": 4,
+          "p99": 9,
+          "max": 70,
+          "blockRms": 1.816,
+          "blockP95": 3,
+          "blockP99": 6.688
+        },
+        "heldOutPerShot": {
+          "rmsMean": 2.2965,
+          "rmsMax": 2.6918,
+          "p99Max": 11,
+          "blockRmsMean": 1.8206,
+          "blockRmsMax": 2.239
+        },
+        "lookSummary": {
+          "neutralGains": [0.9552, 0.9607, 1.0344],
+          "lumaChange": -0.049,
+          "saturationScale": 1
+        },
+        "params": {
+          "rr": 1.120734,
+          "rg": -0.03536,
+          "rb": -0.146949,
+          "gr": -0.194302,
+          "gg": 1.112833,
+          "gb": 0.028431,
+          "br": -0.119151,
+          "bg": -0.554041,
+          "bb": 1.693797,
+          "ro": 0.008363,
+          "go": 0.00687,
+          "bo": 0.006887
+        },
+        "perShot": [
+          {
+            "after": [0, 43],
+            "before": "Woman_lowers_arms_beside_body_cfbf71b4_1080p.mp4",
+            "correlation": 0.9999,
+            "heldOutRms": 2.4832,
+            "heldOutP99": 9,
+            "heldOutBlockRms": 1.737
+          },
+          {
+            "after": [43, 115],
+            "before": "Woman_releasing_fabric_hem_27cccec4_1080p.mp4",
+            "correlation": 0.9995,
+            "heldOutRms": 2.6402,
+            "heldOutP99": 10,
+            "heldOutBlockRms": 2.239
+          },
+          {
+            "after": [115, 177],
+            "before": "Woman_smiling_at_camera_9fe69beb_1080p.mp4",
+            "correlation": 0.9998,
+            "heldOutRms": 2.6918,
+            "heldOutP99": 11,
+            "heldOutBlockRms": 2.1189
+          },
+          {
+            "after": [177, 249],
+            "before": "Woman_shifting_weight_in_shot_e94018fc_1080p.mp4",
+            "correlation": 0.9999,
+            "heldOutRms": 2.453,
+            "heldOutP99": 8,
+            "heldOutBlockRms": 2.03
+          },
+          {
+            "after": [249, 294],
+            "before": "Woman_rising_from_stool_561a777c_1080p.mp4",
+            "correlation": 0.9997,
+            "heldOutRms": 2.539,
+            "heldOutP99": 11,
+            "heldOutBlockRms": 2.1788
+          },
+          {
+            "after": [294, 361],
+            "before": "Woman_shifting_weight_in_sweatshirt_a70aafdf_1080p.mp4",
+            "correlation": 0.9999,
+            "heldOutRms": 2.5071,
+            "heldOutP99": 8,
+            "heldOutBlockRms": 2.0972
+          },
+          {
+            "after": [361, 425],
+            "before": "Woman_turning_shoulders_on_floor_e7fd8f3b_1080p.mp4",
+            "correlation": 0.9991,
+            "heldOutRms": 2.0195,
+            "heldOutP99": 8,
+            "heldOutBlockRms": 1.5007
+          },
+          {
+            "after": [425, 481],
+            "before": "Woman_taking_step_toward_camera_3df0317b_1080p.mp4",
+            "correlation": 0.9992,
+            "heldOutRms": 2.0329,
+            "heldOutP99": 8,
+            "heldOutBlockRms": 1.6297
+          },
+          {
+            "after": [481, 551],
+            "before": "Woman_taking_side_step_3e3b33bb_1080p.mp4",
+            "correlation": 0.9996,
+            "heldOutRms": 1.7981,
+            "heldOutP99": 6,
+            "heldOutBlockRms": 1.2869
+          },
+          {
+            "after": [551, 610],
+            "before": "Woman_turns_toward_camera_b300f77e_1080p.mp4",
+            "correlation": 0.9995,
+            "heldOutRms": 1.8043,
+            "heldOutP99": 6,
+            "heldOutBlockRms": 1.3071
+          },
+          {
+            "after": [610, 672],
+            "before": "Woman_waving_in_continuous_shot_b433eea6_1080p.mp4",
+            "correlation": 0.9999,
+            "heldOutRms": 2.2922,
+            "heldOutP99": 8,
+            "heldOutBlockRms": 1.9016
+          }
+        ],
+        "whyPerPixelIsHigher": "The graded edit is softer than the raw clips (horizontal luma gradient energy 2.30 vs 2.57 on a matched frame) and re-encoded; no color transform can model that. On 4×4 block means the same transform reaches 1.48 on a single matched frame (the planning session's 1.5). A quadratic color model would lower block RMS to 1.18 on that frame; CGA keeps the planned 3×3 + offset.",
+        "heldOutClip": "Woman_stepping_forward (not in the edit) has no graded counterpart; the look applied to it renders at 1.75 RMS from the exact prediction (H.264 loss)."
+      }
+    },
+    {
+      "check": "Adaptive mode changes the owner's high-key median luma by less than a stated limit",
+      "status": "met: limit 0.02; max |Δ| 0.0107 predicted and 0.0107 measured on the rendered output (12 clips)"
+    },
+    {
+      "check": "At least five owner Flow clips: before/after statistics and contact sheets",
+      "status": "met: 12 clips, look and adaptive renders, sheets in dist/cga-owner/sheets (local, git-ignored); owner review pending"
+    },
+    {
+      "check": "pnpm check:fast passes; existing baselines unchanged; CLI README and the generated reference updated",
+      "status": "see verification"
+    }
+  ],
+  "verification": [
+    {
+      "run": "pnpm check:fast #1",
+      "result": "failed",
+      "reason": "native3d appearance closure stale after adding grade-effects.ts; regenerated with pnpm native3d:identity:generate"
+    },
+    {
+      "run": "pnpm check:fast #2",
+      "result": "failed",
+      "reason": "prettier: scripts/color/cga-owner-evaluation.ts unformatted; formatted"
+    },
+    {
+      "run": "pnpm check:fast #3",
+      "result": "passed",
+      "detail": "463 files / 4,675 tests"
+    },
+    {
+      "run": "pnpm test:browser:composition-grade-effects",
+      "result": "passed",
+      "detail": "max delta 0 everywhere"
+    },
+    {
+      "run": "pnpm test:browser:composition-effects --write-grade-baseline",
+      "result": "passed",
+      "detail": "wrote darwin-arm64-grade-1.json only"
+    },
+    {
+      "run": "pnpm test:browser:composition-effects",
+      "result": "passed",
+      "detail": "frozen CE6 items exact; catalogue-grade exact parity"
+    },
+    {
+      "run": "pnpm test:browser:composition-baselines",
+      "result": "passed",
+      "detail": "176 items, 36,061 frames unchanged"
+    },
+    {
+      "run": "pnpm test:browser:composition-media",
+      "result": "passed"
+    },
+    {
+      "run": "vitest tests/integration/composition-color, -media-cache, -media-probe",
+      "result": "passed",
+      "detail": "27 tests; composition-color first run failed once on a synthetic MKV with AAC priming (audio correlation 0.987, 109-sample offset): the fixture now uses PCM"
+    },
+    {
+      "run": "scripts/color/cga-owner-evaluation.ts",
+      "result": "completed",
+      "detail": "12 clips × (look, adaptive) renders and sheets in 37 min 44 s"
+    },
+    {
+      "notRun": "pnpm check, full pnpm test, release:check, test:runtime"
+    }
+  ],
+  "ownerClips": [
+    {
+      "clip": "Woman_lowers_arms_beside_body_cfbf71b4_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.724542, 0.687912],
+        "medianLumaChange": -0.03663,
+        "saturationP50P90": [
+          [0.120635, 0.288889],
+          [0.115263, 0.387057]
+        ],
+        "clipped": [0.002839, 0.00233],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.7849,
+          "measuredMedianLuma": 0.687912,
+          "continuity": [0.000601, 0],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -86.16,
+            "correlation": 0.99869
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -10.28,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 55.11,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.724542, 0.723565],
+        "medianLumaChange": -0.000977,
+        "measuredOutputMedianLuma": 0.726007,
+        "saturationP50P90": [
+          [0.120635, 0.288889],
+          [0.107692, 0.341636]
+        ],
+        "clipped": [0.002839, 0.003019],
+        "crushed": [0.006614, 0.006719],
+        "neutralTemperature": [-25.7, -17.681],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.7017,
+          "measuredMedianLuma": 0.726007,
+          "continuity": [0.000601, 0.000362],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -86.16,
+            "correlation": 0.99869
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_releasing_fabric_hem_27cccec4_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.710623, 0.677656],
+        "medianLumaChange": -0.032967,
+        "saturationP50P90": [
+          [0.112332, 0.260562],
+          [0.110379, 0.330159]
+        ],
+        "clipped": [0.001321, 0.001755],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.8564,
+          "measuredMedianLuma": 0.676923,
+          "continuity": [0.000843, 0.001021],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -93.39,
+            "correlation": 0.99997
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -6.94,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.0069,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.curves",
+            "params": {
+              "curve": [
+                [0, 0],
+                [0.3538, 0.3463],
+                [0.7076, 0.7076],
+                [0.8538, 0.8569],
+                [1, 1]
+              ]
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 55.38,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.710623, 0.707204],
+        "medianLumaChange": -0.003419,
+        "measuredOutputMedianLuma": 0.707204,
+        "saturationP50P90": [
+          [0.112332, 0.260562],
+          [0.125763, 0.292063]
+        ],
+        "clipped": [0.001321, 0.001765],
+        "crushed": [0.004116, 0.006084],
+        "neutralTemperature": [-17.348, -17.68],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.8309,
+          "measuredMedianLuma": 0.707204,
+          "continuity": [0.000843, 0.001317],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -93.39,
+            "correlation": 0.99997
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_rising_from_stool_561a777c_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.727473, 0.689133],
+        "medianLumaChange": -0.03834,
+        "saturationP50P90": [
+          [0.137729, 0.293529],
+          [0.142857, 0.419292]
+        ],
+        "clipped": [0.001308, 0.000238],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.7824,
+          "measuredMedianLuma": 0.6884,
+          "continuity": [0.00107, 0.000301],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -93.88,
+            "correlation": 0.99998
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -16.53,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.0412,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 55.34,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.727473, 0.716728],
+        "medianLumaChange": -0.010745,
+        "measuredOutputMedianLuma": 0.716728,
+        "saturationP50P90": [
+          [0.137729, 0.293529],
+          [0.120391, 0.385348]
+        ],
+        "clipped": [0.001308, 0.000647],
+        "crushed": [0.001055, 0.00278],
+        "neutralTemperature": [-41.334, -34.953],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.9894,
+          "measuredMedianLuma": 0.716728,
+          "continuity": [0.00107, 0.001285],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -93.88,
+            "correlation": 0.99998
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_shifting_weight_in_shot_e94018fc_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.715018, 0.678632],
+        "medianLumaChange": -0.036386,
+        "saturationP50P90": [
+          [0.112821, 0.196337],
+          [0.109402, 0.236386]
+        ],
+        "clipped": [0.001069, 0.000458],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.6266,
+          "measuredMedianLuma": 0.679365,
+          "continuity": [0.001347, 0.002032],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -101.78,
+            "correlation": 0.99998
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -15.15,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.0137,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 54.07,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.715018, 0.712576],
+        "medianLumaChange": -0.002442,
+        "measuredOutputMedianLuma": 0.711844,
+        "saturationP50P90": [
+          [0.112821, 0.196337],
+          [0.093773, 0.204884]
+        ],
+        "clipped": [0.001069, 0.000931],
+        "crushed": [0.001701, 0.002248],
+        "neutralTemperature": [-37.883, -29.511],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.5905,
+          "measuredMedianLuma": 0.711844,
+          "continuity": [0.001347, 0.001577],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -101.78,
+            "correlation": 0.99998
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_shifting_weight_in_sweatshirt_a70aafdf_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.716239, 0.681319],
+        "medianLumaChange": -0.03492,
+        "saturationP50P90": [
+          [0.118926, 0.181929],
+          [0.112332, 0.21514]
+        ],
+        "clipped": [0.001126, 0.000373],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.5721,
+          "measuredMedianLuma": 0.681319,
+          "continuity": [0.001033, 0.000344],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -120,
+            "correlation": 0
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -19.94,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.0073,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 53.85,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.716239, 0.713309],
+        "medianLumaChange": -0.00293,
+        "measuredOutputMedianLuma": 0.715263,
+        "saturationP50P90": [
+          [0.118926, 0.181929],
+          [0.087179, 0.17851]
+        ],
+        "clipped": [0.001126, 0.000517],
+        "crushed": [0.002082, 0.003065],
+        "neutralTemperature": [-40.576, -28.343],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.5835,
+          "measuredMedianLuma": 0.715263,
+          "continuity": [0.001033, 0.001583],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -120,
+            "correlation": 0
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_smiling_at_camera_9fe69beb_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.71746, 0.681319],
+        "medianLumaChange": -0.036141,
+        "saturationP50P90": [
+          [0.123077, 0.311355],
+          [0.116972, 0.431013]
+        ],
+        "clipped": [0.001913, 0.000744],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.9927,
+          "measuredMedianLuma": 0.681319,
+          "continuity": [0.002534, 0.002192],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -103.59,
+            "correlation": 0.99997
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -14.64,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.011,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 54.54,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.71746, 0.71453],
+        "medianLumaChange": -0.00293,
+        "measuredOutputMedianLuma": 0.715751,
+        "saturationP50P90": [
+          [0.123077, 0.311355],
+          [0.107448, 0.380952]
+        ],
+        "clipped": [0.001913, 0.001307],
+        "crushed": [0.002837, 0.004934],
+        "neutralTemperature": [-36.589, -30.836],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.965,
+          "measuredMedianLuma": 0.715751,
+          "continuity": [0.002534, 0.002178],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -103.59,
+            "correlation": 0.99997
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_stepping_forward_fdfc351e_1080p.mp4",
+      "inGradedEdit": false,
+      "look": {
+        "medianLuma": [0.724054, 0.687179],
+        "medianLumaChange": -0.036875,
+        "saturationP50P90": [
+          [0.126984, 0.257387],
+          [0.121123, 0.383639]
+        ],
+        "clipped": [0.001903, 0.000588],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.7453,
+          "measuredMedianLuma": 0.687912,
+          "continuity": [0.000356, 0.000459],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -79.81,
+            "correlation": 0.99993
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -16.12,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.0349,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 54.88,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.724054, 0.714286],
+        "medianLumaChange": -0.009768,
+        "measuredOutputMedianLuma": 0.713553,
+        "saturationP50P90": [
+          [0.126984, 0.257387],
+          [0.102076, 0.36801]
+        ],
+        "clipped": [0.001903, 0.001228],
+        "crushed": [0.001438, 0.003526],
+        "neutralTemperature": [-40.302, -33.926],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.7272,
+          "measuredMedianLuma": 0.713553,
+          "continuity": [0.000356, 0.000341],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -79.81,
+            "correlation": 0.99993
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_taking_side_step_3e3b33bb_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.727961, 0.690598],
+        "medianLumaChange": -0.037363,
+        "saturationP50P90": [
+          [0.12381, 0.226618],
+          [0.11917, 0.307937]
+        ],
+        "clipped": [0.00085, 0.000405],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.5294,
+          "measuredMedianLuma": 0.687912,
+          "continuity": [0.001092, 0.001231],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -96.87,
+            "correlation": 0.99995
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -19.14,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.033,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.curves",
+            "params": {
+              "curve": [
+                [0, 0],
+                [0.3596, 0.3376],
+                [0.7192, 0.7192],
+                [0.8596, 0.8682],
+                [1, 1]
+              ]
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 54.35,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.727961, 0.720879],
+        "medianLumaChange": -0.007082,
+        "measuredOutputMedianLuma": 0.720879,
+        "saturationP50P90": [
+          [0.12381, 0.226618],
+          [0.105495, 0.277167]
+        ],
+        "clipped": [0.00085, 0.000819],
+        "crushed": [0.001092, 0.002463],
+        "neutralTemperature": [-39.809, -28.868],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.5996,
+          "measuredMedianLuma": 0.720879,
+          "continuity": [0.001092, 0.001668],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -96.87,
+            "correlation": 0.99995
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_taking_step_toward_camera_3df0317b_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.727228, 0.690598],
+        "medianLumaChange": -0.03663,
+        "saturationP50P90": [
+          [0.123077, 0.284005],
+          [0.117949, 0.352869]
+        ],
+        "clipped": [0.001274, 0.002112],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.6838,
+          "measuredMedianLuma": 0.6884,
+          "continuity": [0.000401, 0.000223],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -89.71,
+            "correlation": 0.99996
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -12.76,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.0293,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.curves",
+            "params": {
+              "curve": [
+                [0, 0],
+                [0.3587, 0.3321],
+                [0.7175, 0.7175],
+                [0.8587, 0.8692],
+                [1, 1]
+              ]
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 55.52,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.727228, 0.71917],
+        "medianLumaChange": -0.008058,
+        "measuredOutputMedianLuma": 0.720147,
+        "saturationP50P90": [
+          [0.123077, 0.284005],
+          [0.116728, 0.322589]
+        ],
+        "clipped": [0.001274, 0.002311],
+        "crushed": [0.001526, 0.003856],
+        "neutralTemperature": [-31.901, -27.412],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.7363,
+          "measuredMedianLuma": 0.720147,
+          "continuity": [0.000401, 0.000504],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -89.71,
+            "correlation": 0.99996
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_turning_shoulders_on_floor_e7fd8f3b_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.724298, 0.687179],
+        "medianLumaChange": -0.037119,
+        "saturationP50P90": [
+          [0.12381, 0.313309],
+          [0.116972, 0.398291]
+        ],
+        "clipped": [0.001054, 0.001177],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.7303,
+          "measuredMedianLuma": 0.687912,
+          "continuity": [0.000692, 0],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -87.75,
+            "correlation": 0.99997
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -13.83,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.0225,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.curves",
+            "params": {
+              "curve": [
+                [0, 0],
+                [0.3595, 0.3449],
+                [0.719, 0.719],
+                [0.8595, 0.8652],
+                [1, 1]
+              ]
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 55.2,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.724298, 0.718437],
+        "medianLumaChange": -0.005861,
+        "measuredOutputMedianLuma": 0.71746,
+        "saturationP50P90": [
+          [0.12381, 0.313309],
+          [0.113797, 0.342125]
+        ],
+        "clipped": [0.001054, 0.001444],
+        "crushed": [0.002526, 0.005072],
+        "neutralTemperature": [-34.563, -27.903],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.7579,
+          "measuredMedianLuma": 0.71746,
+          "continuity": [0.000692, 0.000698],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -87.75,
+            "correlation": 0.99997
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_turns_toward_camera_b300f77e_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.731868, 0.694994],
+        "medianLumaChange": -0.036874,
+        "saturationP50P90": [
+          [0.124298, 0.259096],
+          [0.117949, 0.317705]
+        ],
+        "clipped": [0.000881, 0.000267],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.5976,
+          "measuredMedianLuma": 0.694994,
+          "continuity": [0.002015, 0.001661],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -96.93,
+            "correlation": 0.99997
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -16.28,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.022,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 54.7,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.731868, 0.726007],
+        "medianLumaChange": -0.005861,
+        "measuredOutputMedianLuma": 0.725519,
+        "saturationP50P90": [
+          [0.124298, 0.259096],
+          [0.100611, 0.278632]
+        ],
+        "clipped": [0.000881, 0.000617],
+        "crushed": [0.001835, 0.003909],
+        "neutralTemperature": [-39.508, -30.269],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.5763,
+          "measuredMedianLuma": 0.725519,
+          "continuity": [0.002015, 0.002417],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -96.93,
+            "correlation": 0.99997
+          }
+        }
+      }
+    },
+    {
+      "clip": "Woman_waving_in_continuous_shot_b433eea6_1080p.mp4",
+      "inGradedEdit": true,
+      "look": {
+        "medianLuma": [0.724054, 0.687179],
+        "medianLumaChange": -0.036875,
+        "saturationP50P90": [
+          [0.116239, 0.181929],
+          [0.1116, 0.21221]
+        ],
+        "clipped": [0.00142, 0.000391],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.6022,
+          "measuredMedianLuma": 0.687912,
+          "continuity": [0.000928, 0.000504],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -99.14,
+            "correlation": 0.99998
+          }
+        }
+      },
+      "adaptive": {
+        "effects": [
+          {
+            "effect": "color.white-balance",
+            "params": {
+              "temperature": -17.19,
+              "tint": 0
+            }
+          },
+          {
+            "effect": "color.levels",
+            "params": {
+              "inputBlack": 0.0093,
+              "inputWhite": 1
+            }
+          },
+          {
+            "effect": "color.vibrance",
+            "params": {
+              "vibrance": 53.87,
+              "saturation": 0,
+              "protectSkin": 0.7
+            }
+          }
+        ],
+        "medianLuma": [0.724054, 0.721368],
+        "medianLumaChange": -0.002686,
+        "measuredOutputMedianLuma": 0.721368,
+        "saturationP50P90": [
+          [0.116239, 0.181929],
+          [0.086935, 0.177045]
+        ],
+        "clipped": [0.00142, 0.000876],
+        "crushed": [0.002082, 0.002947],
+        "neutralTemperature": [-40.124, -28.332],
+        "output": {
+          "frameCount": 72,
+          "sourceFrameCount": 72,
+          "durationSeconds": 3,
+          "predictedRms": 1.5572,
+          "measuredMedianLuma": 0.721368,
+          "continuity": [0.000928, 0.000579],
+          "audio": {
+            "sourceDurationSeconds": 2.98,
+            "outputDurationSeconds": 3,
+            "sourceSamples": 143360,
+            "outputSamples": 144384,
+            "channels": 2,
+            "differenceDb": -99.14,
+            "correlation": 0.99998
+          }
+        }
+      }
+    }
+  ],
+  "findings": [
+    "The owner's graded edit is tagged BT.709 transfer while the Flow sources are sRGB. The media path converts BT.709 transfer to sRGB on import, but comp render writes sRGB-encoded pixels tagged BT.709 without conversion, so an export→import round trip brightens midtones (≈ +5% median luma on the owner's edit). look fit therefore compares the graded edit in code values by default. This import/export asymmetry predates CGA and is not changed here.",
+    "Measured against correctly decoded (BT.601) raw clips, the owner's grade is: neutral gains R 0.955 / G 0.961 / B 1.034 (cooler), luma −4.9%, offsets < 0.01; the median chroma ratio is 1.00 (saturation moved within colors rather than uniformly). The planning session's '×1.48 saturation' was a different decomposition; the transform itself agrees.",
+    "The raw clips' near-neutral cast estimate is warm (temperature −17…−41 to neutralize) with a large per-pixel spread (~18–19): the near-neutral set mixes beige, white and gray, so the solver removes only 40% of it. The owner's grade removed about a third (graded estimate −28)."
+  ],
+  "rejected": [
+    "Fitting the look on the media-path decode of the BT.709-transfer edit: offsets 0.08 and luma +0.5%, a tone change a 3×3 cannot model (RMS 1.93 per pixel but the wrong transform).",
+    "Fitting on single pixels: codec noise and softening dominate; 4×4 block means give the same transform with a cleaner fit.",
+    "Full neutral-cast removal (75%): neutralized the beige scenes and dropped median saturation from 0.12 to 0.05.",
+    "Key-preserving gamma with the black point: overshot the median on symmetric contrast compression; levels use gamma 1.",
+    "Brightening clips whose highlights stay below 0.9 regardless of key: raised high-key Flow medians by +0.10.",
+    "The repository's batch command for folders: it runs v0.1 image-animation requests, not compositions; auto-color handles folders itself with a summary file."
+  ]
+}

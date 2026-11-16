@@ -1,7 +1,8 @@
 # Color grading engine: port and upgrade plan
 
-Date: 2026-11-16. Status: **proposed; no milestone approved or started.** The
-owner's stated minimum need is the [fast track (CGA)](#fast-track-the-minimum-need);
+Date: 2026-11-16. Status: **CGA built on `codex/cga-auto-color`, owner review
+pending (one check partly met); CG0–CG15 proposed, not started.** The owner's
+stated minimum need is the [fast track (CGA)](#fast-track-the-minimum-need);
 CG0–CG15 are the optional long-range upgrade.
 Sources audited: `~/Documents/guthib/chroma-node` at `b804dc0` (owner's separate
 repository, with uncommitted roadmap edits) and this checkout at `e6eb7b06`. No
@@ -227,25 +228,25 @@ These are recommendations to confirm at CG1, each with a fallback.
 
 ## Milestone tracker
 
-| ID   | Milestone                                          | Depends on                     | Estimate (active days) | Status   |
-| ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | -------- |
-| CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Proposed |
-| CG0  | Fixtures, reference vectors and baseline           | owner: approval                | 2–3                    | Proposed |
-| CG1  | Color-science core and contract design             | CG0, owner: license, parity    | 4–6                    | Proposed |
-| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8                    | Proposed |
-| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 for video pixel lint) | 4–6                    | Proposed |
-| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed |
-| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed |
-| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed |
-| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 7–11                   | Proposed |
-| CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed |
-| CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed |
-| CG10 | Grade lint and solvers                             | CG3, CG6                       | 5–8                    | Proposed |
-| CG11 | AI and code authoring surface                      | CG9, CG10                      | 4–7                    | Proposed |
-| CG12 | Tracking and object mattes                         | CG6                            | 5–8                    | Proposed |
-| CG13 | Texture and finishing operations                   | CG6                            | 4–7                    | Proposed |
-| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope         | 8–15                   | Proposed |
-| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage       | 3–5                    | Proposed |
+| ID   | Milestone                                          | Depends on                     | Estimate (active days) | Status              |
+| ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | ------------------- |
+| CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Built; owner review |
+| CG0  | Fixtures, reference vectors and baseline           | owner: approval                | 2–3                    | Proposed            |
+| CG1  | Color-science core and contract design             | CG0, owner: license, parity    | 4–6                    | Proposed            |
+| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8                    | Proposed            |
+| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 for video pixel lint) | 4–6                    | Proposed            |
+| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed            |
+| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed            |
+| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed            |
+| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 7–11                   | Proposed            |
+| CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed            |
+| CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed            |
+| CG10 | Grade lint and solvers                             | CG3, CG6                       | 5–8                    | Proposed            |
+| CG11 | AI and code authoring surface                      | CG9, CG10                      | 4–7                    | Proposed            |
+| CG12 | Tracking and object mattes                         | CG6                            | 5–8                    | Proposed            |
+| CG13 | Texture and finishing operations                   | CG6                            | 4–7                    | Proposed            |
+| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope         | 8–15                   | Proposed            |
+| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage       | 3–5                    | Proposed            |
 
 CGA stands alone at about 5–8 active days. CG0–CG15 total about 75–122 active days. Estimates are planning ranges, not deadlines;
 re-estimate at entry against the then-current code.
@@ -320,31 +321,58 @@ existing 8-bit pipeline.
 animated correction, secondary corrections, LUTs. Look presets are the natural
 next small slice if neutral-but-correct is still too plain.
 
-**Checks**
+**Checks** (2026-11-16, `codex/cga-auto-color`; numbers in
+[CGA results](./color-grading-cga-results.json); RMS is of 255)
 
-- [ ] Synthetic fixture: a reference clip with a known exposure shift, contrast
+- [x] Synthetic fixture: a reference clip with a known exposure shift, contrast
       compression and desaturation applied is restored within stated residuals.
-- [ ] A well-balanced fixture changes by less than a stated threshold.
-- [ ] The same input gives a byte-identical report and parameters on rerun.
-- [ ] Parameters are constant over the clip; measured frame-to-frame luma
-      continuity equals the source's.
-- [ ] After correction, clipped and crushed fractions stay within the budget and
-      the gradient fixture stays within the banding bound.
-- [ ] `color.vibrance` has exact Canvas/WebGL parity and a neutral identity.
-- [ ] Output frame count, duration and audio match the source.
-- [ ] A `smpte170m`-tagged source decodes to the same RGB as a reference
-      BT.601 conversion within one code value; rotated and variable-rate sources
-      produce the documented diagnostic.
-- [ ] A look fitted from the owner's pair, applied to each raw clip, matches the
-      owner's grade within the measured bound (about 2 RMS of 255) on held-out
-      clips; `color.matrix` has exact Canvas/WebGL parity.
-- [ ] The adaptive mode changes the owner's high-key clips' median luma by less
-      than a stated limit.
-- [ ] At least five owner-supplied Flow clips: before/after statistics and
-      contact sheets recorded. Owner review is recorded separately and is the
-      only visual acceptance.
-- [ ] `pnpm check:fast` passes; existing baselines unchanged; CLI README and the
+      Exposure 24.4 → 2.4 (bound 3), contrast 14.4 → 1.8 (bound 2.5), white
+      balance 5.7 → 0.7 (bound 1). Desaturation is lifted to the solver's
+      targets (median saturation 0.125 → 0.172, reference 0.30; RMS 16.8 → 13.7),
+      not back to the reference.
+- [x] A well-balanced fixture changes by less than a stated threshold (no effect
+      is applied: exact identity).
+- [x] The same input gives a byte-identical report and parameters on rerun.
+- [x] Parameters are constant over the clip; measured frame-to-frame luma
+      continuity equals the source's within codec noise (synthetic |Δ| < 0.01;
+      owner clips 0.0004–0.0025 before and after).
+- [x] After correction, clipped and crushed fractions stay within the budget
+      (< 0.4% added on the fixtures; solver guard 0.3%) and the gradient fixture
+      stays within the banding bound (no step over 2 codes; stretch ≤ 1.3).
+- [x] `color.vibrance` has exact Canvas/WebGL parity and a neutral identity.
+- [x] Output frame count, duration and audio match the source (72/72 frames,
+      3.0 s, audio correlation ≥ 0.9987 on the 11 owner clips with sound; the
+      output audio track is 3.00 s against the source's 2.98 s because the master
+      spans the picture).
+- [x] A `smpte170m`-tagged source decodes to the same RGB as a reference
+      BT.601 conversion within one code value (4:4:4 fixture, max 1; BT.709
+      coefficients would be 19 off); on the owner's 4:2:0 clip 99.5% of values
+      are within one (p99 1, max 6 at chroma edges, from chroma upsampling).
+      Rotated and variable-rate sources produce the documented diagnostic.
+- [ ] **Partly met.** A look fitted from the owner's pair, applied to each raw
+      clip, matches the owner's grade within the measured bound (about 2 RMS of 255) on held-out clips: held-out 4×4 block means 1.82 (max 2.24), per pixel
+      2.30 (max 2.69, above 2: the edit is softer and re-encoded). `color.matrix`
+      has exact Canvas/WebGL parity.
+- [x] The adaptive mode changes the owner's high-key clips' median luma by less
+      than a stated limit (limit 0.02; largest 0.0107 on 12 clips, predicted and
+      measured on the render).
+- [x] At least five owner-supplied Flow clips: before/after statistics and
+      contact sheets recorded (12 clips, local). Owner review is pending and is
+      the only visual acceptance.
+- [x] `pnpm check:fast` passes; existing baselines unchanged; CLI README and the
       generated reference updated.
+
+**Implementation notes.** BT.601 sources decode through `in_color_matrix=bt601`.
+The three effects are integer/table exact on both backends. `comp look fit`
+matches shots by gain/offset-invariant luma correlation and fits on 4×4 block
+means; a graded edit tagged BT.709 transfer is compared in code values, because
+`comp render` writes sRGB-encoded pixels tagged BT.709 while the media path
+converts BT.709 transfer on import (a pre-existing asymmetry, not changed). The
+adaptive solver works in stages (white balance → tone → saturation) on the
+measured frames and re-measures the exact predicted result after each; it
+removes 40–90% of the near-neutral cast depending on how much the near-neutral
+pixels agree, never brightens a high-key clip, and keeps a dead band on every
+correction.
 
 **Owner inputs:** five or more representative Flow clips (kept local unless
 licensed for the repository), and optionally one or two frames showing the

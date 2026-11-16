@@ -342,7 +342,9 @@ export async function compareClipAudio(
       10 * Math.log10(difference / Math.max(1, n) || 1e-12),
       2,
     ),
-    correlation: round(ab / Math.sqrt(aa * bb || 1), 5),
+    // Two silent tracks are identical; one silent track does not correlate.
+    correlation:
+      aa === 0 && bb === 0 ? 1 : round(ab / Math.sqrt(aa * bb || 1), 5),
   };
 }
 
