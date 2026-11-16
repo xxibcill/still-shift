@@ -1,9 +1,11 @@
 # Editorial title overlays: improvement plan
 
-Date: 2026-11-15. Status: **ET0–ET3 merged on `main` (PR #60, #61, #62, #63);
-ET5a and ET5b implemented on `codex/editorial-titles-et5a` and
-`codex/editorial-titles-et5b` (PRs pending); remaining milestones reordered by
-the [direction review](#direction-review-2026-11-15) and still proposed.** ET0
+Date: 2026-11-15. Status: **ET0–ET3, ET5a and ET5b merged on `main` (PR #60,
+#61, #62, #63, #66, #67); G1 owner review done 2026-11-16
+([record](./editorial-typography-g1-review-2026-11-16.md)): all three proof
+treatments rejected on style, and the aesthetic target is now the owner's social
+fashion-reel references. Remaining milestones as reordered by the
+[direction review](#direction-review-2026-11-15); ET7a is next.** ET0
 re-baselined every finding on `main` (98a92e92); see
 [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
@@ -19,7 +21,7 @@ are correct (exact copy and glyphs), placed by measurement rather than hand
 coordinates, and checked against the actual moving frames. Taste, footage
 understanding and candidate search stay outside `packages/` (ET7a, ET7b).
 
-**Success measure (proposed; the owner confirms it in G1):** on at least two
+**Success measure (confirmed by the owner in G1, 2026-11-16):** on at least two
 authorized clips, an AI-written batch of eight candidate titles per clip passes
 strict font coverage and the legibility checks, needs no person to edit
 coordinates, and the owner accepts at least three of the eight on each clip.
@@ -96,22 +98,22 @@ order did not, for these reasons.
 
 ## Milestone tracker
 
-| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                    |
-| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | ------------------------- |
-| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60) |
-| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61) |
-| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62) |
-| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63) |
-| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Waiting on owner          |
-| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Implemented (PR pending)  |
-| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5                                        | Proposed                  |
-| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                  |
-| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Implemented (PR pending)  |
-| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                  |
-| ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                  |
-| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                  |
-| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                  |
-| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                  |
+| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                            |
+| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | --------------------------------- |
+| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60)         |
+| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)         |
+| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)         |
+| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63)         |
+| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16; clip rights open |
+| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66)         |
+| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5                                        | Proposed                          |
+| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                          |
+| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67)         |
+| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                          |
+| ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                          |
+| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                          |
+| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                          |
+| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                          |
 
 Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence)
 ET6a, ET5b, ET4, ET6b → ET9 before any release → ET7b. ET5a and ET5b do not depend
@@ -391,13 +393,33 @@ which of the two is right.
   Thai, Prompt, Kanit). Downloading any of them needs the owner's go-ahead.
   Pin TTF or OTF files: WOFF and WOFF2 are rejected before render (PR #64).
 
+**Result (2026-11-16):** see the [G1 record](./editorial-typography-g1-review-2026-11-16.md)
+and [results](./editorial-typography-g1-results.json). The owner watched T1–T3
+re-rendered from `main` a897acb4, with the ET5 fixes, on a phone, and rejected
+all three. In the owner's words: "not because still-shift is bad. because of
+it's style of text and animation is not satisfy me". The owner then supplied
+social fashion-reel references. Their shared style is:
+
+- one large mixed-type lockup over the subject;
+- legibility from outlines, shadows or boxes;
+- a word-by-word build, held across fast cuts.
+
+This style replaces editorial magazine minimalism as the target.
+
 **Checks**
 
-- [ ] Acceptance or rejection of T1, T2 and T3 recorded per treatment, in the
-      owner's words, with what should change.
-- [ ] ET3-D1 and ET3-D2 decided against those frames.
+- [x] Acceptance or rejection of T1, T2 and T3 recorded per treatment, in the
+      owner's words, with what should change. _All three rejected on text style
+      and animation; the change is the reference style above._
+- [x] ET3-D1 and ET3-D2 decided against those frames. _D1 split by size: "Olive"
+      at 2.72:1 "easy to read", but the folio at 3.7:1 is readable in size and hard
+      to read against the background. D2 kept._
 - [ ] Clip and font list approved; rights and licences recorded beside the inputs.
-- [ ] Success measure (see [Goal](#goal)) confirmed or replaced.
+      _Fonts approved: the list above plus every popular free Thai family. Clip:
+      the owner's reference reels, but their rights are not established. Until
+      the owner confirms, use them locally only and commit nothing from them;
+      the repository is public._
+- [x] Success measure (see [Goal](#goal)) confirmed or replaced. _Confirmed._
 
 ---
 
@@ -462,7 +484,24 @@ varied, and which engine gaps cost the most, before more engine work is designed
 - A thin script that, for one clip and copy, renders each candidate, runs
   `--font-coverage strict` and `--legibility true`, and builds contact sheets
   (entrance, hold, exit; native and phone scale).
-- Inputs from G1: the authorized clip and pinned fonts.
+- **Target style (G1):** the owner's social fashion-reel references, not
+  editorial minimalism. Each title is:
+  - one large lockup over the subject's torso, clear of the face;
+  - mixed type per word (script or italic serif with heavy caps, condensed,
+    extended or brush faces) and several colours;
+  - made legible by outline, shadow, glow or a box;
+  - built word by word in 1–2 s, then held across fast cuts, with optional
+    decorations and small sub-labels.
+
+  The [G1 record](./editorial-typography-g1-review-2026-11-16.md#engine-capability-against-the-references)
+  maps each technique to current engine features. Confirm that mapping
+  first, starting with whether a static glyph outline is possible without a text
+  animator.
+
+- Inputs from G1: pinned fonts (the approved list plus popular free Thai
+  families) and a clip. Use the owner's reference reels only after the owner
+  confirms the rights. Until then, renders over them stay local and
+  git-ignored, and committed sheets use authorized footage.
 - For each candidate, record the number of render-and-fix iterations and which
   problem caused each one (placement, overflow, contrast, collision, seams,
   missing measurement). This is the evidence that orders ET4, ET5b and ET6a.
@@ -682,16 +721,16 @@ needed; any ElevenLabs use still requires batch-specific approval.
 
 All are the owner's. G1 collects them.
 
-| ID      | Decision                                                                                | Needed by | Recommendation                                           |
-| ------- | --------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------- |
-| D-view  | Visual acceptance of proof T1, T2, T3                                                   | G1        | —                                                        |
-| ET3-D1  | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level) | G1, ET6b  | Decide after looking at T1's "Olive" (2.72:1)            |
-| ET3-D2  | Phone-scale floor: 6 px x-height at 360 px                                              | G1, ET6b  | Keep                                                     |
-| D-meas  | Success measure for the pilot                                                           | G1        | 3 of 8 accepted per clip, on two clips                   |
-| D-input | One authorized vertical clip; fonts to pin (open-licence list or licensed files)        | G1, ET7a  | Start with open-licence faces                            |
-| D-align | `align` contract: centre on origin, or within `textLayout.width`                        | ET5a      | Keep origin, document and guard                          |
-| D-read  | How much hold motion counts as readable                                                 | ET6b      | —                                                        |
-| ET2-D1  | Near-static footage counted as frozen                                                   | ET9       | Keep current rule                                        |
-| ET2-D2  | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding               | ET9       | —                                                        |
-| D-clip  | Keep the committed synthetic fixture clip (merged with ET0)                             | Any time  | Keep                                                     |
-| D-home  | Where orchestration lives long-term                                                     | ET7b      | In-repository skill for the pilot; decide after its size |
+| ID      | Decision                                                                                | Needed by | Recommendation                                                                                                             |
+| ------- | --------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- |
+| D-view  | Visual acceptance of proof T1, T2, T3                                                   | G1        | **Decided (G1):** all rejected on style; target the owner's references                                                     |
+| ET3-D1  | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level) | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary |
+| ET3-D2  | Phone-scale floor: 6 px x-height at 360 px                                              | G1, ET6b  | **Decided (G1):** keep                                                                                                     |
+| D-meas  | Success measure for the pilot                                                           | G1        | **Decided (G1):** 3 of 8 accepted per clip, on two clips                                                                   |
+| D-input | One authorized vertical clip; fonts to pin (open-licence list or licensed files)        | G1, ET7a  | **Fonts decided (G1)**: the list plus popular free Thai families. Clip rights still open                                   |
+| D-align | `align` contract: centre on origin, or within `textLayout.width`                        | ET5a      | Keep origin, document and guard                                                                                            |
+| D-read  | How much hold motion counts as readable                                                 | ET6b      | —                                                                                                                          |
+| ET2-D1  | Near-static footage counted as frozen                                                   | ET9       | Keep current rule                                                                                                          |
+| ET2-D2  | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding               | ET9       | —                                                                                                                          |
+| D-clip  | Keep the committed synthetic fixture clip (merged with ET0)                             | Any time  | Keep                                                                                                                       |
+| D-home  | Where orchestration lives long-term                                                     | ET7b      | In-repository skill for the pilot; decide after its size                                                                   |
