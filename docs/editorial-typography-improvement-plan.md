@@ -507,7 +507,10 @@ varied, and which engine gaps cost the most, before more engine work is designed
 - Inputs from G1: pinned fonts (the approved list plus popular free Thai
   families) and the owner's reference reels as **local-only** test footage.
   The reels, and every render and contact sheet made over them, stay
-  git-ignored. Commit the composition sources, SHA-256s, check results and the
+  git-ignored: keep the reels in `benchmarks/results/editorial-titles-references/`
+  and the pilot's outputs in `benchmarks/results/editorial-titles-et7a/`
+  (`benchmarks/results/*` is the only ignored media path; `research/` is not
+  ignored). Check `git status` before each commit. Commit the composition sources, SHA-256s, check results and the
   owner's verdicts only.
 - For each candidate, record the number of render-and-fix iterations and which
   problem caused each one (placement, overflow, contrast, collision, seams,

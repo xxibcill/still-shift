@@ -62,7 +62,7 @@
     "outOfScopeForET7a": ["text behind the subject (subject matte)"]
   },
   "openItems": [
-    "Reference reels are local-only (owner decision): never commit, upload or publish them or frames, renders or sheets made over them (public repository); commit sources, hashes, check results and owner verdicts only.",
+    "Reference reels are local-only (owner decision): never commit, upload or publish them or frames, renders or sheets made over them (public repository); commit sources, hashes, check results and owner verdicts only. Reels in benchmarks/results/editorial-titles-references/, pilot outputs in benchmarks/results/editorial-titles-et7a/ (both under the ignored benchmarks/results/*; research/ is not ignored).",
     "D-auth (owner): whether local-only third-party reels count as the success measure's authorized clips. Recommendation: at least one pilot clip owner-shot, licensed or synthetic, so its contact sheets can be committed.",
     "Font downloads happen in ET7a with licence, source URL and SHA-256 recorded."
   ],

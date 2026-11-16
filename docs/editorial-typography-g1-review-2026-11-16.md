@@ -120,7 +120,10 @@ may use them as local-only test footage, the owner answered "Yes, local only"
 
 - Use them for local style study and local test renders only.
 - Keep them, and any renders or contact sheets made over them, git-ignored.
-  Never commit, upload or publish them, or frames from them.
+  Never commit, upload or publish them, or frames from them. The reels go in
+  `benchmarks/results/editorial-titles-references/` and the pilot's outputs in
+  `benchmarks/results/editorial-titles-et7a/`. `benchmarks/results/*` is
+  ignored; `research/`, where the proof scripts live, is not.
 - Commit only what identifies a render without showing it: the composition
   sources, render and clip SHA-256s, the checks' results and the owner's
   verdicts. Visual sheets can be committed only for owner-shot, licensed or
