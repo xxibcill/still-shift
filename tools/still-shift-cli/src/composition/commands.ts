@@ -30,6 +30,7 @@ import {
 } from "@still-shift/scene-contract";
 import { parseNamedArguments, requireArgument } from "../named-options.ts";
 import { loadProgram } from "./program.ts";
+import { runColorCommand } from "./color.ts";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { withProgramFile, writeComposition } from "./files.ts";
 import {
@@ -506,6 +507,12 @@ export async function runCompositionCommand(
       io.stdout(json(result));
       return 0;
     }
+    if (
+      command === "color-stats" ||
+      command === "look" ||
+      command === "auto-color"
+    )
+      return await runColorCommand(args, io);
     programError(
       "comp-program-command",
       `Unknown composition command ${command ?? ""}`,

@@ -96,6 +96,10 @@ Usage:
   pnpm --silent still-shift comp normalize --input <composition.json|program.ts> [--output <composition.json|program.ts>]
   pnpm --silent still-shift comp bake --input <composition.json|program.ts> [--output <composition.json|program.ts>]
   pnpm --silent still-shift comp lint --input <composition.json|program.ts> [--policy <policy.json>] [--pixels true|false] [--backend canvas2d|webgl2] [--font-coverage legacy|strict]
+  pnpm --silent still-shift comp color-stats --input <clip.mp4> [--frames 12] [--output <stats.json>]
+  pnpm --silent still-shift comp look fit --before <clip.mp4|folder>[,...] --after <graded.mp4> --output <look.json> [--pairs-per-shot 4] [--after-interpretation code-values|media-path]
+  pnpm --silent still-shift comp look apply --look <look.json> --input <clip.mp4|folder> --output <fixed.mp4|folder> [--strength 0-1] [--write-composition <composition.json|folder>] [--report <report.json>] [--backend canvas2d|webgl2]
+  pnpm --silent still-shift comp auto-color --input <clip.mp4|folder> --output <fixed.mp4|folder> [--look <look.json>] [--strength 0-1] [--exposure|--contrast|--saturation|--white-balance true|false] [--adaptive true|false] [--write-composition <composition.json|folder>] [--report <report.json>] [--frames 12] [--backend canvas2d|webgl2]
   pnpm --silent still-shift batch --manifest <jsonl> --output-dir <path> [--format landscape|vertical] [--concurrency 1|2]
 
 The default adapter writes a validated 1080p H.264 MP4 and scene manifest.
