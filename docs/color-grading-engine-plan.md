@@ -1,0 +1,773 @@
+# Color grading engine: port and upgrade plan
+
+Date: 2026-11-16. Status: **proposed; no milestone approved or started.** The
+owner's stated minimum need is the [fast track (CGA)](#fast-track-the-minimum-need);
+CG0–CG15 are the optional long-range upgrade.
+Sources audited: `~/Documents/guthib/chroma-node` at `b804dc0` (owner's separate
+repository, with uncommitted roadmap edits) and this checkout at `e6eb7b06`. No
+package source changed and nothing was rendered for this plan.
+
+## Goal
+
+Give Still Shift a grading engine whose operator set, color management and
+measurement tools match what a colorist expects from a frontier grading
+application, and make every part of it drivable by a person or an AI through
+code, the CLI and (later) the lab. A grade is deterministic data: text-diffable,
+animatable, versioned, measurable and renderable by the existing export path.
+
+Two outcomes are measured separately:
+
+1. **Operator parity.** The same CDL, LUT and color-space transform produce the
+   same picture as a reference grading application within a stated ΔE tolerance
+   (CG15).
+2. **Authoring reach.** An AI or a person can look at numbers and pictures
+   (scopes, probes, mattes), change a grade, and confirm the result by
+   measurement without hand-tuned guesswork (CG3, CG10, CG11).
+
+"Same as a frontier app" is bounded by the [exclusions](#out-of-scope). This plan
+does not claim real-time playback, camera RAW decoding, Dolby Vision or
+proprietary neural tools.
+
+## Fast track: the minimum need
+
+Owner requirement (2026-11-16): fix clips generated with Google Flow, which come
+out flat and neutral, by automatically adjusting **exposure, contrast and
+saturation**.
+
+That need does not require most of this plan. Flow output is 8-bit SDR video, so
+the corrections are valid in the existing display-referred pipeline, and the
+engine already has `color.levels`, `color.curves`, `color.exposure` and
+`color.hue-saturation` on video layers. What is missing is small:
+
+1. measuring a clip (nothing reads a video's tonal and saturation statistics);
+2. a solver that turns those measurements into effect parameters;
+3. a one-command path from an MP4 to a corrected MP4;
+4. a saturation control that does not over-push colors that are already strong.
+
+[CGA](#cga--automatic-exposure-contrast-and-saturation-for-flat-sdr-clips) is
+that slice. It needs no float grade stage, no color management, no chroma-node
+port and none of the parity or license decisions. Its measurement code later
+becomes the start of CG3 and its solver the start of CG10. Everything from CG0
+on is optional and should be approved only if a real need appears.
+
+### Evidence from the owner's clips (2026-11-16)
+
+Twelve raw Flow clips and the owner's own grade of them were measured (footage
+stays local and is not committed). Each of the grade's eleven shots was matched
+to its raw clip pixel-for-pixel; one raw clip is unused in the grade.
+
+- **Flow sources are rejected today.** They are 1080×1920, 24 fps, 72 frames,
+  H.264 `yuv420p`, tagged BT.709 primaries, sRGB transfer, **`smpte170m`
+  matrix**, limited range. The media contract accepts only a `bt709` or `gbr`
+  matrix, so the probe fails with `comp-media-color`. They are tagged, not
+  untagged; the fix is correct BT.601-matrix decoding, not an assumption flag.
+- **The owner's grade is one fixed color transform, identical on every clip.**
+  A single 3×3 matrix plus offset reproduces it with an RMS error of 1.5 of 255
+  code values. Fitted on ten clips and tested on the held-out one, the error is
+  1.3–1.8 RMS and at most 5.5 at the 99th percentile.
+- **What the grade does**, as a saturation gain followed by per-channel gains
+  (RMS 1.8): saturation about ×1.48; red ×0.934, green ×0.942, blue ×1.012, which
+  is a cooler white balance; overall luma about −5%; **no contrast change** (no
+  curve, black offset under 0.01).
+- **The footage is high-key and consistent.** Median luma is 0.71–0.73 on every
+  raw clip and the grade keeps it near 0.69. A solver that pulls exposure toward
+  mid-gray or stretches black and white points would damage these clips.
+- **Applied to the unused clip**, the fitted transform renders with a 0.99 RMS
+  difference from the numeric prediction (FFmpeg stopgap, local only).
+
+Consequences for CGA: the fastest route to the owner's result is **learning a
+look from a before/after pair and applying it**, with adaptive correction as a
+second, conservative mode; white balance must be one of the corrections; and
+source support for the BT.601 matrix is a prerequisite. Software agreement with
+the reference is not visual acceptance.
+
+## What the audit found
+
+### chroma-node: what is worth porting
+
+chroma-node is an Electron learning app (about 28,500 lines). The grading core is
+`src/shared/colorEngine.ts` (4,364 lines) with no Electron, DOM or Node imports.
+
+| Area                   | Source                                                                    | Verdict                                                          |
+| ---------------------- | ------------------------------------------------------------------------- | ---------------------------------------------------------------- |
+| Grade data model       | `ColorNode`, `PrimaryCorrection`, `HslQualifier`, `PowerWindow`, ranges   | Port as the starting contract                                    |
+| `.cube` parsing        | `parseCubeLut`, `parseTechnicalLut`, technical LUT validation             | Port with tests                                                  |
+| LUT interpolation      | trilinear and tetrahedral CPU                                             | Port; GPU version is new work                                    |
+| Primaries and matrices | `buildRgbToXyzMatrix`, `buildPrimariesConversionMatrix`                   | Port after checking against published matrices                   |
+| Transfer functions     | sRGB, BT.1886, PQ, HLG, Apple Log                                         | Port after reference validation; Apple Log is marked provisional |
+| Scope analysis         | `scopeAnalysis.ts` (947 lines): waveform, parades, vectorscope, CIE, etc. | Port; pure functions over RGBA frames                            |
+| Frame analysis         | `aiGrading.ts`: `analyzeFrame`, auto balance, `matchToReference`          | Port the statistics; rebuild the solvers (CG10)                  |
+| Translation tracker    | `templateTracker.ts` (172 lines)                                          | Port as the first tracker (CG12)                                 |
+| FFmpeg color tagging   | `buildFFmpegColorArgs`, `detectColorSpaceFromFfprobe`                     | Reuse the mapping tables                                         |
+
+### chroma-node: what is not at the target level
+
+These are stated plainly so the port does not inherit them as if they were done.
+
+- **Display-referred and clamped.** `applyPrimaryCorrection`, `applyCurves` and
+  `applyLut` each clamp to 0–1. Highlights clipped by one node cannot be recovered
+  by the next. Frontier grading is unclamped floating point.
+- **Declared but not evaluated.** `hueShift`, `colorBoost`, `midtoneDetail`,
+  `shadowAmount`, `highlightAmount` and the five hue/saturation curves
+  (`hueVsHue`, `hueVsSaturation`, `hueVsLuminance`, `luminanceVsSaturation`,
+  `saturationVsSaturation`) exist in the schema and sanitizers only.
+- **Preview and export disagree on LUTs.** The generated fragment shader has no
+  LUT sampling; only the CPU export path applies node LUTs.
+- **Curves are piecewise linear**, and the master curve scales by the RGB average.
+- **Camera log profiles are placeholders.** Every profile except Apple Log maps to
+  one generic `log25` transfer. The project's own status calls the managed paths
+  "provisional until authoritative reference validation".
+- **OCIO is a stub** (an environment-variable check; no transforms).
+- **Three serial nodes only.** No parallel, layer or key mixing.
+- **White balance is a per-channel RGB scale**, not chromatic adaptation.
+- **Tracking is translation-only.**
+
+### chroma-node: what stays behind
+
+The Electron shell, IPC, React app shell, its FFmpeg export pipeline, project
+file format, licensing, telemetry, entitlement, update, support and review
+stores, the natural-language keyword parser and cloud-AI settings, and
+`.github/workflows/ci.yml` (GitHub Actions are prohibited here).
+
+### Still Shift: what already exists
+
+- Video and PNG-sequence layers accept `effects`, `masks` (animated bezier paths
+  with feather, expansion and opacity) and `trackMatte`; adjustment layers and
+  precomps exist. Power windows therefore need no new mask engine.
+- Registered effects with a GPU callback and an optional Canvas reference;
+  animated scalars, colors, points and 2–16 point curves; drivers and
+  expressions; versioned effect identity in export metadata.
+- Ten `color.*` effects (levels, curves, exposure, hue-saturation, tint and
+  others), all evaluated on encoded sRGB bytes with exact Canvas/WebGL parity.
+- The WebGL2 device already allocates `RGBA32F` targets behind
+  `EXT_color_buffer_float` for blur sums.
+
+### Still Shift: what blocks frontier-level grading today
+
+| Limit                                                           | Where                                                      | Consequence                                            |
+| --------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------ |
+| Surfaces are premultiplied sRGB `RGBA8`; effects round to bytes | `render/webgl-device.ts`, effect plugin contract           | Stacked corrections band and clip                      |
+| Media is SDR BT.709 only, decoded to an RGBA8 PNG cache         | `composition/media.ts`, `composition-media*.ts`            | No log, 10-bit, wide-gamut or HDR sources              |
+| No working color space or input/output transforms               | composition contract                                       | No scene-referred grading; LUTs have no declared space |
+| Effect parameters are scalar, color, point and curve only       | `effect-definition.ts`                                     | No LUT assets, node graphs or per-effect keys          |
+| No color-keyed selection                                        | —                                                          | No qualifier                                           |
+| No scopes or pixel probes; grade state is not measurable        | CLI                                                        | An AI cannot see what it changed                       |
+| `comp lint --pixels` fails on native-video compositions         | [dev log](./dev-log.md), finding O4 in the editorial proof | Grade lint on video depends on that fix (ET2)          |
+| Output profiles are 8-bit BT.709 except ProRes 4444             | `composition-output*.ts`                                   | No 10-bit delivery for graded log footage              |
+
+## Design decisions proposed
+
+These are recommendations to confirm at CG1, each with a fallback.
+
+1. **Port the engine, not the application.** New pure package
+   `@still-shift/color-science` (`packages/color-science`): transfer functions,
+   primaries, LUT parsing and interpolation, grade operators as a float64
+   reference, scope analysis. No DOM, Node or renderer imports.
+   `scene-contract` owns schemas, `renderer-core` owns GPU kernels,
+   `animation-engine` owns decode, the CLI owns commands. _Fallback:_ folders
+   inside the existing packages if `pnpm check:boundaries` makes a new package
+   costly.
+2. **A float grade stage beside the 8-bit pipeline.** A run of `grade.*`
+   operations on a layer is evaluated unclamped in a floating-point surface chain
+   in a declared working space and quantized once on exit, with an optional
+   deterministic dither. Existing `color.*` effects and every existing baseline
+   stay byte-identical.
+3. **A different parity rule for the float stage.** Existing color effects prove
+   exact byte parity between Canvas and WebGL. Float `pow` and `log` are not
+   bit-identical across GPUs. Proposal: the float64 reference in
+   `color-science` is authoritative; the GPU must match it within one 8-bit code
+   value (or the equivalent at higher depth) on the fixture set, and repeated
+   renders on one machine and toolchain must be byte-identical. Separable
+   per-channel operations are baked into CPU-computed 1D tables where that buys
+   exactness. **Needs owner approval; it relaxes an existing rule for new effects
+   only.**
+4. **Atomic effects first, node graph on the same kernels.** `grade.primary`,
+   `grade.curves`, `grade.lut` and others ship as ordinary registered effects
+   (CG2–CG6). The node graph (CG9) is one `grade-1` document attached through a
+   single effect, compiled to fused passes. It needs structured, path-addressable
+   effect parameters (`effects[look].nodes[skin].primary.gain`); CG1 proves that
+   extension against drivers, expressions and lint. _Fallback:_ lower the graph to
+   atomic effects and adjustment layers in the builder, as `intent-lowering.ts`
+   already does for other intents.
+5. **Windows reuse layer masks and shape paths.** Ellipse, rectangle and
+   gradient are conveniences that produce the same mask data.
+6. **Opt-in color management.** The default working space is "legacy
+   display-referred sRGB", which is today's behavior. Scene-referred projects opt
+   in per composition.
+7. **Camera and ACES transforms come from published specifications**, each with a
+   recorded provenance entry and reference vectors. No transform ships as
+   "supported" on a placeholder curve.
+8. **Neutral naming.** The API uses `window`, `key`, `look`, `object matte`. A
+   third-party product is named only as a comparison reference in CG15.
+
+## Rules for every milestone
+
+- Start from `main` on a `codex/` branch and target the PR at `main`
+  ([AGENTS.md](../AGENTS.md)). Never on `production`. Follow the
+  [composition contribution rules](./composition-contributing.md).
+- Use the pinned toolchain (`pnpm toolchain:check`). GitHub Actions are
+  prohibited; verify locally ([verification tiers](./verification.md)).
+- Each milestone starts with failing fixtures and ends with them passing. Retain
+  failed runs and reruns in the milestone record.
+- Existing outputs do not change silently. Any intended pixel or validation
+  change is versioned, opt-in, or listed with its affected baselines.
+- Every operator has a float64 reference, a GPU kernel, a neutral-identity test
+  and numeric reference vectors. Ported chroma-node code arrives with its tests;
+  untested ported code is treated as new code.
+- Record the chroma-node source commit for each ported file. chroma-node has no
+  license file; ported code enters this repository under GPL-3.0 by its owner's
+  decision (see [owner decisions](#owner-decisions)).
+- LUTs and footage are user-supplied assets pinned by SHA-256. Do not commit
+  third-party LUTs or footage without a recorded license.
+- Software checks are not visual acceptance. Human review is recorded separately
+  and never inferred from scopes, lint or an AI score.
+- Close each milestone with a dated [dev-log](./dev-log.md) entry and a results
+  JSON beside this plan. Regenerate the composition reference and skills with
+  `pnpm schema:generate` when the contract changes.
+
+## Milestone tracker
+
+| ID   | Milestone                                          | Depends on                     | Estimate (active days) | Status   |
+| ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | -------- |
+| CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Proposed |
+| CG0  | Fixtures, reference vectors and baseline           | owner: approval                | 2–3                    | Proposed |
+| CG1  | Color-science core and contract design             | CG0, owner: license, parity    | 4–6                    | Proposed |
+| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8                    | Proposed |
+| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 for video pixel lint) | 4–6                    | Proposed |
+| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed |
+| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed |
+| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed |
+| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 7–11                   | Proposed |
+| CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed |
+| CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed |
+| CG10 | Grade lint and solvers                             | CG3, CG6                       | 5–8                    | Proposed |
+| CG11 | AI and code authoring surface                      | CG9, CG10                      | 4–7                    | Proposed |
+| CG12 | Tracking and object mattes                         | CG6                            | 5–8                    | Proposed |
+| CG13 | Texture and finishing operations                   | CG6                            | 4–7                    | Proposed |
+| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope         | 8–15                   | Proposed |
+| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage       | 3–5                    | Proposed |
+
+CGA stands alone at about 5–8 active days. CG0–CG15 total about 75–122 active days. Estimates are planning ranges, not deadlines;
+re-estimate at entry against the then-current code.
+
+Recommended order: CGA first, then stop and review. If the upgrade continues: CG0 → CG1 → CG2 → CG3 → CG4 → CG5 → CG6 → CG7 → CG8 → CG9 →
+CG10 → CG11 → CG15, with CG12–CG14 scheduled by need. CG3 can run in parallel
+with CG2; CG4 and CG5 can run in parallel after CG2.
+
+Useful stopping points:
+
+- **After CGA:** flat SDR clips are corrected automatically with one command.
+  This meets the stated minimum need.
+- **After CG2:** SDR video can be graded with unclamped primaries from code.
+- **After CG3:** an AI can measure what a grade did.
+- **After CG6:** secondary corrections (selected colors and regions) work.
+- **After CG8:** log and 10-bit footage is graded scene-referred and delivered
+  at 10 bits.
+- **After CG11:** the complete code and AI workflow.
+
+---
+
+## CGA — Automatic exposure, contrast, saturation and white balance for flat SDR clips
+
+**Why:** this is the owner's minimum requirement, and it is reachable on the
+existing 8-bit pipeline.
+
+**Scope**
+
+- **Measure.** Sample frames across the clip through the engine's own media
+  preparation, so the statistics describe the pixels the renderer will see.
+  Compute luma percentiles and mean, tonal spread, clipped and crushed fractions,
+  and the saturation distribution. Emit a deterministic JSON report.
+- **Solve.** Three corrections, each with limits and a `strength` from 0 to 1:
+  - exposure: place the midtones at a target level;
+  - contrast: set black and white points from robust percentiles, then add a
+    bounded S-curve when the tonal spread is still narrow;
+  - saturation: raise the average toward a target while protecting pixels that
+    are already saturated and skin-tone hues.
+- **Apply.** The result is ordinary, editable effect parameters on the video
+  layer (`color.levels`, `color.curves` and one new effect, `color.vibrance`,
+  built in the existing exact-parity framework). No opaque result.
+- **One static correction per clip** by default, so the picture cannot flicker.
+  Per-shot correction with cut detection is a follow-up.
+- **One command.** `comp auto-color --input clip.mp4 --output fixed.mp4` probes
+  the source, builds the composition, keeps the source audio, renders, and writes
+  the before/after report. `--strength`, `--exposure`, `--contrast` and
+  `--saturation` switch or scale each correction; `--write-composition` saves the
+  editable program instead of rendering. A folder of clips runs through the
+  existing batch path.
+- **Guards.** Near-identity on clips that are already well balanced; a clipping
+  budget; a limit on stretch so 8-bit sources do not band visibly; clear
+  diagnostics for sources the media contract rejects.
+- **Source support (prerequisite).** Accept the `smpte170m` matrix on SDR
+  sources and convert with the BT.601 coefficients, so Flow clips pass the probe
+  without transcoding. Rotated and variable-frame-rate files keep their existing
+  diagnostics.
+- **Look from an example (build first).** `comp look fit --before raw.mp4
+--after graded.mp4` aligns the pair, fits one color transform and writes a
+  reusable look file with its residuals. `comp look apply` (and
+  `comp auto-color --look file`) applies it through a new exact-parity
+  `color.matrix` effect, with a 0–1 strength. This reproduces the owner's
+  measured grade.
+- **White balance (owner requirement, 2026-11-16).** Temperature (blue–amber)
+  and tint (green–magenta) controls in a new `color.white-balance` effect, plus
+  automatic neutral estimation. It is the largest part of the owner's measured
+  grade, so the adaptive solver and fitted looks both set it.
+- **Conservative adaptive mode.** The solver preserves a scene's key (it does not
+  pull high-key footage toward mid-gray) and defaults to small moves; a look
+  file can supply its targets.
+
+**Not in CGA:** creative looks (warm, teal-orange, film-style), per-shot or
+animated correction, secondary corrections, LUTs. Look presets are the natural
+next small slice if neutral-but-correct is still too plain.
+
+**Checks**
+
+- [ ] Synthetic fixture: a reference clip with a known exposure shift, contrast
+      compression and desaturation applied is restored within stated residuals.
+- [ ] A well-balanced fixture changes by less than a stated threshold.
+- [ ] The same input gives a byte-identical report and parameters on rerun.
+- [ ] Parameters are constant over the clip; measured frame-to-frame luma
+      continuity equals the source's.
+- [ ] After correction, clipped and crushed fractions stay within the budget and
+      the gradient fixture stays within the banding bound.
+- [ ] `color.vibrance` has exact Canvas/WebGL parity and a neutral identity.
+- [ ] Output frame count, duration and audio match the source.
+- [ ] A `smpte170m`-tagged source decodes to the same RGB as a reference
+      BT.601 conversion within one code value; rotated and variable-rate sources
+      produce the documented diagnostic.
+- [ ] A look fitted from the owner's pair, applied to each raw clip, matches the
+      owner's grade within the measured bound (about 2 RMS of 255) on held-out
+      clips; `color.matrix` has exact Canvas/WebGL parity.
+- [ ] The adaptive mode changes the owner's high-key clips' median luma by less
+      than a stated limit.
+- [ ] At least five owner-supplied Flow clips: before/after statistics and
+      contact sheets recorded. Owner review is recorded separately and is the
+      only visual acceptance.
+- [ ] `pnpm check:fast` passes; existing baselines unchanged; CLI README and the
+      generated reference updated.
+
+**Owner inputs:** five or more representative Flow clips (kept local unless
+licensed for the repository), and optionally one or two frames showing the
+amount of punch that looks right.
+
+## CG0 — Fixtures, reference vectors and baseline
+
+**Why:** every later claim needs numbers to check against, and the existing
+outputs need a recorded baseline before a second pipeline is added.
+
+**Scope**
+
+- Deterministic, license-free generators (FFmpeg and scripts) for: gray and RGB
+  ramps, a hue sweep, a saturation sweep, a synthetic 24-patch chart with stated
+  values, a skin-tone patch set, a noisy gradient for banding, and one short
+  moving clip with a colored object crossing a textured background. Each with a
+  descriptor and SHA-256, well under 1 MB.
+- 10-bit and log-encoded variants generated by encoding a known scene-linear
+  ramp through each transfer function, for CG7.
+- Reference vectors as tracked JSON: published sample points for each transfer
+  function and primaries matrix, ASC CDL reference values, and LUT interpolation
+  cases. Record the source document for every vector. An offline reference
+  generator (for example OpenColorIO through `uv`, development-only) is allowed;
+  it is never a runtime dependency.
+- Record the current behavior of the ten `color.*` effects and of
+  `comp lint --pixels` on a native-video fixture.
+
+**Checks**
+
+- [ ] Generators reproduce every fixture byte-identically on rerun.
+- [ ] Each reference vector names its source and the tolerance it is good for.
+- [ ] Baseline hashes for existing color effects recorded; `pnpm check:fast`
+      passes; no existing baseline changes.
+- [ ] The video pixel-lint failure is reproduced or shown fixed, with the
+      command and output retained.
+
+## CG1 — Color-science core and contract design
+
+**Why:** the math must exist once, tested without a browser, before any GPU work;
+and the three contract questions decide the shape of everything after.
+
+**Scope**
+
+- Create the pure package. Port from chroma-node with tests: types and ranges
+  (as zod schemas and bounds), `.cube` and technical-LUT parsing, trilinear and
+  tetrahedral interpolation, primaries and matrix construction, sRGB, BT.1886,
+  PQ and HLG transfers. Remove per-stage clamps.
+- Replace placeholder camera transforms with an explicit registry of
+  `validated` and `unavailable` entries; nothing reports a transform it cannot
+  perform.
+- Decide and prove, with small spikes: the float grade stage (surface format,
+  memory budget, quantization, dither), the parity rule (decision 3), and
+  structured effect parameters (decision 4).
+- Write the provenance record (ported file → chroma-node commit → license).
+
+**Checks**
+
+- [ ] Every ported function matches its CG0 vectors within the stated tolerance.
+- [ ] Neutral parameters are an exact identity for every operator.
+- [ ] `pnpm check:boundaries` passes with the new package; it imports nothing
+      from DOM, Node or the renderer.
+- [ ] A written decision for each of the three questions, with spike evidence
+      and the fallback taken or rejected.
+- [ ] No rendering behavior changes; all existing baselines are unchanged.
+
+## CG2 — Float grade stage and primary corrections
+
+**Why:** this is the first slice that grades video, and it establishes the
+unclamped pipeline that the remaining operators run in.
+
+**Scope**
+
+- Renderer support for a floating-point grade stage: float scratch surfaces
+  inside the effect ownership and memory limits, one quantization on exit,
+  correct handling of premultiplied alpha (grade straight color, preserve
+  coverage).
+- `grade.primary`: lift, gamma, gain, offset (RGB and master), contrast and
+  pivot, saturation, hue rotation, color boost, shadows, highlights and midtone
+  detail — including the five controls chroma-node declares but never evaluates.
+- Temperature and tint as chromatic adaptation in linear light, replacing the
+  RGB scale.
+- `grade.cdl` (ASC CDL slope, offset, power, saturation, exact to the
+  specification) and `grade.rgb-mixer`.
+- All parameters animatable; works on video, sequence, image, precomp and
+  adjustment layers.
+
+**Checks**
+
+- [ ] Fixture: a value pushed above 1.0 by one operation is recovered by the
+      next (fails on the chroma-node math, passes here).
+- [ ] `grade.cdl` matches the ASC reference values within tolerance.
+- [ ] GPU matches the float64 reference within the approved parity bound on all
+      CG0 fixtures; repeated renders are byte-identical.
+- [ ] A 16-step gray ramp through ten stacked neutral-sum corrections shows no
+      added banding compared with one pass (measured, not viewed).
+- [ ] A graded native-video composition renders and exports through the existing
+      path; effect versions appear in export metadata.
+- [ ] Existing `color.*` baselines unchanged.
+
+## CG3 — Scopes, probes and machine-readable measurement
+
+**Why:** a grade that cannot be measured cannot be verified, and an AI cannot
+grade from a picture alone. This is the engine's eyes, so it comes early.
+
+**Scope**
+
+- Port `scopeAnalysis.ts` into `color-science`: luma waveform, RGB/YRGB/YCbCr
+  parades, vectorscope with skin-tone line, RGB, hue and saturation histograms,
+  CIE chromaticity, false color, exposure zones.
+- `comp scopes`: JSON statistics per frame, frame range or region (luma
+  percentiles, per-channel black and white points, clipped and crushed
+  fractions, saturation distribution, hue histogram, neutral-cast estimate,
+  skin-line deviation) and optional scope PNGs for people and vision models.
+- `comp probe`: values at a point or region, before and after any stage of the
+  layer stack, in encoded, linear, HSL and perceptual coordinates; suggested
+  qualifier ranges for a sampled region.
+- `comp grade diff`: before/after statistics, a split or side-by-side still, and
+  a contact sheet across the clip.
+- Output is deterministic and schema-validated so it can be diffed and tested.
+
+**Checks**
+
+- [ ] Statistics on CG0 synthetic fixtures match analytically known values.
+- [ ] Scope JSON is byte-stable across reruns and validated by a schema.
+- [ ] Probe before/after values match the float64 reference for a graded pixel.
+- [ ] Works on a native-video frame range within the existing media memory
+      limits; over-budget requests fail with a clear diagnostic.
+- [ ] Documented in the CLI README and generated reference.
+
+## CG4 — Curves and tonal-range tools
+
+**Scope**
+
+- `grade.curves` with smooth monotone splines (not piecewise linear), master and
+  per-channel, with a luminance-preserving option.
+- Hue vs hue, hue vs saturation, hue vs luminance, luminance vs saturation,
+  saturation vs saturation and saturation vs luminance curves.
+- Three-range wheels (shadows, midtones, highlights) with adjustable range
+  boundaries, zone-based exposure controls with falloff, and high/low soft clip
+  with knee.
+- Curves baked to float tables on the CPU for deterministic GPU evaluation.
+
+**Checks**
+
+- [ ] Identity curves are exact identities; spline evaluation matches reference
+      vectors; no overshoot outside the control hull for monotone inputs.
+- [ ] Each hue/saturation curve changes only its target dimension on the sweep
+      fixtures, within tolerance (measured with CG3).
+- [ ] Hue curves are continuous across the 0°/360° wrap.
+- [ ] Animated curve points keep the existing ordering and point-count rules.
+
+## CG5 — LUT and CDL interchange
+
+**Scope**
+
+- LUT assets pinned by SHA-256: `.cube` 1D and 3D, domain bounds, optional
+  shaper, sizes up to at least 65³, declared input and output spaces.
+- `grade.lut` on the GPU with tetrahedral (default) and trilinear interpolation
+  and an intensity control. Preview and export use the same kernel, closing the
+  chroma-node mismatch.
+- Bake a grade stack to `.cube` for use elsewhere; import and export ASC CDL
+  (`.cdl`, `.cc`, `.ccc`).
+
+**Checks**
+
+- [ ] Identity LUTs of several sizes are identities within tolerance.
+- [ ] GPU tetrahedral matches the CPU reference on random and edge samples.
+- [ ] Malformed, oversized or wrong-hash LUTs fail before rendering.
+- [ ] A baked `.cube` of a pointwise stack reproduces that stack within the
+      stated tolerance; a non-pointwise stack (keys, blur) refuses to bake.
+- [ ] CDL round trip preserves values exactly as text.
+
+## CG6 — Keys: qualifiers, windows and matte finesse
+
+**Why:** secondary correction — changing only the sky, skin or one garment — is
+most of what separates grading from filtering.
+
+**Scope**
+
+- A key on every grade operation: qualifier × windows × external matte.
+- Qualifiers: HSL (ported), RGB, luma, and a sampled 3D key in a perceptual
+  space built from picked samples.
+- Windows from layer masks and shape paths, plus ellipse, rectangle and linear
+  gradient conveniences; all animatable.
+- External matte from a named layer slot (depth image, alpha, luma, a supplied
+  matte sequence).
+- Matte finesse: denoise, black and white clip, clean black and clean white,
+  blur, shrink and grow, in/out ratio, invert, output gain and offset.
+- Matte views (grayscale key, highlight, high contrast) in preview and CLI.
+
+**Checks**
+
+- [ ] Qualifier keys on the hue and saturation sweeps match analytic masks.
+- [ ] The key is taken from the operation's input, not its output (stated and
+      tested).
+- [ ] Window edges match the existing mask rasterizer on shared fixtures.
+- [ ] A matte-stability metric on the moving CG0 clip is reported per frame;
+      finesse controls measurably reduce chatter on the noisy fixture.
+- [ ] A keyed correction leaves pixels outside the key byte-identical.
+
+## CG7 — Scene-referred input and working space
+
+**Why:** log and 10-bit footage cannot be graded properly in an 8-bit
+display-referred pipeline. This is the largest and riskiest milestone.
+
+**Scope**
+
+- Extend the media color contract beyond SDR BT.709: BT.2020 and P3 primaries,
+  PQ and HLG, limited and full range, and author-declared camera encodings
+  (metadata alone often cannot identify a log curve).
+- High-bit decode: 10- and 12-bit sources to a 16-bit frame cache and float
+  textures, within revised media memory limits.
+- Input transforms validated against published specifications, in priority
+  order to be confirmed: Apple Log, ARRI LogC3/LogC4, Sony S-Log3, Canon Log
+  2/3, Panasonic V-Log, RED Log3G10, Blackmagic Film Gen 5, DJI D-Log, Fujifilm
+  F-Log/F-Log2, Nikon N-Log.
+- Composition-level working space: legacy (default), linear BT.709, ACEScct /
+  ACEScg, and a wide-gamut log intermediate. `grade.color-space-transform` for
+  explicit conversions inside a stack.
+- Compositing rules for mixing graded scene-referred media with existing
+  display-referred layers (text, shapes) are specified and tested.
+
+**Checks**
+
+- [ ] Each transform round-trips and matches its published reference points;
+      each has a provenance entry. Unvalidated transforms are rejected, not
+      approximated.
+- [ ] A 10-bit ramp decoded, passed through neutral grading and re-encoded at
+      10 bits is lossless to the stated bound.
+- [ ] A composition without color management renders byte-identically to
+      before.
+- [ ] Decode cache, live-frame and GPU memory stay within documented limits on
+      the 4K fixture; over-budget cases fail before allocation.
+- [ ] A declared space that contradicts stream metadata produces a diagnostic.
+
+## CG8 — Output transforms and 10-bit delivery
+
+**Scope**
+
+- Output transform per composition: target primaries and transfer, tone mapping
+  and gamut compression from published references, with documented parameters.
+- 10-bit delivery profiles (ProRes 422 HQ, 10-bit HEVC/H.264, 16-bit PNG
+  sequence) with correct color tags, verified by the existing ffprobe output
+  validation.
+- A viewing transform for preview that never alters exported pixels.
+- HDR mastering output stays [conditional](#conditional-future-work).
+
+**Checks**
+
+- [ ] Output tags match pixels on every profile (ffprobe plus a decoded-pixel
+      check on the ramp fixture).
+- [ ] Tone-mapped and gamut-compressed results match reference vectors; no
+      negative or non-finite values reach the encoder.
+- [ ] 10-bit output of a smooth gradient has measurably fewer unique-step
+      artifacts than the 8-bit profile.
+- [ ] `pnpm release:check` scope is reviewed: any new output profile is added to
+      the installed-package verification.
+
+## CG9 — Node graph and reusable looks
+
+**Scope**
+
+- `grade-1` document: serial nodes, parallel mixer, layer mixer with blend
+  modes, key mixer, channel split and combine, shared nodes, per-node enable and
+  mix. Nodes carry the CG2–CG6 operators and keys.
+- A compiler that fuses consecutive pointwise nodes into one pass and caches
+  node outputs under the existing graph identity.
+- Looks as standalone files with versions, applied to layers or adjustment
+  layers. Clip, group and timeline levels map to layers, precomps and adjustment
+  layers.
+- Path addressing, drivers, expressions and animation for node parameters.
+
+**Checks**
+
+- [ ] A serial graph equals the same operators as stacked atomic effects,
+      byte-identical.
+- [ ] Parallel and layer mixing match the float64 reference on fixtures.
+- [ ] Cycles, dangling inputs and unknown operators fail validation with the
+      owning node named.
+- [ ] Fused and unfused compilation produce identical output; pass count and
+      timings are recorded.
+- [ ] One look file applied to two clips stays linked; a per-clip override is
+      visible in the normalized JSON.
+
+## CG10 — Grade lint and solvers
+
+**Scope**
+
+- Grade rules in `comp lint`: clipped highlights and crushed shadows beyond
+  policy, out-of-range delivery levels, gamut excursions, oversaturation,
+  skin-tone deviation in a declared region, banding risk, key chatter, neutral
+  drift over time, shot-to-shot mismatch between adjacent clips, LUT applied in
+  the wrong declared space, and text contrast after grading (shared with ET3).
+- Deterministic solvers that write editable parameters, never an opaque result:
+  white balance from a neutral region, exposure and contrast to target
+  percentiles, match to a reference frame or clip, and chart match from four
+  given corners. Each returns the parameters and a residual report.
+
+**Checks**
+
+- [ ] Each rule has a passing and a failing fixture with measured values.
+- [ ] Solvers recover a known applied cast, exposure offset and CDL on synthetic
+      fixtures within stated residuals.
+- [ ] Solver output is ordinary grade parameters that validate and render.
+- [ ] Rules run on native video (requires the ET2 fix) within memory limits.
+
+## CG11 — AI and code authoring surface
+
+**Scope**
+
+- Builder API in `@still-shift/motion` for grades, nodes, keys and looks, with
+  source maps back to the program.
+- A parametric looks library (original recipes with named, documented controls;
+  no third-party LUTs).
+- Generated reference sections and a `grade-with-still-shift` skill describing
+  the loop: measure → propose → render → measure → lint → iterate.
+- Blind trials: an AI is given footage and a written brief and must reach lint
+  targets; record iterations, failures and the human review separately.
+
+**Checks**
+
+- [ ] Every operator and command is reachable from the builder and documented in
+      the generated reference.
+- [ ] Trial protocol and results recorded (as with
+      `composition-ce10-skill-trials.json`), including failed attempts.
+- [ ] No trial result is described as visual acceptance.
+
+## CG12 — Tracking and object mattes
+
+**Scope:** port the translation tracker as `comp track`, writing keys that a
+window follows through existing constraints; add confidence and failure
+reporting; then affine or planar tracking. Object mattes arrive as external
+matte sequences; an optional local segmentation worker (like the depth worker)
+is conditional on a model with an acceptable license.
+
+**Checks**
+
+- [ ] Recovers a known synthetic motion within a stated pixel error; stops and
+      reports instead of writing low-confidence keys.
+- [ ] Tracked window output is ordinary keys, editable and deterministic.
+
+## CG13 — Texture and finishing operations
+
+**Scope:** key-aware blur, sharpen and midtone detail; spatial noise reduction;
+grain, halation, glow and vignette inside the float stage, reusing existing blur
+and noise kernels where they are exact. Temporal noise reduction is conditional.
+
+**Checks**
+
+- [ ] Each operation has a reference, parity within the approved bound, and
+      correct bounds expansion.
+- [ ] Grain is deterministic per frame and seed.
+
+## CG14 — Lab grading workspace
+
+**Scope:** a grading panel in `apps/lab`: viewer with split, wipe and reference
+still; scope panels; node list; wheels and curve editors; qualifier picker; matte
+view; look versions. It reads and writes the same grade data as code. Reuse
+chroma-node renderer pieces (`scopeRender.ts`, viewer geometry, hooks) where they
+fit.
+
+**Checks**
+
+- [ ] Every edit round-trips through the normalized composition JSON.
+- [ ] Viewer pixels match export pixels for the same frame.
+- [ ] Browser tests cover the panel; no change to non-grading lab sessions.
+
+## CG15 — Parity proof and acceptance on authorized footage
+
+**Scope:** on owner-supplied footage (at least one log 10-bit clip), apply the
+same CDL, LUT and color-space transform here and in a reference grading
+application, and compare decoded frames with a ΔE report. Then one complete
+grade by a person and one by an AI, reviewed by the owner.
+
+**Checks**
+
+- [ ] ΔE statistics per clip recorded with the reference application version and
+      settings; tolerance agreed before the run.
+- [ ] Differences above tolerance are explained or filed, not averaged away.
+- [ ] Owner review recorded separately from software results.
+
+---
+
+## Conditional future work
+
+- HDR mastering delivery (HDR10, HLG) and HDR scopes.
+- Temporal noise reduction and optical-flow tools.
+- A hue-saturation mesh warper.
+- Local segmentation model for object mattes.
+- Baking OpenColorIO configurations to LUT assets offline.
+
+## Out of scope
+
+- Camera RAW decoding (BRAW, R3D, ARRIRAW); transcode before authoring.
+- Real-time playback guarantees and hardware control surfaces.
+- Dolby Vision and other licensed mastering formats.
+- Proprietary neural effects and third-party plug-in hosting.
+- Merging the chroma-node application shell, licensing, telemetry or its CI.
+
+## Risks
+
+| Risk                                                           | Mitigation                                                                    |
+| -------------------------------------------------------------- | ----------------------------------------------------------------------------- |
+| Float GPU results differ across machines                       | Reference-first parity bound; CPU-baked tables; record GPU and driver         |
+| A second pipeline regresses existing exact-parity effects      | Grade stage is additive; baselines checked at every milestone                 |
+| High-bit decode multiplies memory and cache size               | Budgets revised and enforced before allocation in CG7                         |
+| Incorrect camera transforms presented as accurate              | Registry of validated transforms only; provenance and vectors required        |
+| Structured effect parameters do not fit drivers and lint       | Proven in CG1; builder-lowering fallback                                      |
+| Scope too large for one stream of work                         | Stopping points after CG2, CG3, CG6, CG8; later milestones are independent    |
+| Mixed-license or unlicensed LUTs and footage enter the package | Assets are user-supplied and pinned; nothing third-party committed unrecorded |
+
+## Owner decisions
+
+1. Approve CGA alone, or CGA plus a first stopping point in the larger plan.
+   Decisions 2–9 are not needed for CGA.
+2. Confirm ported chroma-node code enters this repository under GPL-3.0.
+3. Approve the bounded parity rule for the float grade stage (decision 3).
+4. Choose the default working space for color-managed projects (CG7).
+5. Priority order of camera input transforms (CG7).
+6. Whether the lab grading workspace (CG14) is in scope.
+7. Supply authorized log and 10-bit footage, and say whether reference renders
+   from another grading application are available for CG15.
+8. Priority against the pending editorial typography plan; ET2 is a shared
+   dependency for pixel checks on video.
+9. What happens to chroma-node afterward: archive, keep as a separate app, or
+   later rebuild its UI on this engine.
