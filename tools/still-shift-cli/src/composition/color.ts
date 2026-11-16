@@ -2,8 +2,15 @@
  * CGA commands: `comp color-stats`, `comp look fit|apply` and
  * `comp auto-color`. Folders are processed clip by clip with a summary.
  */
-import { readdir, readFile, stat, writeFile, mkdir } from "node:fs/promises";
-import { basename, extname, join, resolve } from "node:path";
+import {
+  access,
+  readdir,
+  readFile,
+  stat,
+  writeFile,
+  mkdir,
+} from "node:fs/promises";
+import { basename, dirname, extname, join, resolve } from "node:path";
 import {
   autoColorClip,
   colorSampleOrdinals,
@@ -89,6 +96,36 @@ async function loadLook(
   }
   return parseColorLook(value);
 }
+/** Outputs are never overwritten: resolve a path that must not exist yet. */
+async function newOutput(path: string, option: string): Promise<string> {
+  const resolved = resolve(path);
+  if (
+    await access(resolved).then(
+      () => true,
+      () => false,
+    )
+  )
+    programError(
+      "comp-program-output",
+      `${resolved} already exists; choose a new path`,
+      option,
+    );
+  return resolved;
+}
+/** Write a new file; fails rather than replacing one that appeared meanwhile. */
+async function writeNew(path: string, text: string, option: string) {
+  try {
+    await writeFile(path, text, { flag: "wx" });
+  } catch (error) {
+    if ((error as NodeJS.ErrnoException).code === "EEXIST")
+      programError(
+        "comp-program-output",
+        `${path} already exists; choose a new path`,
+        option,
+      );
+    throw error;
+  }
+}
 const progress = (io: CompositionIo) => (message: string) =>
   io.stderr(json({ status: "progress", message }));
 
@@ -138,6 +175,10 @@ async function runClips(
       "--report names one file; a folder writes one report per clip",
       "report",
     );
+  const summaryPath = await newOutput(
+    join(resolve(output ?? composition!), "auto-color-summary.json"),
+    output ? "output" : "write-composition",
+  );
   const items: unknown[] = [];
   let failed = 0;
   for (const path of inputs) {
@@ -173,12 +214,12 @@ async function runClips(
       });
     }
   }
-  const summaryDirectory = resolve(output ?? composition!);
-  await mkdir(summaryDirectory, { recursive: true });
+  await mkdir(dirname(summaryPath), { recursive: true });
   const summary = { status: failed ? "partial" : "complete", items };
-  await writeFile(
-    join(summaryDirectory, "auto-color-summary.json"),
+  await writeNew(
+    summaryPath,
     JSON.stringify(summary, null, 2) + "\n",
+    output ? "output" : "write-composition",
   );
   io.stdout(json({ ...summary, items: items.length, failed }));
   return failed ? 1 : 0;
@@ -195,6 +236,9 @@ export async function runColorCommand(
       "frames",
       "output",
     ]);
+    const output = values.has("output")
+      ? await newOutput(values.get("output")!, "output")
+      : undefined;
     const clip = await openColorClip(requireArgument(values, "input"));
     const ordinals = colorSampleOrdinals(
       clip.probe.frameCount,
@@ -210,10 +254,9 @@ export async function runColorCommand(
       sampledOrdinals: ordinals,
       statistics,
     };
-    const output = values.get("output");
     if (output) {
-      await writeFile(resolve(output), JSON.stringify(report, null, 2) + "\n");
-      io.stdout(json({ status: "measured", output: resolve(output) }));
+      await writeNew(output, JSON.stringify(report, null, 2) + "\n", "output");
+      io.stdout(json({ status: "measured", output }));
     } else io.stdout(JSON.stringify(report, null, 2) + "\n");
     return 0;
   }
@@ -251,7 +294,7 @@ export async function runColorCommand(
       progress: progress(io),
     });
     const output = resolve(requireArgument(values, "output"));
-    await writeFile(output, JSON.stringify(look, null, 2) + "\n");
+    await writeNew(output, JSON.stringify(look, null, 2) + "\n", "output");
     io.stdout(
       json({
         status: "fitted",
