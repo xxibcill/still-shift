@@ -214,7 +214,11 @@ These are recommendations to confirm at CG1, each with a fallback.
   change is versioned, opt-in, or listed with its affected baselines.
 - Every operator has a float64 reference, a GPU kernel, a neutral-identity test
   and numeric reference vectors. Ported chroma-node code arrives with its tests;
-  untested ported code is treated as new code.
+  untested ported code is treated as new code. For an exact-parity operator
+  (integer or byte-table kernel, as the CGA effects), the integer reference that
+  both backends match byte for byte is the reference vector, and the float64
+  design formula is the float64 reference: tests hold the integer path within
+  one code value of it.
 - Record the chroma-node source commit for each ported file. chroma-node has no
   license file; ported code enters this repository under GPL-3.0 by its owner's
   decision (see [owner decisions](#owner-decisions)).
