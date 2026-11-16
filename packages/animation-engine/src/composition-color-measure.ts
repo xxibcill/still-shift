@@ -4,11 +4,11 @@
  * `readColorFrames` (the engine's media path) or from a predicted correction.
  */
 import { roundTo } from "./composition-color-round.ts";
-import { srgbToLinear } from "@still-shift/renderer-core";
+import { GRADE_LUMA_WEIGHTS, srgbToLinear } from "@still-shift/renderer-core";
 
 export const COLOR_STATISTICS_VERSION = "still-shift-color-statistics-1";
-/** Encoded byte luma weights (sum 256), as the grade and map effects. */
-const LUMA = [54, 183, 19] as const;
+/** Encoded byte luma weights (sum 256), shared with the grade effects. */
+const LUMA = GRADE_LUMA_WEIGHTS;
 /** A channel at or above this byte counts as clipped; at or below CRUSHED as crushed. */
 export const CLIPPED_BYTE = 254;
 export const CRUSHED_BYTE = 1;
