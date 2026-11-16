@@ -25,6 +25,7 @@ import { editorialFixture } from "../helpers/editorial-video-lint.ts";
 import { verifyLintSignalCleanup } from "./composition-lint-signals.ts";
 import { verifyTextLegibility } from "./composition-text-legibility.ts";
 import { verifyFramingGuards } from "./composition-framing-guards.ts";
+import { verifyTextMeasure } from "./composition-text-measure.ts";
 import {
   collapsedMotionComposition,
   groupEffectMotionComposition,
@@ -859,6 +860,11 @@ try {
   const framing = await verifyFramingGuards();
   console.log(
     `ET5a: text-off-canvas reports O2 at ${framing.o2} of its settled ink (pass-1 T3: ${framing.t3.join(", ")}) while a 5 px incursion stays outside-safe-area; orphaned-decoration reports O3 on frames ${framing.o3.map((f) => f.join("-")).join(", ")} and pass-1 T2 on ${framing.t2.map((f) => f.join("-")).join(", ")}; fadeWithText keeps the held bar (${framing.bar.heldNew} vs ${framing.bar.heldOld} px) and clears it after the fade (${framing.bar.goneOld} -> ${framing.bar.goneNew} px).`,
+  );
+
+  const measured = await verifyTextMeasure();
+  console.log(
+    `ET6a: comp measure fits ${measured.widths.map((w) => `${w.name} at ${w.size} px (${w.margin} px margins; guess ${w.guess} px left ${w.guessMargin})`).join(", ")}; highlight offsets ${JSON.stringify(measured.highlight.offsets)} centre their boxes (guess off by ${Math.round(measured.highlight.guessedError.caps)} px); the stacked lockup renders a ${measured.stacked.gap} px gap (guess ${measured.stacked.guessGap}); ${measured.edges.within1px}/${measured.edges.compared} edges within 1 px, worst ${measured.edges.worst} px; motionBounds equal render textBounds on ${measured.boundsEqual.length} layers (ET0 fixtures and proof T1–T3).`,
   );
 
   const cliPixels = await lintCompositionFile(

@@ -156,6 +156,20 @@ export {
   TEXT_LEGIBILITY_VERSION,
   type TextLegibilityReport,
 } from "./composition/text-legibility.ts";
+export { measureCompositionText } from "./composition/measure-text.ts";
+export {
+  COMPOSITION_TEXT_MEASURE_VERSION,
+  type CompositionTextMeasure,
+  type MeasureBox,
+  type TextDecorationMeasure,
+  type TextFontMetrics,
+  type TextLayerMeasure,
+  type TextLineMeasure,
+  type TextOutlineMeasure,
+  type TextSpanMeasure,
+  type TextStateMeasure,
+  type TextWordMeasure,
+} from "./composition/text-measure.ts";
 export {
   compositionQualityFrame,
   compositionQualityTree,
