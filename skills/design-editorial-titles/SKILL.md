@@ -93,6 +93,8 @@ colour that separates every word from the footage.
 - _Hard shadow_: `light.drop-shadow` with `blur: 0` and an offset of 6–9 px.
   _Soft shadow_: blur 10–14, opacity 0.8.
 - _Halo_: a drop shadow with offset `[0, 0]` in a dark or accent colour.
+  Keep the edge margin and line gaps to its measured `visible` box, not the
+  ink (a blur of 12 reaches about 19 px past the outline at 5%).
   `light.glow` has no colour; it brightens the layer's own pixels.
 - _Box_: a `highlight` decoration (the `box` kind is a stroked outline). It
   centres on the baseline minus half the x-height, plus `offset`. Take the
@@ -133,6 +135,11 @@ state, in **layer-local pixels** (origin at the layer's position, y down):
   (`strokeWidth / 2`) and the outlined ink box;
 - `decorations`: each mark's painted box per line, and the `offset` that
   would centre a highlight on the cap band or on the ink;
+- `effects`: for each drop shadow, halo or `light.glow`, its blur (`sigma`),
+  offset and strength, a conservative `paint` box (nothing is painted
+  outside it) and a `visible` box where it fades to 5% coverage
+  (`visibleReach` past the outlined ink); `effects.visible` is everything
+  the layer visibly paints, shadows and halos included;
 - `motionBounds`: the render-time bounds, including every animator pose
   (for culling and safe areas, not for placing);
 - `origin`: where the layer-local origin sits in the frame, when the layer
@@ -148,6 +155,7 @@ const ital = m && measured(m, "brown", { text: "brown", size: 170 });
 // fitSize(ital, 170, 520) → the size whose ink is about 520 px wide;
 // centreOn(ital, 360) and topAt(ital, 420) → whole-pixel origin x and y;
 // bottomOf(ital, y) + gap, then topAt(next, …, "outline") stacks the next line;
+// use "visible" instead of "outline" to stack or keep margins past a halo;
 // highlightOffset(mid, 0, "cap") → the box offset that centres on the caps.
 ```
 
@@ -156,7 +164,10 @@ changing copy, font, size, tracking or the outline, measure again:
 `measured(…, { text, size })` refuses a stale file. Glyph widths scale with
 size but not exactly, so after `fitSize` measure again and step down a pixel
 while the ink is still too wide. Rendered pixels agree with the measured
-boxes within 2 px per edge (most within 1). Origins from `centreOn` and
+boxes within 2 px per edge (most within 1); shadow, halo and glow `visible`
+edges agree within 2 px at 5% coverage. A thin script's halo reaches less
+far than `visibleReach` (it has less ink to blur), so treat that as the
+upper end. Origins from `centreOn` and
 `topAt` are whole pixels, which keeps glyph edges sharp. The measurement
 file holds only the candidate's own copy and geometry, nothing from the
 footage.

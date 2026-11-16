@@ -35,7 +35,8 @@
     "perWord": "word units as `word` animators move them (Unicode word segmentation; punctuation joins the word before it): text, line, spans, advance, ink",
     "outline": "largest drawn strokeWidth over reachable visible frames (0.25 px grid), extent = strokeWidth / 2, outlined ink per layer and line",
     "decorations": "kind, thickness, offset, painted box per line at full reveal, and for highlight/strike centredOffset {cap, ink}; brush and ink line styles flagged approximate",
-    "notMeasured": "text without a pinned font (listed with the reason); layer effects such as drop shadows and halos; native 3D compositions"
+    "notMeasured": "text without a pinned font (listed with the reason); layer effects other than drop shadow and glow; native 3D compositions",
+    "effects": "per enabled light.drop-shadow and light.glow: sigma (shadow blur, glow radius), offset on the renderer's 1/16 px grid (keyed extremes), strength, conservative paint box (renderer bounds rule: shadow ⌈3σ⌉+1, glow 3σ+2), visible box at 5% coverage (σ·Q⁻¹(0.05/strength) past a straight edge of the source); source = ink ∪ outline ∪ decoration paint; state-level paint and visible include them"
   },
   "cases": {
     "fixtures": "benchmarks/fixtures/editorial-titles/et6a-measure.ts (paper frame 720×1280, pinned fonts in assets/editorial-titles/fonts)",
@@ -117,7 +118,8 @@
     "research/editorial-titles-et7a/layout.ts: readMeasure, measured, edgeBox, fitSize, centreOn, topAt, bottomOf, highlightOffset (new).",
     "skills/design-editorial-titles/SKILL.md: Measure section; placement and box offsets from measurement; width table and fontTools removed.",
     "benchmarks/fixtures/editorial-titles/et6a-measure.ts and README note; tests/browser/composition-text-measure.ts; package.json test:browser:composition-text-measure; composition-quality.ts runs it.",
-    "tests/unit/composition-text-measure.test.ts: origin rule and layout helpers (new)."
+    "tests/unit/composition-text-measure.test.ts: origin rule and layout helpers (new).",
+    "Effects (follow-up): text-measure.ts measureTextEffects, textColors, normalTailInverse, TEXT_EFFECT_VISIBLE_COVERAGE; render/text.ts attaches `effects` per state; layout.ts edge \"visible\"; tests/helpers/renderer-frame.ts reads frames from the renderer canvas."
   ],
   "unchangedOutputs": {
     "renders": "No render path calls the new code; composition baselines are checked in finalVerification.",
@@ -125,15 +127,16 @@
     "identity": "The native appearance code identity (appearance-modules.ts closure and its hash) changes, as for any edit to text.ts (ET5a and ET5b also changed it). This is identity metadata, not pixels."
   },
   "observations": [
-    "Rendered PNG colours differ from authored hex values by a few levels (for example #2F6F6A renders as (31,97,92), #4A2716 as (59,23,9)); the test reads rendered colours from the frame. Not investigated; outside ET6a.",
-    "The skill's mixed-case label offset (about −4) was close to the measured −4.29 for a 46 px Archivo label; the pilot's caps guess (−30) was not."
+    "The skill's mixed-case label offset (about −4) was close to the measured −4.29 for a 46 px Archivo label; the pilot's caps guess (−30) was not.",
+    "The PNG colour difference noted earlier is explained in `colourShift`."
   ],
   "limitations": [
-    "Drop shadows, halos and other layer effects are not measured.",
     "The outline width is the largest any visible glyph reaches over the reachable frames; an outline animated between widths reports its widest.",
     "Decorations with brush or ink line styles report their nominal band (approximate: true).",
     "Highlight thickness defaults use the layer's base font cap height, as drawing does, even over a span in another font.",
-    "Compositions with native 3D are refused."
+    "Compositions with native 3D are refused.",
+    "Effects: only light.drop-shadow and light.glow are measured; others are not listed. Keyed parameters use their keyed extremes, not eased overshoot. `visible` assumes a long straight edge; thin strokes and corners fade sooner.",
+    "Effect sizes are in layer pixels, which are the effect's pixels only when the layer is unscaled (see `origin`)."
   ],
   "notRun": [
     "Peak memory of the 100-variant measure (only wall time recorded).",
@@ -159,5 +162,34 @@
     "check:fast 3: passed (462 files, 4,665 tests) before the reference, README and record edits.",
     "check:fast 4: tsc, a unit test added during the run passed `outline: undefined` under exactOptionalPropertyTypes. Fixed; check:fast 5 passed.",
     "ET6a browser test, first runs: strict coverage refused ET0 O5 (kept as a check: measuring under strict fails with font-coverage); the a02 guess left 57 px rather than the pilot's ~20 px (assertion changed to the 72 px target, numbers recorded); nearest-colour pixel classification miscounted antialiased blends and used authored instead of rendered colours (replaced by blend-line classification on rendered colours, searched near each box); the three-font fixture line was wider than the frame (sizes reduced); fractional origins smeared edges to 1.82 px, so layout.ts rounds origins."
-  ]
+  ],
+  "effects": {
+    "added": "2026-11-16, after the first ET6a report listed shadows and halos as not measured (owner asked for them).",
+    "samePath": "Drop shadow: the renderer's Gaussian kernel (shadowGaussianKernel, σ = blur, radius ⌈3σ⌉) and offset quantisation to 1/16 px (shadow-effects.ts), and the bounds rule of its definition (expandBounds: ⌈3σ⌉+1). Glow: pixel-effects.ts glow (alpha × thresholded luminance, CSS blur(radius), screen at intensity) and evaluate/effects.ts's margin 3·radius+2. Effects apply to the layer's whole drawing, so they grow from ink ∪ outline ∪ decorations.",
+    "coverageThreshold": "5% (about 13/255). A Gaussian tail has no hard edge; `visible` is where a long straight edge's effect falls to 5%. Thin strokes and corners carry less mass, so their visible edge lies inside (treat visibleReach as the upper end for thin scripts).",
+    "fixtures": "benchmarks/fixtures/editorial-titles/et6a-measure.ts `effects`: glyphs filled in the background colour so only the effect shows. Anton IT with a soft shadow (offset [10,14], blur 6, opacity 0.8); Anton UP with a 12 px held outline and the pilot's halo (zero-offset drop shadow, blur 12, opacity 0.9); Bebas BOX with a hard shadow (offset [8,8], blur 0); Anton GLOW #FFD54A on #101418 with light.glow radius 10, intensity 0.8.",
+    "results": {
+      "shadow": "σ 6, strength 0.8, reach 19, visibleReach 9.20",
+      "halo": "σ 12, strength 0.9, reach 37, visibleReach 19.12; source equals the outlined ink",
+      "hard": "σ 0, reach 1, visibleReach 0",
+      "glow": "σ 10, strength 0.665 (0.8 × luminance 0.831), reach 32, visibleReach 14.38",
+      "pixels": "Every changed pixel lies inside the effect's paint box (all four layers). Pixels at ≥5% along the background→effect colour line span the visible box within 1.80 px (worst: glow right edge); halo within 0.6 px. Stated tolerance ±2 px at 5% coverage."
+    },
+    "tests": "tests/browser/composition-text-measure.ts verifyEffects; tests/unit/composition-text-measure.test.ts (normal tail inverse, shifted and padded shadow, keyed extremes, disabled and faint effects, glow strength).",
+    "verification": "Node 22.23.1: pnpm check:fast passed (463 files, 4,676 tests); test:browser:composition-quality (316 s, includes the ET6a test with effects), typography (24 s), composition-typography-adapter (179 s) and composition-baselines (282 s, every render hash unchanged) passed."
+  },
+  "colourShift": {
+    "question": "#2F6F6A (47,111,106) read as (31,97,92) in the ET6a test's PNG frames: which stage changes colour?",
+    "minimalCase": "200×200 composition, paper #F4EFE2, a solid #2F6F6A box and Bebas text in #2F6F6A; then a 64×64 BT.709 limited-range lossless H.264 clip of RGB (47,111,106) as a video layer. Inputs and outputs local only (benchmarks/results/colour/).",
+    "stages": {
+      "rendererCanvas": "Exact. Read straight from the preview canvas in the pinned browser: box and text (47,111,106), paper (244,239,226). Shapes and text shift the same way at every later stage.",
+      "explicitProfiles": "Deliberate and documented (composition reference, Output formats: 'Explicit profiles convert encoded-sRGB renderer bytes to BT.709 RGB'). createCompositionOutputConversion maps each sRGB byte to linear and then the BT.709 OETF: 47→31, 111→97, 244→243. png8 is tagged cICP 1/1/0/1 (BT.709 transfer, full range); h264 is tagged BT.709 transfer/matrix, tv range, and decodes to (28,95,89).",
+      "defaultMp4": "`comp render` without --format applies no transfer conversion: the box decodes to (44,109,103), i.e. sRGB code values with only YUV 4:2:0 rounding, but it carries the same BT.709 primaries/transfer/matrix tags as --format h264.",
+      "videoInput": "compositionMediaColorFilter decodes BT.709-transfer sources through the inverse OETF into sRGB: a clip decoding to (44,109,103) sits in the canvas as (62,124,119). --format png8 re-encodes it to (46,111,106), a round trip; the default MP4 writes (60,122,117), up to 16 levels lighter than the source.",
+      "frameExtraction": "ffmpeg rawvideo rgb24 returns stored code values and ignores the PNG's cICP transfer, so the ET6a test compared measurements with BT.709-OETF code values instead of the renderer's sRGB."
+    },
+    "cause": "Not a renderer defect and not an encoder range/matrix error: the shift is the explicit profiles' documented sRGB→BT.709 OETF re-encoding, read without colour management. It exposes a real inconsistency: the default MP4 and --format h264 carry identical BT.709 tags but different code values for the same composition, and the default MP4 lifts BT.709 footage (input inverse OETF without output OETF).",
+    "decision": "Owner decision needed before any fix, because each direction visibly changes outputs: (a) give the default MP4 the explicit profiles' OETF encode (footage round-trips; every authored colour in default MP4s darkens in the shadows, unlike the ET7a renders the owner accepted), or (b) treat BT.709 SDR as display-equivalent to sRGB in and out (no transfer conversion; matches how players show BT.709 and the default MP4's graphics; changes explicit-profile outputs and footage values in the canvas, so pixel lint and legibility numbers over footage). Either is a versioned output change with affected baselines listed. Recommended: (b), because players display BT.709 with a display EOTF rather than the inverse camera OETF, and the canvas then holds footage as viewers see it, which ET3/ET6b contrast depends on. Not implemented.",
+    "et6aEvidence": "Corrected: the test now reads frames straight from the renderer canvas (tests/helpers/renderer-frame.ts) and asserts each authored colour is drawn exactly. Results are unchanged: 49 of 57 edges within 1 px, worst 1.82 px (the transfer is per pixel and moved no edge beyond rounding)."
+  }
 }
