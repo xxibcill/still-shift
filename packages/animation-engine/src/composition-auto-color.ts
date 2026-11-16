@@ -220,23 +220,22 @@ export function autoColorComposition(
     ? relative(compositionDirectory, clip.path)
     : clip.path;
   const assets: CompositionAsset[] = [{ ...clip.asset, path }];
-  const layers: CompositionLayer[] = [
-    {
-      id: "clip",
-      type: "video",
-      asset: "clip",
-      size: [clip.probe.width, clip.probe.height],
-      fit: "stretch",
-      transform: { anchor: [0, 0], position: [0, 0] },
-      effects: effects.map((effect) => ({
-        id: effect.id,
-        effect: effect.effect,
-        params: effect.params,
-      })),
-    } as CompositionLayer,
-  ];
+  const video: Extract<CompositionLayer, { type: "video" }> = {
+    id: "clip",
+    type: "video",
+    asset: "clip",
+    size: [clip.probe.width, clip.probe.height],
+    fit: "stretch",
+    transform: { anchor: [0, 0], position: [0, 0] },
+    effects: effects.map((effect) => ({
+      id: effect.id,
+      effect: effect.effect,
+      params: effect.params,
+    })),
+  };
+  const layers: CompositionLayer[] = [video];
   if (audio) {
-    assets.push({
+    const sound: Extract<CompositionAsset, { type: "audio" }> = {
       id: "source-audio",
       type: "audio",
       path,
@@ -244,12 +243,14 @@ export function autoColorComposition(
       sampleRate: 48000,
       sampleCount: audio.sampleCount,
       channels: audio.channels,
-    } as CompositionAsset);
-    layers.push({
+    };
+    const track: Extract<CompositionLayer, { type: "audio" }> = {
       id: "source-audio",
       type: "audio",
       asset: "source-audio",
-    } as CompositionLayer);
+    };
+    assets.push(sound);
+    layers.push(track);
   }
   return {
     schemaVersion: "composition-1",

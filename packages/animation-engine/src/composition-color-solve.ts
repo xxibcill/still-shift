@@ -24,9 +24,20 @@ import {
 } from "./composition-color-measure.ts";
 
 export const COLOR_SOLVER_VERSION = "still-shift-color-solver-1";
+/**
+ * Effects the solver emits and its measurement reference applies: the grade
+ * effects exactly, and the per-channel `color.levels` and `color.curves` as
+ * byte tables.
+ */
+export const COLOR_CORRECTION_EFFECTS = [
+  "color.levels",
+  "color.curves",
+  ...GRADE_EFFECT_IDS,
+] as const;
+export type ColorCorrectionEffectId = (typeof COLOR_CORRECTION_EFFECTS)[number];
 export type ColorCorrectionEffect = {
   id: string;
-  effect: string;
+  effect: ColorCorrectionEffectId;
   params: Record<string, number | number[][]>;
 };
 export type ColorSolveToggles = {
@@ -609,15 +620,9 @@ export function applyColorEffects(
   }
   return out;
 }
-/**
- * Effects the measurement reference can apply: the grade effects exactly, and
- * the per-channel `color.levels` and `color.curves` as byte tables.
- */
-const MEASURABLE_EFFECTS: ReadonlySet<string> = new Set([
-  "color.levels",
-  "color.curves",
-  ...GRADE_EFFECT_IDS,
-]);
+const MEASURABLE_EFFECTS: ReadonlySet<string> = new Set(
+  COLOR_CORRECTION_EFFECTS,
+);
 /** Parameters with the effect definition's defaults filled in. */
 function effectParams(effect: ColorCorrectionEffect) {
   const definition = MEASURABLE_EFFECTS.has(effect.effect)
