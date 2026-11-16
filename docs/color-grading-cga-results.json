@@ -17,7 +17,7 @@
   "checks": [
     {
       "check": "Synthetic fixture: known exposure / contrast / desaturation / white-balance changes restored within stated residuals",
-      "status": "met (saturation restored to the solver's targets, not to the reference)",
+      "status": "partly met: exposure, contrast and white balance within their stated bounds; desaturation lifted to the solver's targets, not restored to the reference (its 0.85 × degraded bound was set from this result and is a regression guard)",
       "fixture": "benchmarks/fixtures/color/cga-synthetic.ts (96x160, 12 frames, FFV1 lossless)",
       "rmsOf255AgainstReference": {
         "exposure": {

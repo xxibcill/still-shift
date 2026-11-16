@@ -334,12 +334,15 @@ writing only to git-ignored `dist/`).
 **Checks** (2026-11-16, `codex/cga-auto-color`; numbers in
 [CGA results](./color-grading-cga-results.json); RMS is of 255)
 
-- [x] Synthetic fixture: a reference clip with a known exposure shift, contrast
-      compression and desaturation applied is restored within stated residuals.
-      Exposure 24.4 → 2.4 (bound 3), contrast 14.4 → 1.8 (bound 2.5), white
-      balance 5.7 → 0.7 (bound 1). Desaturation is lifted to the solver's
-      targets (median saturation 0.125 → 0.172, reference 0.30; RMS 16.8 → 13.7),
-      not back to the reference.
+- [ ] **Partly met.** Synthetic fixture: a reference clip with a known exposure
+      shift, contrast compression and desaturation applied is restored within
+      stated residuals. Met for exposure 24.4 → 2.4 (bound 3), contrast
+      14.4 → 1.8 (bound 2.5) and white balance 5.7 → 0.7 (bound 1). **Not met
+      for desaturation:** it is lifted to the solver's targets (median
+      saturation 0.125 → 0.172, reference 0.30; RMS 16.8 → 13.7), not restored
+      to the reference, by design (conservative targets). Its test bound
+      (≤ 0.85 × the degraded RMS) was set from this result and only guards
+      against regression; it is not a stated restoration residual.
 - [x] A well-balanced fixture changes by less than a stated threshold (no effect
       is applied: exact identity).
 - [x] The same input gives a byte-identical report and parameters on rerun.

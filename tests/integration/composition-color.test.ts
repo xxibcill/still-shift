@@ -226,6 +226,8 @@ describe("CGA adaptive solver", () => {
       applyColorEffects(solution.effects, frame.rgba),
     );
     const original = read.map((frame) => reference[frame.ordinal]!);
+    // A regression guard set from the recorded result, not a restoration
+    // residual: the solver lifts toward its targets, not to the reference.
     expect(rms(fixed, original)).toBeLessThan(
       0.85 *
         rms(
