@@ -428,7 +428,8 @@ This style replaces editorial magazine minimalism as the target.
 **Why:** two traps passed every check (O2, O3), and a generator will hit both
 repeatedly. They are cheap and independent of the pilot's outcome.
 
-**Result (2026-11-15):** implemented on `codex/editorial-titles-et5a`; see the
+**Result (2026-11-15):** implemented on `codex/editorial-titles-et5a` and
+merged on `main` via PR #66; see the
 [ET5a results](./editorial-typography-et5a-results.json). Pixel lint reports
 both traps by default as errors: `text-off-canvas` (O2 fixture 0.399 of its
 settled ink, matching ET0's pixel measurement; pass-1 T3 `line` 0.399 and
@@ -564,7 +565,8 @@ entrances and, as ET0 found, persist through the whole hold while a per-glyph
 tracking animator runs (O11). That is a visible defect in a title's main element,
 not a minor probe. It can run in parallel with ET7a.
 
-**Result (2026-11-15):** implemented on `codex/editorial-titles-et5b`; see the
+**Result (2026-11-15):** implemented on `codex/editorial-titles-et5b` and
+merged on `main` via PR #67; see the
 [ET5b results](./editorial-typography-et5b-results.json). Root cause: each
 glyph was drawn as a slice of the line's raster cut at its advance, so a
 serif overhanging into the neighbour's slice moved and faded with the
