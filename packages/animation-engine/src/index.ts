@@ -198,3 +198,6 @@ export {
 } from "./mechanism/blender-episode-annotations.ts";
 
 export * from "./mechanism/blender-production-review-contract.ts";
+export * from "./composition-color-frames.ts";
+export * from "./composition-color-measure.ts";
+export { decodeCompositionRgbaPng } from "./composition-media-color.ts";
