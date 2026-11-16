@@ -327,7 +327,7 @@ export async function runColorCommand(
         toggles: Object.fromEntries(
           Object.entries(toggles).filter(([, value]) => value !== undefined),
         ),
-        // --strength scales the look when one is given (default 0.5), and
+        // --strength scales the look when one is given (default 0.6), and
         // the adaptive corrections otherwise (default 1).
         ...(look
           ? {

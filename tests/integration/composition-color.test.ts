@@ -254,9 +254,9 @@ describe("CGA look from an example", () => {
     expect(fitted.fit.residual.rms).toBeLessThan(0.6);
     expect(fitted.fit.heldOut.rmsMax).toBeLessThan(1);
     expect(fitted.fit.afterInterpretation).toBe("media-path");
-    // Applied looks default to half strength; full strength stays available.
+    // Applied looks default to 0.6 (the owner's pick); full strength stays available.
     for (const [lookStrength, expected] of [
-      [undefined, 0.5],
+      [undefined, 0.6],
       [1, 1],
     ] as const) {
       const report = await autoColorClip({

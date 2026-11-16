@@ -372,7 +372,7 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   as `comp render` writes it); `--after-interpretation media-path` converts it
   as composition video instead.
 - **`look apply`** applies a look through `color.matrix`. `--strength`
-  defaults to 0.5 (a learned look at full strength is usually heavy); use
+  defaults to 0.6 (a learned look at full strength is usually heavy); use
   `--strength 1` for the full transform.
 - **`auto-color`** solves one static correction per clip from its statistics:
   white balance (`color.white-balance`, removing part of the near-neutral cast),
@@ -382,13 +382,15 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   and a `--strength` scale; a balanced clip is left unchanged and a high-key
   clip is never brightened, so its key is kept. `--exposure`, `--contrast`,
   `--saturation` and `--white-balance false` switch corrections off. With
-  `--look`, `--strength` scales the look (default 0.5) and only the look is
+  `--look`, `--strength` scales the look (default 0.6) and only the look is
   applied unless a correction is switched on or `--adaptive true` is given;
   adaptive corrections then follow the look, scaled by `--adaptive-strength`.
-  Default targets: median/90% HSV saturation 0.22/0.42 (vibrance ≤ 100, gain
-  ≤ 1.8), an S-curve of up to 0.16 when the 5–95% luma spread is below 0.75,
-  and 20–90% of the near-neutral cast removed (≤ 10–35) depending on how much
-  the near-neutral pixels agree.
+  Default targets: median/90% HSV saturation 0.185/0.36 (vibrance ≤ 80, gain
+  ≤ 1.65), an S-curve of 0.75 × (0.625 − spread), at most 0.13, when the 5–95%
+  luma spread is below 0.625, and 50–90% of the near-neutral cast removed
+  (≤ 20–35) depending on how much the near-neutral pixels agree. When it cools
+  a cast it cannot trust, it also lowers green slightly (magenta tint 0.4 × the
+  cooling), so cream stays beige instead of turning yellow.
 
 `auto-color` and `look apply` keep the source audio as a native audio layer and
 render H.264 with the Canvas backend by default (`--backend webgl2` gives the same

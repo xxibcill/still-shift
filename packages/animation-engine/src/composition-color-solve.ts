@@ -50,10 +50,11 @@ export type ColorSolution = {
 
 /**
  * Solver limits and targets. Every correction is bounded and has a dead band,
- * so a balanced clip is left unchanged. Defaults (retuned 2026-11-16 after the
- * owner found the first version invisible on flat Flow clips) give a visible
- * vibrance boost and a median-pivoted S-curve, keep high-key brightness, and
- * remove only part of a warm cast that mixes real beige with neutrals.
+ * so a balanced clip is left unchanged. Defaults were tuned with the owner on
+ * flat Flow clips (2026-11-16): the first set was invisible, the second too
+ * heavy and too warm; these sit halfway, with a moderate vibrance boost, a
+ * median-pivoted S-curve, kept high-key brightness, and at least half of a
+ * warm cast removed (the owner's own look is cooler).
  */
 export const COLOR_SOLVER_LIMITS = {
   /**
@@ -62,9 +63,16 @@ export const COLOR_SOLVER_LIMITS = {
    * colors such as beige and white) to the second when they share one cast
    * (spread ≤ 5, true neutrals under a colored light).
    */
-  whiteBalanceShare: [0.2, 0.9] as const,
-  whiteBalanceMax: [10, 35] as const,
+  whiteBalanceShare: [0.5, 0.9] as const,
+  whiteBalanceMax: [20, 35] as const,
   tintMax: [12, 25] as const,
+  /**
+   * Magenta tint per unit of cooling when the cast estimate is not trusted
+   * (scaled by 1 − confidence): temperature trades red for blue only, so a
+   * partly cooled cream turns lemon-yellow; lowering green with red keeps it
+   * beige, as the owner's own (cooler) look does.
+   */
+  coolingTint: 0.4,
   castSpread: [5, 15] as const,
   whiteBalanceDeadBand: 3,
   /** Minimum near-neutral pixel share to trust the cast estimate. */
@@ -89,15 +97,16 @@ export const COLOR_SOLVER_LIMITS = {
   maxStretch: 1.3,
   /**
    * S-curve, pivoting on the median so the key is kept, when the 5–95% spread
-   * is narrower than this; strength (spreadTarget − spread), at most sCurveMax.
+   * is narrower than this; strength 0.75 × (spreadTarget − spread), at most
+   * sCurveMax.
    */
-  spreadTarget: 0.75,
-  sCurveMax: 0.16,
+  spreadTarget: 0.625,
+  sCurveMax: 0.13,
   /** Saturation targets (median and 90th percentile) and boost bounds. */
-  saturationTarget: 0.22,
-  strongSaturationTarget: 0.42,
-  saturationMaxGain: 1.8,
-  vibranceMax: 100,
+  saturationTarget: 0.185,
+  strongSaturationTarget: 0.36,
+  saturationMaxGain: 1.65,
+  vibranceMax: 80,
   /** Extra clipped share a correction may add before it is scaled back. */
   clippedBudget: 0.003,
 } as const;
@@ -152,6 +161,12 @@ function solveWhiteBalance(
   let tint = clamp(stats.neutral.tint * share, -maxTint, maxTint);
   if (Math.abs(temperature) < L.whiteBalanceDeadBand) temperature = 0;
   if (Math.abs(tint) < L.whiteBalanceDeadBand) tint = 0;
+  if (temperature < 0)
+    tint = clamp(
+      tint - temperature * L.coolingTint * (1 - confidence),
+      -maxTint,
+      maxTint,
+    );
   temperature = round(temperature * strength, 2);
   tint = round(tint * strength, 2);
   const applied = temperature !== 0 || tint !== 0;
@@ -267,7 +282,7 @@ function solveTone(
   const spread = (luma.p95 - luma.p05) / (white - black);
   const sCurve =
     toggles.contrast && spread < L.spreadTarget
-      ? Math.min(L.sCurveMax, L.spreadTarget - spread) * strength
+      ? Math.min(L.sCurveMax, (L.spreadTarget - spread) * 0.75) * strength
       : 0;
   if (sCurve > 0.005) {
     const m = clamp(target, 0.15, 0.85);
