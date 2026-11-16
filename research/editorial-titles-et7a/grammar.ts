@@ -109,6 +109,22 @@ export function enter(
   });
 }
 
+/**
+ * Rest values of the animator properties an exit can start from. Colours,
+ * stroke width, axes and leading have no rest value that matches every
+ * layer, so an exit that changes them must spell out its own `from`.
+ */
+const REST = {
+  opacity: 1,
+  scale: 1,
+  offset: [0, 0],
+  rotation: 0,
+  blur: 0,
+  tracking: 0,
+  skew: 0,
+  baselineShift: 0,
+} as const;
+
 /** Exit from rest to `to`, held afterwards. */
 export function leave(
   c: Builder,
@@ -120,16 +136,14 @@ export function leave(
 ) {
   const unit = options.unit ?? "line";
   const from = Object.fromEntries(
-    Object.keys(to).map((key) => [
-      key,
-      key === "opacity"
-        ? 1
-        : key === "scale"
-          ? 1
-          : key === "offset"
-            ? [0, 0]
-            : 0,
-    ]),
+    Object.keys(to).map((key) => {
+      if (!Object.hasOwn(REST, key))
+        throw new Error(
+          `leave(${node}): no rest value for "${key}"; use a text animator with an explicit from`,
+        );
+      const rest = REST[key as keyof typeof REST];
+      return [key, Array.isArray(rest) ? [...rest] : rest];
+    }),
   ) as Properties;
   c.textAnimator({
     node,
