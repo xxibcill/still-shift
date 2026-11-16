@@ -176,6 +176,16 @@ describe("CGA adaptive solver", () => {
         ),
     );
   });
+  it("reports a finite vibrance when the median pixel is fully saturated", () => {
+    const rgba = new Uint8Array(16 * 16 * 4);
+    for (let i = 0; i < rgba.length; i += 4) rgba.set([200, 0, 0, 255], i);
+    const solution = solveColorCorrection([{ ordinal: 0, rgba }], 16);
+    const saturation = solution.decisions.find(
+      (decision) => decision.correction === "saturation",
+    )!;
+    expect(saturation.values!.vibrance).toBe(0);
+    expect(JSON.stringify(solution)).not.toContain("null");
+  });
   it("keeps a high-key clip's median luma and never brightens it", async () => {
     // Lift the reference into high key: median ≈ 0.72, whites reach.
     const highKey = cgaDegrade(reference, {

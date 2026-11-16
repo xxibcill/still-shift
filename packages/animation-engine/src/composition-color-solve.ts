@@ -329,11 +329,13 @@ function solveSaturation(
     1,
     L.saturationMaxGain,
   );
-  // Vibrance factor at the median pixel equals the gain.
-  const vibrance = round(
-    clamp((100 * (gain - 1)) / (1 - s50), 0, L.vibranceMax) * strength,
-    2,
-  );
+  // Vibrance factor at the median pixel equals the gain. A fully saturated
+  // median (s50 = 1) has no room to boost, and would otherwise give 0/0.
+  const room = 1 - s50;
+  const vibrance =
+    room > 0
+      ? round(clamp((100 * (gain - 1)) / room, 0, L.vibranceMax) * strength, 2)
+      : 0;
   const applied = vibrance >= 2;
   return [
     applied
