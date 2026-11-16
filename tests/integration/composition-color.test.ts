@@ -25,6 +25,7 @@ import {
   fitColorLook,
   measureColorFrames,
   openColorClip,
+  parseColorLook,
   readColorFrames,
   solveColorCorrection,
   type ColorFrame,
@@ -316,6 +317,30 @@ describe("CGA look held-out residuals", () => {
     expect(fitted.fit.shots[0]!.heldOut).toBeNull();
     expect(fitted.fit.heldOut).toBeNull();
     expect(fitted.fit.residual.rms).toBeLessThan(1);
+  });
+  it("rejects look files outside the contract's color.matrix bounds", async () => {
+    const fitted = await fitColorLook(
+      [join(root, "single-before.mkv")],
+      join(root, "single-after.mkv"),
+      { cacheDirectory: cache(), step: 4 },
+    );
+    expect(parseColorLook(JSON.parse(JSON.stringify(fitted)))).toEqual(fitted);
+    for (const [name, value] of [
+      ["rr", 4.5],
+      ["bo", -1.5],
+    ] as const)
+      try {
+        parseColorLook({
+          ...fitted,
+          params: { ...fitted.params, [name]: value },
+        });
+        expect.fail("must reject");
+      } catch (error) {
+        expect(passageDiagnostics(error)[0]).toMatchObject({
+          code: "comp-look-format",
+          path: `params.${name}`,
+        });
+      }
   });
 });
 

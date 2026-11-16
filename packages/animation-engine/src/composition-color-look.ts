@@ -8,6 +8,7 @@ import { z } from "zod";
 import {
   COLOR_MATRIX_COEFFICIENTS,
   COLOR_MATRIX_OFFSETS,
+  compositionEffectDefinition,
 } from "@still-shift/scene-contract";
 import { gradeBytes, gradeControls } from "@still-shift/renderer-core";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
@@ -45,7 +46,14 @@ const MatrixParams = z
   .object(
     Object.fromEntries(
       [...COLOR_MATRIX_COEFFICIENTS.flat(), ...COLOR_MATRIX_OFFSETS].map(
-        (name) => [name, z.number().finite()],
+        (name) => {
+          // The contract's `color.matrix` bounds, so every valid look renders.
+          const property =
+            compositionEffectDefinition("color.matrix")!.properties[name]!;
+          if (property.type !== "scalar")
+            throw Error("comp-look: color.matrix parameters are scalars");
+          return [name, z.number().min(property.min).max(property.max)];
+        },
       ),
     ) as Record<string, z.ZodNumber>,
   )
