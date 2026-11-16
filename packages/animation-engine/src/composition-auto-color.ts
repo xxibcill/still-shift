@@ -479,6 +479,84 @@ export async function autoColorClip(
       ),
     },
   };
+  // Render and verify into a staged file first; publish the output, the
+  // composition and the report only once everything succeeded, so a failed
+  // run leaves nothing behind that would block its retry.
+  let publish: (() => Promise<void>) | undefined;
+  let staged: string | undefined;
+  try {
+    if (request.output) {
+      const output = resolve(request.output);
+      await mkdir(dirname(output), { recursive: true });
+      staged = join(
+        dirname(output),
+        `.${basename(output)}.${randomUUID()}.mp4`,
+      );
+      const work = await mkdtemp(join(tmpdir(), "still-shift-auto-color-"));
+      try {
+        const path = join(work, "composition.json");
+        await writeFile(
+          path,
+          JSON.stringify(autoColorComposition(clip, audio, effects, undefined)),
+        );
+        progress(`rendering ${basename(output)}`);
+        await renderComposition({
+          compositionPath: path,
+          outputPath: staged,
+          backend: request.backend ?? "canvas2d",
+          ...(request.cacheDirectory
+            ? { cacheDirectory: request.cacheDirectory }
+            : {}),
+          signal: request.signal,
+        });
+      } finally {
+        await rm(work, { recursive: true, force: true });
+      }
+      progress(`verifying ${basename(output)}`);
+      const rendered = await probeCompositionVideo(staged, {
+        signal: request.signal,
+      });
+      const outputClip = await openColorClip(staged, request);
+      const codeValues = await readColorCodeValueFrames(
+        outputClip,
+        ordinals,
+        request.signal,
+      );
+      const measured = measureColorFrames(
+        ordinals.map((ordinal) => ({
+          ordinal,
+          rgba: codeValues.get(ordinal)!,
+        })),
+        clip.probe.width,
+      );
+      let squares = 0;
+      for (const frame of predictedFrames)
+        squares +=
+          rmsDifference(frame.rgba, codeValues.get(frame.ordinal)!) ** 2;
+      report.output = {
+        name: basename(output),
+        frameCount: rendered.frameCount,
+        durationSeconds: rendered.durationSeconds,
+        measured,
+        predictedRms: round(Math.sqrt(squares / predictedFrames.length)),
+        audio: await compareClipAudio(clip.path, staged, request.signal),
+      };
+      const verified = staged;
+      // A hard link publishes atomically and fails if the output appeared.
+      publish = () => link(verified, output);
+    }
+    request.signal?.throwIfAborted();
+    await publish?.();
+  } finally {
+    // The staged render and the renderer's sidecars never stay behind.
+    if (staged)
+      for (const path of [
+        staged,
+        `${staged}.scene.json`,
+        `${staged}.result.json`,
+      ])
+        await rm(path, { force: true });
+  }
   if (compositionPath) {
     await mkdir(dirname(compositionPath), { recursive: true });
     const composition = autoColorComposition(
@@ -493,67 +571,6 @@ export async function autoColorClip(
       { flag: "wx" },
     );
     report.composition = compositionPath;
-  }
-  if (request.output) {
-    const output = resolve(request.output);
-    await mkdir(dirname(output), { recursive: true });
-    const work = await mkdtemp(join(tmpdir(), "still-shift-auto-color-"));
-    try {
-      const path = join(work, "composition.json");
-      await writeFile(
-        path,
-        JSON.stringify(autoColorComposition(clip, audio, effects, undefined)),
-      );
-      progress(`rendering ${basename(output)}`);
-      const staged = join(
-        dirname(output),
-        `.${basename(output)}.${randomUUID()}.mp4`,
-      );
-      try {
-        await renderComposition({
-          compositionPath: path,
-          outputPath: staged,
-          backend: request.backend ?? "canvas2d",
-          ...(request.cacheDirectory
-            ? { cacheDirectory: request.cacheDirectory }
-            : {}),
-          signal: request.signal,
-        });
-        await rm(`${staged}.scene.json`, { force: true });
-        // A hard link publishes atomically and fails if the output appeared.
-        await link(staged, output);
-      } finally {
-        await rm(staged, { force: true });
-        await rm(`${staged}.scene.json`, { force: true });
-      }
-    } finally {
-      await rm(work, { recursive: true, force: true });
-    }
-    progress(`verifying ${basename(output)}`);
-    const rendered = await probeCompositionVideo(output, {
-      signal: request.signal,
-    });
-    const outputClip = await openColorClip(output, request);
-    const codeValues = await readColorCodeValueFrames(
-      outputClip,
-      ordinals,
-      request.signal,
-    );
-    const measured = measureColorFrames(
-      ordinals.map((ordinal) => ({ ordinal, rgba: codeValues.get(ordinal)! })),
-      clip.probe.width,
-    );
-    let squares = 0;
-    for (const frame of predictedFrames)
-      squares += rmsDifference(frame.rgba, codeValues.get(frame.ordinal)!) ** 2;
-    report.output = {
-      name: basename(output),
-      frameCount: rendered.frameCount,
-      durationSeconds: rendered.durationSeconds,
-      measured,
-      predictedRms: round(Math.sqrt(squares / predictedFrames.length)),
-      audio: await compareClipAudio(clip.path, output, request.signal),
-    };
   }
   await mkdir(dirname(reportTarget), { recursive: true });
   await writeFile(reportTarget, JSON.stringify(report, null, 2) + "\n", {

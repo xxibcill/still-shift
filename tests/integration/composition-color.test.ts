@@ -8,6 +8,7 @@ import {
   chmod,
   mkdir,
   mkdtemp,
+  readdir,
   readFile,
   rm,
   writeFile,
@@ -315,6 +316,10 @@ describe("CGA one-command correction", () => {
       await readFile(join(root, "auto-output.auto-color.json"), "utf8"),
     );
     expect(written.effects).toEqual(report.effects);
+    // Only the output and its report are published (no staged sidecars).
+    expect(
+      (await readdir(root)).filter((name) => name.includes("auto-output")),
+    ).toEqual(["auto-output.auto-color.json", "auto-output.mp4"]);
   }, 120_000);
   it("writes the editable composition and a byte-identical report on rerun", async () => {
     const degraded = cgaDegrade(reference, {
@@ -357,6 +362,39 @@ describe("CGA one-command correction", () => {
       expect(passageDiagnostics(error)[0]!.code).toBe("comp-auto-color-output");
     }
   });
+  it("publishes nothing when a run fails after rendering, so it can be retried", async () => {
+    const input = join(root, "retry-input.mkv");
+    await writeCgaClip(
+      input,
+      cgaDegrade(reference.slice(0, 4), { kind: "exposure", stops: -0.6 }),
+    );
+    const folder = join(root, "retry");
+    const request = {
+      input,
+      output: join(folder, "fixed.mp4"),
+      writeComposition: join(folder, "fixed.composition.json"),
+      cacheDirectory: cache(),
+    };
+    // Cancel once the render is done, during verification.
+    const controller = new AbortController();
+    await expect(
+      autoColorClip({
+        ...request,
+        signal: controller.signal,
+        progress: (message) => {
+          if (message.startsWith("verifying")) controller.abort();
+        },
+      }),
+    ).rejects.toThrow();
+    expect(await readdir(folder)).toEqual([]);
+    const report = await autoColorClip(request);
+    expect(report.output!.frameCount).toBe(4);
+    expect((await readdir(folder)).sort()).toEqual([
+      "fixed.auto-color.json",
+      "fixed.composition.json",
+      "fixed.mp4",
+    ]);
+  }, 120_000);
   it("decodes audio even when FFmpeg floods stderr", async () => {
     const input = join(root, "noisy-audio.mkv");
     await writeCgaClip(input, reference.slice(0, 3), { audio: true });
