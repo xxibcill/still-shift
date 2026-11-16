@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Color grading CGA (2026-11-16):** in review as [PR #70](https://github.com/xxibcill/still-shift/pull/70) on `codex/cga-auto-color` (from `main` a897acb4; `main` 9d69a4f7 merged in, only this log conflicted). Flow clips (BT.601 `smpte170m`) now decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three new exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). All CGA checks met except the owner-look bound: held-out 2.30 RMS per pixel (block means 1.82). After two rounds of owner feedback the look defaults to strength 0.6 (owner's pick) and Auto is moderate and cooler. Pending owner decisions: review the final sheets in `dist/cga-owner/sheets`; whether block-mean RMS is the right look bound; the pre-existing BT.709-transfer import/export asymmetry. CG0–CG15 not started. [CGA results](./color-grading-cga-results.json).
+- **Color grading CGA (2026-11-16):** in review as [PR #70](https://github.com/xxibcill/still-shift/pull/70) on `codex/cga-auto-color`. Flow clips (BT.601 `smpte170m`) decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). The [PR review](https://github.com/xxibcill/still-shift/pull/70#pullrequestreview-5920818343)'s 32 findings are addressed on the branch, one commit each (C4 is the owner's decision, no commit). Exposure now places the midtones (it can darken); looks carry targets; per-correction scales; clipping guard scales tone. Checks now marked partly met: synthetic desaturation, luma continuity, audio track length, BT.601 on 4:2:0, and (as before) the owner-look bound. Pending owner decisions: decision 1 (approve CGA alone), the final sheets in `dist/cga-owner/sheets`, whether block-mean RMS is the right look bound, the BT.709-transfer import/export asymmetry, and whether to install the soundtrack runtime for full `check:runtime`. CG0–CG15 not started. [CGA results](./color-grading-cga-results.json).
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
@@ -103,6 +103,16 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-16 — Color grading CGA: PR #70 review findings fixed
+
+- **Agent / branch:** Claude Code on `codex/cga-auto-color` (from `fc452fa0`)
+- **Scope:** two-axis review of PR #70 (Standards + Spec), posted as 32 inline comments, then one commit per finding.
+- **Done:** defects S1 (no-overwrite CLI writes), D1 (FFmpeg stderr drain; a 1 MB-stderr wrapper hung before), D2 (verify before publishing; the staged `.result.json` sidecar leaked on every run), D3 (no held-out figure with one shot), D4 (look bounds from the contract), D5, D6; spec A1 (midtone exposure via levels gamma, 0.40–0.52, can darken), A2 (look `targets`), A3 (batch-path deviation recorded), A4 (0–1 per-correction scales), C1 (clipping guard scales tone, reports overruns); smells SM1–SM11 (shared helpers, one grade-kernel record, `ColorFrameSet`, look module split); records B1, C2a–C2e, C3, S2.
+- **Results:** owner's 12 clips (all high key) give identical effects except one clip whose black point now scales with the clipping guard (0.0297 → 0.0223). `check:fast` 463/4,675; grade parity max delta 0; composition-effects, -media and -baselines (176 items, 36,061 frames) unchanged. `check:runtime`: toolchain and `test:runtime` pass; `test:integration` fails only in 36 soundtrack-runtime tests (runtime not installed here) plus 3 depth timeouts that pass on rerun; `test:depth` and `test:browser:smoke` pass. Not run: `pnpm check`, full `pnpm test`, `release:check`.
+- **Rejected / do not repeat:** routing CGA folders through the v0.1 `batch` command (still-image `AnimationRequest` pipeline; recorded in the plan).
+- **Open / next:** owner decision 1 and sheet review; soundtrack runtime for a full `check:runtime`.
+- **Records:** [PR review](https://github.com/xxibcill/still-shift/pull/70#pullrequestreview-5920818343), [plan checks](./color-grading-engine-plan.md#cga--automatic-exposure-contrast-saturation-and-white-balance-for-flat-sdr-clips), [CGA results `verification`](./color-grading-cga-results.json).
 
 ### 2026-11-16 — Color grading CGA: owner pick, look 0.6, calmer and cooler Auto
 
