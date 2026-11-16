@@ -121,67 +121,8 @@ export function vibranceFactors(p: Params): Uint16Array {
   return factors;
 }
 
-export function gradeControls(id: GradeEffectId, p: Params): GradeControls {
-  if (id === "color.matrix") return { id, matrix: colorMatrixControls(p) };
-  if (id === "color.white-balance") return { id, table: whiteBalanceTable(p) };
-  return { id, factors: vibranceFactors(p) };
-}
-
 const clampByte = (value: number) =>
   value < 0 ? 0 : value > 255 ? 255 : value;
-/**
- * Straight bytes in, straight bytes out (written to `out` at `at`). This is
- * the reference that both backends and Node measurement share.
- */
-export function gradeBytes(
-  controls: GradeControls,
-  r: number,
-  g: number,
-  b: number,
-  out: Uint8Array | Uint8ClampedArray | number[],
-  at = 0,
-) {
-  if (controls.id === "color.white-balance") {
-    const table = controls.table;
-    out[at] = table[r]!;
-    out[at + 1] = table[256 + g]!;
-    out[at + 2] = table[512 + b]!;
-    return;
-  }
-  if (controls.id === "color.matrix") {
-    const m = controls.matrix;
-    for (let channel = 0; channel < 3; channel++) {
-      const row = channel * 4;
-      const sum =
-        m[row]! * r + m[row + 1]! * g + m[row + 2]! * b + m[row + 3]! + 2048;
-      out[at + channel] = clampByte(sum >> 12);
-    }
-    return;
-  }
-  const maximum = Math.max(r, g, b),
-    chroma = maximum - Math.min(r, g, b);
-  const index = maximum ? Math.floor((255 * chroma) / maximum) : 0;
-  const row =
-    chroma > 0 && r >= g && g >= b ? Math.floor((254 * (g - b)) / chroma) : 255;
-  const factor = controls.factors[row * 256 + index]!;
-  const luma =
-    GRADE_LUMA_WEIGHTS[0] * r +
-    GRADE_LUMA_WEIGHTS[1] * g +
-    GRADE_LUMA_WEIGHTS[2] * b;
-  const base = luma * GRADE_VIBRANCE_SCALE + 524288;
-  out[at] = clampByte((base + (r * 256 - luma) * factor) >> 20);
-  out[at + 1] = clampByte((base + (g * 256 - luma) * factor) >> 20);
-  out[at + 2] = clampByte((base + (b * 256 - luma) * factor) >> 20);
-}
-
-/** Apply in place to straight RGBA8 (alpha untouched), e.g. decoded frames. */
-export function applyGradeToRgba(
-  controls: GradeControls,
-  pixels: Uint8Array | Uint8ClampedArray,
-) {
-  for (let i = 0; i < pixels.length; i += 4)
-    gradeBytes(controls, pixels[i]!, pixels[i + 1]!, pixels[i + 2]!, pixels, i);
-}
 
 /** Stored premultiplied byte to straight byte, half-up (as color effects). */
 const straight = (premultiplied: number, alpha: number) =>
@@ -197,20 +138,107 @@ const PRELUDE = `
 const POSTLUDE = `
     o=clamp(o,ivec3(0),ivec3(255));
     pixel=bytes(vec4(vec3(o)/255.0*sourcePixel.a,sourcePixel.a));`;
-const bodies: Readonly<Record<GradeEffectId, string>> = {
-  "color.matrix": `uniform vec4 rowRed;uniform vec4 rowGreen;uniform vec4 rowBlue;
+type ControlsOf<I extends GradeEffectId> = Extract<GradeControls, { id: I }>;
+type ByteOut = Uint8Array | Uint8ClampedArray | number[];
+/**
+ * Everything one grade effect needs, kept together: its controls from
+ * parameters, the integer byte reference, its shader, and the GPU inputs
+ * (uniforms, or a control texture of 256 × `height`).
+ */
+type GradeKernel<I extends GradeEffectId> = {
+  controls: (p: Params) => ControlsOf<I>;
+  bytes: (
+    controls: ControlsOf<I>,
+    r: number,
+    g: number,
+    b: number,
+    out: ByteOut,
+    at: number,
+  ) => void;
+  shader: string;
+  gpu:
+    | { uniforms: (controls: ControlsOf<I>) => Record<string, number[]> }
+    | {
+        height: number;
+        texture: (controls: ControlsOf<I>) => Uint8Array<ArrayBuffer>;
+      };
+};
+const GRADE_KERNELS: { readonly [I in GradeEffectId]: GradeKernel<I> } = {
+  "color.matrix": {
+    controls: (p) => ({ id: "color.matrix", matrix: colorMatrixControls(p) }),
+    bytes({ matrix: m }, r, g, b, out, at) {
+      for (let channel = 0; channel < 3; channel++) {
+        const row = channel * 4;
+        const sum =
+          m[row]! * r + m[row + 1]! * g + m[row + 2]! * b + m[row + 3]! + 2048;
+        out[at + channel] = clampByte(sum >> 12);
+      }
+    },
+    shader: `uniform vec4 rowRed;uniform vec4 rowGreen;uniform vec4 rowBlue;
   void main(){${PRELUDE}
     ivec4 rr=ivec4(rowRed),rg=ivec4(rowGreen),rb=ivec4(rowBlue);
     o=ivec3(rr.x*c.r+rr.y*c.g+rr.z*c.b+rr.w+2048,
             rg.x*c.r+rg.y*c.g+rg.z*c.b+rg.w+2048,
             rb.x*c.r+rb.y*c.g+rb.z*c.b+rb.w+2048)>>12;${POSTLUDE}
   }`,
-  "color.white-balance": `
+    gpu: {
+      uniforms: ({ matrix: m }) => ({
+        rowRed: [m[0]!, m[1]!, m[2]!, m[3]!],
+        rowGreen: [m[4]!, m[5]!, m[6]!, m[7]!],
+        rowBlue: [m[8]!, m[9]!, m[10]!, m[11]!],
+      }),
+    },
+  },
+  "color.white-balance": {
+    controls: (p) => ({
+      id: "color.white-balance",
+      table: whiteBalanceTable(p),
+    }),
+    bytes({ table }, r, g, b, out, at) {
+      out[at] = table[r]!;
+      out[at + 1] = table[256 + g]!;
+      out[at + 2] = table[512 + b]!;
+    },
+    shader: `
   int entry(int channel,int value){return int(floor(texelFetch(backdrop,ivec2(value,0),0)[channel]*255.0+0.5));}
   void main(){${PRELUDE}
     o=ivec3(entry(0,c.r),entry(1,c.g),entry(2,c.b));${POSTLUDE}
   }`,
-  "color.vibrance": `
+    gpu: {
+      height: 1,
+      texture({ table }) {
+        const bytes = new Uint8Array(256 * 4);
+        for (let value = 0; value < 256; value++) {
+          bytes[value * 4] = table[value]!;
+          bytes[value * 4 + 1] = table[256 + value]!;
+          bytes[value * 4 + 2] = table[512 + value]!;
+          bytes[value * 4 + 3] = 255;
+        }
+        return bytes;
+      },
+    },
+  },
+  "color.vibrance": {
+    controls: (p) => ({ id: "color.vibrance", factors: vibranceFactors(p) }),
+    bytes({ factors }, r, g, b, out, at) {
+      const maximum = Math.max(r, g, b),
+        chroma = maximum - Math.min(r, g, b);
+      const index = maximum ? Math.floor((255 * chroma) / maximum) : 0;
+      const row =
+        chroma > 0 && r >= g && g >= b
+          ? Math.floor((254 * (g - b)) / chroma)
+          : 255;
+      const factor = factors[row * 256 + index]!;
+      const luma =
+        GRADE_LUMA_WEIGHTS[0] * r +
+        GRADE_LUMA_WEIGHTS[1] * g +
+        GRADE_LUMA_WEIGHTS[2] * b;
+      const base = luma * GRADE_VIBRANCE_SCALE + 524288;
+      out[at] = clampByte((base + (r * 256 - luma) * factor) >> 20);
+      out[at + 1] = clampByte((base + (g * 256 - luma) * factor) >> 20);
+      out[at + 2] = clampByte((base + (b * 256 - luma) * factor) >> 20);
+    },
+    shader: `
   void main(){${PRELUDE}
     int maximum=max(max(c.r,c.g),c.b),chroma=maximum-min(min(c.r,c.g),c.b);
     int index=maximum>0?int(uint(255*chroma)/uint(maximum)):0;
@@ -220,28 +248,51 @@ const bodies: Readonly<Record<GradeEffectId, string>> = {
     int luma=54*c.r+183*c.g+19*c.b;
     o=(ivec3(luma*4096+524288)+(c*256-ivec3(luma))*factor)>>20;${POSTLUDE}
   }`,
+    gpu: {
+      height: 256,
+      texture({ factors }) {
+        const bytes = new Uint8Array(65536 * 4);
+        for (let i = 0; i < 65536; i++) {
+          bytes[i * 4] = factors[i]! & 255;
+          bytes[i * 4 + 1] = factors[i]! >>> 8;
+          bytes[i * 4 + 3] = 255;
+        }
+        return bytes;
+      },
+    },
+  },
 };
+/** The kernel for a controls value (one cast: TS can't correlate the id). */
+const kernelOf = <I extends GradeEffectId>(controls: ControlsOf<I>) =>
+  GRADE_KERNELS[controls.id as I] as unknown as GradeKernel<I>;
 
-/** RGBA control texture bytes: 256×1 white-balance tables or 256×256 factors. */
-function controlTexture(controls: GradeControls): Uint8Array<ArrayBuffer> {
-  if (controls.id === "color.white-balance") {
-    const bytes = new Uint8Array(256 * 4);
-    for (let value = 0; value < 256; value++) {
-      bytes[value * 4] = controls.table[value]!;
-      bytes[value * 4 + 1] = controls.table[256 + value]!;
-      bytes[value * 4 + 2] = controls.table[512 + value]!;
-      bytes[value * 4 + 3] = 255;
-    }
-    return bytes;
-  }
-  const factors = (controls as { factors: Uint16Array }).factors;
-  const bytes = new Uint8Array(65536 * 4);
-  for (let i = 0; i < 65536; i++) {
-    bytes[i * 4] = factors[i]! & 255;
-    bytes[i * 4 + 1] = factors[i]! >>> 8;
-    bytes[i * 4 + 3] = 255;
-  }
-  return bytes;
+export function gradeControls(id: GradeEffectId, p: Params): GradeControls {
+  return GRADE_KERNELS[id].controls(p);
+}
+
+/**
+ * Straight bytes in, straight bytes out (written to `out` at `at`). This is
+ * the reference that both backends and Node measurement share.
+ */
+export function gradeBytes(
+  controls: GradeControls,
+  r: number,
+  g: number,
+  b: number,
+  out: ByteOut,
+  at = 0,
+) {
+  kernelOf(controls).bytes(controls, r, g, b, out, at);
+}
+
+/** Apply in place to straight RGBA8 (alpha untouched), e.g. decoded frames. */
+export function applyGradeToRgba(
+  controls: GradeControls,
+  pixels: Uint8Array | Uint8ClampedArray,
+) {
+  const bytes = kernelOf(controls).bytes;
+  for (let i = 0; i < pixels.length; i += 4)
+    bytes(controls, pixels[i]!, pixels[i + 1]!, pixels[i + 2]!, pixels, i);
 }
 
 const kernels = new Map<string, Readonly<CompositionEffectPlugin>>();
@@ -252,33 +303,30 @@ export function gradeEffectKernel(
   let kernel = kernels.get(id);
   if (kernel) return kernel;
   const definition = compositionEffectDefinition(id)!;
-  const shader = bodies[id];
+  const grade = GRADE_KERNELS[id] as GradeKernel<typeof id>;
   kernel = Object.freeze({
     id,
     definition,
     renderGpu(context, input, params) {
       const output = context.createSurface(input.width, input.height);
-      const controls = gradeControls(id, params);
-      if (controls.id === "color.matrix") {
-        const m = controls.matrix;
-        context.pass(shader, output, [input], {
-          rowRed: [m[0]!, m[1]!, m[2]!, m[3]!],
-          rowGreen: [m[4]!, m[5]!, m[6]!, m[7]!],
-          rowBlue: [m[8]!, m[9]!, m[10]!, m[11]!],
-        });
+      const controls = grade.controls(params);
+      if ("uniforms" in grade.gpu) {
+        context.pass(
+          grade.shader,
+          output,
+          [input],
+          grade.gpu.uniforms(controls),
+        );
         return output;
       }
-      const table = context.createSurface(
-        256,
-        controls.id === "color.white-balance" ? 1 : 256,
-      );
-      context.uploadBytes(table, controlTexture(controls));
-      context.pass(shader, output, [input, table], {});
+      const table = context.createSurface(256, grade.gpu.height);
+      context.uploadBytes(table, grade.gpu.texture(controls));
+      context.pass(grade.shader, output, [input, table], {});
       return output;
     },
     renderCanvas(context, input, params) {
       const output = context.createSurface(input.width, input.height);
-      const controls = gradeControls(id, params);
+      const controls = grade.controls(params);
       const image = readRenderImageData(
         input.ctx,
         0,
@@ -295,7 +343,7 @@ export function gradeEffectKernel(
         const r = straight(Math.round((data[i]! * alpha) / 255), alpha),
           g = straight(Math.round((data[i + 1]! * alpha) / 255), alpha),
           b = straight(Math.round((data[i + 2]! * alpha) / 255), alpha);
-        gradeBytes(controls, r, g, b, data, i);
+        grade.bytes(controls, r, g, b, data, i);
       }
       output.ctx.putImageData(image, 0, 0);
       return output;
