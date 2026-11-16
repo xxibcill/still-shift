@@ -4,13 +4,22 @@
  * read back through the engine's own media path.
  */
 import { afterAll, beforeAll, describe, expect, it } from "vitest";
-import { mkdtemp, readFile, rm } from "node:fs/promises";
+import {
+  chmod,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  writeFile,
+} from "node:fs/promises";
+import { execFileSync } from "node:child_process";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
   applyColorEffects,
   autoColorClip,
   colorSampleOrdinals,
+  compareClipAudio,
   colorSolverFrames,
   fitColorLook,
   measureColorFrames,
@@ -348,6 +357,30 @@ describe("CGA one-command correction", () => {
       expect(passageDiagnostics(error)[0]!.code).toBe("comp-auto-color-output");
     }
   });
+  it("decodes audio even when FFmpeg floods stderr", async () => {
+    const input = join(root, "noisy-audio.mkv");
+    await writeCgaClip(input, reference.slice(0, 3), { audio: true });
+    // A wrapper that writes 1 MB to stderr first: an unread stderr pipe
+    // (64 KB) would block FFmpeg and hang the decode.
+    const bin = join(root, "noisy-bin");
+    await mkdir(bin, { recursive: true });
+    const real = execFileSync("sh", ["-c", "command -v ffmpeg"], {
+      encoding: "utf8",
+    }).trim();
+    await writeFile(
+      join(bin, "ffmpeg"),
+      `#!/bin/sh\nhead -c 1000000 /dev/zero | tr '\\0' e >&2\nexec "${real}" "$@"\n`,
+    );
+    await chmod(join(bin, "ffmpeg"), 0o755);
+    const path = process.env.PATH;
+    process.env.PATH = `${bin}:${path}`;
+    try {
+      const audio = await compareClipAudio(input, input);
+      expect(audio!.correlation).toBe(1);
+    } finally {
+      process.env.PATH = path;
+    }
+  }, 30_000);
   it("rejects a non-integer source rate with a located diagnostic", async () => {
     const path = join(root, "ntsc.mkv");
     await writeCgaClip(path, reference.slice(0, 3), {

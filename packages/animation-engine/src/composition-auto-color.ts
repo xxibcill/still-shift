@@ -161,7 +161,8 @@ async function decodeAudio(
       { stdio: ["ignore", "pipe", "pipe"] },
     );
     const chunks: Buffer[] = [];
-    let size = 0;
+    let size = 0,
+      errors = "";
     const abort = () => child.kill("SIGKILL");
     signal?.addEventListener("abort", abort, { once: true });
     child.stdout.on("data", (chunk: Buffer) => {
@@ -169,12 +170,19 @@ async function decodeAudio(
       if (size > 2 ** 31) child.kill("SIGKILL");
       else chunks.push(chunk);
     });
+    // Drain stderr (keeping a bounded tail): an unread pipe fills on a noisy
+    // stream, FFmpeg blocks writing to it and the decode never finishes.
+    child.stderr.on("data", (chunk) => {
+      errors = (errors + String(chunk)).slice(-2000);
+    });
     child.on("error", reject);
     child.on("close", (code) => {
       signal?.removeEventListener("abort", abort);
       if (signal?.aborted) return reject(signal.reason);
       if (code !== 0)
-        return reject(Error(`comp-auto-color: audio decode failed (${code})`));
+        return reject(
+          Error(`comp-auto-color: audio decode failed (${code}): ${errors}`),
+        );
       const bytes = Buffer.concat(chunks);
       accept(
         new Float32Array(
