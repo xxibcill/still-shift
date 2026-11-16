@@ -11,6 +11,10 @@ import {
   gradeControls,
   isGradeEffect,
 } from "@still-shift/renderer-core";
+import {
+  GRADE_EFFECT_IDS,
+  compositionEffectDefinition,
+} from "@still-shift/scene-contract";
 import { colorEffectPixel } from "../../renderer-core/src/composition/render/color-effects.ts";
 import {
   measureColorFrames,
@@ -603,44 +607,29 @@ export function applyColorEffects(
   }
   return out;
 }
-const DEFAULTS: Record<string, Record<string, number | number[][]>> = {
-  "color.levels": {
-    inputBlack: 0,
-    inputWhite: 1,
-    gamma: 1,
-    outputBlack: 0,
-    outputWhite: 1,
-  },
-  "color.curves": {
-    curve: [
-      [0, 0],
-      [1, 1],
-    ],
-    amount: 1,
-  },
-  "color.matrix": {
-    rr: 1,
-    rg: 0,
-    rb: 0,
-    gr: 0,
-    gg: 1,
-    gb: 0,
-    br: 0,
-    bg: 0,
-    bb: 1,
-    ro: 0,
-    go: 0,
-    bo: 0,
-    strength: 1,
-  },
-  "color.white-balance": { temperature: 0, tint: 0 },
-  "color.vibrance": { vibrance: 0, saturation: 0, protectSkin: 0.7 },
-};
+/**
+ * Effects the measurement reference can apply: the grade effects exactly, and
+ * the per-channel `color.levels` and `color.curves` as byte tables.
+ */
+const MEASURABLE_EFFECTS: ReadonlySet<string> = new Set([
+  "color.levels",
+  "color.curves",
+  ...GRADE_EFFECT_IDS,
+]);
+/** Parameters with the effect definition's defaults filled in. */
 function effectParams(effect: ColorCorrectionEffect) {
-  const defaults = DEFAULTS[effect.effect];
-  if (!defaults)
+  const definition = MEASURABLE_EFFECTS.has(effect.effect)
+    ? compositionEffectDefinition(effect.effect)
+    : undefined;
+  if (!definition)
     throw Error(
       `comp-auto-color: no measurement reference for ${effect.effect}`,
     );
+  const defaults = Object.fromEntries(
+    Object.entries(definition.properties).map(([name, property]) => [
+      name,
+      property.default,
+    ]),
+  );
   return { ...defaults, ...effect.params } as Record<string, never>;
 }
