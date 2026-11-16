@@ -85,6 +85,14 @@ export const COLOR_SOLVER_LIMITS = {
   /** Largest median-luma rise an exposure fix may cause outside high key. */
   medianRiseMax: 0.08,
   /**
+   * Midtone placement outside high key: a median below the range is raised
+   * toward it (within medianRiseMax, white point included), one above it is
+   * lowered by at most medianDropMax, through the levels gamma. Inside the
+   * range nothing moves.
+   */
+  midtoneRange: [0.4, 0.52] as const,
+  medianDropMax: 0.05,
+  /**
    * Black point target and the largest move. A flat clip (lifted blacks and
    * dim highlights) closes the whole gap; a soft or high-key clip whose
    * highlights already reach closes half of it, so its key barely moves.
@@ -201,7 +209,9 @@ function solveTone(
     median = Math.max(0.02, luma.p50);
   const decisions: ColorSolveDecision[] = [];
   let white = 1,
-    black = 0;
+    black = 0,
+    gamma = 1;
+  const exposure = toggles.exposure && median < L.highKey;
   if (!toggles.exposure)
     decisions.push({
       correction: "exposure",
@@ -218,7 +228,7 @@ function solveTone(
     decisions.push({
       correction: "exposure",
       applied: false,
-      reason: `highlights reach ${luma.p995} (≥ ${L.whiteTrigger}); exposure kept`,
+      reason: `highlights reach ${luma.p995} (≥ ${L.whiteTrigger}); white point kept`,
     });
   else {
     white = Math.max(
@@ -268,15 +278,38 @@ function solveTone(
   }
   black *= strength;
   white = 1 - (1 - white) * strength;
-  const target = clamp((median - black) / (white - black), 0.02, 0.98);
+  let target = clamp((median - black) / (white - black), 0.02, 0.98);
+  if (exposure) {
+    // Place the midtones: gamma moves the median after levels into range.
+    const [low, high] = L.midtoneRange;
+    const goal =
+      target < low
+        ? Math.max(target, Math.min(low, median + L.medianRiseMax))
+        : target > high
+          ? Math.max(high, target - L.medianDropMax)
+          : target;
+    const placed = target + (goal - target) * strength;
+    const solved = round(Math.log(target) / Math.log(placed));
+    if (Math.abs(solved - 1) >= 0.01) {
+      gamma = solved;
+      decisions.push({
+        correction: "exposure",
+        applied: true,
+        reason: `median ${round(target, 3)} after levels is ${target < low ? "below" : "above"} the midtone range ${low}–${high}; gamma moves it to ${round(placed, 3)}`,
+        values: { gamma, median: round(target, 4), placed: round(placed, 4) },
+      });
+      target = placed;
+    }
+  }
   const effects: ColorCorrectionEffect[] = [];
-  if (black > 0.0005 || white < 0.9995)
+  if (black > 0.0005 || white < 0.9995 || gamma !== 1)
     effects.push({
       id: "auto-levels",
       effect: "color.levels",
       params: {
         inputBlack: round(black),
         inputWhite: round(white),
+        ...(gamma !== 1 ? { gamma } : {}),
       },
     });
   const spread = (luma.p95 - luma.p05) / (white - black);

@@ -154,6 +154,58 @@ describe("CGA adaptive solver", () => {
         expect(mapped[v * 4]! - mapped[(v - 1) * 4]!).toBeLessThanOrEqual(2);
     },
   );
+  it("places the midtones: darkens an over-exposed clip, lifts dark midtones", async () => {
+    const levels = (solution: ReturnType<typeof solve>) =>
+      solution.effects.find((effect) => effect.effect === "color.levels")
+        ?.params as Record<string, number> | undefined;
+    // +0.5 stops: median 0.57 (not high key), highlights clipped.
+    const bright = cgaDegrade(reference, { kind: "exposure", stops: 0.5 });
+    const over = await clipFrames("over-exposed", bright);
+    const darkened = solve(over.read);
+    expect(levels(darkened)!.gamma).toBeLessThan(1);
+    const before = measureColorFrames(over.read, W).luma.p50;
+    expect(darkened.predicted.luma.p50).toBeLessThan(before - 0.03);
+    expect(before - darkened.predicted.luma.p50).toBeLessThanOrEqual(
+      COLOR_SOLVER_LIMITS.medianDropMax + 0.005,
+    );
+    const original = over.read.map((frame) => reference[frame.ordinal]!);
+    expect(
+      rms(
+        over.read.map((frame) =>
+          applyColorEffects(darkened.effects, frame.rgba),
+        ),
+        original,
+      ),
+    ).toBeLessThan(
+      rms(
+        over.read.map((frame) => frame.rgba),
+        original,
+      ),
+    );
+    // Dark midtones under full highlights: the white point stays, gamma lifts.
+    const dim = reference.map((frame) =>
+      applyColorEffects(
+        [{ id: "dim", effect: "color.levels", params: { gamma: 0.7 } }],
+        frame,
+      ),
+    );
+    const low = await clipFrames("dark-midtones", dim);
+    const lifted = solve(low.read);
+    expect(levels(lifted)!.inputWhite).toBe(1);
+    expect(levels(lifted)!.gamma).toBeGreaterThan(1);
+    const lowBefore = measureColorFrames(low.read, W).luma;
+    expect(lowBefore.p50).toBeLessThan(COLOR_SOLVER_LIMITS.midtoneRange[0]);
+    expect(lifted.predicted.luma.p50).toBeGreaterThan(lowBefore.p50 + 0.03);
+    expect(lifted.predicted.luma.p50 - lowBefore.p50).toBeLessThanOrEqual(
+      COLOR_SOLVER_LIMITS.medianRiseMax + 0.005,
+    );
+    // +0.8 stops is high key (median ≥ 0.6): its exposure is left alone.
+    const key = await clipFrames(
+      "high-key-exposure",
+      cgaDegrade(reference, { kind: "exposure", stops: 0.8 }),
+    );
+    expect(levels(solve(key.read))?.gamma).toBeUndefined();
+  });
   it("lifts a desaturated clip to the saturation targets, protecting skin", async () => {
     const degraded = cgaDegrade(reference, { kind: "saturation", scale: 0.4 });
     const { read } = await clipFrames("desaturated", degraded);

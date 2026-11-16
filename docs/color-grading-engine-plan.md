@@ -385,7 +385,11 @@ adaptive solver works in stages (white balance → tone → saturation) on the
 measured frames and re-measures the exact predicted result after each; it
 removes 50–90% of the near-neutral cast (with a coupled magenta tint when it is unsure) depending on how much the near-neutral
 pixels agree, never brightens a high-key clip, and keeps a dead band on every
-correction.
+correction. Exposure lifts a dim white point and then places the median in the
+0.40–0.52 midtone range with the levels gamma (raise ≤ 0.08 in all, lower
+≤ 0.05), so an over-exposed or dark-midtone clip is corrected too; high-key
+clips (median ≥ 0.6) keep their exposure. Added after review (PR #70, A1): the
+first version only lifted the white point and could never darken.
 
 **Owner inputs:** five or more representative Flow clips (kept local unless
 licensed for the repository), and optionally one or two frames showing the

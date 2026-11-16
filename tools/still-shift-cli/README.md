@@ -377,11 +377,13 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   `--strength 1` for the full transform.
 - **`auto-color`** solves one static correction per clip from its statistics:
   white balance (`color.white-balance`, removing part of the near-neutral cast),
-  exposure and contrast (`color.levels`, plus a median-pivoted `color.curves`
+  exposure and contrast (`color.levels`: white and black points, plus a gamma
+  that places the median in the 0.40–0.52 midtone range, raising it by at most
+  0.08 or lowering it by at most 0.05; and a median-pivoted `color.curves`
   S-curve when the range stays narrow) and saturation (`color.vibrance`, which
   protects strong colors and skin). Each correction is bounded, has a dead band
   and a `--strength` scale; a balanced clip is left unchanged and a high-key
-  clip is never brightened, so its key is kept. `--exposure`, `--contrast`,
+  clip (median luma ≥ 0.6) keeps its exposure, so its key is kept. `--exposure`, `--contrast`,
   `--saturation` and `--white-balance false` switch corrections off. With
   `--look`, `--strength` scales the look (default 0.6) and only the look is
   applied unless a correction is switched on or `--adaptive true` is given;
