@@ -128,7 +128,7 @@ async function video(
     "-color_trc",
     transfer,
     "-colorspace",
-    matrix === "gbr" ? "0" : "bt709",
+    matrix === "gbr" ? "0" : matrix,
     "-color_range",
     matrix === "gbr" ? "pc" : "tv",
     source,
@@ -277,6 +277,68 @@ it("converts limited-range BT.709 YUV neutral samples without treating limited c
       expected,
     ),
   ).toBeLessThanOrEqual(2);
+});
+it("converts limited-range BT.601 (smpte170m) YUV with BT.601 coefficients within one code value", async () => {
+  // Generated sources such as Google Flow tag BT.709 primaries, an sRGB
+  // transfer and the BT.601 matrix. Chroma rows make the matrix choice visible.
+  const width = 220,
+    height = 24,
+    count = width * height;
+  const raw = Buffer.alloc(count * 3),
+    expected = Buffer.alloc(count * 4),
+    asBt709 = Buffer.alloc(count * 4);
+  const convert = (y: number, u: number, v: number, kr: number, kb: number) => {
+    const kg = 1 - kr - kb,
+      luma = (y - 16) / 219,
+      cb = (u - 128) / 224,
+      cr = (v - 128) / 224;
+    const r = luma + 2 * (1 - kr) * cr,
+      b = luma + 2 * (1 - kb) * cb,
+      g = (luma - kr * r - kb * b) / kg;
+    return [r, g, b].map((value) =>
+      Math.round(Math.min(1, Math.max(0, value)) * 255),
+    );
+  };
+  for (let y = 0; y < height; y++)
+    for (let x = 0; x < width; x++) {
+      const at = y * width + x;
+      const luma = x + 16,
+        u = 128 + Math.round(((y % 6) - 2.5) * 18),
+        v = 128 + Math.round((Math.floor(y / 6) - 1.5) * 26);
+      raw[at] = luma;
+      raw[count + at] = u;
+      raw[count * 2 + at] = v;
+      expected.set([...convert(luma, u, v, 0.299, 0.114), 255], at * 4);
+      asBt709.set([...convert(luma, u, v, 0.2126, 0.0722), 255], at * 4);
+    }
+  const { asset, probe } = await video(
+    "bt601",
+    raw,
+    width,
+    height,
+    "yuv444p",
+    "iec61966-2-1",
+    "smpte170m",
+    "24",
+  );
+  expect(probe.color).toEqual({
+    primaries: "bt709",
+    transfer: "iec61966-2-1",
+    matrix: "smpte170m",
+    range: "tv",
+  });
+  const prepared = await prepareCompositionVisualMedia({
+    asset,
+    sourceDirectory: root,
+    cacheDirectory: join(root, "bt601-cache"),
+    ordinals: [0],
+  });
+  const pixels = mediaPngPixels(
+    await readFile(prepared.assetPaths[prepared.frames[0]!.id]!),
+  );
+  expect(maxDifference(pixels, expected)).toBeLessThanOrEqual(1);
+  // The BT.709 coefficients would be a visible error on these samples.
+  expect(maxDifference(pixels, asBt709)).toBeGreaterThan(10);
 });
 async function sequence(name: string) {
   const directory = join(root, name);

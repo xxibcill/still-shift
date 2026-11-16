@@ -197,7 +197,12 @@ export function compositionMediaColorFilter(
 ): string {
   const flags = "accurate_rnd+bitexact";
   const range = `in_range=${color.range}:out_range=pc`;
-  const matrix = color.matrix === "bt709" ? ":in_color_matrix=bt709" : "";
+  const matrix =
+    color.matrix === "bt709"
+      ? ":in_color_matrix=bt709"
+      : color.matrix === "smpte170m"
+        ? ":in_color_matrix=bt601"
+        : "";
   const filters = [`scale=${range}${matrix}:flags=${flags}`, "format=rgba64le"];
   if (color.transfer === "bt709") {
     const linear =
