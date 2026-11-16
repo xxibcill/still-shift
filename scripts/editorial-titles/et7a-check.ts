@@ -2,6 +2,7 @@
 // (docs/editorial-typography-improvement-plan.md#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8).
 //
 //   pnpm exec tsx scripts/editorial-titles/et7a-check.ts --input <candidate.ts> [--lint false]
+//   pnpm exec tsx scripts/editorial-titles/et7a-check.ts --input <candidate.ts> --lint-only true
 //   pnpm exec tsx scripts/editorial-titles/et7a-check.ts --overview <a|b>
 //
 // For one candidate program it runs, as separate CLI processes:
@@ -17,6 +18,10 @@
 // reels: everything this script writes stays in the git-ignored
 // benchmarks/results tree and must never be committed.
 //
+// `--lint-only true` lints the latest iteration again without rendering, for
+// a change to the saved reading policy (waivers) only; it refuses any other
+// change to the composition.
+//
 // `--overview a` tiles the latest hold frame of every candidate for reel A
 // into one phone-scale sheet for side-by-side review.
 //
@@ -24,7 +29,7 @@
 // separately, in the owner's words.
 import { execFile } from "node:child_process";
 import { createHash } from "node:crypto";
-import { mkdir, readFile, readdir, writeFile } from "node:fs/promises";
+import { mkdir, readFile, readdir, rm, writeFile } from "node:fs/promises";
 import { basename, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import { parseArgs, promisify } from "node:util";
@@ -334,8 +339,37 @@ async function lintInto(
 }
 
 /**
+ * The composition as rendered: without its saved reading policy (the part a
+ * lint-only rerun may change) and without `metadata.builder`, which records
+ * the source file paths, not anything drawn. Keys are sorted so key order
+ * cannot differ.
+ */
+function renderedPart(composition: Record<string, unknown>) {
+  const copy = structuredClone(composition);
+  const metadata = copy.metadata as Record<string, unknown> | undefined;
+  if (metadata) {
+    delete metadata.readingPolicy;
+    delete metadata.builder;
+    if (Object.keys(metadata).length === 0) delete copy.metadata;
+  }
+  const sorted = (value: unknown): unknown =>
+    Array.isArray(value)
+      ? value.map(sorted)
+      : value && typeof value === "object"
+        ? Object.fromEntries(
+            Object.entries(value)
+              .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+              .map(([key, entry]) => [key, sorted(entry)]),
+          )
+        : value;
+  return JSON.stringify(sorted(copy));
+}
+
+/**
  * Lint the latest iteration again without rendering, for a change that does
- * not alter pixels (a waiver). Refuses when the source changed otherwise.
+ * not alter pixels (a waiver). Refuses when the exported composition differs
+ * from the iteration's in anything but `metadata.readingPolicy`, so the
+ * iteration's render and sheets always match the composition that is linted.
  */
 async function lintOnly(input: string) {
   const program = resolve(input);
@@ -350,14 +384,40 @@ async function lintOnly(input: string) {
   const summary = JSON.parse(
     await readFile(join(out, "summary.json"), "utf8"),
   ) as Record<string, unknown>;
+  if (!summary.sheets)
+    throw new Error(`${name} ${latest} has no render; run a full check`);
   const sha = createHash("sha256")
     .update(await readFile(program))
     .digest("hex");
-  if (sha !== summary.sourceSha256)
+  if (sha !== summary.sourceSha256) {
+    const current = join(out, "lint-only-composition.json");
+    await rm(current, { force: true }); // export-json never overwrites
+    const exported = await still([
+      "export-json",
+      "--input",
+      program,
+      "--output",
+      current,
+    ]);
+    if (exported.code !== 0)
+      throw new Error(
+        `export-json failed for ${name}: ${JSON.stringify(exported.report)}`,
+      );
+    const read = async (path: string) =>
+      JSON.parse(await readFile(path, "utf8")) as Record<string, unknown>;
+    if (
+      renderedPart(await read(current)) !==
+      renderedPart(await read(join(out, "composition.json")))
+    )
+      throw new Error(
+        `${name} changed beyond metadata.readingPolicy since ${latest}; ` +
+          "run a full check so the render matches what is linted",
+      );
     summary.lintSource = {
       sha256: sha,
-      note: "lint-only rerun; render unchanged",
+      note: "lint-only rerun; only metadata.readingPolicy changed, render unchanged",
     };
+  }
   await lintInto(program, out, summary);
   await writeFile(join(out, "summary.json"), JSON.stringify(summary, null, 2));
   return summary;
