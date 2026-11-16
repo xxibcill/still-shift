@@ -2,7 +2,10 @@
 // (docs/editorial-typography-improvement-plan.md#et3--text-over-video-legibility-checks).
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
-import type { Composition } from "@still-shift/scene-contract";
+import {
+  type Composition,
+  validateComposition,
+} from "@still-shift/scene-contract";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import { contrastRatio } from "../../packages/renderer-core/src/typography-quality.ts";
 import {
@@ -174,7 +177,13 @@ describe("legibility words and masks", () => {
     const background = textLegibilityBackground(input, "title");
     const cleared = background.layers[0] as typeof text;
     expect(cleared.color).toBe("#00000000");
-    expect(cleared.spans![0]!.color).toBe("#00000000");
+    // Spans inherit the cleared layer colour: span colours must be #RRGGBB.
+    expect(cleared.spans).toEqual([{ start: 6, end: 10, style: "bold" }]);
+    expect(
+      validateComposition(background).diagnostics.filter(
+        (d) => d.code === "comp-schema-format",
+      ),
+    ).toEqual([]);
     expect(cleared.decorations).toEqual([
       { kind: "highlight", color: "#FFFF00" },
     ]);

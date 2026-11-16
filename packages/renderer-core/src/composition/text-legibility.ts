@@ -385,8 +385,16 @@ export function textLegibilityBackground(
     return {
       ...text,
       color: clear,
+      // Span colours accept only #RRGGBB, so a span drops its colour and
+      // inherits the cleared layer colour (ET7a: spans used to fail lint).
       ...(text.spans
-        ? { spans: text.spans.map((span) => ({ ...span, color: clear })) }
+        ? {
+            spans: text.spans.map((span) => {
+              const rest = { ...span };
+              delete rest.color;
+              return rest;
+            }),
+          }
         : {}),
       ...(text.corrections
         ? {
