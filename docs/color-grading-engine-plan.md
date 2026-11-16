@@ -346,9 +346,13 @@ writing only to git-ignored `dist/`).
 - [x] A well-balanced fixture changes by less than a stated threshold (no effect
       is applied: exact identity).
 - [x] The same input gives a byte-identical report and parameters on rerun.
-- [x] Parameters are constant over the clip; measured frame-to-frame luma
-      continuity equals the source's within codec noise (synthetic |Δ| < 0.01;
-      owner clips 0.0004–0.0025 before and after).
+- [ ] **Partly met.** Parameters are constant over the clip (met); measured
+      frame-to-frame luma continuity equals the source's. The criterion was
+      reworded to "within codec noise" when the results were recorded: a static
+      correction scales frame-to-frame differences by its tonal slope, so exact
+      equality is not expected. Synthetic: |Δ| < 0.01 (the test's bound, set
+      then). Owner clips: 0.0004–0.0025 before and after, up to about 1.6× the
+      source's (e.g. 0.000843 → 0.001317), with no bound stated.
 - [x] After correction, clipped and crushed fractions stay within the budget
       (≤ 0.3% added on the fixtures: the solver scales every correction, tone
       included, until it fits, and records a decision when four rounds are not

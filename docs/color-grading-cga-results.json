@@ -58,7 +58,7 @@
     },
     {
       "check": "Parameters constant over the clip; frame-to-frame luma continuity equals the source's",
-      "status": "met within codec noise",
+      "status": "partly met: parameters constant; continuity not equal to the source's (criterion reworded to \"within codec noise\" when recorded; synthetic |Δ| < 0.01, owner clips up to about 1.6× the source's with no stated bound)",
       "detail": "One static effect stack per clip. Synthetic: |Δ median-luma continuity| < 0.01. Owner clips (12 sampled frames, source → rendered output): Woman_lowers_arms_beside 0.000601→0.000362; Woman_releasing_fabric_h 0.000843→0.001317; Woman_rising_from_stool_ 0.00107→0.001285; Woman_shifting_weight_in 0.001347→0.001577; Woman_shifting_weight_in 0.001033→0.001583; Woman_smiling_at_camera_ 0.002534→0.002178; Woman_stepping_forward_f 0.000356→0.000341; Woman_taking_side_step_3 0.001092→0.001668; Woman_taking_step_toward 0.000401→0.000504; Woman_turning_shoulders_ 0.000692→0.000698; Woman_turns_toward_camer 0.002015→0.002417; Woman_waving_in_continuo 0.000928→0.000579"
     },
     {
