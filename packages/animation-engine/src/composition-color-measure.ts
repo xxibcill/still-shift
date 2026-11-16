@@ -79,13 +79,17 @@ function percentile(histogram: Float64Array, total: number, q: number) {
 
 const spread = (sum: number, squares: number, count: number) =>
   count ? Math.sqrt(Math.max(0, squares / count - (sum / count) ** 2)) : 0;
+/**
+ * Cast in `color.white-balance` units from log2 linear channels: the
+ * temperature and tint that neutralize it. One definition for the
+ * per-pixel spread and the mean estimate.
+ */
+const castTemperature = (r: number, b: number) => 100 * (b - r);
+const castTint = (r: number, g: number, b: number) => 200 * (g - (r + b) / 2);
 /** Temperature/tint (white-balance units) that neutralize a linear mean. */
 export function neutralizingWhiteBalance(mean: readonly number[]) {
   const [r, g, b] = mean.map((value) => Math.log2(Math.max(1e-6, value)));
-  return {
-    temperature: 100 * (b! - r!),
-    tint: 200 * (g! - (r! + b!) / 2),
-  };
+  return { temperature: castTemperature(r!, b!), tint: castTint(r!, g!, b!) };
 }
 
 export type ColorFrameLike = { ordinal: number; rgba: Uint8Array };
@@ -150,8 +154,8 @@ export function measureColorFrames(
           neutralSum[0]! += linear[r]!;
           neutralSum[1]! += linear[g]!;
           neutralSum[2]! += linear[b]!;
-          const t = 100 * (log2[b]! - log2[r]!),
-            n = 200 * (log2[g]! - (log2[r]! + log2[b]!) / 2);
+          const t = castTemperature(log2[r]!, log2[b]!),
+            n = castTint(log2[r]!, log2[g]!, log2[b]!);
           tSum += t;
           tSquares += t * t;
           nSum += n;
