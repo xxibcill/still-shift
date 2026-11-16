@@ -25,7 +25,7 @@
     "thaiAesthetic": "Thai text does not have aesthetic but that's not the point",
     "oliveContrast": "yes, it's easy to read",
     "smallText": "I can read No. 03 — Courtyard Edit without zoom but background make it hard to read",
-    "clip": "Six vertical fashion reels and three phone screenshots supplied as references (not committed; rights not established)",
+    "clip": "Six vertical fashion reels and three phone screenshots supplied as references (not committed); pilot use: \"Yes, local only\"",
     "fonts": "yes, download all popular free Thai font",
     "successMeasure": "yes"
   },
@@ -34,7 +34,7 @@
     "ET3-D1": "Split by size: large display titles may pass below 3:1 (2.72:1 read easily); small text keeps 4.5:1 (folio 3.74–3.76:1 hard to read). ET6b sets the size boundary and display level.",
     "ET3-D2": "Keep 6 px x-height at 360 px width.",
     "D-meas": "Confirmed: ≥3 of 8 accepted per clip, on two clips.",
-    "D-input": "Fonts approved (open-licence list plus every popular free Thai family; TTF/OTF, licence, source, SHA-256 recorded at pin time). Clip: owner reference reels, rights pending.",
+    "D-input": "Fonts approved (open-licence list plus every popular free Thai family; TTF/OTF, licence, source, SHA-256 recorded at pin time). Clip: owner reference reels as local-only test footage (owner: \"Yes, local only\").",
     "D-align": "Not raised; ET5a's recommended contract stands without objection."
   },
   "referenceStyle": [
@@ -62,7 +62,7 @@
     "outOfScopeForET7a": ["text behind the subject (subject matte)"]
   },
   "openItems": [
-    "Rights to the reference reels: local study and local renders only until the owner confirms; never commit, upload or publish them or frames from them (public repository).",
+    "Reference reels are local-only (owner decision): never commit, upload or publish them or frames, renders or sheets made over them (public repository); commit sources, hashes, check results and owner verdicts only.",
     "Font downloads happen in ET7a with licence, source URL and SHA-256 recorded."
   ],
   "notRun": [

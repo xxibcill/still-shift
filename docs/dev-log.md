@@ -53,7 +53,7 @@ still hold before relying on them.
     - ET3-D2 is kept.
     - The success measure is confirmed.
     - The fonts are approved: the list plus popular free Thai families.
-  - **Open:** the rights to the reference reels. They are third-party downloads, so use them locally only and commit nothing from them; the repository is public.
+  - **Clips:** the owner's reference reels, local only ("Yes, local only"). They are third-party, so nothing made from them is committed; the repository is public.
   - **Next:** ET7a pilot.
   - Records: [G1 record](./editorial-typography-g1-review-2026-11-16.md) and [G1 results](./editorial-typography-g1-results.json).
 - **Editorial titles ET5b (2026-11-16):** serif seam fix (O11) merged on `main` via [PR #67](https://github.com/xxibcill/still-shift/pull/67) from `codex/editorial-titles-et5b` (from `main` 0af3a405). Root cause: each glyph was drawn as a slice of its line's raster cut at the advance, so a serif overhanging the advance moved and faded with the neighbouring glyph. Lines whose glyphs have different poses now draw runs of same-pose glyphs from their own shaped rasters; settled lines keep the slices and are pixel-identical. The review's findings are fixed, one commit each (bounded segment cache, mixed-colour tint, joined glyphs kept whole across poses, WebGL2/memory/parallel groups run, test wording); `typography/glyph-performance` re-recorded once more. Renderer versions `composition-canvas-1.47.8` / `composition-webgl2-0.68.8`. `main` (with ET5a, PR #66) is merged into the branch; the dev-log conflict is resolved and ET0 `--check` rerun. Owner review of the PR and the before/after sheets pending. [ET5b results](./editorial-typography-et5b-results.json).
@@ -118,7 +118,7 @@ still hold before relying on them.
   - Not run: no code changed, so no verification tier applies. Prettier only.
 - **Rejected / do not repeat:** editorial magazine minimalism (small, quiet titles placed in empty areas) as the pilot's target style.
 - **Open / next:**
-  - Rights to the reference reels: the owner decides.
+  - Reference reels: the owner chose local-only use. Renders and sheets over them stay git-ignored.
   - ET7a pilot against the reference style. Its first task is to confirm the engine mapping, starting with a static glyph outline.
 - **Records:** [G1 record](./editorial-typography-g1-review-2026-11-16.md), [G1 results](./editorial-typography-g1-results.json), [plan G1](./editorial-typography-improvement-plan.md#g1--owner-review-and-inputs-no-code).
 

@@ -43,13 +43,13 @@ These are recorded in the owner's words, lightly trimmed.
 
 ## Decisions taken
 
-| ID      | Decision                                                                                                                                                                                                       |
-| ------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| D-view  | T1, T2 and T3 rejected on text style and animation, not on engine defects. The aesthetic target is the owner's references (below), not editorial magazine minimalism.                                          |
-| ET3-D1  | Split by size. Large display titles may pass below 3:1: 2.72:1 was read easily. Small text keeps 4.5:1: 3.7:1 was hard to read. ET6b sets the size boundary and the display level.                             |
-| ET3-D2  | Keep the 6 px x-height floor at 360 px width. Size was not the problem; contrast and background were.                                                                                                          |
-| D-meas  | Confirmed: on two clips, at least 3 of 8 AI candidates per clip accepted by the owner.                                                                                                                         |
-| D-input | Fonts approved: the open-licence list plus every popular free Thai family, pinned as TTF/OTF with licence, source and SHA-256. Clip: the owner's reference reels. Their rights are not established; see below. |
+| ID      | Decision                                                                                                                                                                                  |
+| ------- | ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| D-view  | T1, T2 and T3 rejected on text style and animation, not on engine defects. The aesthetic target is the owner's references (below), not editorial magazine minimalism.                     |
+| ET3-D1  | Split by size. Large display titles may pass below 3:1: 2.72:1 was read easily. Small text keeps 4.5:1: 3.7:1 was hard to read. ET6b sets the size boundary and the display level.        |
+| ET3-D2  | Keep the 6 px x-height floor at 360 px width. Size was not the problem; contrast and background were.                                                                                     |
+| D-meas  | Confirmed: on two clips, at least 3 of 8 AI candidates per clip accepted by the owner.                                                                                                    |
+| D-input | Fonts approved: the open-licence list plus every popular free Thai family, pinned as TTF/OTF with licence, source and SHA-256. Clip: the owner's reference reels, local only (see below). |
 
 D-align was not raised. ET5a built the plan's recommendation (keep origin
 centring, document it, warn on overflow), and the owner has not objected.
@@ -111,14 +111,17 @@ confirm it with real candidates and count the iterations each gap costs.
 | Sparkle or sticker decorations          | Native shapes                                                                         | Test                   |
 | Brush, script and Thai display faces    | Font pinning (TTF/OTF)                                                                | Download in ET7a       |
 
-## Open item: rights to the reference reels
+## Rights to the reference reels (decided: local only)
 
 The owner supplied the reels as references and candidate pilot footage. They
-appear to be downloads of other creators' public posts, and the rights to use
-them have not been established. Until the owner confirms otherwise:
+appear to be downloads of other creators' public posts. Asked whether the pilot
+may use them as local-only test footage, the owner answered "Yes, local only"
+(2026-11-16). Under that decision:
 
 - Use them for local style study and local test renders only.
-- Keep them and any renders over them git-ignored. Never commit, upload or
-  publish them, or frames from them.
-- Commit pilot contact sheets only for authorized footage. A synthetic or
-  owner-shot clip is the fallback.
+- Keep them, and any renders or contact sheets made over them, git-ignored.
+  Never commit, upload or publish them, or frames from them.
+- Commit only what identifies a render without showing it: the composition
+  sources, render and clip SHA-256s, the checks' results and the owner's
+  verdicts. Visual sheets can be committed only for owner-shot, licensed or
+  synthetic footage.
