@@ -100,6 +100,20 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-16 — Editorial titles G1: PR #68 review fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-g1` (from PR head 0b406aca).
+- **Scope:** the six findings (R1–R6) of the [PR #68 review](https://github.com/xxibcill/still-shift/pull/68#pullrequestreview-5916227754), one commit each.
+- **Done:**
+  - R1: dev-log status for ET3, ET5b and G1 corrected.
+  - R2: ET5a and ET5b Result lines say merged.
+  - R3: D-auth recorded as an open owner decision.
+  - R4: git-ignored paths named for the reels and pilot outputs.
+  - R5: the Thai font reading labelled as the agent's.
+  - R6: a held stroke animator is ET7a's first outline test.
+- **Results:** Prettier passes on the changed documents; the G1 results JSON parses. No code changed.
+- **Open / next:** D-auth (owner). ET7a pilot.
+
 ### 2026-11-16 — Editorial titles G1: owner review and inputs
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-g1` (from `main` a897acb4).
