@@ -116,4 +116,44 @@ describe("CGA CLI output safety", () => {
     }
     expect(await readFile(output, "utf8")).toBe("keep\n");
   });
+  it("auto-color takes a 0–1 scale per correction and rejects other values", async () => {
+    const input = join(root, "scaled.mkv");
+    await writeCgaClip(
+      input,
+      cgaDegrade(reference.slice(0, 3), { kind: "saturation", scale: 0.5 }),
+    );
+    const bad = await run([
+      "auto-color",
+      "--input",
+      input,
+      "--write-composition",
+      join(root, "scaled-bad.json"),
+      "--saturation",
+      "1.5",
+    ]);
+    expect(bad.code).not.toBe(0);
+    expect(failure(bad.stderr).diagnostics[0]).toMatchObject({
+      code: "comp-program-option",
+      path: "saturation",
+    });
+    const vibrance = async (scale: string) => {
+      const result = await run([
+        "auto-color",
+        "--input",
+        input,
+        "--write-composition",
+        join(root, `scaled-${scale}.json`),
+        "--saturation",
+        scale,
+      ]);
+      expect(result.code).toBe(0);
+      const effects = JSON.parse(result.stdout).effects as {
+        effect: string;
+        params: { vibrance: number };
+      }[];
+      return effects.find((effect) => effect.effect === "color.vibrance")!
+        .params.vibrance;
+    };
+    expect(await vibrance("0.5")).toBeLessThan(await vibrance("true"));
+  });
 });

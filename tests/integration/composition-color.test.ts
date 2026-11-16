@@ -311,6 +311,47 @@ describe("CGA adaptive solver", () => {
       false,
     );
   });
+  it("scales each correction on its own", async () => {
+    const degraded = cgaDegrade(
+      cgaDegrade(reference, { kind: "contrast", black: 0.1, white: 0.88 }),
+      { kind: "saturation", scale: 0.5 },
+    );
+    const { read } = await clipFrames("per-correction", degraded);
+    const small = colorSolverFrames(read);
+    const params = (
+      options: Parameters<typeof solveColorCorrection>[2],
+      effect: string,
+    ) =>
+      solveColorCorrection(small.frames, small.width, options).effects.find(
+        (candidate) => candidate.effect === effect,
+      )!.params as Record<string, number>;
+    const value = (
+      options: Parameters<typeof solveColorCorrection>[2],
+      effect: string,
+      name: string,
+    ) => params(options, effect)[name]!;
+    const full = { whiteBalance: false } as const;
+    const half = { ...full, contrast: 0.5, saturation: 0.5 };
+    expect(value(half, "color.levels", "inputBlack")).toBeCloseTo(
+      value(full, "color.levels", "inputBlack") / 2,
+      3,
+    );
+    expect(value(half, "color.levels", "inputWhite")).toBe(
+      value(full, "color.levels", "inputWhite"),
+    );
+    expect(value(half, "color.vibrance", "vibrance")).toBeLessThan(
+      value(full, "color.vibrance", "vibrance"),
+    );
+    // 0 is the same as false; 1 the same as true.
+    expect(
+      solveColorCorrection(small.frames, small.width, { saturation: 0 }),
+    ).toEqual(
+      solveColorCorrection(small.frames, small.width, { saturation: false }),
+    );
+    expect(
+      solveColorCorrection(small.frames, small.width, { contrast: 1 }),
+    ).toEqual(solveColorCorrection(small.frames, small.width, {}));
+  });
 });
 
 describe("CGA look from an example", () => {

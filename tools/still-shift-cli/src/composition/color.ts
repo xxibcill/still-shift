@@ -54,6 +54,20 @@ const flag = (values: Map<string, string>, name: string) => {
     );
   return value === "true";
 };
+/** A correction switch: true, false or a 0–1 scale. */
+const correction = (values: Map<string, string>, name: string) => {
+  const value = values.get(name);
+  if (value === undefined) return undefined;
+  if (value === "true" || value === "false") return value === "true";
+  const scale = Number(value);
+  if (value.trim() === "" || !Number.isFinite(scale) || scale < 0 || scale > 1)
+    programError(
+      "comp-program-option",
+      `--${name} must be true, false or a scale 0–1`,
+      name,
+    );
+  return scale;
+};
 const unit = (values: Map<string, string>, name: string) => {
   const text = values.get(name);
   if (text === undefined) return undefined;
@@ -353,12 +367,15 @@ export async function runColorCommand(
     ]);
     const look = await loadLook(values.get("look"));
     const toggles = {
-      exposure: flag(values, "exposure"),
-      contrast: flag(values, "contrast"),
-      saturation: flag(values, "saturation"),
-      whiteBalance: flag(values, "white-balance"),
+      exposure: correction(values, "exposure"),
+      contrast: correction(values, "contrast"),
+      saturation: correction(values, "saturation"),
+      whiteBalance: correction(values, "white-balance"),
     };
-    const explicitToggle = Object.values(toggles).some((value) => value);
+    // true or a nonzero scale asks for that correction.
+    const explicitToggle = Object.values(toggles).some((value) =>
+      typeof value === "number" ? value > 0 : value === true,
+    );
     return runClips(
       io,
       requireArgument(values, "input"),

@@ -29,7 +29,11 @@ export type ColorSolveToggles = {
   saturation: boolean;
   whiteBalance: boolean;
 };
-export type ColorSolveOptions = Partial<ColorSolveToggles> & {
+/** Per correction: true/false switches it, a 0–1 number scales it. */
+export type ColorSolveSettings = {
+  [K in keyof ColorSolveToggles]?: boolean | number;
+};
+export type ColorSolveOptions = ColorSolveSettings & {
   /** Scales every correction, 0–1 (default 1). */
   strength?: number;
 };
@@ -201,7 +205,7 @@ function solveWhiteBalance(
 
 function solveTone(
   stats: ColorStatistics,
-  strength: number,
+  strength: { exposure: number; contrast: number },
   toggles: ColorSolveToggles,
 ): [ColorCorrectionEffect[], ColorSolveDecision[]] {
   const L = COLOR_SOLVER_LIMITS;
@@ -276,8 +280,8 @@ function solveTone(
     black -= (deficit * black) / moved;
     white += (deficit * (1 - white)) / moved;
   }
-  black *= strength;
-  white = 1 - (1 - white) * strength;
+  black *= strength.contrast;
+  white = 1 - (1 - white) * strength.exposure;
   let target = clamp((median - black) / (white - black), 0.02, 0.98);
   if (exposure) {
     // Place the midtones: gamma moves the median after levels into range.
@@ -288,7 +292,7 @@ function solveTone(
         : target > high
           ? Math.max(high, target - L.medianDropMax)
           : target;
-    const placed = target + (goal - target) * strength;
+    const placed = target + (goal - target) * strength.exposure;
     const solved = round(Math.log(target) / Math.log(placed));
     if (Math.abs(solved - 1) >= 0.01) {
       gamma = solved;
@@ -315,7 +319,8 @@ function solveTone(
   const spread = (luma.p95 - luma.p05) / (white - black);
   const sCurve =
     toggles.contrast && spread < L.spreadTarget
-      ? Math.min(L.sCurveMax, (L.spreadTarget - spread) * 0.75) * strength
+      ? Math.min(L.sCurveMax, (L.spreadTarget - spread) * 0.75) *
+        strength.contrast
       : 0;
   if (sCurve > 0.005) {
     const m = clamp(target, 0.15, 0.85);
@@ -428,11 +433,23 @@ export function solveColorCorrection(
   } = {},
 ): ColorSolution {
   const strength = clamp(options.strength ?? 1, 0, 1);
+  const setting = (value: boolean | number | undefined) =>
+    value === undefined || value === true
+      ? 1
+      : value === false
+        ? 0
+        : clamp(value, 0, 1);
+  const scales: Record<keyof ColorSolveToggles, number> = {
+    exposure: setting(options.exposure),
+    contrast: setting(options.contrast),
+    saturation: setting(options.saturation),
+    whiteBalance: setting(options.whiteBalance),
+  };
   const toggles: ColorSolveToggles = {
-    exposure: options.exposure ?? true,
-    contrast: options.contrast ?? true,
-    saturation: options.saturation ?? true,
-    whiteBalance: options.whiteBalance ?? true,
+    exposure: scales.exposure > 0,
+    contrast: scales.contrast > 0,
+    saturation: scales.saturation > 0,
+    whiteBalance: scales.whiteBalance > 0,
   };
   const prefix = options.prefix ?? [];
   const measure = (effects: readonly ColorCorrectionEffect[]) =>
@@ -451,13 +468,17 @@ export function solveColorCorrection(
     const s = strength * scale;
     const [balance, balanceDecision] = solveWhiteBalance(
       source,
-      s,
+      s * scales.whiteBalance,
       toggles.whiteBalance,
     );
-    const [tone, toneDecisions] = solveTone(measure(balance), s, toggles);
+    const [tone, toneDecisions] = solveTone(
+      measure(balance),
+      { exposure: s * scales.exposure, contrast: s * scales.contrast },
+      toggles,
+    );
     const [vivid, vividDecision] = solveSaturation(
       measure([...balance, ...tone]),
-      s,
+      s * scales.saturation,
       toggles.saturation,
     );
     const effects = [...balance, ...tone, ...vivid];

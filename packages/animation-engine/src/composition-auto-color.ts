@@ -43,7 +43,7 @@ import {
   solveColorCorrection,
   type ColorCorrectionEffect,
   type ColorSolveDecision,
-  type ColorSolveToggles,
+  type ColorSolveSettings,
 } from "./composition-color-solve.ts";
 
 export const AUTO_COLOR_REPORT_VERSION = "still-shift-auto-color-report-1";
@@ -66,7 +66,8 @@ export type AutoColorRequest = ColorFrameOptions & {
   lookStrength?: number | undefined;
   /** Adaptive corrections; defaults on without a look and off with one. */
   adaptive?: boolean | undefined;
-  toggles?: Partial<ColorSolveToggles> | undefined;
+  /** Per correction: true/false switches it, a 0–1 number scales it. */
+  toggles?: ColorSolveSettings | undefined;
   /** Save the editable composition here (asset paths relative to it). */
   writeComposition?: string | undefined;
   /** Report path (default: beside the output or composition). */

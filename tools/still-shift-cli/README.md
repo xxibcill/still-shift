@@ -384,7 +384,8 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   protects strong colors and skin). Each correction is bounded, has a dead band
   and a `--strength` scale; a balanced clip is left unchanged and a high-key
   clip (median luma ≥ 0.6) keeps its exposure, so its key is kept. `--exposure`, `--contrast`,
-  `--saturation` and `--white-balance false` switch corrections off. With
+  `--saturation` and `--white-balance` take `true`, `false` or a 0–1 scale for
+  that correction alone (`--saturation 0.5` halves the vibrance boost). With
   `--look`, `--strength` scales the look (default 0.6) and only the look is
   applied unless a correction is switched on or `--adaptive true` is given;
   adaptive corrections then follow the look, scaled by `--adaptive-strength`.
