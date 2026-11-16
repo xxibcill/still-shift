@@ -11,6 +11,12 @@ the checks or your own look at the frames find, and record every
 render-and-fix iteration with its cause. You never judge acceptance: the owner
 does, in their own words. Label any score of yours as the agent's.
 
+This skill works from a Still Shift repository checkout: it uses the pinned
+fonts in `assets/editorial-titles/`, the check script in
+`scripts/editorial-titles/` and the pilot helpers in
+`research/editorial-titles-et7a/`, none of which the npm package ships, so the
+package leaves this skill out.
+
 This skill assumes the composition basics in
 [`compose-with-still-shift`](../compose-with-still-shift/SKILL.md). The pilot
 it came from, with its candidates and evidence, is
@@ -101,8 +107,8 @@ colour that separates every word from the footage.
 → 1, 6–8 frames, stagger 6–8), a glyph typewriter (opacity, 1–4 frames,
 stagger 1–3), a drop or slide cascade, or caps tracking in. Hold untouched
 through the cuts. Exit in 0.3–0.5 s (fade with a small move, or reverse glyph
-order). Use the `grammar.ts` helpers' markers (`build`, `hold`, `exit`) so the
-check script picks the right frames.
+order). Use the markers from the `research/editorial-titles-et7a/grammar.ts`
+helpers (`build`, `hold`, `exit`) so the check script picks the right frames.
 
 ## Check loop
 
@@ -134,7 +140,7 @@ render, sheets); the second adds `comp lint --pixels true --legibility true
      or halo, so it reports 1.0–1.5:1 on text that reads well (a dark outline
      over dark clothing measures about 1:1). G1 allows large display text
      below 3:1. Waive `text-contrast` for those layers with that reason
-     (`grammar.ts` `displayWaivers`, saved in
+     (`displayWaivers` in `research/editorial-titles-et7a/grammar.ts`, saved in
      `metadata.readingPolicy.textLegibility.waivers`), and only after
      looking at the hold frames yourself. A halo alone is often too weak for
      a thin script: give scripts an outline.
@@ -150,7 +156,9 @@ render, sheets); the second adds `comp lint --pixels true --legibility true
 
 - Prompt Black is pinned but rejected by `font-metadata`: its name table
   carries the full licence (8.7 KB) over the 2 KB name budget. Use Kanit
-  Black or Mitr instead. Run `probes/all-fonts.ts` after pinning new faces.
+  Black or Mitr instead. Run
+  `research/editorial-titles-et7a/probes/all-fonts.ts` after pinning new
+  faces.
 - A span's named style inherits the base style's `axes`; give a span style
   for a font without that axis `axes: {}`.
 - Drop shadows and halos make Canvas renders about ten times slower (a 7 s
