@@ -1,0 +1,72 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-g1",
+  "milestone": "G1 — Owner review and inputs (no code)",
+  "plan": "docs/editorial-typography-improvement-plan.md#g1--owner-review-and-inputs-no-code",
+  "record": "docs/editorial-typography-g1-review-2026-11-16.md",
+  "date": "2026-11-16",
+  "agent": "Claude Code (Opus 5.5); answers are the owner's",
+  "branch": "codex/editorial-titles-g1",
+  "base": "main a897acb4 (Merge PR #67; ET0–ET3, ET5a, ET5b merged)",
+  "toolchain": "Node 22.23.1, pnpm 10.29.3 (nvm), Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1",
+  "reviewRenders": {
+    "source": "research/editorial-typography-proof/t1-editorial-stack.ts, t2-thai-condensed-poster.ts, t3-minimal-centered.ts at a897acb4 over the proof stand-in clip (sha256 d5bc5a52…)",
+    "output": "benchmarks/results/editorial-typography-g1-review-2026-11-16/ (git-ignored, local)",
+    "sha256Prefix": {
+      "t1-editorial-stack": "ddb0a61805cb (2026-11-15 render df14efa49f6b)",
+      "t2-thai-condensed-poster": "23c3efeb0b4a (byte-identical to 2026-11-15)",
+      "t3-minimal-centered": "14c2a486174b (2026-11-15 render 9d136847e634)"
+    },
+    "renderSeconds": { "t1": 90, "t2": 89, "t3": 89 },
+    "sheets": "review-frames.sh: frames 16/24/32/60/100/130/138/146, 360×640 phone sheet, 270 px hold"
+  },
+  "ownerAnswers": {
+    "treatments": "No, but not because still-shift is bad. because of it's style of text and animation is not satisfy me",
+    "thaiAesthetic": "Thai text does not have aesthetic but that's not the point",
+    "oliveContrast": "yes, it's easy to read",
+    "smallText": "I can read No. 03 — Courtyard Edit without zoom but background make it hard to read",
+    "clip": "Six vertical fashion reels and three phone screenshots supplied as references (not committed); pilot use: \"Yes, local only\"",
+    "fonts": "yes, download all popular free Thai font",
+    "successMeasure": "yes"
+  },
+  "decisions": {
+    "D-view": "T1, T2, T3 rejected on style (text and animation); no engine defect named. Aesthetic target: the owner's social fashion-reel references.",
+    "ET3-D1": "Split by size: large display titles may pass below 3:1 (2.72:1 read easily); small text keeps 4.5:1 (folio 3.74–3.76:1 hard to read). ET6b sets the size boundary and display level.",
+    "ET3-D2": "Keep 6 px x-height at 360 px width.",
+    "D-meas": "Confirmed: ≥3 of 8 accepted per clip, on two clips.",
+    "D-input": "Fonts approved (open-licence list plus every popular free Thai family; TTF/OTF, licence, source, SHA-256 recorded at pin time). Clip: owner reference reels as local-only test footage (owner: \"Yes, local only\").",
+    "D-align": "Not raised; ET5a's recommended contract stands without objection."
+  },
+  "referenceStyle": [
+    "Single large lockup (60–80% width) over the subject's torso, held across fast outfit cuts",
+    "Mixed type per word: script/italic serif with heavy caps, condensed serif, extended sans or brush",
+    "Legibility by outline, shadow, glow, extrusion or a solid box, not by placement",
+    "Multi-colour titles drawn from the outfit",
+    "Word-by-word build in 1–2 s (pop, typewriter with cursor, cascade); per-cut colour change; sparkle decorations",
+    "Text behind the subject in one reference",
+    "English titles with Korean or Japanese sub-labels; Thai equivalents are the target"
+  ],
+  "engineMappingHypotheses": {
+    "method": "Read from docs/composition-reference.md and docs/typography-engine.md; not rendered. ET7a confirms.",
+    "likelySupported": [
+      "spans with named styles (mixed fonts)",
+      "light.drop-shadow and light.glow effects",
+      "textBox and containers",
+      "revealMode words and per-word animators",
+      "native shapes for decorations"
+    ],
+    "possibleGaps": [
+      "static glyph outline as a text-style field (outline found only on text animators; a stroke/strokeWidth animator held at its end state with `to` may already give one, test first)",
+      "cut-synchronised changes (needs external cut detection)"
+    ],
+    "outOfScopeForET7a": ["text behind the subject (subject matte)"]
+  },
+  "openItems": [
+    "Reference reels are local-only (owner decision): never commit, upload or publish them or frames, renders or sheets made over them (public repository); commit sources, hashes, check results and owner verdicts only. Reels in benchmarks/results/editorial-titles-references/, pilot outputs in benchmarks/results/editorial-titles-et7a/ (both under the ignored benchmarks/results/*; research/ is not ignored).",
+    "D-auth (owner): whether local-only third-party reels count as the success measure's authorized clips. Recommendation: at least one pilot clip owner-shot, licensed or synthetic, so its contact sheets can be committed.",
+    "Font downloads happen in ET7a with licence, source URL and SHA-256 recorded."
+  ],
+  "notRun": [
+    "No code changed; no verification tier applies beyond Prettier on the changed documents."
+  ]
+}
