@@ -43,6 +43,8 @@ still hold before relying on them.
 
 ## Current state
 
+- **Composition colour accuracy (2026-11-16):** owner decision D-colour ("Match players") implemented on `codex/composition-colour-accuracy` (not pushed): exports keep authored sRGB on every path (`composition-output-2`) and BT.709 footage decodes without the inverse OETF (`composition-media-decoder-3`). Footage-dependent lint numbers and renders over BT.709 footage change (listed in the [results](./composition-colour-accuracy-results.json)); composition baselines do not. ET7a's and G1's visual judgements were made on lifted footage; recalibrate ET6b on corrected renders.
+
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
 - **Editorial titles ET7a (2026-11-16):** generator pilot in review as [PR #69](https://github.com/xxibcill/still-shift/pull/69) on `codex/editorial-titles-et7a`. 16 candidates (8 per reel, 4 Thai or mixed) pass strict coverage and pixel lint. The [PR review](https://github.com/xxibcill/still-shift/pull/69#pullrequestreview-5918679207)'s five findings are fixed on the branch, one commit each. The owner reviewed the local contact sheets and answered "all yes": 16/16 accepted, so the success measure (at least 3 of 8 per clip, two clips) is met. Caveats: both clips are third-party reels used local only, so D-auth stays open and nothing visual is committed; the reels' burned-in labels were visible during review; one blanket answer does not rank styles. Next by the pilot's evidence: ET6a, then ET6b widened to treated display text, then small fixes, then ET4. [ET7a results](./editorial-typography-et7a-results.json).
@@ -101,6 +103,22 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-16 — Composition colour accuracy (D-colour: "Match players")
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/composition-colour-accuracy` (from `main` 9d69a4f7).
+- **Scope:** the owner's D-colour decision, found in ET6a: treat BT.709-tagged SDR video as equivalent to sRGB, with no transfer conversion in or out.
+- **Done:**
+  - Export `composition-output-2`: every path writes the renderer's sRGB bytes unchanged. Video profiles stay BT.709-tagged; PNG profiles are tagged sRGB (the PNG `sRGB` chunk). Output-1 re-encoded `--format` exports with the BT.709 OETF (`#2F6F6A` → (31,97,92)).
+  - Decode `composition-media-decoder-3`: no inverse OETF for BT.709 footage (decoder 2 lifted it, code 16 → 31, 128 → 140). BT.709 and sRGB sequences decode through one exact filter (the old sRGB path rounded some 16-bit samples up by one).
+  - Mechanism native plate receipts require output-2 and sRGB transfer.
+- **Results:**
+  - Failing first (`tests/browser/composition-colour-accuracy.ts` on `main`'s packages): authored colours 16 levels off on all seven `--format` paths; BT.709 footage 16 levels lighter in the default MP4; legibility over footage 4.82:1 against a player's 5.84:1. With the fix: authored within 0–1, footage within 0–1, legibility 5.84:1.
+  - Composition baselines unchanged (176 items). ET0: only the O6 render hash (footage behind text). Lint over footage moves, before → after: O6 1.04/1.05 → 1.15; proof T1 "Olive" 2.72 → 2.39, T3 credit 1.53 → 1.21, T2 poster 3.60 → 3.77 (full list in the results).
+  - One expectation was partly wrong: ET7a titles keep their colours, but the reels are BT.709-tagged, so the footage behind them now renders at source values, darker than the owner reviewed. G1's "2.72:1 read easily" was judged on lifted footage.
+  - Test tolerance changed: `composition-output` h264 grey ramp ±5 (CRF 16 lifts authored 0/1 to 5; the OETF used to hide this).
+- **Open / next:** owner review and merge. ET6b should calibrate its display contrast level on corrected renders. Accepting the Google Flow clips' smpte170m matrix stays out of scope; under this rule they would decode with the BT.601 matrix and no transfer conversion.
+- **Records:** [results](./composition-colour-accuracy-results.json).
 
 ### 2026-11-16 — Editorial titles ET7a: PR #69 review fixes
 

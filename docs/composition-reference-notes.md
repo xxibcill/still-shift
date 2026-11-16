@@ -390,13 +390,19 @@ and native-audio codec; use the matching output filename or PNG pattern.
 | `vp9alpha`      | VP9 WebM                     | Yes   | Opus                  |
 | `png8`, `png16` | 8-/16-bit RGBA numbered PNGs | Yes   | Companion Float32 WAV |
 
-Explicit profiles convert encoded-sRGB renderer bytes to BT.709 RGB and preserve
-linear alpha. PNG16 and high-bit-depth video encode the captured RGBA8 image at the
-profile's depth; they do not create additional source detail. PNG sequences require
+Every path writes the renderer's encoded-sRGB bytes unchanged and preserves
+linear alpha (`composition-output-2`; owner decision D-colour, 2026-11-16, "Match
+players"). Video profiles and the default MP4 are tagged BT.709, which players
+show like sRGB; PNG profiles are tagged sRGB with the PNG `sRGB` chunk.
+`composition-output-1` re-encoded explicit profiles with the BT.709 camera
+OETF, so their colours were darker than the default MP4's under the same tags.
+PNG16 and high-bit-depth video encode the captured RGBA8 image at the profile's
+depth; they do not create additional source detail. PNG sequences require
 one `%06d.png` filename pattern, start at zero and publish an ordered hash manifest
 at `<pattern>.sequence.json`. Audio, when present, is written to
-`<pattern>.audio.wav`. Native sequence input requires sRGB source PNGs; normalize
-BT.709 delivery frames and create source descriptors before reimport.
+`<pattern>.audio.wav`. Native sequence input requires sRGB source PNGs; PNG
+delivery frames are already sRGB-tagged, so create source descriptors before
+reimport.
 
 ```sh
 pnpm still-shift comp render --input program.ts --output clip.mov --format prores4444 --workers 4 --cache-static true
