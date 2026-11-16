@@ -50,7 +50,7 @@
     },
     {
       "check": "A well-balanced fixture changes by less than a stated threshold",
-      "status": "met: no effect applied (exact identity); threshold 0"
+      "status": "met: no effect applied (exact identity); threshold 0, stated when the result was recorded"
     },
     {
       "check": "Same input gives a byte-identical report and parameters on rerun",
@@ -251,7 +251,7 @@
     },
     {
       "check": "Adaptive mode changes the owner's high-key median luma by less than a stated limit",
-      "status": "met: limit 0.02; final defaults max |Δ| 0.0120 measured on the rendered output (12 clips); earlier defaults 0.0107 and 0.0122"
+      "status": "met: limit 0.02 (chosen when the first results were recorded); final defaults max |Δ| 0.0120 measured on the rendered output (12 clips); earlier defaults 0.0107 and 0.0122"
     },
     {
       "check": "At least five owner Flow clips: before/after statistics and contact sheets",

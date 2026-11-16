@@ -344,7 +344,8 @@ writing only to git-ignored `dist/`).
       (≤ 0.85 × the degraded RMS) was set from this result and only guards
       against regression; it is not a stated restoration residual.
 - [x] A well-balanced fixture changes by less than a stated threshold (no effect
-      is applied: exact identity).
+      is applied: exact identity). The threshold (0, identity) was stated when
+      the result was recorded; the first plan left it open.
 - [x] The same input gives a byte-identical report and parameters on rerun.
 - [ ] **Partly met.** Parameters are constant over the clip (met); measured
       frame-to-frame luma continuity equals the source's. The criterion was
@@ -380,7 +381,9 @@ writing only to git-ignored `dist/`).
       has exact Canvas/WebGL parity.
 - [x] The adaptive mode changes the owner's high-key clips' median luma by less
       than a stated limit (limit 0.02; largest 0.0107 on 12 clips with the first
-      defaults, 0.0122 after the visibility retune; final defaults below).
+      defaults, 0.0122 after the visibility retune; final defaults below). The
+      0.02 limit was chosen when the first results were recorded; the first plan
+      left it open.
 - [x] At least five owner-supplied Flow clips: before/after statistics and
       contact sheets recorded (12 clips, local). Owner review is pending and is
       the only visual acceptance.
