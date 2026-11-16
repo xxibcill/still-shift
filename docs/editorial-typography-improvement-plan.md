@@ -27,6 +27,11 @@ strict font coverage and the legibility checks, needs no person to edit
 coordinates, and the owner accepts at least three of the eight on each clip.
 Engine milestones are worth doing to the extent they move this number.
 
+_Open (D-auth):_ G1 approved the owner's third-party reference reels for
+local use only. Whether that counts as "authorized" here is not yet decided.
+If it does, no visual evidence of the pilot can be committed, so the result
+rests on the owner's recorded verdicts. See [Decisions needed](#decisions-needed).
+
 ## Rules for every milestone
 
 - Start from `main` on a `codex/` branch and target the PR at `main`
@@ -739,3 +744,4 @@ All are the owner's. G1 collects them.
 | ET2-D2  | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding               | ET9       | —                                                                                                                          |
 | D-clip  | Keep the committed synthetic fixture clip (merged with ET0)                             | Any time  | Keep                                                                                                                       |
 | D-home  | Where orchestration lives long-term                                                     | ET7b      | In-repository skill for the pilot; decide after its size                                                                   |
+| D-auth  | Whether local-only third-party reels count as authorized clips for the success measure  | ET7a      | Use at least one owner-shot, licensed or synthetic clip so its contact sheets can be committed                             |

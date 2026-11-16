@@ -125,3 +125,8 @@ may use them as local-only test footage, the owner answered "Yes, local only"
   sources, render and clip SHA-256s, the checks' results and the owner's
   verdicts. Visual sheets can be committed only for owner-shot, licensed or
   synthetic footage.
+
+Still open (D-auth): whether these local-only reels count as the "authorized
+clips" in the success measure. If both pilot clips are reels, no visual
+evidence of the pilot can be committed. The recommendation is that at least
+one pilot clip be owner-shot, licensed or synthetic.
