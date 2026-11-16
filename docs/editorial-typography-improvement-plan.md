@@ -776,6 +776,12 @@ also need an editorial setting (ET3-D1).
 - An `editorial-title` policy profile: reading windows that allow bounded slow
   drift (displacement and velocity budgets), plus the contrast and phone-scale
   values the owner chose in G1.
+- **Reading rule (D-read, decided 2026-11-16, owner: "Gentle drift is fine"):**
+  slow, steady movement during a title's hold counts as reading time: a push,
+  float or scale-up of about one letter-height per second or less, in one
+  direction, with no shaking or back-and-forth. Fast motion, jitter or
+  spinning during the hold still fails. The exact displacement and velocity
+  thresholds are ET6b's to calibrate against the proof's T1–T3 hold drift.
 
 **Checks**
 
@@ -785,7 +791,7 @@ also need an editorial setting (ET3-D1).
 - [ ] Default policy results unchanged.
 - [ ] `pnpm check:fast`, `pnpm test:browser:composition-quality`.
 
-Estimate: 1–2 days after the owner's rule.
+Estimate: 1–2 days (the owner's rule is decided).
 
 ---
 
@@ -870,17 +876,17 @@ needed; any ElevenLabs use still requires batch-specific approval.
 
 All are the owner's. G1 collects them.
 
-| ID      | Decision                                                                                | Needed by | Recommendation                                                                                                             |
-| ------- | --------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- |
-| D-view  | Visual acceptance of proof T1, T2, T3                                                   | G1        | **Decided (G1):** all rejected on style; target the owner's references                                                     |
-| ET3-D1  | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level) | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary |
-| ET3-D2  | Phone-scale floor: 6 px x-height at 360 px                                              | G1, ET6b  | **Decided (G1):** keep                                                                                                     |
-| D-meas  | Success measure for the pilot                                                           | G1        | **Decided (G1):** 3 of 8 accepted per clip, on two clips                                                                   |
-| D-input | One authorized vertical clip; fonts to pin (open-licence list or licensed files)        | G1, ET7a  | **Decided (G1):** fonts are the list plus popular free Thai families; clips are the owner's reels, local only              |
-| D-align | `align` contract: centre on origin, or within `textLayout.width`                        | ET5a      | Keep origin, document and guard                                                                                            |
-| D-read  | How much hold motion counts as readable                                                 | ET6b      | —                                                                                                                          |
-| ET2-D1  | Near-static footage counted as frozen                                                   | ET9       | Keep current rule                                                                                                          |
-| ET2-D2  | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding               | ET9       | —                                                                                                                          |
-| D-clip  | Keep the committed synthetic fixture clip (merged with ET0)                             | Any time  | Keep                                                                                                                       |
-| D-home  | Where orchestration lives long-term                                                     | ET7b      | In-repository skill for the pilot; decide after its size                                                                   |
-| D-auth  | Whether local-only third-party reels count as authorized clips for the success measure  | ET7a      | ET7a passed on two such reels; still open. Recommended: confirm on one owner-shot, licensed or synthetic clip              |
+| ID      | Decision                                                                                | Needed by | Recommendation                                                                                                                                                                                               |
+| ------- | --------------------------------------------------------------------------------------- | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| D-view  | Visual acceptance of proof T1, T2, T3                                                   | G1        | **Decided (G1):** all rejected on style; target the owner's references                                                                                                                                       |
+| ET3-D1  | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level) | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary                                                                                   |
+| ET3-D2  | Phone-scale floor: 6 px x-height at 360 px                                              | G1, ET6b  | **Decided (G1):** keep                                                                                                                                                                                       |
+| D-meas  | Success measure for the pilot                                                           | G1        | **Decided (G1):** 3 of 8 accepted per clip, on two clips                                                                                                                                                     |
+| D-input | One authorized vertical clip; fonts to pin (open-licence list or licensed files)        | G1, ET7a  | **Decided (G1):** fonts are the list plus popular free Thai families; clips are the owner's reels, local only                                                                                                |
+| D-align | `align` contract: centre on origin, or within `textLayout.width`                        | ET5a      | Keep origin, document and guard                                                                                                                                                                              |
+| D-read  | How much hold motion counts as readable                                                 | ET6b      | **Decided (G1 follow-up, 2026-11-16):** "Gentle drift is fine": slow, steady one-direction drift of about one letter-height per second or less counts as reading time; fast motion, jitter or spinning fails |
+| ET2-D1  | Near-static footage counted as frozen                                                   | ET9       | Keep current rule                                                                                                                                                                                            |
+| ET2-D2  | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding               | ET9       | —                                                                                                                                                                                                            |
+| D-clip  | Keep the committed synthetic fixture clip (merged with ET0)                             | Any time  | Keep                                                                                                                                                                                                         |
+| D-home  | Where orchestration lives long-term                                                     | ET7b      | In-repository skill for the pilot; decide after its size                                                                                                                                                     |
+| D-auth  | Whether local-only third-party reels count as authorized clips for the success measure  | ET7a      | ET7a passed on two such reels; still open. Recommended: confirm on one owner-shot, licensed or synthetic clip                                                                                                |
