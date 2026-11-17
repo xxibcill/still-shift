@@ -22,6 +22,7 @@ provides composition authoring instructions.
 | One image                                   | `animate`                                                                               | A supplied still and chosen preset                  |
 | Prepared illustration/story/cinematic scene | `animate-scene`                                                                         | Verified scene, layers and assets                   |
 | Commerce                                    | `prepare-commerce`, `animate-scene`                                                     | Brief, product imagery, copy and sources            |
+| Color correction of flat SDR clips          | `comp color-stats`, `look fit`, `look apply`, `auto-color`                              | MP4/MOV clips or a folder; optional graded example  |
 | Multiple independent images                 | `batch`                                                                                 | JSONL manifest                                      |
 | Passage timing and portrait checks          | `passage import-narration`, `passage lint`                                              | Passage plan and measured word/SRT timing           |
 | Saved audio project                         | `soundtrack validate`, `inspect`, `edit`, `render`, `retime`, `package`, `from-passage` | `soundtrack-project-1`, optional passage/narration  |
@@ -353,6 +354,77 @@ rendering a frame: ink and line boxes, baselines, cap and x-height lines,
 per-span font metrics and boxes, word boxes, outline extent and decoration
 boxes, in layer-local pixels. See the
 [composition reference](../../docs/composition-reference.md#text-measurement-et6a).
+
+## Automatic color for flat clips
+
+These commands correct flat 8-bit SDR clips, such as Google Flow output, with
+ordinary editable effects on a video layer
+([CGA plan](../../docs/color-grading-engine-plan.md#cga--automatic-exposure-contrast-saturation-and-white-balance-for-flat-sdr-clips),
+[effects](../../docs/composition-effect-plugins.md#grade-corrections-cga)).
+Every frame is read through the composition media path, so BT.601 (`smpte170m`)
+sources decode correctly.
+
+```sh
+pnpm --silent still-shift comp color-stats --input clip.mp4 --frames 12
+pnpm --silent still-shift comp look fit --before raw-clips/ --after graded-edit.mp4 --output my.look.json
+pnpm --silent still-shift comp look apply --look my.look.json --input raw-clips/ --output fixed/ --strength 0.8
+pnpm --silent still-shift comp auto-color --input clip.mp4 --output fixed.mp4
+pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition clip.composition.json --white-balance false
+```
+
+- **`color-stats`** prints deterministic statistics of evenly sampled frames:
+  luma percentiles and mean, clipped/crushed shares, the saturation
+  distribution, a near-neutral cast estimate and per-frame median luma.
+- **`look fit`** learns one look from your own grade. `--before` takes clips
+  or folders (comma-separated); `--after` is the graded edit, which may be a
+  concatenation of shots cut from those clips with the same framing. It detects
+  cuts, matches each shot to its source clip and frames, fits one encoded-sRGB
+  3×3 + offset transform and writes a `still-shift-look-1` file with per-pixel
+  and 4×4-block residuals, overall and with each shot held out (`null` when
+  only one shot matched, so there is nothing to hold out), plus the graded
+  edit's measured `targets` (median luma, median and 90% saturation). A graded edit
+  tagged BT.709 transfer is compared in its code values (as players show it and
+  as `comp render` writes it); `--after-interpretation media-path` converts it
+  as composition video instead.
+- **`look apply`** applies a look through `color.matrix`. `--strength`
+  defaults to 0.6 (a learned look at full strength is usually heavy); use
+  `--strength 1` for the full transform.
+- **`auto-color`** solves one static correction per clip from its statistics:
+  white balance (`color.white-balance`, removing part of the near-neutral cast),
+  exposure and contrast (`color.levels`: white and black points, plus a gamma
+  that places the median in the 0.40–0.52 midtone range, raising it by at most
+  0.08 or lowering it by at most 0.05; and a median-pivoted `color.curves`
+  S-curve when the range stays narrow) and saturation (`color.vibrance`, which
+  protects strong colors and skin). Each correction is bounded, has a dead band
+  and a `--strength` scale; a balanced clip is left unchanged and a high-key
+  clip (median luma ≥ 0.6) keeps its exposure, so its key is kept. `--exposure`, `--contrast`,
+  `--saturation` and `--white-balance` take `true`, `false` or a 0–1 scale for
+  that correction alone (`--saturation 0.5` halves the vibrance boost). With
+  `--look`, `--strength` scales the look (default 0.6) and only the look is
+  applied unless a correction is switched on or `--adaptive true` is given;
+  adaptive corrections then follow the look, scaled by `--adaptive-strength`,
+  and aim for the look's `targets` instead of the defaults (the midtone range is
+  centered on its median). `--strength 0 --adaptive true` uses only the
+  targets.
+  Default targets: median/90% HSV saturation 0.185/0.36 (vibrance ≤ 80, gain
+  ≤ 1.65), an S-curve of 0.75 × (0.625 − spread), at most 0.13, when the 5–95%
+  luma spread is below 0.625, and 50–90% of the near-neutral cast removed
+  (≤ 20–35) depending on how much the near-neutral pixels agree. When it cools
+  a cast it cannot trust, it also lowers green slightly (magenta tint 0.4 × the
+  cooling), so cream stays beige instead of turning yellow.
+
+`auto-color` and `look apply` keep the source audio as a native audio layer and
+render H.264 with the Canvas backend by default (`--backend webgl2` gives the same
+bytes for these effects). They write `<output>.auto-color.json`: the effects,
+solver decisions, statistics before and predicted after, the rendered output's
+frame count, duration and measured statistics, the prediction-to-output RMS and
+an audio comparison. `--write-composition` saves the editable composition (asset
+paths relative to it) instead of, or as well as, rendering. A folder input needs a
+folder `--output` (and/or `--write-composition`); each clip is processed in turn,
+failures are recorded and the rest continue, and `auto-color-summary.json` lists
+the results (exit 1 when any clip failed). Outputs must not already exist. The
+source must have an integer frame rate up to 60 fps. Software checks are not
+visual acceptance: review the result yourself.
 
 ## Narration timing and passages
 

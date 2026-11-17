@@ -8,6 +8,7 @@ import { format } from "prettier";
 import type { Page } from "playwright";
 import {
   compositionEffectDefinition,
+  GRADE_EFFECT_IDS,
   type Composition,
 } from "@still-shift/scene-contract";
 import {
@@ -43,6 +44,8 @@ export async function runEffectCatalogueAcceptance(
       `${environment.platform}-${environment.arch}.json`,
     ),
     writing = process.argv.includes("--write-ce6-baseline"),
+    /** CGA grade effects have their own baseline file; the CE6 files stay frozen. */
+    writingGrade = process.argv.includes("--write-grade-baseline"),
     directory = await mkdtemp(join(tmpdir(), "ce6-native-export-"));
   const fixtures: [string, Composition][] = [];
   const items: Record<
@@ -147,6 +150,12 @@ export async function runEffectCatalogueAcceptance(
         canvas2d: result.hashes[0],
         webgl2: result.hashes[1],
       };
+      if (name === "catalogue-grade")
+        assert.equal(
+          result.maxDelta,
+          0,
+          "CGA grade effects: exact Canvas/WebGL byte parity",
+        );
       reports.push({
         fixture: name,
         frames: doc.frameCount,
@@ -228,7 +237,9 @@ export async function runEffectCatalogueAcceptance(
             version: "composition-effect-catalogue-baseline-1",
             environment,
             items: Object.fromEntries(
-              Object.entries(items).filter(([id]) => id !== "catalogue-mesh"),
+              Object.entries(items).filter(
+                ([id]) => id !== "catalogue-mesh" && id !== "catalogue-grade",
+              ),
             ),
           }),
           { parser: "json" },
@@ -337,6 +348,39 @@ export async function runEffectCatalogueAcceptance(
         "Keep the original CE6 catalogue frozen",
       );
       expected["catalogue-mesh"] = mesh.items["catalogue-mesh"];
+      assert.equal(Object.hasOwn(expected, "catalogue-grade"), false);
+      const gradePath = join(
+        baselineDirectory,
+        `${environment.platform}-${environment.arch}-grade-1.json`,
+      );
+      const gradeVersions = Object.fromEntries(
+        GRADE_EFFECT_IDS.map((id) => [
+          id,
+          compositionEffectDefinition(id)!.version,
+        ]),
+      );
+      if (writingGrade)
+        await writeFile(
+          gradePath,
+          await format(
+            JSON.stringify({
+              version: "composition-grade-catalogue-baseline-1",
+              environment,
+              effectVersions: gradeVersions,
+              items: { "catalogue-grade": items["catalogue-grade"] },
+            }),
+            { parser: "json" },
+          ),
+        );
+      const grade = JSON.parse(await readFile(gradePath, "utf8"));
+      assert.equal(grade.version, "composition-grade-catalogue-baseline-1");
+      assert.equal(
+        grade.environment.rasterFingerprint,
+        environment.rasterFingerprint,
+      );
+      assert.deepEqual(Object.keys(grade.items), ["catalogue-grade"]);
+      assert.deepEqual(grade.effectVersions, gradeVersions);
+      expected["catalogue-grade"] = grade.items["catalogue-grade"];
       assert.deepEqual(items, expected, "CE6 full-frame hashes");
     }
     const hardware = await shapeHardwarePreview(root, fixtures);

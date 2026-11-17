@@ -43,6 +43,8 @@ still hold before relying on them.
 
 ## Current state
 
+- **Color grading CGA (2026-11-16):** in review as [PR #70](https://github.com/xxibcill/still-shift/pull/70) on `codex/cga-auto-color`. Flow clips (BT.601 `smpte170m`) decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). The [PR review](https://github.com/xxibcill/still-shift/pull/70#pullrequestreview-5920818343)'s 32 findings are addressed on the branch, one commit each (C4 is the owner's decision, no commit). Exposure now places the midtones (it can darken); looks carry targets; per-correction scales; clipping guard scales tone. Checks now marked partly met: synthetic desaturation, luma continuity, audio track length, BT.601 on 4:2:0, and (as before) the owner-look bound. Pending owner decisions: decision 1 (approve CGA alone), the final sheets in `dist/cga-owner/sheets`, whether block-mean RMS is the right look bound, the BT.709-transfer import/export asymmetry, CG0–CG15 not started. `main` 85c9134d (PR #71, ET6a) merged in on 2026-11-17. [CGA results](./color-grading-cga-results.json).
+
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
 - **Composition colour D-colour (2026-11-16):** the owner decided "Match players": treat BT.709-tagged video as equivalent to sRGB, with no transfer conversion on the way in or out (the recommended option). The fix is on its own branch, `codex/composition-colour-accuracy` from `main`; ET6a's records point to it. [ET6a colour evidence](./editorial-typography-et6a-results.json).
@@ -108,6 +110,14 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-17 — Color grading CGA: PR #70 conflicts with `main` resolved
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga-auto-color` (from PR head e55dc340).
+- **Scope:** merge `main` 85c9134d (PR #71, ET6a `comp measure`) into PR #70.
+- **Done:** two conflicts, both independent additions kept: the CLI README keeps ET6a's "Composition text measurement" section followed by CGA's "Automatic color for flat clips"; this log keeps `main`'s 2026-11-17 ET6a entries above the CGA entries. `commands.ts`, `cli.ts`, the generated composition reference and the rest merged without conflict.
+- **Results:** Node 22.23.1: `pnpm check:fast` passed (464 files, 4,692 tests); Prettier passes on both resolved files. Browser and runtime tiers not run for this merge.
+- **Records:** [PR #70](https://github.com/xxibcill/still-shift/pull/70).
+
 ### 2026-11-17 — Editorial titles ET6a: PR #71 second review fixes
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/editorial-titles-et6a` (from PR head ef0d60c7).
@@ -153,6 +163,43 @@ still hold before relying on them.
 - **Rejected / do not repeat:** a separate "single text request" JSON format (one schema is simpler: a one-layer composition); a builder API (programs run in Node and cannot shape text). A shell `>` redirect to a file the program reads leaves it empty while measuring; use `--output`.
 - **Open / next:** owner review and merge; then ET6b (needs the owner's reading rule, D-read). The pilot's effect-cost finding is now tracked as EC. Noted, not investigated: rendered PNG colours differ from authored hex by a few levels (for example `#2F6F6A` renders as (31,97,92)).
 - **Records:** [plan](./editorial-typography-improvement-plan.md#et6a--text-measurement-command), [ET6a results](./editorial-typography-et6a-results.json).
+
+### 2026-11-16 — Color grading CGA: PR #70 review findings fixed
+
+- **Agent / branch:** Claude Code on `codex/cga-auto-color` (from `fc452fa0`)
+- **Scope:** two-axis review of PR #70 (Standards + Spec), posted as 32 inline comments, then one commit per finding.
+- **Done:** defects S1 (no-overwrite CLI writes), D1 (FFmpeg stderr drain; a 1 MB-stderr wrapper hung before), D2 (verify before publishing; the staged `.result.json` sidecar leaked on every run), D3 (no held-out figure with one shot), D4 (look bounds from the contract), D5, D6; spec A1 (midtone exposure via levels gamma, 0.40–0.52, can darken), A2 (look `targets`), A3 (batch-path deviation recorded), A4 (0–1 per-correction scales), C1 (clipping guard scales tone, reports overruns); smells SM1–SM11 (shared helpers, one grade-kernel record, `ColorFrameSet`, look module split); records B1, C2a–C2e, C3, S2.
+- **Results:** owner's 12 clips (all high key) give identical effects except one clip whose black point now scales with the clipping guard (0.0297 → 0.0223). `check:fast` 463/4,675; grade parity max delta 0; composition-effects, -media and -baselines (176 items, 36,061 frames) unchanged. `check:runtime` failed twice and passed on run 3. Run 1 lacked the CE16 soundtrack runtime, which is git-ignored per checkout, so this fresh worktree had none (36 soundtrack failures, plus 3 depth timeouts under load). Runs 2–3 used the primary checkout's runtime through `STILL_SHIFT_SOUNDTRACK_PYTHON`: run 2 failed one untouched composition-preview watch-poll timeout (3/3 alone); run 3 passed in full (runtime 376, integration 371, depth, smoke). Not run: `pnpm check`, full `pnpm test`, `release:check`.
+- **Rejected / do not repeat:** routing CGA folders through the v0.1 `batch` command (still-image `AnimationRequest` pipeline; recorded in the plan). Reporting a fresh worktree's missing soundtrack runtime as "not installed": point `STILL_SHIFT_SOUNDTRACK_PYTHON` at the primary checkout's runtime first.
+- **Open / next:** owner decision 1 and sheet review.
+- **Records:** [PR review](https://github.com/xxibcill/still-shift/pull/70#pullrequestreview-5920818343), [plan checks](./color-grading-engine-plan.md#cga--automatic-exposure-contrast-saturation-and-white-balance-for-flat-sdr-clips), [CGA results `verification`](./color-grading-cga-results.json).
+
+### 2026-11-16 — Color grading CGA: owner pick, look 0.6, calmer and cooler Auto
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga-auto-color`, relayed owner feedback on the strength ladder: "Auto seem too heavy for me. I think somewhere between 50% and 75% is good".
+- **Done:** look default strength 0.6 (owner's pick from 50–75%; `--strength` overrides). Auto halfway between the first two default sets: saturation targets 0.185/0.36, gain ≤ 1.65, vibrance ≤ 80; S-curve 0.75 × (0.625 − spread) ≤ 0.13; white balance removes 50–90% of the cast (≤ 20–35) plus a magenta tint of 0.4 × cooling × (1 − confidence). Sheets: Raw | Look 60% | Auto per clip; ladder Raw | Look 50% | 60% | 65% | 75% | Auto.
+- **Finding:** temperature alone trades red for blue, so partly cooled cream turned lemon-yellow (bright near-neutral R−B/G−B 10.1/9.8 vs look 60% 14.9/6.5); with the coupled tint 9.1/4.3, beige like the look.
+- **Results (renders, 12 clips):** Auto median luma −0.012…+0.002, spread −0.001…+0.063, 90% saturation +0.025…+0.131, median saturation −0.035…+0.027, clipped ≤ 0.42%; 72/72 frames, audio unchanged. A first check chain on the pre-tint solver was stopped (superseded, not failed); reruns on the final code below.
+- **Open / next:** owner review of the final sheets. Opened [PR #70](https://github.com/xxibcill/still-shift/pull/70) after merging `main` 9d69a4f7 (dev-log conflict only; both sides kept); after the merge `check:fast` 463/4,675, `composition-grade-effects` and `composition-baselines` (176 items) pass.
+- **Records:** [CGA results `finalTuning`](./color-grading-cga-results.json).
+
+### 2026-11-16 — Color grading CGA: visible auto defaults, half-strength looks
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga-auto-color`, at the request of the planning session relaying owner feedback on the sheets ("no different between Left and Right column"; "middle is too heavy grade").
+- **Done:** adaptive defaults retuned for visibility: saturation targets 0.15/0.30 → 0.22/0.42 (median/90%), gain ≤ 1.8, vibrance ≤ 100; median-pivoted S-curve whenever the 5–95% luma spread is below 0.75 (≤ 0.16, was 0.5/≤ 0.10); white balance removes 20–90% of the cast (was 40–90%), ≤ 10–35. High-key clips are still never brightened. Applied looks default to `--strength 0.5` (`look apply`, `auto-color --look`); full strength stays available, adaptive corrections after a look use `--adaptive-strength`. Sheets are now labelled (Raw | Look 50% | Look 100% | Auto), rendered through the pinned Chromium because this FFmpeg has no drawtext, plus a strength ladder for the held-out clip.
+- **Results (renders, 12 clips):** Auto median luma −0.012…+0.002 (limit 0.02), 5–95% spread −0.001…+0.089, median saturation +0.008…+0.063, 90% saturation +0.028…+0.164, clipped ≤ 0.31%; 72/72 frames, audio unchanged. Retune checks: `check:fast`, `composition-grade-effects`, `composition-baselines` and the color/media integration tests rerun (see results JSON).
+- **Open / next:** owner picks a look strength from the ladder and judges the new Auto; observation (not acceptance): Auto keeps and boosts some of the warm cast, so cream reads warmer, while the look cools.
+- **Records:** [CGA results `retune`](./color-grading-cga-results.json), local sheets `dist/cga-owner/sheets/`.
+
+### 2026-11-16 — Color grading CGA: auto color and look from an example
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga-auto-color` (from `main` a897acb4), in a side session started by the color-grading planning session.
+- **Scope:** [CGA](./color-grading-engine-plan.md#cga--automatic-exposure-contrast-saturation-and-white-balance-for-flat-sdr-clips): fix flat Google Flow clips (exposure, contrast, saturation, white balance) and learn the owner's grade from a before/after pair.
+- **Done:** plan copied onto the branch; BT.601 (`smpte170m`) SDR sources decode with BT.601 coefficients (Flow clips no longer fail with `comp-media-color`); exact-parity `color.matrix`, `color.white-balance`, `color.vibrance` (integer/table kernels, `gradeBytes` reference, new CE6 `catalogue-grade` fixture and its own baseline file); media-path color statistics; `comp look fit|apply`; staged adaptive solver; `comp color-stats` and `comp auto-color` (folders, never overwrites, keeps source audio, report); synthetic fixtures; owner evaluation script; docs, skill and reference.
+- **Results:** synthetic RMS/255 exposure 24.4 → 2.4, contrast 14.4 → 1.8, white balance 5.7 → 0.7; desaturation lifted to targets only (0.125 → 0.172 median). Effects: max delta 0 between backends on 5.2 M opaque colors, all 32,895 byte pairs and 81 layer/seek cases. Owner look (11 shots matched, ≥ 0.999 correlation): held-out RMS 2.30 per pixel (max 2.69, **above ~2**), 1.82 on 4×4 block means (max 2.24); look = neutral gains R 0.955/G 0.961/B 1.034, luma −4.9%. Adaptive on 12 owner clips: median luma |Δ| ≤ 0.0107 (limit 0.02), 72/72 frames, 3.0 s, audio correlation ≥ 0.9987. `check:fast` 463/4,675 after two retained failures (stale native3d closure; formatting), `composition-baselines` 176 items unchanged, `composition-effects`, `composition-grade-effects`, `composition-media` and the color/media integration tests pass. Not run: `pnpm check`, full `pnpm test`, `test:runtime`, `release:check`.
+- **Rejected / do not repeat:** fitting the BT.709-transfer graded edit through the media path (its sRGB re-encode is a tone change a 3×3 cannot model); single-pixel fits (codec noise and softening; use 4×4 block means); removing 75% of the neutral cast (beige scenes went grey: median saturation 0.12 → 0.05); a median-keeping gamma with the black point (overshoots symmetric compression); brightening any clip with dim highlights (high-key medians +0.10); AAC in the synthetic MKV (priming offset; PCM now).
+- **Open / next:** owner review of `dist/cga-owner/sheets` (raw | look | adaptive) and the solver defaults; the per-pixel look target is not met (decide whether block-mean RMS is the right bound, or a quadratic look model in CG2+); pre-existing asymmetry: import converts BT.709 transfer to sRGB but `comp render` tags sRGB pixels BT.709 (round trip brightens) — owner decision; open the PR when asked.
+- **Records:** [CGA results](./color-grading-cga-results.json), [plan checks](./color-grading-engine-plan.md#cga--automatic-exposure-contrast-saturation-and-white-balance-for-flat-sdr-clips), [grade effects](./composition-effect-plugins.md#grade-corrections-cga), [CLI](../tools/still-shift-cli/README.md#automatic-color-for-flat-clips).
 
 ### 2026-11-16 — Editorial titles ET7a: PR #69 review fixes
 

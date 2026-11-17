@@ -8461,7 +8461,7 @@
       "properties": {
         "primaries": { "type": "string", "const": "bt709" },
         "transfer": { "type": "string", "enum": ["bt709", "iec61966-2-1"] },
-        "matrix": { "type": "string", "enum": ["bt709", "gbr"] },
+        "matrix": { "type": "string", "enum": ["bt709", "smpte170m", "gbr"] },
         "range": { "type": "string", "enum": ["tv", "pc"] }
       },
       "required": ["primaries", "transfer", "matrix", "range"],

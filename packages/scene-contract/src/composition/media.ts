@@ -9,12 +9,16 @@ export const CompositionMediaRateSchema = z
   })
   .strict();
 
-/** Supported SDR source metadata, using ffprobe's names and values. */
+/**
+ * Supported SDR source metadata, using ffprobe's names and values. `smpte170m`
+ * is the BT.601 YUV matrix (Kr 0.299, Kb 0.114), used by some generators with
+ * BT.709 primaries and an sRGB transfer.
+ */
 export const CompositionMediaColorSchema = z
   .object({
     primaries: z.literal("bt709"),
     transfer: z.enum(["bt709", "iec61966-2-1"]),
-    matrix: z.enum(["bt709", "gbr"]),
+    matrix: z.enum(["bt709", "smpte170m", "gbr"]),
     range: z.enum(["tv", "pc"]),
   })
   .strict();

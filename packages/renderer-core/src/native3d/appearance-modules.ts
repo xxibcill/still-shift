@@ -359,6 +359,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../composition/render/flat-lighting.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/composition/render/grade-effects.ts",
+    url: new URL("../composition/render/grade-effects.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/composition/render/gradient-controls.ts",
     url: new URL("../composition/render/gradient-controls.ts", import.meta.url),
   },
@@ -1430,6 +1434,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/composition/expressions.ts",
     url: new URL(
       "../../../scene-contract/src/composition/expressions.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/composition/grade-effects.ts",
+    url: new URL(
+      "../../../scene-contract/src/composition/grade-effects.ts",
       import.meta.url,
     ),
   },

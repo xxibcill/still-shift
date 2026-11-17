@@ -162,6 +162,71 @@ it("rejects an actual rotated display matrix and corrupt source media", async ()
     "comp-media-format",
   );
 });
+it("accepts Flow-style BT.601 tags and keeps rotation and VFR diagnostics for them", async () => {
+  // BT.709 primaries, sRGB transfer, smpte170m matrix, limited range.
+  const flow = async (name: string, extra: string[] = []) => {
+    const path = join(root, name + ".mp4");
+    await runProcess("ffmpeg", [
+      "-v",
+      "error",
+      "-f",
+      "lavfi",
+      "-i",
+      "testsrc2=size=160x80:rate=24:duration=1",
+      "-vf",
+      [
+        "setparams=color_primaries=bt709:color_trc=iec61966-2-1:colorspace=smpte170m:range=limited",
+        ...(extra[0] === "-vf" ? [extra[1]!] : []),
+      ].join(","),
+      ...(extra[0] === "-vf" ? extra.slice(2) : extra),
+      "-c:v",
+      "libx264",
+      "-pix_fmt",
+      "yuv420p",
+      "-color_primaries",
+      "bt709",
+      "-color_trc",
+      "iec61966-2-1",
+      "-colorspace",
+      "smpte170m",
+      "-color_range",
+      "tv",
+      path,
+    ]);
+    return path;
+  };
+  const source = await flow("flow");
+  expect((await probeCompositionVideo(source)).color).toEqual({
+    primaries: "bt709",
+    transfer: "iec61966-2-1",
+    matrix: "smpte170m",
+    range: "tv",
+  });
+  const rotated = join(root, "flow-rotated.mp4");
+  await runProcess("ffmpeg", [
+    "-v",
+    "error",
+    "-display_rotation:v:0",
+    "90",
+    "-i",
+    source,
+    "-map",
+    "0:v:0",
+    "-c:v",
+    "copy",
+    rotated,
+  ]);
+  expect(await failureCode(probeCompositionVideo(rotated))).toBe(
+    "comp-media-rotation",
+  );
+  const vfr = await flow("flow-vfr", [
+    "-vf",
+    "setpts='if(lt(N,12),N,N+3)/(24*TB)'",
+    "-fps_mode",
+    "vfr",
+  ]);
+  expect(await failureCode(probeCompositionVideo(vfr))).toBe("comp-media-vfr");
+});
 it("requires explicit normalization of non-square source pixels", async () => {
   const source = await encode("non-square", ["-vf", "setsar=2"]);
   expect(await failureCode(probeCompositionVideo(source))).toBe(
