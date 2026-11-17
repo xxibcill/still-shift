@@ -12,6 +12,7 @@ import {
   type Composition,
 } from "@still-shift/scene-contract";
 import {
+  COMPOSITION_OUTPUT_VERSION,
   CompositionNodeMemory,
   verifyNativeObservationClosureVersions,
   isNativeObservationRequestV2,
@@ -140,6 +141,22 @@ function failure(location: string, message: string): never {
     nextAction:
       "Capture fresh native plates when the verified native picture changes; retain the original capture receipt and source snapshot.",
   });
+}
+/**
+ * Parse a retained plate's render result. Plates written before
+ * composition-output-2 (D-colour, 2026-11-16) hold BT.709-encoded samples and
+ * fail with a located recapture message instead of a bare schema error.
+ */
+export function parseNativePlateRenderResult(value: unknown) {
+  const version = (
+    value as { metrics?: { output?: { version?: unknown } } } | null
+  )?.metrics?.output?.version;
+  if (typeof version === "string" && version !== COMPOSITION_OUTPUT_VERSION)
+    failure(
+      "renderResult.metrics.output.version",
+      `Native plate was captured with ${version}; ${COMPOSITION_OUTPUT_VERSION} keeps authored sRGB samples, so recapture it`,
+    );
+  return renderResult.parse(value);
 }
 /** Paths are excluded only after actual asset loading verifies their declared byte hashes. */
 function identity(picture: Composition) {
@@ -300,7 +317,7 @@ async function verifyReceipt(
   );
   if (!binding || !isNativeObservationRequestV2(binding))
     failure("nativeObservations", "Expected original native2 capture binding");
-  const result = renderResult.parse(
+  const result = parseNativePlateRenderResult(
     await readCuePlateJson(
       receipt.renderResult.path,
       owner,
