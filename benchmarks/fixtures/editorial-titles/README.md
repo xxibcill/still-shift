@@ -23,6 +23,14 @@ Exact measured values, render hashes and lint outcomes are recorded in
 re-baseline of the proof on `main`, is in
 [`docs/editorial-typography-et0-results.json`](../../../docs/editorial-typography-et0-results.json).
 
+[`et6a-measure.ts`](./et6a-measure.ts) (ET6a) is not an ET0 baseline. It holds
+the ET7a pilot's measurement failures on a plain paper frame (guessed widths,
+a guessed highlight offset and a font-metric stack) as builders whose sizes,
+origins and offsets are parameters, for
+[`tests/browser/composition-text-measure.ts`](../../../tests/browser/composition-text-measure.ts):
+each case renders once as the pilot placed it and once placed from
+`comp measure`.
+
 ## Synthetic clip
 
 [`media/editorial-bands.mp4`](./media/editorial-bands.mp4) (70,569 bytes,

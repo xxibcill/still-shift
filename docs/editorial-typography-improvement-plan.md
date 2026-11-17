@@ -8,7 +8,9 @@ fashion-reel references. Remaining milestones as reordered by the
 [direction review](#direction-review-2026-11-15). ET7a on
 `codex/editorial-titles-et7a`: the owner accepted all 16 candidates ("all
 yes"), so the success measure is met on the local-only reels (D-auth open;
-[results](./editorial-typography-et7a-results.json)).** ET0
+[results](./editorial-typography-et7a-results.json)). ET6a (`comp measure`)
+done on `codex/editorial-titles-et6a`
+([results](./editorial-typography-et6a-results.json)).** ET0
 re-baselined every finding on `main` (98a92e92); see
 [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
@@ -106,22 +108,23 @@ order did not, for these reasons.
 
 ## Milestone tracker
 
-| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                     |
-| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | -------------------------- |
-| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60)  |
-| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)  |
-| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)  |
-| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63)  |
-| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16            |
-| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66)  |
-| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Done: owner accepted 16/16 |
-| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3                                        | Proposed                   |
-| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67)  |
-| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                   |
-| ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                   |
-| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                   |
-| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                   |
-| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                   |
+| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                      |
+| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | --------------------------- |
+| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60)   |
+| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)   |
+| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)   |
+| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63)   |
+| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16             |
+| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66)   |
+| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Done: owner accepted 16/16  |
+| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3; actual 1 session                      | Done on branch (not merged) |
+| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67)   |
+| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                    |
+| ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                    |
+| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                    |
+| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                    |
+| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                    |
+| EC   | Effect render cost (shadow, halo)                 | —        | before ET7b search at scale  | profile first                              | Proposed                    |
 
 Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence, see
 [ET7a](#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8)) ET6a → ET6b
@@ -611,7 +614,9 @@ subject, automatic footage analysis and preference learning (ET7b).
 
 **Why:** a planner that can measure copy before rendering can compute positions
 itself, which removes hand coordinates without new attach features. Start only
-if ET7a shows measurement or placement iterations are a leading cost.
+if ET7a shows measurement or placement iterations are a leading cost. (It did:
+5 of the pilot's 11 fix iterations, plus font metrics read with fontTools for
+every stacked lockup.)
 
 **Scope**
 
@@ -621,17 +626,72 @@ if ET7a shows measurement or placement iterations are a leading cost.
 - Text is shaped by the browser's canvas, so measuring runs the pinned headless
   browser's preparation step only. No frames are rendered or encoded.
 
+**Result (2026-11-16):** implemented on `codex/editorial-titles-et6a`; see the
+[ET6a results](./editorial-typography-et6a-results.json).
+
+- **Surface.** `comp measure --input <composition.json|program.ts>
+[--output <file>] [--font-coverage strict]`, the Node API
+  `measureCompositionFile` (`@still-shift/animation-engine`) and the browser
+  entry `measureCompositionText` (`@still-shift/renderer-core`). A "single
+  text request" is a one-layer composition, so there is one schema and one
+  path instead of a second request format. No builder API: a builder program
+  runs in Node and cannot shape text, so a program places itself from its own
+  saved measurement instead (`--output`, then `readMeasure` in
+  `research/editorial-titles-et7a/layout.ts`).
+- **Same path as rendering.** Node reads and validates the document, verifies
+  the font files and runs ET1 coverage; it prepares no media. The browser runs
+  `loadCompositionFonts` and `prepareCompositionText` (glyph surfaces created
+  without painting, as text frame discovery already does) and reads the
+  shaped layouts. No frame is evaluated, drawn or encoded.
+- **Output** (`composition-measure-1`, layer-local pixels, independent of
+  placement): per layer and state, `motionBounds` (= render `textBounds`),
+  `advance` and `ink`; per line, the line box, ink, baseline, cap and x-height
+  lines; per span, its own font's metrics and per-line boxes; per word unit
+  (as `word` animators move them), boxes; the held outline's width, extent and
+  outlined ink; each decoration's painted box and the offsets that centre a
+  highlight on the cap band or the ink; and the layer origin when it is a
+  plain translation.
+- **Effects (follow-up, same day):** each `light.drop-shadow` (including the
+  zero-offset halo) and `light.glow` on a text layer reports its blur, offset,
+  strength, a conservative `paint` box from the renderer's own bounds rule,
+  and a `visible` box where the effect falls to **5% coverage**, grown from
+  ink, outline and decorations. Rendered pixels: nothing outside `paint`;
+  `visible` within ±2 px (worst 1.80 px) on a soft shadow, a halo around an
+  outline, a hard shadow and a glow.
+- **Not measured:** other layer effects, text without a pinned font,
+  compositions with native 3D.
+- **Colour check:** the ET6a test had read export-encoded PNG code values.
+  The canvas is exact; explicit `--format` profiles re-encode sRGB with the
+  BT.709 OETF by design, while the default MP4 does not under the same tags
+  and lifts BT.709 footage. The test now reads the renderer canvas (results
+  unchanged); the export inconsistency was decision D-colour, decided "Match players" (2026-11-16).
+
 **Checks**
 
-- [ ] `comp measure` bounds equal render-time `textBounds` exactly for all ET0
-      fixtures and proof treatments.
-- [ ] Measuring 100 copy variants renders no frames; timing and peak memory
-      recorded.
-- [ ] Ink and cap boxes match rendered ink within ±1 px on the ET0 attach fixture.
-- [ ] Cancellation leaves no temporary files (reuse the ET2 checks).
-- [ ] `pnpm check:fast`, `pnpm test:browser:composition-quality`.
+- [x] `comp measure` bounds equal render-time `textBounds` exactly for all ET0
+      fixtures and proof treatments. _Equal for every text layer of the ten ET0
+      fixtures and footage-free copies of pass-1 T1–T3, compared with pixel
+      lint's `textBounds`._
+- [x] Measuring 100 copy variants renders no frames; timing and peak memory
+      recorded. _100 layers in one call, about 0.7 s; no preview is created.
+      Peak memory was not measured separately (see the results' `notRun`)._
+- [x] Ink and cap boxes match rendered ink within ±1 px on the ET0 attach
+      fixture. _Changed: checked on ET6a's synthetic fixtures instead (the
+      attach fixture's footage makes per-colour pixel boxes unreliable), at a
+      stated ±2 px per edge: 49 of 57 edges within 1 px, worst 1.82 px. A
+      rendered edge is the first pixel with 12% coverage, so an exact edge can
+      read up to 1 px outside; Chrome's antialiasing adds the rest._
+- [x] Cancellation leaves no temporary files (reuse the ET2 checks). _SIGINT
+      in the browser phase: exit 130, `comp-program-aborted`, private TMPDIR
+      empty._
+- [x] Failing first: the pilot's guessed widths (a02, b08), guessed box offset
+      (b02) and metric stack (a01-style lockup) miss their targets in pixels;
+      placed from `comp measure` with no hand-tuned numbers they hit them.
+- [x] Latin, Thai, mixed Thai/English and spans of three fonts measured
+      against pixels.
+- [x] `pnpm check:fast`, `pnpm test:browser:composition-quality`.
 
-Estimate: 2–3 days.
+Estimate: 2–3 days. Actual: one session.
 
 ---
 
@@ -728,6 +788,12 @@ also need an editorial setting (ET3-D1).
 - An `editorial-title` policy profile: reading windows that allow bounded slow
   drift (displacement and velocity budgets), plus the contrast and phone-scale
   values the owner chose in G1.
+- **Reading rule (D-read, decided 2026-11-16, owner: "Gentle drift is fine"):**
+  slow, steady movement during a title's hold counts as reading time: a push,
+  float or scale-up of about one letter-height per second or less, in one
+  direction, with no shaking or back-and-forth. Fast motion, jitter or
+  spinning during the hold still fails. The exact displacement and velocity
+  thresholds are ET6b's to calibrate against the proof's T1–T3 hold drift.
 
 **Checks**
 
@@ -737,7 +803,7 @@ also need an editorial setting (ET3-D1).
 - [ ] Default policy results unchanged.
 - [ ] `pnpm check:fast`, `pnpm test:browser:composition-quality`.
 
-Estimate: 1–2 days after the owner's rule.
+Estimate: 1–2 days (the owner's rule is decided).
 
 ---
 
@@ -779,6 +845,25 @@ This is not a release. Publishing still needs the owner's explicit request.
 
 ---
 
+## EC — Effect render cost (shadow, halo)
+
+**Why:** in the ET7a pilot, drop shadows and zero-offset halos made Canvas
+renders about 10 times slower and legibility lint about 20 times slower (a 7 s
+720×1280 candidate: a01 15 s render + 16 s lint without; a03 130 s + 453 s
+with). Candidate search at scale (ET7b) multiplies this.
+
+**Scope:** profile first (the isolate pass that blurs each shadowed layer is the
+suspect), then fix or document. Outputs stay byte-identical unless a change is
+versioned.
+
+**Checks**
+
+- [ ] Profile of one shadowed and one unshadowed pilot-style candidate on the
+      synthetic clip, with the time per pass.
+- [ ] A fix or a recorded decision not to fix, before ET7b searches candidates.
+
+---
+
 ## ET7b — External orchestration (after the pilot)
 
 Only if ET7a meets the success measure or shows a clear path to it.
@@ -803,17 +888,18 @@ needed; any ElevenLabs use still requires batch-specific approval.
 
 All are the owner's. G1 collects them.
 
-| ID      | Decision                                                                                | Needed by | Recommendation                                                                                                             |
-| ------- | --------------------------------------------------------------------------------------- | --------- | -------------------------------------------------------------------------------------------------------------------------- |
-| D-view  | Visual acceptance of proof T1, T2, T3                                                   | G1        | **Decided (G1):** all rejected on style; target the owner's references                                                     |
-| ET3-D1  | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level) | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary |
-| ET3-D2  | Phone-scale floor: 6 px x-height at 360 px                                              | G1, ET6b  | **Decided (G1):** keep                                                                                                     |
-| D-meas  | Success measure for the pilot                                                           | G1        | **Decided (G1):** 3 of 8 accepted per clip, on two clips                                                                   |
-| D-input | One authorized vertical clip; fonts to pin (open-licence list or licensed files)        | G1, ET7a  | **Decided (G1):** fonts are the list plus popular free Thai families; clips are the owner's reels, local only              |
-| D-align | `align` contract: centre on origin, or within `textLayout.width`                        | ET5a      | Keep origin, document and guard                                                                                            |
-| D-read  | How much hold motion counts as readable                                                 | ET6b      | —                                                                                                                          |
-| ET2-D1  | Near-static footage counted as frozen                                                   | ET9       | Keep current rule                                                                                                          |
-| ET2-D2  | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding               | ET9       | —                                                                                                                          |
-| D-clip  | Keep the committed synthetic fixture clip (merged with ET0)                             | Any time  | Keep                                                                                                                       |
-| D-home  | Where orchestration lives long-term                                                     | ET7b      | In-repository skill for the pilot; decide after its size                                                                   |
-| D-auth  | Whether local-only third-party reels count as authorized clips for the success measure  | ET7a      | ET7a passed on two such reels; still open. Recommended: confirm on one owner-shot, licensed or synthetic clip              |
+| ID       | Decision                                                                                                                                   | Needed by | Recommendation                                                                                                                                                                                               |
+| -------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| D-view   | Visual acceptance of proof T1, T2, T3                                                                                                      | G1        | **Decided (G1):** all rejected on style; target the owner's references                                                                                                                                       |
+| ET3-D1   | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level)                                                    | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary                                                                                   |
+| ET3-D2   | Phone-scale floor: 6 px x-height at 360 px                                                                                                 | G1, ET6b  | **Decided (G1):** keep                                                                                                                                                                                       |
+| D-meas   | Success measure for the pilot                                                                                                              | G1        | **Decided (G1):** 3 of 8 accepted per clip, on two clips                                                                                                                                                     |
+| D-input  | One authorized vertical clip; fonts to pin (open-licence list or licensed files)                                                           | G1, ET7a  | **Decided (G1):** fonts are the list plus popular free Thai families; clips are the owner's reels, local only                                                                                                |
+| D-align  | `align` contract: centre on origin, or within `textLayout.width`                                                                           | ET5a      | Keep origin, document and guard                                                                                                                                                                              |
+| D-read   | How much hold motion counts as readable                                                                                                    | ET6b      | **Decided (G1 follow-up, 2026-11-16):** "Gentle drift is fine": slow, steady one-direction drift of about one letter-height per second or less counts as reading time; fast motion, jitter or spinning fails |
+| ET2-D1   | Near-static footage counted as frozen                                                                                                      | ET9       | Keep current rule                                                                                                                                                                                            |
+| ET2-D2   | Default `decodedCacheBytes` rejects a 60 s 1080×1920 clip before decoding                                                                  | ET9       | —                                                                                                                                                                                                            |
+| D-clip   | Keep the committed synthetic fixture clip (merged with ET0)                                                                                | Any time  | Keep                                                                                                                                                                                                         |
+| D-home   | Where orchestration lives long-term                                                                                                        | ET7b      | In-repository skill for the pilot; decide after its size                                                                                                                                                     |
+| D-auth   | Whether local-only third-party reels count as authorized clips for the success measure                                                     | ET7a      | ET7a passed on two such reels; still open. Recommended: confirm on one owner-shot, licensed or synthetic clip                                                                                                |
+| D-colour | Default MP4 and `--format` profiles carry the same BT.709 tags but different code values; default MP4 lifts BT.709 footage up to 16 levels | Any time  | **Decided (2026-11-16):** "Match players": treat BT.709-tagged video as equivalent to sRGB, with no transfer conversion in or out. Implemented on `codex/composition-colour-accuracy` (see its results)      |

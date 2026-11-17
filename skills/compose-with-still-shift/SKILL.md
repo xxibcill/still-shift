@@ -51,6 +51,7 @@ Use exactly one of `frames` or `seconds` for the composition duration. Allowed f
 pnpm still-shift comp validate --input program.ts
 pnpm still-shift comp preview --input program.ts --watch
 pnpm still-shift comp lint --input program.ts
+pnpm still-shift comp measure --input program.ts
 pnpm still-shift comp export-json --input program.ts --output composition.json
 pnpm still-shift comp bake --input program.ts --output baked.json
 pnpm still-shift comp render --input program.ts --output clip.mp4

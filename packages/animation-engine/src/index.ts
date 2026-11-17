@@ -37,6 +37,11 @@ export {
   type CompositionLintReport,
   type CompositionLintOptions,
 } from "./composition-lint.ts";
+export {
+  measureCompositionFile,
+  type CompositionMeasureOptions,
+  type CompositionMeasureReport,
+} from "./composition-measure.ts";
 
 export {
   loadPassageCompositions,
