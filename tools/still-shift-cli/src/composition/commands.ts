@@ -1,11 +1,12 @@
 import { createProgramPreview } from "./preview.ts";
 import { writeSync } from "node:fs";
-import { readFile, realpath } from "node:fs/promises";
+import { readFile, realpath, rename, rm, writeFile } from "node:fs/promises";
 import { dirname, resolve } from "node:path";
 import {
   compileCommerceComposition,
   compileStoryComposition,
   lintCompositionFile,
+  measureCompositionFile,
   readCompositionSource,
   renderComposition,
 } from "@still-shift/animation-engine";
@@ -441,6 +442,51 @@ export async function runCompositionCommand(
         );
         io.stdout(json(report));
         return report.status === "failed" ? 1 : 0;
+      });
+    }
+    if (command === "measure") {
+      const values = parseNamedArguments(args.slice(1), [
+          "input",
+          "output",
+          "font-coverage",
+        ]),
+        input = requireArgument(values, "input");
+      const fontCoverage = fontCoverageOption(values);
+      const output = values.get("output");
+      return await withOwnedSignals("measure", io, async (signal) => {
+        const program = await loadProgram(input, { signal });
+        signal.throwIfAborted();
+        const report = await withProgramFile(program, input, (path) =>
+          measureCompositionFile(path, {
+            signal,
+            ownsProcessSignals: true,
+            ...(fontCoverage ? { fontCoverage } : {}),
+          }),
+        );
+        const text = json({ ...report, source: program.source });
+        if (!output) {
+          io.stdout(text);
+          return 0;
+        }
+        // Written only once measured, and replaced in one step, so a program
+        // that reads its own measurement never sees a partial file.
+        const outputPath = resolve(output);
+        const temporary = `${outputPath}.${process.pid}.tmp`;
+        try {
+          await writeFile(temporary, text);
+          await rename(temporary, outputPath);
+        } finally {
+          await rm(temporary, { force: true });
+        }
+        io.stdout(
+          json({
+            status: report.status,
+            composition: report.composition,
+            layers: report.layers.length,
+            outputPath,
+          }),
+        );
+        return 0;
       });
     }
     if (command === "render") {

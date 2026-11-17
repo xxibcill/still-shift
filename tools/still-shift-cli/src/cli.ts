@@ -95,6 +95,7 @@ Usage:
   pnpm --silent still-shift comp export-json --scene <family-scene.json> [--output <composition.json|program.ts>] [--normalized true]
   pnpm --silent still-shift comp normalize --input <composition.json|program.ts> [--output <composition.json|program.ts>]
   pnpm --silent still-shift comp bake --input <composition.json|program.ts> [--output <composition.json|program.ts>]
+  pnpm --silent still-shift comp measure --input <composition.json|program.ts> [--output <measure.json>] [--font-coverage legacy|strict]
   pnpm --silent still-shift comp lint --input <composition.json|program.ts> [--policy <policy.json>] [--pixels true|false] [--backend canvas2d|webgl2] [--font-coverage legacy|strict]
   pnpm --silent still-shift comp color-stats --input <clip.mp4> [--frames 12] [--output <stats.json>]
   pnpm --silent still-shift comp look fit --before <clip.mp4|folder>[,...] --after <graded.mp4> --output <look.json> [--pairs-per-shot 4] [--after-interpretation code-values|media-path]

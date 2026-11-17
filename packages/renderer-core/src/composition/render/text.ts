@@ -9,7 +9,11 @@ import type { CanvasPixelSource } from "../../canvas-pixel-source.ts";
  * typography renderer, so platform-independent layout (Q8 option C) can later
  * replace the operating system's layout without changing the text layer contract.
  */
-import type { Composition, PreparedScene } from "@still-shift/scene-contract";
+import type {
+  Composition,
+  CompositionScope,
+  PreparedScene,
+} from "@still-shift/scene-contract";
 import { loadPreparedFonts, type LoadedFont } from "../../prepared-fonts.ts";
 import type { FontValidationOptions } from "../../font-identity.ts";
 import { loadTextAnimationFonts } from "../../typography-axes.ts";
@@ -49,6 +53,15 @@ import {
 import { preparedTextBounds } from "./text-bounds.ts";
 import { nativeTypographyContentBounds } from "./native-text-bounds.ts";
 import { typographyClock } from "./text-clock.ts";
+import {
+  COMPOSITION_TEXT_MEASURE_VERSION,
+  measuredLayerOrigin,
+  measureTextEffects,
+  measureTextState,
+  textColors,
+  type CompositionTextMeasure,
+  type TextLayerMeasure,
+} from "../text-measure.ts";
 
 import {
   compositionFontTextRuns,
@@ -58,6 +71,7 @@ import {
   textLayers,
   textNode,
   typographyScene,
+  type TextLayer,
 } from "./text-scenes.ts";
 /** Preparation-only diagnostic draw, used to measure glyph contrast. */
 export type TextProbe = { node: string; mode: "ink-only" | "container-only" };
@@ -83,6 +97,11 @@ export type CompositionText = {
   nativeContentBounds(content: TextContent): Bounds | undefined;
   singleImage(content: TextContent): boolean;
   stableImages(content: TextContent): boolean;
+  /**
+   * ET6a: measured geometry of every text layer, from this preparation's
+   * shaped layouts and `bounds` (no frames drawn). See `text-measure.ts`.
+   */
+  measure(): CompositionTextMeasure;
 };
 
 type Entry =
@@ -278,6 +297,13 @@ export function prepareCompositionText(
   const entries = new Map<string, Entry>();
   const bounds: Record<string, Bounds[]> = {};
   const inkBounds: Record<string, Bounds[][]> = {};
+  const measured: {
+    key: string;
+    layer: TextLayer;
+    scope: CompositionScope;
+    node: TextNode;
+    pinned: boolean;
+  }[] = [];
   for (const [scope, prefix] of scopes(comp)) {
     const nodes = textLayers(scope).map((layer) => ({
       layer,
@@ -311,6 +337,13 @@ export function prepareCompositionText(
     for (const { layer, node } of nodes) {
       const key = prefix + layer.id;
       const texts = layer.states ?? [layer.text];
+      measured.push({
+        key,
+        layer,
+        scope,
+        node,
+        pinned: Boolean(prepared && pinned(comp, node)),
+      });
       if (prepared && pinned(comp, node)) {
         const measured = preparedTextBounds(node, prepared);
         const perState = texts.map((text) => measured.get(text)!);
@@ -429,6 +462,53 @@ export function prepareCompositionText(
     },
     bounds,
     inkBounds,
+    measure() {
+      return {
+        version: COMPOSITION_TEXT_MEASURE_VERSION,
+        coordinates: "layer-local",
+        layers: measured.map(({ key, layer, scope, node, pinned }) => {
+          const common = {
+            key,
+            layer: layer.id,
+            scope: scope === comp ? null : scope.id,
+            align: node.align,
+            anchor: node.anchor ?? "top",
+            locale: node.locale ?? node.textBox?.locale ?? "en",
+            ...measuredLayerOrigin(comp, scope, layer),
+          };
+          const entry = entries.get(key);
+          if (!pinned || entry?.kind !== "typography")
+            return {
+              ...common,
+              measured: false,
+              reason:
+                "Text without a pinned fontAsset draws with generic browser faces and is not measured",
+            } satisfies TextLayerMeasure;
+          const texts = layer.states ?? [layer.text];
+          return {
+            ...common,
+            measured: true,
+            states: texts.map((text, state) => {
+              const measuredState = measureTextState(
+                measureContext,
+                entry.node,
+                entry.prepared,
+                fonts,
+                state,
+                text,
+                bounds[key]![state]!,
+              );
+              const effects = measureTextEffects(
+                layer.effects,
+                measuredState,
+                textColors(entry.node, entry.prepared),
+              );
+              return effects ? { ...measuredState, effects } : measuredState;
+            }),
+          } satisfies TextLayerMeasure;
+        }),
+      };
+    },
     orphanedDecorations(content) {
       const entry = entries.get(content.key);
       if (entry?.kind !== "typography" || !entry.node.decorations?.length)

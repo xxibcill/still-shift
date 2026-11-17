@@ -713,6 +713,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../composition/shapes/trim.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/composition/text-measure.ts",
+    url: new URL("../composition/text-measure.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/composition/typography-source-frame.ts",
     url: new URL("../composition/typography-source-frame.ts", import.meta.url),
   },

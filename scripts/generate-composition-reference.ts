@@ -94,6 +94,7 @@ export default comp({ width: 640, height: 360, fps: 24, frames: 96 }, c => {
 const commands = `pnpm still-shift comp validate --input program.ts
 pnpm still-shift comp preview --input program.ts --watch
 pnpm still-shift comp lint --input program.ts
+pnpm still-shift comp measure --input program.ts
 pnpm still-shift comp export-json --input program.ts --output composition.json
 pnpm still-shift comp bake --input program.ts --output baked.json
 pnpm still-shift comp render --input program.ts --output clip.mp4`;

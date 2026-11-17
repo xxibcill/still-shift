@@ -342,6 +342,19 @@ text bounds. The report distinguishes unmeasured pixels and incomplete text fram
 Use the [composition reference](../../docs/composition-reference.md#motion-linting-ce12)
 for configurable thresholds, reading roles, cuts, shot partitions and severity overrides.
 
+## Composition text measurement
+
+```sh
+pnpm --silent still-shift comp measure --input program.ts
+pnpm --silent still-shift comp measure --input program.ts --output program.measure.json --font-coverage strict
+```
+
+Reports every text layer's geometry as rendering lays it out, without
+rendering a frame: ink and line boxes, baselines, cap and x-height lines,
+per-span font metrics and boxes, word boxes, outline extent and decoration
+boxes, in layer-local pixels. See the
+[composition reference](../../docs/composition-reference.md#text-measurement-et6a).
+
 ## Automatic color for flat clips
 
 These commands correct flat 8-bit SDR clips, such as Google Flow output, with
