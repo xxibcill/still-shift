@@ -43,6 +43,8 @@ still hold before relying on them.
 
 ## Current state
 
+- **Package build on `main` (2026-11-17):** `pnpm build:package` failed at `main` 6235ab3e with TS2742 on `textLayers` and `textLegibilityLayers` (inferred types reference zod internals; added after 0.2.0). Fixed with explicit return types, type-only; emitted JavaScript unchanged. New `pnpm check:package-types` runs the release compile's diagnostics without writing `dist/` and is part of `check:fast` and `check`, because `tsc --noEmit` skips declaration emit. In review on `claude/fix-package-declaration-emit`.
+
 - **Composition colour accuracy (2026-11-16):** owner decision D-colour ("Match players") in review as [PR #72](https://github.com/xxibcill/still-shift/pull/72) on `codex/composition-colour-accuracy`; `main` d9ad624e (PR #70 CGA, PR #71 ET6a) merged in on 2026-11-17: exports keep authored sRGB on every path (`composition-output-2`) and BT.709 footage decodes without the inverse OETF (`composition-media-decoder-3`). Footage-dependent lint numbers and renders over BT.709 footage change (listed in the [results](./composition-colour-accuracy-results.json)); composition baselines do not. ET7a's and G1's visual judgements were made on lifted footage; recalibrate ET6b on corrected renders. The [PR review](https://github.com/xxibcill/still-shift/pull/72#pullrequestreview-5934588962)'s five findings are fixed on the branch (four commits plus a description edit); owner review is pending. This also settles CGA's pending "BT.709-transfer import/export asymmetry" item: import and export now both leave the transfer alone.
 
 - **Color grading CGA (2026-11-16):** in review as [PR #70](https://github.com/xxibcill/still-shift/pull/70) on `codex/cga-auto-color`. Flow clips (BT.601 `smpte170m`) decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). The [PR review](https://github.com/xxibcill/still-shift/pull/70#pullrequestreview-5920818343)'s 32 findings are addressed on the branch, one commit each (C4 is the owner's decision, no commit). Exposure now places the midtones (it can darken); looks carry targets; per-correction scales; clipping guard scales tone. Checks now marked partly met: synthetic desaturation, luma continuity, audio track length, BT.601 on 4:2:0, and (as before) the owner-look bound. Pending owner decisions: decision 1 (approve CGA alone), the final sheets in `dist/cga-owner/sheets`, whether block-mean RMS is the right look bound, the BT.709-transfer import/export asymmetry, CG0–CG15 not started. `main` 85c9134d (PR #71, ET6a) merged in on 2026-11-17. [CGA results](./color-grading-cga-results.json).
@@ -111,6 +113,15 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-17 — Package build: TS2742 fix and package-types check
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `claude/fix-package-declaration-emit` (from `main` 6235ab3e).
+- **Scope:** `pnpm build:package` / `pack:release` failed on `main`: TS2742 on `textLayers` (`render/text-scenes.ts`) and `textLegibilityLayers` (`text-legibility.ts`), whose inferred types name `zod/v4/core/util.d.cts`.
+- **Done:** explicit return types on both functions (type-only; emitted JavaScript identical by `transpileModule`). `scripts/release/build-package.ts` splits the release program out of `compile`; `checkPackageTypes` / `pnpm check:package-types` reports its diagnostics without emitting, and runs in `check:fast` and `check` after `pnpm build`.
+- **Results:** Node 22.23.1: the new check fails with both TS2742 errors on unfixed `main` and passes with the fix (about 10 s); `pnpm check:fast` (465 files, 4,694 tests); `pnpm pack:release`; `pnpm test:package` passes all installed-package checks with `STILL_SHIFT_PNPM_STORE` set. Without it, the locked production audit fails on `vite` 7.3.6 (`launch-editor` advisories GHSA-587h-7wmj-h5pm high, Windows-only, and two moderate); 0.2.0 shipped the same `vite`. Not run: `pnpm check`, runtime tier, `release:check`.
+- **Rejected / do not repeat:** whole-repo `tsc --noEmit --declaration` as the guard: it also flags test helpers (TS2742/TS7056) that the package never compiles.
+- **Open / next:** owner decision on the `vite` audit finding before the next release (bump `vite` or record an exception).
 
 ### 2026-11-17 — Composition colour accuracy: PR #72 review fixes
 
