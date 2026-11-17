@@ -452,7 +452,10 @@ export function measureTextContrastPixels(
 }
 
 /** Root text layers ET3 measures, and the precomp text it does not. */
-export function textLegibilityLayers(comp: Composition) {
+export function textLegibilityLayers(comp: Composition): {
+  root: TextLayer[];
+  nested: string[];
+} {
   return {
     root: comp.layers.filter(
       (layer): layer is TextLayer =>
