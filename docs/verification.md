@@ -4,15 +4,20 @@ Use the pinned Node and pnpm versions in `toolchain.json` for every tier. Runtim
 checks additionally require the pinned Python/uv environment, FFmpeg/FFprobe,
 and installed Playwright Chromium. `pnpm toolchain:check` verifies them.
 
-| Command                   | Purpose                                                                                                     | Prerequisites                                   |
-| ------------------------- | ----------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
-| `pnpm check:fast`         | Generated schema, package boundaries, TypeScript formatting/lint/type checks, and unit behavior tests       | Node, pnpm, installed workspace dependencies    |
-| `pnpm test:runtime`       | Filesystem/process locks, cancellation, cache recovery, and FFmpeg evidence tests                           | Python, FFmpeg; OS process inspection permitted |
-| `pnpm test:integration`   | Real CLI, Python protocol, API, browser, and export transaction tests                                       | Full pinned toolchain and Python environment    |
-| `pnpm test:browser:smoke` | Three Lab session workflows, component playback/pixel checks, and representative Commerce/Story MP4 exports | Full pinned toolchain                           |
-| `pnpm check:runtime`      | Toolchain check plus all three runtime groups and Python tests, sequentially                                | Full pinned toolchain                           |
-| `pnpm check`              | Existing full render matrix plus format/lint/type/schema/boundary gates                                     | Full pinned toolchain                           |
-| `pnpm check:all`          | Full software check and benchmark; the production technical release gate                                    | Full pinned toolchain                           |
+| Command                   | Purpose                                                                                                                          | Prerequisites                                   |
+| ------------------------- | -------------------------------------------------------------------------------------------------------------------------------- | ----------------------------------------------- |
+| `pnpm check:fast`         | Generated schema, package boundaries, TypeScript formatting/lint/type checks, package declaration types, and unit behavior tests | Node, pnpm, installed workspace dependencies    |
+| `pnpm test:runtime`       | Filesystem/process locks, cancellation, cache recovery, and FFmpeg evidence tests                                                | Python, FFmpeg; OS process inspection permitted |
+| `pnpm test:integration`   | Real CLI, Python protocol, API, browser, and export transaction tests                                                            | Full pinned toolchain and Python environment    |
+| `pnpm test:browser:smoke` | Three Lab session workflows, component playback/pixel checks, and representative Commerce/Story MP4 exports                      | Full pinned toolchain                           |
+| `pnpm check:runtime`      | Toolchain check plus all three runtime groups and Python tests, sequentially                                                     | Full pinned toolchain                           |
+| `pnpm check`              | Existing full render matrix plus format/lint/type/package-declaration/schema/boundary gates                                      | Full pinned toolchain                           |
+| `pnpm check:all`          | Full software check and benchmark; the production technical release gate                                                         | Full pinned toolchain                           |
+
+`pnpm check:package-types` (in `check:fast` and `check`) type-checks the npm
+package's release program, declarations included, without writing files. It
+reports declaration errors such as TS2742 that `pnpm build` (`tsc --noEmit`)
+skips.
 
 `test:unit` remains an alias for the unit group. Tests that spawn processes moved
 from `tests/unit` to `tests/runtime`; no lock-recovery or media assertions were
