@@ -221,7 +221,7 @@ it("keeps a 16-bit BT.709 RGB ramp's code values, rounded to 8 bits, and preserv
     await readFile(prepared.assetPaths[prepared.frames[0]!.id]!),
   );
   expect(maxDifference(pixels, expected)).toBeLessThanOrEqual(1);
-  // Decoder 2's inverse OETF lifted mid grey 128 to about 156.
+  // Decoder 2's inverse OETF lifted mid grey 128 to 140.
   expect(Math.abs(pixels[128 * 4]! - 128)).toBeLessThanOrEqual(1);
 });
 it("converts limited-range BT.709 YUV neutral samples without treating limited codes as full range", async () => {
