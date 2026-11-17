@@ -17,6 +17,7 @@ import {
   normalTailInverse,
   textColors,
 } from "../../packages/renderer-core/src/composition/text-measure.ts";
+import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/index.ts";
 import type {
   MeasureBox,
   TextStateMeasure,
@@ -120,6 +121,106 @@ describe("measuredLayerOrigin", () => {
       camera2d,
     } as unknown as Composition;
     expect(measuredLayerOrigin(fixed, fixed, fixed.layers[0]!)).toEqual({
+      origin: [100, 200],
+    });
+  });
+
+  it("refuses layers that drivers, periodic motion, expressions or constraints move", () => {
+    const placed = (extra: Record<string, unknown>) =>
+      ({
+        schemaVersion: "composition-1",
+        id: "c",
+        width: 400,
+        height: 400,
+        fps: 30,
+        frameCount: 40,
+        assets: [],
+        layers: [
+          {
+            id: "lead",
+            type: "solid",
+            size: [10, 10],
+            color: "#ff0000",
+            transform: { position: [300, 300] },
+          },
+          {
+            id: "title",
+            type: "text",
+            text: "IT",
+            fontSize: 40,
+            color: "#111111",
+            transform: { position: [100, 200] },
+          },
+        ],
+        ...extra,
+      }) as unknown as Composition;
+    const signals = [
+      {
+        id: "s",
+        keys: [
+          { frame: 0, value: 0 },
+          { frame: 39, value: 50 },
+        ],
+      },
+    ];
+    for (const [extra, reason] of [
+      [
+        {
+          signals,
+          drivers: [{ target: "title.transform.position.x", signal: "s" }],
+        },
+        "a driver moves the layer",
+      ],
+      [
+        {
+          periodic: [
+            {
+              target: "title.transform.position.y",
+              start: 0,
+              end: 39,
+              oscillate: { period: 10, amplitude: 20 },
+            },
+          ],
+        },
+        "periodic motion moves the layer",
+      ],
+      [
+        {
+          expressions: {
+            "title.transform.position": { source: "value + [50, 0]" },
+          },
+        },
+        "an expression moves the layer",
+      ],
+      [
+        { constraints: [{ type: "attach", target: "title", anchor: "lead" }] },
+        "a constraint moves the layer",
+      ],
+    ] as const) {
+      const comp = placed(extra);
+      const title = comp.layers[1]!;
+      // The evaluator really does move it away from transform.position.
+      const at = [0, 7, 20].map(
+        (frame) =>
+          evaluateComp(comp, frame).layers.find((l) => l.id === "title")!
+            .transform.position,
+      );
+      expect(at.some(([x, y]) => x !== 100 || y !== 200)).toBe(true);
+      expect(measuredLayerOrigin(comp, comp, title)).toEqual({
+        origin: null,
+        originReason: reason,
+      });
+    }
+    // Opacity, or motion on another layer, leaves the origin static.
+    const still = placed({
+      signals,
+      drivers: [
+        { target: "title.transform.opacity", signal: "s" },
+        { target: "lead.transform.position.x", signal: "s" },
+      ],
+      constraints: [{ type: "attach", target: "lead", anchor: "title" }],
+    });
+    expect(measuredLayerOrigin(still, still, still.layers[1]!)).toEqual({
       origin: [100, 200],
     });
   });

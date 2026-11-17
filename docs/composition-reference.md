@@ -3649,7 +3649,8 @@ decoration the painted box per line and, for highlight and strike, the `offset`
 that would centre the band on the cap band or on the decorated ink. `origin`
 gives the layer origin in the composition when the layer is placed by a plain
 translation (no anchor, scale, rotation, skew, parent, camera layer, `camera2d`
-the layer follows, or precomp).
+the layer follows, driver, periodic motion, expression or constraint that moves
+it, or precomp); otherwise it is null with `originReason`.
 `--output` writes the report only after measuring, replacing the file in one
 step. `effects` covers each enabled `light.drop-shadow` and `light.glow` on
 the layer, which grow from everything the layer draws (ink, outline and

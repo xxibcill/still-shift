@@ -8,10 +8,15 @@
  * is placed: a planner can measure, then compute positions. Measurement adds
  * no taste: it reports geometry and never chooses a size or a position.
  */
-import type {
-  Composition,
-  CompositionLayer,
-  CompositionScope,
+import {
+  expressionEntries,
+  isPropertyPathError,
+  isResolvedProperty,
+  parsePropertyPath,
+  resolvePropertyPath,
+  type Composition,
+  type CompositionLayer,
+  type CompositionScope,
 } from "@still-shift/scene-contract";
 import type { LoadedFont } from "../prepared-fonts.ts";
 import type { GlyphCluster, ShapedLayout } from "../shaped-text.ts";
@@ -235,8 +240,9 @@ export type TextLayerMeasure = {
   /**
    * Composition position of the layer-local origin when the layer is placed
    * by a static translation alone (no anchor, scale, rotation, skew, parent,
-   * camera layer, or `camera2d` the layer follows): composition = local +
-   * origin. Otherwise null, with the reason.
+   * camera layer, `camera2d` the layer follows, or driver, periodic motion,
+   * expression or constraint that moves it): composition = local + origin.
+   * Otherwise null, with the reason.
    */
   origin: [number, number] | null;
   originReason?: string;
@@ -830,6 +836,44 @@ const staticPair = (value: unknown): value is [number, number] =>
   staticVector(value, 2);
 const staticTriple = (value: unknown) => staticVector(value, 3);
 
+/**
+ * What else writes a top-level layer's transform at evaluation time: comp
+ * drivers, periodic motion, expressions (including those behaviours compile
+ * to), each resolved as the evaluator resolves it, and scope constraints.
+ */
+function transformWriter(
+  comp: Composition,
+  layer: CompositionLayer,
+): string | undefined {
+  const movesLayer = (text: string) => {
+    const resolved = resolvePropertyPath(comp, text);
+    const path = parsePropertyPath(
+      isResolvedProperty(resolved) ? resolved.path : text,
+    );
+    if (isPropertyPathError(path)) return false;
+    const [head, next] = path.segments;
+    return (
+      !path.scope.length &&
+      path.layer === layer.id &&
+      head?.name === "transform" &&
+      next?.name !== "opacity"
+    );
+  };
+  if ((comp.drivers ?? []).some((motion) => movesLayer(motion.target)))
+    return "a driver moves the layer";
+  if (
+    (comp.periodic ?? []).some((motion) =>
+      movesLayer(motion.target ?? `${motion.node}.${motion.property}`),
+    )
+  )
+    return "periodic motion moves the layer";
+  if (expressionEntries(comp).some((entry) => movesLayer(entry.target)))
+    return "an expression moves the layer";
+  if ((comp.constraints ?? []).some((c) => c.target === layer.id))
+    return "a constraint moves the layer";
+  return undefined;
+}
+
 /** Where the layer-local origin sits in the composition, when that is static. */
 export function measuredLayerOrigin(
   comp: Composition,
@@ -861,5 +905,7 @@ export function measuredLayerOrigin(
   ] as const)
     if (t[key] !== undefined && t[key] !== 0) return none(`layer has ${key}`);
   if (t.orientation !== undefined) return none("layer has orientation");
+  const writer = transformWriter(comp, layer);
+  if (writer) return none(writer);
   return { origin: [position[0], position[1]] };
 }
