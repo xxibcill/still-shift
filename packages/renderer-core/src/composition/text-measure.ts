@@ -9,6 +9,7 @@
  * no taste: it reports geometry and never chooses a size or a position.
  */
 import {
+  compositionEffectDefinition,
   expressionEntries,
   isPropertyPathError,
   isResolvedProperty,
@@ -224,8 +225,12 @@ export type TextStateMeasure = {
   /**
    * Drop shadows and glows on the layer, in stack order. `source` is what
    * they grow from: ink, outline, decorations at full reveal and the
-   * container; `paint` and
-   * `visible` are the layer's whole painted box including them.
+   * container; `paint` and `visible` are the layer's whole painted box
+   * including them. `unmeasured` lists shadows and glows whose parameters
+   * could not be read and every other enabled effect that spreads paint
+   * (blurs, `distort.sine`, generators, effects with their own bounds rule):
+   * `paint` and `visible` exclude those, so they are not the whole layer
+   * while `unmeasured` is not empty.
    */
   effects?: {
     coverage: typeof TEXT_EFFECT_VISIBLE_COVERAGE;
@@ -682,6 +687,22 @@ const luminance = (hex: string) => {
   return { value: 0.2126 * r + 0.7152 * g + 0.0722 * b, alpha: a };
 };
 
+/** Effects the renderer's `effectBounds` lets paint past their source. */
+const MARGIN_EFFECTS = new Set([
+  "blur.gaussian",
+  "blur.primitive",
+  "blur.directional",
+  "distort.sine",
+]);
+function spreadsPaint(effect: EffectInstance): boolean {
+  const definition = compositionEffectDefinition(effect.effect);
+  return (
+    MARGIN_EFFECTS.has(effect.effect) ||
+    Boolean(definition?.expandBounds) ||
+    Boolean(definition?.generatesContent)
+  );
+}
+
 /**
  * Measure the layer's drop shadows and glows from `source` (ink, outline,
  * decorations and container), with the kernels and bounds rules the renderer uses
@@ -697,7 +718,11 @@ export function measureTextEffects(
       effect.enabled !== false &&
       (effect.effect === "light.drop-shadow" || effect.effect === "light.glow"),
   );
-  if (!own.length) return undefined;
+  const spreading = (effects ?? []).filter(
+    (effect) =>
+      effect.enabled !== false && !own.includes(effect) && spreadsPaint(effect),
+  );
+  if (!own.length && !spreading.length) return undefined;
   const sourceBox = unionBounds([
     ...(state.outline?.ink
       ? [state.outline.ink]
@@ -714,6 +739,15 @@ export function measureTextEffects(
   const unmeasured: { id: string; effect: string; reason: string }[] = [];
   const brightest = Math.max(0, ...colors.map((c) => luminance(c).value));
   for (const [index, effect] of (effects ?? []).entries()) {
+    if (spreading.includes(effect)) {
+      unmeasured.push({
+        id: effect.id,
+        effect: effect.effect,
+        reason:
+          "spreads paint beyond its source; not included in paint or visible",
+      });
+      continue;
+    }
     if (!own.includes(effect)) continue;
     const params = (effect.params ?? {}) as Record<string, unknown>;
     if (effect.effect === "light.drop-shadow") {

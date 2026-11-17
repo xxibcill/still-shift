@@ -518,6 +518,48 @@ describe("effect extents", () => {
     expect(glow.visible).not.toBeNull();
   });
 
+  it("lists effects that spread paint as unmeasured", () => {
+    const shadow = {
+      id: "s",
+      effect: "light.drop-shadow",
+      params: { offset: [0, 0], blur: 4, opacity: 1, color: "#000000" },
+    };
+    const measured = measureTextEffects(
+      [
+        { id: "b", effect: "blur.gaussian", params: { radius: 6 } },
+        shadow,
+        { id: "c", effect: "color.tint", params: {} },
+        { id: "w", effect: "distort.ripple", params: {} },
+        { id: "off", effect: "blur.gaussian", enabled: false, params: {} },
+      ] as Effects,
+      state(),
+      [],
+    )!;
+    expect(measured.list.map((e) => e.id)).toEqual(["s"]);
+    expect(measured.unmeasured).toEqual([
+      expect.objectContaining({ id: "b", effect: "blur.gaussian" }),
+      expect.objectContaining({ id: "w", effect: "distort.ripple" }),
+    ]);
+    // A spreading effect alone still reports, so `paint` is not mistaken
+    // for the whole layer.
+    const alone = measureTextEffects(
+      [{ id: "b", effect: "blur.gaussian", params: { radius: 6 } }] as Effects,
+      state(),
+      [],
+    )!;
+    expect(alone.list).toEqual([]);
+    expect(alone.unmeasured.map((e) => e.id)).toEqual(["b"]);
+    expect(alone.paint).toEqual(alone.source);
+    // Effects that only recolour do not spread paint.
+    expect(
+      measureTextEffects(
+        [{ id: "c", effect: "color.tint", params: {} }] as Effects,
+        state(),
+        [],
+      ),
+    ).toBeUndefined();
+  });
+
   it("grows effects from the text container and counts its colours", () => {
     const shadow = [
       {

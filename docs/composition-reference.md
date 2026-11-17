@@ -3663,9 +3663,12 @@ decoration and container colours), a conservative `paint` box from the renderer'
 rule (shadow kernel ⌈3σ⌉ + 1, glow 3σ + 2, applied whatever the strength), and
 a `visible` box where a long straight edge's
 effect falls to 5% coverage (`σ·Q⁻¹(0.05 / strength)` past the edge). Keyed
-effect parameters use their keyed extremes. Not measured: text without a
-pinned font (listed with the reason), other layer effects, and compositions
-with native 3D (refused). Measured ink agrees with rendered pixels within 2 px
+effect parameters use their keyed extremes. Every other enabled effect that
+spreads paint past its source (the blurs, distortions, generators and plugins
+with their own bounds rule) is listed in `effects.unmeasured`; `paint` and
+`visible` exclude it, so they are the whole layer only while `unmeasured` is
+empty. Not measured: text without a pinned font (listed with the reason), other
+layer effects, and compositions with native 3D (refused). Measured ink agrees with rendered pixels within 2 px
 per edge on the ET6a fixtures (most edges within 1 px), and effect `visible`
 edges within 2 px at 5% coverage; no effect pixel lies outside `paint`. The
 Node API is `measureCompositionFile`.

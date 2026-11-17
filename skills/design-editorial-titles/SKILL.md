@@ -141,7 +141,8 @@ state, in **layer-local pixels** (origin at the layer's position, y down):
   offset and strength, a conservative `paint` box (nothing is painted
   outside it) and a `visible` box where it fades to 5% coverage
   (`visibleReach` past the outlined ink); `effects.visible` is everything
-  the layer visibly paints, shadows and halos included;
+  the layer visibly paints, shadows and halos included, unless
+  `effects.unmeasured` lists a blur, distortion or other spreading effect;
 - `motionBounds`: the render-time bounds, including every animator pose
   (for culling and safe areas, not for placing);
 - `origin`: where the layer-local origin sits in the frame, when the layer
