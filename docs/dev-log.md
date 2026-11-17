@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Composition colour accuracy (2026-11-16):** owner decision D-colour ("Match players") in review as [PR #72](https://github.com/xxibcill/still-shift/pull/72) on `codex/composition-colour-accuracy`; `main` d9ad624e (PR #70 CGA, PR #71 ET6a) merged in on 2026-11-17: exports keep authored sRGB on every path (`composition-output-2`) and BT.709 footage decodes without the inverse OETF (`composition-media-decoder-3`). Footage-dependent lint numbers and renders over BT.709 footage change (listed in the [results](./composition-colour-accuracy-results.json)); composition baselines do not. ET7a's and G1's visual judgements were made on lifted footage; recalibrate ET6b on corrected renders. This also settles CGA's pending "BT.709-transfer import/export asymmetry" item: import and export now both leave the transfer alone.
+- **Composition colour accuracy (2026-11-16):** owner decision D-colour ("Match players") in review as [PR #72](https://github.com/xxibcill/still-shift/pull/72) on `codex/composition-colour-accuracy`; `main` d9ad624e (PR #70 CGA, PR #71 ET6a) merged in on 2026-11-17: exports keep authored sRGB on every path (`composition-output-2`) and BT.709 footage decodes without the inverse OETF (`composition-media-decoder-3`). Footage-dependent lint numbers and renders over BT.709 footage change (listed in the [results](./composition-colour-accuracy-results.json)); composition baselines do not. ET7a's and G1's visual judgements were made on lifted footage; recalibrate ET6b on corrected renders. The [PR review](https://github.com/xxibcill/still-shift/pull/72#pullrequestreview-5934588962)'s five findings are fixed on the branch (four commits plus a description edit); owner review is pending. This also settles CGA's pending "BT.709-transfer import/export asymmetry" item: import and export now both leave the transfer alone.
 
 - **Color grading CGA (2026-11-16):** in review as [PR #70](https://github.com/xxibcill/still-shift/pull/70) on `codex/cga-auto-color`. Flow clips (BT.601 `smpte170m`) decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). The [PR review](https://github.com/xxibcill/still-shift/pull/70#pullrequestreview-5920818343)'s 32 findings are addressed on the branch, one commit each (C4 is the owner's decision, no commit). Exposure now places the midtones (it can darken); looks carry targets; per-correction scales; clipping guard scales tone. Checks now marked partly met: synthetic desaturation, luma continuity, audio track length, BT.601 on 4:2:0, and (as before) the owner-look bound. Pending owner decisions: decision 1 (approve CGA alone), the final sheets in `dist/cga-owner/sheets`, whether block-mean RMS is the right look bound, the BT.709-transfer import/export asymmetry, CG0–CG15 not started. `main` 85c9134d (PR #71, ET6a) merged in on 2026-11-17. [CGA results](./color-grading-cga-results.json).
 
@@ -111,6 +111,19 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-17 — Composition colour accuracy: PR #72 review fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/composition-colour-accuracy` (from 13a7bea1, the `main` merge).
+- **Scope:** the [PR #72 review](https://github.com/xxibcill/still-shift/pull/72#pullrequestreview-5934588962), posted as inline comments at the owner's request; one commit per finding.
+- **Done:**
+  - 1/5 (P2): PR description updated (smpte170m is accepted since PR #70; merge with `main` described). No commit: it is not in the repository.
+  - 2/5: test comment corrected: decoder 2 took mid grey 128 to 140, not about 156.
+  - 3/5: `composition-colour-accuracy` asserts each path's transfer tag (sRGB for PNG, BT.709 for video). Expecting BT.709 everywhere fails on the four PNG runs.
+  - 4/5: `parseNativePlateRenderResult` turns a pre-output-2 plate into a located `mechanism-cue-native-plate-identity` failure that says to recapture, instead of a bare ZodError. The unit test gets the ZodError with the check disabled.
+  - 5/5: 8-bit sequence PNGs decode with a direct `format=rgba`; only 16-bit PNGs use the exact graph. Bytes identical (24 1080p RGBA frames, plus RGB, grey+alpha and palette PNGs); about 30% faster per frame (1.47 s vs 1.92 s for 24 frames). Decoder version unchanged. New integration test: an 8-bit BT.709-cICP sequence keeps every value and alpha (a guard; it passes on the old graph too).
+- **Results:** Node 22.23.1: `pnpm check:fast` (465 files, 4,694 tests); media and color integration tests (4 files, 43 tests); browser `composition-colour-accuracy` (legibility 5.84:1 against 5.84:1), `composition-media`, `composition-output`, `mechanism-native-plates`. Not run: `pnpm check`, baselines, runtime tier, release checks.
+- **Records:** [colour results `sequenceDirectPath`](./composition-colour-accuracy-results.json).
 
 ### 2026-11-17 — Composition colour accuracy: PR #72 conflicts with `main` resolved
 
