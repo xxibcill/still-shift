@@ -135,6 +135,8 @@ state, in **layer-local pixels** (origin at the layer's position, y down):
   (`strokeWidth / 2`) and the outlined ink box;
 - `decorations`: each mark's painted box per line, and the `offset` that
   would centre a highlight on the cap band or on the ink;
+- `container`: a caption or speech shape's box as drawn, when the layer has
+  one; effects grow from it too;
 - `effects`: for each drop shadow, halo or `light.glow`, its blur (`sigma`),
   offset and strength, a conservative `paint` box (nothing is painted
   outside it) and a `visible` box where it fades to 5% coverage

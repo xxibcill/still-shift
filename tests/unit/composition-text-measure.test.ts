@@ -517,4 +517,45 @@ describe("effect extents", () => {
     );
     expect(glow.visible).not.toBeNull();
   });
+
+  it("grows effects from the text container and counts its colours", () => {
+    const shadow = [
+      {
+        id: "s",
+        effect: "light.drop-shadow",
+        params: { offset: [0, 0], blur: 4, opacity: 1, color: "#000000" },
+      },
+    ] as Effects;
+    const container = box(-140, -40, 160, 180);
+    const measured = measureTextEffects(shadow, state({ container }), [])!;
+    // The container encloses the ink, so it is the whole source.
+    expect(measured.source).toEqual(container);
+    // ⌈3σ⌉ + 1 = 13 past the container on every side.
+    expect(measured.paint).toEqual(box(-153, -53, 173, 193));
+    const node = {
+      id: "title",
+      color: "#111111",
+      container: {
+        kind: "caption",
+        fill: "#FFF8E7",
+        stroke: "#514638",
+        strokeWidth: 2,
+        padding: 20,
+        radius: 18,
+      },
+    } as unknown as Parameters<typeof textColors>[0];
+    const prepared = { scene: { textAnimators: [] } } as unknown as Parameters<
+      typeof textColors
+    >[1];
+    expect(textColors(node, prepared)).toEqual([
+      "#111111",
+      "#FFF8E7",
+      "#514638",
+    ]);
+    const unstroked = {
+      ...node,
+      container: { ...node.container!, strokeWidth: 0 },
+    } as typeof node;
+    expect(textColors(unstroked, prepared)).toEqual(["#111111", "#FFF8E7"]);
+  });
 });

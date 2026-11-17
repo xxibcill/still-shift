@@ -2289,18 +2289,20 @@ font's metrics and per-line boxes; per word unit (as `word` animators move them)
 the advance and ink; for a stroke animator, the largest drawn `strokeWidth`, its
 `extent` outside the ink (half the width) and the outlined ink; and for each
 decoration the painted box per line and, for highlight and strike, the `offset`
-that would centre the band on the cap band or on the decorated ink. `origin`
+that would centre the band on the cap band or on the decorated ink; for a
+layer with a `container`, the shape's box as drawn (content plus padding, half
+the stroke and the tail). `origin`
 gives the layer origin in the composition when the layer is placed by a plain
 translation (no anchor, scale, rotation, skew, parent, camera layer, `camera2d`
 the layer follows, driver, periodic motion, expression or constraint that moves
 it, or precomp); otherwise it is null with `originReason`.
 `--output` writes the report only after measuring, replacing the file in one
 step. `effects` covers each enabled `light.drop-shadow` and `light.glow` on
-the layer, which grow from everything the layer draws (ink, outline and
-decorations): its Gaussian `sigma` (shadow `blur`, glow `radius`), offset (on
+the layer, which grow from everything the layer draws (ink, outline,
+decorations and container): its Gaussian `sigma` (shadow `blur`, glow `radius`), offset (on
 the renderer's 1/16 px grid) and strength (shadow opacity × colour alpha; glow
-intensity × the brightest thresholded luminance among glyph, outline and
-decoration colours), a conservative `paint` box from the renderer's own bounds
+intensity × the brightest thresholded luminance among glyph, outline,
+decoration and container colours), a conservative `paint` box from the renderer's own bounds
 rule (shadow kernel ⌈3σ⌉ + 1, glow 3σ + 2, applied whatever the strength), and
 a `visible` box where a long straight edge's
 effect falls to 5% coverage (`σ·Q⁻¹(0.05 / strength)` past the edge). Keyed

@@ -324,18 +324,21 @@ export const scripts = {
  * Drop shadows and glows. Glyphs are filled in the background colour so the
  * frame shows only what each effect paints: a soft offset shadow, the
  * pilot's halo (a zero-offset drop shadow, here around a held outline), a
- * hard shadow, and `light.glow` on bright text over a dark frame.
+ * hard shadow, a soft shadow cast by a caption `container` filled in the
+ * background colour, and `light.glow` on bright text over a dark frame.
  */
 export const effects = {
   shadow: "#B3261E",
   halo: "#2F6F6A",
   hard: "#4A2716",
+  bubble: "#3D4A9E",
   night: "#101418",
   glowText: "#FFD54A",
   params: {
     shadow: { offset: [10, 14] as [number, number], blur: 6, opacity: 0.8 },
     halo: { offset: [0, 0] as [number, number], blur: 12, opacity: 0.9 },
     hard: { offset: [8, 8] as [number, number], blur: 0, opacity: 1 },
+    bubble: { offset: [6, 10] as [number, number], blur: 8, opacity: 0.8 },
     outline: 12,
     glow: { radius: 10, intensity: 0.8, threshold: 0 },
   },
@@ -392,6 +395,38 @@ export const effects = {
             align: "center",
             anchor: "cap",
             effects: [shadow("k", effects.hard, p.hard)],
+          }),
+      );
+    }) as Composition;
+  },
+  containerShadow() {
+    return comp(base("et6a-bubble", [latin.anton]), (c) => {
+      c.add(
+        text("SAY", {
+          id: "bubble",
+          fontAsset: "anton",
+          fontSize: 160,
+          color: paper,
+        })
+          .at(360, 560)
+          .with({
+            align: "center",
+            anchor: "cap",
+            container: {
+              kind: "caption",
+              fill: paper,
+              stroke: paper,
+              strokeWidth: 0,
+              padding: 48,
+              radius: 18,
+            },
+            effects: [
+              {
+                id: "b",
+                effect: "light.drop-shadow",
+                params: { ...effects.params.bubble, color: effects.bubble },
+              },
+            ],
           }),
       );
     }) as Composition;

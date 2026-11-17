@@ -27,8 +27,10 @@ import {
 import { decorationSegments } from "../typography-decorations.ts";
 import {
   quantizeStrokeWidth,
+  typographyContainerContent,
   type PreparedTypography,
 } from "../typography-renderer.ts";
+import { textContainerBounds } from "../text-container.ts";
 import { applyTextStyle, type TextNode } from "../typography-style.ts";
 import type { TextStyle } from "../../../scene-contract/src/typography.ts";
 import type { Bounds } from "./evaluate/types.ts";
@@ -159,8 +161,8 @@ export const TEXT_EFFECT_VISIBLE_COVERAGE = 0.05;
 
 /**
  * How a `light.drop-shadow` or `light.glow` on the layer extends what it
- * paints. Effects apply to everything the layer draws (ink, outline and
- * decorations), so both boxes grow from `source`. Values are in layer pixels,
+ * paints. Effects apply to everything the layer draws (ink, outline,
+ * decorations and container), so both boxes grow from `source`. Values are in layer pixels,
  * which are the effect's pixels when the layer is not scaled (see `origin`).
  */
 export type TextEffectMeasure = {
@@ -173,8 +175,8 @@ export type TextEffectMeasure = {
   sigma: number;
   /**
    * Peak strength: shadow opacity × colour alpha, or glow intensity × the
-   * brightest source colour's thresholded luminance (glyphs, outlines and
-   * decorations). Strength sets `visible` only; `paint` does not depend on it.
+   * brightest source colour's thresholded luminance (glyphs, outlines,
+   * decorations and container). Strength sets `visible` only; `paint` does not depend on it.
    */
   strength: number;
   /**
@@ -215,8 +217,14 @@ export type TextStateMeasure = {
   decorations: TextDecorationMeasure[];
   outline?: TextOutlineMeasure;
   /**
+   * The layer's `container` (caption, speech or thought shape) as drawn:
+   * the content box plus padding, half the stroke and the tail.
+   */
+  container?: MeasureBox;
+  /**
    * Drop shadows and glows on the layer, in stack order. `source` is what
-   * they grow from: ink, outline and decorations at full reveal; `paint` and
+   * they grow from: ink, outline, decorations at full reveal and the
+   * container; `paint` and
    * `visible` are the layer's whole painted box including them.
    */
   effects?: {
@@ -554,6 +562,12 @@ export function measureTextState(
       }),
     );
   const all = layout.clusters.map((_, i) => i);
+  const container = node.container
+    ? textContainerBounds(
+        typographyContainerContent(node, layout),
+        node.container,
+      )
+    : undefined;
   return {
     state,
     text,
@@ -578,6 +592,16 @@ export function measureTextState(
     spans,
     words,
     decorations: decorationMeasures(node, layout),
+    ...(container
+      ? {
+          container: box({
+            left: container.x,
+            top: container.y,
+            right: container.x + container.width,
+            bottom: container.y + container.height,
+          }),
+        }
+      : {}),
     ...(strokeWidth > 0
       ? {
           outline: {
@@ -659,8 +683,8 @@ const luminance = (hex: string) => {
 };
 
 /**
- * Measure the layer's drop shadows and glows from `source` (ink, outline and
- * decorations), with the kernels and bounds rules the renderer uses
+ * Measure the layer's drop shadows and glows from `source` (ink, outline,
+ * decorations and container), with the kernels and bounds rules the renderer uses
  * (shadow-effects.ts, pixel-effects.ts glow, evaluate/effects.ts bounds).
  */
 export function measureTextEffects(
@@ -681,6 +705,7 @@ export function measureTextEffects(
         ? [state.ink]
         : []),
     ...state.decorations.flatMap((d) => (d.paint ? [d.paint] : [])),
+    ...(state.container ? [state.container] : []),
   ]);
   if (!sourceBox) return undefined;
   let paint: Bounds = sourceBox,
@@ -804,7 +829,8 @@ export function measureTextEffects(
 
 /**
  * Colours the layer can paint in: fill, span fills, animated fills and
- * outlines, and decorations (including those text events lower into).
+ * outlines, decorations (including those text events lower into) and the
+ * container's fill and stroke.
  */
 export function textColors(
   node: TextNode,
@@ -813,6 +839,10 @@ export function textColors(
   const colors = new Set<string>([node.color]);
   for (const span of node.spans ?? []) if (span.color) colors.add(span.color);
   for (const mark of node.decorations ?? []) colors.add(mark.color);
+  if (node.container) {
+    colors.add(node.container.fill);
+    if (node.container.strokeWidth) colors.add(node.container.stroke);
+  }
   for (const animator of prepared.scene.textAnimators ?? []) {
     if (animator.node !== node.id) continue;
     for (const props of [animator.from, animator.to])

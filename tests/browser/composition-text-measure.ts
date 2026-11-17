@@ -640,8 +640,8 @@ async function verifyHundredVariants() {
 export const EFFECT_TOLERANCE = 2;
 
 /**
- * Drop shadows (soft, the pilot's zero-offset halo around an outline, hard)
- * and `light.glow`. Glyphs are filled in the background colour, so every
+ * Drop shadows (soft, the pilot's zero-offset halo around an outline, hard,
+ * and one cast by a text container) and `light.glow`. Glyphs are filled in the background colour, so every
  * changed pixel is the effect's. Two checks per effect: no changed pixel lies
  * outside its conservative `paint` box (the renderer's own bound), and the
  * pixels at TEXT_EFFECT_VISIBLE_COVERAGE or more along the background→effect
@@ -652,6 +652,7 @@ async function verifyEffects() {
   let worst = 0;
   for (const [composition, background] of [
     [effects.shadows(), paper],
+    [effects.containerShadow(), paper],
     [effects.glow(), effects.night],
   ] as const) {
     const path = join(directory, `${composition.id}.json`);
@@ -673,7 +674,7 @@ async function verifyEffects() {
       const color = rgb_(
         layer.layer === "glow"
           ? effects.glowText
-          : effects[layer.layer as "shadow" | "halo" | "hard"],
+          : effects[layer.layer as "shadow" | "halo" | "hard" | "bubble"],
       );
       const region = near(paint, 30);
       const d = color.map((c, k) => c - bg[k]!);
@@ -741,6 +742,11 @@ async function verifyEffects() {
       if (layer.layer === "shadow")
         assert.deepEqual(effect.offset, { min: [10, 14], max: [10, 14] });
       if (layer.layer === "hard") assert.equal(effect.visibleReach, 0);
+      if (layer.layer === "bubble") {
+        // The container encloses the ink, so the shadow grows from it.
+        assert.ok(state.container, "bubble: container measured");
+        assert.deepEqual(measuredEffects.source, state.container);
+      }
     }
   }
   return { layers: results, worst, tolerance: EFFECT_TOLERANCE };
