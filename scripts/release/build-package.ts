@@ -374,7 +374,13 @@ if (
   pathToFileURL(resolve(process.argv[1])).href === import.meta.url
 ) {
   if (process.argv.includes("--check-types")) {
-    checkPackageTypes();
-    console.log("Package declaration types check passed");
+    // Print the diagnostics alone, like other checks, not as an uncaught throw.
+    try {
+      checkPackageTypes();
+      console.log("Package declaration types check passed");
+    } catch (error) {
+      console.error(error instanceof Error ? error.message : error);
+      process.exitCode = 1;
+    }
   } else console.log(await buildNpmPackage());
 }
