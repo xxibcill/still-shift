@@ -91,11 +91,8 @@ export function rewritePackageReferences(
   return text;
 }
 
-function compile(
-  root: string,
-  output: string,
-  aliases: ReadonlyMap<string, string>,
-) {
+/** The release program: public entry points compiled with declarations. */
+function packageProgram(root: string, output: string) {
   const configPath = resolve(root, "tsconfig.json");
   const config = ts.readConfigFile(configPath, ts.sys.readFile);
   if (config.error)
@@ -129,6 +126,24 @@ function compile(
         getNewLine: () => "\n",
       }),
     );
+  return program;
+}
+
+/**
+ * Report the release compile's diagnostics without writing the package.
+ * `tsc --noEmit` skips declaration emit, so errors such as TS2742 only
+ * appear here.
+ */
+export function checkPackageTypes(root = projectRoot): void {
+  packageProgram(root, resolve(root, "dist/npm"));
+}
+
+function compile(
+  root: string,
+  output: string,
+  aliases: ReadonlyMap<string, string>,
+) {
+  const program = packageProgram(root, output);
   const result = program.emit(
     undefined,
     (file, contents, _bom, _error, sources) => {
@@ -357,5 +372,9 @@ export async function buildNpmPackage(root = projectRoot): Promise<string> {
 if (
   process.argv[1] &&
   pathToFileURL(resolve(process.argv[1])).href === import.meta.url
-)
-  console.log(await buildNpmPackage());
+) {
+  if (process.argv.includes("--check-types")) {
+    checkPackageTypes();
+    console.log("Package declaration types check passed");
+  } else console.log(await buildNpmPackage());
+}
