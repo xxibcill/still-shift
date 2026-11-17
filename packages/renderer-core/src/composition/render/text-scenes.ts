@@ -29,7 +29,7 @@ export const scopes = (comp: Composition): [CompositionScope, string][] => [
     `${p.id}/`,
   ]),
 ];
-export const textLayers = (scope: CompositionScope) =>
+export const textLayers = (scope: CompositionScope): TextLayer[] =>
   scope.layers.filter((l): l is TextLayer => l.type === "text");
 
 /** Initial node colour; drawing supplies the evaluated layer colour. */
