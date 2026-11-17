@@ -117,5 +117,12 @@
     "composition-output: h264 grey ramp read 5 for authored 0 and 1 (tolerance 4); codec loss near black, previously hidden by the OETF. Tolerance 5 for h264 only, recorded.",
     "Existing tests that encoded the OETF were updated: composition-output-input unit (2), composition-media-cache integration (2), mechanism-bridge runtime (1).",
     "Integration, first full run: 41 failures, 39 environmental (soundtrack runtime absent; depth worker 5 s timeouts that pass alone) and 2 decoder-2 expectations (updated)."
-  ]
+  ],
+  "sequenceDirectPath": {
+    "review": "PR #72 review 5/5 (https://github.com/xxibcill/still-shift/pull/72#pullrequestreview-5934588962)",
+    "change": "8-bit (and lower-depth) sequence PNGs decode with a direct format=rgba whatever their transfer tag; only 16-bit PNGs use the exact split/alphamerge graph.",
+    "bytes": "Identical to the graph on 24 1080p RGBA noise frames (199,065,600 bytes compared) and on RGB, grey+alpha and palette PNGs; a new integration test keeps every 8-bit value and alpha of a BT.709-cICP sequence.",
+    "time": "24 1080p frames, one FFmpeg per frame with -threads 1 as prepared media runs it: direct 1.47/1.46 s, graph 1.93/1.91 s (about 30% slower, ~18 ms per frame), Node 22.23.1, FFmpeg on this Mac.",
+    "decoderVersion": "Unchanged (composition-media-decoder-3): prepared bytes do not change."
+  }
 }
