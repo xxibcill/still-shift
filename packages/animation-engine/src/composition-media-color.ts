@@ -1,3 +1,4 @@
+import { inflateSync } from "node:zlib";
 import {
   COMPOSITION_MEDIA_DECODER_VERSION,
   type CompositionMediaColor,
@@ -202,7 +203,12 @@ export function compositionMediaColorFilter(
 ): string {
   const flags = "accurate_rnd+bitexact";
   const range = `in_range=${color.range}:out_range=pc`;
-  const matrix = color.matrix === "bt709" ? ":in_color_matrix=bt709" : "";
+  const matrix =
+    color.matrix === "bt709"
+      ? ":in_color_matrix=bt709"
+      : color.matrix === "smpte170m"
+        ? ":in_color_matrix=bt601"
+        : "";
   const filters = [`scale=${range}${matrix}:flags=${flags}`, "format=rgba64le"];
   filters.push(`scale=flags=${flags}:sws_dither=none`, "format=rgba");
   return filters.join(",");
@@ -219,4 +225,63 @@ export function compositionSequenceColorFilter(
     "format=rgb24",
   );
   return `format=${input},split[color][alpha];[alpha]alphaextract,format=gray[mask];[color]${rgb}[rgb];[rgb][mask]alphamerge,format=rgba`;
+}
+
+/**
+ * Decode a canonical prepared frame (RGBA8, non-interlaced) into straight
+ * RGBA bytes. Prepared frames are verified on every cache hit, so this reader
+ * only needs the sample layout the media path writes.
+ */
+export function decodeCompositionRgbaPng(bytes: Buffer): {
+  width: number;
+  height: number;
+  rgba: Uint8Array;
+} {
+  const chunks = pngChunks(bytes);
+  const header = chunks[0]!.data;
+  const width = header.readUInt32BE(0),
+    height = header.readUInt32BE(4);
+  if (header[8] !== 8 || header[9] !== 6 || header[12] !== 0)
+    passageError(
+      "comp-media-format",
+      "Prepared frame must be 8-bit RGBA without interlacing",
+      { path: "IHDR" },
+    );
+  const rows = inflateSync(
+    Buffer.concat(
+      chunks.filter((chunk) => chunk.type === "IDAT").map((c) => c.data),
+    ),
+  );
+  const stride = width * 4;
+  if (rows.length !== height * (stride + 1))
+    passageError("comp-media-format", "Prepared frame data length differs", {
+      path: "IDAT",
+    });
+  const rgba = new Uint8Array(stride * height);
+  for (let y = 0; y < height; y++) {
+    const filter = rows[y * (stride + 1)]!;
+    const line = rows.subarray(y * (stride + 1) + 1, (y + 1) * (stride + 1));
+    const out = y * stride;
+    for (let x = 0; x < stride; x++) {
+      const left = x >= 4 ? rgba[out + x - 4]! : 0,
+        up = y ? rgba[out - stride + x]! : 0,
+        corner = y && x >= 4 ? rgba[out - stride + x - 4]! : 0;
+      let predictor = 0;
+      if (filter === 1) predictor = left;
+      else if (filter === 2) predictor = up;
+      else if (filter === 3) predictor = (left + up) >> 1;
+      else if (filter === 4) {
+        const p = left + up - corner,
+          pa = Math.abs(p - left),
+          pb = Math.abs(p - up),
+          pc = Math.abs(p - corner);
+        predictor = pa <= pb && pa <= pc ? left : pb <= pc ? up : corner;
+      } else if (filter !== 0)
+        passageError("comp-media-format", "Invalid PNG row filter", {
+          path: "IDAT",
+        });
+      rgba[out + x] = (line[x]! + predictor) & 255;
+    }
+  }
+  return { width, height, rgba };
 }

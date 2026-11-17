@@ -26,6 +26,7 @@ export default comp({ width: 640, height: 360, fps: 24, frames: 96 }, (c) => {
 pnpm still-shift comp validate --input program.ts
 pnpm still-shift comp preview --input program.ts --watch
 pnpm still-shift comp lint --input program.ts
+pnpm still-shift comp measure --input program.ts
 pnpm still-shift comp export-json --input program.ts --output composition.json
 pnpm still-shift comp bake --input program.ts --output baked.json
 pnpm still-shift comp render --input program.ts --output clip.mp4
@@ -903,6 +904,24 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `color.gradient-ramp`          | `amount`         | scalar | `1`                         | 0–1                                          |
 | `color.invert`                 | `amount`         | scalar | `1`                         | 0–1                                          |
 | `color.posterize`              | `levels`         | scalar | `8`                         | 2–256 (integer)                              |
+| `color.matrix`                 | `rr`             | scalar | `1`                         | -4–4                                         |
+| `color.matrix`                 | `rg`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `rb`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `gr`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `gg`             | scalar | `1`                         | -4–4                                         |
+| `color.matrix`                 | `gb`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `br`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `bg`             | scalar | `0`                         | -4–4                                         |
+| `color.matrix`                 | `bb`             | scalar | `1`                         | -4–4                                         |
+| `color.matrix`                 | `ro`             | scalar | `0`                         | -1–1                                         |
+| `color.matrix`                 | `go`             | scalar | `0`                         | -1–1                                         |
+| `color.matrix`                 | `bo`             | scalar | `0`                         | -1–1                                         |
+| `color.matrix`                 | `strength`       | scalar | `1`                         | 0–1                                          |
+| `color.white-balance`          | `temperature`    | scalar | `0`                         | -100–100                                     |
+| `color.white-balance`          | `tint`           | scalar | `0`                         | -100–100                                     |
+| `color.vibrance`               | `vibrance`       | scalar | `0`                         | -100–100                                     |
+| `color.vibrance`               | `saturation`     | scalar | `0`                         | -100–100                                     |
+| `color.vibrance`               | `protectSkin`    | scalar | `0.7`                       | 0–1                                          |
 | `transition.linear-wipe`       | `progress`       | scalar | `0`                         | 0–1                                          |
 | `transition.linear-wipe`       | `softness`       | scalar | `0`                         | 0–1                                          |
 | `transition.linear-wipe`       | `angle`          | scalar | `0`                         | -36000–36000                                 |
@@ -3627,6 +3646,56 @@ compositions render unchanged.
 
 See the [ET5a results](./editorial-typography-et5a-results.json) for the
 fixtures and proof compositions these rules report.
+
+### Text measurement (ET6a)
+
+```sh
+pnpm --silent still-shift comp measure --input program.ts
+pnpm --silent still-shift comp measure --input program.ts --output program.measure.json --font-coverage strict
+```
+
+`comp measure` reports the geometry of every text layer as rendering lays it
+out, before any frame is rendered: Node reads and validates the document,
+verifies the pinned fonts and runs exact-copy font coverage (`--font-coverage
+strict` fails on gaps, as in `comp validate`); the pinned browser then loads the
+fonts and prepares the text with the same functions rendering uses. No media is
+prepared and no frame is evaluated, drawn or encoded. The report
+(`composition-measure-1`) is in layer-local pixels (origin at the layer's
+position, y down), so it does not depend on where a layer is placed. For each
+layer and text state it gives `motionBounds` (equal to the render-time
+`textBounds`, including every text-animator pose, decoration reach and
+container), the settled `advance` and `ink` boxes, the base font's metrics, and
+per line the line box, ink, `baseline`, `capTop` and `xTop`; per span the span
+font's metrics and per-line boxes; per word unit (as `word` animators move them)
+the advance and ink; for a stroke animator, the largest drawn `strokeWidth`, its
+`extent` outside the ink (half the width) and the outlined ink; and for each
+decoration the painted box per line and, for highlight and strike, the `offset`
+that would centre the band on the cap band or on the decorated ink; for a
+layer with a `container`, the shape's box as drawn (content plus padding, half
+the stroke and the tail). `origin`
+gives the layer origin in the composition when the layer is placed by a plain
+translation (no anchor, scale, rotation, skew, parent, camera layer, `camera2d`
+the layer follows, driver, periodic motion, expression or constraint that moves
+it, or precomp); otherwise it is null with `originReason`.
+`--output` writes the report only after measuring, replacing the file in one
+step. `effects` covers each enabled `light.drop-shadow` and `light.glow` on
+the layer, which grow from everything the layer draws (ink, outline,
+decorations and container): its Gaussian `sigma` (shadow `blur`, glow `radius`), offset (on
+the renderer's 1/16 px grid) and strength (shadow opacity × colour alpha; glow
+intensity × the brightest thresholded luminance among glyph, outline,
+decoration and container colours), a conservative `paint` box from the renderer's own bounds
+rule (shadow kernel ⌈3σ⌉ + 1, glow 3σ + 2, applied whatever the strength), and
+a `visible` box where a long straight edge's
+effect falls to 5% coverage (`σ·Q⁻¹(0.05 / strength)` past the edge). Keyed
+effect parameters use their keyed extremes. Every other enabled effect that
+spreads paint past its source (the blurs, distortions, generators and plugins
+with their own bounds rule) is listed in `effects.unmeasured`; `paint` and
+`visible` exclude it, so they are the whole layer only while `unmeasured` is
+empty. Not measured: text without a pinned font (listed with the reason), other
+layer effects, and compositions with native 3D (refused). Measured ink agrees with rendered pixels within 2 px
+per edge on the ET6a fixtures (most edges within 1 px), and effect `visible`
+edges within 2 px at 5% coverage; no effect pixel lies outside `paint`. The
+Node API is `measureCompositionFile`.
 
 ### Story exposure and passage compilation (CE4a continuation)
 

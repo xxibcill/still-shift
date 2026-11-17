@@ -479,6 +479,12 @@ function byteEffectCases(
   return { pairs: 32895, rows };
 }
 
+/** CGA grade effects over the same 32,895 premultiplied byte pairs. */
+export function checkGradeEffectByteRounding(
+  cases: { effect: string; label: string; params: EffectParams }[],
+) {
+  return byteEffectCases(cases);
+}
 export function checkColorEffectByteRounding() {
   const result = byteEffectCases(
     [2, 3, 6, 10, 16, 256].map((levels) => ({

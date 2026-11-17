@@ -13,8 +13,15 @@ import { NOISE_EFFECT_DEFINITIONS } from "./noise-effects.ts";
 import { WARP_EFFECT_DEFINITIONS } from "./warp-effects.ts";
 import { SAMPLED_BLUR_DEFINITIONS } from "./blur-effects.ts";
 import { COLOR_EFFECT_DEFINITIONS } from "./color-effects.ts";
+import { GRADE_EFFECT_DEFINITIONS } from "./grade-effects.ts";
 import { TRANSITION_EFFECT_DEFINITIONS } from "./transition-effects.ts";
 export * from "./effect-definition.ts";
+export {
+  COLOR_MATRIX_COEFFICIENTS,
+  COLOR_MATRIX_OFFSETS,
+  GRADE_EFFECT_IDS,
+  type GradeEffectId,
+} from "./grade-effects.ts";
 
 function defineEffect(
   properties: Record<string, Omit<EffectScalar, "type">>,
@@ -44,6 +51,7 @@ export const COMPOSITION_EFFECTS: Readonly<
   Record<string, CompositionEffectDefinition>
 > = {
   ...COLOR_EFFECT_DEFINITIONS,
+  ...GRADE_EFFECT_DEFINITIONS,
   ...TRANSITION_EFFECT_DEFINITIONS,
   ...SAMPLED_BLUR_DEFINITIONS,
   ...WARP_EFFECT_DEFINITIONS,

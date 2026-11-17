@@ -64,7 +64,10 @@ bytes. Physical paths are separate from source identity.
 
 The color descriptor records source primaries, transfer, matrix and range using
 ffprobe names. Supported SDR values are BT.709 primaries, BT.709 or sRGB transfer,
-BT.709 YUV or RGB matrix, and limited or full range. RGB requires full range.
+BT.709 YUV (`bt709`), BT.601 YUV (`smpte170m`) or RGB (`gbr`) matrix, and limited
+or full range. RGB requires full range. BT.601-matrix sources, such as Google Flow
+clips tagged BT.709 primaries, sRGB transfer and `smpte170m`, decode with the BT.601
+coefficients (Kr 0.299, Kb 0.114).
 Sequences require sRGB RGB PNGs. Decoder preparation must verify actual metadata
 and convert samples to canonical encoded-sRGB RGBA8; the descriptor alone is not
 evidence of conversion. `linear-srgb` remains a composition blending choice.
@@ -145,10 +148,9 @@ Prepared PNGs carry an sRGB chunk, with competing tags removed.
 
 A source tagged with sRGB transfer (as some generators tag BT.709-primaries
 video) is decoded the same way; under this rule the transfer tag of an SDR
-source does not change its samples, only its range and matrix do. The
-`smpte170m` (BT.601) matrix is not accepted yet; if it is, the rule applies
-unchanged: decode with the BT.601 matrix and range, with no transfer
-conversion.
+source does not change its samples, only its range and matrix do. The same
+holds for `smpte170m` (BT.601) sources: they decode with the BT.601 matrix and
+range, with no transfer conversion.
 
 Sequence PNGs follow [PNG Third Edition color priority](https://www.w3.org/TR/png-3/):
 cICP, ICC, sRGB, then legacy gamma/chromaticities. Supported authoritative cICP is

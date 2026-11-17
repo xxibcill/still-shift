@@ -46,7 +46,7 @@
   },
   "otherSourceTags": {
     "srgbTransferVideo": "Already decoded without transfer conversion on main; unchanged. Under the rule the SDR transfer tag (bt709 or iec61966-2-1) no longer changes samples, only range and matrix do.",
-    "smpte170mMatrix": "Not accepted by the media contract (unchanged here). The owner's Google Flow clips (bt709 primaries, sRGB transfer, smpte170m matrix, tv range) would, once accepted, decode with the BT.601 (smpte170m) matrix and limited-to-full range, with no transfer conversion.",
+    "smpte170mMatrix": "Not accepted by the media contract (unchanged here). The owner's Google Flow clips (bt709 primaries, sRGB transfer, smpte170m matrix, tv range) would, once accepted, decode with the BT.601 (smpte170m) matrix and limited-to-full range, with no transfer conversion. Update 2026-11-17: `main` d9ad624e (CGA, PR #70) accepts smpte170m; after merging it into this branch they decode exactly that way.",
     "pngSequences": "BT.709-cICP and sRGB sequences both use their samples unchanged; the descriptor transfer must still match the PNG's colour authority, as before."
   },
   "changes": [

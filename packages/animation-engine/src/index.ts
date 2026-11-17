@@ -37,6 +37,11 @@ export {
   type CompositionLintReport,
   type CompositionLintOptions,
 } from "./composition-lint.ts";
+export {
+  measureCompositionFile,
+  type CompositionMeasureOptions,
+  type CompositionMeasureReport,
+} from "./composition-measure.ts";
 
 export {
   loadPassageCompositions,
@@ -198,3 +203,11 @@ export {
 } from "./mechanism/blender-episode-annotations.ts";
 
 export * from "./mechanism/blender-production-review-contract.ts";
+export * from "./composition-color-frames.ts";
+export * from "./composition-color-measure.ts";
+export { decodeCompositionRgbaPng } from "./composition-media-color.ts";
+export * from "./composition-color-look.ts";
+export * from "./composition-color-shots.ts";
+export * from "./composition-color-matrix-fit.ts";
+export * from "./composition-color-solve.ts";
+export * from "./composition-auto-color.ts";

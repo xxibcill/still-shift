@@ -1,3 +1,4 @@
+import { GRADE_EFFECT_IDS } from "@still-shift/scene-contract";
 import type {
   Composition,
   CompositionLayer,
@@ -41,6 +42,21 @@ export function ce6EffectCases(
     },
     "color.invert": { amount: 0.65 },
     "color.posterize": { levels: 5 },
+    "color.matrix": {
+      rr: 1.18,
+      rg: -0.12,
+      rb: -0.06,
+      gr: -0.05,
+      gg: 1.1,
+      gb: -0.05,
+      br: -0.08,
+      bg: -0.14,
+      bb: 1.28,
+      bo: 0.02,
+      strength: animated(0.2, 1),
+    },
+    "color.white-balance": { temperature: animated(-40, 40), tint: 15 },
+    "color.vibrance": { vibrance: animated(0, 80), saturation: 10 },
     "transition.linear-wipe": {
       progress: animated(0.1, 0.85),
       softness: 0.15,
@@ -180,13 +196,18 @@ export const CE6_NATIVE_FIXTURES = [
   "catalogue-transition",
   "catalogue-history-linear",
   "catalogue-mesh",
+  "catalogue-grade",
 ] as const;
+/** CGA grade effects, kept out of the frozen color catalogue cell layout. */
+const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
 
 /** Each catalogue cell is a native isolated group with independently moving paints. */
 export function ce6NativeFixtures(): [string, Composition][] {
   const cases = ce6EffectCases(),
     families = [
-      Object.keys(cases).filter((id) => id.startsWith("color.")),
+      Object.keys(cases).filter(
+        (id) => id.startsWith("color.") && !GRADE_EFFECTS.includes(id),
+      ),
       Object.keys(cases).filter((id) => id.startsWith("blur.")),
       Object.keys(cases).filter(
         (id) =>
@@ -203,6 +224,7 @@ export function ce6NativeFixtures(): [string, Composition][] {
       Object.keys(cases).filter((id) => id.startsWith("transition.")),
       ["time.echo", "distort.displacement-map", "transition.gradient-wipe"],
       ["distort.mesh-warp", "distort.puppet"],
+      [...GRADE_EFFECTS],
     ];
   return families.map((effects, family) => {
     const doc: Composition = {

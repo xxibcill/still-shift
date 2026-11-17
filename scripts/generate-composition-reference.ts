@@ -94,6 +94,7 @@ export default comp({ width: 640, height: 360, fps: 24, frames: 96 }, c => {
 const commands = `pnpm still-shift comp validate --input program.ts
 pnpm still-shift comp preview --input program.ts --watch
 pnpm still-shift comp lint --input program.ts
+pnpm still-shift comp measure --input program.ts
 pnpm still-shift comp export-json --input program.ts --output composition.json
 pnpm still-shift comp bake --input program.ts --output baked.json
 pnpm still-shift comp render --input program.ts --output clip.mp4`;
@@ -145,6 +146,8 @@ ${commands}
 \`\`\`
 
 Explicit \`comp render --format\` profiles are \`prores4444\`, \`png8\`, \`png16\`, \`h264\`, \`hevc10\`, \`prores422hq\` and \`vp9alpha\`. Alpha survives in ProRes4444, PNG and VP9 alpha with a transparent root background; omit the format for the existing opaque MP4 path. PNG output needs a \`%06d.png\` filename pattern. \`--workers 1|2|3|4\` selects bounded parallel renderers; \`--cache-static true|false\` controls shared static reuse. Use PNG/raw transport for explicit profiles. Read [delivery details](../../docs/composition-reference.md#output-formats-and-parallel-rendering-ce15) for color, native-audio output and manifests. Programmable soundtrack routing/DSP is a separate [soundtrack-project workflow](../../docs/soundtrack-project.md) with its own optional runtime; native composition audio does not require that runtime.
+
+For flat SDR footage, grade corrections are \`color.matrix\` (3×3 + offset with \`strength\`), \`color.white-balance\` (\`temperature\`, \`tint\`) and \`color.vibrance\` (\`vibrance\`, \`saturation\`, \`protectSkin\`); they give identical bytes on both backends. \`comp auto-color --input clip.mp4 --output fixed.mp4\` measures a clip and writes one bounded correction as these editable effects (plus \`color.levels\`/\`color.curves\`) with the source audio kept; \`comp look fit --before raws/ --after graded.mp4 --output look.json\` learns a look from a graded example and \`comp look apply\` applies it. Read [grade corrections](../../docs/composition-effect-plugins.md#grade-corrections-cga) and the [CLI reference](../../tools/still-shift-cli/README.md#automatic-color-for-flat-clips); reports are measurements, not visual acceptance.
 
 Validate after authoring and fix located diagnostics before rendering. CLI accepts \`.json\`, \`.ts\`, \`.mts\` and \`.cts\`; JSON export rebases pinned asset paths to its output folder. Output writes refuse to overwrite existing files. Watch preview retains the last valid pixels/frame on an invalid rebuild. Lint reports motion craft separately from schema validity; use its findings to improve the clip. Verification runs locally using pnpm.
 

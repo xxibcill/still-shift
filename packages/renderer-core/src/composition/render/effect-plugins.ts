@@ -20,6 +20,7 @@ import { warpEffectKernel } from "./warp-effects.ts";
 import { sampledBlurKernel } from "./sampled-blur.ts";
 import { transitionEffectKernel } from "./transition-effects.ts";
 import { colorEffectKernel } from "./color-effects.ts";
+import { gradeEffectKernel } from "./grade-effects.ts";
 import {
   compositionEffectDefinition,
   registerCompositionEffectDefinition,
@@ -99,6 +100,7 @@ export function registerCompositionEffect(
 export const compositionEffectPlugin = (id: string) =>
   plugins.get(id) ??
   colorEffectKernel(id) ??
+  gradeEffectKernel(id) ??
   transitionEffectKernel(id) ??
   sampledBlurKernel(id) ??
   warpEffectKernel(id) ??
