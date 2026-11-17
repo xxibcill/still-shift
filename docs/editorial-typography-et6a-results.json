@@ -28,7 +28,7 @@
   },
   "samePath": "Node: readCompositionDocument, validatePreparedAssets (fonts), checkCompositionFonts (ET1 coverage), as comp validate. Browser: loadCompositionFonts and prepareCompositionText, exactly as rendering calls them, with a bounds-only canvas source (the one text frame discovery already uses), then the shaped layouts of prepared typography. Ink boxes are the shaped clusters' measureText bounds; motionBounds is the same `bounds` the renderer passes as textBounds.",
   "output": {
-    "coordinates": "layer-local pixels: origin at the layer's position, y down; `origin` gives the composition position when the layer is a plain translation (no anchor, scale, rotation, skew, parent, camera or precomp)",
+    "coordinates": "layer-local pixels: origin at the layer's position, y down; `origin` gives the composition position when the layer is a plain translation (no anchor, scale, rotation, skew, parent, camera, camera2d the layer follows, driver, periodic motion, expression or constraint that moves it, or precomp)",
     "perState": "motionBounds (render textBounds), advance, ink, base-font metrics (size, ascent, descent, capHeight, xHeight, lineHeight, tracking)",
     "perLine": "advance box, ink, baseline, capTop, xTop",
     "perSpan": "the span's own font metrics; per line: text, advance, ink, capTop, xTop",
@@ -135,7 +135,7 @@
     "Decorations with brush or ink line styles report their nominal band (approximate: true).",
     "Highlight thickness defaults use the layer's base font cap height, as drawing does, even over a span in another font.",
     "Compositions with native 3D are refused.",
-    "Effects: only light.drop-shadow and light.glow are measured; others are not listed. Keyed parameters use their keyed extremes, not eased overshoot. `visible` assumes a long straight edge; thin strokes and corners fade sooner.",
+    "Effects: only light.drop-shadow and light.glow are measured; every other enabled effect that spreads paint (blurs, distortions, generators, effects with their own bounds rule) is listed in effects.unmeasured, and paint and visible exclude it. Keyed parameters use their keyed extremes, not eased overshoot. `visible` assumes a long straight edge; thin strokes and corners fade sooner.",
     "Effect sizes are in layer pixels, which are the effect's pixels only when the layer is unscaled (see `origin`)."
   ],
   "notRun": [
@@ -165,15 +165,16 @@
   ],
   "effects": {
     "added": "2026-11-16, after the first ET6a report listed shadows and halos as not measured (owner asked for them).",
-    "samePath": "Drop shadow: the renderer's Gaussian kernel (shadowGaussianKernel, σ = blur, radius ⌈3σ⌉) and offset quantisation to 1/16 px (shadow-effects.ts), and the bounds rule of its definition (expandBounds: ⌈3σ⌉+1). Glow: pixel-effects.ts glow (alpha × thresholded luminance, CSS blur(radius), screen at intensity) and evaluate/effects.ts's margin 3·radius+2. Effects apply to the layer's whole drawing, so they grow from ink ∪ outline ∪ decorations.",
+    "samePath": "Drop shadow: the renderer's Gaussian kernel (shadowGaussianKernel, σ = blur, radius ⌈3σ⌉) and offset quantisation to 1/16 px (shadow-effects.ts), and the bounds rule of its definition (expandBounds: ⌈3σ⌉+1). Glow: pixel-effects.ts glow (alpha × thresholded luminance, CSS blur(radius), screen at intensity) and evaluate/effects.ts's margin 3·radius+2. Effects apply to the layer's whole drawing, so they grow from ink ∪ outline ∪ decorations ∪ container.",
     "coverageThreshold": "5% (about 13/255). A Gaussian tail has no hard edge; `visible` is where a long straight edge's effect falls to 5%. Thin strokes and corners carry less mass, so their visible edge lies inside (treat visibleReach as the upper end for thin scripts).",
-    "fixtures": "benchmarks/fixtures/editorial-titles/et6a-measure.ts `effects`: glyphs filled in the background colour so only the effect shows. Anton IT with a soft shadow (offset [10,14], blur 6, opacity 0.8); Anton UP with a 12 px held outline and the pilot's halo (zero-offset drop shadow, blur 12, opacity 0.9); Bebas BOX with a hard shadow (offset [8,8], blur 0); Anton GLOW #FFD54A on #101418 with light.glow radius 10, intensity 0.8.",
+    "fixtures": "benchmarks/fixtures/editorial-titles/et6a-measure.ts `effects`: glyphs filled in the background colour so only the effect shows. Anton IT with a soft shadow (offset [10,14], blur 6, opacity 0.8); Anton UP with a 12 px held outline and the pilot's halo (zero-offset drop shadow, blur 12, opacity 0.9); Bebas BOX with a hard shadow (offset [8,8], blur 0); Anton SAY in a caption container (padding 48, radius 18, filled in the background colour, no stroke) with a soft shadow (offset [6,10], blur 8, opacity 0.8, added 2026-11-17); Anton GLOW #FFD54A on #101418 with light.glow radius 10, intensity 0.8.",
     "results": {
       "shadow": "σ 6, strength 0.8, reach 19, visibleReach 9.20",
       "halo": "σ 12, strength 0.9, reach 37, visibleReach 19.12; source equals the outlined ink",
       "hard": "σ 0, reach 1, visibleReach 0",
       "glow": "σ 10, strength 0.665 (0.8 × luminance 0.831), reach 32, visibleReach 14.38",
-      "pixels": "Every changed pixel lies inside the effect's paint box (all four layers). Pixels at ≥5% along the background→effect colour line span the visible box within 1.80 px (worst: glow right edge); halo within 0.6 px. Stated tolerance ±2 px at 5% coverage."
+      "container": "σ 8, strength 0.8, reach 25, visibleReach 12.27; source equals the container box. Before the 2026-11-17 fix its rendered shadow crossed paint (top edge).",
+      "pixels": "Every changed pixel lies inside the effect's paint box (all five layers). Pixels at ≥5% along the background→effect colour line span the visible box within 1.80 px (worst: glow right edge); halo within 0.6 px. Stated tolerance ±2 px at 5% coverage."
     },
     "tests": "tests/browser/composition-text-measure.ts verifyEffects; tests/unit/composition-text-measure.test.ts (normal tail inverse, shifted and padded shadow, keyed extremes, disabled and faint effects, glow strength).",
     "verification": "Node 22.23.1: pnpm check:fast passed (463 files, 4,676 tests); test:browser:composition-quality (316 s, includes the ET6a test with effects), typography (24 s), composition-typography-adapter (179 s) and composition-baselines (282 s, every render hash unchanged) passed."
