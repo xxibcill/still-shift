@@ -67,6 +67,13 @@ export const CODEC_TOLERANCE: Record<Path, number> = {
  * more than CODEC_TOLERANCE.
  */
 export const DECODE_ROUNDING = 1;
+/**
+ * Transfer tag each path must carry: sRGB for PNG, BT.709 for video (players
+ * show both like sRGB). A PNG tagged BT.709 would be read through the camera
+ * curve again, the mismatch D-colour removes.
+ */
+export const EXPECTED_TRANSFER = (path: Path) =>
+  path.startsWith("png") ? "iec61966-2-1" : "bt709";
 /** Legibility contrast agrees with the player-value contrast within this. */
 export const CONTRAST_TOLERANCE = 0.05;
 
@@ -347,6 +354,17 @@ export async function verifyColourAccuracy() {
     };
     console.log(`Colour accuracy: ${JSON.stringify(results)}`);
     const failures = [
+      ...PATHS.flatMap((p) =>
+        [
+          ["authored", authoredRuns[p]!.transfer],
+          ["footage", footageRuns[p]!.transfer],
+        ]
+          .filter(([, transfer]) => transfer !== EXPECTED_TRANSFER(p))
+          .map(
+            ([run, transfer]) =>
+              `${run} ${p} transfer tag ${transfer}, expected ${EXPECTED_TRANSFER(p)}`,
+          ),
+      ),
       ...PATHS.filter((p) => authoredRuns[p]!.error > CODEC_TOLERANCE[p]).map(
         (p) =>
           `authored ${p}: ${authoredRuns[p]!.error} > ${CODEC_TOLERANCE[p]}`,
