@@ -318,6 +318,42 @@ export const scripts = {
       },
     ) as Composition;
   },
+  /**
+   * A layer whose text opens with a span in another font: the layer's base
+   * metrics are still its own style's (Playfair italic at 72), not the
+   * opening span's (Bodoni italic at 92).
+   */
+  openingSpan() {
+    return comp(
+      base("et6a-opening-span", [latin.playfairItalic, latin.bodoniItalic]),
+      (c) => {
+        c.textStyle("ital", {
+          fontAsset: "playfair-italic",
+          size: 72,
+          axes: { wght: 900 },
+        });
+        c.textStyle("amp", {
+          fontAsset: "bodoni-italic",
+          size: 92,
+          axes: { wght: 900, opsz: 96 },
+        });
+        c.add(
+          text("& lace", {
+            id: "opening",
+            style: "ital",
+            fontSize: 72,
+            color: scripts.lace,
+          })
+            .at(360, 640)
+            .with({
+              align: "center",
+              anchor: "baseline",
+              spans: [{ id: "amp", start: 0, end: 1, style: "amp" }],
+            }),
+        );
+      },
+    ) as Composition;
+  },
 };
 
 /**

@@ -524,6 +524,16 @@ async function verifyScripts() {
     paper,
     ["top", "bottom"],
   );
+  // A layer that opens with a span keeps its own base metrics: font, size
+  // and heights all from the layer style, as the layout uses them.
+  const opening = measured(await measure(scripts.openingSpan()), "opening");
+  const own = opening.spans.find((s) => s.span === null)!.metrics;
+  const amp = opening.spans.find((s) => s.span === 0)!.metrics;
+  assert.equal(opening.metrics.fontAsset, "playfair-italic");
+  assert.equal(opening.metrics.size, 72);
+  assert.equal(opening.metrics.capHeight, own.capHeight);
+  assert.notEqual(opening.metrics.capHeight, amp.capHeight);
+  assert.equal(amp.fontAsset, "bodoni-italic");
   // Thai word units follow Unicode word segmentation of the shaped clusters.
   assert.equal(thai.words.map((w) => w.text).join(""), "แต่งตัวปัง");
   return {

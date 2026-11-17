@@ -32,7 +32,11 @@ import {
   type PreparedTypography,
 } from "../typography-renderer.ts";
 import { textContainerBounds } from "../text-container.ts";
-import { applyTextStyle, type TextNode } from "../typography-style.ts";
+import {
+  applyTextStyle,
+  resolvedTextStyle,
+  type TextNode,
+} from "../typography-style.ts";
 import type { TextStyle } from "../../../scene-contract/src/typography.ts";
 import type { Bounds } from "./evaluate/types.ts";
 
@@ -467,10 +471,13 @@ export function measureTextState(
   motionBounds: Bounds,
 ): TextStateMeasure {
   const layout = prepared.nodes.get(node.id)!.get(text)!.layout;
-  const base = layout.runs[0]?.style;
+  // The base style the layout's ascent, descent and cap/x heights come from
+  // (shapeText), not the first run's, which is a span's when text opens
+  // with one.
+  const base = resolvedTextStyle(node, prepared.scene.textStyles ?? {});
   const baseMetrics: TextFontMetrics = {
-    fontAsset: base?.fontAsset ?? node.fontAsset ?? "",
-    size: base?.size ?? node.fontSize,
+    fontAsset: base.fontAsset ?? node.fontAsset ?? "",
+    size: base.size ?? node.fontSize,
     ascent: layout.ascent,
     descent: layout.descent,
     capHeight: layout.capHeight,
