@@ -1,0 +1,128 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "composition-colour-accuracy",
+  "milestone": "Composition colour accuracy (owner decision D-colour)",
+  "date": "2026-11-16",
+  "agent": "Claude Code (Opus 5.5)",
+  "branch": "codex/composition-colour-accuracy",
+  "base": "main 9d69a4f7 (Merge PR #69; ET7a)",
+  "toolchain": "Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
+  "decision": {
+    "id": "D-colour",
+    "date": "2026-11-16",
+    "ownerWords": "Match players",
+    "rule": "Treat BT.709-tagged SDR video as equivalent to sRGB: no transfer conversion on the way in or out.",
+    "evidence": "docs/editorial-typography-et6a-results.json (colourShift) on codex/editorial-titles-et6a"
+  },
+  "rootCause": {
+    "renderer": "Exact: the canvas holds authored sRGB bytes.",
+    "export": "composition-output-1 re-encoded every --format profile's sRGB bytes with the BT.709 camera OETF (sRGB -> linear -> 1.099 L^0.45 - 0.099): #2F6F6A (47,111,106) -> (31,97,92), #111111 -> 6. The default MP4 path did not, under the same BT.709 tags.",
+    "decode": "composition-media-decoder-2 mapped BT.709-transfer video and sequences through the inverse OETF into sRGB, lifting dark and mid tones: code 16 -> 31, 64 -> 79, 128 -> 140 (largest lift +16 near code 18). --format outputs undid it; the default MP4 did not, so footage came out lighter than its source, and the canvas, pixel lint and legibility measured footage lighter than players show it."
+  },
+  "fix": {
+    "export": "composition-output-2: every path writes the renderer's sRGB bytes unchanged (16-bit profiles expand bytes x 257). Video profiles (prores4444, h264, hevc10, prores422hq, vp9alpha) keep BT.709 primaries/transfer/matrix tags, which players show like sRGB. PNG profiles (png8, png16) are tagged sRGB: FFmpeg writes the PNG sRGB chunk (with compatibility gAMA/cHRM) instead of cICP; the output validator now requires that chunk for sRGB profiles and BT.709 cICP only for a BT.709 PNG profile (none remain). Profiles carry a `transfer` field; result metrics record it.",
+    "decode": "composition-media-decoder-3: range and matrix convert to full RGB; no transfer conversion for BT.709 or sRGB SDR sources. Sequences of either transfer decode through the same filter (exact 16-to-8-bit rounding, separate alpha); decoder 2 used a bare `format=rgba` for sRGB sequences, which rounded some 16-bit samples up by one (found when PNG16 deliveries, now sRGB-tagged, were reimported).",
+    "versions": {
+      "COMPOSITION_OUTPUT_VERSION": "composition-output-1 -> composition-output-2",
+      "COMPOSITION_MEDIA_DECODER_VERSION": "composition-media-decoder-2 -> composition-media-decoder-3 (prepared-media and passage cache keys change, so old cache entries are not reused)",
+      "rendererVersion": "unchanged (composition-canvas-1.47.8): renderer code did not change; footage renders change through the decoder version",
+      "mechanismNativePlates": "receipt schema now requires output version composition-output-2 and transfer iec61966-2-1 (PNG16 plates hold sRGB samples); plates captured under output-1 must be recaptured, as the receipt's own guidance says for a changed picture"
+    }
+  },
+  "failingFirst": {
+    "test": "tests/browser/composition-colour-accuracy.ts (pnpm test:browser:composition-colour-accuracy, also in pnpm test)",
+    "method": "The final test run with packages/ restored to main 9d69a4f7 (test file unchanged), then with the fix.",
+    "onMain": {
+      "authoredColours": "worst per-channel error: default MP4 1; prores4444, png8, png16, h264, hevc10, prores422hq, vp9alpha 16 (all fail their codec tolerance)",
+      "footageRoundTrip": "default MP4 16 (fails); every --format path 0-1",
+      "legibility": "white heading over the footage's #2F6F6A swatch: lint 4.82:1, player values 5.84:1 (fails)"
+    },
+    "withFix": {
+      "authoredColours": "default MP4 1, prores4444 1, png8 0, png16 0, h264 1, hevc10 1, prores422hq 1, vp9alpha 1; all transfer tags as designed (video bt709, PNG iec61966-2-1)",
+      "footageRoundTrip": "default MP4 0, h264 0, vp9alpha 0, others 1",
+      "legibility": "5.84:1 measured = 5.84:1 from player values"
+    },
+    "tolerances": "Codec tolerance per swatch centre (8x8 mean, per channel): PNG 0; prores4444, vp9alpha, hevc10, prores422hq 2; h264 and default MP4 3; footage checks add 1 for decode rounding (engine and reference player decodes round YUV->RGB differently); legibility contrast within 0.05."
+  },
+  "otherSourceTags": {
+    "srgbTransferVideo": "Already decoded without transfer conversion on main; unchanged. Under the rule the SDR transfer tag (bt709 or iec61966-2-1) no longer changes samples, only range and matrix do.",
+    "smpte170mMatrix": "Not accepted by the media contract (unchanged here). The owner's Google Flow clips (bt709 primaries, sRGB transfer, smpte170m matrix, tv range) would, once accepted, decode with the BT.601 (smpte170m) matrix and limited-to-full range, with no transfer conversion. Update 2026-11-17: `main` d9ad624e (CGA, PR #70) accepts smpte170m; after merging it into this branch they decode exactly that way.",
+    "pngSequences": "BT.709-cICP and sRGB sequences both use their samples unchanged; the descriptor transfer must still match the PNG's colour authority, as before."
+  },
+  "changes": [
+    "packages/execution-runtime/src/composition-output.ts: composition-output-2, profile `transfer`, identity conversion, transfer tags per profile.",
+    "packages/execution-runtime/src/composition-output-artifacts.ts: PNG validator accepts the sRGB chunk for sRGB profiles; video stream check uses the profile's transfer.",
+    "packages/execution-runtime/src/export-worker.ts: output metrics version and colour transfer from the profile.",
+    "packages/animation-engine/src/composition-media-color.ts: no inverse OETF.",
+    "packages/animation-engine/src/composition-media-cache.ts: one sequence decode filter for both transfers.",
+    "packages/scene-contract/src/composition/media.ts: composition-media-decoder-3.",
+    "packages/animation-engine/src/mechanism/cue-native-plates.ts: receipt literals composition-output-2 and iec61966-2-1.",
+    "tests: new tests/browser/composition-colour-accuracy.ts; updated expectations in tests/unit/composition-output-input.test.ts, tests/integration/composition-media-cache.test.ts, tests/runtime/mechanism-bridge.test.ts and tests/browser/composition-output.ts (sRGB grey ramp; sRGB reimport; h264 near-black tolerance 5).",
+    "docs: composition-media.md, composition-reference-notes.md (regenerated composition-reference.md), user-guide.md; package.json script test:browser:composition-colour-accuracy (in pnpm test).",
+    "benchmarks/fixtures/editorial-titles/et0-baseline.json: O6 render hash re-recorded."
+  ],
+  "affectedOutputs": {
+    "compositionBaselines": "Unchanged: pnpm test:browser:composition-baselines passes (176 items, 36,061 frames on darwin-arm64). No baseline fixture decodes BT.709-transfer media.",
+    "et0Baseline": "One value: findings.O6.render.sha256 0cc02749c57cff00cd38f00d919a7ddec534ae480bd5be14ee21be019374578b -> 2e8f02711f779f8d6d784e4d7c96629eacc2680457873be21def1e7a00b4ab07 (the only ET0 render with footage visible behind its text; default MP4). Every other ET0 render hash and recorded outcome is unchanged.",
+    "lintNumbers": {
+      "method": "comp lint --pixels true --legibility true on the ET0 fixtures and scripts/editorial-titles/et3-proof-checks.ts on the local-only proof clip, each run on main's packages (before) and with the fix (after). Worst word contrast per layer.",
+      "o6DarkBand": "credit 1.04 -> 1.15, line 1.05 -> 1.15 (frames 27-47 and 33-54 unchanged; still flagged)",
+      "o4VideoPixelLint": "credit 1.04 -> 1.15 (frames 27-47; still flagged)",
+      "proofT1Pass2": "kicker 4.76 -> 4.19, headline \"Olive\" 2.72 -> 2.39, folio 3.74 -> 3.21",
+      "proofT1Pass1": "kicker 4.24 -> 3.71, headline 2.72 -> 2.39, folio 1.51 -> 1.19",
+      "proofT2Pass2": "tag 4.60 -> 4.15, poster 3.60 -> 3.77, Thai sub 4.37 -> 4.54",
+      "proofT2WithoutScrim": "tag 6.10 -> 5.41, poster 1.52 -> 1.61, sub 1.31 -> 1.38",
+      "proofT3Pass2": "credit 1.53 -> 1.21, line 6.86 -> 6.18",
+      "proofT3Pass1": "credit 9.40 -> 8.81, line 9.67 -> 9.10",
+      "xHeight": "unchanged (geometry only)",
+      "direction": "Light text over footage measures lower (the footage is darker than decoder 2 made it); dark text over footage measures higher."
+    },
+    "expectationsChecked": {
+      "formatOutputsChange": "Confirmed: authored colours now survive every --format path (were 16 levels off).",
+      "footageContrastChanges": "Confirmed: see lintNumbers.",
+      "et0Et3BaselinesOverVideoMayMove": "Confirmed for O6 only; ET3's browser assertions pass unchanged at the new values.",
+      "defaultMp4AuthoredColourUnchanged": "Confirmed for authored colour: default MP4 authored swatches err 1 before and after; ET0 O1-O5 render hashes unchanged.",
+      "et7aTitlesUnchanged": "Partly wrong. The titles' authored colours are unchanged, but the ET7a reels are tagged BT.709 transfer (research/editorial-titles-et7a/clips.ts), so the footage behind every ET7a title now renders at its source values instead of lifted by up to 16 levels: ET7a renders over the reels change, darker and closer to how the reels play. The owner's ET7a acceptance and G1's \"2.72:1 read easily\" (proof T1 Olive, now 2.39:1) were judged on lifted footage. ET6b's display contrast level should be calibrated on corrected renders."
+    }
+  },
+  "limitations": [
+    "Only SDR is covered; HDR transfers remain rejected by the media contract.",
+    "The legibility check covers one solid-footage case; footage-dependent lint elsewhere moves with the decode change, as listed.",
+    "Default MP4 rendering code is unchanged; its default-path outputs over BT.709 footage change only through the decoder.",
+    "ET7a renders over the local-only reels were not re-rendered (third-party, local only); the change follows from the reels' BT.709 tags and the decoder change."
+  ],
+  "notRun": [
+    "pnpm check (full matrix) and release checks.",
+    "Human visual review of corrected renders."
+  ],
+  "finalVerification": {
+    "node": "22.23.1 (pnpm toolchain:check passed)",
+    "checkFast": "passed: 462 test files, 4,665 tests",
+    "runtime": "pnpm test:runtime passed: 63 files, 376 tests",
+    "integration": "pnpm test:integration: 343 of 344 passed; the one failure is composition-preview.test.ts \"recovers TypeScript resolution candidates for initially missing ./missing\" (watcher matcher timeout under load; its ./missing.js, .mjs and ./nested variants passed). Rerun alone: see integrationRerun. Soundtrack tests use the existing local runtime via STILL_SHIFT_SOUNDTRACK_PYTHON (the runtime is not installed in this fresh worktree); without it 31 soundtrack and passage-audio tests fail to start Python, unrelated to colour.",
+    "colourAccuracy": "pnpm test:browser:composition-colour-accuracy passed",
+    "compositionOutput": "pnpm test:browser:composition-output passed (both backends, both transports, all seven profiles)",
+    "compositionMedia": "pnpm test:browser:composition-media passed",
+    "compositionAlpha": "pnpm test:browser:composition-alpha passed",
+    "compositionQuality": "pnpm test:browser:composition-quality passed (ET2 video lint, ET3 legibility, ET5a guards)",
+    "et0Baseline": "--check after --write: ET0 outcomes match the recorded baseline",
+    "compositionBaselines": "pnpm test:browser:composition-baselines passed: 176 items unchanged",
+    "integrationRerun": "tests/integration/composition-preview.test.ts rerun alone: 17 of 17 passed.",
+    "mechanismPlates": "pnpm test:browser:mechanism-cue-plate-export (827 s) and mechanism-world-plate-export (881 s) passed: PNG16 plates export as sRGB, reimport and round-trip.",
+    "lintNumbers": "Before/after footage lint numbers in affectedOutputs.lintNumbers (proof clip local only, git-ignored)."
+  },
+  "failedRuns": [
+    "First fix run: png8 export failed validation (the validator required BT.709 cICP; FFmpeg writes the PNG sRGB chunk for an sRGB transfer). Validator updated.",
+    "composition-output: the sRGB PNG16 reimport failed by one alpha level (129 vs 128): the sRGB sequence decode path used a bare format=rgba. Unified with the exact filter (decoder 3).",
+    "composition-output: h264 grey ramp read 5 for authored 0 and 1 (tolerance 4); codec loss near black, previously hidden by the OETF. Tolerance 5 for h264 only, recorded.",
+    "Existing tests that encoded the OETF were updated: composition-output-input unit (2), composition-media-cache integration (2), mechanism-bridge runtime (1).",
+    "Integration, first full run: 41 failures, 39 environmental (soundtrack runtime absent; depth worker 5 s timeouts that pass alone) and 2 decoder-2 expectations (updated)."
+  ],
+  "sequenceDirectPath": {
+    "review": "PR #72 review 5/5 (https://github.com/xxibcill/still-shift/pull/72#pullrequestreview-5934588962)",
+    "change": "8-bit (and lower-depth) sequence PNGs decode with a direct format=rgba whatever their transfer tag; only 16-bit PNGs use the exact split/alphamerge graph.",
+    "bytes": "Identical to the graph on 24 1080p RGBA noise frames (199,065,600 bytes compared) and on RGB, grey+alpha and palette PNGs; a new integration test keeps every 8-bit value and alpha of a BT.709-cICP sequence.",
+    "time": "24 1080p frames, one FFmpeg per frame with -threads 1 as prepared media runs it: direct 1.47/1.46 s, graph 1.93/1.91 s (about 30% slower, ~18 ms per frame), Node 22.23.1, FFmpeg on this Mac.",
+    "decoderVersion": "Unchanged (composition-media-decoder-3): prepared bytes do not change."
+  }
+}

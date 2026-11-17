@@ -1173,9 +1173,10 @@ path. Profile exports use lossless `png_pipe` or `raw_rgba` capture; higher outp
 bit depth carries the current RGBA8 renderer's picture and does not add HDR or
 recover lost source precision.
 
-Explicit profiles convert rendered sRGB to BT.709 output. Delivery PNGs carry
-BT.709 color metadata; native sequence input requires sRGB PNGs. Normalize and
-re-pin exported frames before reusing them as native source media.
+Every export path keeps the authored sRGB colours: video files are tagged
+BT.709, which players show like sRGB, and delivery PNGs are tagged sRGB.
+Footage tagged BT.709 is used as players show it, with no transfer
+conversion. Re-pin exported frames before reusing them as native source media.
 
 `--workers 1|2|3|4` and `--cache-static true|false` opt into bounded production
 workers and verified reusable static surfaces. Defaults retain ordinary rendering.

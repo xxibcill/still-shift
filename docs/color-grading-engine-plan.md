@@ -409,8 +409,9 @@ magenta tint so cream stays beige. On the renders: median luma −0.012…+0.002
 The three effects are integer/table exact on both backends. `comp look fit`
 matches shots by gain/offset-invariant luma correlation and fits on 4×4 block
 means; a graded edit tagged BT.709 transfer is compared in code values, because
-`comp render` writes sRGB-encoded pixels tagged BT.709 while the media path
-converts BT.709 transfer on import (a pre-existing asymmetry, not changed). The
+`comp render` writes sRGB-encoded pixels tagged BT.709. The media path then
+converted BT.709 transfer on import; D-colour (decoder 3, PR #72) removed that
+asymmetry, so both readings now agree. The
 adaptive solver works in stages (white balance → tone → saturation) on the
 measured frames and re-measures the exact predicted result after each; it
 removes 50–90% of the near-neutral cast (with a coupled magenta tint when it is unsure) depending on how much the near-neutral

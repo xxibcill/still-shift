@@ -43,6 +43,8 @@ still hold before relying on them.
 
 ## Current state
 
+- **Composition colour accuracy (2026-11-16):** owner decision D-colour ("Match players") in review as [PR #72](https://github.com/xxibcill/still-shift/pull/72) on `codex/composition-colour-accuracy`; `main` d9ad624e (PR #70 CGA, PR #71 ET6a) merged in on 2026-11-17: exports keep authored sRGB on every path (`composition-output-2`) and BT.709 footage decodes without the inverse OETF (`composition-media-decoder-3`). Footage-dependent lint numbers and renders over BT.709 footage change (listed in the [results](./composition-colour-accuracy-results.json)); composition baselines do not. ET7a's and G1's visual judgements were made on lifted footage; recalibrate ET6b on corrected renders. The [PR review](https://github.com/xxibcill/still-shift/pull/72#pullrequestreview-5934588962)'s five findings are fixed on the branch (four commits plus a description edit); owner review is pending. This also settles CGA's pending "BT.709-transfer import/export asymmetry" item: import and export now both leave the transfer alone.
+
 - **Color grading CGA (2026-11-16):** in review as [PR #70](https://github.com/xxibcill/still-shift/pull/70) on `codex/cga-auto-color`. Flow clips (BT.601 `smpte170m`) decode; `comp auto-color`, `comp look fit|apply` and `comp color-stats` work on clips and folders with three exact-parity effects (`color.matrix`, `color.white-balance`, `color.vibrance`). The [PR review](https://github.com/xxibcill/still-shift/pull/70#pullrequestreview-5920818343)'s 32 findings are addressed on the branch, one commit each (C4 is the owner's decision, no commit). Exposure now places the midtones (it can darken); looks carry targets; per-correction scales; clipping guard scales tone. Checks now marked partly met: synthetic desaturation, luma continuity, audio track length, BT.601 on 4:2:0, and (as before) the owner-look bound. Pending owner decisions: decision 1 (approve CGA alone), the final sheets in `dist/cga-owner/sheets`, whether block-mean RMS is the right look bound, the BT.709-transfer import/export asymmetry, CG0–CG15 not started. `main` 85c9134d (PR #71, ET6a) merged in on 2026-11-17. [CGA results](./color-grading-cga-results.json).
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
@@ -110,6 +112,27 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-17 — Composition colour accuracy: PR #72 review fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/composition-colour-accuracy` (from 13a7bea1, the `main` merge).
+- **Scope:** the [PR #72 review](https://github.com/xxibcill/still-shift/pull/72#pullrequestreview-5934588962), posted as inline comments at the owner's request; one commit per finding.
+- **Done:**
+  - 1/5 (P2): PR description updated (smpte170m is accepted since PR #70; merge with `main` described). No commit: it is not in the repository.
+  - 2/5: test comment corrected: decoder 2 took mid grey 128 to 140, not about 156.
+  - 3/5: `composition-colour-accuracy` asserts each path's transfer tag (sRGB for PNG, BT.709 for video). Expecting BT.709 everywhere fails on the four PNG runs.
+  - 4/5: `parseNativePlateRenderResult` turns a pre-output-2 plate into a located `mechanism-cue-native-plate-identity` failure that says to recapture, instead of a bare ZodError. The unit test gets the ZodError with the check disabled.
+  - 5/5: 8-bit sequence PNGs decode with a direct `format=rgba`; only 16-bit PNGs use the exact graph. Bytes identical (24 1080p RGBA frames, plus RGB, grey+alpha and palette PNGs); about 30% faster per frame (1.47 s vs 1.92 s for 24 frames). Decoder version unchanged. New integration test: an 8-bit BT.709-cICP sequence keeps every value and alpha (a guard; it passes on the old graph too).
+- **Results:** Node 22.23.1: `pnpm check:fast` (465 files, 4,694 tests); media and color integration tests (4 files, 43 tests); browser `composition-colour-accuracy` (legibility 5.84:1 against 5.84:1), `composition-media`, `composition-output`, `mechanism-native-plates`. Not run: `pnpm check`, baselines, runtime tier, release checks.
+- **Records:** [colour results `sequenceDirectPath`](./composition-colour-accuracy-results.json).
+
+### 2026-11-17 — Composition colour accuracy: PR #72 conflicts with `main` resolved
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/composition-colour-accuracy` (from PR head 99f038d6).
+- **Scope:** merge `main` d9ad624e (PR #71 ET6a, PR #70 CGA) into PR #72.
+- **Done:** two text conflicts, both sides kept: `package.json` `test` runs both `composition-colour-accuracy` and CGA's `composition-grade-effects`; this log keeps both state bullets and orders entries by date. Semantic check: CGA's BT.601 (`smpte170m`) decode merged cleanly into decoder 3 (matrix only, no transfer step), as D-colour said it would; `composition-media.md` no longer says `smpte170m` is rejected. CGA's `look fit` `code-values` reading is now the same as `media-path` for BT.709 sources; the CLI README, the CGA plan note and the `readColorCodeValueFrames` comment say so, and the colour results note that `smpte170m` is now accepted.
+- **Results:** Node 22.23.1: `pnpm check:fast` passed (464 files, 4,692 tests); `schema:check`, format and lint rerun after the last comment edit; the color/media integration tests (5 files, 46 tests); browser groups `composition-colour-accuracy` (authored within 0–1, footage within 0–1, legibility 5.84:1 against 5.84:1), `composition-output`, `composition-media` and `composition-grade-effects`. The first targeted run did not start (a zsh word-splitting slip in my loop, every step exit 127) and was rerun. Not run: `pnpm check`, baselines, runtime tier, release checks.
+- **Records:** [PR #72](https://github.com/xxibcill/still-shift/pull/72).
+
 ### 2026-11-17 — Color grading CGA: PR #70 conflicts with `main` resolved
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga-auto-color` (from PR head e55dc340).
@@ -140,6 +163,22 @@ still hold before relying on them.
   - Retracted: the third finding said `test:browser:composition-text-measure` was outside `pnpm test`. `composition-quality.ts` already runs `verifyTextMeasure()`, so the group is covered; the PR description's "not yet in `pnpm test`" line is what is inaccurate.
 - **Results:** `pnpm check:fast` passed on Node 22.23.1 (463 files, 4,679 tests). `test:browser:composition-text-measure` passed with the same figures: edges 49/57 within 1 px, worst 1.82; effects worst 1.80; motion bounds equal on 24 layers. The glow fixture has no decoration, so fix 1 is covered by unit tests only. Not run: `pnpm check`, `composition-quality`, baselines, release checks.
 - **Records:** [ET6a results](./editorial-typography-et6a-results.json) are unchanged.
+
+### 2026-11-16 — Composition colour accuracy (D-colour: "Match players")
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/composition-colour-accuracy` (from `main` 9d69a4f7).
+- **Scope:** the owner's D-colour decision, found in ET6a: treat BT.709-tagged SDR video as equivalent to sRGB, with no transfer conversion in or out.
+- **Done:**
+  - Export `composition-output-2`: every path writes the renderer's sRGB bytes unchanged. Video profiles stay BT.709-tagged; PNG profiles are tagged sRGB (the PNG `sRGB` chunk). Output-1 re-encoded `--format` exports with the BT.709 OETF (`#2F6F6A` → (31,97,92)).
+  - Decode `composition-media-decoder-3`: no inverse OETF for BT.709 footage (decoder 2 lifted it, code 16 → 31, 128 → 140). BT.709 and sRGB sequences decode through one exact filter (the old sRGB path rounded some 16-bit samples up by one).
+  - Mechanism native plate receipts require output-2 and sRGB transfer.
+- **Results:**
+  - Failing first (`tests/browser/composition-colour-accuracy.ts` on `main`'s packages): authored colours 16 levels off on all seven `--format` paths; BT.709 footage 16 levels lighter in the default MP4; legibility over footage 4.82:1 against a player's 5.84:1. With the fix: authored within 0–1, footage within 0–1, legibility 5.84:1.
+  - Composition baselines unchanged (176 items). ET0: only the O6 render hash (footage behind text). Lint over footage moves, before → after: O6 1.04/1.05 → 1.15; proof T1 "Olive" 2.72 → 2.39, T3 credit 1.53 → 1.21, T2 poster 3.60 → 3.77 (full list in the results).
+  - One expectation was partly wrong: ET7a titles keep their colours, but the reels are BT.709-tagged, so the footage behind them now renders at source values, darker than the owner reviewed. G1's "2.72:1 read easily" was judged on lifted footage.
+  - Test tolerance changed: `composition-output` h264 grey ramp ±5 (CRF 16 lifts authored 0/1 to 5; the OETF used to hide this).
+- **Open / next:** owner review and merge. ET6b should calibrate its display contrast level on corrected renders. Accepting the Google Flow clips' smpte170m matrix stays out of scope; under this rule they would decode with the BT.601 matrix and no transfer conversion.
+- **Records:** [results](./composition-colour-accuracy-results.json).
 
 ### 2026-11-16 — Editorial titles ET6a: `comp measure`
 

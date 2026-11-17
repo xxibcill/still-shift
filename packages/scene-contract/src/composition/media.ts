@@ -145,9 +145,13 @@ export function resolveCompositionMediaLimits(
 export const compositionMediaFrameId = (asset: string, frame: number) =>
   `__media:${asset}:${frame}`;
 
-/** Captured prepared frames are separate from editable source descriptors. */
+/**
+ * Captured prepared frames are separate from editable source descriptors.
+ * Decoder 3 (D-colour, "Match players") uses SDR code values as sRGB with no
+ * transfer conversion; decoder 2 mapped BT.709 through the inverse OETF.
+ */
 export const COMPOSITION_MEDIA_DECODER_VERSION =
-  "composition-media-decoder-2" as const;
+  "composition-media-decoder-3" as const;
 export const CompositionPreparedMediaFrameSchema = z
   .object({
     id: z.string().min(1).max(256),

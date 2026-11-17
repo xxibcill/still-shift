@@ -384,8 +384,9 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   only one shot matched, so there is nothing to hold out), plus the graded
   edit's measured `targets` (median luma, median and 90% saturation). A graded edit
   tagged BT.709 transfer is compared in its code values (as players show it and
-  as `comp render` writes it); `--after-interpretation media-path` converts it
-  as composition video instead.
+  as `comp render` writes it); `--after-interpretation media-path` reads it
+  through the composition media path instead, which since decoder 3 (D-colour)
+  gives the same code values for BT.709 and sRGB transfer.
 - **`look apply`** applies a look through `color.matrix`. `--strength`
   defaults to 0.6 (a learned look at full strength is usually heavy); use
   `--strength 1` for the full transform.

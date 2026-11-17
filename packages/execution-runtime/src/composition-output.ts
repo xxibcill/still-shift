@@ -1,6 +1,12 @@
 import type { FrameTransport } from "./transport.ts";
 
-export const COMPOSITION_OUTPUT_VERSION = "composition-output-1" as const;
+/**
+ * composition-output-2 (D-colour, 2026-11-16, owner: "Match players"): the
+ * renderer's sRGB bytes are written unchanged. Video profiles are tagged
+ * BT.709, which players show like sRGB; PNG profiles are tagged sRGB.
+ * composition-output-1 re-encoded every byte with the BT.709 OETF.
+ */
+export const COMPOSITION_OUTPUT_VERSION = "composition-output-2" as const;
 
 /** Explicit delivery profiles; omitting a profile retains the legacy MP4 path. */
 export const COMPOSITION_OUTPUT_FORMATS = [
@@ -34,6 +40,8 @@ export type CompositionOutputProfile = {
   encodedBitDepth: 8 | 10 | 12 | 16;
   range: "pc" | "tv";
   matrix: "rgb" | "bt709";
+  /** Transfer tag: BT.709 for video containers, sRGB for PNG. Samples are never converted. */
+  transfer: "bt709" | "iec61966-2-1";
   audioCodec: "pcm_f32le" | "aac" | "libopus";
   evenDimensions: boolean;
   encoderArguments: readonly string[];
@@ -52,6 +60,7 @@ const profiles: Record<
     encodedBitDepth: 12,
     range: "tv",
     matrix: "bt709",
+    transfer: "bt709",
     audioCodec: "pcm_f32le",
     evenDimensions: false,
     encoderArguments: ["-profile:v", "4", "-alpha_bits", "16"],
@@ -65,6 +74,7 @@ const profiles: Record<
     encodedBitDepth: 8,
     range: "pc",
     matrix: "rgb",
+    transfer: "iec61966-2-1",
     audioCodec: "pcm_f32le",
     evenDimensions: false,
     encoderArguments: [],
@@ -78,6 +88,7 @@ const profiles: Record<
     encodedBitDepth: 16,
     range: "pc",
     matrix: "rgb",
+    transfer: "iec61966-2-1",
     audioCodec: "pcm_f32le",
     evenDimensions: false,
     encoderArguments: [],
@@ -91,6 +102,7 @@ const profiles: Record<
     encodedBitDepth: 8,
     range: "tv",
     matrix: "bt709",
+    transfer: "bt709",
     audioCodec: "aac",
     evenDimensions: true,
     encoderArguments: [
@@ -111,6 +123,7 @@ const profiles: Record<
     encodedBitDepth: 10,
     range: "tv",
     matrix: "bt709",
+    transfer: "bt709",
     audioCodec: "aac",
     evenDimensions: true,
     encoderArguments: [
@@ -133,6 +146,7 @@ const profiles: Record<
     encodedBitDepth: 10,
     range: "tv",
     matrix: "bt709",
+    transfer: "bt709",
     audioCodec: "pcm_f32le",
     evenDimensions: false,
     encoderArguments: ["-profile:v", "3", "-alpha_bits", "0"],
@@ -146,6 +160,7 @@ const profiles: Record<
     encodedBitDepth: 8,
     range: "tv",
     matrix: "bt709",
+    transfer: "bt709",
     audioCodec: "libopus",
     evenDimensions: false,
     encoderArguments: [
@@ -201,42 +216,32 @@ export function validateCompositionOutput(
     );
 }
 
-/** Convert exact straight RGBA8 to BT.709 RGB; alpha retains its normalized value. */
+/**
+ * Prepare straight RGBA8 for the encoder: sRGB samples pass unchanged (D-colour,
+ * "Match players"); 16-bit profiles expand each byte exactly (x 257).
+ */
 export function createCompositionOutputConversion(
   profile: CompositionOutputProfile,
 ) {
   const highPrecision = profile.bitDepth > 8;
-  const channelBytes = highPrecision ? 2 : 1;
-  const maximum = highPrecision ? 65535 : 255;
-  const table = new Uint16Array(256);
-  for (let value = 0; value < 256; value++) {
-    const srgb = value / 255;
-    const linear =
-      srgb <= 0.04045 ? srgb / 12.92 : ((srgb + 0.055) / 1.055) ** 2.4;
-    const bt709 =
-      linear < 0.018 ? 4.5 * linear : 1.099 * linear ** 0.45 - 0.099;
-    table[value] = Math.round(bt709 * maximum);
-  }
   return {
     pixelFormat: highPrecision ? ("rgba64le" as const) : ("rgba" as const),
     convert(pixels: Uint8Array): Uint8Array {
       if (pixels.length % 4)
         throw Error("Composition capture must contain complete RGBA pixels");
-      const output = new Uint8Array(pixels.length * channelBytes);
+      if (!highPrecision) return pixels.slice();
+      const output = new Uint8Array(pixels.length * 2);
       for (let offset = 0; offset < pixels.length; offset++) {
-        const value =
-          offset % 4 === 3
-            ? pixels[offset]! * (highPrecision ? 257 : 1)
-            : table[pixels[offset]!]!;
-        output[offset * channelBytes] = value & 255;
-        if (highPrecision) output[offset * channelBytes + 1] = value >>> 8;
+        const value = pixels[offset]! * 257;
+        output[offset * 2] = value & 255;
+        output[offset * 2 + 1] = value >>> 8;
       }
       return output;
     },
   };
 }
 
-/** Matrix/range conversion follows explicit RGB transfer and linear-alpha expansion. */
+/** Matrix/range conversion and colour tags; samples keep their sRGB transfer. */
 export function compositionOutputFilter(
   profile: CompositionOutputProfile,
 ): string {
@@ -247,7 +252,7 @@ export function compositionOutputFilter(
     );
   filters.push(`format=${profile.pixelFormat}`);
   filters.push(
-    `setparams=color_primaries=bt709:color_trc=bt709:colorspace=${profile.matrix === "rgb" ? "gbr" : "bt709"}:range=${profile.range === "pc" ? "full" : "limited"}`,
+    `setparams=color_primaries=bt709:color_trc=${profile.transfer}:colorspace=${profile.matrix === "rgb" ? "gbr" : "bt709"}:range=${profile.range === "pc" ? "full" : "limited"}`,
   );
   if (profile.format === "vp9alpha") {
     const metadata = filters.pop()!;
@@ -272,7 +277,7 @@ export function compositionOutputCodecArguments(
     "-color_primaries",
     "bt709",
     "-color_trc",
-    "bt709",
+    profile.transfer,
     "-colorspace",
     profile.matrix,
     ...(profile.container === "mp4"

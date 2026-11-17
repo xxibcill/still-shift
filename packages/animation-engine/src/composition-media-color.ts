@@ -192,7 +192,12 @@ export function tagCompositionSrgbPng(bytes: Buffer): Buffer {
   ]);
 }
 
-/** Convert explicit source range/matrix and BT.709 transfer; alpha stays linear. */
+/**
+ * Convert explicit source range and matrix to full-range RGB; alpha stays
+ * linear. SDR transfer is not converted (D-colour, 2026-11-16, owner: "Match
+ * players"): BT.709- and sRGB-transfer code values are used as sRGB, which is
+ * how players show them. Decoder 2 mapped BT.709 through the inverse OETF.
+ */
 export function compositionMediaColorFilter(
   color: CompositionMediaColor,
 ): string {
@@ -205,25 +210,23 @@ export function compositionMediaColorFilter(
         ? ":in_color_matrix=bt601"
         : "";
   const filters = [`scale=${range}${matrix}:flags=${flags}`, "format=rgba64le"];
-  if (color.transfer === "bt709") {
-    const linear =
-      "if(lt(val/maxval,0.081),val/maxval/4.5,pow((val/maxval+0.099)/1.099,1/0.45))";
-    const encoded = `maxval*if(lte(${linear},0.0031308),12.92*(${linear}),1.055*pow(${linear},1/2.4)-0.055)`;
-    filters.push(
-      "lutrgb=" +
-        ["r", "g", "b"].map((channel) => `${channel}='${encoded}'`).join(":"),
-    );
-  }
   filters.push(`scale=flags=${flags}:sws_dither=none`, "format=rgba");
   return filters.join(",");
 }
 
-/** BT.709 PNG alpha is copied from source samples before any RGB precision conversion. */
+/**
+ * Sequence PNGs to canonical RGBA8. Decoder 3 converts no transfer, so 8-bit
+ * and lower-depth PNGs (RGB, RGBA, grey, palette) are already the output and
+ * take a direct `format=rgba`, byte-identical to the full graph and about 30%
+ * faster per 1080p frame. 16-bit PNGs round each channel to 8 bits exactly,
+ * with alpha copied from source samples before any RGB precision conversion.
+ */
 export function compositionSequenceColorFilter(
   color: CompositionMediaColor,
   bitDepth: number,
 ): string {
-  const input = bitDepth === 16 ? "rgba64le" : "rgba";
+  if (bitDepth !== 16) return "format=rgba";
+  const input = "rgba64le";
   const rgb = compositionMediaColorFilter(color).replace(
     /format=rgba$/,
     "format=rgb24",

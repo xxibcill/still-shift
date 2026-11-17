@@ -189,7 +189,9 @@ it("decodes burnt-in original frame numbers at 30000/1001 and reuses after physi
   expect(changedMapping.cacheHit).toBe(false);
   expect(changedMapping.key).not.toBe(prepared.key);
 });
-it("converts a 16-bit BT.709 RGB ramp into independently calculated sRGB and preserves linear alpha", async () => {
+// Decoder 3 (D-colour, "Match players"): BT.709-transfer code values are used
+// as encoded sRGB, as players show them; only range and matrix convert.
+it("keeps a 16-bit BT.709 RGB ramp's code values, rounded to 8 bits, and preserves linear alpha", async () => {
   const raw = Buffer.alloc(256 * 16 * 8),
     expected = Buffer.alloc(256 * 16 * 4);
   for (let y = 0; y < 16; y++)
@@ -197,21 +199,7 @@ it("converts a 16-bit BT.709 RGB ramp into independently calculated sRGB and pre
       const at = (y * 256 + x) * 8;
       for (let c = 0; c < 3; c++) raw.writeUInt16LE(x * 257, at + c * 2);
       raw.writeUInt16LE(y * 4369, at + 6);
-      const v = x / 255,
-        linear = v < 0.081 ? v / 4.5 : ((v + 0.099) / 1.099) ** (1 / 0.45),
-        srgb =
-          linear <= 0.0031308
-            ? 12.92 * linear
-            : 1.055 * linear ** (1 / 2.4) - 0.055;
-      expected.set(
-        [
-          Math.round(srgb * 255),
-          Math.round(srgb * 255),
-          Math.round(srgb * 255),
-          y * 17,
-        ],
-        (y * 256 + x) * 4,
-      );
+      expected.set([x, x, x, y * 17], (y * 256 + x) * 4);
     }
   const { asset } = await video(
     "ramp",
@@ -233,7 +221,8 @@ it("converts a 16-bit BT.709 RGB ramp into independently calculated sRGB and pre
     await readFile(prepared.assetPaths[prepared.frames[0]!.id]!),
   );
   expect(maxDifference(pixels, expected)).toBeLessThanOrEqual(1);
-  expect(pixels[128 * 4]).toBeGreaterThan(128 + 10);
+  // Decoder 2's inverse OETF lifted mid grey 128 to 140.
+  expect(Math.abs(pixels[128 * 4]! - 128)).toBeLessThanOrEqual(1);
 });
 it("converts limited-range BT.709 YUV neutral samples without treating limited codes as full range", async () => {
   const width = 220,
@@ -244,13 +233,8 @@ it("converts limited-range BT.709 YUV neutral samples without treating limited c
   for (let y = 0; y < height; y++)
     for (let x = 0; x < width; x++) {
       raw[y * width + x] = x + 16;
-      const v = x / 219,
-        linear = v < 0.081 ? v / 4.5 : ((v + 0.099) / 1.099) ** (1 / 0.45),
-        srgb =
-          linear <= 0.0031308
-            ? 12.92 * linear
-            : 1.055 * linear ** (1 / 2.4) - 0.055;
-      const value = Math.round(srgb * 255);
+      // Limited 16–235 expands to full range; the transfer is not converted.
+      const value = Math.round((x / 219) * 255);
       expected.set([value, value, value, 255], (y * width + x) * 4);
     }
   const { asset } = await video(
@@ -401,6 +385,55 @@ it("pins all sequence originals including unselected frames, with explicit untag
   expect(await failureCode(prepareCompositionVisualMedia(options))).toBe(
     "comp-media-checksum",
   );
+});
+// Decoder 3 converts no transfer, so 8-bit sequences of either tag take the
+// direct format=rgba path; every channel and alpha value must survive exactly.
+it("keeps every 8-bit value of a BT.709-tagged sequence, alpha included", async () => {
+  const directory = join(root, "bt709-8bit");
+  await mkdir(directory);
+  const width = 256,
+    height = 4,
+    pixels = Buffer.alloc(width * height * 4);
+  for (let y = 0; y < height; y++)
+    for (let x = 0; x < width; x++)
+      pixels.set(
+        [x, 255 - x, (x * 7 + y) & 255, (x * 3 + y * 64) & 255],
+        (y * width + x) * 4,
+      );
+  const bytes = mediaRgbaPng(width, height, pixels, [
+    mediaPngChunk("cICP", Buffer.from([1, 1, 0, 1])),
+  ]);
+  await writeFile(join(directory, "frame_0000.png"), bytes);
+  const manifest = Buffer.from(
+    JSON.stringify({
+      schemaVersion: "composition-sequence-1",
+      frames: [hash(bytes)],
+    }),
+  );
+  await writeFile(join(directory, "manifest.json"), manifest);
+  const prepared = await prepareCompositionVisualMedia({
+    asset: {
+      id: "bt709-8bit",
+      type: "sequence",
+      path: join(directory, "frame_%04d.png"),
+      manifestPath: join(directory, "manifest.json"),
+      firstFrame: 0,
+      sha256: hash(manifest),
+      width,
+      height,
+      frameRate: { numerator: 24, denominator: 1 },
+      frameCount: 1,
+      color: { ...color, transfer: "bt709" },
+    },
+    sourceDirectory: root,
+    cacheDirectory: join(root, "bt709-8bit-cache"),
+    ordinals: [0],
+  });
+  expect(
+    mediaPngPixels(
+      await readFile(prepared.assetPaths[prepared.frames[0]!.id]!),
+    ).equals(pixels),
+  ).toBe(true);
 });
 it("rejects modified prepared pixels and manifest provenance rather than reporting a cache hit", async () => {
   const { asset } = await sequence("tamper");

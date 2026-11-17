@@ -135,15 +135,27 @@ shared identity builder. Copying a cache across platforms cannot authorize reuse
 returning to the original platform still reuses its verified entries. Prepared PNG hashes, byte counts,
 dimensions and canonical layout verify on every hit. Modified entries reject.
 
-Source range/matrix is converted to full RGB. BT.709 transfer is decoded and then
-encoded with the sRGB piecewise curve in a 16-bit intermediate before RGBA8
-quantization. Alpha stays linear. Independent real-media ramps verify a maximum
-one code value RGB/alpha error and two code values for limited YUV neutral samples.
-Prepared PNGs carry an sRGB chunk after conversion, with competing tags removed.
+Source range/matrix is converted to full RGB in a 16-bit intermediate before
+RGBA8 quantization. SDR transfer is not converted (decoder
+`composition-media-decoder-3`; owner decision D-colour, 2026-11-16, "Match
+players"): BT.709- and sRGB-transfer code values are used as encoded sRGB,
+which is how players show BT.709 video, so the canvas, pixel lint and
+legibility checks see footage as viewers do. Decoder 2 mapped BT.709 through
+the inverse camera OETF, which lifted dark footage by up to 16 code values.
+Alpha stays linear. Independent real-media ramps verify a maximum one code
+value RGB/alpha error and two code values for limited YUV neutral samples.
+Prepared PNGs carry an sRGB chunk, with competing tags removed.
+
+A source tagged with sRGB transfer (as some generators tag BT.709-primaries
+video) is decoded the same way; under this rule the transfer tag of an SDR
+source does not change its samples, only its range and matrix do. The same
+holds for `smpte170m` (BT.601) sources: they decode with the BT.601 matrix and
+range, with no transfer conversion.
 
 Sequence PNGs follow [PNG Third Edition color priority](https://www.w3.org/TR/png-3/):
 cICP, ICC, sRGB, then legacy gamma/chromaticities. Supported authoritative cICP is
-`[1, 13, 0, 1]`; standalone ICC or legacy-only tags require prior normalization.
+`[1, 13, 0, 1]` (or `[1, 1, 0, 1]` for a sequence described with BT.709
+transfer, whose samples are likewise used unchanged); standalone ICC or legacy-only tags require prior normalization.
 Untagged PNGs use the authored sRGB descriptor and explicitly record that authority.
 All original hashes and dimensions verify even when only a subset is selected.
 Animated PNG and corrupt chunks reject. A root lock protects cumulative disk

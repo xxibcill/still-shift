@@ -153,9 +153,12 @@ export function parseColorLook(value: unknown): ColorLook {
 
 /**
  * Frames as display code values: the media path's range/matrix conversion
- * without its BT.709-transfer re-encoding. A graded edit tagged BT.709 transfer
- * is compared in the code values its player shows and Still Shift's export
- * writes (export tags its sRGB-encoded pixels BT.709 without conversion).
+ * with the transfer forced to sRGB. Since decoder 3 (D-colour) the media path
+ * no longer converts BT.709 transfer either, so the two readings agree; this
+ * stays explicit so a future transfer rule cannot change it. A graded edit
+ * tagged BT.709 transfer is compared in the code values its player shows and
+ * Still Shift's export writes (export tags its sRGB-encoded pixels BT.709
+ * without conversion).
  */
 export async function readColorCodeValueFrames(
   clip: ColorClip,

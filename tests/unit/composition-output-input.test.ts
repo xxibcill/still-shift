@@ -32,7 +32,7 @@ async function convert(
 
 describe("canonical composition encoder input", () => {
   it.each(["png8", "png16"] as const)(
-    "preserves every alpha value and known BT.709 samples for %s across split pixels",
+    "preserves every alpha value and the sRGB samples unchanged for %s across split pixels",
     async (format) => {
       const input = Buffer.alloc(256 * 4);
       for (let alpha = 0; alpha < 256; alpha++)
@@ -47,14 +47,16 @@ describe("canonical composition encoder input", () => {
       expect(actual.length).toBe(input.length * (high ? 2 : 1));
       for (let alpha = 0; alpha < 256; alpha++) {
         const offset = alpha * (high ? 8 : 4);
-        // RGB values independently calculated from the standard curve at 60 decimal digits.
+        // composition-output-2 (D-colour): sRGB bytes pass unchanged; 16-bit expands × 257.
         expect(
           high
             ? [0, 1, 2, 3].map((channel) =>
                 actual.readUInt16LE(offset + channel * 2),
               )
             : [...actual.subarray(offset, offset + 4)],
-        ).toEqual(high ? [0, 12431, 29640, alpha * 257] : [0, 48, 115, alpha]);
+        ).toEqual(
+          high ? [0, 64 * 257, 128 * 257, alpha * 257] : [0, 64, 128, alpha],
+        );
       }
     },
   );

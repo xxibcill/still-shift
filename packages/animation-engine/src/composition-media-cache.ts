@@ -508,9 +508,11 @@ export async function prepareCompositionVisualMedia(
               "-i",
               input,
               "-vf",
-              asset.color.transfer === "bt709"
-                ? compositionSequenceColorFilter(asset.color, original[24]!)
-                : "format=rgba",
+              // Decoder 3: BT.709- and sRGB-transfer sequences decode alike
+              // (no transfer conversion): 8-bit PNGs directly, 16-bit with
+              // exact rounding and separately carried alpha. Decoder 2 used a
+              // bare `format=rgba` for 16-bit sRGB, which rounded some values up.
+              compositionSequenceColorFilter(asset.color, original[24]!),
               "-frames:v",
               "1",
               "-threads",

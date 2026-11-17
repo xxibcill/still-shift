@@ -52,8 +52,8 @@ async function verifyPng(
         type = chunk.toString("ascii", 4);
       if (offset + count + 12 > size)
         throw Error("Output PNG chunk exceeds its file");
-      if (type === "IHDR" || type === "cICP") {
-        if (count !== (type === "IHDR" ? 13 : 4))
+      if (type === "IHDR" || type === "cICP" || type === "sRGB") {
+        if (count !== (type === "IHDR" ? 13 : type === "sRGB" ? 1 : 4))
           throw Error("Output PNG metadata has the wrong byte count");
         const data = Buffer.alloc(count);
         if ((await file.read(data, 0, count, offset + 8)).bytesRead !== count)
@@ -71,13 +71,24 @@ async function verifyPng(
               "Output PNG dimensions, bit depth or RGBA layout differ",
             );
           header = true;
-        } else {
-          if (cicp || !data.equals(Buffer.from([1, 1, 0, 1])))
+        } else if (type === "cICP") {
+          // BT.709 primaries and transfer, RGB, full range.
+          if (
+            cicp ||
+            profile.transfer !== "bt709" ||
+            !data.equals(Buffer.from([1, 1, 0, 1]))
+          )
             throw Error("Output PNG must carry full-range BT.709 RGB cICP");
+          cicp = true;
+        } else {
+          // sRGB samples (composition-output-2): the PNG sRGB chunk, which
+          // FFmpeg writes with compatibility gAMA/cHRM and no cICP.
+          if (cicp || profile.transfer !== "iec61966-2-1" || data[0]! > 3)
+            throw Error("Output PNG must carry one sRGB transfer chunk");
           cicp = true;
         }
       }
-      if (type === "sRGB" || type === "iCCP")
+      if (type === "iCCP")
         throw Error("Output PNG contains conflicting RGB transfer metadata");
       offset += count + 12;
       if (type === "IEND") {
@@ -230,7 +241,7 @@ export async function prepareCompositionOutputArtifacts(
         (profile.format === "prores4444" &&
           stream.bits_per_raw_sample !== "12") ||
         stream.color_space !== (profile.matrix === "rgb" ? "gbr" : "bt709") ||
-        stream.color_transfer !== "bt709" ||
+        stream.color_transfer !== profile.transfer ||
         stream.color_primaries !== "bt709" ||
         (stream.color_range !== profile.range &&
           !(prores && stream.color_range === undefined)) ||
