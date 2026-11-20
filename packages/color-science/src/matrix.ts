@@ -14,6 +14,13 @@ export type Mat3 = readonly number[];
 
 export const IDENTITY: Mat3 = [1, 0, 0, 0, 1, 0, 0, 0, 1];
 
+/** The same function on each channel, as an `Rgb`. */
+export const perChannel = (f: (channel: 0 | 1 | 2) => number): Rgb => [
+  f(0),
+  f(1),
+  f(2),
+];
+
 export function multiply(left: Mat3, right: Mat3): number[] {
   const out = new Array<number>(9);
   for (let row = 0; row < 3; row++)

@@ -8,7 +8,14 @@
  * float (GPU float32, Canvas float64 via this module) and quantizes once.
  */
 import { ColorScienceError } from "./errors.ts";
-import { apply, invert, multiply, type Mat3, type Rgb } from "./matrix.ts";
+import {
+  apply,
+  invert,
+  multiply,
+  perChannel,
+  type Mat3,
+  type Rgb,
+} from "./matrix.ts";
 import { chromaticAdaptationMatrix, rgbToXyzMatrix } from "./primaries.ts";
 import { transferFunction } from "./transfer.ts";
 
@@ -52,8 +59,8 @@ export const NEUTRAL_GRADE_PRIMARY: GradePrimary = {
   highlights: 0,
 };
 export type GradePrimaryControls = GradePrimary & {
-  /** Row-major hue rotation, or null when the hue is 0. */
-  hueMatrix: number[] | null;
+  /** Hue rotation, or null when the hue is 0. */
+  hueMatrix: Mat3 | null;
 };
 
 /** Shadow and highlight weights over luma (shared with the GPU kernel). */
@@ -63,7 +70,7 @@ export const HIGHLIGHT_RANGE = [0.4, 1] as const;
 export const TONAL_AMOUNT = 0.25;
 
 /** Rotation by `degrees` in the BT.709 (Cb, Cr) plane; luma is unchanged. */
-export function hueRotationMatrix(degrees: number): number[] {
+export function hueRotationMatrix(degrees: number): Mat3 {
   const [kr, , kb] = LUMA;
   const kg = LUMA[1];
   // RGB → (Y, Cb, Cr) and back.
@@ -95,15 +102,12 @@ export function gradePrimaryControls(p: GradePrimary): GradePrimaryControls {
  * shadows/highlights (luma-weighted offset) → saturation about Rec.709 luma →
  * hue rotation → color boost.
  */
-export function applyGradePrimary(
-  rgb: Rgb,
-  k: GradePrimaryControls,
-): [number, number, number] {
-  const v = [0, 1, 2].map((c) => {
-    const lifted = rgb[c]! + k.lift[c]! * (1 - rgb[c]!);
-    const curved = lifted < 0 ? lifted : Math.pow(lifted, 1 / k.gamma[c]!);
+export function applyGradePrimary(rgb: Rgb, k: GradePrimaryControls): Rgb {
+  const v = perChannel((c) => {
+    const lifted = rgb[c] + k.lift[c] * (1 - rgb[c]);
+    const curved = lifted < 0 ? lifted : Math.pow(lifted, 1 / k.gamma[c]);
     return (
-      (curved * k.gain[c]! + k.offset[c]!) * k.contrast +
+      (curved * k.gain[c] + k.offset[c]) * k.contrast +
       k.pivot * (1 - k.contrast)
     );
   });
@@ -112,20 +116,16 @@ export function applyGradePrimary(
     TONAL_AMOUNT *
     (k.shadows * (1 - smoothstep(SHADOW_RANGE[0], SHADOW_RANGE[1], y0)) +
       k.highlights * smoothstep(HIGHLIGHT_RANGE[0], HIGHLIGHT_RANGE[1], y0));
-  const t = v.map((x) => x + tonal);
+  const t = perChannel((c) => v[c] + tonal);
   const y1 = luma(t);
-  let s = t.map((x) => y1 * (1 - k.saturation) + x * k.saturation);
-  if (k.hueMatrix) s = apply(k.hueMatrix, s as unknown as Rgb);
-  const max = Math.max(s[0]!, s[1]!, s[2]!),
-    min = Math.min(s[0]!, s[1]!, s[2]!);
+  let s = perChannel((c) => y1 * (1 - k.saturation) + t[c] * k.saturation);
+  if (k.hueMatrix) s = apply(k.hueMatrix, s);
+  const max = Math.max(...s),
+    min = Math.min(...s);
   const sat = max > 0 ? Math.min(1, Math.max(0, (max - min) / max)) : 0;
   const factor = 1 + k.colorBoost * (1 - sat);
   const y2 = luma(s);
-  return s.map((x) => y2 * (1 - factor) + x * factor) as [
-    number,
-    number,
-    number,
-  ];
+  return perChannel((c) => y2 * (1 - factor) + s[c] * factor);
 }
 
 // --- grade.white-balance -------------------------------------------------------
@@ -206,7 +206,7 @@ export function temperatureTintWhite(
  * Linear BT.709 RGB matrix adapting the stated illuminant (temperature, tint)
  * to the 6500 K locus white with Bradford; null (identity) at 6500 K, tint 0.
  */
-export function whiteBalanceMatrix(cct: number, tint: number): number[] | null {
+export function whiteBalanceMatrix(cct: number, tint: number): Mat3 | null {
   if (cct === REFERENCE_CCT && tint === 0) return null;
   const npm = rgbToXyzMatrix("bt709");
   const cat = chromaticAdaptationMatrix(
@@ -225,29 +225,21 @@ export const srgbEncodeMirrored = (v: number) =>
   v < 0 ? -srgb.encode(-v) : srgb.encode(v);
 
 /** Encoded sRGB → linear → matrix → encoded sRGB. */
-export function applyLinearMatrixEncoded(
-  rgb: Rgb,
-  m: Mat3,
-): [number, number, number] {
-  const linear = apply(m, [
-    srgbDecodeMirrored(rgb[0]),
-    srgbDecodeMirrored(rgb[1]),
-    srgbDecodeMirrored(rgb[2]),
-  ]);
-  return [
-    srgbEncodeMirrored(linear[0]),
-    srgbEncodeMirrored(linear[1]),
-    srgbEncodeMirrored(linear[2]),
-  ];
+export function applyLinearMatrixEncoded(rgb: Rgb, m: Mat3): Rgb {
+  const linear = apply(
+    m,
+    perChannel((c) => srgbDecodeMirrored(rgb[c])),
+  );
+  return perChannel((c) => srgbEncodeMirrored(linear[c]));
 }
 
 // --- grade.rgb-mixer -------------------------------------------------------------
 
-export type RgbMixer = { matrix: number[]; offset: [number, number, number] };
+export type RgbMixer = { matrix: Mat3; offset: Rgb };
 
 /** (I + strength·(M − I))·rgb + strength·offset, as `color.matrix` designs it. */
 export function rgbMixer(
-  matrix: readonly number[],
+  matrix: Mat3,
   offset: Rgb,
   strength: number,
 ): RgbMixer {
@@ -256,19 +248,10 @@ export function rgbMixer(
       const identity = i % 4 === 0 ? 1 : 0;
       return identity + strength * (value - identity);
     }),
-    offset: [strength * offset[0], strength * offset[1], strength * offset[2]],
+    offset: perChannel((c) => strength * offset[c]),
   };
 }
-export function applyRgbMixer(
-  rgb: Rgb,
-  mixer: RgbMixer,
-): [number, number, number] {
-  const m = mixer.matrix;
-  return [0, 1, 2].map(
-    (r) =>
-      m[r * 3]! * rgb[0] +
-      m[r * 3 + 1]! * rgb[1] +
-      m[r * 3 + 2]! * rgb[2] +
-      mixer.offset[r]!,
-  ) as [number, number, number];
+export function applyRgbMixer(rgb: Rgb, mixer: RgbMixer): Rgb {
+  const mixed = apply(mixer.matrix, rgb);
+  return perChannel((c) => mixed[c] + mixer.offset[c]);
 }

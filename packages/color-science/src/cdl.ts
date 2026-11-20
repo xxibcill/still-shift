@@ -6,7 +6,7 @@
  * `no-clamp`: OpenColorIO's CDL_NO_CLAMP style: no clamps, and the power is
  * not applied to negative values (they pass through).
  */
-import type { Rgb } from "./matrix.ts";
+import { perChannel, type Rgb } from "./matrix.ts";
 
 export type Cdl = {
   slope: Rgb;
@@ -27,13 +27,15 @@ export function applyCdl(
   rgb: Rgb,
   cdl: Cdl,
   style: "asc" | "no-clamp" = "asc",
-): [number, number, number] {
-  const sop = [0, 1, 2].map((c) => {
-    const v = rgb[c]! * cdl.slope[c]! + cdl.offset[c]!;
-    if (style === "asc") return Math.pow(clamp01(v), cdl.power[c]!);
-    return v < 0 ? v : Math.pow(v, cdl.power[c]!);
+): Rgb {
+  const sop = perChannel((c) => {
+    const v = rgb[c] * cdl.slope[c] + cdl.offset[c];
+    if (style === "asc") return Math.pow(clamp01(v), cdl.power[c]);
+    return v < 0 ? v : Math.pow(v, cdl.power[c]);
   });
-  const luma = sop[0]! * LUMA[0] + sop[1]! * LUMA[1] + sop[2]! * LUMA[2];
-  const out = sop.map((v) => luma + cdl.saturation * (v - luma));
-  return (style === "asc" ? out.map(clamp01) : out) as [number, number, number];
+  const luma = sop[0] * LUMA[0] + sop[1] * LUMA[1] + sop[2] * LUMA[2];
+  return perChannel((c) => {
+    const v = luma + cdl.saturation * (sop[c] - luma);
+    return style === "asc" ? clamp01(v) : v;
+  });
 }

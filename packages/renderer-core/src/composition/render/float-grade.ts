@@ -5,12 +5,14 @@ import {
   applyRgbMixer,
   gradePrimaryControls,
   HIGHLIGHT_RANGE,
+  perChannel,
   rgbMixer,
   SHADOW_RANGE,
   TONAL_AMOUNT,
   whiteBalanceMatrix,
   type Cdl,
   type GradePrimaryControls,
+  type Mat3,
   type Rgb,
   type RgbMixer,
 } from "@still-shift/color-science";
@@ -37,20 +39,17 @@ type Params = Readonly<
   Record<string, number | readonly number[] | readonly (readonly number[])[]>
 >;
 const n = (p: Params, key: string) => p[key] as number;
-const rgb = (p: Params, name: string): Rgb => [
-  n(p, `${name}R`),
-  n(p, `${name}G`),
-  n(p, `${name}B`),
-];
+const CHANNELS = ["R", "G", "B"] as const;
+const rgb = (p: Params, name: string): Rgb =>
+  perChannel((c) => n(p, `${name}${CHANNELS[c]}`));
 
 export type FloatGradeOp =
   | { id: "grade.primary"; controls: GradePrimaryControls }
-  | { id: "grade.white-balance"; matrix: number[] }
+  | { id: "grade.white-balance"; matrix: Mat3 }
   | { id: "grade.cdl"; cdl: Cdl; clamp: boolean }
   | { id: "grade.rgb-mixer"; mixer: RgbMixer };
 
-const isIdentity = (m: readonly number[]) =>
-  m.every((v, i) => v === (i % 4 === 0 ? 1 : 0));
+const isIdentity = (m: Mat3) => m.every((v, i) => v === (i % 4 === 0 ? 1 : 0));
 
 /** Float64 controls for one effect, or null when its settings are neutral. */
 export function floatGradeOp(
@@ -60,14 +59,14 @@ export function floatGradeOp(
   switch (id) {
     case "grade.primary": {
       const m = (name: string) => n(p, `${name}Master`);
-      const lift = rgb(p, "lift").map((v) => v + m("lift")) as unknown as Rgb;
-      const gamma = rgb(p, "gamma").map(
-        (v) => v * m("gamma"),
-      ) as unknown as Rgb;
-      const gain = rgb(p, "gain").map((v) => v * m("gain")) as unknown as Rgb;
-      const offset = rgb(p, "offset").map(
-        (v) => v + m("offset"),
-      ) as unknown as Rgb;
+      const channel = (name: string, combine: (v: number) => number) => {
+        const values = rgb(p, name);
+        return perChannel((c) => combine(values[c]));
+      };
+      const lift = channel("lift", (v) => v + m("lift"));
+      const gamma = channel("gamma", (v) => v * m("gamma"));
+      const gain = channel("gain", (v) => v * m("gain"));
+      const offset = channel("offset", (v) => v + m("offset"));
       const settings = {
         lift,
         gamma,
@@ -117,7 +116,7 @@ export function floatGradeOp(
     case "grade.rgb-mixer": {
       const mixer = rgbMixer(
         COLOR_MATRIX_COEFFICIENTS.flat().map((name) => n(p, name)),
-        COLOR_MATRIX_OFFSETS.map((name) => n(p, name)) as unknown as Rgb,
+        perChannel((c) => n(p, COLOR_MATRIX_OFFSETS[c]!)),
         n(p, "strength"),
       );
       return isIdentity(mixer.matrix) && mixer.offset.every((v) => v === 0)
@@ -146,17 +145,10 @@ export const quantizeGrade = (v: number) =>
   v >= 1 ? 255 : v > 0 ? Math.floor(v * 255 + 0.5) : 0;
 
 /** The run on one straight color (0–1 floats in, bytes out). */
-export function floatGradeBytes(
-  ops: readonly FloatGradeOp[],
-  v: Rgb,
-): [number, number, number] {
+export function floatGradeBytes(ops: readonly FloatGradeOp[], v: Rgb): Rgb {
   let value = v;
   for (const op of ops) value = applyFloatGradeOp(op, value);
-  return [
-    quantizeGrade(value[0]),
-    quantizeGrade(value[1]),
-    quantizeGrade(value[2]),
-  ];
+  return perChannel((c) => quantizeGrade(value[c]));
 }
 
 // --- GPU ----------------------------------------------------------------------
@@ -193,7 +185,7 @@ vec3 gCdl(vec3 v,vec3 slope,vec3 offs,vec3 power,vec2 sc){
 }`;
 
 /** Column-major (GLSL) from row-major. */
-const columns = (m: readonly number[]) =>
+const columns = (m: Mat3) =>
   [0, 1, 2].flatMap((c) => [m[c]!, m[3 + c]!, m[6 + c]!]);
 
 function opGlsl(op: FloatGradeOp, i: number) {

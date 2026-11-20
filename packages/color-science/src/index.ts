@@ -9,6 +9,7 @@ export {
   apply as applyMatrix,
   invert as invertMatrix,
   multiply as multiplyMatrices,
+  perChannel,
 } from "./matrix.ts";
 export type { Mat3, Rgb } from "./matrix.ts";
 export {
