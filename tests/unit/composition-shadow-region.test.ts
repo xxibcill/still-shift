@@ -205,7 +205,11 @@ it("matches the full-surface drop shadow byte for byte", () => {
   cases.forEach((value, index) => {
     const data = sparseImage(value.w, value.h, random(index + 7), value.boxes);
     const { input, context, output } = harness(value.w, value.h, data);
-    kernel.renderCanvas!(context as never, input as never, value.params as never);
+    kernel.renderCanvas!(
+      context as never,
+      input as never,
+      value.params as never,
+    );
     expect(Array.from(output()), `case ${index}`).toEqual(
       Array.from(reference(value.w, value.h, data, value.params)),
     );
