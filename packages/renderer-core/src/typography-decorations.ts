@@ -88,7 +88,16 @@ export function decorationSegments(
           (poses?.[i]?.x ?? 0),
       ),
     );
-    const baseline = line.baseline + (poses?.[indices[0]!]?.y ?? 0);
+    // A growing mark follows its most-revealed glyph (the first on ties), so
+    // a glyph still entering does not drag the band; fully revealed, that is
+    // the first glyph, as without `grow`.
+    const anchor =
+      grow && poses
+        ? indices.reduce((best, i) =>
+            (poses[i]?.opacity ?? 1) > (poses[best]?.opacity ?? 1) ? i : best,
+          )
+        : indices[0]!;
+    const baseline = line.baseline + (poses?.[anchor]?.y ?? 0);
     // Highest animator opacity of the decorated glyphs on this line (ET5a).
     const opacity = poses
       ? Math.max(
