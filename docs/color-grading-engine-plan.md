@@ -143,7 +143,10 @@ stores, the natural-language keyword parser and cloud-AI settings, and
 - Ten `color.*` effects (levels, curves, exposure, hue-saturation, tint and
   others), all evaluated on encoded sRGB bytes with exact Canvas/WebGL parity.
   CGA added three more (`color.matrix`, `color.white-balance`,
-  `color.vibrance`), so there are thirteen as of 2026-11-20.
+  `color.vibrance`), so there are thirteen as of 2026-11-20. _Correction
+  (CG0, 2026-11-20):_ only the three CGA effects are byte-exact between
+  backends; the original ten meet the CE6 near tier (at most one code value),
+  and 21 of the 273 CG0 renders differ by one.
 - The WebGL2 device already allocates `RGBA32F` targets behind
   `EXT_color_buffer_float` for blur sums.
 
@@ -178,7 +181,8 @@ These are recommendations to confirm at CG1, each with a fallback.
    deterministic dither. Existing `color.*` effects and every existing baseline
    stay byte-identical.
 3. **A different parity rule for the float stage.** Existing color effects prove
-   exact byte parity between Canvas and WebGL. Float `pow` and `log` are not
+   backend parity between Canvas and WebGL: byte-exact for the three CGA
+   effects, within one code value for the original ten (measured in CG0). Float `pow` and `log` are not
    bit-identical across GPUs. Proposal: the float64 reference in
    `color-science` is authoritative; the GPU must match it within one 8-bit code
    value (or the equivalent at higher depth) on the fixture set, and repeated
@@ -292,6 +296,12 @@ parts are folded in below, not rebuilt; each later milestone starts from them.
 | `comp color-stats`: media-path luma percentiles, black/white points, clipped and crushed fractions, saturation distribution, neutral cast, per clip                         | CG3            | The start of `comp scopes` statistics. CG3 adds regions, frame ranges, scopes, probes and a schema, and keeps `color-stats` output stable (or versions it).                                                                                      |
 | `comp auto-color` (staged white balance → exposure → contrast → saturation solver) and `comp look fit\|apply` (match a before/after pair with one 3×3 + offset; look files) | CG10, CG9      | CG10 extends these solvers to the float operators (CDL recovery, neutral region, chart match) and reuses their residual reports. CGA look files are migrated, not replaced, when CG9 defines looks.                                              |
 | ET2: `comp lint --pixels` measures native-video compositions (PR #62)                                                                                                       | CG3/CG10 dep.  | No longer a dependency. CG0 records it passing on a CG0 clip.                                                                                                                                                                                    |
+
+CG0 found one more (2026-11-20): `comp render` already has 10-bit containers
+(`hevc10`, `prores422hq`, `png16`, from CE15), but they carry the renderer's
+8-bit pixels (a 256-code ramp exported as `hevc10` keeps 256 levels). CG8's
+"10-bit delivery profiles" is therefore high-bit pixels into the existing
+profiles plus correct tags, not new profiles.
 
 Estimates in the tracker are revised for CG2, CG3, CG7 and CG10 accordingly.
 Owner decisions 2 and 3 (license and parity rule) are still needed before CG1
@@ -486,14 +496,24 @@ outputs need a recorded baseline before a second pipeline is added.
 - Record the current behavior of the ten `color.*` effects and of
   `comp lint --pixels` on a native-video fixture.
 
-**Checks**
+**Checks** (2026-11-20, `codex/color-grading-cg0`; numbers in
+[CG0 results](./color-grading-cg0-results.json) and the
+[fixture README](../benchmarks/fixtures/color/cg0/README.md))
 
-- [ ] Generators reproduce every fixture byte-identically on rerun.
-- [ ] Each reference vector names its source and the tolerance it is good for.
-- [ ] Baseline hashes for existing color effects recorded; `pnpm check:fast`
-      passes; no existing baseline changes.
-- [ ] The video pixel-lint failure is reproduced or shown fixed, with the
-      command and output retained.
+- [x] Generators reproduce every fixture byte-identically on rerun: 49 fixture
+      files (`pnpm color:cg0-fixtures --check`) and 10 vector files
+      (`pnpm color:cg0-vectors --check`), on darwin-arm64 with the pinned
+      toolchain.
+- [x] Each reference vector names its source and the tolerance it is good for:
+      19 transfer functions (11 with published anchors or an independent
+      OpenColorIO check, all asserted), 19 primaries sets with three published
+      matrices, nine camera input transforms, eight CDL cases, five LUTs.
+- [x] Baseline hashes for existing color effects recorded (13 effects × 3
+      settings × 7 stills, both backends, plus gray-ramp transfer tables);
+      `pnpm check:fast` passes; no existing baseline changes.
+- [x] The video pixel-lint failure is shown fixed (ET2): `comp lint --pixels
+true` on a graded native-video composition exits 0 with pixels measured;
+      command and report retained in `cg0-baseline.json`.
 
 ## CG1 — Color-science core and contract design
 

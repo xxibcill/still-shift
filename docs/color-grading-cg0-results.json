@@ -1,0 +1,227 @@
+{
+  "schema": "still-shift-milestone-results-1",
+  "milestone": "CG0",
+  "title": "Color grading engine: fixtures, reference vectors and baseline",
+  "date": "2026-11-20",
+  "branch": "codex/color-grading-cg0",
+  "base": "main 894c9d32",
+  "plan": "docs/color-grading-engine-plan.md#cg0--fixtures-reference-vectors-and-baseline",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "ffmpeg": "8.0.1",
+    "browser": "pinned Chromium 151.0.7922.34 / SwiftShader (chromium-software-2)",
+    "platform": "darwin-arm64",
+    "referenceGenerators": "uv 0.7.12, Python 3.12.11, colour-science 0.4.6, OpenColorIO 2.4.2, numpy 2.5.5 (development only)"
+  },
+  "visualAcceptance": "none: CG0 produces numbers and fixtures only; nothing here is a visual judgement",
+  "ownerDecisionsUsed": "none (CG0 needs none); decisions 2 and 3 are asked before CG1 code",
+  "planRecheck": {
+    "summary": "CGA (PR #70) and D-colour (PR #72) delivered parts of later milestones; folded into CG2, CG3, CG7, CG8, CG9 and CG10 in the plan's 're-check against main' section instead of being rebuilt. Tracker estimates revised for CG2, CG3, CG7, CG10.",
+    "corrections": [
+      "The original ten color.* effects are not byte-exact between Canvas and WebGL2; they meet the CE6 near tier (<= 1 code value). Only the three CGA effects are exact. Plan wording corrected in 'what already exists' and decision 3.",
+      "`comp lint --pixels` on native video is fixed (ET2, PR #62); the blocker row is struck.",
+      "10-bit output containers exist (hevc10, prores422hq, png16 from CE15) but carry 8-bit renderer pixels; CG8 re-scoped to high-bit pixels and tags.",
+      "The CGA finding 'a re-imported render is about 5% brighter' is resolved on main by D-colour (decoder 3, output 2); shown by the round trip below."
+    ],
+    "branchName": "The worktree branch was renamed from claude/grading-engine-cg0-7a1886 to codex/color-grading-cg0 to follow AGENTS.md."
+  },
+  "checks": [
+    {
+      "check": "Generators reproduce every fixture byte-identically on rerun",
+      "status": "met",
+      "fixtures": {
+        "command": "pnpm color:cg0-fixtures --check",
+        "files": 49,
+        "totalBytes": 402735,
+        "largestBytes": 316480,
+        "largest": "media/moving-disc.mp4",
+        "result": "CG0 fixtures identical (49 files)"
+      },
+      "vectors": {
+        "command": "pnpm color:cg0-vectors --check",
+        "files": 10,
+        "result": "CG0 reference vectors identical (10 files)"
+      },
+      "scope": "darwin-arm64 with the pinned Node, FFmpeg and Python packages; other platforms may differ (zlib, libm, encoder builds)"
+    },
+    {
+      "check": "Each reference vector names its source and the tolerance it is good for",
+      "status": "met",
+      "transferFunctions": {
+        "count": 19,
+        "ids": [
+          "srgb",
+          "bt709",
+          "bt1886",
+          "pq",
+          "hlg",
+          "acescct",
+          "arri-logc3",
+          "arri-logc4",
+          "sony-slog3",
+          "panasonic-vlog",
+          "apple-log",
+          "canon-log2",
+          "canon-log3",
+          "red-log3g10",
+          "bmd-film-gen5",
+          "dji-dlog",
+          "fujifilm-flog",
+          "fujifilm-flog2",
+          "nikon-nlog"
+        ],
+        "float64PortTolerance": "absolute or relative 1e-12",
+        "publishedAnchors": "asserted within the published precision for sRGB, BT.709, BT.1886, PQ (incl. BT.2408 203 cd/m2 at 58%), HLG, ACEScct, LogC3 (grey 400), S-Log3 (95/420/598), V-Log (128/433/602), Log3G10 (grey 1/3), F-Log (95/470/705)",
+        "independentCheck": "OpenColorIO decode agreement for sRGB 6.0e-7, BT.709 5.3e-5 (moncurve, see findings), BT.1886 4.2e-8, PQ 5.0e-8, ACEScct 4.1e-7, Apple Log 5.2e-8, Canon Log 2 7.2e-7, Canon Log 3 3.5e-7 (relative to max(|v|,1)); LogC3, LogC4, S-Log3, V-Log and Log3G10 checked end to end through input transforms; HLG, BMD Gen 5, D-Log, F-Log2, N-Log single implementation (anchors and round trip only)"
+      },
+      "primaries": {
+        "spaces": 19,
+        "publishedMatrices": {
+          "bt709 (IEC 61966-2-1, 4 dp)": 3.9e-5,
+          "ACES AP0 (S-2014-004, 10 dp)": 4.8e-11,
+          "ACES AP1 (S-2014-004, 10 dp)": 4.4e-11,
+          "BT.709 to BT.2020 (BT.2087, 4 dp)": 4e-5
+        },
+        "lumaCoefficients": "BT.601, BT.709, BT.2020 (709 and 2020 checked against the matrices)",
+        "bradfordOcioAgreement": 4.9e-8
+      },
+      "inputTransforms": {
+        "count": 9,
+        "reference": "OpenColorIO 2.4.2 built-ins, float32",
+        "colourScienceAgreementMaxRelative": 3.8e-6,
+        "adaptationThatMatches": "CAT02 for ARRI, Sony and Canon; Bradford for Panasonic, RED and Apple (recorded per transform)"
+      },
+      "cdl": {
+        "cases": 8,
+        "inputs": 8,
+        "ocioAgreementMax": 9.1e-8
+      },
+      "lut": {
+        "luts": [
+          "cube-2",
+          "cube-5",
+          "cube-17",
+          "cube-5-domain (-0.25..1.25)",
+          "curve-1d-64"
+        ],
+        "samplesPer3dLut": 63,
+        "tetrahedralAgreementMax": 1.6e-7,
+        "trilinearAgreementMax": 1.4e-7,
+        "note": "OpenColorIO is the reference; colour-science and numpy interpolation agree within float32 precision"
+      }
+    },
+    {
+      "check": "Baseline hashes for existing color effects recorded; pnpm check:fast passes; no existing baseline changes",
+      "status": "met",
+      "effectBaseline": {
+        "command": "pnpm test:browser:color-grading-cg0",
+        "file": "tests/visual/color-grading/darwin-arm64-cg0.json",
+        "effects": 13,
+        "settings": "defaults, typical, extreme (static)",
+        "stills": [
+          "gray-ramp-256",
+          "chart-24",
+          "hue-sweep",
+          "saturation-sweep",
+          "skin-tones",
+          "noisy-gradient",
+          "alpha-patches"
+        ],
+        "renders": 273,
+        "recorded": "SHA-256 per backend, largest Canvas/WebGL2 byte difference, gray-ramp transfer table",
+        "parity": {
+          "exactEffects": [
+            "color.matrix",
+            "color.white-balance",
+            "color.vibrance"
+          ],
+          "rendersWithDelta1": 21,
+          "byEffect": {
+            "color.gradient-ramp/typical": 7,
+            "color.invert/typical": 6,
+            "color.fill/typical": 5,
+            "color.hue-saturation/typical": 3
+          },
+          "enforced": "0 for the CGA effects, <= 1 for the original ten (the CE6 near tier, as tests/browser/composition-effects.ts asserts)"
+        },
+        "repeatRender": "second run reproduced every hash and table (\"unchanged\")",
+        "inPnpmTest": true
+      },
+      "verification": "see top-level verification"
+    },
+    {
+      "check": "The video pixel-lint failure is reproduced or shown fixed, with the command and output retained",
+      "status": "met: shown fixed (ET2, PR #62)",
+      "command": "pnpm --silent still-shift comp lint --input <tmp>/lint.json --pixels true",
+      "composition": "one native video layer (media/moving-disc.mp4) with a color.levels grade",
+      "exitCode": 0,
+      "reportStatus": "passed",
+      "measured": "pixels true, pixelMethod grayscale-energy, 48 frames",
+      "diagnostics": "one warning: outside-safe-area on the full-frame video layer",
+      "retained": "benchmarks/fixtures/color/cg0/cg0-baseline.json videoPixelLint (full report)"
+    }
+  ],
+  "baselineRecord": {
+    "file": "benchmarks/fixtures/color/cg0/cg0-baseline.json",
+    "command": "pnpm color:cg0-baseline",
+    "probes": {
+      "movingClip": "accepted (BT.709, 48 frames)",
+      "tenBitSdrRamps": "srgb, bt709, bt1886 accepted; decoded to RGBA8 with at most 0.64 of an 8-bit code error (122-127 distinct levels from 128 samples): 10-bit precision is dropped",
+      "pqHlgAndLogRamps": "16 rejected with comp-media-color 'Source needs supported explicit SDR color metadata' (the CG7 failing fixtures)",
+      "sixteenBitPngRamps": "all 19 inspected as 'authored-untagged-srgb' 16-bit RGB: a log ramp would be read as sRGB code values, with no way to declare its curve"
+    },
+    "movingClipThroughMediaPath": {
+      "meanAbsCodeError": "1.68-1.84",
+      "p99": "5-6",
+      "max": "64-69 (4:2:0 chroma at the disc edge)",
+      "discCentroidErrorPx": "0.02-0.10"
+    },
+    "exportImportRoundTrip": {
+      "what": "16-step grey ramp, default MP4 export (BT.709 tags), re-imported through the media path",
+      "maxAbsDelta": 0,
+      "meanDelta": 0,
+      "before": "decoder 2 lifted BT.709 footage (16 -> 31, 128 -> 140); CGA measured about +5% median on the owner's re-imported edit"
+    },
+    "tenBitExport": {
+      "what": "gray-ramp-256 rendered with --format hevc10",
+      "distinctLumaLevels": 256,
+      "lumaRange": [65, 942],
+      "medianStep": 3
+    }
+  },
+  "findings": [
+    "OpenColorIO's BT.709 OETF is a C1-continuous moncurve built from gamma 1/0.45 and offset 0.099; BT.709-6 publishes rounded constants (4.5, 0.018), so the two differ by up to 5.3e-5 near the break. A port follows the published piecewise form.",
+    "DJI's D-Log white paper publishes encode and decode with independently rounded constants (decode 3.89616, 2.27752); decode(encode(x)) differs from x by up to 4.4e-7. A port reproduces each published equation.",
+    "Camera input transforms in OpenColorIO use CAT02 (ARRI, Sony, Canon) or Bradford (Panasonic, RED, Apple) to reach the ACES white; CG7 must record the adaptation per transform.",
+    "Camera log files carry the curve's 10-bit code values as Y' with a limited-range tag (S-Log3 grey Y' 420 = '41% IRE'); a decoder that maps limited to full range before the curve misreads it. The 10-bit ramp fixtures follow that convention and say so in the manifest.",
+    "The original ten color.* effects differ by one code value between backends at some fractional settings (21 of 273 renders); the plan called them exact."
+  ],
+  "failedRunsAndReruns": [
+    "Vector generator run 1 failed: 'bt709 OCIO disagreement 5.3e-5' against the shared 2e-6 cross-check bound. Cause: OpenColorIO's moncurve form (finding 1). Rerun with a per-curve 1e-4 bound and a recorded note.",
+    "Vector generator run 2 failed: 'dji-dlog round trip 4.4e-7' against 1e-10. Cause: DJI's rounded decode constants (finding 2). Rerun with a per-curve 1e-6 bound and a recorded note.",
+    "Fixture generator, first output: ffprobe showed the moving clip and the 10-bit ramps tagged unknown primaries/transfer, because FFmpeg 8 takes frame properties over output options. Fixed with setparams before committing; the tags and every decoded 10-bit Y' value were then verified (19 clips, 0 mismatches).",
+    "Effect baseline check, before any baseline existed: failed with ENOENT (expected), retained in the session log.",
+    "Effect baseline, first full run: the exact-parity assertion failed on 21 renders (four original effects at fractional settings, max delta 1). The assertion was changed to the bounds the code is documented and tested to meet (0 for CGA effects, <= 1 for the rest) and both backends' hashes are recorded.",
+    "Media baseline check, before any baseline existed: failed with ENOENT (expected); --write, then a check run reported 'CG0 baseline unchanged'."
+  ],
+  "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks; the CE6 effect catalogue acceptance (no package source changed).",
+  "next": "Owner decisions 2 (GPL-3.0 entry of ported chroma-node code) and 3 (bounded parity rule for the float stage) before CG1 code; then CG1.",
+  "verification": {
+    "checkFast": [
+      "run 1 failed: pnpm build TS2345 in tests/browser/color-grading-cg0.ts (crypto.subtle.digest input type); fixed in its own commit",
+      "run 2 passed: 468 test files, 4,720 tests"
+    ],
+    "browser": {
+      "composition-grade-effects": "passed (opaque and translucent max delta 0, 81 layer-kind cases 0)",
+      "composition-colour-accuracy": "passed (authored within 0-1 on all eight formats)",
+      "color-grading-cg0": "passed, unchanged (273 renders, 21 at delta 1, enforced bounds)",
+      "composition-baselines": "passed: 176 items, 36,061 frames unchanged (266.9 s)"
+    },
+    "scripts": {
+      "color:cg0-fixtures --check": "identical (49 files)",
+      "color:cg0-vectors --check": "identical (10 files)",
+      "color:cg0-baseline": "unchanged"
+    }
+  }
+}
