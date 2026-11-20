@@ -1,5 +1,6 @@
 import { resolveCompositionQualityPolicy } from "./quality-policy.ts";
 import type { Composition } from "@still-shift/scene-contract";
+import type { TextLayer } from "./render/text-scenes.ts";
 import {
   analyzeCompositionQuality,
   type CompositionQualityPolicy,
@@ -22,8 +23,11 @@ import type {
   TextLegibilityEvidence,
 } from "./quality-policy.ts";
 import {
-  DEFAULT_CONTRAST_PERCENTILE,
+  DEFAULT_REVIEW_WIDTH,
   measureTextContrastPixels,
+  measureTreatedTextContrastPixels,
+  textContrastPercentile,
+  treatedEdgeRadius,
   textLegibilityBackground,
   textLegibilityFrames,
   textLegibilityMask,
@@ -37,13 +41,16 @@ import {
  */
 export const MAX_LIVE_CONTRAST_PROBES = 6;
 
-type ProbePreviews = { background: ProbePreview; mask: ProbePreview };
+type ProbePreviews = { background?: ProbePreview; mask: ProbePreview };
 type ContrastProbe = {
   id: string;
+  /** Lower percentile of each word's contrasts (ET6b: per size class). */
+  percentile: number;
   reading: Set<number>;
   /** Last reading frame; the live previews are disposed after it. */
   last: number;
-  background: Composition;
+  /** Absent for ET6b `treated-edge`, which reads the rendered frame only. */
+  background?: Composition;
   mask: Composition;
   live?: ProbePreviews | undefined;
   evidence: TextContrastLayerEvidence;
@@ -68,13 +75,31 @@ function createContrastProbes(
     textBounds: preview.textBounds,
   });
   const probes = new Map<string, ContrastProbe>();
-  for (const [id, reading] of textLegibilityFrames(comp, frames, resolved)) {
-    const mask = textLegibilityMask(comp, id);
+  const treated = resolved.textLegibility?.contrastMethod === "treated-edge";
+  // The same glyph evidence as the final analysis, so both read the same
+  // frames of an outline-only layer.
+  const framing = textFramingEvidence(preview);
+  for (const [id, reading] of textLegibilityFrames(comp, frames, {
+    ...resolved,
+    ...(framing ? { textFramingEvidence: framing } : {}),
+  })) {
+    const mask = textLegibilityMask(comp, id, { ring: treated });
+    const layer = comp.layers.find(
+      (candidate): candidate is TextLayer =>
+        candidate.id === id && candidate.type === "text",
+    )!;
     probes.set(id, {
       id,
+      percentile: textContrastPercentile(
+        comp,
+        layer,
+        frames,
+        reading,
+        resolved.textLegibility!,
+      ),
       reading: new Set(reading),
       last: reading.at(-1) ?? -1,
-      background: textLegibilityBackground(comp, id),
+      ...(treated ? {} : { background: textLegibilityBackground(comp, id) }),
       mask: mask.composition,
       evidence: { ...mask.evidence, frames: [] },
     });
@@ -134,10 +159,12 @@ function openProbePreviews(
   backend: CompositionPreview["backend"],
 ): ProbePreviews {
   const resources = sharedProbeResources(shared);
-  const background = openProbePreview(probe.background, resources, backend);
+  const background = probe.background
+    ? openProbePreview(probe.background, resources, backend)
+    : undefined;
   try {
     return {
-      background,
+      ...(background ? { background } : {}),
       mask: openProbePreview(
         probe.mask,
         { ...resources, textProbe: { node: probe.id, mode: "ink-only" } },
@@ -145,7 +172,7 @@ function openProbePreviews(
       ),
     };
   } catch (error) {
-    disposeProbePreview(background);
+    if (background) disposeProbePreview(background);
     throw error;
   }
 }
@@ -159,7 +186,7 @@ function disposeProbePreview({ preview, canvas }: ProbePreview) {
 function disposeProbePreviews(previews: ProbePreviews | undefined) {
   if (!previews) return;
   try {
-    disposeProbePreview(previews.background);
+    if (previews.background) disposeProbePreview(previews.background);
   } finally {
     disposeProbePreview(previews.mask);
   }
@@ -189,6 +216,9 @@ function textFramingEvidence(
     ink: preview.textInkBounds,
     ...(preview.orphanedTextDecorations
       ? { orphanedDecorations: preview.orphanedTextDecorations }
+      : {}),
+    ...(preview.textGlyphMotion
+      ? { glyphMotion: preview.textGlyphMotion }
       : {}),
   };
 }
@@ -227,8 +257,6 @@ export async function analyzeRenderedCompositionQuality(
       : undefined;
   const resources = options.legibilityResources;
   let liveProbes = 0;
-  const percentile =
-    resolved.textLegibility?.contrastPercentile ?? DEFAULT_CONTRAST_PERCENTILE;
   try {
     for (let frame = 0; frame < comp.frameCount; frame++) {
       options.signal?.throwIfAborted();
@@ -262,9 +290,15 @@ export async function analyzeRenderedCompositionQuality(
         }
         const previews =
           probe.live ?? openProbePreviews(probe, resources!, preview.backend);
-        let back: Uint8ClampedArray | Uint8Array, mask: typeof back;
+        let back: Uint8ClampedArray | Uint8Array | undefined,
+          mask: Uint8ClampedArray | Uint8Array;
         try {
-          back = await renderProbe(previews.background.preview, frame, native);
+          if (previews.background)
+            back = await renderProbe(
+              previews.background.preview,
+              frame,
+              native,
+            );
           mask = await renderProbe(previews.mask.preview, frame, native);
         } finally {
           if (previews !== probe.live) disposeProbePreviews(previews);
@@ -274,18 +308,42 @@ export async function analyzeRenderedCompositionQuality(
           probe.live = undefined;
           liveProbes--;
         }
+        const fourDigits = (value: number) => Math.round(value * 1e4) / 1e4;
         probe.evidence.frames.push({
           frame,
-          words: measureTextContrastPixels(
-            rgba,
-            back,
-            mask,
-            probe.evidence.words.length,
-            percentile,
-            probe.evidence.attribution === "layer",
-          ).map((value) =>
-            value ? [Math.round(value[0] * 1e4) / 1e4, value[1]] : null,
-          ),
+          words: back
+            ? measureTextContrastPixels(
+                rgba,
+                back,
+                mask,
+                probe.evidence.words.length,
+                probe.percentile,
+                probe.evidence.attribution === "layer",
+              ).map((value) =>
+                value ? [fourDigits(value[0]), value[1]] : null,
+              )
+            : measureTreatedTextContrastPixels(
+                rgba,
+                mask,
+                comp.width,
+                comp.height,
+                probe.evidence.words.length,
+                probe.percentile,
+                treatedEdgeRadius(
+                  comp.width,
+                  resolved.textLegibility?.reviewWidth ?? DEFAULT_REVIEW_WIDTH,
+                ),
+                probe.evidence.attribution === "layer",
+              ).map((value) =>
+                value
+                  ? [
+                      fourDigits(value[0]),
+                      value[1],
+                      fourDigits(value[2]),
+                      value[3] === null ? null : fourDigits(value[3]),
+                    ]
+                  : null,
+              ),
         });
       }
       options.onFrame?.(frame);

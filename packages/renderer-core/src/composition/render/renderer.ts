@@ -48,6 +48,7 @@ import {
 } from "../../passage-diagnostics.ts";
 import type { LoadedFont } from "../../prepared-fonts.ts";
 import type { Bounds, EvaluationOptions } from "../evaluate/types.ts";
+import type { TextGlyphMotion } from "../quality-policy.ts";
 import type { PreparedNative3DSceneVersions } from "../../native3d/types-v2.ts";
 import type { NativeDepthRuntimeFactory } from "../../native3d/runtime.ts";
 import { prepareCompositionNative3DVersions } from "../../native3d/prepare.ts";
@@ -400,6 +401,13 @@ export type CompositionPreview = {
     reveal: number;
     time: number;
   }): number[];
+  /** ET6b: glyph positions of a text layer for the reading-motion rule. */
+  textGlyphMotion?(content: {
+    key: string;
+    state: number;
+    reveal: number;
+    time: number;
+  }): TextGlyphMotion | undefined;
   /** Runtime-only immutable native lookup; never serialize into a saved policy. */
   evaluationOptions?: EvaluationOptions;
   /** Still-only frames are ready synchronously; native media returns its loading promise. */
@@ -913,6 +921,7 @@ function prepareCompositionPreviewOnCanvas(
         textBounds: text.bounds,
         textInkBounds: text.inkBounds,
         orphanedTextDecorations: (content) => text.orphanedDecorations(content),
+        textGlyphMotion: (content) => text.glyphMotion(content),
         ...(resources.native3D ? { evaluationOptions } : {}),
         ...(statistics
           ? { renderStatistics: () => statistics.statistics }

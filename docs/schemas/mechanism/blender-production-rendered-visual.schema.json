@@ -169,6 +169,23 @@
           "exclusiveMinimum": 0,
           "maximum": 1
         },
+        "profile": { "type": "string", "enum": ["editorial-title", "none"] },
+        "readingMotion": {
+          "type": "object",
+          "properties": {
+            "velocity": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 100
+            },
+            "displacement": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000
+            }
+          },
+          "additionalProperties": false
+        },
         "opacityPop": { "type": "number", "minimum": 0, "maximum": 1 },
         "scalePop": { "type": "number", "minimum": 0 },
         "popNeighbourRatio": { "type": "number", "minimum": 0, "maximum": 1 },
@@ -508,6 +525,24 @@
               "type": "number",
               "minimum": 0,
               "maximum": 0.5
+            },
+            "contrastMethod": {
+              "type": "string",
+              "enum": ["glyph-interior", "treated-edge"]
+            },
+            "display": {
+              "type": "object",
+              "properties": {
+                "minimumSize": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "contrast": { "type": "number", "minimum": 1, "maximum": 21 },
+                "small": { "type": "number", "minimum": 1, "maximum": 21 },
+                "percentile": { "type": "number", "minimum": 0, "maximum": 0.5 }
+              },
+              "additionalProperties": false
             },
             "reviewWidth": {
               "type": "integer",
@@ -672,6 +707,23 @@
           "exclusiveMinimum": 0,
           "maximum": 1
         },
+        "profile": { "type": "string", "enum": ["editorial-title", "none"] },
+        "readingMotion": {
+          "type": "object",
+          "properties": {
+            "velocity": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 100
+            },
+            "displacement": {
+              "type": "number",
+              "exclusiveMinimum": 0,
+              "maximum": 1000
+            }
+          },
+          "additionalProperties": false
+        },
         "opacityPop": { "type": "number", "minimum": 0, "maximum": 1 },
         "scalePop": { "type": "number", "minimum": 0 },
         "popNeighbourRatio": { "type": "number", "minimum": 0, "maximum": 1 },
@@ -1011,6 +1063,24 @@
               "type": "number",
               "minimum": 0,
               "maximum": 0.5
+            },
+            "contrastMethod": {
+              "type": "string",
+              "enum": ["glyph-interior", "treated-edge"]
+            },
+            "display": {
+              "type": "object",
+              "properties": {
+                "minimumSize": {
+                  "type": "number",
+                  "exclusiveMinimum": 0,
+                  "maximum": 1000
+                },
+                "contrast": { "type": "number", "minimum": 1, "maximum": 21 },
+                "small": { "type": "number", "minimum": 1, "maximum": 21 },
+                "percentile": { "type": "number", "minimum": 0, "maximum": 0.5 }
+              },
+              "additionalProperties": false
             },
             "reviewWidth": {
               "type": "integer",

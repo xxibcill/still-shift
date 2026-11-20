@@ -25,6 +25,7 @@ import {
   hasStableTypographyImage,
   prepareTypography,
   prepareTypographyColors,
+  typographyGlyphMotion,
   typographyOrphanedDecorations,
   type PreparedTypography,
   type TextRaster,
@@ -45,6 +46,7 @@ import {
   type CanvasTextDrawer,
 } from "./canvas2d.ts";
 import type { TextContent } from "./graph.ts";
+import type { TextGlyphMotion } from "../quality-policy.ts";
 import {
   collectCompositionTextFrames,
   animatedTextNodes,
@@ -90,6 +92,10 @@ export type CompositionText = {
   orphanedDecorations(
     content: Pick<TextContent, "key" | "state" | "reveal" | "time">,
   ): number[];
+  /** ET6b: glyph positions for the reading-motion rule (pinned fonts only). */
+  glyphMotion(
+    content: Pick<TextContent, "key" | "state" | "reveal" | "time">,
+  ): TextGlyphMotion | undefined;
   draw: CanvasTextDrawer;
   preparePixels(content: TextContent): void;
   contentKey(content: TextContent): string | undefined;
@@ -514,6 +520,16 @@ export function prepareCompositionText(
       if (entry?.kind !== "typography" || !entry.node.decorations?.length)
         return [];
       return typographyOrphanedDecorations(
+        entry.node,
+        { state: content.state, reveal: content.reveal },
+        entry.prepared,
+        content.time,
+      );
+    },
+    glyphMotion(content) {
+      const entry = entries.get(content.key);
+      if (entry?.kind !== "typography") return undefined;
+      return typographyGlyphMotion(
         entry.node,
         { state: content.state, reveal: content.reveal },
         entry.prepared,

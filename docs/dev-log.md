@@ -43,10 +43,19 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial titles Phase 1 (2026-11-20):** on `codex/editorial-titles-phase1` from `main` 760a18a1, in review as [PR #74](https://github.com/xxibcill/still-shift/pull/74). The owner split the remaining work into three phases ([plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20)).
+- **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32, merged as [PR #76](https://github.com/xxibcill/still-shift/pull/76) (`main` 51ffe62a).
+  - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
+  - **Owner gate D-level (done 2026-11-20):** after the local-only variant sheets, the owner answered "Confirm 1.5:1": display text needs 1.5:1 at the median edge (lowest accepted candidate 1.63; untreated or hairline-outlined display text 1.23).
+  - **EC:** the Canvas drop shadow now computes only where it can paint (byte-identical; all 16 candidate renders match Phase 1). Halo fixture render 36.0 → 8.9 s, lint 54.9 → 7.9 s.
+  - **PR #76 review (2026-11-20):** four findings fixed, one commit each (hollow text read only while its stroke is drawn; one condition for hollow reading; occluders keep fill alpha; `--profile none`).
+  - **PR #76 re-review (2026-11-20):** one Medium finding fixed in one commit: reading-motion glyph points now follow the drawn glyph through its word or line anchor, so a fast line scale-up or turn is no longer counted as reading time (new fixture `hold-line-scale`). All 16 candidates still pass; recorded reading-motion figures refreshed.
+  - **Known limits:** WCAG luminance cannot credit hue (a02's crimson "&" over black); fully invisible text has no reading window and is not reported; the reading rule needs pixel lint for text-animator motion.
+  - Next: the owner supplies an owned or licensed clip (D-auth) for Phase 3. Records: [Phase 2 results](./editorial-typography-phase2-results.json).
+
+- **Editorial titles Phase 1 (2026-11-20):** on `codex/editorial-titles-phase1` from `main` 760a18a1, merged as [PR #74](https://github.com/xxibcill/still-shift/pull/74). The owner split the remaining work into three phases ([plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20)).
   - **Re-review:** all 16 ET7a candidates re-rendered unchanged over the corrected (darker) footage; sources and exported compositions identical, every render hash changed, all pass strict coverage and lint. Agent judgement (not acceptance): none visibly worse, b02 slightly worse ("BLACK" over darker trousers).
   - **Fixes (opt-in or invisible; no baseline changes):** Prompt Black loads (only identity names count against the name budget); span styles resolve axes against their own font; decoration `growWithText` and `padding`; `light.glow` 1.1.0 `color` + `tint`.
-  - **Owner gate (done 2026-11-20):** the owner reviewed the corrected sheets and answered "all yes": 16/16 accepted, success measure still met (D-auth open). No title named weak, so ET6b's display level must pass all 16. Next: Phase 2 (ET6b + EC), then the owner's licensed clip (D-auth) for Phase 3.
+  - **Owner gate (done 2026-11-20):** the owner reviewed the corrected sheets and answered "all yes": 16/16 accepted, success measure still met (D-auth open). No title named weak, so ET6b's display level must pass all 16. Phase 2 (ET6b + EC) is above.
   - **Review (2026-11-20):** [PR #74 review](https://github.com/xxibcill/still-shift/pull/74#pullrequestreview-5989610756), 17 findings. Ten fixed on the branch, one commit each (growWithText baseline, glow `color` needs `tint`, shared padding/glow/font-axes helpers, required axes lookup, ET0 re-record); seven unchanged with reasons in the results. The PR head's ET0 `--check` had failed on a message change; re-recorded, outcomes unchanged.
   - Records: [Phase 1 results](./editorial-typography-phase1-results.json).
 
@@ -119,6 +128,13 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-21 — Color grading CG2: PR #77 merge of `main` and third review
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg0-cg2` (from 77722bb0), merging `main` 51ffe62a (PR #76, editorial titles Phase 2).
+- **Done:** conflicts in `package.json` (`test` keeps Phase 2's `editorial-titles-phase2` and this branch's `color-grading-cg0`/`-cg2`) and this log (both entry sets kept). No source file changed on both sides.
+- **Results:** on the merged tree with Node 22.23.1: `check:fast` passed (473 files, 4,863 tests; native appearance closure unchanged); browser `color-grading-cg2` and `composition-effects` passed. Not run: `pnpm check`, full `pnpm test`, runtime/integration tiers, release checks.
+- **Review finding (open):** `grade.white-balance` adapts to the 6500 K Planckian-locus white, not D65 (the BT.709 white), so a grey card under any locus illuminant ends at (120, 117, 120) at 18% grey, not neutral as the docs say; the unit test checks against `planckianXy(6500)`. Fixing it changes the identity point, so it waits for the owner.
+
 ### 2026-11-21 — Color grading CG2: PR #77 second review and fixes
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg0-cg2` (from b47293d5).
@@ -168,6 +184,39 @@ still hold before relying on them.
 - **Rejected / do not repeat:** asserting exact Canvas/WebGL parity for the legacy color effects (they never had it); setting FFmpeg color tags with output options only on rawvideo input (FFmpeg 8 keeps the frame's unspecified tags; use `setparams`).
 - **Open / next:** owner decisions 2 (ported chroma-node code under GPL-3.0) and 3 (bounded parity rule for the float stage) before CG1 code. Not run: `pnpm check`, full `pnpm test`, runtime tier, release checks.
 - **Records:** [CG0 results](./color-grading-cg0-results.json), [fixture README](../benchmarks/fixtures/color/cg0/README.md), [plan re-check](./color-grading-engine-plan.md#re-check-against-main-2026-11-20).
+
+### 2026-11-20 — Editorial titles Phase 2: PR #76 re-review fix
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-phase2` (from ff578cf8)
+- **Scope:** [PR #76 re-review](https://github.com/xxibcill/still-shift/pull/76#pullrequestreview-5995559965), one finding, one commit. The four earlier fixes and the EC shadow region were checked and are unchanged.
+- **Done:** `typographyGlyphMotion` used pose anchor + offset as each glyph's centre; under a word or line anchor every glyph shares that point, so a 24-glyph line scaled 1 → 1.5 in 1 s measured 0.19 letter-heights/s (outer glyphs 4.44) and counted as reading. Points now go through the drawn transform (`posedGlyphPoint`, checked against `posedClusterTransform`).
+- **Results:** unit tests fail 4/5 with the old maths and pass; fixture `hold-line-scale` passes the profile on ff578cf8 (2.25 s readable) and fails with the fix (28 speed ends). ff578cf8 reproduces every recorded figure exactly; with the fix all 16 candidates still pass with no reading-time findings (highest peak 0.895/s), proof T1–T3 peaks unchanged, and single false speed ends from anchor switches are gone. `pnpm check:fast` passed on the second run (the first failed `tsc` on the new test); browser groups editorial-titles-phase2 and typography pass (Node 22.23.1). Not run: other browser groups, full `pnpm check`, WebGL2.
+- **Open / next:** owner review; Phase 3 still waits on D-auth.
+- **Records:** [Phase 2 results](./editorial-typography-phase2-results.json) (`reviewFixes.prReReview1`).
+
+### 2026-11-20 — Editorial titles Phase 2: PR #76 review fixes
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-phase2` (from b96a1daf)
+- **Scope:** [PR #76 review](https://github.com/xxibcill/still-shift/pull/76#pullrequestreview-5994916584), four findings, one commit each. The EC shadow region was checked and is unchanged.
+- **Done:** (1) outline-only text counts as on screen only on frames its stroke is drawn: glyph poses' `strokeWidth` in pixel lint, else a strict reading of the animator declaration (the repro, a hollow title stroked at frame 90 of 96, had 3.75 s of reading time and no finding); (2) `readsOutlinedText` (the `treated-edge` measure) is the one condition for hollow reading in both reading time and legibility; (3) occluders above keep their fill alpha in the ring mask, so a hollow title above covers only its outline; (4) `profile: "none"` / `--profile none` overrides a saved profile (reports omit `none`).
+- **Results:** new unit tests fail on b96a1daf and pass; `tsc`, ESLint, Prettier and `schema:check` pass. Browser groups editorial-titles-phase2, editorial-titles-phase1, composition-quality and composition-effects pass (Node 24.16, not the pinned 22.23.1). Not run: full `pnpm check`, release checks, WebGL2.
+- **Open / next:** owner review of the fixes; Phase 3 still waits on D-auth.
+
+### 2026-11-20 — Editorial titles Phase 2: display level confirmed
+
+- The owner reviewed the ET6b variant sheets and answered "Confirm 1.5:1" (decision D-level).
+- The profile default is unchanged (1.5:1 at the median edge). The records now say "confirmed" instead of "proposed", in the results, plan, reference, skill and code comment.
+- Next: the owned or licensed clip for Phase 3 (D-auth).
+
+### 2026-11-20 — Editorial titles Phase 2: ET6b profile and EC
+
+- **Branch:** `codex/editorial-titles-phase2` from `main` 894c9d32. Not pushed.
+- **ET6b:** the opt-in `editorial-title` lint profile, with D-read reading motion, treated-edge contrast and size-split targets. All 16 ET7a candidates pass without waivers. T1–T3 hold drift passes. Fast, jittery and spinning holds, and untreated or hairline-outlined display text, still fail. Default lint is byte-identical to `main` (22 reports).
+- **Calibration:** at the 5th percentile, two accepted words (a02 "&" 1.04, a06 "SUNDAY" 1.14) fall below untreated text (1.23), so display text uses the median edge. The proposed level is 1.5:1; the owner confirms it on the variant sheets (decision D-level).
+- **EC:** cause: the Canvas drop shadow did full-surface JavaScript passes, and lint ran them again on the background probe. Fixed with byte-identical pixels; halo fixture render 36.0 → 8.9 s, lint 54.9 → 7.9 s.
+- **Failing first:** the new unit tests and the browser group fail on `main`.
+- **Retained failures:** `check:fast` failed twice before passing, on Prettier for the region test and then an unused variable; both are fixed in their own commits.
+- **Verification:** see the [Phase 2 results](./editorial-typography-phase2-results.json).
 
 ### 2026-11-20 — Editorial titles Phase 1: owner gate passed
 
