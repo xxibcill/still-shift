@@ -3,6 +3,7 @@
 // inherited the base style's wght and failed validation (a02 r01).
 import { describe, expect, it } from "vitest";
 import {
+  declaredFontAxes,
   resolvedTextStyle,
   validateComposition,
   type Composition,
@@ -110,5 +111,20 @@ describe("span style axes", () => {
       wght: 900,
       opsz: 96,
     });
+  });
+});
+
+describe("declaredFontAxes (Phase 1)", () => {
+  const lookup = declaredFontAxes([
+    font("serif", { wght: [400, 900] }),
+    font("script"),
+  ]);
+  it("reports a variable font's axes, a static font's none, and unknown fonts as undefined", () => {
+    expect(Object.keys(lookup!("serif")!)).toEqual(["wght"]);
+    expect(lookup!("script")).toEqual({});
+    expect(lookup!("missing")).toBeUndefined();
+  });
+  it("is undefined without fonts", () => {
+    expect(declaredFontAxes(undefined)).toBeUndefined();
   });
 });

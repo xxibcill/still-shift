@@ -19,6 +19,22 @@ export type FontAxesLookup = (
   fontAsset: string,
 ) => Readonly<Record<string, unknown>> | undefined;
 
+/** Declared axes of a scene's fonts (a static font has none). */
+export function declaredFontAxes(
+  fonts:
+    | readonly {
+        id: string;
+        variable?: Readonly<Record<string, unknown>> | undefined;
+      }[]
+    | undefined,
+): FontAxesLookup | undefined {
+  if (!fonts) return undefined;
+  return (id) => {
+    const font = fonts.find((f) => f.id === id);
+    return font ? (font.variable ?? {}) : undefined;
+  };
+}
+
 /**
  * A span style over its layer's style. A span style that sets no `axes`
  * inherits the base axes, but with `fontAxes` it keeps only those its own
@@ -47,6 +63,11 @@ export function spanStyleOver<T extends TextStyle>(
   return resolved as T & TextStyle;
 }
 
+/**
+ * `fontAxes` resolves a span style's inherited axes against its own font.
+ * Pass it wherever the result's `axes` are read; callers that read only
+ * case, size or font may omit it.
+ */
 export function resolvedTextStyle(
   node: TextNode,
   styles: Record<string, TextStyle>,

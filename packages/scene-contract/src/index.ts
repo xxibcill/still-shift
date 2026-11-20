@@ -57,6 +57,7 @@ export {
 } from "./intent-presets.ts";
 export {
   ROLE_LEADING,
+  declaredFontAxes,
   opticalTracking,
   resolvedTextStyle,
   spanStyleOver,

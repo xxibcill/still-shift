@@ -6,7 +6,11 @@ import {
   resolvedTextStyle,
   type TextNode,
 } from "./typography-style.ts";
-import type { FontAxesLookup } from "@still-shift/scene-contract";
+import {
+  declaredFontAxes,
+  type FontAxesLookup,
+} from "@still-shift/scene-contract";
+export { declaredFontAxes };
 import { FONT_IDENTITY_LIMITS, type FontTextRun } from "./font-identity.ts";
 import { passageError } from "./passage-diagnostics.ts";
 
@@ -24,22 +28,6 @@ export type FontCopyScene = Parameters<typeof typographyTextValues>[0] & {
     | undefined;
 };
 export type CollectedFontTextRun = FontTextRun & { fontAsset: string };
-
-/** Declared axes of a scene's fonts (a static font has none). */
-export function declaredFontAxes(
-  fonts:
-    | readonly {
-        id: string;
-        variable?: Readonly<Record<string, unknown>> | undefined;
-      }[]
-    | undefined,
-): FontAxesLookup | undefined {
-  if (!fonts) return undefined;
-  return (id) => {
-    const font = fonts.find((f) => f.id === id);
-    return font ? (font.variable ?? {}) : undefined;
-  };
-}
 
 /**
  * Collect the same generated values and per-grapheme case transforms as
