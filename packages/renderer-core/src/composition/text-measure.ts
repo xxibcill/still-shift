@@ -27,6 +27,7 @@ import {
 } from "../typography-animation.ts";
 import {
   decorationBand,
+  decorationBoxBand,
   decorationPadding,
   decorationSegments,
   type DecorationPadding,
@@ -415,26 +416,19 @@ function decorationMeasures(
             : mark.kind === "strike" || mark.kind === "highlight"
               ? -layout.xHeight * 0.5
               : -layout.capHeight);
-        const painted = decorationBand(y, thickness, padding);
-        const paint: Bounds =
+        const painted =
           mark.kind === "box"
-            ? padBounds(
-                {
-                  left: segment.x - padding.left,
-                  right: segment.x + segment.width + padding.right,
-                  top: y - padding.top,
-                  bottom:
-                    y + layout.capHeight + layout.descent + padding.bottom,
-                },
-                thickness / 2,
-              )
-            : {
-                left: segment.x - padding.left,
-                right: segment.x + segment.width + padding.right,
-                top: painted.top,
-                // Exactly as before when unpadded.
-                bottom: y + thickness / 2 + padding.bottom,
-              };
+            ? decorationBoxBand(y, layout, padding)
+            : decorationBand(y, thickness, padding);
+        // The reported segment stays unpadded; its paint carries the padding.
+        const extent: Bounds = {
+          left: segment.x - padding.left,
+          right: segment.x + segment.width + padding.right,
+          top: painted.top,
+          bottom: painted.bottom,
+        };
+        const paint: Bounds =
+          mark.kind === "box" ? padBounds(extent, thickness / 2) : extent;
         const band = mark.kind === "highlight" || mark.kind === "strike";
         // Band centre with no offset; an offset moves it one for one.
         const centre = segment.baseline - layout.xHeight * 0.5;

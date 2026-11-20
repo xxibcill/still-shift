@@ -14,6 +14,7 @@ import { axisKey } from "../../typography-axes.ts";
 import {
   decorationPadding,
   decorationSegments,
+  padSegment,
 } from "../../typography-decorations.ts";
 import { sampleCurve } from "../../curve.ts";
 import { scalarKeys } from "../../motion-craft.ts";
@@ -67,11 +68,7 @@ export function nativeTypographyContentBounds(
         raster.layout,
         mark.span,
         original,
-      ).map((segment) => ({
-        ...segment,
-        x: segment.x - padding.left,
-        width: segment.width + padding.left + padding.right,
-      }));
+      ).map((segment) => padSegment(segment, padding));
       let remaining =
         segments.reduce((sum, segment) => sum + segment.width, 0) * amount;
       const thickness =

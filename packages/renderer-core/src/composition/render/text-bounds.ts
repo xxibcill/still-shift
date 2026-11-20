@@ -9,6 +9,7 @@ import { axisKey } from "../../typography-axes.ts";
 import {
   decorationPadding,
   decorationSegments,
+  padSegment,
 } from "../../typography-decorations.ts";
 import type {
   PreparedTypography,
@@ -176,10 +177,10 @@ export function animatedTextBounds(
         raster.layout,
         mark.span,
         poses,
-      ))
+      ).map((segment) => padSegment(segment, padding)))
         include({
-          left: segment.x - thickness - padding.left,
-          right: segment.x + segment.width + thickness + padding.right,
+          left: segment.x - thickness,
+          right: segment.x + segment.width + thickness,
           top: segment.baseline + (mark.offset ?? 0) - reach - padding.top,
           bottom:
             segment.baseline + (mark.offset ?? 0) + reach + padding.bottom,

@@ -46,9 +46,21 @@ export function decorationPadding(
     return { top: p[0], right: p[1], bottom: p[0], left: p[1] };
   return { top: p[0], right: p[1], bottom: p[2], left: p[3] };
 }
+/** A decoration segment widened by the horizontal padding. */
+export function padSegment<T extends { x: number; width: number }>(
+  segment: T,
+  padding: DecorationPadding,
+): T {
+  return {
+    ...segment,
+    x: segment.x - padding.left,
+    width: segment.width + padding.left + padding.right,
+  };
+}
 /**
  * The band a highlight, underline or strike paints around centre line `y`:
  * `thickness` grown by the vertical padding, about the unpadded centre.
+ * Unpadded, `top` and `bottom` are exactly `y ∓ thickness / 2`.
  */
 export function decorationBand(
   y: number,
@@ -57,7 +69,23 @@ export function decorationBand(
 ) {
   return {
     top: y - thickness / 2 - padding.top,
+    bottom: y + thickness / 2 + padding.bottom,
     height: thickness + padding.top + padding.bottom,
+  };
+}
+/**
+ * The rectangle a box decoration strokes from cap line `y`, through the
+ * descent, grown by the vertical padding (stroke width not included).
+ */
+export function decorationBoxBand(
+  y: number,
+  layout: { capHeight: number; descent: number },
+  padding: DecorationPadding,
+) {
+  return {
+    top: y - padding.top,
+    bottom: y + layout.capHeight + layout.descent + padding.bottom,
+    height: layout.capHeight + layout.descent + padding.top + padding.bottom,
   };
 }
 
@@ -154,11 +182,7 @@ export function drawTextDecorations(
       mark.span,
       poses,
       decorationGrowsWithText(mark),
-    ).map((segment) => ({
-      ...segment,
-      x: segment.x - padding.left,
-      width: segment.width + padding.left + padding.right,
-    }));
+    ).map((segment) => padSegment(segment, padding));
     const reveal = decorationReveal(mark, frame, fps);
     const fades = decorationFadesWithText(mark);
     let remaining =
@@ -189,13 +213,9 @@ export function drawTextDecorations(
       ctx.lineWidth = thickness;
       const band = decorationBand(y, thickness, padding);
       if (mark.kind === "box") {
+        const box = decorationBoxBand(y, layout, padding);
         ctx.beginPath();
-        ctx.rect(
-          segment.x,
-          y - padding.top,
-          width,
-          layout.capHeight + layout.descent + padding.top + padding.bottom,
-        );
+        ctx.rect(segment.x, box.top, width, box.height);
         ctx.stroke();
       } else if (!mark.lineStyle || mark.lineStyle === "uniform")
         ctx.fillRect(segment.x, band.top, width, band.height);
