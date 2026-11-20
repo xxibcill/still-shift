@@ -103,3 +103,13 @@ needed graph (parallel or layer mixing of keyed nodes).
 **Fallback taken.** Lowering for CG9. **Rejected for now:** a `group` property
 type in CG1 (eight-file contract change with no CG2–CG6 operator that needs
 it).
+
+**Parameter bounds (PR #77 second review, 2026-11-21).** The plan's "types and
+ranges (as zod schemas and bounds)" are the `grade.*` effect definitions in
+`@still-shift/scene-contract`; their `min`/`max` are the only authoring bounds.
+chroma-node's `PRIMARY_RANGES` (lift ±0.5, gamma 0.1–3, gain 0–4, offset ±0.5,
+contrast 0–2, saturation 0–2) were ported in CG1 but no effect read them, and
+they disagreed with `grade.primary` (lift, gamma, gain and offset per channel
+and master: lift ±1, gamma 0.1–10, gain 0–16, offset ±1; contrast 0–4,
+saturation 0–4). They are removed from the package. chroma-node's lift
+range also does not carry over: CG2 redefines lift as `v + lift·(1 − v)`.

@@ -2,8 +2,8 @@
  * Primary correction float64 reference: lift, gamma, gain, offset, contrast
  * around a pivot and Rec.709 saturation.
  *
- * Provenance: ported from chroma-node `applyPrimaryCorrection` and
- * `PRIMARY_RANGES` (`src/shared/colorEngine.ts`, b804dc0). Changes:
+ * Provenance: ported from chroma-node `applyPrimaryCorrection`
+ * (`src/shared/colorEngine.ts`, b804dc0). Changes:
  * - no clamps: chroma-node clamps the result to 0–1 and gamma's input to ≥ 0,
  *   so highlights pushed above 1 could not be recovered by a later node;
  *   gamma now leaves negative values unchanged;
@@ -11,7 +11,10 @@
  *   neutral setting is an exact identity in floating point;
  * - temperature/tint (an RGB scale there) and the controls chroma-node declares
  *   but never evaluates (hue shift, color boost, midtone detail, shadows,
- *   highlights) are not ported; CG2 defines them.
+ *   highlights) are not ported; CG2 defines them;
+ * - chroma-node's `PRIMARY_RANGES` are not kept: the bounds of the
+ *   `grade.primary` zod contract (`@still-shift/scene-contract`) are the
+ *   only authoring bounds.
  */
 import type { Rgb } from "./matrix.ts";
 import { lumaCoefficients } from "./primaries.ts";
@@ -25,24 +28,6 @@ export type PrimaryCorrection = {
   pivot: number;
   saturation: number;
 };
-
-export type NumericRange = {
-  min: number;
-  max: number;
-  neutral: number;
-  step: number;
-};
-
-/** chroma-node's bounds for the ported controls (authoring bounds, not clamps). */
-export const PRIMARY_RANGES = {
-  lift: { min: -0.5, max: 0.5, neutral: 0, step: 0.01 },
-  gamma: { min: 0.1, max: 3, neutral: 1, step: 0.01 },
-  gain: { min: 0, max: 4, neutral: 1, step: 0.01 },
-  offset: { min: -0.5, max: 0.5, neutral: 0, step: 0.01 },
-  contrast: { min: 0, max: 2, neutral: 1, step: 0.01 },
-  pivot: { min: 0, max: 1, neutral: 0.5, step: 0.01 },
-  saturation: { min: 0, max: 2, neutral: 1, step: 0.01 },
-} as const satisfies Record<keyof PrimaryCorrection, NumericRange>;
 
 export const NEUTRAL_PRIMARY: PrimaryCorrection = {
   lift: [0, 0, 0],

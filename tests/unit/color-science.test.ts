@@ -16,7 +16,6 @@ import {
   lumaCoefficients,
   NEUTRAL_PRIMARY,
   parseCubeLut,
-  PRIMARY_RANGES,
   rgbConversionMatrix,
   rgbToXyzMatrix,
   sampleLut,
@@ -324,14 +323,5 @@ describe("primary correction float64 reference (ported, unclamped)", () => {
         1e-15,
       ),
     ).toEqual([]);
-  });
-  it("keeps chroma-node's bounds for the ported controls", () => {
-    expect(PRIMARY_RANGES.gain).toEqual({
-      min: 0,
-      max: 4,
-      neutral: 1,
-      step: 0.01,
-    });
-    expect(PRIMARY_RANGES.gamma.min).toBe(0.1);
   });
 });
