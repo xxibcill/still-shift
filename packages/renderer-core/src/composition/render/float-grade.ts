@@ -5,6 +5,7 @@ import {
   applyRgbMixer,
   gradePrimaryControls,
   HIGHLIGHT_RANGE,
+  lumaCoefficients,
   perChannel,
   rgbMixer,
   SHADOW_RANGE,
@@ -25,6 +26,7 @@ import {
 } from "@still-shift/scene-contract";
 import { readRenderImageData } from "../../managed-memory-context.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
+import { assertEffectVersion, COPY_SHADER } from "./effect-shared.ts";
 import type { RenderEffect } from "./graph.ts";
 
 /**
@@ -154,7 +156,7 @@ export function floatGradeBytes(ops: readonly FloatGradeOp[], v: Rgb): Rgb {
 // --- GPU ----------------------------------------------------------------------
 
 const GLSL_COMMON = `
-const vec3 LUMA=vec3(0.2126,0.7152,0.0722);
+const vec3 LUMA=vec3(${lumaCoefficients("bt709").join(",")});
 float gSmooth(float e0,float e1,float x){float t=clamp((x-e0)/(e1-e0),0.0,1.0);return t*t*(3.0-2.0*t);}
 float gPow(float x,float p){return (x<0.0||p==1.0)?x:pow(x,p);}
 vec3 gPow3(vec3 x,vec3 p){return vec3(gPow(x.r,p.r),gPow(x.g,p.g),gPow(x.b,p.b));}
@@ -277,11 +279,7 @@ function runPlugin(
       const output = context.createSurface(input.width, input.height);
       const ops = opsFor(params);
       if (!ops.length) {
-        context.pass(
-          "void main(){pixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);}",
-          output,
-          [input],
-        );
+        context.pass(COPY_SHADER, output, [input]);
         return output;
       }
       const { fragment, uniforms } = floatGradeShader(ops);
@@ -365,11 +363,10 @@ export function floatGradeRun(
       continue;
     }
     if (!isFloatGradeEffect(effect.effect) || effect.window) break;
-    const definition = compositionEffectDefinition(effect.effect)!;
-    if (effect.version !== undefined && effect.version !== definition.version)
-      throw Error(
-        `comp-effect-version: ${effect.effect} differs from its sampled definition`,
-      );
+    assertEffectVersion(
+      effect,
+      compositionEffectDefinition(effect.effect)!.version,
+    );
     members.push(effect);
     end = i;
   }
@@ -378,4 +375,22 @@ export function floatGradeRun(
     plugin: Object.freeze(runPlugin(first.effect, () => opsOf(members))),
     end,
   };
+}
+
+/**
+ * The enabled effects of a stack in order, with each run of two or more
+ * `grade.*` effects collapsed to its first effect and the fused plugin that
+ * stands in for the whole run (both backends walk stacks with this).
+ */
+export function* effectStages(stack: readonly RenderEffect[]): Generator<{
+  effect: RenderEffect;
+  run: Readonly<CompositionEffectPlugin> | undefined;
+}> {
+  for (let index = 0; index < stack.length; index++) {
+    const effect = stack[index]!;
+    if (!effect.enabled) continue;
+    const run = floatGradeRun(stack, index);
+    if (run) index = run.end;
+    yield { effect, run: run?.plugin };
+  }
 }

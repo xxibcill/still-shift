@@ -14,6 +14,7 @@
  *   highlights) are not ported; CG2 defines them.
  */
 import type { Rgb } from "./matrix.ts";
+import { lumaCoefficients } from "./primaries.ts";
 
 export type PrimaryCorrection = {
   lift: Rgb;
@@ -53,7 +54,7 @@ export const NEUTRAL_PRIMARY: PrimaryCorrection = {
   saturation: 1,
 };
 
-const LUMA = [0.2126, 0.7152, 0.0722] as const;
+const LUMA = lumaCoefficients("bt709");
 
 export function applyPrimaryCorrection(
   rgb: Rgb,

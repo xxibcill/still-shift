@@ -7,6 +7,7 @@
  * not applied to negative values (they pass through).
  */
 import { perChannel, type Rgb } from "./matrix.ts";
+import { lumaCoefficients } from "./primaries.ts";
 
 export type Cdl = {
   slope: Rgb;
@@ -20,7 +21,7 @@ export const NEUTRAL_CDL: Cdl = {
   power: [1, 1, 1],
   saturation: 1,
 };
-const LUMA = [0.2126, 0.7152, 0.0722] as const;
+const LUMA = lumaCoefficients("bt709");
 const clamp01 = (v: number) => Math.min(1, Math.max(0, v));
 
 export function applyCdl(

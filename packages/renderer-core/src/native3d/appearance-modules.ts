@@ -386,6 +386,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../composition/render/effect-plugins.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/composition/render/effect-shared.ts",
+    url: new URL("../composition/render/effect-shared.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/composition/render/effect-window.ts",
     url: new URL("../composition/render/effect-window.ts", import.meta.url),
   },

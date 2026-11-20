@@ -16,10 +16,14 @@ import {
   type Mat3,
   type Rgb,
 } from "./matrix.ts";
-import { chromaticAdaptationMatrix, rgbToXyzMatrix } from "./primaries.ts";
+import {
+  chromaticAdaptationMatrix,
+  lumaCoefficients,
+  rgbToXyzMatrix,
+} from "./primaries.ts";
 import { transferFunction } from "./transfer.ts";
 
-const LUMA = [0.2126, 0.7152, 0.0722] as const;
+const LUMA = lumaCoefficients("bt709");
 const luma = (v: readonly number[]) =>
   v[0]! * LUMA[0] + v[1]! * LUMA[1] + v[2]! * LUMA[2];
 const smoothstep = (e0: number, e1: number, x: number) => {
