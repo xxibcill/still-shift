@@ -42,8 +42,10 @@ export type TextLegibilityCode = (typeof TEXT_LEGIBILITY_CODES)[number];
  * ET6b lint policy profiles. `editorial-title` is opt-in: it turns on the
  * legibility rules with the treated-edge contrast measure and size-split
  * targets, and counts slow one-direction hold drift as reading time (D-read).
+ * `none` lints without a profile, overriding one saved in the composition's
+ * `metadata.readingPolicy` (lint merges the policy over it key by key).
  */
-export const COMPOSITION_LINT_PROFILES = ["editorial-title"] as const;
+export const COMPOSITION_LINT_PROFILES = ["editorial-title", "none"] as const;
 export type CompositionLintProfile = (typeof COMPOSITION_LINT_PROFILES)[number];
 /** ET3 measures glyph interiors; ET6b's `treated-edge` credits outlines and halos. */
 export const TEXT_CONTRAST_METHODS = [
@@ -280,7 +282,10 @@ export const CompositionQualityPolicySchema = z
      * at which `text-off-canvas` is reported (default 0.05).
      */
     textOffCanvasFraction: positive.max(1).optional(),
-    /** ET6b: an opt-in bundle of defaults; see `COMPOSITION_LINT_PROFILES`. */
+    /**
+     * ET6b: an opt-in bundle of defaults, or `none` to lint without a saved
+     * one; see `COMPOSITION_LINT_PROFILES`.
+     */
     profile: z.enum(COMPOSITION_LINT_PROFILES).optional(),
     /**
      * ET6b reading rule (D-read): slow, steady one-direction motion counts as

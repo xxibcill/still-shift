@@ -169,7 +169,7 @@
           "exclusiveMinimum": 0,
           "maximum": 1
         },
-        "profile": { "type": "string", "enum": ["editorial-title"] },
+        "profile": { "type": "string", "enum": ["editorial-title", "none"] },
         "readingMotion": {
           "type": "object",
           "properties": {
@@ -707,7 +707,7 @@
           "exclusiveMinimum": 0,
           "maximum": 1
         },
-        "profile": { "type": "string", "enum": ["editorial-title"] },
+        "profile": { "type": "string", "enum": ["editorial-title", "none"] },
         "readingMotion": {
           "type": "object",
           "properties": {

@@ -7,6 +7,7 @@ import { describe, expect, it } from "vitest";
 import type { Composition } from "@still-shift/scene-contract";
 import {
   CompositionQualityPolicySchema,
+  declaresTextLegibility,
   EDITORIAL_TITLE_PROFILE,
   resolveCompositionQualityPolicy,
   type TextGlyphMotion,
@@ -91,6 +92,30 @@ describe("policy", () => {
       contrast: 2.5,
     });
     expect(resolved.textLegibility?.contrastPercentile).toBe(0.1);
+  });
+  it("lets `none` override a profile saved in the composition (PR #76 review, finding 4)", () => {
+    const saved = title({
+      metadata: { readingPolicy: { profile: "editorial-title" } },
+    } as Partial<Composition>);
+    expect(declaresTextLegibility({}, saved.metadata?.readingPolicy)).toBe(
+      true,
+    );
+    expect(resolveCompositionQualityPolicy(saved, {})).toMatchObject({
+      profile: "editorial-title",
+      readingMotion: EDITORIAL_TITLE_PROFILE.readingMotion,
+    });
+    expect(
+      declaresTextLegibility(
+        { profile: "none" },
+        saved.metadata?.readingPolicy,
+      ),
+    ).toBe(false);
+    const off = resolveCompositionQualityPolicy(saved, { profile: "none" });
+    expect(off.readingMotion).toBeUndefined();
+    expect(off.textLegibility).toBeUndefined();
+    const report = analyzeCompositionQuality(saved, { profile: "none" });
+    expect(report).not.toHaveProperty("profile");
+    expect(report).not.toHaveProperty("readingMotion");
   });
   it("rejects unknown profiles", () => {
     expect(

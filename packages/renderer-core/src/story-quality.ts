@@ -533,7 +533,9 @@ export function analyzeCompositionQuality(
     },
     ...(readingDeclarations.length ? { readingDeclarations } : {}),
     ...(physicalProofHolds.length ? { physicalProofHolds } : {}),
-    ...(resolved.profile ? { profile: resolved.profile } : {}),
+    ...(resolved.profile === "editorial-title"
+      ? { profile: resolved.profile }
+      : {}),
     ...(resolved.readingMotion
       ? {
           readingMotion: {

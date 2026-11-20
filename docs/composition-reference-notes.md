@@ -2237,6 +2237,8 @@ the 7 s 1080×1920 proof clip, see the
 `"profile": "editorial-title"` in the lint policy or the saved
 `metadata.readingPolicy`, or `--profile editorial-title`, opts into settings
 for display titles over video. Without it, reports are unchanged.
+`"profile": "none"` in the lint policy, or `--profile none`, lints without a
+profile saved in the composition.
 
 ```sh
 pnpm --silent still-shift comp lint --input title.ts --pixels true --profile editorial-title

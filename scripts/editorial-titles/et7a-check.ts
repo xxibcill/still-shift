@@ -11,7 +11,7 @@
 //   3. `comp lint --pixels true --profile editorial-title --font-coverage strict`
 //      (ET6b: the treated-edge contrast measure, size-split targets and the
 //      D-read reading rule; `--profile none` lints with the ET3 defaults,
-//      `--legibility true`);
+//      `--profile none --legibility true`, even over a saved profile);
 //   4. entrance, hold and exit contact sheets from the render, at native size
 //      and at phone scale (360×640 per frame), taken at the candidate's
 //      `build`, `hold` and `exit` markers;
@@ -303,7 +303,7 @@ async function lintInto(
   const strict = ["--font-coverage", "strict"];
   const profile =
     values.profile === "none"
-      ? ["--legibility", "true"]
+      ? ["--profile", "none", "--legibility", "true"]
       : ["--profile", values.profile!];
   // ET6b: lint without the saved legibility waivers. A policy file replaces
   // the saved `textLegibility` as a whole, so it keeps the rest of it.

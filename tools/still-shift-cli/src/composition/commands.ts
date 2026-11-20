@@ -87,7 +87,7 @@ function fontCoverageOption(values: Map<string, string>) {
     );
   return value as "legacy" | "strict" | undefined;
 }
-/** ET6b: `--profile editorial-title`. */
+/** ET6b: `--profile editorial-title`, or `none` to override a saved profile. */
 function lintProfileOption(values: Map<string, string>) {
   const value = values.get("profile");
   if (
@@ -439,7 +439,8 @@ export async function runCompositionCommand(
             JSON.parse(await readFile(resolve(path), "utf8")),
           )
         : {};
-      // ET6b: `--profile editorial-title` opts into the profile's defaults.
+      // ET6b: `--profile editorial-title` opts into the profile's defaults;
+      // `--profile none` lints without one saved in the composition.
       const filePolicy = profile ? { ...loadedPolicy, profile } : loadedPolicy;
       return await withOwnedSignals("lint", io, async (signal) => {
         const program = await loadProgram(input, { signal });

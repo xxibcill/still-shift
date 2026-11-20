@@ -43,10 +43,11 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32. Committed, not pushed, no PR (push only on the owner's request).
+- **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32. In review as [PR #76](https://github.com/xxibcill/still-shift/pull/76).
   - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
   - **Owner gate D-level (done 2026-11-20):** after the local-only variant sheets, the owner answered "Confirm 1.5:1": display text needs 1.5:1 at the median edge (lowest accepted candidate 1.63; untreated or hairline-outlined display text 1.23).
   - **EC:** the Canvas drop shadow now computes only where it can paint (byte-identical; all 16 candidate renders match Phase 1). Halo fixture render 36.0 → 8.9 s, lint 54.9 → 7.9 s.
+  - **PR #76 review (2026-11-20):** four findings fixed, one commit each (hollow text read only while its stroke is drawn; one condition for hollow reading; occluders keep fill alpha; `--profile none`).
   - **Known limits:** WCAG luminance cannot credit hue (a02's crimson "&" over black); fully invisible text has no reading window and is not reported; the reading rule needs pixel lint for text-animator motion.
   - Next: the owner supplies an owned or licensed clip (D-auth) for Phase 3. Records: [Phase 2 results](./editorial-typography-phase2-results.json).
 
@@ -125,6 +126,14 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-20 — Editorial titles Phase 2: PR #76 review fixes
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-phase2` (from b96a1daf)
+- **Scope:** [PR #76 review](https://github.com/xxibcill/still-shift/pull/76#pullrequestreview-5994916584), four findings, one commit each. The EC shadow region was checked and is unchanged.
+- **Done:** (1) outline-only text counts as on screen only on frames its stroke is drawn: glyph poses' `strokeWidth` in pixel lint, else a strict reading of the animator declaration (the repro, a hollow title stroked at frame 90 of 96, had 3.75 s of reading time and no finding); (2) `readsOutlinedText` (the `treated-edge` measure) is the one condition for hollow reading in both reading time and legibility; (3) occluders above keep their fill alpha in the ring mask, so a hollow title above covers only its outline; (4) `profile: "none"` / `--profile none` overrides a saved profile (reports omit `none`).
+- **Results:** new unit tests fail on b96a1daf and pass; `tsc`, ESLint, Prettier and `schema:check` pass. Browser groups editorial-titles-phase2, editorial-titles-phase1, composition-quality and composition-effects pass (Node 24.16, not the pinned 22.23.1). Not run: full `pnpm check`, release checks, WebGL2.
+- **Open / next:** owner review of the fixes; Phase 3 still waits on D-auth.
 
 ### 2026-11-20 — Editorial titles Phase 2: display level confirmed
 
