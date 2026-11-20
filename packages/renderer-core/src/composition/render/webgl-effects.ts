@@ -1245,7 +1245,9 @@ ${FLOAT32_RATIONAL_SUM}
                   glowColor: builtinArray(
                     phase,
                     ((p.color as Rgba | undefined) ?? [1, 1, 1, 1]).map(
-                      (value) => Math.round(value * 255) / 255,
+                      // Clamped like Canvas's glowColor().
+                      (value) =>
+                        Math.round(Math.max(0, Math.min(1, value)) * 255) / 255,
                     ),
                   ),
                 }),
