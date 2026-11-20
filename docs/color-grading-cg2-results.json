@@ -3,7 +3,7 @@
   "milestone": "CG2",
   "title": "Color grading engine: float grade stage and primary corrections",
   "date": "2026-11-20",
-  "branch": "codex/color-grading-cg0",
+  "branch": "codex/color-grading-cg0-cg2",
   "base": "main 894c9d32 (CG2 continues after CG0 and CG1 on the same branch)",
   "plan": "docs/color-grading-engine-plan.md#cg2--float-grade-stage-and-primary-corrections",
   "environment": {

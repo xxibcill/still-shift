@@ -3,7 +3,7 @@
   "milestone": "CG1",
   "title": "Color grading engine: color-science core and contract design",
   "date": "2026-11-20",
-  "branch": "codex/color-grading-cg0",
+  "branch": "codex/color-grading-cg0-cg2",
   "base": "main 894c9d32 (CG1 continues on the CG0 branch, after CG0's commits)",
   "plan": "docs/color-grading-engine-plan.md#cg1--color-science-core-and-contract-design",
   "decisions": "docs/color-grading-cg1-decisions.md",

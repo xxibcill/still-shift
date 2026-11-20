@@ -2,7 +2,7 @@
 
 Date: 2026-11-16; re-checked against `main` 894c9d32 on 2026-11-20. Status:
 **CGA merged on `main` (PR #70); the owner asked to continue the whole upgrade
-(2026-11-20); CG0 in progress on `codex/color-grading-cg0`.** The owner's stated
+(2026-11-20); CG0–CG2 done on `codex/color-grading-cg0-cg2` (stopping point after CG2).** The owner's stated
 minimum need was the [fast track (CGA)](#fast-track-the-minimum-need); CG0–CG15
 are the long-range upgrade, re-scoped in
 [re-check against `main`](#re-check-against-main-2026-11-20).
@@ -496,7 +496,7 @@ outputs need a recorded baseline before a second pipeline is added.
 - Record the current behavior of the ten `color.*` effects and of
   `comp lint --pixels` on a native-video fixture.
 
-**Checks** (2026-11-20, `codex/color-grading-cg0`; numbers in
+**Checks** (2026-11-20, `codex/color-grading-cg0-cg2`; numbers in
 [CG0 results](./color-grading-cg0-results.json) and the
 [fixture README](../benchmarks/fixtures/color/cg0/README.md))
 
@@ -534,7 +534,7 @@ and the three contract questions decide the shape of everything after.
   structured effect parameters (decision 4).
 - Write the provenance record (ported file → chroma-node commit → license).
 
-**Checks** (2026-11-20, `codex/color-grading-cg0`; numbers in
+**Checks** (2026-11-20, `codex/color-grading-cg0-cg2`; numbers in
 [CG1 results](./color-grading-cg1-results.json), decisions in
 [CG1 decisions](./color-grading-cg1-decisions.md), provenance in
 [`PROVENANCE.md`](../packages/color-science/PROVENANCE.md))
@@ -577,7 +577,7 @@ unclamped pipeline that the remaining operators run in.
 - All parameters animatable; works on video, sequence, image, precomp and
   adjustment layers.
 
-**Checks** (2026-11-20, `codex/color-grading-cg0`; numbers in
+**Checks** (2026-11-20, `codex/color-grading-cg0-cg2`; numbers in
 [CG2 results](./color-grading-cg2-results.json); operators in
 [float grade stage](./composition-effect-plugins.md#float-grade-stage-cg2))
 
