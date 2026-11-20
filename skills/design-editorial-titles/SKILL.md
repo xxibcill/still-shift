@@ -216,7 +216,7 @@ the candidate too, so any lint of it uses the same rules:
      outlined letter against the footage. A word scores the better edge. Text
      at least 24 px tall on a 360 px phone (48 px at 720, 72 px at 1080) is
      display text and needs the display level (`EDITORIAL_TITLE_PROFILE` in
-     the lint policy; 1.5:1, proposed and pending the owner) at the median of its
+     the lint policy; 1.5:1, confirmed by the owner) at the median of its
      edge; smaller text needs 4.5:1 at its weakest 5%.
    - Labels (small text): put them on a box; the box is their backdrop.
    - Display text below the level: give it an outline of at least

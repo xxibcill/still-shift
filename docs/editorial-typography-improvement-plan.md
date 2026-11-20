@@ -13,8 +13,8 @@ yes"), so the success measure is met on the local-only reels (D-auth open;
 ([results](./editorial-typography-et6a-results.json)); colour accuracy
 (D-colour) merged as PR #72. Remaining work runs in three phases
 ([below](#remaining-phases-2026-11-20)); Phase 1 merged as PR #74/#75;
-Phase 2 (ET6b, EC) is on `codex/editorial-titles-phase2`, waiting for the
-owner to confirm the display level.** ET0
+Phase 2 (ET6b, EC) is on `codex/editorial-titles-phase2`; the owner confirmed
+its display level (D-level, 1.5:1). Next: the owner's clip for Phase 3.** ET0
 re-baselined every finding on `main` (98a92e92); see
 [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
@@ -126,7 +126,7 @@ order did not, for these reasons.
 | P1   | Phase 1: corrected re-review and small fixes      | —        | ET6a, CA                     | 1 session; actual 1 session                | Merged (PR #74, #75)      |
 | ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67) |
 | ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Phase 3: reduce or drop   |
-| ET6b | Editorial title lint profile                      | O7       | Phase 1 owner gate           | 1–2; actual 1 session (with EC)            | Phase 2; owner gate next  |
+| ET6b | Editorial title lint profile                      | O7       | Phase 1 owner gate           | 1–2; actual 1 session (with EC)            | Phase 2; level confirmed  |
 | ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                  |
 | ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Phase 3                   |
 | ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                  |
@@ -190,7 +190,8 @@ Still deferred: ET7b, ET5c and D-home.
   - The proof T1–T3 holds pass reading time (O7 gone), at 0.16–0.88
     letter-heights per second.
   - The default lint is byte-identical to `main`.
-  - The owner confirms the level on weakened-variant sheets (local only).
+  - Owner gate (done 2026-11-20): after the weakened-variant sheets (local
+    only), the owner answered "Confirm 1.5:1" (D-level).
 - **EC.** The Canvas drop shadow blurred and composited the whole layer
   surface in JavaScript. It now works only where it can paint, with
   byte-identical output. All 16 candidate renders match Phase 1, and the
@@ -899,8 +900,9 @@ also need an editorial setting (ET3-D1).
       baselines and composition-quality pass.)
 - [x] `pnpm check:fast`, `pnpm test:browser:composition-quality` (and the
       other groups listed in the Phase 2 results).
-- [ ] **Owner gate:** confirm the display level (1.5:1 at the median edge)
-      on the near-threshold and weakened variant sheets.
+- [x] **Owner gate:** confirm the display level (1.5:1 at the median edge)
+      on the near-threshold and weakened variant sheets. (Done 2026-11-20:
+      "Confirm 1.5:1".)
 
 **ET6b outcome (2026-11-20):** profile, measure and calibration as in the
 [Phase 2 results](./editorial-typography-phase2-results.json). Two
@@ -1007,8 +1009,8 @@ All are the owner's. G1 collects them.
 | ID       | Decision                                                                                                                                   | Needed by | Recommendation                                                                                                                                                                                               |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | D-view   | Visual acceptance of proof T1, T2, T3                                                                                                      | G1        | **Decided (G1):** all rejected on style; target the owner's references                                                                                                                                       |
-| ET3-D1   | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level)                                                    | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary (24 px at 360 px) and proposes 1.5:1 at the median edge (D-level)                 |
-| D-level  | ET6b display level: 1.5:1 at the median of each display word's edge, from the 16 accepted candidates (lowest 1.63) with a margin           | Phase 2   | Confirm on the variant sheets, or name the variant where readability breaks                                                                                                                                  |
+| ET3-D1   | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level)                                                    | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary (24 px at 360 px) and 1.5:1 at the median edge (D-level, confirmed)               |
+| D-level  | ET6b display level: 1.5:1 at the median of each display word's edge, from the 16 accepted candidates (lowest 1.63) with a margin           | Phase 2   | **Decided (2026-11-20):** "Confirm 1.5:1", after the variant sheets                                                                                                                                          |
 | ET3-D2   | Phone-scale floor: 6 px x-height at 360 px                                                                                                 | G1, ET6b  | **Decided (G1):** keep                                                                                                                                                                                       |
 | D-meas   | Success measure for the pilot                                                                                                              | G1        | **Decided (G1):** 3 of 8 accepted per clip, on two clips                                                                                                                                                     |
 | D-input  | One authorized vertical clip; fonts to pin (open-licence list or licensed files)                                                           | G1, ET7a  | **Decided (G1):** fonts are the list plus popular free Thai families; clips are the owner's reels, local only                                                                                                |

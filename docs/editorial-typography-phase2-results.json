@@ -4,11 +4,11 @@
   "milestone": "Editorial titles Phase 2: ET6b editorial-title lint profile and EC effect render cost",
   "plan": "docs/editorial-typography-improvement-plan.md#remaining-phases-2026-11-20",
   "date": "2026-11-20",
-  "agent": "Claude Code (Opus 5.5); visual judgements and the proposed level are the agent's and are not owner acceptance",
+  "agent": "Claude Code (Opus 5.5); visual judgements are the agent's; the display level is confirmed by the owner (ownerReview)",
   "branch": "codex/editorial-titles-phase2",
   "base": "main 894c9d32 (Merge PR #75)",
   "toolchain": "Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
-  "status": "ET6b and EC implemented and committed; all 16 ET7a candidates pass the profile with no waivers. Pending owner decision D-level: confirm the proposed display level (1.5:1 at the median edge) on the variant sheets. Not pushed; no PR.",
+  "status": "ET6b and EC implemented and committed; all 16 ET7a candidates pass the profile with no waivers. Owner gate D-level done: the owner confirmed the display level (1.5:1 at the median edge). Not pushed; no PR.",
   "constraints": "The ET7a reels are third-party and local only: no reel, reel file name, frame, render or sheet is committed. Only sources, hashes, measured values and verdicts are recorded here. packages/ gains no taste or footage analysis: the profile is a policy (thresholds and a measure), chosen by the composition.",
   "et6b": {
     "surface": {
@@ -813,7 +813,7 @@
     "proposedDisplayLevel": {
       "value": 1.5,
       "at": "median edge",
-      "label": "agent's proposal, not owner acceptance",
+      "label": "proposed by the agent, confirmed by the owner (ownerReview)",
       "basis": "Lowest of the 16 accepted candidates at the median: 1.63 (a02 'ital'), margin 0.13; untreated or hairline-outlined display text over matching footage: 1.23, margin 0.27. Next lowest accepted: a03 script 2.31, b05 l2 2.83.",
       "ownerQuestion": "On the variant sheets, in which rows does the named layer stop reading easily on a phone? Confirm 1.5:1, or name the break."
     },
@@ -2992,8 +2992,11 @@
     "WebGL2 with the profile on the candidates (Canvas only)"
   ],
   "ownerReview": {
-    "status": "pending",
-    "decision": "D-level: confirm the display level 1.5:1 at the median edge, or name the variant where readability breaks",
+    "date": "2026-11-20",
+    "status": "done",
+    "ownerWords": "Confirm 1.5:1",
+    "decision": "D-level: display text needs 1.5:1 at the median of each word's edge; small text keeps 4.5:1 at the 5th percentile.",
+    "scope": "One answer after the near-threshold and weakened variant sheets (local only; five candidates, one per treatment type). No variant was named as the point where readability breaks.",
     "sheets": "benchmarks/results/editorial-titles-phase2-review/ in the primary checkout (local only)"
   }
 }

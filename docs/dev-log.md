@@ -45,10 +45,10 @@ still hold before relying on them.
 
 - **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32. Committed, not pushed, no PR (push only on the owner's request).
   - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
-  - **Pending owner decision D-level:** the proposed display level, 1.5:1 at the median edge (lowest accepted candidate 1.63; untreated or hairline-outlined display text 1.23). Confirm it on the local-only variant sheets (`benchmarks/results/editorial-titles-phase2/variants/` in the Phase 2 worktree), or name the variant where readability breaks.
+  - **Owner gate D-level (done 2026-11-20):** after the local-only variant sheets, the owner answered "Confirm 1.5:1": display text needs 1.5:1 at the median edge (lowest accepted candidate 1.63; untreated or hairline-outlined display text 1.23).
   - **EC:** the Canvas drop shadow now computes only where it can paint (byte-identical; all 16 candidate renders match Phase 1). Halo fixture render 36.0 → 8.9 s, lint 54.9 → 7.9 s.
   - **Known limits:** WCAG luminance cannot credit hue (a02's crimson "&" over black); fully invisible text has no reading window and is not reported; the reading rule needs pixel lint for text-animator motion.
-  - Next: owner gate (D-level), then the owned or licensed clip (D-auth) for Phase 3. Records: [Phase 2 results](./editorial-typography-phase2-results.json).
+  - Next: the owner supplies an owned or licensed clip (D-auth) for Phase 3. Records: [Phase 2 results](./editorial-typography-phase2-results.json).
 
 - **Editorial titles Phase 1 (2026-11-20):** on `codex/editorial-titles-phase1` from `main` 760a18a1, merged as [PR #74](https://github.com/xxibcill/still-shift/pull/74). The owner split the remaining work into three phases ([plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20)).
   - **Re-review:** all 16 ET7a candidates re-rendered unchanged over the corrected (darker) footage; sources and exported compositions identical, every render hash changed, all pass strict coverage and lint. Agent judgement (not acceptance): none visibly worse, b02 slightly worse ("BLACK" over darker trousers).
@@ -125,6 +125,12 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-20 — Editorial titles Phase 2: display level confirmed
+
+- The owner reviewed the ET6b variant sheets and answered "Confirm 1.5:1" (decision D-level).
+- The profile default is unchanged (1.5:1 at the median edge). The records now say "confirmed" instead of "proposed", in the results, plan, reference, skill and code comment.
+- Next: the owned or licensed clip for Phase 3 (D-auth).
 
 ### 2026-11-20 — Editorial titles Phase 2: ET6b profile and EC
 

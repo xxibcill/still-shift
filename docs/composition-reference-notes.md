@@ -2310,10 +2310,10 @@ fill alpha is 0), is read by its outline.
 size (spans included) at the layer's scale is at least `minimumSize` px at
 the review width (24, WCAG's large-text size) uses the display level
 `contrast`; smaller text keeps `small` (4.5:1). The role targets do not apply.
-The display level (1.5:1 at the median edge) is proposed from the 16 ET7a
+The display level (1.5:1 at the median edge) comes from the 16 ET7a
 candidates the owner accepted (lowest 1.63:1) with a margin, above untreated
 or hairline-outlined display text over matching footage (about 1.2:1); the
-owner confirms it on near-threshold variants (see
+owner confirmed it on near-threshold variants (decision D-level; see
 [Phase 2 results](./editorial-typography-phase2-results.json)). The
 report version is `composition-text-legibility-treated-edge-1`.
 

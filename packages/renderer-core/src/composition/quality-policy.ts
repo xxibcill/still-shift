@@ -355,8 +355,8 @@ export const EDITORIAL_TITLE_PROFILE = {
     contrastMethod: "treated-edge" as const,
     // Proposed from the 16 accepted ET7a candidates (lowest 1.63:1 at the
     // median edge) with a margin; untreated or hairline-outlined display text
-    // over matching footage measures about 1.2:1. Pending the owner's
-    // confirmation on the near-threshold variants.
+    // over matching footage measures about 1.2:1. The owner confirmed it on
+    // the near-threshold variants (D-level, 2026-11-20: "Confirm 1.5:1").
     display: { minimumSize: 24, contrast: 1.5, small: 4.5, percentile: 0.5 },
   },
 } as const;
