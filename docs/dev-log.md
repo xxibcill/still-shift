@@ -46,7 +46,7 @@ still hold before relying on them.
 - **Editorial titles Phase 1 (2026-11-20):** on `codex/editorial-titles-phase1` from `main` 760a18a1, in review as [PR #74](https://github.com/xxibcill/still-shift/pull/74). The owner split the remaining work into three phases ([plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20)).
   - **Re-review:** all 16 ET7a candidates re-rendered unchanged over the corrected (darker) footage; sources and exported compositions identical, every render hash changed, all pass strict coverage and lint. Agent judgement (not acceptance): none visibly worse, b02 slightly worse ("BLACK" over darker trousers).
   - **Fixes (opt-in or invisible; no baseline changes):** Prompt Black loads (only identity names count against the name budget); span styles resolve axes against their own font; decoration `growWithText` and `padding`; `light.glow` 1.1.0 `color` + `tint`.
-  - **Owner gate (pending):** review the sheets in the primary checkout's git-ignored `benchmarks/results/editorial-titles-phase1-review/` and set ET6b's display-contrast level. Then Phase 2 (ET6b + EC); then the owner's licensed clip (D-auth) for Phase 3.
+  - **Owner gate (done 2026-11-20):** the owner reviewed the corrected sheets and answered "all yes": 16/16 accepted, success measure still met (D-auth open). No title named weak, so ET6b's display level must pass all 16. Next: Phase 2 (ET6b + EC), then the owner's licensed clip (D-auth) for Phase 3.
   - **Review (2026-11-20):** [PR #74 review](https://github.com/xxibcill/still-shift/pull/74#pullrequestreview-5989610756), 17 findings. Ten fixed on the branch, one commit each (growWithText baseline, glow `color` needs `tint`, shared padding/glow/font-axes helpers, required axes lookup, ET0 re-record); seven unchanged with reasons in the results. The PR head's ET0 `--check` had failed on a message change; re-recorded, outcomes unchanged.
   - Records: [Phase 1 results](./editorial-typography-phase1-results.json).
 
@@ -118,6 +118,14 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-20 — Editorial titles Phase 1: owner gate passed
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-phase1` ([PR #74](https://github.com/xxibcill/still-shift/pull/74)).
+- **Scope:** record the owner's review of the corrected re-render sheets.
+- **Results:** owner: "all yes" (one answer, all 16, no comments). Success measure still met on corrected footage (8/8 per reel; D-auth open). The agent's "b02 slightly worse" stays an agent judgement.
+- **Open / next:** Phase 2. ET6b's display level must pass all 16; propose it from their fill-vs-ring contrast and confirm with the owner on near-threshold and weakened variants (no owner-marked negative yet).
+- **Records:** [Phase 1 results](./editorial-typography-phase1-results.json) (`ownerReview`), [plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20).
 
 ### 2026-11-20 — Editorial titles Phase 1: PR #74 review fixes
 
