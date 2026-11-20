@@ -221,11 +221,10 @@ render, sheets); the second adds `comp lint --pixels true --legibility true
 
 ## Known pitfalls (from the ET7a pilot)
 
-- Prompt Black is pinned but rejected by `font-metadata`: its name table
-  carries the full licence (8.7 KB) over the 2 KB name budget. Use Kanit
-  Black or Mitr instead. Run
-  `research/editorial-titles-et7a/probes/all-fonts.ts` after pinning new
-  faces.
+- Run `research/editorial-titles-et7a/probes/all-fonts.ts` after pinning
+  new faces. (Prompt Black, rejected in ET7a for its 8.7 KB embedded
+  licence, loads since Phase 1: only identity names count against the
+  2 KB name budget.)
 - A span's named style inherits the base style's `axes`; give a span style
   for a font without that axis `axes: {}`.
 - Drop shadows and halos make Canvas renders about ten times slower (a 7 s

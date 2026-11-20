@@ -108,6 +108,14 @@ export function readTag(data: DataView, at: number) {
   );
 }
 
+/**
+ * Name IDs the identity reads: family (1), subfamily (2), full name (4),
+ * PostScript name (6) and typographic family/subfamily (16, 17). Other
+ * records (copyright, licence text, descriptions) are extent-checked but not
+ * decoded, so a long embedded licence does not count against `nameBytes`.
+ */
+const IDENTITY_NAME_IDS: ReadonlySet<number> = new Set([1, 2, 4, 6, 16, 17]);
+
 export function readFontNames(tables: SfntTables) {
   const table = requireSfntTable(tables, "name", 6);
   const format = table.getUint16(0),
@@ -130,10 +138,9 @@ export function readFontNames(tables: SfntTables) {
       id = table.getUint16(at + 6);
     const length = table.getUint16(at + 8),
       offset = strings + table.getUint16(at + 10);
-    if (
-      length > FONT_IDENTITY_LIMITS.nameBytes ||
-      offset + length > table.byteLength
-    )
+    if (offset + length > table.byteLength) fail("invalid name string extent");
+    if (!IDENTITY_NAME_IDS.has(id)) continue;
+    if (length > FONT_IDENTITY_LIMITS.nameBytes)
       fail("invalid name string extent");
     const unicode =
       platform === 0 || (platform === 3 && (encoding === 1 || encoding === 10));
