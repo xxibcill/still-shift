@@ -1,0 +1,2999 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-phase2",
+  "milestone": "Editorial titles Phase 2: ET6b editorial-title lint profile and EC effect render cost",
+  "plan": "docs/editorial-typography-improvement-plan.md#remaining-phases-2026-11-20",
+  "date": "2026-11-20",
+  "agent": "Claude Code (Opus 5.5); visual judgements and the proposed level are the agent's and are not owner acceptance",
+  "branch": "codex/editorial-titles-phase2",
+  "base": "main 894c9d32 (Merge PR #75)",
+  "toolchain": "Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
+  "status": "ET6b and EC implemented and committed; all 16 ET7a candidates pass the profile with no waivers. Pending owner decision D-level: confirm the proposed display level (1.5:1 at the median edge) on the variant sheets. Not pushed; no PR.",
+  "constraints": "The ET7a reels are third-party and local only: no reel, reel file name, frame, render or sheet is committed. Only sources, hashes, measured values and verdicts are recorded here. packages/ gains no taste or footage analysis: the profile is a policy (thresholds and a measure), chosen by the composition.",
+  "et6b": {
+    "surface": {
+      "optIn": "profile: \"editorial-title\" in the lint policy or saved metadata.readingPolicy, or comp lint --profile editorial-title. Turns on the legibility rules like --legibility true. Without it every report is unchanged.",
+      "defaults": {
+        "readingMotion": {
+          "velocity": 1,
+          "displacement": 2,
+          "units": "letter-heights (shaped cap height at the layer's scale)"
+        },
+        "textLegibility": {
+          "contrastMethod": "treated-edge",
+          "display": {
+            "minimumSize": 24,
+            "contrast": 1.5,
+            "small": 4.5,
+            "percentile": 0.5
+          },
+          "reviewWidth": "360 (unchanged default)",
+          "minimumXHeight": "6 (unchanged default, ET3-D2)"
+        }
+      },
+      "reportVersions": {
+        "readingMotion": "composition-reading-motion-1",
+        "textLegibility": "composition-text-legibility-treated-edge-1 (glyph-interior reports keep composition-text-legibility-1)"
+      },
+      "schemas": "docs/schemas/mechanism/blender-production-rendered-visual.schema.json regenerated: the embedded lint policy gains the optional profile, readingMotion, textLegibility.contrastMethod and textLegibility.display fields."
+    },
+    "readingRule": {
+      "decision": "D-read (owner, 2026-11-16): \"Gentle drift is fine\".",
+      "method": "Pixel lint takes each visible glyph's centre and the two ends of its advance from the renderer's own text-animator poses (prepared layout), through the layer matrix. A reading run continues while every point moves <= velocity letter-heights/s, has travelled <= displacement letter-heights since the run began, and has not turned > 90 degrees from its first direction in the run (steps < 0.1 px carry no direction). Glyph blur > 0.5 px or glyph opacity below reading opacity end a run. The words-per-second requirement is unchanged. Without glyph evidence (state lint, system fonts) the layer corners are followed with letter = 0.7 font size and any text-animator change still ends a run.",
+      "calibration": "Proof T1-T3 holds (tracking +25/+30, a 14 px rise) peak at 0.16-0.88 letter-heights/s with <= 0.52 of travel on the real treatments; fast (600 px, ~4/s), jitter (+/-1 px) and spin (360 degrees) holds end runs on speed, reversal and speed. Velocity is the owner's own figure (1 letter-height/s); displacement 2 letter-heights lets a heading (1 s) use the full speed and shortens allowed speed for longer reading (a 3 s body line may move <= 0.67/s).",
+      "proofTreatments": {
+        "t1-editorial-stack": {
+          "default": {
+            "readingTime": [["headline", 0.12]],
+            "textContrast": ["folio", "headline", "kicker"],
+            "xHeightFloor": [],
+            "otherErrors": ["frozen-pixels"]
+          },
+          "profile": {
+            "readingTime": [],
+            "textContrast": ["folio", "kicker"],
+            "xHeightFloor": [],
+            "otherErrors": ["frozen-pixels"],
+            "readingMotion": [
+              {
+                "layer": "kicker",
+                "readableSeconds": 3.167,
+                "requiredSeconds": 1.333,
+                "peakSpeed": 0.163,
+                "peakTravel": 0.007,
+                "runEnds": {
+                  "speed": 6,
+                  "reversal": 0,
+                  "travel": 0,
+                  "blur": 0
+                }
+              },
+              {
+                "layer": "headline",
+                "readableSeconds": 3.792,
+                "requiredSeconds": 1,
+                "peakSpeed": 0.833,
+                "peakTravel": 0.159,
+                "runEnds": {
+                  "speed": 1,
+                  "reversal": 0,
+                  "travel": 0,
+                  "blur": 2
+                }
+              },
+              {
+                "layer": "folio",
+                "readableSeconds": 3,
+                "requiredSeconds": 1.333,
+                "peakSpeed": 0.241,
+                "peakTravel": 0.01,
+                "runEnds": {
+                  "speed": 2,
+                  "reversal": 0,
+                  "travel": 0,
+                  "blur": 0
+                }
+              }
+            ],
+            "layers": [
+              {
+                "layer": "kicker",
+                "sizeClass": "small",
+                "displaySize": 12.67,
+                "target": 4.5,
+                "contrast": 4.25
+              },
+              {
+                "layer": "headline",
+                "sizeClass": "display",
+                "displaySize": 83.33,
+                "target": 1.5,
+                "contrast": 2.74
+              },
+              {
+                "layer": "folio",
+                "sizeClass": "small",
+                "displaySize": 13.33,
+                "target": 4.5,
+                "contrast": 3.5
+              }
+            ]
+          }
+        },
+        "t2-thai-condensed-poster": {
+          "default": {
+            "readingTime": [["poster", 0.08]],
+            "textContrast": ["tag"],
+            "xHeightFloor": [],
+            "otherErrors": ["frozen-pixels"]
+          },
+          "profile": {
+            "readingTime": [],
+            "textContrast": ["sub", "tag"],
+            "xHeightFloor": [],
+            "otherErrors": ["frozen-pixels"],
+            "readingMotion": [
+              {
+                "layer": "tag",
+                "readableSeconds": 4.25,
+                "requiredSeconds": 1.333,
+                "peakSpeed": 0,
+                "peakTravel": 0,
+                "runEnds": {
+                  "speed": 0,
+                  "reversal": 0,
+                  "travel": 0,
+                  "blur": 0
+                }
+              },
+              {
+                "layer": "poster",
+                "readableSeconds": 3.375,
+                "requiredSeconds": 1,
+                "peakSpeed": 0.473,
+                "peakTravel": 0.085,
+                "runEnds": {
+                  "speed": 1,
+                  "reversal": 1,
+                  "travel": 0,
+                  "blur": 0
+                }
+              },
+              {
+                "layer": "sub",
+                "readableSeconds": 2.958,
+                "requiredSeconds": 2,
+                "peakSpeed": 0.554,
+                "peakTravel": 0.033,
+                "runEnds": {
+                  "speed": 1,
+                  "reversal": 0,
+                  "travel": 0,
+                  "blur": 0
+                }
+              }
+            ],
+            "layers": [
+              {
+                "layer": "tag",
+                "sizeClass": "small",
+                "displaySize": 12,
+                "target": 4.5,
+                "contrast": 4.3
+              },
+              {
+                "layer": "poster",
+                "sizeClass": "display",
+                "displaySize": 76.67,
+                "target": 1.5,
+                "contrast": 5.97
+              },
+              {
+                "layer": "sub",
+                "sizeClass": "small",
+                "displaySize": 21.33,
+                "target": 4.5,
+                "contrast": 4.45
+              }
+            ]
+          }
+        },
+        "t3-minimal-centered": {
+          "default": {
+            "readingTime": [["line", 0]],
+            "textContrast": ["credit"],
+            "xHeightFloor": [["credit", 5.5]],
+            "otherErrors": ["frozen-pixels"]
+          },
+          "profile": {
+            "readingTime": [],
+            "textContrast": ["credit"],
+            "xHeightFloor": [["credit", 5.5]],
+            "otherErrors": ["frozen-pixels"],
+            "readingMotion": [
+              {
+                "layer": "credit",
+                "readableSeconds": 3.125,
+                "requiredSeconds": 1,
+                "peakSpeed": 0.883,
+                "peakTravel": 0.064,
+                "runEnds": {
+                  "speed": 4,
+                  "reversal": 0,
+                  "travel": 0,
+                  "blur": 0
+                }
+              },
+              {
+                "layer": "line",
+                "readableSeconds": 3.542,
+                "requiredSeconds": 1.667,
+                "peakSpeed": 0.796,
+                "peakTravel": 0.516,
+                "runEnds": {
+                  "speed": 2,
+                  "reversal": 0,
+                  "travel": 0,
+                  "blur": 2
+                }
+              }
+            ],
+            "layers": [
+              {
+                "layer": "credit",
+                "sizeClass": "small",
+                "displaySize": 10.67,
+                "target": 4.5,
+                "contrast": 1.73
+              },
+              {
+                "layer": "line",
+                "sizeClass": "small",
+                "displaySize": 20.67,
+                "target": 4.5,
+                "contrast": 5.27
+              }
+            ]
+          }
+        }
+      },
+      "fixtures": "benchmarks/fixtures/editorial-titles/et6b-profile.ts (hold-* cases)"
+    },
+    "treatedEdgeContrast": {
+      "why": "ET3 compares each glyph pixel with the frame behind it: an outline ring counts as glyph and shadows and halos get no credit, so treated display text measured 1.0-1.9:1 while it read well.",
+      "method": "The glyph mask draws the fill in word codes and the text-animator outline in a ring code (#00ff00). Fill edge: at each fill pixel on a letter edge, mean linear luminance of the fill in a window vs every non-fill, non-anti-aliased pixel in the window (outline, halo, shadow or footage), as rendered. Outer edge: at each outline pixel on the ring's outside, the outlined letter (fill + ring) vs the pixels outside. Window half-size round(width/reviewWidth)+1 px (one review pixel past the anti-aliased edge), so a ring thinner than a phone pixel blends with the footage. Each edge's value is a percentile of its pixels; a word takes the better edge. Text layers stacked above the measured one are drawn as occluders (#0000ff) and left out, with edges against them. Hollow (outline-only) text, which samples treat as invisible, gets a reading window by its outline. No background render is needed.",
+      "occluders": "Found on a01: 'IT' read 1.38 because the script 'layer' above it covers part of it with a cream outline; with occluders 17.39, matching 'UP'.",
+      "fixtures": {
+        "hold-tracking": {
+          "default": {
+            "readingTime": [0.17],
+            "contrast": 1.02,
+            "measuredFrames": "60/96"
+          },
+          "profile": {
+            "readingTime": [],
+            "contrast": 1.02,
+            "measuredFrames": "60/96",
+            "readingMotion": {
+              "readableSeconds": 2.375,
+              "peakSpeed": 0.151,
+              "peakTravel": 0.093,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.02,
+              "outer": null
+            }
+          }
+        },
+        "hold-rise": {
+          "default": {
+            "readingTime": [0.17],
+            "contrast": 1.02,
+            "measuredFrames": "67/96"
+          },
+          "profile": {
+            "readingTime": [],
+            "contrast": 1.02,
+            "measuredFrames": "67/96",
+            "readingMotion": {
+              "readableSeconds": 2.208,
+              "peakSpeed": 0.192,
+              "peakTravel": 0.134,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.02,
+              "outer": null
+            }
+          }
+        },
+        "hold-line-track": {
+          "default": {
+            "readingTime": [0.17],
+            "contrast": 1.02,
+            "measuredFrames": "70/96"
+          },
+          "profile": {
+            "readingTime": [],
+            "contrast": 1.02,
+            "measuredFrames": "70/96",
+            "readingMotion": {
+              "readableSeconds": 2.25,
+              "peakSpeed": 0.644,
+              "peakTravel": 0.448,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.02,
+              "outer": null
+            }
+          }
+        },
+        "hold-fast": {
+          "default": {
+            "readingTime": [0.17],
+            "contrast": 1.02,
+            "measuredFrames": "52/96"
+          },
+          "profile": {
+            "readingTime": [0.54],
+            "contrast": 1.02,
+            "measuredFrames": "52/96",
+            "readingMotion": {
+              "readableSeconds": 0.542,
+              "peakSpeed": 0.841,
+              "peakTravel": 0.106,
+              "runEnds": {
+                "speed": 33,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.02,
+              "outer": null
+            }
+          }
+        },
+        "hold-jitter": {
+          "default": {
+            "readingTime": [0.17],
+            "contrast": 1.02,
+            "measuredFrames": "67/96"
+          },
+          "profile": {
+            "readingTime": [0.21],
+            "contrast": 1.02,
+            "measuredFrames": "67/96",
+            "readingMotion": {
+              "readableSeconds": 0.208,
+              "peakSpeed": 0.344,
+              "peakTravel": 0.014,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 47,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.02,
+              "outer": null
+            }
+          }
+        },
+        "hold-spin": {
+          "default": {
+            "readingTime": [0.17],
+            "contrast": 1.02,
+            "measuredFrames": "67/96"
+          },
+          "profile": {
+            "readingTime": [0.67],
+            "contrast": 1.02,
+            "measuredFrames": "67/96",
+            "readingMotion": {
+              "readableSeconds": 0.667,
+              "peakSpeed": 0.921,
+              "peakTravel": 0.154,
+              "runEnds": {
+                "speed": 27,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.02,
+              "outer": null
+            }
+          }
+        },
+        "treat-none": {
+          "default": {
+            "readingTime": [],
+            "contrast": 1.23,
+            "measuredFrames": "24/24"
+          },
+          "profile": {
+            "readingTime": [],
+            "contrast": 1.23,
+            "measuredFrames": "24/24",
+            "readingMotion": {
+              "readableSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.23,
+              "outer": null
+            }
+          }
+        },
+        "treat-outline": {
+          "default": {
+            "readingTime": [],
+            "contrast": 1.23,
+            "measuredFrames": "24/24"
+          },
+          "profile": {
+            "readingTime": [],
+            "contrast": 18.88,
+            "measuredFrames": "24/24",
+            "readingMotion": {
+              "readableSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 18.88,
+              "outer": 15.41
+            }
+          }
+        },
+        "treat-thin": {
+          "default": {
+            "readingTime": [],
+            "contrast": 1.23,
+            "measuredFrames": "24/24"
+          },
+          "profile": {
+            "readingTime": [],
+            "contrast": 1.23,
+            "measuredFrames": "24/24",
+            "readingMotion": {
+              "readableSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.23,
+              "outer": 1.01
+            }
+          }
+        },
+        "treat-halo": {
+          "default": {
+            "readingTime": [],
+            "contrast": 1.23,
+            "measuredFrames": "24/24"
+          },
+          "profile": {
+            "readingTime": [],
+            "contrast": 1.95,
+            "measuredFrames": "24/24",
+            "readingMotion": {
+              "readableSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1.95,
+              "outer": null
+            }
+          }
+        },
+        "treat-hollow": {
+          "default": {
+            "readingTime": [],
+            "contrast": null,
+            "measuredFrames": "0/0"
+          },
+          "profile": {
+            "readingTime": [],
+            "contrast": 15.41,
+            "measuredFrames": "24/24",
+            "readingMotion": {
+              "readableSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            "edges": {
+              "fill": 1,
+              "outer": 15.41
+            }
+          }
+        }
+      },
+      "percentileCalibration": {
+        "finding": "At the 5th percentile two accepted words fall below untreated text: a02 '&' (crimson over a black top; it reads by hue, which luminance cannot see) 1.04 and a06 'SUNDAY' (cream hollow outline, 'Y' over a cream lace sleeve) 1.14, against 1.23 for untreated or hairline-outlined white display text over matching footage. No level can pass all 16 and fail untreated text at the 5th or 25th percentile; at the median the accepted minimum is 1.63 and the untreated fixtures stay 1.23.",
+        "choice": "Display text is measured at the median of each word's edge (a large word reads when most of its edge is clear); small text keeps ET3's 5th percentile.",
+        "candidates": {
+          "a01-layer-it-up/script": {
+            "0.05": 6.31,
+            "0.1": 6.31,
+            "0.25": 6.31,
+            "0.5": 6.31
+          },
+          "a01-layer-it-up/caps": {
+            "0.05": 17.38,
+            "0.1": 17.39,
+            "0.25": 17.39,
+            "0.5": 17.39
+          },
+          "a02-lace-leather/ital": {
+            "0.05": 1.04,
+            "0.1": 1.09,
+            "0.25": 1.27,
+            "0.5": 1.63
+          },
+          "a02-lace-leather/wide": {
+            "0.05": 17.1,
+            "0.1": 17.21,
+            "0.25": 17.23,
+            "0.5": 17.23
+          },
+          "a03-thai-get-dressed/thai": {
+            "0.05": 6.25,
+            "0.1": 6.25,
+            "0.25": 6.25,
+            "0.5": 6.31
+          },
+          "a03-thai-get-dressed/script": {
+            "0.05": 1.6,
+            "0.1": 1.73,
+            "0.25": 2.07,
+            "0.5": 2.31
+          },
+          "a04-thai-look-slay/l1": {
+            "0.05": 8.52,
+            "0.1": 8.52,
+            "0.25": 8.61,
+            "0.5": 8.61
+          },
+          "a04-thai-look-slay/l2": {
+            "0.05": 2.51,
+            "0.1": 2.78,
+            "0.25": 3.44,
+            "0.5": 4.39
+          },
+          "a05-plaid-season/fat": {
+            "0.05": 18.72,
+            "0.1": 18.84,
+            "0.25": 18.87,
+            "0.5": 18.87
+          },
+          "a05-plaid-season/brush": {
+            "0.05": 6.25,
+            "0.1": 6.3,
+            "0.25": 6.3,
+            "0.5": 6.31
+          },
+          "a06-soft-sunday/script": {
+            "0.05": 8.16,
+            "0.1": 9.94,
+            "0.25": 9.98,
+            "0.5": 9.98
+          },
+          "a06-soft-sunday/caps": {
+            "0.05": 1.14,
+            "0.1": 1.21,
+            "0.25": 1.39,
+            "0.5": 3.69
+          },
+          "a07-black-cami-era/ital": {
+            "0.05": 1.71,
+            "0.1": 1.9,
+            "0.25": 2.34,
+            "0.5": 3.02
+          },
+          "a07-black-cami-era/caps": {
+            "0.05": 16.2,
+            "0.1": 16.37,
+            "0.25": 17.23,
+            "0.5": 17.23
+          },
+          "a08-todays-ootd/script": {
+            "0.05": 6.25,
+            "0.1": 6.25,
+            "0.25": 6.25,
+            "0.5": 6.31
+          },
+          "a08-todays-ootd/didone": {
+            "0.05": 17.29,
+            "0.1": 17.34,
+            "0.25": 17.37,
+            "0.5": 17.37
+          },
+          "b01-one-pant/caps": {
+            "0.05": 13.57,
+            "0.1": 13.57,
+            "0.25": 13.57,
+            "0.5": 13.58
+          },
+          "b01-one-pant/script": {
+            "0.05": 8.03,
+            "0.1": 8.03,
+            "0.25": 8.03,
+            "0.5": 8.04
+          },
+          "b02-brown-new-black/brown": {
+            "0.05": 2.2,
+            "0.1": 2.45,
+            "0.25": 2.92,
+            "0.5": 3.39
+          },
+          "b02-brown-new-black/mid": {
+            "0.05": 10.73,
+            "0.1": 10.73,
+            "0.25": 10.81,
+            "0.5": 10.82
+          },
+          "b02-brown-new-black/black": {
+            "0.05": 15.37,
+            "0.1": 15.37,
+            "0.25": 15.37,
+            "0.5": 15.37
+          },
+          "b03-thai-one-pant/l1": {
+            "0.05": 13.62,
+            "0.1": 13.62,
+            "0.25": 13.62,
+            "0.5": 13.63
+          },
+          "b03-thai-one-pant/l2": {
+            "0.05": 8.51,
+            "0.1": 8.51,
+            "0.25": 8.51,
+            "0.5": 8.51
+          },
+          "b03-thai-one-pant/l3": {
+            "0.05": 2.75,
+            "0.1": 2.75,
+            "0.25": 2.75,
+            "0.5": 2.77
+          },
+          "b04-golden-hour/script": {
+            "0.05": 8.32,
+            "0.1": 8.32,
+            "0.25": 8.32,
+            "0.5": 8.33
+          },
+          "b04-golden-hour/wide": {
+            "0.05": 11.83,
+            "0.1": 11.84,
+            "0.25": 11.86,
+            "0.5": 11.86
+          },
+          "b05-thai-steal-look/l1": {
+            "0.05": 6.08,
+            "0.1": 6.08,
+            "0.25": 6.08,
+            "0.5": 6.15
+          },
+          "b05-thai-steal-look/l2": {
+            "0.05": 2.28,
+            "0.1": 2.37,
+            "0.25": 2.55,
+            "0.5": 2.83
+          },
+          "b06-fit-check/marker": {
+            "0.05": 1.92,
+            "0.1": 2.01,
+            "0.25": 2.24,
+            "0.5": 5.02
+          },
+          "b06-fit-check/tag": {
+            "0.05": 6.02,
+            "0.1": 6.04,
+            "0.25": 6.09,
+            "0.5": 6.1
+          },
+          "b07-chocolate-trousers/fat": {
+            "0.05": 10.02,
+            "0.1": 10.04,
+            "0.25": 10.1,
+            "0.5": 10.1
+          },
+          "b07-chocolate-trousers/brush": {
+            "0.05": 7.45,
+            "0.1": 7.45,
+            "0.25": 7.46,
+            "0.5": 7.46
+          },
+          "b08-main-character/ital": {
+            "0.05": 2.92,
+            "0.1": 3.19,
+            "0.25": 3.89,
+            "0.5": 4.61
+          },
+          "b08-main-character/caps": {
+            "0.05": 8.37,
+            "0.1": 8.56,
+            "0.25": 9.09,
+            "0.5": 9.09
+          }
+        },
+        "fixtures": {
+          "treat-none": {
+            "0.05": 1.23,
+            "0.1": 1.23,
+            "0.25": 1.23,
+            "0.5": 1.23
+          },
+          "treat-thin": {
+            "0.05": 1.23,
+            "0.1": 1.23,
+            "0.25": 1.23,
+            "0.5": 1.23
+          },
+          "treat-halo": {
+            "0.05": 1.95,
+            "0.1": 2.11,
+            "0.25": 2.35,
+            "0.5": 2.74
+          },
+          "treat-outline": {
+            "0.05": 18.88,
+            "0.1": 18.88,
+            "0.25": 18.88,
+            "0.5": 18.88
+          },
+          "treat-hollow": {
+            "0.05": 15.41,
+            "0.1": 15.41,
+            "0.25": 15.41,
+            "0.5": 15.41
+          }
+        }
+      }
+    },
+    "sizeSplit": {
+      "decision": "ET3-D1 (G1): display text may go below 3:1; small text keeps 4.5:1.",
+      "boundary": "24 px font size at the 360 px review width (WCAG's large-text size; 48 px at 720, 72 px at 1080), using the layer's smallest span size at its smallest layer scale over the reading frames. On the pilot it separates every boxed label (12-23 px) from every heading (28-130 px)."
+    },
+    "phoneFloor": "ET3-D2 kept: 6 px x-height at 360 px. Lowest across the 16: a07 label 6.31 px.",
+    "proposedDisplayLevel": {
+      "value": 1.5,
+      "at": "median edge",
+      "label": "agent's proposal, not owner acceptance",
+      "basis": "Lowest of the 16 accepted candidates at the median: 1.63 (a02 'ital'), margin 0.13; untreated or hairline-outlined display text over matching footage: 1.23, margin 0.27. Next lowest accepted: a03 script 2.31, b05 l2 2.83.",
+      "ownerQuestion": "On the variant sheets, in which rows does the named layer stop reading easily on a phone? Confirm 1.5:1, or name the break."
+    },
+    "variants": {
+      "rule": "Local only, git-ignored; built over the third-party reels. Never commit.",
+      "primaryCheckout": "benchmarks/results/editorial-titles-phase2-review/ (README.md lists rows and values)",
+      "worktree": "benchmarks/results/editorial-titles-phase2/variants/ in the Phase 2 worktree",
+      "script": "scripts/editorial-titles/et6b-variants.ts",
+      "sheets": [
+        {
+          "candidate": "a02-lace-leather",
+          "layer": "ital",
+          "sheet": "a02-lace-leather/a02-lace-leather-ital-variants.png",
+          "rows": [
+            {
+              "variant": "base",
+              "contrast": 1.63,
+              "edges": {
+                "fill": 1.63,
+                "outer": null
+              },
+              "worstWord": "&",
+              "worstFrame": 120,
+              "midHoldFrame": 120,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "no-halo",
+              "contrast": 1.81,
+              "edges": {
+                "fill": 1.81,
+                "outer": null
+              },
+              "worstWord": "lace",
+              "worstFrame": 158,
+              "midHoldFrame": 120,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "fill-50",
+              "contrast": 1.31,
+              "edges": {
+                "fill": 1.31,
+                "outer": null
+              },
+              "worstWord": "lace",
+              "worstFrame": 156,
+              "midHoldFrame": 120,
+              "target": 1.5,
+              "passes": false
+            },
+            {
+              "variant": "fill-75",
+              "contrast": 1.63,
+              "edges": {
+                "fill": 1.63,
+                "outer": null
+              },
+              "worstWord": "&",
+              "worstFrame": 120,
+              "midHoldFrame": 120,
+              "target": 1.5,
+              "passes": true
+            }
+          ]
+        },
+        {
+          "candidate": "a03-thai-get-dressed",
+          "layer": "script",
+          "sheet": "a03-thai-get-dressed/a03-thai-get-dressed-script-variants.png",
+          "rows": [
+            {
+              "variant": "base",
+              "contrast": 2.31,
+              "edges": {
+                "fill": 2.31,
+                "outer": null
+              },
+              "worstWord": "with",
+              "worstFrame": 139,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "no-halo",
+              "contrast": 1.27,
+              "edges": {
+                "fill": 1.27,
+                "outer": null
+              },
+              "worstWord": "with",
+              "worstFrame": 139,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": false
+            },
+            {
+              "variant": "fill-50",
+              "contrast": 1.13,
+              "edges": {
+                "fill": 1.13,
+                "outer": null
+              },
+              "worstWord": "with",
+              "worstFrame": 119,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": false
+            },
+            {
+              "variant": "fill-75",
+              "contrast": 1.36,
+              "edges": {
+                "fill": 1.36,
+                "outer": null
+              },
+              "worstWord": "with",
+              "worstFrame": 150,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": false
+            }
+          ]
+        },
+        {
+          "candidate": "b06-fit-check",
+          "layer": "marker",
+          "sheet": "b06-fit-check/b06-fit-check-marker-variants.png",
+          "rows": [
+            {
+              "variant": "base",
+              "contrast": 5.02,
+              "edges": {
+                "fill": 5.02,
+                "outer": null
+              },
+              "worstWord": "check",
+              "worstFrame": 97,
+              "midHoldFrame": 93,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "no-halo",
+              "contrast": 2.2,
+              "edges": {
+                "fill": 2.2,
+                "outer": null
+              },
+              "worstWord": "check",
+              "worstFrame": 99,
+              "midHoldFrame": 93,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "fill-50",
+              "contrast": 1.71,
+              "edges": {
+                "fill": 1.71,
+                "outer": null
+              },
+              "worstWord": "check",
+              "worstFrame": 141,
+              "midHoldFrame": 93,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "fill-75",
+              "contrast": 2.03,
+              "edges": {
+                "fill": 2.03,
+                "outer": null
+              },
+              "worstWord": "fit",
+              "worstFrame": 5,
+              "midHoldFrame": 93,
+              "target": 1.5,
+              "passes": true
+            }
+          ]
+        },
+        {
+          "candidate": "b01-one-pant",
+          "layer": "caps",
+          "sheet": "b01-one-pant/b01-one-pant-caps-variants.png",
+          "rows": [
+            {
+              "variant": "base",
+              "contrast": 13.58,
+              "edges": {
+                "fill": 13.58,
+                "outer": 4.63
+              },
+              "worstWord": "ONE",
+              "worstFrame": 150,
+              "midHoldFrame": 94,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "ring-half",
+              "contrast": 13.6,
+              "edges": {
+                "fill": 13.6,
+                "outer": 1.34
+              },
+              "worstWord": "PANT",
+              "worstFrame": 150,
+              "midHoldFrame": 94,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "ring-quarter",
+              "contrast": 13.61,
+              "edges": {
+                "fill": 13.61,
+                "outer": 1.66
+              },
+              "worstWord": "ONE",
+              "worstFrame": 94,
+              "midHoldFrame": 94,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "ring-hairline",
+              "contrast": 2.08,
+              "edges": {
+                "fill": 2.08,
+                "outer": 1.62
+              },
+              "worstWord": "PANT",
+              "worstFrame": 98,
+              "midHoldFrame": 94,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "no-ring",
+              "contrast": 2.03,
+              "edges": {
+                "fill": 2.03,
+                "outer": null
+              },
+              "worstWord": "PANT",
+              "worstFrame": 139,
+              "midHoldFrame": 94,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "fill-50",
+              "contrast": 4.5,
+              "edges": {
+                "fill": 4.5,
+                "outer": 1.99
+              },
+              "worstWord": "ONE",
+              "worstFrame": 6,
+              "midHoldFrame": 94,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "fill-75",
+              "contrast": 2.15,
+              "edges": {
+                "fill": 2.15,
+                "outer": 1.99
+              },
+              "worstWord": "ONE",
+              "worstFrame": 6,
+              "midHoldFrame": 94,
+              "target": 1.5,
+              "passes": true
+            }
+          ]
+        },
+        {
+          "candidate": "a06-soft-sunday",
+          "layer": "caps",
+          "sheet": "a06-soft-sunday/a06-soft-sunday-caps-variants.png",
+          "rows": [
+            {
+              "variant": "base",
+              "contrast": 3.69,
+              "edges": {
+                "fill": 1.03,
+                "outer": 3.69
+              },
+              "worstWord": "SUNDAY",
+              "worstFrame": 138,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "ring-half",
+              "contrast": 3.7,
+              "edges": {
+                "fill": 1.29,
+                "outer": 3.7
+              },
+              "worstWord": "SUNDAY",
+              "worstFrame": 138,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "ring-quarter",
+              "contrast": 1.73,
+              "edges": {
+                "fill": 1.54,
+                "outer": 1.73
+              },
+              "worstWord": "SUNDAY",
+              "worstFrame": 145,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "ring-hairline",
+              "contrast": 1.73,
+              "edges": {
+                "fill": 1.54,
+                "outer": 1.73
+              },
+              "worstWord": "SUNDAY",
+              "worstFrame": 145,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "no-ring",
+              "contrast": null,
+              "edges": null,
+              "worstWord": null,
+              "worstFrame": 122,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": false
+            },
+            {
+              "variant": "fill-50",
+              "contrast": 3.69,
+              "edges": {
+                "fill": 1.03,
+                "outer": 3.69
+              },
+              "worstWord": "SUNDAY",
+              "worstFrame": 138,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": true
+            },
+            {
+              "variant": "fill-75",
+              "contrast": 3.69,
+              "edges": {
+                "fill": 1.03,
+                "outer": 3.69
+              },
+              "worstWord": "SUNDAY",
+              "worstFrame": 138,
+              "midHoldFrame": 122,
+              "target": 1.5,
+              "passes": true
+            }
+          ]
+        }
+      ],
+      "notes": [
+        "a06 caps has a transparent fill, so its fill variants are unchanged; with no ring it is invisible and unmeasured.",
+        "b01 caps: a hairline ring (strokeWidth 2) measures 2.08, like no ring (2.03); half and quarter rings keep 13.6.",
+        "a02 ital: removing its drop shadow raises it (1.63 -> 1.81): the dark shadow lies on a dark top."
+      ]
+    },
+    "candidates": {
+      "result": "All 16 pass under the profile with their saved waivers ignored: no legibility findings, no reading-time findings, no errors. None still needs a waiver.",
+      "method": "scripts/editorial-titles/et7a-check.ts --input <candidate> --waivers ignore (render, sheets, lint with --profile editorial-title), then --lint-only after the final code. Four at a time.",
+      "list": [
+        {
+          "id": "a01-layer-it-up",
+          "sourceSha256": "de99ab9e65bde00d8abf4046daae22d8d5fa6a5359152070496a8c34e2fa5131",
+          "sourceUnchanged": true,
+          "renderSha256": "ca0ef5294d0d98e5ef17912f5616dfe8a225b59d99a2f38634bfa8e6eed5de6b",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 30.9,
+            "phase2": 52.9
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 14.1,
+            "phase2Profile": 13.6
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["script", "caps"]
+          },
+          "layers": [
+            {
+              "layer": "script",
+              "sizeClass": "display",
+              "displaySize": 95,
+              "target": 1.5,
+              "contrast": 6.31,
+              "worstWord": "layer",
+              "worstFrame": 70,
+              "edges": {
+                "fill": 6.31,
+                "outer": 2.04
+              },
+              "measuredFrames": "187/210",
+              "xHeightAt360": 35.25,
+              "et3Contrast": 1.08
+            },
+            {
+              "layer": "caps",
+              "sizeClass": "display",
+              "displaySize": 85,
+              "target": 1.5,
+              "contrast": 17.39,
+              "worstWord": "IT",
+              "worstFrame": 29,
+              "edges": {
+                "fill": 17.39,
+                "outer": 1.08
+              },
+              "measuredFrames": "164/210",
+              "xHeightAt360": 62.26,
+              "et3Contrast": 1
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "script",
+              "readableSeconds": 6.03,
+              "requiredSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "caps",
+              "readableSeconds": 5.23,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.838,
+              "peakTravel": 0.032,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "a02-lace-leather",
+          "sourceSha256": "cd7bc2d8f95fe70f170a9dea6f3fdc2ad7204a63840209299f6a9cede419a37b",
+          "sourceUnchanged": true,
+          "renderSha256": "f6105da0a620733e62810e3fb6e57b5fbfe7ed92a2dfa82f61ec9b8ef33b0492",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 187.9,
+            "phase2": 89.2
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 342.1,
+            "phase2Profile": 24.2
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["ital", "wide"]
+          },
+          "layers": [
+            {
+              "layer": "ital",
+              "sizeClass": "display",
+              "displaySize": 80,
+              "target": 1.5,
+              "contrast": 1.63,
+              "worstWord": "&",
+              "worstFrame": 120,
+              "edges": {
+                "fill": 1.63,
+                "outer": null
+              },
+              "measuredFrames": "177/210",
+              "xHeightAt360": 41.12,
+              "et3Contrast": 1.15
+            },
+            {
+              "layer": "wide",
+              "sizeClass": "display",
+              "displaySize": 42,
+              "target": 1.5,
+              "contrast": 17.23,
+              "worstWord": "LEATHER",
+              "worstFrame": 190,
+              "edges": {
+                "fill": 17.23,
+                "outer": 14.3
+              },
+              "measuredFrames": "162/210",
+              "xHeightAt360": 22.09,
+              "et3Contrast": 1.01
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "ital",
+              "readableSeconds": 5.87,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.667,
+              "peakTravel": 0.022,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 1,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "wide",
+              "readableSeconds": 5.2,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.187,
+              "peakTravel": 0.006,
+              "runEnds": {
+                "speed": 2,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "a03-thai-get-dressed",
+          "sourceSha256": "5e709a09136e11466e7b7779c9c8b520596c0377080de4ae4fcc03dbe2d94bac",
+          "sourceUnchanged": true,
+          "renderSha256": "7d902c228bf41f5af732317a33e50d861e2a3bbfebbb689f47cf7af250f5794c",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 154.5,
+            "phase2": 19.6
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 420.6,
+            "phase2Profile": 19.5
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["thai", "script"]
+          },
+          "layers": [
+            {
+              "layer": "thai",
+              "sizeClass": "display",
+              "displaySize": 85,
+              "target": 1.5,
+              "contrast": 6.31,
+              "worstWord": "แต่งตัว",
+              "worstFrame": 26,
+              "edges": {
+                "fill": 6.31,
+                "outer": 4.6
+              },
+              "measuredFrames": "177/210",
+              "xHeightAt360": 40.29,
+              "et3Contrast": 1.26
+            },
+            {
+              "layer": "script",
+              "sizeClass": "display",
+              "displaySize": 70,
+              "target": 1.5,
+              "contrast": 2.31,
+              "worstWord": "with",
+              "worstFrame": 139,
+              "edges": {
+                "fill": 2.31,
+                "outer": null
+              },
+              "measuredFrames": "170/210",
+              "xHeightAt360": 22.96,
+              "et3Contrast": 1.02
+            },
+            {
+              "layer": "label",
+              "sizeClass": "small",
+              "displaySize": 15,
+              "target": 4.5,
+              "contrast": 17.21,
+              "worstWord": "ลุคไปคาเฟ่",
+              "worstFrame": 190,
+              "edges": {
+                "fill": 17.21,
+                "outer": null
+              },
+              "measuredFrames": "143/210",
+              "xHeightAt360": 7.88,
+              "et3Contrast": 17.23
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "thai",
+              "readableSeconds": 6,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.52,
+              "peakTravel": 0.025,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "script",
+              "readableSeconds": 5.5,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.086,
+              "peakTravel": 0.003,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "label",
+              "readableSeconds": 4.83,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.371,
+              "peakTravel": 0.014,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "a04-thai-look-slay",
+          "sourceSha256": "295de9c969e0c3fcb6a2426a48c1464eca3c67ccae0aa876a902d7f6221b2870",
+          "sourceUnchanged": true,
+          "renderSha256": "8216bccc73f666f3416af284f9ae56e2ffd70aa252e25b985d377f59688280be",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 124.8,
+            "phase2": 39.2
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 344.7,
+            "phase2Profile": 24.4
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["l1", "l2"]
+          },
+          "layers": [
+            {
+              "layer": "l1",
+              "sizeClass": "display",
+              "displaySize": 85,
+              "target": 1.5,
+              "contrast": 8.61,
+              "worstWord": "ลุคนี้",
+              "worstFrame": 13,
+              "edges": {
+                "fill": 8.61,
+                "outer": 1.25
+              },
+              "measuredFrames": "178/210",
+              "xHeightAt360": 45.56,
+              "et3Contrast": 1.02
+            },
+            {
+              "layer": "l2",
+              "sizeClass": "display",
+              "displaySize": 70,
+              "target": 1.5,
+              "contrast": 4.39,
+              "worstWord": "ปังมาก",
+              "worstFrame": 145,
+              "edges": {
+                "fill": 4.39,
+                "outer": null
+              },
+              "measuredFrames": "159/210",
+              "xHeightAt360": 33.18,
+              "et3Contrast": 1.14
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "l1",
+              "readableSeconds": 5.97,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.231,
+              "peakTravel": 0.017,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "l2",
+              "readableSeconds": 5.3,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.306,
+              "peakTravel": 0.01,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 1,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "a05-plaid-season",
+          "sourceSha256": "9e9ec02dfd72d8f3baaeec37f74be41d1da6ac921c64a4225ca2765f27ca30ed",
+          "sourceUnchanged": true,
+          "renderSha256": "3157a37d866b51c6586b29f2f53cb48e5307a973faae58d741cdb0b061579e40",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 11.7,
+            "phase2": 53.6
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 18.2,
+            "phase2Profile": 40.4
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["fat", "brush"]
+          },
+          "layers": [
+            {
+              "layer": "fat",
+              "sizeClass": "display",
+              "displaySize": 90,
+              "target": 1.5,
+              "contrast": 18.87,
+              "worstWord": "plaid",
+              "worstFrame": 190,
+              "edges": {
+                "fill": 18.87,
+                "outer": 1.18
+              },
+              "measuredFrames": "184/210",
+              "xHeightAt360": 42.84,
+              "et3Contrast": 1.02
+            },
+            {
+              "layer": "brush",
+              "sizeClass": "display",
+              "displaySize": 70,
+              "target": 1.5,
+              "contrast": 6.31,
+              "worstWord": "season",
+              "worstFrame": 116,
+              "edges": {
+                "fill": 6.31,
+                "outer": 3.39
+              },
+              "measuredFrames": "158/210",
+              "xHeightAt360": 29.4,
+              "et3Contrast": 1.15
+            },
+            {
+              "layer": "tag",
+              "sizeClass": "small",
+              "displaySize": 23,
+              "target": 4.5,
+              "contrast": 17.22,
+              "worstWord": "OUTFIT",
+              "worstFrame": 190,
+              "edges": {
+                "fill": 17.22,
+                "outer": null
+              },
+              "measuredFrames": "147/210",
+              "xHeightAt360": 16.1,
+              "et3Contrast": 17.23
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "fat",
+              "readableSeconds": 5.9,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.4,
+              "peakTravel": 0.015,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "brush",
+              "readableSeconds": 5.3,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.64,
+              "peakTravel": 0.024,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 1,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "tag",
+              "readableSeconds": 4.9,
+              "requiredSeconds": 0.67,
+              "peakSpeed": 0.345,
+              "peakTravel": 0.012,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 1,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "a06-soft-sunday",
+          "sourceSha256": "d113444f3c96e5ebecf493a12096c1376161a40c7a073608e80fbe1ac6df4032",
+          "sourceUnchanged": true,
+          "renderSha256": "503e75209fb521c744b4124b97eefd4c2d34ae4b631085525d07333247bbeb11",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 125.3,
+            "phase2": 69
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 236.6,
+            "phase2Profile": 43.7
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["script", "caps"]
+          },
+          "layers": [
+            {
+              "layer": "script",
+              "sizeClass": "display",
+              "displaySize": 80,
+              "target": 1.5,
+              "contrast": 9.98,
+              "worstWord": "soft",
+              "worstFrame": 190,
+              "edges": {
+                "fill": 9.98,
+                "outer": 5.73
+              },
+              "measuredFrames": "184/210",
+              "xHeightAt360": 26.24,
+              "et3Contrast": 1.01
+            },
+            {
+              "layer": "caps",
+              "sizeClass": "display",
+              "displaySize": 105,
+              "target": 1.5,
+              "contrast": 3.69,
+              "worstWord": "SUNDAY",
+              "worstFrame": 138,
+              "edges": {
+                "fill": 1.03,
+                "outer": 3.69
+              },
+              "measuredFrames": "147/210",
+              "xHeightAt360": 73.5
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "script",
+              "readableSeconds": 5.97,
+              "requiredSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "caps",
+              "readableSeconds": 4.83,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.37,
+              "peakTravel": 0.014,
+              "runEnds": {
+                "speed": 5,
+                "reversal": 1,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "a07-black-cami-era",
+          "sourceSha256": "b6c1a627436232c8d56aed4b1890d9de8c4e691751522cf89e7f3a8bff45f95f",
+          "sourceUnchanged": true,
+          "renderSha256": "ba7991ce19c0354304c69cca0ce598e8ade75cd75c2794ecf8e529f82d11356a",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 226.8,
+            "phase2": 41.9
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 490.8,
+            "phase2Profile": 43.7
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["ital", "caps"]
+          },
+          "layers": [
+            {
+              "layer": "ital",
+              "sizeClass": "display",
+              "displaySize": 56,
+              "target": 1.5,
+              "contrast": 3.02,
+              "worstWord": "cami",
+              "worstFrame": 67,
+              "edges": {
+                "fill": 3.02,
+                "outer": null
+              },
+              "measuredFrames": "184/210",
+              "xHeightAt360": 26.94,
+              "et3Contrast": 1.08
+            },
+            {
+              "layer": "caps",
+              "sizeClass": "display",
+              "displaySize": 130,
+              "target": 1.5,
+              "contrast": 17.23,
+              "worstWord": "ERA",
+              "worstFrame": 190,
+              "edges": {
+                "fill": 17.23,
+                "outer": 15.01
+              },
+              "measuredFrames": "166/210",
+              "xHeightAt360": 95.21,
+              "et3Contrast": 1.01
+            },
+            {
+              "layer": "label",
+              "sizeClass": "small",
+              "displaySize": 12,
+              "target": 4.5,
+              "contrast": 4.68,
+              "worstWord": "LACE",
+              "worstFrame": 117,
+              "edges": {
+                "fill": 4.68,
+                "outer": null
+              },
+              "measuredFrames": "139/210",
+              "xHeightAt360": 6.31,
+              "et3Contrast": 6.25
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "ital",
+              "readableSeconds": 5.83,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.455,
+              "peakTravel": 0.017,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "caps",
+              "readableSeconds": 5.3,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.15,
+              "peakTravel": 0.006,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "label",
+              "readableSeconds": 4.67,
+              "requiredSeconds": 0.67,
+              "peakSpeed": 0.292,
+              "peakTravel": 0.01,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "a08-todays-ootd",
+          "sourceSha256": "f955875bce6f348f14e4ee1b41b01202125ca4b5c9fc4ff720634a8e4ca12b83",
+          "sourceUnchanged": true,
+          "renderSha256": "12b1e077a873bd128a98dd715d55f5f95360b2e1bbd2773355d916ea09e27a7f",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 32.6,
+            "phase2": 12.5
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 41,
+            "phase2Profile": 31.3
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["script", "didone"]
+          },
+          "layers": [
+            {
+              "layer": "script",
+              "sizeClass": "display",
+              "displaySize": 65,
+              "target": 1.5,
+              "contrast": 6.31,
+              "worstWord": "today's",
+              "worstFrame": 37,
+              "edges": {
+                "fill": 6.31,
+                "outer": 5.09
+              },
+              "measuredFrames": "155/210",
+              "xHeightAt360": 24.12,
+              "et3Contrast": 1.09
+            },
+            {
+              "layer": "didone",
+              "sizeClass": "display",
+              "displaySize": 85,
+              "target": 1.5,
+              "contrast": 17.37,
+              "worstWord": "OOTD",
+              "worstFrame": 190,
+              "edges": {
+                "fill": 17.37,
+                "outer": 1.23
+              },
+              "measuredFrames": "184/210",
+              "xHeightAt360": 39.1,
+              "et3Contrast": 1.01
+            },
+            {
+              "layer": "label",
+              "sizeClass": "small",
+              "displaySize": 12,
+              "target": 4.5,
+              "contrast": 13.48,
+              "worstWord": "LACE",
+              "worstFrame": 90,
+              "edges": {
+                "fill": 13.48,
+                "outer": null
+              },
+              "measuredFrames": "150/210",
+              "xHeightAt360": 6.31,
+              "et3Contrast": 17.23
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "script",
+              "readableSeconds": 5.27,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.302,
+              "peakTravel": 0.012,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "didone",
+              "readableSeconds": 6.07,
+              "requiredSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "label",
+              "readableSeconds": 4.83,
+              "requiredSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "b01-one-pant",
+          "sourceSha256": "aa9b39bf0a38274ed5dea3b98636f6d577b88c9ca2561fb2e08d685fd100e015",
+          "sourceUnchanged": true,
+          "renderSha256": "5acf2c2d516716843f6ccbbd96889b0a7e38b1eb80bbc4ab89bee64003367123",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 56.3,
+            "phase2": 10.7
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 26.7,
+            "phase2Profile": 13
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["caps", "script"]
+          },
+          "layers": [
+            {
+              "layer": "caps",
+              "sizeClass": "display",
+              "displaySize": 75,
+              "target": 1.5,
+              "contrast": 13.58,
+              "worstWord": "ONE",
+              "worstFrame": 150,
+              "edges": {
+                "fill": 13.58,
+                "outer": 4.63
+              },
+              "measuredFrames": "145/168",
+              "xHeightAt360": 54.93,
+              "et3Contrast": 1.04
+            },
+            {
+              "layer": "script",
+              "sizeClass": "display",
+              "displaySize": 65,
+              "target": 1.5,
+              "contrast": 8.04,
+              "worstWord": "five",
+              "worstFrame": 150,
+              "edges": {
+                "fill": 8.04,
+                "outer": 4.27
+              },
+              "measuredFrames": "129/168",
+              "xHeightAt360": 24.12,
+              "et3Contrast": 1.01
+            },
+            {
+              "layer": "label",
+              "sizeClass": "small",
+              "displaySize": 13,
+              "target": 4.5,
+              "contrast": 13.39,
+              "worstWord": "MOCK",
+              "worstFrame": 150,
+              "edges": {
+                "fill": 13.39,
+                "outer": null
+              },
+              "measuredFrames": "112/168",
+              "xHeightAt360": 6.84,
+              "et3Contrast": 13.4
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "caps",
+              "readableSeconds": 5.71,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.246,
+              "peakTravel": 0.015,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "script",
+              "readableSeconds": 5.04,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.359,
+              "peakTravel": 0.021,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "label",
+              "readableSeconds": 4.71,
+              "requiredSeconds": 1.33,
+              "peakSpeed": 0.654,
+              "peakTravel": 0.039,
+              "runEnds": {
+                "speed": 2,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "b02-brown-new-black",
+          "sourceSha256": "87c5965531de17bf6cee3996633328fbf6a24d43e8aa107333575da4d757e0e4",
+          "sourceUnchanged": true,
+          "renderSha256": "77257a26567c700f21b39bba83955e16d104b9d03dc327214d7b4536b86f7c0b",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 107.7,
+            "phase2": 78.6
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 394.2,
+            "phase2Profile": 24.4
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["brown", "black"]
+          },
+          "layers": [
+            {
+              "layer": "brown",
+              "sizeClass": "display",
+              "displaySize": 85,
+              "target": 1.5,
+              "contrast": 3.39,
+              "worstWord": "brown",
+              "worstFrame": 99,
+              "edges": {
+                "fill": 3.39,
+                "outer": null
+              },
+              "measuredFrames": "152/168",
+              "xHeightAt360": 39.1,
+              "et3Contrast": 1.55
+            },
+            {
+              "layer": "mid",
+              "sizeClass": "display",
+              "displaySize": 46,
+              "target": 1.5,
+              "contrast": 10.82,
+              "worstWord": "NEW",
+              "worstFrame": 152,
+              "edges": {
+                "fill": 10.82,
+                "outer": null
+              },
+              "measuredFrames": "132/168",
+              "xHeightAt360": 32.2,
+              "et3Contrast": 10.75
+            },
+            {
+              "layer": "black",
+              "sizeClass": "display",
+              "displaySize": 46,
+              "target": 1.5,
+              "contrast": 15.37,
+              "worstWord": "BLACK",
+              "worstFrame": 152,
+              "edges": {
+                "fill": 15.37,
+                "outer": 2.38
+              },
+              "measuredFrames": "115/168",
+              "xHeightAt360": 32.2,
+              "et3Contrast": 1.09
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "brown",
+              "readableSeconds": 5.92,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.211,
+              "peakTravel": 0.01,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "mid",
+              "readableSeconds": 5.21,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.626,
+              "peakTravel": 0.03,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "black",
+              "readableSeconds": 4.79,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.626,
+              "peakTravel": 0.026,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 1,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "b03-thai-one-pant",
+          "sourceSha256": "da10e60ab051987dc544aa9891abecb5becb9ccafb9cc56384be1b100ab4d362",
+          "sourceUnchanged": true,
+          "renderSha256": "8f256afc797acbecc1df7fe3bf136ae46e35ec519217d56f0b19636d772b05a2",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 10.5,
+            "phase2": 46.2
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 16.2,
+            "phase2Profile": 14.8
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["l1", "l2", "l3"]
+          },
+          "layers": [
+            {
+              "layer": "l1",
+              "sizeClass": "display",
+              "displaySize": 75,
+              "target": 1.5,
+              "contrast": 13.63,
+              "worstWord": "กางเกง",
+              "worstFrame": 150,
+              "edges": {
+                "fill": 13.63,
+                "outer": 5.37
+              },
+              "measuredFrames": "140/168",
+              "xHeightAt360": 35.55,
+              "et3Contrast": 1.04
+            },
+            {
+              "layer": "l2",
+              "sizeClass": "display",
+              "displaySize": 65,
+              "target": 1.5,
+              "contrast": 8.51,
+              "worstWord": "ตัวเดียว",
+              "worstFrame": 150,
+              "edges": {
+                "fill": 8.51,
+                "outer": 5.15
+              },
+              "measuredFrames": "137/168",
+              "xHeightAt360": 30.29,
+              "et3Contrast": 1
+            },
+            {
+              "layer": "l3",
+              "sizeClass": "display",
+              "displaySize": 75,
+              "target": 1.5,
+              "contrast": 2.77,
+              "worstWord": "5",
+              "worstFrame": 56,
+              "edges": {
+                "fill": 2.77,
+                "outer": 2.44
+              },
+              "measuredFrames": "120/168",
+              "xHeightAt360": 40.2,
+              "et3Contrast": 1.01
+            },
+            {
+              "layer": "label",
+              "sizeClass": "small",
+              "displaySize": 13,
+              "target": 4.5,
+              "contrast": 13.43,
+              "worstWord": "LOOKS",
+              "worstFrame": 150,
+              "edges": {
+                "fill": 13.43,
+                "outer": null
+              },
+              "measuredFrames": "107/168",
+              "xHeightAt360": 6.83,
+              "et3Contrast": 13.45
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "l1",
+              "readableSeconds": 5.96,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.595,
+              "peakTravel": 0.035,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "l2",
+              "readableSeconds": 5.54,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.101,
+              "peakTravel": 0.005,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "l3",
+              "readableSeconds": 4.75,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.121,
+              "peakTravel": 0.006,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "label",
+              "readableSeconds": 4.54,
+              "requiredSeconds": 1.33,
+              "peakSpeed": 0.392,
+              "peakTravel": 0.018,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "b04-golden-hour",
+          "sourceSha256": "87cd6961334e21365f0e425fe2b74e65570e8bb4fc96780e034db3d3178549ac",
+          "sourceUnchanged": true,
+          "renderSha256": "673efa4e8e0aa4948605ee0c19efbdfc0db7bae06d051f662bbe0d4a7a1dd586",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 126.6,
+            "phase2": 38.7
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 296.7,
+            "phase2Profile": 26
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["script", "wide"]
+          },
+          "layers": [
+            {
+              "layer": "script",
+              "sizeClass": "display",
+              "displaySize": 75,
+              "target": 1.5,
+              "contrast": 8.33,
+              "worstWord": "golden",
+              "worstFrame": 3,
+              "edges": {
+                "fill": 8.33,
+                "outer": 2.3
+              },
+              "measuredFrames": "158/168",
+              "xHeightAt360": 24.6,
+              "et3Contrast": 1.05
+            },
+            {
+              "layer": "wide",
+              "sizeClass": "display",
+              "displaySize": 75,
+              "target": 1.5,
+              "contrast": 11.86,
+              "worstWord": "FITS",
+              "worstFrame": 34,
+              "edges": {
+                "fill": 11.86,
+                "outer": 1.71
+              },
+              "measuredFrames": "118/168",
+              "xHeightAt360": 39.45,
+              "et3Contrast": 1.14
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "script",
+              "readableSeconds": 6.08,
+              "requiredSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "wide",
+              "readableSeconds": 4.96,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.473,
+              "peakTravel": 0.02,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 1,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "b05-thai-steal-look",
+          "sourceSha256": "e6f9513d5880612890290aeab45fa491e20d72c6e897077dc7c790cf8ddd8722",
+          "sourceUnchanged": true,
+          "renderSha256": "484429eee3dd822471d81d46deaa3ca1654da28b4f2cacd80ff717d24cff58a6",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 102.6,
+            "phase2": 17.3
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 364.3,
+            "phase2Profile": 21.2
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["l1", "l2"]
+          },
+          "layers": [
+            {
+              "layer": "l1",
+              "sizeClass": "display",
+              "displaySize": 62,
+              "target": 1.5,
+              "contrast": 6.15,
+              "worstWord": "ขโมยลุคนี้",
+              "worstFrame": 3,
+              "edges": {
+                "fill": 6.15,
+                "outer": 2.7
+              },
+              "measuredFrames": "150/168",
+              "xHeightAt360": 29.39,
+              "et3Contrast": 1.01
+            },
+            {
+              "layer": "l2",
+              "sizeClass": "display",
+              "displaySize": 60,
+              "target": 1.5,
+              "contrast": 2.83,
+              "worstWord": "ไปเลย!",
+              "worstFrame": 97,
+              "edges": {
+                "fill": 2.83,
+                "outer": null
+              },
+              "measuredFrames": "124/168",
+              "xHeightAt360": 30,
+              "et3Contrast": 1.75
+            },
+            {
+              "layer": "tag",
+              "sizeClass": "small",
+              "displaySize": 22,
+              "target": 4.5,
+              "contrast": 6.13,
+              "worstWord": "STEAL",
+              "worstFrame": 152,
+              "edges": {
+                "fill": 6.13,
+                "outer": null
+              },
+              "measuredFrames": "120/168",
+              "xHeightAt360": 15.4,
+              "et3Contrast": 6.13
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "l1",
+              "readableSeconds": 6,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.337,
+              "peakTravel": 0.016,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "l2",
+              "readableSeconds": 5.21,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.446,
+              "peakTravel": 0.021,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 1,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "tag",
+              "readableSeconds": 4.79,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.873,
+              "peakTravel": 0.042,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "b06-fit-check",
+          "sourceSha256": "13776682ac3ff0c76baf03d1da22828ebba34483c6dc5ba5f15f576228a2dd68",
+          "sourceUnchanged": true,
+          "renderSha256": "51da9cd5d729ecc9b06142f8f4f22d46fc1ac48779a0f78b968768c0a20570ff",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 71,
+            "phase2": 29.8
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 136.4,
+            "phase2Profile": 16.6
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["marker"]
+          },
+          "layers": [
+            {
+              "layer": "marker",
+              "sizeClass": "display",
+              "displaySize": 62,
+              "target": 1.5,
+              "contrast": 5.02,
+              "worstWord": "check",
+              "worstFrame": 97,
+              "edges": {
+                "fill": 5.02,
+                "outer": null
+              },
+              "measuredFrames": "149/168",
+              "xHeightAt360": 37.84,
+              "et3Contrast": 1.87
+            },
+            {
+              "layer": "tag",
+              "sizeClass": "display",
+              "displaySize": 28,
+              "target": 1.5,
+              "contrast": 6.1,
+              "worstWord": "05",
+              "worstFrame": 24,
+              "edges": {
+                "fill": 6.1,
+                "outer": null
+              },
+              "measuredFrames": "129/168",
+              "xHeightAt360": 19.6,
+              "et3Contrast": 6.01
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "marker",
+              "readableSeconds": 5.92,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.286,
+              "peakTravel": 0.014,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "tag",
+              "readableSeconds": 5.29,
+              "requiredSeconds": 0.67,
+              "peakSpeed": 0.228,
+              "peakTravel": 0.011,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "b07-chocolate-trousers",
+          "sourceSha256": "3a05e93bc6d89c7d14615034e3093055a457bb250f4e18cb3ca14c04db3adb74",
+          "sourceUnchanged": true,
+          "renderSha256": "3204478516919457e82d58075c0e004f587419a0d70d38262f6a07b308f4dfb2",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 9.6,
+            "phase2": 9.3
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 14.8,
+            "phase2Profile": 13.3
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["fat", "brush"]
+          },
+          "layers": [
+            {
+              "layer": "fat",
+              "sizeClass": "display",
+              "displaySize": 60,
+              "target": 1.5,
+              "contrast": 10.1,
+              "worstWord": "chocolate",
+              "worstFrame": 152,
+              "edges": {
+                "fill": 10.1,
+                "outer": 2.57
+              },
+              "measuredFrames": "148/168",
+              "xHeightAt360": 28.56,
+              "et3Contrast": 1.03
+            },
+            {
+              "layer": "brush",
+              "sizeClass": "display",
+              "displaySize": 65,
+              "target": 1.5,
+              "contrast": 7.46,
+              "worstWord": "trousers",
+              "worstFrame": 152,
+              "edges": {
+                "fill": 7.46,
+                "outer": 5.91
+              },
+              "measuredFrames": "122/168",
+              "xHeightAt360": 27.3,
+              "et3Contrast": 1.01
+            },
+            {
+              "layer": "label",
+              "sizeClass": "small",
+              "displaySize": 12,
+              "target": 4.5,
+              "contrast": 9.88,
+              "worstWord": "I",
+              "worstFrame": 152,
+              "edges": {
+                "fill": 9.88,
+                "outer": null
+              },
+              "measuredFrames": "113/168",
+              "xHeightAt360": 6.31,
+              "et3Contrast": 9.88
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "fat",
+              "readableSeconds": 5.88,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.48,
+              "peakTravel": 0.023,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "brush",
+              "readableSeconds": 5.12,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.47,
+              "peakTravel": 0.033,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "label",
+              "readableSeconds": 4.75,
+              "requiredSeconds": 1.67,
+              "peakSpeed": 0.35,
+              "peakTravel": 0.015,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        },
+        {
+          "id": "b08-main-character",
+          "sourceSha256": "d75bbc48a24562509dfb5dfb51a3ce3e599863ea37f403b4c69bd657bfe7d7ad",
+          "sourceUnchanged": true,
+          "renderSha256": "b63105f9a07afa16af15456a330830004e329f1624e9d3f34702022ecc1f33e7",
+          "renderIdenticalToPhase1": true,
+          "renderSeconds": {
+            "phase1": 88.2,
+            "phase2": 15.3
+          },
+          "lintSeconds": {
+            "phase1Et3WithWaivers": 222.2,
+            "phase2Profile": 39
+          },
+          "lint": {
+            "status": "passed",
+            "errors": [],
+            "legibilityFindings": [],
+            "readingTimeFindings": [],
+            "waiversInEffect": 0,
+            "savedWaiversIgnored": ["ital", "caps"]
+          },
+          "layers": [
+            {
+              "layer": "ital",
+              "sizeClass": "display",
+              "displaySize": 40,
+              "target": 1.5,
+              "contrast": 4.61,
+              "worstWord": "main",
+              "worstFrame": 95,
+              "edges": {
+                "fill": 4.61,
+                "outer": null
+              },
+              "measuredFrames": "150/168",
+              "xHeightAt360": 20.56,
+              "et3Contrast": 1.89
+            },
+            {
+              "layer": "caps",
+              "sizeClass": "display",
+              "displaySize": 100,
+              "target": 1.5,
+              "contrast": 9.09,
+              "worstWord": "ENERGY",
+              "worstFrame": 31,
+              "edges": {
+                "fill": 9.09,
+                "outer": 1.47
+              },
+              "measuredFrames": "126/168",
+              "xHeightAt360": 73.24,
+              "et3Contrast": 1.03
+            }
+          ],
+          "readingMotion": [
+            {
+              "layer": "ital",
+              "readableSeconds": 6.17,
+              "requiredSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "caps",
+              "readableSeconds": 4.92,
+              "requiredSeconds": 1,
+              "peakSpeed": 0.912,
+              "peakTravel": 0.043,
+              "runEnds": {
+                "speed": 0,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    "defaultUnchanged": "Default lint reports byte-identical to main 894c9d32 on all 11 ET6b fixture cases with and without --legibility true (22 reports, worktree .claude/worktrees/phase2-main-red). Renderer versions unchanged. ET0 baseline --check and composition baselines: see verification.",
+    "knownLimits": [
+      "WCAG luminance cannot credit hue contrast (a02's crimson '&' over black).",
+      "Fully invisible text (transparent fill, no outline) has no reading window and is not reported.",
+      "The reading rule needs pixel lint to see text-animator motion; state lint keeps the default text-clock rule for it.",
+      "Declared reading windows and speech captions keep their own rules.",
+      "Occluders are root text layers only; shapes, images and decorations stacked above are not."
+    ]
+  },
+  "ec": {
+    "profile": {
+      "surface": "720x1280 Canvas layer surface, one 400x200 opaque block, blur 16 (kernel radius 48)",
+      "passesMs": {
+        "maskSampling": 137.1,
+        "horizontalGaussian": 155.8,
+        "verticalGaussian": 153.3,
+        "composite": 154.8,
+        "premultiply": 3.6
+      },
+      "method": "Node micro-benchmark of the exported shadow-effects steps"
+    },
+    "cause": "The Canvas light.drop-shadow kernel ran bilinear mask sampling, two Gaussian passes and a per-pixel composite over every pixel of the layer surface in JavaScript, about 0.6 s per 720x1280 frame per shadowed layer. Lint paid it again for the legibility background probe, whose glyphs are transparent (all-zero work).",
+    "fix": "Outer shadows compute only inside the painted pixels' bounds shifted by the offset, widened by one sample step and by the kernel radius per pass; every other pixel keeps the exact premultiply round trip. Inner shadows keep the full surface. Pixels byte-identical; renderer versions unchanged.",
+    "failingFirst": "tests/unit/composition-shadow-region.test.ts: a 16 px glyph on a 2048x2048 surface took 2.45 s on main (bound 1.5 s); byte identity against the full-surface oracle in six cases.",
+    "fixture": {
+      "file": "benchmarks/fixtures/editorial-titles/ec-effect-cost.ts",
+      "frames": 48,
+      "script": "scripts/editorial-titles/ec-effect-cost.ts (render --format png8, per-frame SHA-256; lint --pixels --legibility)",
+      "serialRuns": [
+        {
+          "variant": "none",
+          "renderSeconds": {
+            "before": 6.5,
+            "after": 6.5
+          },
+          "lintSecondsWithLegibility": {
+            "before": 3.9,
+            "after": 3.9
+          },
+          "framesSha256": "3075031e8613480f5b6107b81338d8b2e379c4be27ecf033a4e5673733aa6ac8",
+          "identical": true
+        },
+        {
+          "variant": "outline",
+          "renderSeconds": {
+            "before": 10.5,
+            "after": 6.2
+          },
+          "lintSecondsWithLegibility": {
+            "before": 4,
+            "after": 3.9
+          },
+          "framesSha256": "4d7dcb87cf61c53bc881b021caad7d07d4944eaddd81cb620da869da487aa230",
+          "identical": true
+        },
+        {
+          "variant": "halo",
+          "renderSeconds": {
+            "before": 36,
+            "after": 8.9
+          },
+          "lintSecondsWithLegibility": {
+            "before": 54.9,
+            "after": 7.9
+          },
+          "framesSha256": "1308f7019e7309ad669342c45eb163e358b95c05c7cbeedb93aa35d54b09bfe1",
+          "identical": true
+        },
+        {
+          "variant": "shadow",
+          "renderSeconds": {
+            "before": 32.3,
+            "after": 8
+          },
+          "lintSecondsWithLegibility": {
+            "before": 47.8,
+            "after": 7.2
+          },
+          "framesSha256": "81f5d31a1f7d0642a9c818300c28b2bec77d002784185ac40e0284d4ef0837da",
+          "identical": true
+        },
+        {
+          "variant": "glow",
+          "renderSeconds": {
+            "before": 11.1,
+            "after": 6.8
+          },
+          "lintSecondsWithLegibility": {
+            "before": 5,
+            "after": 4.8
+          },
+          "framesSha256": "3843da4b55a2d90036fe88c585fd70dcc6f4b0cf46d35c3674f94766fa305506",
+          "identical": true
+        }
+      ]
+    },
+    "candidates": "All 16 MP4 render SHA-256s are identical to Phase 1's corrected renders (list under et6b.candidates.list). Timings are four candidates at a time on one machine, so contention adds noise; the shadowed ones fell most (a03 154.5 -> 19.6 s render, 420.6 -> 18.9 s lint; a07 226.8 -> 41.9 s, 490.8 -> 39.5 s). Lint also changed method (treated-edge needs no background render).",
+    "notChanged": [
+      "light.glow: its blur is the browser's own filter; fixture 6.8-11.1 s across runs vs 6.2-6.5 s untreated.",
+      "WebGL2 drop shadow: GPU passes, not the reported cost.",
+      "Inner shadows: full surface by nature."
+    ]
+  },
+  "failingFirst": {
+    "main": "894c9d32 in a detached worktree with the new tests and fixtures copied in",
+    "results": [
+      "tests/unit/composition-editorial-title-profile.test.ts: fails to load (no reading-motion module, no profile).",
+      "tests/browser/editorial-titles-phase2.ts: fails (no EDITORIAL_TITLE_PROFILE export).",
+      "comp lint --profile editorial-title: 'Unknown or duplicate CLI option: --profile'.",
+      "ET6B_CASE=hold-tracking default lint: reading-time error, 0.17 s readable.",
+      "ET6B_CASE=treat-outline: 1.23:1 (the ring counted as glyph).",
+      "tests/unit/composition-shadow-region.test.ts: 2.45 s > 1.5 s bound."
+    ]
+  },
+  "affectedBaselines": "None. No renderer version changed; default lint byte-identical; composition and ET0 baselines unchanged (see verification). The lint policy JSON schema gains optional fields.",
+  "verification": {
+    "pnpm toolchain:check": "passed",
+    "pnpm check:fast": "passed on the third run (470 files, 4,744 tests). Run 1 failed on Prettier (tests/unit/composition-shadow-region.test.ts after a sed edit); run 2 failed on ESLint (an unused binding in text-legibility.ts). Each fixed in its own commit.",
+    "default lint identity": "22/22 byte-identical to main",
+    "pnpm test:browser:editorial-titles-phase2": "passed (131s)",
+    "pnpm test:browser:editorial-titles-phase1": "passed (153s)",
+    "pnpm test:browser:composition-quality": "passed (418s)",
+    "tests/browser/composition-text-legibility.ts": "passed (62s)",
+    "pnpm test:browser:typography": "passed (28s)",
+    "pnpm test:browser:composition-text-measure": "passed (208s)",
+    "pnpm test:browser:composition-colour-accuracy": "passed (21s)",
+    "pnpm test:browser:composition-effects": "passed (158s)",
+    "pnpm test:browser:composition-webgl": "passed (341s)",
+    "pnpm test:browser:composition-baselines": "passed (281s)",
+    "scripts/editorial-titles/et0-baseline.ts --check": "passed (77s); ET0 outcomes match the recorded baseline"
+  },
+  "notRun": [
+    "pnpm check / pnpm test in full and release checks (not a release; the matching tiers were run)",
+    "Soundtrack groups (unaffected)",
+    "WebGL2 with the profile on the candidates (Canvas only)"
+  ],
+  "ownerReview": {
+    "status": "pending",
+    "decision": "D-level: confirm the display level 1.5:1 at the median edge, or name the variant where readability breaks",
+    "sheets": "benchmarks/results/editorial-titles-phase2-review/ in the primary checkout (local only)"
+  }
+}

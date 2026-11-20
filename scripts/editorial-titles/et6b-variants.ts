@@ -14,6 +14,7 @@
 //   base           the candidate as accepted
 //   ring-half      the layer's outline at half its stroke width
 //   ring-quarter   at a quarter (at least 1)
+//   ring-hairline  at strokeWidth 2 (about one output pixel visible)
 //   no-ring        the outline removed
 //   no-halo        its light.drop-shadow / light.glow effects removed
 //   fill-50        the fill moved halfway to the outline (or halo) colour
@@ -146,6 +147,11 @@ function variants(base: Composition, id: string) {
   if (hasRing) {
     edit("ring-half", (comp) => scaleRing(comp, 0.5));
     edit("ring-quarter", (comp) => scaleRing(comp, 0.25));
+    edit("ring-hairline", (comp) => {
+      for (const a of strokes(comp, id))
+        for (const p of [a.from, a.to ?? {}])
+          if (typeof p.strokeWidth === "number") p.strokeWidth = 2;
+    });
     edit("no-ring", (comp) => {
       comp.textAnimators = comp.textAnimators!.filter(
         (a) =>
@@ -200,7 +206,11 @@ async function latestIteration(candidate: string) {
   return join(dir, latest);
 }
 
-const index: Record<string, unknown>[] = [];
+// Rerunning some candidates keeps the others' entries.
+const indexPath = join(results, "index.json");
+const index: Record<string, unknown>[] = await readFile(indexPath, "utf8")
+  .then((text) => JSON.parse(text) as Record<string, unknown>[])
+  .catch(() => []);
 for (const { candidate, layer } of pairs) {
   const source = await latestIteration(candidate);
   const base = JSON.parse(
@@ -295,7 +305,11 @@ for (const { candidate, layer } of pairs) {
     `xstack=inputs=${tiles.length}:layout=${layout}:fill=black`,
     sheet,
   ]);
+  const at = index.findIndex(
+    (entry) => entry.candidate === candidate && entry.layer === layer,
+  );
+  if (at >= 0) index.splice(at, 1);
   index.push({ candidate, layer, sheet, rows });
 }
-await writeFile(join(results, "index.json"), JSON.stringify(index, null, 2));
+await writeFile(indexPath, JSON.stringify(index, null, 2));
 process.stdout.write(JSON.stringify(index, null, 2) + "\n");

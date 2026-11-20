@@ -43,10 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial titles Phase 1 (2026-11-20):** on `codex/editorial-titles-phase1` from `main` 760a18a1, in review as [PR #74](https://github.com/xxibcill/still-shift/pull/74). The owner split the remaining work into three phases ([plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20)).
+- **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32. Committed, not pushed, no PR (push only on the owner's request).
+  - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
+  - **Pending owner decision D-level:** the proposed display level, 1.5:1 at the median edge (lowest accepted candidate 1.63; untreated or hairline-outlined display text 1.23). Confirm it on the local-only variant sheets (`benchmarks/results/editorial-titles-phase2/variants/` in the Phase 2 worktree), or name the variant where readability breaks.
+  - **EC:** the Canvas drop shadow now computes only where it can paint (byte-identical; all 16 candidate renders match Phase 1). Halo fixture render 36.0 → 8.9 s, lint 54.9 → 7.9 s.
+  - **Known limits:** WCAG luminance cannot credit hue (a02's crimson "&" over black); fully invisible text has no reading window and is not reported; the reading rule needs pixel lint for text-animator motion.
+  - Next: owner gate (D-level), then the owned or licensed clip (D-auth) for Phase 3. Records: [Phase 2 results](./editorial-typography-phase2-results.json).
+
+- **Editorial titles Phase 1 (2026-11-20):** on `codex/editorial-titles-phase1` from `main` 760a18a1, merged as [PR #74](https://github.com/xxibcill/still-shift/pull/74). The owner split the remaining work into three phases ([plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20)).
   - **Re-review:** all 16 ET7a candidates re-rendered unchanged over the corrected (darker) footage; sources and exported compositions identical, every render hash changed, all pass strict coverage and lint. Agent judgement (not acceptance): none visibly worse, b02 slightly worse ("BLACK" over darker trousers).
   - **Fixes (opt-in or invisible; no baseline changes):** Prompt Black loads (only identity names count against the name budget); span styles resolve axes against their own font; decoration `growWithText` and `padding`; `light.glow` 1.1.0 `color` + `tint`.
-  - **Owner gate (done 2026-11-20):** the owner reviewed the corrected sheets and answered "all yes": 16/16 accepted, success measure still met (D-auth open). No title named weak, so ET6b's display level must pass all 16. Next: Phase 2 (ET6b + EC), then the owner's licensed clip (D-auth) for Phase 3.
+  - **Owner gate (done 2026-11-20):** the owner reviewed the corrected sheets and answered "all yes": 16/16 accepted, success measure still met (D-auth open). No title named weak, so ET6b's display level must pass all 16. Phase 2 (ET6b + EC) is above.
   - **Review (2026-11-20):** [PR #74 review](https://github.com/xxibcill/still-shift/pull/74#pullrequestreview-5989610756), 17 findings. Ten fixed on the branch, one commit each (growWithText baseline, glow `color` needs `tint`, shared padding/glow/font-axes helpers, required axes lookup, ET0 re-record); seven unchanged with reasons in the results. The PR head's ET0 `--check` had failed on a message change; re-recorded, outcomes unchanged.
   - Records: [Phase 1 results](./editorial-typography-phase1-results.json).
 
@@ -118,6 +125,16 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-20 — Editorial titles Phase 2: ET6b profile and EC
+
+- **Branch:** `codex/editorial-titles-phase2` from `main` 894c9d32. Not pushed.
+- **ET6b:** the opt-in `editorial-title` lint profile, with D-read reading motion, treated-edge contrast and size-split targets. All 16 ET7a candidates pass without waivers. T1–T3 hold drift passes. Fast, jittery and spinning holds, and untreated or hairline-outlined display text, still fail. Default lint is byte-identical to `main` (22 reports).
+- **Calibration:** at the 5th percentile, two accepted words (a02 "&" 1.04, a06 "SUNDAY" 1.14) fall below untreated text (1.23), so display text uses the median edge. The proposed level is 1.5:1; the owner confirms it on the variant sheets (decision D-level).
+- **EC:** cause: the Canvas drop shadow did full-surface JavaScript passes, and lint ran them again on the background probe. Fixed with byte-identical pixels; halo fixture render 36.0 → 8.9 s, lint 54.9 → 7.9 s.
+- **Failing first:** the new unit tests and the browser group fail on `main`.
+- **Retained failures:** `check:fast` failed twice before passing, on Prettier for the region test and then an unused variable; both are fixed in their own commits.
+- **Verification:** see the [Phase 2 results](./editorial-typography-phase2-results.json).
 
 ### 2026-11-20 — Editorial titles Phase 1: owner gate passed
 

@@ -12,8 +12,9 @@ yes"), so the success measure is met on the local-only reels (D-auth open;
 (`comp measure`) merged as PR #71
 ([results](./editorial-typography-et6a-results.json)); colour accuracy
 (D-colour) merged as PR #72. Remaining work runs in three phases
-([below](#remaining-phases-2026-11-20)); Phase 1 is on
-`codex/editorial-titles-phase1`.** ET0
+([below](#remaining-phases-2026-11-20)); Phase 1 merged as PR #74/#75;
+Phase 2 (ET6b, EC) is on `codex/editorial-titles-phase2`, waiting for the
+owner to confirm the display level.** ET0
 re-baselined every finding on `main` (98a92e92); see
 [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
@@ -111,25 +112,25 @@ order did not, for these reasons.
 
 ## Milestone tracker
 
-| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                     |
-| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | -------------------------- |
-| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60)  |
-| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)  |
-| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)  |
-| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63)  |
-| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16            |
-| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66)  |
-| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Merged on `main` (PR #69)  |
-| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3; actual 1 session                      | Merged on `main` (PR #71)  |
-| CA   | Colour accuracy (D-colour, "Match players")       | —        | owner: D-colour              | actual 1 session                           | Merged on `main` (PR #72)  |
-| P1   | Phase 1: corrected re-review and small fixes      | —        | ET6a, CA                     | 1 session; actual 1 session                | On branch; owner gate next |
-| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67)  |
-| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Phase 3: reduce or drop    |
-| ET6b | Editorial title lint profile                      | O7       | Phase 1 owner gate           | 1–2                                        | Phase 2                    |
-| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                   |
-| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Phase 3                    |
-| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                   |
-| EC   | Effect render cost (shadow, halo)                 | —        | before ET7b search at scale  | profile first                              | Phase 2                    |
+| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                    |
+| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | ------------------------- |
+| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60) |
+| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61) |
+| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62) |
+| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63) |
+| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16           |
+| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66) |
+| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Merged on `main` (PR #69) |
+| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3; actual 1 session                      | Merged on `main` (PR #71) |
+| CA   | Colour accuracy (D-colour, "Match players")       | —        | owner: D-colour              | actual 1 session                           | Merged on `main` (PR #72) |
+| P1   | Phase 1: corrected re-review and small fixes      | —        | ET6a, CA                     | 1 session; actual 1 session                | Merged (PR #74, #75)      |
+| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67) |
+| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Phase 3: reduce or drop   |
+| ET6b | Editorial title lint profile                      | O7       | Phase 1 owner gate           | 1–2; actual 1 session (with EC)            | Phase 2; owner gate next  |
+| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                  |
+| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Phase 3                   |
+| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                  |
+| EC   | Effect render cost (shadow, halo)                 | —        | before ET7b search at scale  | profile first; actual part of Phase 2      | Phase 2 (fixed)           |
 
 Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence, see
 [ET7a](#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8)) ET6a → ET6b
@@ -169,6 +170,33 @@ PR, with an owner gate between them.
    release verification with the carried follow-ups.
 
 Still deferred: ET7b, ET5c and D-home.
+
+**Phase 2 result (2026-11-20, on `codex/editorial-titles-phase2`):** see the
+[Phase 2 results](./editorial-typography-phase2-results.json).
+
+- **ET6b.** The opt-in `editorial-title` lint profile
+  ([reference](./composition-reference.md#editorial-title-lint-profile-et6b)).
+  It counts gentle hold drift as reading time (D-read: one letter-height per
+  second or less, at most two of travel, one direction). It measures
+  contrast at the letter edges, so outlines, halos, shadows and hollow
+  outlines are credited. Text layers stacked above are left out. Targets
+  split by size: small text keeps 4.5:1 at the 5th percentile, and display
+  text (24 px or more at 360 px) needs a display level at the median edge.
+  - Proposed level: **1.5:1**. The lowest of the 16 accepted candidates is
+    1.63; untreated or hairline-outlined display text over matching footage
+    measures 1.23.
+  - All 16 ET7a candidates pass with no waivers and no legibility or
+    reading-time findings.
+  - The proof T1–T3 holds pass reading time (O7 gone), at 0.16–0.88
+    letter-heights per second.
+  - The default lint is byte-identical to `main`.
+  - The owner confirms the level on weakened-variant sheets (local only).
+- **EC.** The Canvas drop shadow blurred and composited the whole layer
+  surface in JavaScript. It now works only where it can paint, with
+  byte-identical output. All 16 candidate renders match Phase 1, and the
+  fixture's PNG frames are identical. Halo fixture: render 36.0 → 8.9 s,
+  lint 54.9 → 7.9 s. Candidates (four at a time): a03 render 155 → 20 s,
+  lint 421 → 19 s.
 
 **Phase 1 result (2026-11-20, in review as [PR #74](https://github.com/xxibcill/still-shift/pull/74)):** see the
 [Phase 1 results](./editorial-typography-phase1-results.json).
@@ -854,11 +882,33 @@ also need an editorial setting (ET3-D1).
 
 **Checks**
 
-- [ ] Under the profile, proof T1–T3 hold drift passes `reading-time`; a fast or
-      jittery hold still fails.
-- [ ] Contrast and x-height results match the G1 decisions on the proof frames.
-- [ ] Default policy results unchanged.
-- [ ] `pnpm check:fast`, `pnpm test:browser:composition-quality`.
+- [x] Under the profile, proof T1–T3 hold drift passes `reading-time`; a fast or
+      jittery hold still fails. (On the proof treatments themselves: T1–T3
+      reading-time errors gone, hold peaks 0.16–0.88 letter-heights/s and
+      at most 0.52 of travel. Committed fixtures copying their holds pass;
+      fast (600 px), jitter (±1 px) and spin (360°) holds fail, on speed,
+      reversal and speed. Tests written first and run red on `main`.)
+- [x] Contrast and x-height results match the G1 decisions on the proof frames.
+      (T1 "Olive", 2.72:1 under ET3 and read easily in G1, is display text
+      at 2.74 and passes. Small text keeps 4.5:1: T1's folio and kicker
+      (3.5, 4.25) and T3's credit (1.73) are still reported, and so is
+      T3's credit at 5.5 px against the 6 px floor (ET3-D2).)
+- [x] Default policy results unchanged. (22 default lint reports over the
+      ET6b fixtures, with and without `--legibility true`, are
+      byte-identical to `main` 894c9d32; ET0 baseline, composition
+      baselines and composition-quality pass.)
+- [x] `pnpm check:fast`, `pnpm test:browser:composition-quality` (and the
+      other groups listed in the Phase 2 results).
+- [ ] **Owner gate:** confirm the display level (1.5:1 at the median edge)
+      on the near-threshold and weakened variant sheets.
+
+**ET6b outcome (2026-11-20):** profile, measure and calibration as in the
+[Phase 2 results](./editorial-typography-phase2-results.json). Two
+candidates' weakest words (a02's crimson "&" over a black top, a06's cream
+hollow "SUNDAY" over a cream sleeve) read by hue or as a whole word. They
+measure 1.04 and 1.14 at the 5th percentile, below untreated text (1.23).
+So display text is measured at the median of its edge; small text keeps
+the 5th percentile.
 
 Estimate: 1–2 days (the owner's rule is decided).
 
@@ -915,9 +965,18 @@ versioned.
 
 **Checks**
 
-- [ ] Profile of one shadowed and one unshadowed pilot-style candidate on the
-      synthetic clip, with the time per pass.
-- [ ] A fix or a recorded decision not to fix, before ET7b searches candidates.
+- [x] Profile of one shadowed and one unshadowed pilot-style candidate on the
+      synthetic clip, with the time per pass. (A 720×1280 Canvas surface: mask
+      sampling 137 ms, each Gaussian pass 155 ms, composite 155 ms, all over
+      the full surface; lint ran them twice more per frame, once on the
+      legibility background probe, whose glyphs are transparent.)
+- [x] A fix or a recorded decision not to fix, before ET7b searches candidates.
+      (Fixed: outer shadows compute only within the painted pixels' bounds
+      plus offset and kernel radius, with byte-identical output. Halo
+      fixture render 36.0 → 8.9 s, lint 54.9 → 7.9 s. Not changed: inner
+      shadows (full surface by nature), the WebGL2 path, and `light.glow`,
+      whose blur is the browser's own filter; its fixture render took 6.8–11.1 s
+      across runs against 6.2–6.5 s untreated, so it was never the 10× cost.)
 
 ---
 
@@ -948,7 +1007,8 @@ All are the owner's. G1 collects them.
 | ID       | Decision                                                                                                                                   | Needed by | Recommendation                                                                                                                                                                                               |
 | -------- | ------------------------------------------------------------------------------------------------------------------------------------------ | --------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | D-view   | Visual acceptance of proof T1, T2, T3                                                                                                      | G1        | **Decided (G1):** all rejected on style; target the owner's references                                                                                                                                       |
-| ET3-D1   | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level)                                                    | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary                                                                                   |
+| ET3-D1   | Contrast targets for titles over footage (WCAG AA 3:1/4.5:1, or a looser display level)                                                    | G1, ET6b  | **Decided (G1):** large display text may go below 3:1 (2.72:1 read easily); small text keeps 4.5:1; ET6b sets the boundary (24 px at 360 px) and proposes 1.5:1 at the median edge (D-level)                 |
+| D-level  | ET6b display level: 1.5:1 at the median of each display word's edge, from the 16 accepted candidates (lowest 1.63) with a margin           | Phase 2   | Confirm on the variant sheets, or name the variant where readability breaks                                                                                                                                  |
 | ET3-D2   | Phone-scale floor: 6 px x-height at 360 px                                                                                                 | G1, ET6b  | **Decided (G1):** keep                                                                                                                                                                                       |
 | D-meas   | Success measure for the pilot                                                                                                              | G1        | **Decided (G1):** 3 of 8 accepted per clip, on two clips                                                                                                                                                     |
 | D-input  | One authorized vertical clip; fonts to pin (open-licence list or licensed files)                                                           | G1, ET7a  | **Decided (G1):** fonts are the list plus popular free Thai families; clips are the owner's reels, local only                                                                                                |
