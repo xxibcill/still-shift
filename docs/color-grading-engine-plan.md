@@ -245,7 +245,7 @@ These are recommendations to confirm at CG1, each with a fallback.
 | CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Merged (PR #70) |
 | CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)        | 2–3                    | Done (branch)   |
 | CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
-| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Proposed        |
+| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
 | CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Proposed        |
 | CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed        |
 | CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed        |
@@ -577,18 +577,28 @@ unclamped pipeline that the remaining operators run in.
 - All parameters animatable; works on video, sequence, image, precomp and
   adjustment layers.
 
-**Checks**
+**Checks** (2026-11-20, `codex/color-grading-cg0`; numbers in
+[CG2 results](./color-grading-cg2-results.json); operators in
+[float grade stage](./composition-effect-plugins.md#float-grade-stage-cg2))
 
-- [ ] Fixture: a value pushed above 1.0 by one operation is recovered by the
-      next (fails on the chroma-node math, passes here).
-- [ ] `grade.cdl` matches the ASC reference values within tolerance.
-- [ ] GPU matches the float64 reference within the approved parity bound on all
-      CG0 fixtures; repeated renders are byte-identical.
-- [ ] A 16-step gray ramp through ten stacked neutral-sum corrections shows no
-      added banding compared with one pass (measured, not viewed).
-- [ ] A graded native-video composition renders and exports through the existing
-      path; effect versions appear in export metadata.
-- [ ] Existing `color.*` baselines unchanged.
+- [x] Fixture: a value pushed above 1.0 by one operation is recovered by the
+      next: gain 2 then 0.5 is exact on both backends (8-bit `color.exposure`
+      loses 127 codes; chroma-node clamps every stage).
+- [x] `grade.cdl` matches the ASC reference values within tolerance (1e-12 in
+      float64; Canvas exact and WebGL2 within 1 on the renderer).
+- [x] GPU matches the float64 reference within the approved parity bound on all
+      CG0 fixtures; repeated renders are byte-identical (72 rows: Canvas 0,
+      WebGL2 ≤ 1 with 32 channels at 1).
+- [x] A 16-step gray ramp through ten stacked neutral-sum corrections shows no
+      added banding compared with one pass (16/16 and 256/256 levels, max
+      difference 0).
+- [x] A graded native-video composition renders and exports through the existing
+      path; effect versions appear in export metadata (both backends, 48/48
+      frames, scene manifest `effectVersions`).
+- [x] Existing `color.*` baselines unchanged.
+
+_Deviation:_ midtone detail is spatial, not pointwise, and moves to CG13 so the
+stage stays one fused pointwise pass.
 
 ## CG3 — Scopes, probes and machine-readable measurement
 

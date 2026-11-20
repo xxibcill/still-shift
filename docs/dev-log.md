@@ -54,7 +54,7 @@ still hold before relying on them.
 
 - **Composition colour accuracy (2026-11-16):** owner decision D-colour ("Match players") merged on `main` via [PR #72](https://github.com/xxibcill/still-shift/pull/72): exports keep authored sRGB on every path (`composition-output-2`) and BT.709 footage decodes without the inverse OETF (`composition-media-decoder-3`). Footage-dependent lint numbers and renders over BT.709 footage changed ([results](./composition-colour-accuracy-results.json)); composition baselines did not. The ET7a candidates are re-rendered over corrected footage in editorial titles Phase 1 (below).
 
-- **Color grading engine (2026-11-20):** CGA merged on `main` (PR #70). The owner asked to continue CG0–CG15 and approved decisions 2 (GPL-3.0 port) and 3 (float parity bound). **CG0** (fixtures, vectors, baselines) and **CG1** (`@still-shift/color-science` core, provenance, decisions: RGBA32F float stage, flat scalar params) are done on `codex/color-grading-cg0`, all checks met, no PR yet (owner asks first). Next: CG2 (float grade stage and primary corrections), then the stopping point to report. Later owner decisions: working space and camera-transform priority (CG7), lab panel scope (CG14), log/10-bit footage and reference renders (CG15). Still open from CGA: whether block-mean RMS is the right look bound. [CG0 results](./color-grading-cg0-results.json), [CG1 results](./color-grading-cg1-results.json).
+- **Color grading engine (2026-11-20):** CGA merged on `main` (PR #70). The owner asked to continue CG0–CG15 and approved decisions 2 (GPL-3.0 port) and 3 (float parity bound). **CG0**, **CG1** and **CG2** are done on `codex/color-grading-cg0` (fixtures and vectors; `@still-shift/color-science`; the float grade stage with `grade.primary`, `grade.white-balance`, `grade.cdl`, `grade.rgb-mixer`), all checks met, no PR yet (owner asks first). **Stopping point after CG2:** report to the owner before CG3. Later owner decisions: working space and camera-transform priority (CG7), lab panel scope (CG14), log/10-bit footage and reference renders (CG15). Still open from CGA: whether block-mean RMS is the right look bound. Results: [CG0](./color-grading-cg0-results.json), [CG1](./color-grading-cg1-results.json), [CG2](./color-grading-cg2-results.json).
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
@@ -118,6 +118,17 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-20 — Color grading CG2: float grade stage and primary corrections
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg0`, continuing after CG1 (the planning session relayed "continue with CG2 … stop to report after CG2").
+- **Scope:** [CG2](./color-grading-engine-plan.md#cg2--float-grade-stage-and-primary-corrections); the first planned stopping point.
+- **Done:** float64 operators in `@still-shift/color-science` (`grade.ts`) plus a CG0 `temperature.json` vector file (Kang 2002 locus, Bradford); contract `grade.primary`, `grade.white-balance`, `grade.cdl`, `grade.rgb-mixer` (1.0.0, flat scalars); renderer float stage: consecutive `grade.*` effects fuse into one stage on straight color (one float32 shader on WebGL2, float64 on Canvas), quantized once, neutral operators dropped; `pnpm test:browser:color-grading-cg2` (in `pnpm test`); CE6 cell `catalogue-float-grade` with its own baseline file; [docs](./composition-effect-plugins.md#float-grade-stage-cg2), reference and skill regenerated; native appearance closure regenerated (identity only).
+- **Results:** all six CG2 checks met. 72 parity rows: Canvas = float64 reference, WebGL2 ≤ 1 code (32 channels at 1), repeats byte-identical, neutral run identity; gain 2→0.5 exact (8-bit exposure loses 127); ten neutral-sum passes keep 16/16 and 256/256 levels; 108 layer-kind/seek cases at backend difference 0; graded native video exports on both backends with `grade.*` versions in the scene manifest; CE6 frozen baselines unchanged.
+- **Deviation:** midtone detail is spatial, so it moves to CG13; CG2 stays one fused pointwise pass.
+- **Rejected / do not repeat:** float intermediates between separate grade plugins (fusing the run needs no float surfaces and gives the same precision); a GPU path for neutral operators (dropping them keeps neutral runs exact on both backends).
+- **Open / next:** owner report at this stopping point; then CG3 (scopes and probes, building on `comp color-stats`). Not run: `pnpm check`, full `pnpm test`, runtime tier, release checks.
+- **Records:** [CG2 results](./color-grading-cg2-results.json).
 
 ### 2026-11-20 — Color grading CG1: color-science core and contract decisions
 
