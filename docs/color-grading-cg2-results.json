@@ -22,7 +22,10 @@
       "grade.rgb-mixer": "color.matrix's parameters and design formula in float"
     },
     "stage": "consecutive grade.* effects fuse into one stage on straight color: one generated float32 fragment shader on WebGL2, color-science float64 on Canvas; one half-up quantization on exit with the CGA premultiply rule; neutral operators dropped",
-    "deviation": "midtone detail (listed under grade.primary in the plan) is spatial, not pointwise; deferred to CG13 (texture operations) so the stage stays fused and pointwise",
+    "deviations": [
+      "midtone detail (listed under grade.primary in the plan) is spatial, not pointwise; deferred to CG13 (texture operations) so the stage stays fused and pointwise",
+      "float intermediates (PR #77 second review, Spec-5): CG1 decision 1 called for RGBA32F intermediate surfaces reserved through createRenderStorage, and the plan's CG2 scope for float scratch surfaces. Because every CG2 operator is pointwise, a run is fused into one fragment shader instead: intermediate values live in float32 registers (the same precision as RGBA32F texels), the stage reads and writes only the layer's existing RGBA8 surfaces, and no float surface is allocated, so there is nothing to reserve and the memory cost is that of any 8-bit effect. Float surfaces and their createRenderStorage reservation return with the first operator that needs neighbouring pixels inside a run (CG13 texture operations or later)"
+    ],
     "references": "packages/color-science/src/grade.ts; vectors/temperature.json added to CG0 (Kang 2002 locus, Bradford matrices); other CG0 vector files unchanged"
   },
   "checks": [

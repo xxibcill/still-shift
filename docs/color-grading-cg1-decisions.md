@@ -57,6 +57,15 @@ ordered dither is a CG8 delivery option for high-bit output, not a CG2 feature.
 **Fallback considered.** RGBA16F (half the memory) — rejected on the precision
 measured above.
 
+**As built in CG2 (PR #77 second review, 2026-11-21).** Every CG2 operator is
+pointwise, so a run is one fused fragment shader: intermediates are float32
+registers (the precision measured above for RGBA32F), the stage reads and
+writes the layer's existing RGBA8 surfaces, and no float surface is
+allocated. The `createRenderStorage` reservation above therefore has nothing
+to reserve yet; it applies when an operator inside a run needs neighbouring
+pixels (CG13 texture operations or later) and the run must be split across
+RGBA32F surfaces. See the CG2 results, `delivered.deviations`.
+
 ## 2. Parity rule for the float stage
 
 **Decision (owner decision 3, approved 2026-11-20).** The float64 reference in

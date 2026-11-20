@@ -566,7 +566,9 @@ unclamped pipeline that the remaining operators run in.
 - Renderer support for a floating-point grade stage: float scratch surfaces
   inside the effect ownership and memory limits, one quantization on exit,
   correct handling of premultiplied alpha (grade straight color, preserve
-  coverage).
+  coverage). (As built: the pointwise CG2 run is one fused shader with
+  float32 registers and no float surfaces; see the
+  [CG1 decisions](./color-grading-cg1-decisions.md#1-float-grade-stage).)
 - `grade.primary`: lift, gamma, gain, offset (RGB and master), contrast and
   pivot, saturation, hue rotation, color boost, shadows, highlights and midtone
   detail — including the five controls chroma-node declares but never evaluates.
