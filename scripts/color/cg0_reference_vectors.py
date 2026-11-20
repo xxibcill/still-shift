@@ -1275,6 +1275,61 @@ def lut_interpolation(write_dir: Path) -> tuple[dict, dict[str, str]]:
 
 
 # --------------------------------------------------------------------------
+# Correlated colour temperature (added for CG2 white balance)
+# --------------------------------------------------------------------------
+
+CCT_SAMPLES = [
+    1667.0,
+    2000.0,
+    2222.0,
+    2500.0,
+    3200.0,
+    4000.0,
+    4500.0,
+    5000.0,
+    5600.0,
+    6500.0,
+    7500.0,
+    10000.0,
+    15000.0,
+    25000.0,
+]
+WB_SAMPLES = [2000.0, 3200.0, 5000.0, 6500.0, 9000.0]
+
+
+def temperature() -> dict:
+    out = header(
+        "temperature",
+        "Planckian locus chromaticity by correlated colour temperature (Kang et al. 2002 cubic approximation), and Bradford adaptation matrices in linear BT.709 RGB from each sample's locus white to the 6500 K locus white (the reference white of grade.white-balance).",
+    )
+    out["source"] = (
+        "Kang, B., Moon, O., Hong, C., Lee, H., Cho, B., Kim, Y. (2002), Design of Advanced Color Temperature Control System for HDTV Applications, Journal of the Korean Physical Society 41(6), 865-871"
+    )
+    out["tolerances"] = {
+        "float64Port": {
+            "absolute": 1e-12,
+            "use": "A float64 port of the Kang 2002 polynomials and of the Bradford adaptation must match within 1e-12.",
+        }
+    }
+    xy = colour.temperature.CCT_to_xy_Kang2002(np.array(CCT_SAMPLES))
+    out["locus"] = {"cct": floats(CCT_SAMPLES), "xy": matrix(xy)}
+    npm = colour.normalised_primary_matrix(
+        colour.RGB_COLOURSPACES["ITU-R BT.709"].primaries,
+        colour.RGB_COLOURSPACES["ITU-R BT.709"].whitepoint,
+    )
+    reference = colour.xy_to_XYZ(colour.temperature.CCT_to_xy_Kang2002(6500.0))
+    adaptation = []
+    for t in WB_SAMPLES:
+        source = colour.xy_to_XYZ(colour.temperature.CCT_to_xy_Kang2002(t))
+        cat = colour.adaptation.matrix_chromatic_adaptation_VonKries(
+            source, reference, transform="Bradford"
+        )
+        adaptation.append({"cct": f(t), "linearBt709": matrix(np.linalg.inv(npm) @ cat @ npm)})
+    out["bradfordToReference"] = adaptation
+    return out
+
+
+# --------------------------------------------------------------------------
 
 
 def dump(value) -> str:
@@ -1308,6 +1363,7 @@ def build() -> dict[str, str]:
     files["input-transforms.json"] = dump(input_transforms())
     files["cdl.json"] = dump(cdl())
     files["lut-interpolation.json"] = dump(lut)
+    files["temperature.json"] = dump(temperature())
     return files
 
 

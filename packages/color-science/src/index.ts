@@ -49,3 +49,23 @@ export {
   applyPrimaryCorrection,
 } from "./primary.ts";
 export type { NumericRange, PrimaryCorrection } from "./primary.ts";
+export {
+  HIGHLIGHT_RANGE,
+  NEUTRAL_GRADE_PRIMARY,
+  REFERENCE_CCT,
+  SHADOW_RANGE,
+  TINT_DUV_PER_UNIT,
+  TONAL_AMOUNT,
+  applyGradePrimary,
+  applyLinearMatrixEncoded,
+  applyRgbMixer,
+  gradePrimaryControls,
+  hueRotationMatrix,
+  planckianXy,
+  rgbMixer,
+  srgbDecodeMirrored,
+  srgbEncodeMirrored,
+  temperatureTintWhite,
+  whiteBalanceMatrix,
+} from "./grade.ts";
+export type { GradePrimary, GradePrimaryControls, RgbMixer } from "./grade.ts";
