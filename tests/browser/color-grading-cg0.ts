@@ -210,7 +210,7 @@ try {
           return [still.id, canvas] as const;
         }),
       );
-      const hex = async (bytes: Uint8ClampedArray) =>
+      const hex = async (bytes: Uint8ClampedArray<ArrayBuffer>) =>
         [...new Uint8Array(await crypto.subtle.digest("SHA-256", bytes))]
           .map((b) => b.toString(16).padStart(2, "0"))
           .join("");
