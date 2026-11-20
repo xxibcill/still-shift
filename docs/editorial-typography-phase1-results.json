@@ -1,0 +1,1476 @@
+{
+  "schema": "still-shift-investigation-results-1",
+  "id": "editorial-typography-phase1",
+  "milestone": "Editorial titles Phase 1: corrected re-review, ET7a small fixes, housekeeping",
+  "plan": "docs/editorial-typography-improvement-plan.md#remaining-phases-2026-11-20",
+  "date": "2026-11-20",
+  "agent": "Claude Code (Opus 5.5); visual judgements are the agent's and are not owner acceptance",
+  "branch": "codex/editorial-titles-phase1",
+  "base": "main 760a18a1 (Merge PR #73)",
+  "toolchain": "Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
+  "status": "Re-review sheets ready for the owner gate; five small fixes and housekeeping committed. Not pushed.",
+  "phases": {
+    "phase1": "this record",
+    "ownerGate1": "owner reviews the re-rendered sheets; sets ET6b's display-contrast level",
+    "phase2": "ET6b (editorial-title lint profile: D-read drift, size-split contrast, outline/shadow/halo credit) and EC (shadow/halo cost)",
+    "ownerGate2": "owner supplies one owned or licensed clip (D-auth)",
+    "phase3": "confirming 8-candidate run with committed sheets; ET4 reduced or dropped; ET9 release verification",
+    "deferred": ["ET7b", "ET5c", "D-home"]
+  },
+  "reReview": {
+    "why": "PR #72 (D-colour, \"Match players\") decodes BT.709 footage at its true, darker values. The owner's G1 and ET7a judgements were made on footage lifted by up to 16 levels.",
+    "method": "All 16 ET7a candidates re-run unchanged with scripts/editorial-titles/et7a-check.ts (validate, render, pixel + legibility lint, sheets) from a detached checkout of main 760a18a1, 4 in parallel, on the same SHA-pinned local-only reel segments. Overviews rebuilt with --overview a|b. Old numbers are each candidate's ET7a verification run (docs/editorial-typography-et7a-results.json).",
+    "likeForLike": "Every candidate source SHA-256 and every exported composition (minus metadata.builder and asset paths) is identical to its ET7a verification iteration. Renderer composition-canvas-1.47.8 both times; only the media decoder changed (composition-media-decoder-3).",
+    "renders": "All 16 render SHA-256s changed (the footage decode); all validate with strict coverage covered; all lint with status passed and no errors.",
+    "contrastSummary": {
+      "treatedDisplayLayers": "Still about 1.0-1.9:1 and waived: the contrast mask counts the outline ring as glyph pixels and credits no shadow or halo (the ET6b gap), so these numbers barely move with the footage. Changes range -0.20 (b02 black 1.29 -> 1.09) to +0.14 (b08 ital 1.75 -> 1.89).",
+      "labels": [
+        {
+          "candidate": "a03-thai-get-dressed",
+          "layer": "label",
+          "before": 17.23,
+          "after": 17.23
+        },
+        {
+          "candidate": "a05-plaid-season",
+          "layer": "tag",
+          "before": 17.23,
+          "after": 17.23
+        },
+        {
+          "candidate": "a07-black-cami-era",
+          "layer": "label",
+          "before": 6.25,
+          "after": 6.25
+        },
+        {
+          "candidate": "a08-todays-ootd",
+          "layer": "label",
+          "before": 17.23,
+          "after": 17.23
+        },
+        {
+          "candidate": "b01-one-pant",
+          "layer": "label",
+          "before": 13.4,
+          "after": 13.4
+        },
+        {
+          "candidate": "b02-brown-new-black",
+          "layer": "mid",
+          "before": 10.75,
+          "after": 10.75
+        },
+        {
+          "candidate": "b03-thai-one-pant",
+          "layer": "label",
+          "before": 13.45,
+          "after": 13.45
+        },
+        {
+          "candidate": "b05-thai-steal-look",
+          "layer": "tag",
+          "before": 6.13,
+          "after": 6.13
+        },
+        {
+          "candidate": "b06-fit-check",
+          "layer": "tag",
+          "before": 6.8,
+          "after": 6.01
+        },
+        {
+          "candidate": "b07-chocolate-trousers",
+          "layer": "label",
+          "before": 9.88,
+          "after": 9.88
+        }
+      ],
+      "labelsNote": "Boxed labels are unchanged except b06's typed tag, 6.8 -> 6.01 on its typing frames (target 4.5, still met)."
+    },
+    "agentVisualPass": {
+      "label": "agent judgement, not owner acceptance",
+      "method": "Before/after reel overviews and per-candidate before/after phone sheets (entrance, hold, exit at 360x640) inspected by the agent.",
+      "visiblyWorse": [],
+      "slightlyWorse": ["b02-brown-new-black"],
+      "unchanged": [
+        "a01-layer-it-up",
+        "a02-lace-leather",
+        "a03-thai-get-dressed",
+        "a04-thai-look-slay",
+        "a05-plaid-season",
+        "a06-soft-sunday",
+        "a07-black-cami-era",
+        "a08-todays-ootd",
+        "b01-one-pant",
+        "b03-thai-one-pant",
+        "b04-golden-hour",
+        "b05-thai-steal-look",
+        "b06-fit-check",
+        "b07-chocolate-trousers",
+        "b08-main-character"
+      ],
+      "summary": "Corrected footage is slightly darker and warmer everywhere. No candidate became hard to read; b02's dark caps over the darker trousers rely more on the outline."
+    },
+    "ownerSheets": {
+      "rule": "Local only, git-ignored; the reels are third-party (D-auth open). Never commit them.",
+      "primaryCheckout": "benchmarks/results/editorial-titles-phase1-review/",
+      "layout": "reel-a-overview.png, reel-b-overview.png (new hold frames); reel-a-before-after.png, reel-b-before-after.png (top: ET7a review, grey bar; bottom: corrected, green bar); per candidate <id>/<id>.mp4, phone-sheet.png, entrance/hold/exit sheets (native and phone) and before-after-phone.png (left grey: ET7a; right green: corrected).",
+      "fullRuns": "benchmarks/results/editorial-titles-et7a/ in the detached checkout .claude/worktrees/editorial-titles-phase1-rerender (summary.json, lint.json, validate.json per candidate)"
+    },
+    "candidates": [
+      {
+        "id": "a01-layer-it-up",
+        "reel": "A",
+        "sourceSha256": "de99ab9e65bde00d8abf4046daae22d8d5fa6a5359152070496a8c34e2fa5131",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "75d21a4febc696dbe5dba5b369b3bd0831c9ffd88baf6c472a8301252767ddc4",
+          "after": "ca0ef5294d0d98e5ef17912f5616dfe8a225b59d99a2f38634bfa8e6eed5de6b"
+        },
+        "renderSeconds": {
+          "before": 15,
+          "after": 30.9
+        },
+        "lintSeconds": {
+          "before": 16.4,
+          "after": 14.1
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "outside-safe-area footage ×1",
+            "text-contrast script ×1",
+            "text-contrast caps ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "outside-safe-area footage ×1",
+            "text-contrast script ×1",
+            "text-contrast caps ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "script",
+            "role": "heading",
+            "waived": true,
+            "before": 1.08,
+            "after": 1.08,
+            "afterWorstWord": "layer",
+            "afterWorstFrame": 166,
+            "measuredFramesBefore": "189/210",
+            "measuredFramesAfter": "189/210"
+          },
+          {
+            "layer": "caps",
+            "role": "heading",
+            "waived": true,
+            "before": 1,
+            "after": 1,
+            "afterWorstWord": "IT",
+            "afterWorstFrame": 29,
+            "measuredFramesBefore": "165/210",
+            "measuredFramesAfter": "165/210"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "a02-lace-leather",
+        "reel": "A",
+        "sourceSha256": "cd7bc2d8f95fe70f170a9dea6f3fdc2ad7204a63840209299f6a9cede419a37b",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "a0bbed1e748469e4e2272b2ed22d9feffe09350fe5f45e29f5d9016a3e0fa97e",
+          "after": "f6105da0a620733e62810e3fb6e57b5fbfe7ed92a2dfa82f61ec9b8ef33b0492"
+        },
+        "renderSeconds": {
+          "before": 139.3,
+          "after": 187.9
+        },
+        "lintSeconds": {
+          "before": 375.5,
+          "after": 342.1
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing ital ×210",
+            "outside-safe-area wide ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast ital ×1",
+            "text-contrast wide ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing ital ×210",
+            "outside-safe-area wide ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast ital ×1",
+            "text-contrast wide ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "ital",
+            "role": "heading",
+            "waived": true,
+            "before": 1.07,
+            "after": 1.15,
+            "afterWorstWord": "&",
+            "afterWorstFrame": 19,
+            "measuredFramesBefore": "177/210",
+            "measuredFramesAfter": "177/210"
+          },
+          {
+            "layer": "wide",
+            "role": "heading",
+            "waived": true,
+            "before": 1.01,
+            "after": 1.01,
+            "afterWorstWord": "LEATHER",
+            "afterWorstFrame": 133,
+            "measuredFramesBefore": "163/210",
+            "measuredFramesAfter": "163/210"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "a03-thai-get-dressed",
+        "reel": "A",
+        "sourceSha256": "5e709a09136e11466e7b7779c9c8b520596c0377080de4ae4fcc03dbe2d94bac",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "1aa0c7b3139be77f603fadaf2dd1407c72d421630c8a86ed14235ccceda3680e",
+          "after": "7d902c228bf41f5af732317a33e50d861e2a3bbfebbb689f47cf7af250f5794c"
+        },
+        "renderSeconds": {
+          "before": 129.6,
+          "after": 154.5
+        },
+        "lintSeconds": {
+          "before": 452.7,
+          "after": 420.6
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing script ×210",
+            "outside-safe-area thai ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast thai ×1",
+            "text-contrast script ×2"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing script ×210",
+            "outside-safe-area thai ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast thai ×1",
+            "text-contrast script ×2"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "thai",
+            "role": "heading",
+            "waived": true,
+            "before": 1.19,
+            "after": 1.26,
+            "afterWorstWord": "แต่งตัว",
+            "afterWorstFrame": 140,
+            "measuredFramesBefore": "180/210",
+            "measuredFramesAfter": "180/210"
+          },
+          {
+            "layer": "script",
+            "role": "heading",
+            "waived": true,
+            "before": 1.01,
+            "after": 1.02,
+            "afterWorstWord": "with",
+            "afterWorstFrame": 160,
+            "measuredFramesBefore": "170/210",
+            "measuredFramesAfter": "170/210"
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "waived": false,
+            "before": 17.23,
+            "after": 17.23,
+            "afterWorstWord": "ลุคไปคาเฟ่",
+            "afterWorstFrame": 190,
+            "measuredFramesBefore": "143/210",
+            "measuredFramesAfter": "143/210"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "a04-thai-look-slay",
+        "reel": "A",
+        "sourceSha256": "295de9c969e0c3fcb6a2426a48c1464eca3c67ccae0aa876a902d7f6221b2870",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "df308b3ee8f2c9bc1edf32a32c9eb3fde1067991801dc5e96dd39950985763e6",
+          "after": "8216bccc73f666f3416af284f9ae56e2ffd70aa252e25b985d377f59688280be"
+        },
+        "renderSeconds": {
+          "before": 141.7,
+          "after": 124.8
+        },
+        "lintSeconds": {
+          "before": 377,
+          "after": 344.7
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing l2 ×210",
+            "outside-safe-area l1 ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast l1 ×1",
+            "text-contrast l2 ×2",
+            "co-start ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing l2 ×210",
+            "outside-safe-area l1 ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast l1 ×1",
+            "text-contrast l2 ×2",
+            "co-start ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "l1",
+            "role": "heading",
+            "waived": true,
+            "before": 1.02,
+            "after": 1.02,
+            "afterWorstWord": "ลุคนี้",
+            "afterWorstFrame": 146,
+            "measuredFramesBefore": "180/210",
+            "measuredFramesAfter": "180/210"
+          },
+          {
+            "layer": "l2",
+            "role": "heading",
+            "waived": true,
+            "before": 1.12,
+            "after": 1.14,
+            "afterWorstWord": "ปังมาก",
+            "afterWorstFrame": 127,
+            "measuredFramesBefore": "159/210",
+            "measuredFramesAfter": "159/210"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "a05-plaid-season",
+        "reel": "A",
+        "sourceSha256": "9e9ec02dfd72d8f3baaeec37f74be41d1da6ac921c64a4225ca2765f27ca30ed",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "6378624345c439dd6f8f687ab9795fc31497cd8731ce9a9d6221dd95151b9bde",
+          "after": "3157a37d866b51c6586b29f2f53cb48e5307a973faae58d741cdb0b061579e40"
+        },
+        "renderSeconds": {
+          "before": 37.6,
+          "after": 11.7
+        },
+        "lintSeconds": {
+          "before": 21.2,
+          "after": 18.2
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "outside-safe-area footage ×1",
+            "text-contrast fat ×1",
+            "text-contrast brush ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "outside-safe-area footage ×1",
+            "text-contrast fat ×1",
+            "text-contrast brush ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "fat",
+            "role": "heading",
+            "waived": true,
+            "before": 1.05,
+            "after": 1.02,
+            "afterWorstWord": "plaid",
+            "afterWorstFrame": 143,
+            "measuredFramesBefore": "185/210",
+            "measuredFramesAfter": "185/210"
+          },
+          {
+            "layer": "brush",
+            "role": "heading",
+            "waived": true,
+            "before": 1.12,
+            "after": 1.15,
+            "afterWorstWord": "season",
+            "afterWorstFrame": 145,
+            "measuredFramesBefore": "160/210",
+            "measuredFramesAfter": "160/210"
+          },
+          {
+            "layer": "tag",
+            "role": "label",
+            "waived": false,
+            "before": 17.23,
+            "after": 17.23,
+            "afterWorstWord": "OUTFIT",
+            "afterWorstFrame": 190,
+            "measuredFramesBefore": "147/210",
+            "measuredFramesAfter": "147/210"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "a06-soft-sunday",
+        "reel": "A",
+        "sourceSha256": "d113444f3c96e5ebecf493a12096c1376161a40c7a073608e80fbe1ac6df4032",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "faa850f76e80ddf4c8cd88fbf92b827dc8d69fad15cb21837ec89de7f4b6541d",
+          "after": "503e75209fb521c744b4124b97eefd4c2d34ae4b631085525d07333247bbeb11"
+        },
+        "renderSeconds": {
+          "before": 163.6,
+          "after": 125.3
+        },
+        "lintSeconds": {
+          "before": 257.8,
+          "after": 236.6
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing script ×210",
+            "outside-safe-area footage ×1",
+            "text-contrast script ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing script ×210",
+            "outside-safe-area footage ×1",
+            "text-contrast script ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "script",
+            "role": "heading",
+            "waived": true,
+            "before": 1.02,
+            "after": 1.01,
+            "afterWorstWord": "girl",
+            "afterWorstFrame": 78,
+            "measuredFramesBefore": "185/210",
+            "measuredFramesAfter": "185/210"
+          },
+          {
+            "layer": "caps",
+            "role": "heading",
+            "waived": true,
+            "before": null,
+            "after": null,
+            "afterWorstWord": null,
+            "afterWorstFrame": null,
+            "measuredFramesBefore": "0/0",
+            "measuredFramesAfter": "0/0"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "a07-black-cami-era",
+        "reel": "A",
+        "sourceSha256": "b6c1a627436232c8d56aed4b1890d9de8c4e691751522cf89e7f3a8bff45f95f",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "4a4f8d50fda81d93a146acfb509dd28b79828b8baf1a4906c9bb66a830b50c70",
+          "after": "ba7991ce19c0354304c69cca0ce598e8ade75cd75c2794ecf8e529f82d11356a"
+        },
+        "renderSeconds": {
+          "before": 149.8,
+          "after": 226.8
+        },
+        "lintSeconds": {
+          "before": 529.8,
+          "after": 490.8
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing ital ×210",
+            "outside-safe-area footage ×1",
+            "text-contrast ital ×1",
+            "text-contrast caps ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing ital ×210",
+            "outside-safe-area footage ×1",
+            "text-contrast ital ×1",
+            "text-contrast caps ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "ital",
+            "role": "heading",
+            "waived": true,
+            "before": 1.07,
+            "after": 1.08,
+            "afterWorstWord": "cami",
+            "afterWorstFrame": 69,
+            "measuredFramesBefore": "184/210",
+            "measuredFramesAfter": "184/210"
+          },
+          {
+            "layer": "caps",
+            "role": "heading",
+            "waived": true,
+            "before": 1.01,
+            "after": 1.01,
+            "afterWorstWord": "ERA",
+            "afterWorstFrame": 26,
+            "measuredFramesBefore": "167/210",
+            "measuredFramesAfter": "167/210"
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "waived": false,
+            "before": 6.25,
+            "after": 6.25,
+            "afterWorstWord": "LACE",
+            "afterWorstFrame": 190,
+            "measuredFramesBefore": "139/210",
+            "measuredFramesAfter": "139/210"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "a08-todays-ootd",
+        "reel": "A",
+        "sourceSha256": "f955875bce6f348f14e4ee1b41b01202125ca4b5c9fc4ff720634a8e4ca12b83",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "94b968b11f6632272699b3e41247fc0954b776a7dc079a2ecec145c5ec5f4d6d",
+          "after": "12b1e077a873bd128a98dd715d55f5f95360b2e1bbd2773355d916ea09e27a7f"
+        },
+        "renderSeconds": {
+          "before": 13.2,
+          "after": 32.6
+        },
+        "lintSeconds": {
+          "before": 19.7,
+          "after": 41
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "outside-safe-area footage ×1",
+            "text-contrast didone ×1",
+            "text-contrast script ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "outside-safe-area footage ×1",
+            "text-contrast didone ×1",
+            "text-contrast script ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "script",
+            "role": "heading",
+            "waived": true,
+            "before": 1.08,
+            "after": 1.09,
+            "afterWorstWord": "today's",
+            "afterWorstFrame": 165,
+            "measuredFramesBefore": "158/210",
+            "measuredFramesAfter": "158/210"
+          },
+          {
+            "layer": "didone",
+            "role": "heading",
+            "waived": true,
+            "before": 1.03,
+            "after": 1.01,
+            "afterWorstWord": "OOTD",
+            "afterWorstFrame": 132,
+            "measuredFramesBefore": "185/210",
+            "measuredFramesAfter": "185/210"
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "waived": false,
+            "before": 17.23,
+            "after": 17.23,
+            "afterWorstWord": "LACE",
+            "afterWorstFrame": 190,
+            "measuredFramesBefore": "150/210",
+            "measuredFramesAfter": "150/210"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "b01-one-pant",
+        "reel": "B",
+        "sourceSha256": "aa9b39bf0a38274ed5dea3b98636f6d577b88c9ca2561fb2e08d685fd100e015",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "7aa62c72fe8ab4c8e46f1d6956ffe1da41b9de573bf6e5e454f345143adf1313",
+          "after": "5acf2c2d516716843f6ccbbd96889b0a7e38b1eb80bbc4ab89bee64003367123"
+        },
+        "renderSeconds": {
+          "before": 56.2,
+          "after": 56.3
+        },
+        "lintSeconds": {
+          "before": 13.8,
+          "after": 26.7
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "outside-safe-area footage ×1",
+            "text-contrast caps ×1",
+            "text-contrast script ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "outside-safe-area footage ×1",
+            "text-contrast caps ×1",
+            "text-contrast script ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "caps",
+            "role": "heading",
+            "waived": true,
+            "before": 1.05,
+            "after": 1.04,
+            "afterWorstWord": "ONE",
+            "afterWorstFrame": 60,
+            "measuredFramesBefore": "147/168",
+            "measuredFramesAfter": "147/168"
+          },
+          {
+            "layer": "script",
+            "role": "heading",
+            "waived": true,
+            "before": 1,
+            "after": 1.01,
+            "afterWorstWord": "ways",
+            "afterWorstFrame": 130,
+            "measuredFramesBefore": "131/168",
+            "measuredFramesAfter": "131/168"
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "waived": false,
+            "before": 13.4,
+            "after": 13.4,
+            "afterWorstWord": "MOCK",
+            "afterWorstFrame": 150,
+            "measuredFramesBefore": "112/168",
+            "measuredFramesAfter": "112/168"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "b02-brown-new-black",
+        "reel": "B",
+        "sourceSha256": "87c5965531de17bf6cee3996633328fbf6a24d43e8aa107333575da4d757e0e4",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "0fae79abc1d2f0da666de701c0de9c9ce94e36f3367cf818be529095cfbc683e",
+          "after": "77257a26567c700f21b39bba83955e16d104b9d03dc327214d7b4536b86f7c0b"
+        },
+        "renderSeconds": {
+          "before": 132.9,
+          "after": 107.7
+        },
+        "lintSeconds": {
+          "before": 424.6,
+          "after": 394.2
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing brown ×168",
+            "outside-safe-area mid ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast brown ×1",
+            "text-contrast black ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing brown ×168",
+            "outside-safe-area mid ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast brown ×1",
+            "text-contrast black ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "brown",
+            "role": "heading",
+            "waived": true,
+            "before": 1.44,
+            "after": 1.55,
+            "afterWorstWord": "brown",
+            "afterWorstFrame": 92,
+            "measuredFramesBefore": "152/168",
+            "measuredFramesAfter": "152/168"
+          },
+          {
+            "layer": "mid",
+            "role": "heading",
+            "waived": false,
+            "before": 10.75,
+            "after": 10.75,
+            "afterWorstWord": "IS",
+            "afterWorstFrame": 152,
+            "measuredFramesBefore": "132/168",
+            "measuredFramesAfter": "132/168"
+          },
+          {
+            "layer": "black",
+            "role": "heading",
+            "waived": true,
+            "before": 1.29,
+            "after": 1.09,
+            "afterWorstWord": "BLACK",
+            "afterWorstFrame": 48,
+            "measuredFramesBefore": "117/168",
+            "measuredFramesAfter": "117/168"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "slightly worse",
+          "note": "\"BLACK\" (dark condensed caps) over the brown trousers: the corrected footage is darker, so the word leans more on its cream outline at phone size. Still readable. Lint 1.29 -> 1.09 (outline ring counted)."
+        }
+      },
+      {
+        "id": "b03-thai-one-pant",
+        "reel": "B",
+        "sourceSha256": "da10e60ab051987dc544aa9891abecb5becb9ccafb9cc56384be1b100ab4d362",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "3d0365ba2864c33b3e7564f76014020c0cf0d7353bc5050d6ef8daee5a16d84a",
+          "after": "8f256afc797acbecc1df7fe3bf136ae46e35ec519217d56f0b19636d772b05a2"
+        },
+        "renderSeconds": {
+          "before": 11.1,
+          "after": 10.5
+        },
+        "lintSeconds": {
+          "before": 65.2,
+          "after": 16.2
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "outside-safe-area l1 ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast l1 ×1",
+            "text-contrast l2 ×1",
+            "text-contrast l3 ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "outside-safe-area l1 ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast l1 ×1",
+            "text-contrast l2 ×1",
+            "text-contrast l3 ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "l1",
+            "role": "heading",
+            "waived": true,
+            "before": 1.07,
+            "after": 1.04,
+            "afterWorstWord": "กางเกง",
+            "afterWorstFrame": 60,
+            "measuredFramesBefore": "142/168",
+            "measuredFramesAfter": "142/168"
+          },
+          {
+            "layer": "l2",
+            "role": "heading",
+            "waived": true,
+            "before": 1,
+            "after": 1,
+            "afterWorstWord": "ตัวเดียว",
+            "afterWorstFrame": 14,
+            "measuredFramesBefore": "138/168",
+            "measuredFramesAfter": "138/168"
+          },
+          {
+            "layer": "l3",
+            "role": "heading",
+            "waived": true,
+            "before": 1,
+            "after": 1.01,
+            "afterWorstWord": "5",
+            "afterWorstFrame": 43,
+            "measuredFramesBefore": "121/168",
+            "measuredFramesAfter": "121/168"
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "waived": false,
+            "before": 13.45,
+            "after": 13.45,
+            "afterWorstWord": "ONE",
+            "afterWorstFrame": 150,
+            "measuredFramesBefore": "107/168",
+            "measuredFramesAfter": "107/168"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "b04-golden-hour",
+        "reel": "B",
+        "sourceSha256": "87cd6961334e21365f0e425fe2b74e65570e8bb4fc96780e034db3d3178549ac",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "77f3abd7a82d1c73877ac99ee2e8f15eea36ed7f8b7ac9316949765f88636c32",
+          "after": "673efa4e8e0aa4948605ee0c19efbdfc0db7bae06d051f662bbe0d4a7a1dd586"
+        },
+        "renderSeconds": {
+          "before": 138.1,
+          "after": 126.6
+        },
+        "lintSeconds": {
+          "before": 320.6,
+          "after": 296.7
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing script ×168",
+            "easing-monotony ×1",
+            "outside-safe-area wide ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast script ×1",
+            "text-contrast wide ×1",
+            "co-start ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing script ×168",
+            "easing-monotony ×1",
+            "outside-safe-area wide ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast script ×1",
+            "text-contrast wide ×1",
+            "co-start ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "script",
+            "role": "heading",
+            "waived": true,
+            "before": 1.04,
+            "after": 1.05,
+            "afterWorstWord": "golden",
+            "afterWorstFrame": 17,
+            "measuredFramesBefore": "158/168",
+            "measuredFramesAfter": "158/168"
+          },
+          {
+            "layer": "wide",
+            "role": "heading",
+            "waived": true,
+            "before": 1.08,
+            "after": 1.14,
+            "afterWorstWord": "FITS",
+            "afterWorstFrame": 37,
+            "measuredFramesBefore": "121/168",
+            "measuredFramesAfter": "121/168"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "b05-thai-steal-look",
+        "reel": "B",
+        "sourceSha256": "e6f9513d5880612890290aeab45fa491e20d72c6e897077dc7c790cf8ddd8722",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "85a57f859af06ad1081421ede5deacb9639abb9f547de3c72689427bba9d2de5",
+          "after": "484429eee3dd822471d81d46deaa3ca1654da28b4f2cacd80ff717d24cff58a6"
+        },
+        "renderSeconds": {
+          "before": 113.9,
+          "after": 102.6
+        },
+        "lintSeconds": {
+          "before": 388.1,
+          "after": 364.3
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing l2 ×168",
+            "outside-safe-area footage ×1",
+            "text-contrast l1 ×1",
+            "text-contrast l2 ×3"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing l2 ×168",
+            "outside-safe-area footage ×1",
+            "text-contrast l1 ×1",
+            "text-contrast l2 ×2"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "l1",
+            "role": "heading",
+            "waived": true,
+            "before": 1.02,
+            "after": 1.01,
+            "afterWorstWord": "ขโมยลุคนี้",
+            "afterWorstFrame": 7,
+            "measuredFramesBefore": "151/168",
+            "measuredFramesAfter": "151/168"
+          },
+          {
+            "layer": "l2",
+            "role": "heading",
+            "waived": true,
+            "before": 1.64,
+            "after": 1.75,
+            "afterWorstWord": "ไปเลย!",
+            "afterWorstFrame": 147,
+            "measuredFramesBefore": "124/168",
+            "measuredFramesAfter": "124/168"
+          },
+          {
+            "layer": "tag",
+            "role": "label",
+            "waived": false,
+            "before": 6.13,
+            "after": 6.13,
+            "afterWorstWord": "LOOK",
+            "afterWorstFrame": 36,
+            "measuredFramesBefore": "120/168",
+            "measuredFramesAfter": "120/168"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "b06-fit-check",
+        "reel": "B",
+        "sourceSha256": "13776682ac3ff0c76baf03d1da22828ebba34483c6dc5ba5f15f576228a2dd68",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "dd1168d1a914032a0c512722cd548e950dab770c7af36913be1ed663057b9280",
+          "after": "51da9cd5d729ecc9b06142f8f4f22d46fc1ac48779a0f78b968768c0a20570ff"
+        },
+        "renderSeconds": {
+          "before": 48,
+          "after": 71
+        },
+        "lintSeconds": {
+          "before": 137.2,
+          "after": 136.4
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing marker ×168",
+            "outside-safe-area footage ×1",
+            "text-contrast marker ×2"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing marker ×168",
+            "outside-safe-area footage ×1",
+            "text-contrast marker ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "marker",
+            "role": "heading",
+            "waived": true,
+            "before": 1.74,
+            "after": 1.87,
+            "afterWorstWord": "check",
+            "afterWorstFrame": 99,
+            "measuredFramesBefore": "149/168",
+            "measuredFramesAfter": "149/168"
+          },
+          {
+            "layer": "tag",
+            "role": "label",
+            "waived": false,
+            "before": 6.8,
+            "after": 6.01,
+            "afterWorstWord": "05",
+            "afterWorstFrame": 24,
+            "measuredFramesBefore": "129/168",
+            "measuredFramesAfter": "129/168"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "b07-chocolate-trousers",
+        "reel": "B",
+        "sourceSha256": "3a05e93bc6d89c7d14615034e3093055a457bb250f4e18cb3ca14c04db3adb74",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "abad37f6caa0a02828bfbda1dcf95f6073ae33b4ad648b44e81a5d9a4a62cf31",
+          "after": "3204478516919457e82d58075c0e004f587419a0d70d38262f6a07b308f4dfb2"
+        },
+        "renderSeconds": {
+          "before": 10.8,
+          "after": 9.6
+        },
+        "lintSeconds": {
+          "before": 16.8,
+          "after": 14.8
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "outside-safe-area fat ×1",
+            "outside-safe-area brush ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast fat ×1",
+            "text-contrast brush ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "outside-safe-area fat ×1",
+            "outside-safe-area brush ×1",
+            "outside-safe-area footage ×1",
+            "text-contrast fat ×1",
+            "text-contrast brush ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "fat",
+            "role": "heading",
+            "waived": true,
+            "before": 1.02,
+            "after": 1.03,
+            "afterWorstWord": "chocolate",
+            "afterWorstFrame": 16,
+            "measuredFramesBefore": "149/168",
+            "measuredFramesAfter": "149/168"
+          },
+          {
+            "layer": "brush",
+            "role": "heading",
+            "waived": true,
+            "before": 1,
+            "after": 1.01,
+            "afterWorstWord": "trousers",
+            "afterWorstFrame": 123,
+            "measuredFramesBefore": "124/168",
+            "measuredFramesAfter": "124/168"
+          },
+          {
+            "layer": "label",
+            "role": "label",
+            "waived": false,
+            "before": 9.88,
+            "after": 9.88,
+            "afterWorstWord": "I",
+            "afterWorstFrame": 152,
+            "measuredFramesBefore": "113/168",
+            "measuredFramesAfter": "113/168"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      },
+      {
+        "id": "b08-main-character",
+        "reel": "B",
+        "sourceSha256": "d75bbc48a24562509dfb5dfb51a3ce3e599863ea37f403b4c69bd657bfe7d7ad",
+        "sourceUnchanged": true,
+        "exportedCompositionUnchanged": true,
+        "renderSha256": {
+          "before": "6579012940f8919b35426b9fcb3522e6e6e40f2367315a98999f90bfb2db71aa",
+          "after": "b63105f9a07afa16af15456a330830004e329f1624e9d3f34702022ecc1f33e7"
+        },
+        "renderSeconds": {
+          "before": 103,
+          "after": 88.2
+        },
+        "lintSeconds": {
+          "before": 255.8,
+          "after": 222.2
+        },
+        "validate": "valid",
+        "fontCoverage": {
+          "profile": "strict",
+          "covered": true
+        },
+        "lint": {
+          "status": "passed",
+          "errors": [],
+          "warnings": [
+            "comp-text-layout-missing ital ×168",
+            "outside-safe-area footage ×1",
+            "text-contrast ital ×3",
+            "text-contrast caps ×1"
+          ]
+        },
+        "lintBefore": {
+          "status": "passed",
+          "warnings": [
+            "comp-text-layout-missing ital ×168",
+            "outside-safe-area footage ×1",
+            "text-contrast ital ×2",
+            "text-contrast caps ×1"
+          ]
+        },
+        "layers": [
+          {
+            "layer": "ital",
+            "role": "heading",
+            "waived": true,
+            "before": 1.75,
+            "after": 1.89,
+            "afterWorstWord": "character",
+            "afterWorstFrame": 107,
+            "measuredFramesBefore": "150/168",
+            "measuredFramesAfter": "150/168"
+          },
+          {
+            "layer": "caps",
+            "role": "heading",
+            "waived": true,
+            "before": 1.02,
+            "after": 1.03,
+            "afterWorstWord": "ENERGY",
+            "afterWorstFrame": 43,
+            "measuredFramesBefore": "127/168",
+            "measuredFramesAfter": "127/168"
+          }
+        ],
+        "agentJudgement": {
+          "label": "agent judgement, not owner acceptance",
+          "verdict": "no visible change in legibility",
+          "note": "Footage slightly darker and warmer; the title reads as before at phone size."
+        }
+      }
+    ]
+  },
+  "fixes": [
+    {
+      "gap": "font name budget (Prompt Black)",
+      "commit": "fdf861b0",
+      "symptom": "ET7a b03 r01: font-metadata 'invalid name string extent'; name ID 13 licence is 8,716 bytes (Windows) / 4,358 (Mac), over the 2,048-byte budget.",
+      "fix": "readFontNames decodes only identity name IDs (1, 2, 4, 6, 16, 17); every record is still extent-checked and identity names keep the 2 KB budget.",
+      "failingFirst": "tests/unit/font-identity.test.ts: Prompt Black identity; a malformed copyright string is skipped; an identity name over 2 KB and a skipped record past the table still fail.",
+      "evidence": "comp validate --font-coverage strict on a Prompt Black probe: main fails (font-metadata), branch valid; comp measure loads it in the browser (Prompt / Black). Prompt Black joins the pilot's Thai fonts; probes/all-fonts.ts valid.",
+      "pixels": "none: identities of fonts that loaded before are unchanged"
+    },
+    {
+      "gap": "span-style axis inheritance",
+      "commit": "7ad60b9c",
+      "symptom": "ET7a a02 r01: a span style in static Pinyon inherited the base style's wght 900 (comp-text-font-axis; also font-axis-range in the font gate); workaround axes: {}.",
+      "fix": "spanStyleOver: a span style that sets no axes keeps an inherited axis only where its own font has it. Used by validation, animator axis checks, copy runs (font gate), shaping, font loading and axis variants. Inherited axes the font has are still range-checked; explicit span axes must exist.",
+      "failingFirst": "tests/unit/composition-span-axes.test.ts; browser group editorial-titles-phase1 (span measured in Pinyon; render equals the axes: {} workaround byte for byte).",
+      "pixels": "none: a scene that rendered before had every inherited axis on the span font (loading threw otherwise)"
+    },
+    {
+      "gap": "highlight under per-glyph builds",
+      "commit": "0f443d85",
+      "symptom": "ET7a b06 r01-r03: the highlight showed in full behind the first typed glyph (fadeWithText follows the line's highest glyph opacity); reveal keyed by hand, lint caught 2.03:1.",
+      "fix": "Opt-in decoration field growWithText: each line's mark covers only non-blank glyphs whose animator opacity and scale are above 0. Used by drawing and the orphaned-decoration guard.",
+      "failingFirst": "editorial-titles-phase1: mid-typing the box ends 35 px past the opaque ink with growWithText, 164 px without; fully typed and unanimated renders identical; unit carry-through test.",
+      "pixels": "none by default (opt-in); comp measure reports the settled state and is unchanged",
+      "found": "A text animator's end bounds the whole build (unit starts clamp to end - 1); the pilot's enter(duration 2, stagger 2) typed b06 in about 2 frames. Noted in the skill."
+    },
+    {
+      "gap": "box padding",
+      "commit": "da12a33e",
+      "symptom": "ET7a engine mapping: highlights have no horizontal padding; only thickness controls the band.",
+      "fix": "Opt-in decoration field padding (CSS order: n, [vertical, horizontal], [top, right, bottom, left]) on highlight and box; a highlight band grows about its unpadded centre. Drawing, dirty and native text bounds and comp measure (paint box, resolved padding) share one geometry. Underline/strike reject it (comp-text-decoration-padding).",
+      "failingFirst": "tests/unit/composition-decoration-padding.test.ts; editorial-titles-phase1: measured paint box grows by exactly the padding; rendered edges within 0.8 px.",
+      "pixels": "none: unpadded marks compute exactly as before"
+    },
+    {
+      "gap": "coloured glow",
+      "commit": "4fd40b8a",
+      "symptom": "ET7a: light.glow has no colour; the pilot faked coloured halos with a zero-offset drop shadow.",
+      "fix": "light.glow 1.1.0: color (default white) and tint (0-1, default 0); tint blends each glowing pixel's colour toward color and its weight toward full coverage. Canvas and WebGL2; comp measure strength follows.",
+      "failingFirst": "editorial-titles-phase1: lavender ring around dark caps on both backends (Canvas vs WebGL2 worst difference 0); tint 0 equals 1.0.0 params on both; unit tests for version and measure strength.",
+      "pixels": "none for existing glows: a 1.0.0-parameter glow renders byte-identically to main on Canvas and WebGL2 (frame SHA-256 dbb2c328... / a98d07bb...). Pinned changes: WebGL2 built-in trace hashes for light.glow (shader text) and evaluated glow params now list tint and color defaults. Export snapshots record effect version 1.1.0.",
+      "limit": "A screened glow only lightens; dark halos stay zero-offset drop shadows (skill and grammar say so)."
+    }
+  ],
+  "affectedBaselines": "None. No renderer version changed; composition baselines, ET0 and catalogue baselines are unaffected (see verification). Pinned non-pixel expectations updated: light.glow WebGL2 trace hashes and evaluated params.",
+  "housekeeping": {
+    "commit": "a3ca508e",
+    "added": [
+      "test:browser:composition-text-measure",
+      "test:browser:editorial-titles-phase1"
+    ],
+    "notAdded": {
+      "test:browser:passage, test:browser:motion-craft, test:browser:composition-webgl-blur": "Older standalone groups outside this track (the WebGL blur parity check also runs inside composition-webgl); left for the owner to decide.",
+      "test:browser:smoke, test:fast, test:soundtrack, test:integration:command, test:package, test:browser:mechanism-spoken-inputs": "subsets, aliases, release or private-input groups"
+    }
+  },
+  "skill": "skills/design-editorial-titles/SKILL.md uses the real features: Prompt Black available, no axes: {} workaround, growWithText, padding, glow helper; adds the text-animator end pitfall. research/editorial-titles-et7a/grammar.ts gains glow(); halo() unchanged (candidates still use it).",
+  "notRun": [
+    "pnpm check / pnpm test in full, and release checks (not a release; the matching tiers above were run)",
+    "Soundtrack groups (unaffected; runtime not set up in this worktree)"
+  ],
+  "verification": {
+    "toolchain": "pnpm toolchain:check passed (Node 22.23.1)",
+    "pnpm check:fast": "passed on the final tree (467 test files, 4,708 tests). First run failed on lint ('_dropped' unused in spanStyleOver); fixed in the span-axes commit and rerun.",
+    "test:browser:editorial-titles-phase1": "passed (136 s)",
+    "test:browser:composition-text-measure": "passed (200 s)",
+    "test:browser:typography": "passed (22 s)",
+    "test:browser:composition-quality": "passed (333 s; includes ET3 legibility and ET5a framing)",
+    "tests/browser/composition-text-legibility.ts": "passed (54 s)",
+    "test:browser:composition-colour-accuracy": "passed (16 s)",
+    "test:browser:composition-baselines": "passed: 176 items, 36,061 frames, all ok (baselines unchanged)",
+    "test:browser:composition-webgl": "passed (333 s; glow shader changed)",
+    "test:browser:composition-effects": "passed (152 s)",
+    "et0-baseline --check": "ET0 outcomes match the recorded baseline",
+    "retainedFailures": [
+      "Full unit run during the parallel re-render: 3 tests timed out (mechanism-slotted-retention x2, mechanism-cue-plate-overlays x1); they pass alone and in every later full run.",
+      "pnpm check:fast first run: one lint error (above)."
+    ],
+    "note": "The browser groups ran before the lint fix, which only replaced a destructuring with an equivalent copy-and-delete; the unit suite and check:fast ran after it."
+  },
+  "agentScores": "None. Visual verdicts above are the agent's judgement; the owner gate decides."
+}

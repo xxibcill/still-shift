@@ -31,6 +31,13 @@ origins and offsets are parameters, for
 each case renders once as the pilot placed it and once placed from
 `comp measure`.
 
+[`phase1-fixes.ts`](./phase1-fixes.ts) (editorial titles Phase 1) is not an
+ET0 baseline either. It holds the ET7a pilot's small gaps on plain frames: a
+static script span under a `wght` serif, a label highlight under a glyph
+typewriter, a highlight and a box with `padding`, and a tinted `light.glow`.
+[`tests/browser/editorial-titles-phase1.ts`](../../../tests/browser/editorial-titles-phase1.ts)
+checks each fix against rendered pixels.
+
 ## Synthetic clip
 
 [`media/editorial-bands.mp4`](./media/editorial-bands.mp4) (70,569 bytes,

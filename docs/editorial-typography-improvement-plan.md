@@ -8,9 +8,12 @@ fashion-reel references. Remaining milestones as reordered by the
 [direction review](#direction-review-2026-11-15). ET7a on
 `codex/editorial-titles-et7a`: the owner accepted all 16 candidates ("all
 yes"), so the success measure is met on the local-only reels (D-auth open;
-[results](./editorial-typography-et7a-results.json)). ET6a (`comp measure`)
-done on `codex/editorial-titles-et6a`
-([results](./editorial-typography-et6a-results.json)).** ET0
+[results](./editorial-typography-et7a-results.json)); merged as PR #69. ET6a
+(`comp measure`) merged as PR #71
+([results](./editorial-typography-et6a-results.json)); colour accuracy
+(D-colour) merged as PR #72. Remaining work runs in three phases
+([below](#remaining-phases-2026-11-20)); Phase 1 is on
+`codex/editorial-titles-phase1`.** ET0
 re-baselined every finding on `main` (98a92e92); see
 [Re-baseline on `main`](#re-baseline-on-main-et0) below and the
 [ET0 results](./editorial-typography-et0-results.json).
@@ -108,23 +111,25 @@ order did not, for these reasons.
 
 ## Milestone tracker
 
-| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                      |
-| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | --------------------------- |
-| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60)   |
-| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)   |
-| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)   |
-| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63)   |
-| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16             |
-| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66)   |
-| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Done: owner accepted 16/16  |
-| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3; actual 1 session                      | Done on branch (not merged) |
-| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67)   |
-| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Proposed                    |
-| ET6b | Editorial title lint profile                      | O7       | G1 (reading rule, ET3-D1/D2) | 1–2                                        | Proposed                    |
-| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                    |
-| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Proposed                    |
-| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                    |
-| EC   | Effect render cost (shadow, halo)                 | —        | before ET7b search at scale  | profile first                              | Proposed                    |
+| ID   | Milestone                                         | Findings | Depends on                   | Estimate (active days)                     | Status                     |
+| ---- | ------------------------------------------------- | -------- | ---------------------------- | ------------------------------------------ | -------------------------- |
+| ET0  | Tracked fixtures and baseline                     | O1–O6    | owner: ET0 clip              | 1–2                                        | Merged on `main` (PR #60)  |
+| ET1  | Exact-copy font coverage gate (= MS1)             | O5       | ET0                          | 3–5; re-estimate (core gate exists)        | Merged on `main` (PR #61)  |
+| ET2  | Pixel lint over native video                      | O4, O8   | ET0                          | ~1 (O4 fixed; tests, bounds, cancellation) | Merged on `main` (PR #62)  |
+| ET3  | Text-over-video legibility checks                 | O6       | ET2                          | 3–5; actual 1 session                      | Merged on `main` (PR #63)  |
+| G1   | Owner review and inputs (no code)                 | —        | owner                        | owner time                                 | Done 2026-11-16            |
+| ET5a | Framing and decoration guards                     | O2, O3   | ET0, owner: align            | 1–2                                        | Merged on `main` (PR #66)  |
+| ET7a | Generator pilot and aesthetic proof (absorbs ET8) | —        | ET1–ET3, G1                  | 3–5; actual 1 session                      | Merged on `main` (PR #69)  |
+| ET6a | Text measurement command                          | O9       | ET7a evidence                | 2–3; actual 1 session                      | Merged on `main` (PR #71)  |
+| CA   | Colour accuracy (D-colour, "Match players")       | —        | owner: D-colour              | actual 1 session                           | Merged on `main` (PR #72)  |
+| P1   | Phase 1: corrected re-review and small fixes      | —        | ET6a, CA                     | 1 session; actual 1 session                | On branch; owner gate next |
+| ET5b | Serif seam fix                                    | O11      | ET0                          | 1–3 after root cause                       | Merged on `main` (PR #67)  |
+| ET4  | Attach bounds repair (reduced)                    | O1       | ET0; scope from ET7a         | 2–3                                        | Phase 3: reduce or drop    |
+| ET6b | Editorial title lint profile                      | O7       | Phase 1 owner gate           | 1–2                                        | Phase 2                    |
+| ET5c | Deferred probes                                   | O10, P1  | a real title needing them    | per probe                                  | Deferred                   |
+| ET9  | Release verification and carried follow-ups       | —        | before the next release      | 1–2                                        | Phase 3                    |
+| ET7b | External orchestration                            | —        | ET7a result, owner: location | 5–10                                       | Deferred                   |
+| EC   | Effect render cost (shadow, halo)                 | —        | before ET7b search at scale  | profile first                              | Phase 2                    |
 
 Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence, see
 [ET7a](#et7a--generator-pilot-and-aesthetic-proof-absorbs-et8)) ET6a → ET6b
@@ -132,6 +137,55 @@ Recommended order: G1 → ET5a → ET7a → (ordered by ET7a's evidence, see
 any release → ET7b. ET5a and ET5b do not depend
 on G1's visual review and can run while it is pending. Estimates are planning
 ranges, not deadlines; re-estimate at entry against the then-current code.
+
+## Remaining phases (2026-11-20)
+
+The owner split the remaining work into three phases, each one session and one
+PR, with an owner gate between them.
+
+1. **Phase 1 (`codex/editorial-titles-phase1`):** a corrected re-review and
+   the small fixes. PR #72 made BT.709 footage decode at its true, darker
+   values, and the owner's G1 and ET7a judgements were made on lightened
+   footage. So the 16 ET7a candidates are re-rendered unchanged over the
+   corrected footage, and their contrast is recorded before and after. The
+   ET7a small fixes land with failing-first tests: font name budget, span
+   axis inheritance, highlight under per-glyph builds, box padding and glow
+   colour. Housekeeping adds missing test groups to `pnpm test`. Results:
+   [Phase 1 results](./editorial-typography-phase1-results.json).
+2. **Owner gate:** the owner reviews the re-rendered sheets. That review sets
+   ET6b's display-contrast level (ET3-D1's boundary).
+3. **Phase 2:** [ET6b](#et6b--editorial-title-lint-profile), the
+   `editorial-title` lint profile with the D-read drift rule, size-split
+   contrast and credit for outline, shadow and halo; plus
+   [EC](#ec--effect-render-cost-shadow-halo), which profiles and fixes the
+   largest cost of shadows and halos (about 10× on renders, 20× on lint).
+4. **Owner gate:** the owner supplies one owned or licensed clip (D-auth).
+5. **Phase 3:** a confirming run of 8 candidates on that clip, with committed
+   sheets; [ET4](#et4--attach-bounds-repair-reduced) reduced or explicitly
+   dropped; and [ET9](#et9--release-verification-and-carried-follow-ups)
+   release verification with the carried follow-ups.
+
+Still deferred: ET7b, ET5c and D-home.
+
+**Phase 1 result (2026-11-20, not pushed):** see the
+[Phase 1 results](./editorial-typography-phase1-results.json).
+
+- **Re-review.** All 16 candidates were re-rendered with unchanged sources
+  and exported compositions. Every render hash changed (the footage decode),
+  and all pass strict coverage and lint. Treated display layers still
+  measure about 1.0–1.9:1, because the mask counts the outline ring. Boxed
+  labels are unchanged except b06's typed tag (6.8 → 6.01:1, target 4.5).
+  The agent's judgement, which is not acceptance: no candidate is visibly
+  worse, and b02 is slightly worse. The owner's sheets are local only.
+- **Fixes:** each landed with a failing-first test, and none changes an
+  existing render.
+  - Prompt Black loads: only identity names count against the name budget.
+  - Span styles resolve axes against their own font.
+  - Decorations gain `growWithText` and `padding` (opt-in).
+  - `light.glow` 1.1.0 gains `color` and `tint` (`tint` 0 is the old glow on
+    Canvas and WebGL2).
+- **Housekeeping:** `composition-text-measure` and `editorial-titles-phase1`
+  now run in `pnpm test`.
 
 ---
 
