@@ -144,8 +144,19 @@ export {
 } from "./story-quality.ts";
 export {
   CompositionPhysicalProofHoldSchema,
+  COMPOSITION_LINT_PROFILES,
+  declaresTextLegibility,
+  EDITORIAL_TITLE_PROFILE,
+  TEXT_CONTRAST_METHODS,
+  type CompositionLintProfile,
   type CompositionPhysicalProofHold,
+  type TextContrastMethod,
+  type TextGlyphMotion,
 } from "./composition/quality-policy.ts";
+export {
+  READING_MOTION_VERSION,
+  type ReadingMotionSettings,
+} from "./composition/reading-motion.ts";
 export { analyzeRenderedCompositionQuality } from "./composition/quality-render.ts";
 export {
   analyzeTextLegibility,

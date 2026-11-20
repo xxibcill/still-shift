@@ -38,6 +38,21 @@ export const TEXT_LEGIBILITY_CODES = [
   "platform-safe-zone",
 ] as const satisfies readonly (typeof MOTION_LINT_CODES)[number][];
 export type TextLegibilityCode = (typeof TEXT_LEGIBILITY_CODES)[number];
+/**
+ * ET6b lint policy profiles. `editorial-title` is opt-in: it turns on the
+ * legibility rules with the treated-edge contrast measure and size-split
+ * targets, and counts slow one-direction hold drift as reading time (D-read).
+ * `none` lints without a profile, overriding one saved in the composition's
+ * `metadata.readingPolicy` (lint merges the policy over it key by key).
+ */
+export const COMPOSITION_LINT_PROFILES = ["editorial-title", "none"] as const;
+export type CompositionLintProfile = (typeof COMPOSITION_LINT_PROFILES)[number];
+/** ET3 measures glyph interiors; ET6b's `treated-edge` credits outlines and halos. */
+export const TEXT_CONTRAST_METHODS = [
+  "glyph-interior",
+  "treated-edge",
+] as const;
+export type TextContrastMethod = (typeof TEXT_CONTRAST_METHODS)[number];
 export type MotionLintCode = (typeof MOTION_LINT_CODES)[number];
 export type MotionLintDiagnostic = PassageDiagnostic & {
   frames: [number, number];
@@ -175,6 +190,32 @@ export const CompositionTextLegibilitySchema = z
       .optional(),
     /** Lower percentile of a word's per-pixel contrasts taken as its contrast. */
     contrastPercentile: fraction.max(0.5).optional(),
+    /**
+     * ET6b: `glyph-interior` (default) compares each glyph pixel with the
+     * frame behind it; `treated-edge` compares the fill with what surrounds
+     * its edge (outline, halo, shadow or footage) and the outlined letter
+     * with the footage around it, and takes the better of the two.
+     */
+    contrastMethod: z.enum(TEXT_CONTRAST_METHODS).optional(),
+    /**
+     * ET6b size-split targets (ET3-D1). Text whose smallest font size is at
+     * least `minimumSize` px at the review width uses `contrast`; smaller
+     * text uses `small`. Declaring it replaces the per-role targets.
+     */
+    display: z
+      .object({
+        minimumSize: positive.max(1000).optional(),
+        contrast: contrastTarget.optional(),
+        small: contrastTarget.optional(),
+        /**
+         * Lower percentile of a display word's edge contrasts taken as its
+         * contrast (small text keeps `contrastPercentile`): a large word
+         * reads when most of its edge is clear.
+         */
+        percentile: fraction.max(0.5).optional(),
+      })
+      .strict()
+      .optional(),
     /** Output width shown at phone scale, in CSS pixels (default 360). */
     reviewWidth: positive.int().max(COMPOSITION_LIMITS.maxSize).optional(),
     /** Minimum x-height at `reviewWidth`, in pixels (default 6). */
@@ -241,6 +282,25 @@ export const CompositionQualityPolicySchema = z
      * at which `text-off-canvas` is reported (default 0.05).
      */
     textOffCanvasFraction: positive.max(1).optional(),
+    /**
+     * ET6b: an opt-in bundle of defaults, or `none` to lint without a saved
+     * one; see `COMPOSITION_LINT_PROFILES`.
+     */
+    profile: z.enum(COMPOSITION_LINT_PROFILES).optional(),
+    /**
+     * ET6b reading rule (D-read): slow, steady one-direction motion counts as
+     * reading time. Speeds and travel are in letter-heights (cap height at
+     * the layer's scale); jitter, back-and-forth and spinning still end it.
+     */
+    readingMotion: z
+      .object({
+        /** Largest glyph speed, in letter-heights per second. */
+        velocity: positive.max(100).optional(),
+        /** Largest glyph travel within one reading run, in letter-heights. */
+        displacement: positive.max(1000).optional(),
+      })
+      .strict()
+      .optional(),
     opacityPop: fraction.optional(),
     scalePop: nonnegative.optional(),
     popNeighbourRatio: fraction.optional(),
@@ -288,6 +348,23 @@ export const CompositionQualityPolicySchema = z
     textLegibility: CompositionTextLegibilitySchema.optional(),
   })
   .strict();
+/**
+ * ET6b `editorial-title` defaults. Reading motion follows the owner's D-read
+ * rule ("about one letter-height per second or less"); the travel budget and
+ * the display contrast level are calibrated in
+ * docs/editorial-typography-phase2-results.json.
+ */
+export const EDITORIAL_TITLE_PROFILE = {
+  readingMotion: { velocity: 1, displacement: 2 },
+  textLegibility: {
+    contrastMethod: "treated-edge" as const,
+    // Proposed from the 16 accepted ET7a candidates (lowest 1.63:1 at the
+    // median edge) with a margin; untreated or hairline-outlined display text
+    // over matching footage measures about 1.2:1. The owner confirmed it on
+    // the near-threshold variants (D-level, 2026-11-20: "Confirm 1.5:1").
+    display: { minimumSize: 24, contrast: 1.5, small: 4.5, percentile: 0.5 },
+  },
+} as const;
 export type CompositionQualityPolicy = z.infer<
   typeof CompositionQualityPolicySchema
 > & {
@@ -298,6 +375,26 @@ export type CompositionQualityPolicy = z.infer<
   textLegibilityEvidence?: TextLegibilityEvidence;
   /** ET5a runtime evidence; never part of a saved policy. */
   textFramingEvidence?: TextFramingEvidence;
+};
+/** ET6b: a text layer's glyphs at one frame, for the reading-motion rule. */
+export type TextGlyphMotion = {
+  /** Cap height of the shaped layout, in layer-local pixels. */
+  capHeight: number;
+  /**
+   * x, y pairs in layer-local pixels: each visible glyph's centre and the
+   * two ends of its advance, where the glyph is drawn after text animators
+   * (scaled and turned about the animator's glyph, word or line anchor).
+   */
+  points: readonly number[];
+  /** Lowest opacity of a visible glyph (1 without glyphs). */
+  opacity: number;
+  /** Largest glyph blur, in layer-local pixels. */
+  blur: number;
+  /**
+   * Thinnest text-animator stroke of a visible glyph, in layer-local pixels
+   * (0 when one is unstroked): whether an outline-only layer is drawn.
+   */
+  strokeWidth?: number;
 };
 /** Measured inputs for the ET5a framing and decoration rules (pixel lint). */
 export type TextFramingEvidence = {
@@ -317,6 +414,16 @@ export type TextFramingEvidence = {
     reveal: number;
     time: number;
   }) => readonly number[];
+  /**
+   * ET6b: glyph positions after text animators, from the prepared layout;
+   * undefined for text without a pinned font or while two copies blend.
+   */
+  glyphMotion?: (content: {
+    key: string;
+    state: number;
+    reveal: number;
+    time: number;
+  }) => TextGlyphMotion | undefined;
 };
 /** Measured inputs for the ET3 legibility rules, supplied by the lint runner. */
 export type TextLegibilityEvidence = {
@@ -331,6 +438,9 @@ export type TextLegibilityEvidence = {
    */
   fontXHeightErrors?: Record<string, string>;
 };
+export type TextContrastSample =
+  | [number, number]
+  | [number, number, number, number | null];
 export type TextContrastLayerEvidence = {
   attribution: "word" | "layer";
   /** Present when attribution falls back to the whole layer. */
@@ -339,10 +449,46 @@ export type TextContrastLayerEvidence = {
   /** Frames in the layer's reading window, in order. */
   frames: {
     frame: number;
-    /** Per word index: [percentile contrast, glyph-interior pixels]; null when unmeasured. */
-    words: ([number, number] | null)[];
+    /**
+     * Per word index: [percentile contrast, glyph-interior pixels]; null when
+     * unmeasured. ET6b `treated-edge` appends the fill-edge and outer-edge
+     * percentiles: [combined, fill-edge pixels, fill edge, outer edge or null].
+     */
+    words: (TextContrastSample | null)[];
   }[];
 };
+/**
+ * Whether a lint policy (or the composition's saved reading policy) turns on
+ * the ET3 legibility rules: by declaring `textLegibility` or, ET6b, the
+ * `editorial-title` profile.
+ */
+export function declaresTextLegibility(
+  policy: { textLegibility?: unknown; profile?: unknown },
+  saved?: unknown,
+) {
+  const stored = (saved ?? {}) as {
+    textLegibility?: unknown;
+    profile?: unknown;
+  };
+  return Boolean(
+    policy.textLegibility ||
+      stored.textLegibility ||
+      (policy.profile ?? stored.profile) === "editorial-title",
+  );
+}
+/**
+ * ET6b: whether lint reads outline-only (hollow) text layers by their
+ * outline. One condition for both the reading-time windows and the
+ * legibility reading frames: the `treated-edge` contrast measure, the one
+ * that can measure such a layer.
+ */
+export function readsOutlinedText(policy: {
+  textLegibility?:
+    | { contrastMethod?: TextContrastMethod | undefined }
+    | undefined;
+}) {
+  return policy.textLegibility?.contrastMethod === "treated-edge";
+}
 export function resolveCompositionQualityPolicy(
   comp: Composition,
   input: CompositionQualityPolicy,
@@ -644,8 +790,34 @@ export function resolveCompositionQualityPolicy(
         { path: path + ".audioLayer" },
       );
   }
+  const editorial = policy.profile === "editorial-title";
+  const readingMotion =
+    policy.readingMotion || editorial
+      ? {
+          velocity:
+            policy.readingMotion?.velocity ??
+            EDITORIAL_TITLE_PROFILE.readingMotion.velocity,
+          displacement:
+            policy.readingMotion?.displacement ??
+            EDITORIAL_TITLE_PROFILE.readingMotion.displacement,
+        }
+      : undefined;
+  const textLegibility = editorial
+    ? {
+        ...policy.textLegibility,
+        contrastMethod:
+          policy.textLegibility?.contrastMethod ??
+          EDITORIAL_TITLE_PROFILE.textLegibility.contrastMethod,
+        display: {
+          ...EDITORIAL_TITLE_PROFILE.textLegibility.display,
+          ...policy.textLegibility?.display,
+        },
+      }
+    : policy.textLegibility;
   return {
     ...policy,
+    readingMotion,
+    textLegibility,
     semanticProfile: policy.semanticProfile ?? "legacy",
     maxFrozenFrames: policy.maxFrozenFrames ?? 6,
     pixelChannelThreshold: policy.pixelChannelThreshold ?? 4,
