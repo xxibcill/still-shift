@@ -9,6 +9,7 @@
  *   are byte-identical;
  * - semi-transparent pixels grade their straight color and keep coverage:
  *   stored bytes match the reference (Canvas exact, WebGL2 within 1);
+ * - `grade.rgb-mixer` equals `color.matrix` within one code on in-range values;
  * - a value pushed above 1 by one grade effect is recovered by the next,
  *   also beside an effect that the backend applies on its own and across a
  *   default (neutral) grade.cdl;
@@ -241,6 +242,29 @@ const CASES: Record<string, Effect[]> = {
   ],
 };
 
+/**
+ * `color.matrix` and its float counterpart `grade.rgb-mixer` with the same
+ * parameters (PR #77 second review, Spec-2: "must equal it within the parity
+ * bound on in-range values").
+ */
+const MIXERS: Record<string, Record<string, number>> = {
+  "owner-like": CASES["mixer-owner-like"]![0]!.params,
+  strong: {
+    rr: 1.8,
+    rg: -0.5,
+    rb: -0.3,
+    gr: -0.2,
+    gg: 1.5,
+    gb: -0.3,
+    br: 0.1,
+    bg: -0.6,
+    bb: 1.5,
+    ro: 0.02,
+    go: -0.01,
+    strength: 1,
+  },
+  swap: { rr: 0, rg: 1, gr: 1, gg: 0, strength: 1 },
+};
 const server = await createServer({
   root,
   configFile: false,
@@ -254,7 +278,7 @@ try {
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
   const result = await page.evaluate(
-    async ({ stills, cases }) => {
+    async ({ stills, cases, mixers }) => {
       const m = (await import(
         String("/packages/renderer-core/src/index.ts")
       )) as typeof Render;
@@ -626,9 +650,67 @@ try {
           },
         ],
       });
+      // 5. Counterparts of the 8-bit color.* effects.
+      const opaquePixels = (still: (typeof stills)[number]) =>
+        Array.from(
+          { length: still.width * still.height },
+          (_, i) => i * 4,
+        ).filter((at) => still.rgba[at + 3] === 255);
+      // Spec-2: grade.rgb-mixer against color.matrix on in-range values.
+      const mixerRows = [];
+      for (const [label, params] of Object.entries(mixers)) {
+        const op = fg.floatGradeOp("grade.rgb-mixer", {
+          ...defaults("grade.rgb-mixer"),
+          ...params,
+        })!;
+        for (const still of stills)
+          for (const backend of ["canvas2d", "webgl2"] as const) {
+            const matrix = render(
+              still,
+              [{ effect: "color.matrix", params }],
+              backend,
+            );
+            const mixer = render(
+              still,
+              [{ effect: "grade.rgb-mixer", params }],
+              backend,
+            );
+            let inRange = 0,
+              clipped = 0,
+              maxDifference = 0,
+              channelsAtOne = 0;
+            for (const at of opaquePixels(still)) {
+              const value = op.apply([
+                still.rgba[at]! / 255,
+                still.rgba[at + 1]! / 255,
+                still.rgba[at + 2]! / 255,
+              ]);
+              if (value.some((v) => v < 0 || v > 1)) {
+                clipped++;
+                continue;
+              }
+              inRange++;
+              for (let c = 0; c < 3; c++) {
+                const d = Math.abs(matrix[at + c]! - mixer[at + c]!);
+                maxDifference = Math.max(maxDifference, d);
+                if (d === 1) channelsAtOne++;
+              }
+            }
+            mixerRows.push({
+              mixer: label,
+              still: still.id,
+              backend,
+              inRangePixels: inRange,
+              clippedPixels: clipped,
+              maxDifference,
+              channelsAtOne,
+            });
+          }
+      }
 
       return {
         parity,
+        counterparts: { mixer: mixerRows },
         recovery,
         banding,
         kinds: {
@@ -641,6 +723,7 @@ try {
     {
       stills,
       cases: CASES,
+      mixers: MIXERS,
     },
   );
 
@@ -703,6 +786,13 @@ try {
     rows.some((r) => r.translucentPixels > 0),
     "the stills include semi-transparent pixels",
   );
+  assert.deepEqual(
+    result.counterparts.mixer
+      .filter((r) => r.maxDifference > 1)
+      .map((r) => `${r.mixer}/${r.still}/${r.backend}: ${r.maxDifference}`),
+    [],
+    "grade.rgb-mixer equals color.matrix within one code on in-range values",
+  );
   for (const r of result.recovery) {
     assert.equal(r.floatMaxError, 0, `${r.backend}: recovered exactly`);
     assert.equal(
@@ -742,6 +832,19 @@ try {
       banding: result.banding,
       kinds: result.kinds,
       translucentPixels: rows.reduce((a, r) => a + r.translucentPixels, 0),
+      mixerVsColorMatrix: {
+        maxDifference: Math.max(
+          ...result.counterparts.mixer.map((r) => r.maxDifference),
+        ),
+        channelsAtOne: result.counterparts.mixer.reduce(
+          (a, r) => a + r.channelsAtOne,
+          0,
+        ),
+        inRangePixels: result.counterparts.mixer.reduce(
+          (a, r) => a + r.inRangePixels,
+          0,
+        ),
+      },
     }),
   );
 } finally {

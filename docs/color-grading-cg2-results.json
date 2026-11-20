@@ -49,6 +49,11 @@
       "evidence": "alpha-patches, 16,256 semi-transparent pixels per case x 11 cases: the stored premultiplied byte (round(v·a/255)) is un-premultiplied, graded by the float64 reference and re-premultiplied; the frame over the opaque black background equals that stored byte exactly on Canvas and WebGL2 (0 codes); fully transparent pixels stay 0. Before this check the parity test skipped every pixel with alpha < 255"
     },
     {
+      "check": "grade.rgb-mixer equals color.matrix within the parity bound on in-range values (plan re-check table; PR #77 second review, Spec-2)",
+      "status": "met",
+      "evidence": "color.matrix and grade.rgb-mixer rendered with the same parameters on the 8 CG0 stills, both backends, opaque pixels whose float result stays in 0–1: max difference 1 code. owner-like (strength 0.6): 12,492 channels at 1 over 462,496 in-range pixel renders (42,464 clipped, excluded); strong (strength 1): 10,688 at 1 over 373,280 (131,680 clipped); channel swap: 0 over 504,960. The earlier unit test only re-derived the formula"
+    },
+    {
       "check": "A 16-step gray ramp through ten stacked neutral-sum corrections shows no added banding compared with one pass (measured, not viewed)",
       "status": "met",
       "evidence": "ten grade.primary corrections (gamma 1.5 / gain 0.8 then gain 1.25, five times) plus the inverse gamma: gray-steps-16 keeps 16 levels and gray-ramp-256 keeps 256, max difference 0 on both backends; the CG1 spike measured 57 of 256 levels for the same idea through 8-bit intermediates"
