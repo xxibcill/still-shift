@@ -84,7 +84,8 @@ parameters and versions; executable callbacks belong to each rendering host.
 The current color slice provides `color.levels`, `color.tint`,
 `color.hue-saturation`, `color.exposure`, `color.brightness-contrast`, `color.fill`,
 `color.gradient-ramp`, `color.invert`, `color.posterize` and `color.curves`, plus
-the CGA [grade corrections](#grade-corrections-cga). See the generated
+the CGA [grade corrections](#grade-corrections-cga) and the CG2
+[float grade stage](#float-grade-stage-cg2). See the generated
 [parameter reference](./composition-reference.md) for bounds and defaults.
 
 Corrections evaluate encoded sRGB channels and preserve input coverage. Color
@@ -143,6 +144,54 @@ protectSkin·skin))`, with `s` the HSV saturation index `floor(255·chroma/max)`
 `pnpm test:browser:composition-grade-effects` checks 524,288 opaque colors per
 case, all 32,895 premultiplied byte pairs and the color-effect layer/seek
 matrix: every byte matches between backends and the integer reference.
+
+### Float grade stage (CG2)
+
+`grade.primary`, `grade.white-balance`, `grade.cdl` and `grade.rgb-mixer` are
+the first operators of the [float grade stage](./color-grading-cg1-decisions.md)
+([plan, CG2](./color-grading-engine-plan.md#cg2--float-grade-stage-and-primary-corrections)).
+A run of consecutive `grade.*` effects on a layer is evaluated as one stage on
+straight color, unclamped, and quantized once (round half up) on exit: one
+fused fragment shader in float32 on WebGL2, and the float64 references of
+`@still-shift/color-science` on Canvas. Values pushed above 1 or below 0 by one
+operator are recovered by the next. Neutral operators are dropped, so a neutral
+run leaves pixels unchanged on both backends. The working space is encoded sRGB,
+as for `color.*`; white balance adapts in linear light. Parameters are flat
+scalars (CG1 decision 3), so paths, drivers, expressions and keys work as for
+any effect.
+
+- `grade.primary`: per channel with the master combined (lift and offset add,
+  gamma and gain multiply): `v + lift·(1 − v)` (black moves, white stays) →
+  `v^(1/gamma)` (negative values unchanged) → `·gain` → `+offset` → contrast
+  about `pivot` → `shadows`/`highlights` (a luma-weighted offset of up to ±0.25:
+  shadows weight `1 − smoothstep(0, 0.6, Y)`, highlights `smoothstep(0.4, 1, Y)`)
+  → `saturation` about Rec.709 luma → `hue` rotation about the luma axis in
+  degrees → `colorBoost` (saturation scaled by `1 + colorBoost·(1 − s)`, `s` the
+  HSV saturation, so soft colors move most). Midtone detail is spatial and is
+  deferred to CG13.
+- `grade.white-balance`: Bradford chromatic adaptation in linear BT.709 light
+  from the stated illuminant to the 6500 K locus white. `temperature` is the
+  illuminant's correlated colour temperature (1667–25000 K, Kang et al. 2002
+  Planckian locus); `tint` ±100 moves it ±0.02 Duv off the locus in CIE 1960 uv
+  (positive is greener, so the result turns magenta). Setting the temperature
+  to the scene's light neutralizes it: 3200 K cools a tungsten scene.
+  6500 K with tint 0 is the identity. Unlike `color.white-balance` (channel
+  gains), this keeps neutrals neutral under any illuminant on the locus.
+- `grade.cdl`: ASC CDL slope, offset, power (per channel) and saturation;
+  `clamp` 1 is Release 1.2 (clamped), 0 is unclamped with the power skipped for
+  negative values (OpenColorIO's no-clamp style).
+- `grade.rgb-mixer`: `color.matrix`'s parameters and formula
+  (`(I + strength·(M − I))·rgb + strength·offset`) in float, without the 1/4096
+  quantization.
+
+`pnpm test:browser:color-grading-cg2` checks every operator, a five-operator
+chain and a neutral run on the CG0 stills: Canvas equals the float64 reference
+exactly on opaque pixels, WebGL2 is within one code value (owner decision 3),
+repeated WebGL2 renders are byte-identical, gain 2 then 0.5 recovers exactly,
+eleven neutral-sum passes lose no levels, the layer-kind/seek matrix keeps
+backend parity, and a graded native-video composition exports with the effect
+versions in its scene manifest. The CE6 cell `catalogue-float-grade` has its
+own baseline file (`darwin-arm64-float-grade-1.json`).
 
 ## Native transitions
 
