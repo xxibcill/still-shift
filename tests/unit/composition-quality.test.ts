@@ -1612,6 +1612,11 @@ describe("ET5a text framing and decoration guards", () => {
     expect(found[0]!.message).toContain("set `fadeWithText: true`");
   });
 
+  it("suggests growWithText for a glyph-by-glyph or word-by-word build", () => {
+    const [found] = orphaned();
+    expect(found!.message).toContain("`growWithText: true`");
+  });
+
   it("carries fadeWithText from the layer to the drawn decoration", () => {
     const layer = title([100, 100], {
       decorations: [
