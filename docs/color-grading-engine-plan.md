@@ -1,9 +1,11 @@
 # Color grading engine: port and upgrade plan
 
-Date: 2026-11-16. Status: **CGA built on `codex/cga-auto-color`, owner review
-pending (one check partly met); CG0–CG15 proposed, not started.** The owner's
-stated minimum need is the [fast track (CGA)](#fast-track-the-minimum-need);
-CG0–CG15 are the optional long-range upgrade.
+Date: 2026-11-16; re-checked against `main` 894c9d32 on 2026-11-20. Status:
+**CGA merged on `main` (PR #70); the owner asked to continue the whole upgrade
+(2026-11-20); CG0 in progress on `codex/color-grading-cg0`.** The owner's stated
+minimum need was the [fast track (CGA)](#fast-track-the-minimum-need); CG0–CG15
+are the long-range upgrade, re-scoped in
+[re-check against `main`](#re-check-against-main-2026-11-20).
 Sources audited: `~/Documents/guthib/chroma-node` at `b804dc0` (owner's separate
 repository, with uncommitted roadmap edits) and this checkout at `e6eb7b06`. No
 package source changed and nothing was rendered for this plan.
@@ -140,21 +142,23 @@ stores, the natural-language keyword parser and cloud-AI settings, and
   expressions; versioned effect identity in export metadata.
 - Ten `color.*` effects (levels, curves, exposure, hue-saturation, tint and
   others), all evaluated on encoded sRGB bytes with exact Canvas/WebGL parity.
+  CGA added three more (`color.matrix`, `color.white-balance`,
+  `color.vibrance`), so there are thirteen as of 2026-11-20.
 - The WebGL2 device already allocates `RGBA32F` targets behind
   `EXT_color_buffer_float` for blur sums.
 
 ### Still Shift: what blocks frontier-level grading today
 
-| Limit                                                           | Where                                                      | Consequence                                            |
-| --------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------ |
-| Surfaces are premultiplied sRGB `RGBA8`; effects round to bytes | `render/webgl-device.ts`, effect plugin contract           | Stacked corrections band and clip                      |
-| Media is SDR BT.709 only, decoded to an RGBA8 PNG cache         | `composition/media.ts`, `composition-media*.ts`            | No log, 10-bit, wide-gamut or HDR sources              |
-| No working color space or input/output transforms               | composition contract                                       | No scene-referred grading; LUTs have no declared space |
-| Effect parameters are scalar, color, point and curve only       | `effect-definition.ts`                                     | No LUT assets, node graphs or per-effect keys          |
-| No color-keyed selection                                        | —                                                          | No qualifier                                           |
-| No scopes or pixel probes; grade state is not measurable        | CLI                                                        | An AI cannot see what it changed                       |
-| `comp lint --pixels` fails on native-video compositions         | [dev log](./dev-log.md), finding O4 in the editorial proof | Grade lint on video depends on that fix (ET2)          |
-| Output profiles are 8-bit BT.709 except ProRes 4444             | `composition-output*.ts`                                   | No 10-bit delivery for graded log footage              |
+| Limit                                                           | Where                                            | Consequence                                            |
+| --------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------ |
+| Surfaces are premultiplied sRGB `RGBA8`; effects round to bytes | `render/webgl-device.ts`, effect plugin contract | Stacked corrections band and clip                      |
+| Media is SDR BT.709 only, decoded to an RGBA8 PNG cache         | `composition/media.ts`, `composition-media*.ts`  | No log, 10-bit, wide-gamut or HDR sources              |
+| No working color space or input/output transforms               | composition contract                             | No scene-referred grading; LUTs have no declared space |
+| Effect parameters are scalar, color, point and curve only       | `effect-definition.ts`                           | No LUT assets, node graphs or per-effect keys          |
+| No color-keyed selection                                        | —                                                | No qualifier                                           |
+| No scopes or pixel probes; grade state is not measurable        | CLI                                              | An AI cannot see what it changed                       |
+| ~~`comp lint --pixels` fails on native-video compositions~~     | Fixed by ET2 (PR #62); CG0 records it passing    | No longer blocks grade lint on video                   |
+| Output profiles are 8-bit BT.709 except ProRes 4444             | `composition-output*.ts`                         | No 10-bit delivery for graded log footage              |
 
 ## Design decisions proposed
 
@@ -232,25 +236,25 @@ These are recommendations to confirm at CG1, each with a fallback.
 
 ## Milestone tracker
 
-| ID   | Milestone                                          | Depends on                     | Estimate (active days) | Status              |
-| ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | ------------------- |
-| CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Built; owner review |
-| CG0  | Fixtures, reference vectors and baseline           | owner: approval                | 2–3                    | Proposed            |
-| CG1  | Color-science core and contract design             | CG0, owner: license, parity    | 4–6                    | Proposed            |
-| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8                    | Proposed            |
-| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 for video pixel lint) | 4–6                    | Proposed            |
-| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed            |
-| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed            |
-| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed            |
-| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 7–11                   | Proposed            |
-| CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed            |
-| CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed            |
-| CG10 | Grade lint and solvers                             | CG3, CG6                       | 5–8                    | Proposed            |
-| CG11 | AI and code authoring surface                      | CG9, CG10                      | 4–7                    | Proposed            |
-| CG12 | Tracking and object mattes                         | CG6                            | 5–8                    | Proposed            |
-| CG13 | Texture and finishing operations                   | CG6                            | 4–7                    | Proposed            |
-| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope         | 8–15                   | Proposed            |
-| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage       | 3–5                    | Proposed            |
+| ID   | Milestone                                          | Depends on                  | Estimate (active days) | Status          |
+| ---- | -------------------------------------------------- | --------------------------- | ---------------------- | --------------- |
+| CGA  | Auto exposure, contrast, saturation, white balance | owner: review               | 5–8                    | Merged (PR #70) |
+| CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)     | 2–3                    | In progress     |
+| CG1  | Color-science core and contract design             | CG0, owner: license, parity | 4–6                    | Proposed        |
+| CG2  | Float grade stage and primary corrections          | CG1                         | 5–8 (WB, mixer seeded) | Proposed        |
+| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)            | 3–5 (stats seeded)     | Proposed        |
+| CG4  | Curves and tonal-range tools                       | CG2                         | 4–6                    | Proposed        |
+| CG5  | LUT and CDL interchange                            | CG2                         | 3–5                    | Proposed        |
+| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                    | 6–9                    | Proposed        |
+| CG7  | Scene-referred input and working space             | CG2, owner: working space   | 6–10 (BT.601 done)     | Proposed        |
+| CG8  | Output transforms and 10-bit delivery              | CG7                         | 5–8                    | Proposed        |
+| CG9  | Node graph and reusable looks                      | CG4–CG6                     | 6–10                   | Proposed        |
+| CG10 | Grade lint and solvers                             | CG3, CG6                    | 4–6 (solvers seeded)   | Proposed        |
+| CG11 | AI and code authoring surface                      | CG9, CG10                   | 4–7                    | Proposed        |
+| CG12 | Tracking and object mattes                         | CG6                         | 5–8                    | Proposed        |
+| CG13 | Texture and finishing operations                   | CG6                         | 4–7                    | Proposed        |
+| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope      | 8–15                   | Proposed        |
+| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage    | 3–5                    | Proposed        |
 
 CGA stands alone at about 5–8 active days. CG0–CG15 total about 75–122 active days. Estimates are planning ranges, not deadlines;
 re-estimate at entry against the then-current code.
@@ -271,6 +275,27 @@ Useful stopping points:
 - **After CG11:** the complete code and AI workflow.
 
 ---
+
+## Re-check against `main` (2026-11-20)
+
+CGA and the composition colour-accuracy decision (D-colour, PR #72) landed on
+`main` after this plan was written. They deliver parts of later milestones. Those
+parts are folded in below, not rebuilt; each later milestone starts from them.
+
+| Delivered on `main`                                                                                                                                                         | Was planned in | Now                                                                                                                                                                                                                                              |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BT.601 (`smpte170m`) SDR sources decode with BT.601 coefficients (CGA)                                                                                                      | CG7            | Done. CG7 extends the color contract from this matrix list; it does not re-add BT.601.                                                                                                                                                           |
+| BT.709-tagged SDR video is display-equivalent to sRGB on decode (`composition-media-decoder-3`) and export (`composition-output-2`) (D-colour)                              | CG7, CG8       | The legacy working space keeps this rule. The CGA finding "`comp render` tags sRGB pixels BT.709, so a re-imported render is ~5% brighter" is resolved by it; CG0 records the round trip. Scene-referred modes (CG7) define the OETF explicitly. |
+| `color.matrix` (3×3 + offset, strength), exact 8-bit parity                                                                                                                 | CG2 (mixer)    | Stays as the 8-bit effect. CG2's `grade.rgb-mixer` is its float-stage counterpart and must equal it within the parity bound on in-range values.                                                                                                  |
+| `color.white-balance` (temperature/tint as linear-light channel gains), exact 8-bit parity                                                                                  | CG2            | Stays. CG2 adds chromatic adaptation in the float stage as a new operator; it does not change this effect. The two are compared on the CG0 chart and the difference recorded.                                                                    |
+| `color.vibrance` (saturation-aware, skin-protecting), exact 8-bit parity                                                                                                    | CG2 (boost)    | Stays. `grade.primary` color boost is the float counterpart.                                                                                                                                                                                     |
+| `comp color-stats`: media-path luma percentiles, black/white points, clipped and crushed fractions, saturation distribution, neutral cast, per clip                         | CG3            | The start of `comp scopes` statistics. CG3 adds regions, frame ranges, scopes, probes and a schema, and keeps `color-stats` output stable (or versions it).                                                                                      |
+| `comp auto-color` (staged white balance → exposure → contrast → saturation solver) and `comp look fit\|apply` (match a before/after pair with one 3×3 + offset; look files) | CG10, CG9      | CG10 extends these solvers to the float operators (CDL recovery, neutral region, chart match) and reuses their residual reports. CGA look files are migrated, not replaced, when CG9 defines looks.                                              |
+| ET2: `comp lint --pixels` measures native-video compositions (PR #62)                                                                                                       | CG3/CG10 dep.  | No longer a dependency. CG0 records it passing on a CG0 clip.                                                                                                                                                                                    |
+
+Estimates in the tracker are revised for CG2, CG3, CG7 and CG10 accordingly.
+Owner decisions 2 and 3 (license and parity rule) are still needed before CG1
+code; CG0 needs neither.
 
 ## CGA — Automatic exposure, contrast, saturation and white balance for flat SDR clips
 
