@@ -382,7 +382,8 @@ export type TextGlyphMotion = {
   capHeight: number;
   /**
    * x, y pairs in layer-local pixels: each visible glyph's centre and the
-   * two ends of its advance along its own rotation, after text animators.
+   * two ends of its advance, where the glyph is drawn after text animators
+   * (scaled and turned about the animator's glyph, word or line anchor).
    */
   points: readonly number[];
   /** Lowest opacity of a visible glyph (1 without glyphs). */

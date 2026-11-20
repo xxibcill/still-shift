@@ -39,8 +39,8 @@
     },
     "readingRule": {
       "decision": "D-read (owner, 2026-11-16): \"Gentle drift is fine\".",
-      "method": "Pixel lint takes each visible glyph's centre and the two ends of its advance from the renderer's own text-animator poses (prepared layout), through the layer matrix. A reading run continues while every point moves <= velocity letter-heights/s, has travelled <= displacement letter-heights since the run began, and has not turned > 90 degrees from its first direction in the run (steps < 0.1 px carry no direction). Glyph blur > 0.5 px or glyph opacity below reading opacity end a run. The words-per-second requirement is unchanged. Without glyph evidence (state lint, system fonts) the layer corners are followed with letter = 0.7 font size and any text-animator change still ends a run.",
-      "calibration": "Proof T1-T3 holds (tracking +25/+30, a 14 px rise) peak at 0.16-0.88 letter-heights/s with <= 0.52 of travel on the real treatments; fast (600 px, ~4/s), jitter (+/-1 px) and spin (360 degrees) holds end runs on speed, reversal and speed. Velocity is the owner's own figure (1 letter-height/s); displacement 2 letter-heights lets a heading (1 s) use the full speed and shortens allowed speed for longer reading (a 3 s body line may move <= 0.67/s).",
+      "method": "Pixel lint takes each visible glyph's centre and the two ends of its advance from the renderer's own text-animator poses (prepared layout), mapped as the glyph is drawn (scaled, skewed and turned about the animator's glyph, word or line anchor), then through the layer matrix. A reading run continues while every point moves <= velocity letter-heights/s, has travelled <= displacement letter-heights since the run began, and has not turned > 90 degrees from its first direction in the run (steps < 0.1 px carry no direction). Glyph blur > 0.5 px or glyph opacity below reading opacity end a run. The words-per-second requirement is unchanged. Without glyph evidence (state lint, system fonts) the layer corners are followed with letter = 0.7 font size and any text-animator change still ends a run.",
+      "calibration": "Proof T1-T3 holds (tracking +25/+30, a 14 px rise) peak at 0.16-0.88 letter-heights/s with <= 0.52 of travel on the real treatments; fast (600 px, ~4/s), jitter (+/-1 px), spin (360 degrees) and line scale-up (1 -> 1.5 about the line's centre) holds end runs on speed, reversal, speed and speed. Velocity is the owner's own figure (1 letter-height/s); displacement 2 letter-heights lets a heading (1 s) use the full speed and shortens allowed speed for longer reading (a 3 s body line may move <= 0.67/s).",
       "proofTreatments": {
         "t1-editorial-stack": {
           "default": {
@@ -57,12 +57,12 @@
             "readingMotion": [
               {
                 "layer": "kicker",
-                "readableSeconds": 3.167,
+                "readableSeconds": 3.375,
                 "requiredSeconds": 1.333,
                 "peakSpeed": 0.163,
                 "peakTravel": 0.007,
                 "runEnds": {
-                  "speed": 6,
+                  "speed": 5,
                   "reversal": 0,
                   "travel": 0,
                   "blur": 0
@@ -83,12 +83,12 @@
               },
               {
                 "layer": "folio",
-                "readableSeconds": 3,
+                "readableSeconds": 3.208,
                 "requiredSeconds": 1.333,
                 "peakSpeed": 0.241,
                 "peakTravel": 0.01,
                 "runEnds": {
-                  "speed": 2,
+                  "speed": 1,
                   "reversal": 0,
                   "travel": 0,
                   "blur": 0
@@ -148,12 +148,12 @@
               },
               {
                 "layer": "poster",
-                "readableSeconds": 3.375,
+                "readableSeconds": 3.667,
                 "requiredSeconds": 1,
                 "peakSpeed": 0.473,
-                "peakTravel": 0.085,
+                "peakTravel": 0.112,
                 "runEnds": {
-                  "speed": 1,
+                  "speed": 0,
                   "reversal": 1,
                   "travel": 0,
                   "blur": 0
@@ -161,12 +161,12 @@
               },
               {
                 "layer": "sub",
-                "readableSeconds": 2.958,
+                "readableSeconds": 3.167,
                 "requiredSeconds": 2,
                 "peakSpeed": 0.554,
                 "peakTravel": 0.033,
                 "runEnds": {
-                  "speed": 1,
+                  "speed": 0,
                   "reversal": 0,
                   "travel": 0,
                   "blur": 0
@@ -213,12 +213,12 @@
             "readingMotion": [
               {
                 "layer": "credit",
-                "readableSeconds": 3.125,
+                "readableSeconds": 3.375,
                 "requiredSeconds": 1,
                 "peakSpeed": 0.883,
                 "peakTravel": 0.064,
                 "runEnds": {
-                  "speed": 4,
+                  "speed": 3,
                   "reversal": 0,
                   "travel": 0,
                   "blur": 0
@@ -226,12 +226,12 @@
               },
               {
                 "layer": "line",
-                "readableSeconds": 3.542,
+                "readableSeconds": 3.792,
                 "requiredSeconds": 1.667,
                 "peakSpeed": 0.796,
                 "peakTravel": 0.516,
                 "runEnds": {
-                  "speed": 2,
+                  "speed": 1,
                   "reversal": 0,
                   "travel": 0,
                   "blur": 2
@@ -302,11 +302,11 @@
             "contrast": 1.02,
             "measuredFrames": "67/96",
             "readingMotion": {
-              "readableSeconds": 2.208,
-              "peakSpeed": 0.192,
-              "peakTravel": 0.134,
+              "readableSeconds": 2.292,
+              "peakSpeed": 0.344,
+              "peakTravel": 0.148,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -358,9 +358,9 @@
             "readingMotion": {
               "readableSeconds": 0.542,
               "peakSpeed": 0.841,
-              "peakTravel": 0.106,
+              "peakTravel": 0.12,
               "runEnds": {
-                "speed": 33,
+                "speed": 32,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -387,8 +387,8 @@
               "peakSpeed": 0.344,
               "peakTravel": 0.014,
               "runEnds": {
-                "speed": 1,
-                "reversal": 47,
+                "speed": 0,
+                "reversal": 48,
                 "travel": 0,
                 "blur": 0
               }
@@ -406,16 +406,16 @@
             "measuredFrames": "67/96"
           },
           "profile": {
-            "readingTime": [0.67],
+            "readingTime": [0.38],
             "contrast": 1.02,
             "measuredFrames": "67/96",
             "readingMotion": {
-              "readableSeconds": 0.667,
-              "peakSpeed": 0.921,
-              "peakTravel": 0.154,
+              "readableSeconds": 0.375,
+              "peakSpeed": 0.787,
+              "peakTravel": 0.057,
               "runEnds": {
-                "speed": 27,
-                "reversal": 0,
+                "speed": 40,
+                "reversal": 1,
                 "travel": 0,
                 "blur": 0
               }
@@ -425,6 +425,30 @@
               "outer": null
             }
           }
+        },
+        "hold-line-scale": {
+          "default": {
+            "readingTime": [0.17],
+            "contrast": 1.02,
+            "measuredFrames": "70/96"
+          },
+          "profile": {
+            "readingTime": [0.63],
+            "contrast": 1.02,
+            "measuredFrames": "70/96",
+            "readingMotion": {
+              "readableSeconds": 0.625,
+              "peakSpeed": 0.95,
+              "peakTravel": 0.146,
+              "runEnds": {
+                "speed": 28,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            }
+          },
+          "note": "PR #76 re-review, finding 1. On ff578cf8 (before the fix) the profile counted this hold as reading: readable 2.25 s, peakSpeed 0.405, no run ends."
         },
         "treat-none": {
           "default": {
@@ -1361,12 +1385,12 @@
             },
             {
               "layer": "wide",
-              "readableSeconds": 5.2,
+              "readableSeconds": 5.27,
               "requiredSeconds": 1,
               "peakSpeed": 0.187,
               "peakTravel": 0.006,
               "runEnds": {
-                "speed": 2,
+                "speed": 1,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -1449,12 +1473,12 @@
           "readingMotion": [
             {
               "layer": "thai",
-              "readableSeconds": 6,
+              "readableSeconds": 5.93,
               "requiredSeconds": 1,
-              "peakSpeed": 0.52,
-              "peakTravel": 0.025,
+              "peakSpeed": 0.624,
+              "peakTravel": 0.035,
               "runEnds": {
-                "speed": 0,
+                "speed": 1,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -1462,12 +1486,12 @@
             },
             {
               "layer": "script",
-              "readableSeconds": 5.5,
+              "readableSeconds": 5.6,
               "requiredSeconds": 1,
-              "peakSpeed": 0.086,
-              "peakTravel": 0.003,
+              "peakSpeed": 0.376,
+              "peakTravel": 0.014,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -1477,8 +1501,8 @@
               "layer": "label",
               "readableSeconds": 4.83,
               "requiredSeconds": 1,
-              "peakSpeed": 0.371,
-              "peakTravel": 0.014,
+              "peakSpeed": 0.87,
+              "peakTravel": 0.035,
               "runEnds": {
                 "speed": 0,
                 "reversal": 0,
@@ -1549,8 +1573,8 @@
               "layer": "l1",
               "readableSeconds": 5.97,
               "requiredSeconds": 1,
-              "peakSpeed": 0.231,
-              "peakTravel": 0.017,
+              "peakSpeed": 0.676,
+              "peakTravel": 0.048,
               "runEnds": {
                 "speed": 1,
                 "reversal": 0,
@@ -1560,10 +1584,10 @@
             },
             {
               "layer": "l2",
-              "readableSeconds": 5.3,
+              "readableSeconds": 5.27,
               "requiredSeconds": 1,
-              "peakSpeed": 0.306,
-              "peakTravel": 0.01,
+              "peakSpeed": 0.895,
+              "peakTravel": 0.03,
               "runEnds": {
                 "speed": 1,
                 "reversal": 1,
@@ -1648,12 +1672,12 @@
           "readingMotion": [
             {
               "layer": "fat",
-              "readableSeconds": 5.9,
+              "readableSeconds": 6,
               "requiredSeconds": 1,
               "peakSpeed": 0.4,
               "peakTravel": 0.015,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -1661,12 +1685,12 @@
             },
             {
               "layer": "brush",
-              "readableSeconds": 5.3,
+              "readableSeconds": 5.23,
               "requiredSeconds": 1,
-              "peakSpeed": 0.64,
-              "peakTravel": 0.024,
+              "peakSpeed": 0.545,
+              "peakTravel": 0.018,
               "runEnds": {
-                "speed": 0,
+                "speed": 1,
                 "reversal": 1,
                 "travel": 0,
                 "blur": 0
@@ -1745,12 +1769,12 @@
           "readingMotion": [
             {
               "layer": "script",
-              "readableSeconds": 5.97,
+              "readableSeconds": 6.07,
               "requiredSeconds": 1,
               "peakSpeed": 0,
               "peakTravel": 0,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -1846,12 +1870,12 @@
           "readingMotion": [
             {
               "layer": "ital",
-              "readableSeconds": 5.83,
+              "readableSeconds": 5.93,
               "requiredSeconds": 1,
               "peakSpeed": 0.455,
               "peakTravel": 0.017,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -1859,12 +1883,12 @@
             },
             {
               "layer": "caps",
-              "readableSeconds": 5.3,
+              "readableSeconds": 5.4,
               "requiredSeconds": 1,
               "peakSpeed": 0.15,
               "peakTravel": 0.006,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -1960,10 +1984,23 @@
           "readingMotion": [
             {
               "layer": "script",
-              "readableSeconds": 5.27,
+              "readableSeconds": 5.2,
               "requiredSeconds": 1,
-              "peakSpeed": 0.302,
-              "peakTravel": 0.012,
+              "peakSpeed": 0.233,
+              "peakTravel": 0.008,
+              "runEnds": {
+                "speed": 1,
+                "reversal": 0,
+                "travel": 0,
+                "blur": 0
+              }
+            },
+            {
+              "layer": "didone",
+              "readableSeconds": 6.17,
+              "requiredSeconds": 1,
+              "peakSpeed": 0,
+              "peakTravel": 0,
               "runEnds": {
                 "speed": 0,
                 "reversal": 0,
@@ -1972,26 +2009,13 @@
               }
             },
             {
-              "layer": "didone",
-              "readableSeconds": 6.07,
-              "requiredSeconds": 1,
-              "peakSpeed": 0,
-              "peakTravel": 0,
-              "runEnds": {
-                "speed": 1,
-                "reversal": 0,
-                "travel": 0,
-                "blur": 0
-              }
-            },
-            {
               "layer": "label",
-              "readableSeconds": 4.83,
+              "readableSeconds": 4.93,
               "requiredSeconds": 1,
               "peakSpeed": 0,
               "peakTravel": 0,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2074,12 +2098,12 @@
           "readingMotion": [
             {
               "layer": "caps",
-              "readableSeconds": 5.71,
+              "readableSeconds": 5.88,
               "requiredSeconds": 1,
               "peakSpeed": 0.246,
               "peakTravel": 0.015,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2087,12 +2111,12 @@
             },
             {
               "layer": "script",
-              "readableSeconds": 5.04,
+              "readableSeconds": 5.21,
               "requiredSeconds": 1,
               "peakSpeed": 0.359,
               "peakTravel": 0.021,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2201,12 +2225,12 @@
             },
             {
               "layer": "mid",
-              "readableSeconds": 5.21,
+              "readableSeconds": 5.33,
               "requiredSeconds": 1,
               "peakSpeed": 0.626,
               "peakTravel": 0.03,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2216,8 +2240,8 @@
               "layer": "black",
               "readableSeconds": 4.79,
               "requiredSeconds": 1,
-              "peakSpeed": 0.626,
-              "peakTravel": 0.026,
+              "peakSpeed": 0.822,
+              "peakTravel": 0.034,
               "runEnds": {
                 "speed": 0,
                 "reversal": 1,
@@ -2318,12 +2342,12 @@
           "readingMotion": [
             {
               "layer": "l1",
-              "readableSeconds": 5.96,
+              "readableSeconds": 5.88,
               "requiredSeconds": 1,
-              "peakSpeed": 0.595,
-              "peakTravel": 0.035,
+              "peakSpeed": 0.696,
+              "peakTravel": 0.051,
               "runEnds": {
-                "speed": 0,
+                "speed": 1,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2331,12 +2355,12 @@
             },
             {
               "layer": "l2",
-              "readableSeconds": 5.54,
+              "readableSeconds": 5.67,
               "requiredSeconds": 1,
-              "peakSpeed": 0.101,
-              "peakTravel": 0.005,
+              "peakSpeed": 0.541,
+              "peakTravel": 0.026,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2344,12 +2368,12 @@
             },
             {
               "layer": "l3",
-              "readableSeconds": 4.75,
+              "readableSeconds": 4.88,
               "requiredSeconds": 1,
-              "peakSpeed": 0.121,
-              "peakTravel": 0.006,
+              "peakSpeed": 0.42,
+              "peakTravel": 0.02,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2357,12 +2381,12 @@
             },
             {
               "layer": "label",
-              "readableSeconds": 4.54,
+              "readableSeconds": 4.5,
               "requiredSeconds": 1.33,
               "peakSpeed": 0.392,
-              "peakTravel": 0.018,
+              "peakTravel": 0.023,
               "runEnds": {
-                "speed": 0,
+                "speed": 1,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2442,13 +2466,13 @@
             },
             {
               "layer": "wide",
-              "readableSeconds": 4.96,
+              "readableSeconds": 4.92,
               "requiredSeconds": 1,
-              "peakSpeed": 0.473,
-              "peakTravel": 0.02,
+              "peakSpeed": 0.169,
+              "peakTravel": 0.007,
               "runEnds": {
-                "speed": 0,
-                "reversal": 1,
+                "speed": 2,
+                "reversal": 0,
                 "travel": 0,
                 "blur": 0
               }
@@ -2530,12 +2554,12 @@
           "readingMotion": [
             {
               "layer": "l1",
-              "readableSeconds": 6,
+              "readableSeconds": 6.13,
               "requiredSeconds": 1,
               "peakSpeed": 0.337,
               "peakTravel": 0.016,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2543,12 +2567,12 @@
             },
             {
               "layer": "l2",
-              "readableSeconds": 5.21,
+              "readableSeconds": 5.13,
               "requiredSeconds": 1,
-              "peakSpeed": 0.446,
-              "peakTravel": 0.021,
+              "peakSpeed": 0.299,
+              "peakTravel": 0.012,
               "runEnds": {
-                "speed": 0,
+                "speed": 1,
                 "reversal": 1,
                 "travel": 0,
                 "blur": 0
@@ -2556,12 +2580,12 @@
             },
             {
               "layer": "tag",
-              "readableSeconds": 4.79,
+              "readableSeconds": 4.92,
               "requiredSeconds": 1,
               "peakSpeed": 0.873,
               "peakTravel": 0.042,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2628,10 +2652,10 @@
           "readingMotion": [
             {
               "layer": "marker",
-              "readableSeconds": 5.92,
+              "readableSeconds": 6,
               "requiredSeconds": 1,
-              "peakSpeed": 0.286,
-              "peakTravel": 0.014,
+              "peakSpeed": 0.278,
+              "peakTravel": 0.012,
               "runEnds": {
                 "speed": 1,
                 "reversal": 0,
@@ -2641,10 +2665,10 @@
             },
             {
               "layer": "tag",
-              "readableSeconds": 5.29,
+              "readableSeconds": 5.38,
               "requiredSeconds": 0.67,
-              "peakSpeed": 0.228,
-              "peakTravel": 0.011,
+              "peakSpeed": 0.16,
+              "peakTravel": 0.007,
               "runEnds": {
                 "speed": 1,
                 "reversal": 0,
@@ -2729,12 +2753,12 @@
           "readingMotion": [
             {
               "layer": "fat",
-              "readableSeconds": 5.88,
+              "readableSeconds": 6,
               "requiredSeconds": 1,
               "peakSpeed": 0.48,
               "peakTravel": 0.023,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2742,7 +2766,7 @@
             },
             {
               "layer": "brush",
-              "readableSeconds": 5.12,
+              "readableSeconds": 5.13,
               "requiredSeconds": 1,
               "peakSpeed": 0.47,
               "peakTravel": 0.033,
@@ -2827,12 +2851,12 @@
           "readingMotion": [
             {
               "layer": "ital",
-              "readableSeconds": 6.17,
+              "readableSeconds": 6.29,
               "requiredSeconds": 1,
               "peakSpeed": 0,
               "peakTravel": 0,
               "runEnds": {
-                "speed": 1,
+                "speed": 0,
                 "reversal": 0,
                 "travel": 0,
                 "blur": 0
@@ -2998,5 +3022,21 @@
     "decision": "D-level: display text needs 1.5:1 at the median of each word's edge; small text keeps 4.5:1 at the 5th percentile.",
     "scope": "One answer after the near-threshold and weakened variant sheets (local only; five candidates, one per treatment type). No variant was named as the point where readability breaks.",
     "sheets": "benchmarks/results/editorial-titles-phase2-review/ in the primary checkout (local only)"
+  },
+  "reviewFixes": {
+    "prReReview1": {
+      "review": "https://github.com/xxibcill/still-shift/pull/76#pullrequestreview-5995559965",
+      "finding": "Medium: reading-motion glyph points used pose anchor + offset as each glyph's centre. Under a word, line or whole-layer anchor every glyph in the group shares that anchor, so a line-wide scale or rotation showed only through the half-advance ends: a 24-glyph line scaled 1 -> 1.5 in 1 s measured 0.19 letter-heights/s where its outer glyphs move 4.44, and counted as reading time.",
+      "fix": "typographyGlyphMotion maps each glyph's advance centre (half cap height above its baseline) and both advance ends through the transform posedClusterTransform draws it with (posedGlyphPoint: scale and skew about the anchor, rotate, offset). Glyph-anchored motion is unchanged apart from the anchor switch below.",
+      "failingFirst": "tests/unit/composition-editorial-title-profile.test.ts 'glyph motion follows the drawn glyphs': 4 of 5 fail with the old point maths (24 glyph centres collapse to 1; a fast line scale-up and a line turn never end on speed). Fixture hold-line-scale (et6b-profile.ts) passes the profile on ff578cf8 (readable 2.25 s, peakSpeed 0.405) and fails it with the fix (readable 0.63 s, 28 speed ends); tests/browser/editorial-titles-phase2.ts now requires it to end on speed.",
+      "alsoRemoved": "An artefact of the old points: when a later text animator's word or line anchor replaced the entrance's glyph anchor, every glyph's measured centre jumped to the shared anchor and ended a run on speed (or added a reversal). Those single run ends are gone on hold-rise, hold-fast, hold-jitter, proof T1-T3 and most candidate layers.",
+      "rerun": "Every hold fixture, proof T1-T3 and all 16 ET7a candidates linted under the profile on ff578cf8 and with the fix. ff578cf8 reproduces every figure recorded above exactly, so each change in this file comes from the fix. With the fix: 16/16 candidates still pass with no reading-time findings (highest peak 0.895 letter-heights/s, a04 l2; lowest readable 4.5 s against at most 1.33 s required); proof T1-T3 peak speeds and travel bounds unchanged (0.16-0.88/s, <= 0.52), readable time up by up to 0.29 s; hold-spin ends on speed 40 times (was 27), readable 0.38 s.",
+      "verification": {
+        "pnpm check:fast": "passed on the second run (470 files, 4,757 tests). Run 1 failed on tsc (a readonly identity matrix passed to readingMotionFrame in the new unit test); fixed before the commit.",
+        "pnpm test:browser:editorial-titles-phase2": "passed (81s), with hold-line-scale ending on speed",
+        "pnpm test:browser:typography": "passed (20s)",
+        "notRun": "Other browser groups (the fix changes only the reading-motion evidence, which lint reads under readingMotion), full pnpm check, WebGL2."
+      }
+    }
   }
 }

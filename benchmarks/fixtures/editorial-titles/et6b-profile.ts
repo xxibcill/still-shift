@@ -13,6 +13,9 @@
 //   hold-fast         the line rises 600 px through the hold (~4 letter-heights/s)
 //   hold-jitter       the line shakes 1 px up and down on alternate frames
 //   hold-spin         the line turns a full circle through the hold
+//   hold-line-scale   the 62 px line scales 1 → 1.5 about its centre through
+//                     the hold: its outer glyphs move faster than 1
+//                     letter-height/s (PR #76 re-review, finding 1)
 //
 // Treated display contrast. White display type in the clip's bright field
 // (RGB 232), where untreated white reads about 1.2:1.
@@ -31,6 +34,7 @@ export const ET6B_CASES = [
   "hold-fast",
   "hold-jitter",
   "hold-spin",
+  "hold-line-scale",
   "treat-none",
   "treat-outline",
   "treat-thin",
@@ -92,7 +96,7 @@ function hold(
 
 function readingCase(name: Et6bCase) {
   const headline = name === "hold-tracking";
-  const line = name === "hold-line-track";
+  const line = name === "hold-line-track" || name === "hold-line-scale";
   return comp(
     {
       id: `et6b-${name}`,
@@ -146,6 +150,8 @@ function readingCase(name: Et6bCase) {
         hold(c, "title", "line", { offset: [0, 0] }, { offset: [0, -600] });
       if (name === "hold-spin")
         hold(c, "title", "line", { rotation: 0 }, { rotation: 360 });
+      if (name === "hold-line-scale")
+        hold(c, "title", "line", { scale: 1 }, { scale: 1.5 });
       exit(c, "title");
     },
   );

@@ -3645,7 +3645,8 @@ the phone floor (6 px x-height at 360 px, ET3-D2).
 **Reading motion (D-read).** Slow, steady movement while a title holds counts
 as reading time: about one letter-height per second or less, in one
 direction. Pixel lint follows each visible glyph's centre and the two ends of
-its advance, after text animators, through the layer transform. A frame
+its advance where text animators draw it (scaled and turned about the
+animator's glyph, word or line anchor), through the layer transform. A frame
 continues a reading run while every point moves at most `velocity`
 letter-heights per second (the letter height is the shaped layout's cap
 height at the layer's scale), has travelled at most `displacement`

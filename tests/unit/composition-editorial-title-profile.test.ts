@@ -26,6 +26,18 @@ import {
   wordCode,
 } from "../../packages/renderer-core/src/composition/text-legibility.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
+import type { ShapedLayout } from "../../packages/renderer-core/src/shaped-text.ts";
+import {
+  evaluateTextPoses,
+  type TextPose,
+} from "../../packages/renderer-core/src/typography-animation.ts";
+import {
+  glyphMotionFromPoses,
+  posedClusterTransform,
+  posedGlyphPoint,
+} from "../../packages/renderer-core/src/typography-renderer.ts";
+import type { TextNode } from "../../packages/renderer-core/src/typography-style.ts";
+import type { TextAnimator } from "../../packages/scene-contract/src/motion-craft.ts";
 import { fonts } from "../../benchmarks/fixtures/editorial-titles/shared.ts";
 
 const identity = [1, 0, 0, 1, 0, 0] as const;
@@ -767,5 +779,144 @@ describe("hollow occluders (PR #76 review, finding 3)", () => {
         keys: [{ value: OCCLUDER_CODE }, { value: `${OCCLUDER_CODE}00` }],
       },
     });
+  });
+});
+
+describe("glyph motion follows the drawn glyphs (PR #76 re-review, finding 1)", () => {
+  const capHeight = 44,
+    advance = 34;
+  // A one-line, 24-glyph layout in layer-local pixels.
+  const layout = {
+    clusters: Array.from({ length: 24 }, (_, i) => ({
+      text: "x",
+      sourceIndex: i,
+      spanIndex: 0,
+      wordIndex: Math.floor(i / 6),
+      lineIndex: 0,
+      x: i * advance,
+      advance,
+      baseline: 60,
+      ascent: 50,
+      descent: 12,
+      runIndex: 0,
+    })),
+    capHeight,
+    lines: [],
+    runs: [],
+  } as unknown as ShapedLayout;
+  const node = {
+    id: "t",
+    type: "text",
+    text: "x".repeat(24),
+    color: "#ffffff",
+    fontSize: 62,
+  } as unknown as TextNode;
+  const animator = (
+    unit: "glyph" | "word" | "line",
+    from: TextAnimator["from"],
+    to: TextAnimator["to"],
+  ): TextAnimator =>
+    ({
+      node: "t",
+      unit,
+      start: 0,
+      end: 24,
+      stagger: 0,
+      selector: { start: 0, end: 1, easing: "linear" },
+      from,
+      to,
+    }) as TextAnimator;
+  const glyphsAt = (animators: TextAnimator[], frame: number) =>
+    glyphMotionFromPoses(
+      layout,
+      evaluateTextPoses(node, layout, animators, frame, { fps: 24 }),
+    );
+  const run = (animators: TextAnimator[]) => {
+    const state: ReadingMotionRun = { reference: [] };
+    const steps = [];
+    for (let frame = 0; frame <= 24; frame++)
+      steps.push(
+        advanceReadingMotion(
+          state,
+          readingMotionFrame([...identity], 1, glyphsAt(animators, frame), 62),
+          24,
+          EDITORIAL_TITLE_PROFILE.readingMotion,
+        ),
+      );
+    return steps;
+  };
+  // Records the canvas transform posedClusterTransform builds.
+  function drawnMatrix(pose: TextPose) {
+    let m = [1, 0, 0, 1, 0, 0];
+    const times = (n: number[]) =>
+      (m = [
+        m[0]! * n[0]! + m[2]! * n[1]!,
+        m[1]! * n[0]! + m[3]! * n[1]!,
+        m[0]! * n[2]! + m[2]! * n[3]!,
+        m[1]! * n[2]! + m[3]! * n[3]!,
+        m[0]! * n[4]! + m[2]! * n[5]! + m[4]!,
+        m[1]! * n[4]! + m[3]! * n[5]! + m[5]!,
+      ]);
+    posedClusterTransform(
+      {
+        translate: (x: number, y: number) => times([1, 0, 0, 1, x, y]),
+        rotate: (a: number) =>
+          times([Math.cos(a), Math.sin(a), -Math.sin(a), Math.cos(a), 0, 0]),
+        transform: (...n: number[]) => times(n),
+      } as unknown as CanvasRenderingContext2D,
+      pose,
+    );
+    return m;
+  }
+
+  it("maps a point exactly as the renderer draws it", () => {
+    const pose = {
+      ...evaluateTextPoses(node, layout, [], 0, { fps: 24 })[0]!,
+      anchorX: 400,
+      anchorY: 38,
+      x: 12,
+      y: -7,
+      scale: 1.4,
+      rotation: 23,
+      skew: 9,
+    };
+    const m = drawnMatrix(pose);
+    for (const [x, y] of [
+      [17, 38],
+      [0, 60],
+      [700, -20],
+    ] as const) {
+      const [px, py] = posedGlyphPoint(pose, x, y);
+      expect(px).toBeCloseTo(m[0]! * x + m[2]! * y + m[4]!, 9);
+      expect(py).toBeCloseTo(m[1]! * x + m[3]! * y + m[5]!, 9);
+    }
+  });
+
+  it("keeps each glyph's own position when a line scales about its centre", () => {
+    const glyphs = glyphsAt(
+      [animator("line", { scale: 1 }, { scale: 1.5 })],
+      0,
+    );
+    const centres = new Set<string>();
+    for (let i = 0; i < glyphs.points.length; i += 6)
+      centres.add(`${glyphs.points[i]},${glyphs.points[i + 1]}`);
+    expect(centres.size).toBe(24);
+  });
+
+  it("ends a reading run on speed when a line scales up fast", () => {
+    // The outer glyphs move about 4.4 letter-heights per second.
+    const steps = run([animator("line", { scale: 1 }, { scale: 1.5 })]);
+    expect(steps.some((step) => step.ended === "speed")).toBe(true);
+    expect(Math.max(...steps.map((step) => step.speed))).toBeGreaterThan(4);
+  });
+
+  it("ends a reading run when a line turns about its centre", () => {
+    const steps = run([animator("line", { rotation: 0 }, { rotation: 30 })]);
+    expect(steps.some((step) => step.ended === "speed")).toBe(true);
+  });
+
+  it("still counts a gentle scale of each glyph about itself as reading", () => {
+    const steps = run([animator("glyph", { scale: 1 }, { scale: 1.05 })]);
+    expect(steps.every((step) => step.readable)).toBe(true);
   });
 });

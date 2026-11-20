@@ -1111,7 +1111,11 @@ function drawSegment(
   paint(untinted ? own.canvas : coloredRaster(own, pose.fill));
   ctx.restore();
 }
-function posedClusterTransform(ctx: CanvasRenderingContext2D, pose: TextPose) {
+/** The canvas transform a posed cluster is drawn with (`posedGlyphPoint` maps a point by it). */
+export function posedClusterTransform(
+  ctx: CanvasRenderingContext2D,
+  pose: TextPose,
+) {
   ctx.translate(pose.anchorX + pose.x, pose.anchorY + pose.y);
   ctx.rotate((pose.rotation * Math.PI) / 180);
   ctx.transform(
@@ -1501,9 +1505,9 @@ export function typographyOrphanedDecorations(
 }
 /**
  * ET6b reading motion: where each visible glyph is drawn at `frame`, after
- * text animators and the word reveal, in layer-local pixels: its centre (the
- * pose anchor plus offset) and the two ends of its advance along its own
- * scale and rotation. Undefined while two copies blend.
+ * text animators and the word reveal, in layer-local pixels: its centre and
+ * the two ends of its advance, through the transform the glyph is drawn with
+ * (`glyphMotionFromPoses`). Undefined while two copies blend.
  */
 export function typographyGlyphMotion(
   node: TextNode,
@@ -1519,7 +1523,44 @@ export function typographyGlyphMotion(
     plan.poses,
     state.reveal,
   );
-  const layout = plan.raster.layout;
+  return glyphMotionFromPoses(plan.raster.layout, poses);
+}
+/**
+ * Where `posedClusterTransform` draws the layout point `x`, `y` of a posed
+ * cluster: scaled, skewed and rotated about the pose anchor, then offset.
+ * A word, line or whole-layer anchor is shared by its glyphs, so they move
+ * apart as it scales and swing round it as it turns.
+ */
+export function posedGlyphPoint(
+  pose: Pick<
+    TextPose,
+    "anchorX" | "anchorY" | "x" | "y" | "scale" | "rotation" | "skew"
+  >,
+  x: number,
+  y: number,
+): [number, number] {
+  const dx = x - pose.anchorX,
+    dy = y - pose.anchorY,
+    sx = pose.scale * dx + Math.tan((pose.skew * Math.PI) / 180) * dy,
+    sy = pose.scale * dy,
+    angle = (pose.rotation * Math.PI) / 180,
+    cos = Math.cos(angle),
+    sin = Math.sin(angle);
+  return [
+    pose.anchorX + pose.x + cos * sx - sin * sy,
+    pose.anchorY + pose.y + sin * sx + cos * sy,
+  ];
+}
+/**
+ * ET6b: the reading-motion evidence of posed clusters. Each visible glyph
+ * gives three points, mapped as it is drawn (`posedGlyphPoint`): the centre
+ * of its advance at half cap height above its baseline, and the two ends of
+ * its advance at that height.
+ */
+export function glyphMotionFromPoses(
+  layout: ShapedLayout,
+  poses: readonly TextPose[],
+) {
   const points: number[] = [];
   let opacity = 1,
     blur = 0,
@@ -1527,13 +1568,13 @@ export function typographyGlyphMotion(
   layout.clusters.forEach((cluster, i) => {
     const pose = poses[i];
     if (!pose || !/\S/u.test(cluster.text)) return;
-    const x = pose.anchorX + pose.x,
-      y = pose.anchorY + pose.y,
-      angle = (pose.rotation * Math.PI) / 180,
-      half = (cluster.advance / 2) * pose.scale,
-      dx = Math.cos(angle) * half,
-      dy = Math.sin(angle) * half;
-    points.push(x, y, x - dx, y - dy, x + dx, y + dy);
+    const y = cluster.baseline - layout.capHeight / 2;
+    for (const x of [
+      cluster.x + cluster.advance / 2,
+      cluster.x,
+      cluster.x + cluster.advance,
+    ])
+      points.push(...posedGlyphPoint(pose, x, y));
     opacity = Math.min(opacity, pose.opacity);
     blur = Math.max(blur, pose.blur);
     strokeWidth = Math.min(strokeWidth, pose.strokeWidth * pose.scale);

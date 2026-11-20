@@ -122,6 +122,8 @@ async function verifyReadingMotion() {
     ["hold-fast", "speed"],
     ["hold-jitter", "reversal"],
     ["hold-spin", "speed"],
+    // PR #76 re-review, finding 1: glyphs scaled about their line's centre.
+    ["hold-line-scale", "speed"],
   ] as const) {
     const report = await lint(name, profile);
     assert.equal(readingTime(report).length, 1, `${name}: not reading time`);

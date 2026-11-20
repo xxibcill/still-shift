@@ -48,6 +48,7 @@ still hold before relying on them.
   - **Owner gate D-level (done 2026-11-20):** after the local-only variant sheets, the owner answered "Confirm 1.5:1": display text needs 1.5:1 at the median edge (lowest accepted candidate 1.63; untreated or hairline-outlined display text 1.23).
   - **EC:** the Canvas drop shadow now computes only where it can paint (byte-identical; all 16 candidate renders match Phase 1). Halo fixture render 36.0 → 8.9 s, lint 54.9 → 7.9 s.
   - **PR #76 review (2026-11-20):** four findings fixed, one commit each (hollow text read only while its stroke is drawn; one condition for hollow reading; occluders keep fill alpha; `--profile none`).
+  - **PR #76 re-review (2026-11-20):** one Medium finding fixed in one commit: reading-motion glyph points now follow the drawn glyph through its word or line anchor, so a fast line scale-up or turn is no longer counted as reading time (new fixture `hold-line-scale`). All 16 candidates still pass; recorded reading-motion figures refreshed.
   - **Known limits:** WCAG luminance cannot credit hue (a02's crimson "&" over black); fully invisible text has no reading window and is not reported; the reading rule needs pixel lint for text-animator motion.
   - Next: the owner supplies an owned or licensed clip (D-auth) for Phase 3. Records: [Phase 2 results](./editorial-typography-phase2-results.json).
 
@@ -126,6 +127,15 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-20 — Editorial titles Phase 2: PR #76 re-review fix
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-phase2` (from ff578cf8)
+- **Scope:** [PR #76 re-review](https://github.com/xxibcill/still-shift/pull/76#pullrequestreview-5995559965), one finding, one commit. The four earlier fixes and the EC shadow region were checked and are unchanged.
+- **Done:** `typographyGlyphMotion` used pose anchor + offset as each glyph's centre; under a word or line anchor every glyph shares that point, so a 24-glyph line scaled 1 → 1.5 in 1 s measured 0.19 letter-heights/s (outer glyphs 4.44) and counted as reading. Points now go through the drawn transform (`posedGlyphPoint`, checked against `posedClusterTransform`).
+- **Results:** unit tests fail 4/5 with the old maths and pass; fixture `hold-line-scale` passes the profile on ff578cf8 (2.25 s readable) and fails with the fix (28 speed ends). ff578cf8 reproduces every recorded figure exactly; with the fix all 16 candidates still pass with no reading-time findings (highest peak 0.895/s), proof T1–T3 peaks unchanged, and single false speed ends from anchor switches are gone. `pnpm check:fast` passed on the second run (the first failed `tsc` on the new test); browser groups editorial-titles-phase2 and typography pass (Node 22.23.1). Not run: other browser groups, full `pnpm check`, WebGL2.
+- **Open / next:** owner review; Phase 3 still waits on D-auth.
+- **Records:** [Phase 2 results](./editorial-typography-phase2-results.json) (`reviewFixes.prReReview1`).
 
 ### 2026-11-20 — Editorial titles Phase 2: PR #76 review fixes
 
