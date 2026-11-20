@@ -198,6 +198,38 @@ describe("composition effect stack", () => {
     ).toEqual(["color", "intensity", "radius", "threshold", "tint"]);
   });
 
+  it("rejects a light.glow color without a tint, which would not show", () => {
+    const glow = (params: Record<string, unknown>) => {
+      const comp = fixture();
+      comp.layers[0]!.effects = [
+        { id: "glow", effect: "light.glow", params: { radius: 5, ...params } },
+      ];
+      const result = validateComposition(comp);
+      return result.ok
+        ? []
+        : result.diagnostics.map((d) => `${d.code} ${d.path} ${d.message}`);
+    };
+    expect(glow({ color: "#C8B4FF" })).toEqual([
+      expect.stringMatching(
+        /^comp-effect-params layers\[0\]\.effects\[0\]\.params\.color .*tint/u,
+      ),
+    ]);
+    expect(glow({ color: "#C8B4FF", tint: 1 })).toEqual([]);
+    // An explicit tint, even 0 or keyed from 0, is the author's choice.
+    expect(glow({ color: "#C8B4FF", tint: 0 })).toEqual([]);
+    expect(
+      glow({
+        color: "#C8B4FF",
+        tint: {
+          keys: [
+            { frame: 0, value: 0 },
+            { frame: 10, value: 1 },
+          ],
+        },
+      }),
+    ).toEqual([]);
+  });
+
   it.each(["directional-blur", "glow", "displacement"])(
     "compiles %s into an ordered native stack",
     (id) => {

@@ -220,6 +220,17 @@ function checkLayer(
     }
     if ((effect.inPoint ?? -Infinity) >= (effect.outPoint ?? Infinity))
       fail("comp-effect-time", at, "Effect inPoint must precede outPoint");
+    // light.glow 1.1.0 uses `color` only through `tint`, which defaults to 0.
+    if (
+      effect.effect === "light.glow" &&
+      effect.params?.color !== undefined &&
+      effect.params.tint === undefined
+    )
+      fail(
+        "comp-effect-params",
+        [...at, "params", "color"],
+        "light.glow color has no effect without tint; set tint (0–1, 1 glows fully in color)",
+      );
     const parsed = definition.params.safeParse(effect.params ?? {});
     if (!parsed.success)
       for (const issue of parsed.error.issues)

@@ -1737,7 +1737,9 @@ passes `threshold`, and screens the result over the layer. Version `1.1.0`
 (editorial titles Phase 1) adds `tint`: it blends each glowing pixel's colour
 toward `color` and its weight toward full coverage, so `tint: 1` glows in
 `color` from the layer's shape even when the layer is dark. `tint` 0, the
-default, renders exactly as `1.0.0` on Canvas and WebGL2. A screened glow only
+default, renders exactly as `1.0.0` on Canvas and WebGL2, so a `color` set
+without `tint` would not show and fails validation (`comp-effect-params`); an
+explicit `tint`, even 0 or keyed from 0, is accepted. A screened glow only
 lightens; for a dark halo use a zero-offset `light.drop-shadow`.
 
 Directional blur averages premultiplied samples in fixed order with Float32
