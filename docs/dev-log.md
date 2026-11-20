@@ -123,8 +123,8 @@ still hold before relying on them.
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg0-cg2` (from b6c2f0d7).
 - **Scope:** the three findings of the [PR #77 review](https://github.com/xxibcill/still-shift/pull/77#pullrequestreview-5996579727), one commit each.
-- **Done:** (1) a `grade.*` run stays fused when another effect on the layer has a window or layer inputs (`effectStack` splits only at those effects; it was quantizing after every grade effect, 127 codes lost).
-- **Results:** `check:fast` passed; CG2, composition-effects, composition-mesh and composition-baselines (36,061 frames unchanged) passed. Run on Node 22.23.1: on Node 24 `composition-bake.test.ts` fails on the unmodified head (float last digits).
+- **Done:** (1) a `grade.*` run stays fused when another effect on the layer has a window or layer inputs (`effectStack` splits only at those effects; it was quantizing after every grade effect, 127 codes lost). (2) the npm package includes `@still-shift/color-science` (`package-layout.ts`; the installed renderer failed with `ERR_MODULE_NOT_FOUND` and the corresponding source lacked the package).
+- **Results:** `check:fast` passed; CG2, composition-effects, composition-mesh and composition-baselines (36,061 frames unchanged) passed. `test:package` passed with the local pnpm store; without it the npm audit step fails on high advisories for the locked `vite` and `zod` (unchanged lock, needs a decision before release). Run on Node 22.23.1: on Node 24 `composition-bake.test.ts` fails on the unmodified head (float last digits).
 - **Records:** [CG2 results, `reviewFixes`](./color-grading-cg2-results.json).
 
 ### 2026-11-20 — Color grading CG2: float grade stage and primary corrections

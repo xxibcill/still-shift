@@ -87,6 +87,17 @@
         "failingFirst": "color-grading-cg2 with the new check (gain 2, gain 0.5, then distort.displacement-map with a layer input): canvas2d besideLayerInputMaxError 127",
         "after": "besideLayerInputMaxError 0 on Canvas and WebGL2; all other CG2 numbers unchanged",
         "verification": "pnpm check:fast passed (470 files, 4,821 tests); browser color-grading-cg2, composition-effects, composition-mesh passed; composition-baselines 176 items, 36,061 frames unchanged"
+      },
+      {
+        "finding": 2,
+        "problem": "scripts/release/package-layout.ts did not list packages/color-science, so the npm build left the bare @still-shift/color-science import in the emitted renderer and the corresponding source omitted the package",
+        "fix": "add packages/color-science to workspaceDirectories (alias rewrite and corresponding source)",
+        "failingFirst": "pnpm build:package at the PR head: importing dist/npm/packages/renderer-core/src/index.js failed with ERR_MODULE_NOT_FOUND for @still-shift/color-science (from float-grade.js); dist/npm/source/packages had no color-science",
+        "after": "float-grade.js imports ../../../../color-science/src/index.js; source/packages/color-science is shipped",
+        "verification": "pnpm test:package passed with STILL_SHIFT_PNPM_STORE set (offline install, installed API imports, canvas2d and webgl2 exports, corresponding source rebuild)",
+        "failedRuns": [
+          "pnpm test:package without STILL_SHIFT_PNPM_STORE failed at its first step, the locked production npm audit: high advisories for vite and zod in the unchanged lock. Not caused by this fix; the audit was skipped on the rerun and still needs a dependency decision before any release."
+        ]
       }
     ]
   },
