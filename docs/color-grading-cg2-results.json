@@ -76,6 +76,20 @@
     "schema:check failed on a stale native appearance closure after the renderer change; regenerated with pnpm native3d:identity:generate (identity only, as for earlier renderer edits).",
     "CE6 unit coverage failed once the effects were registered (no catalogue cell yet); the new cell fixed it."
   ],
+  "reviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/77#pullrequestreview-5996579727",
+    "environment": "node 22.23.1 (toolchain.json); on node 24.16.0 tests/unit/composition-bake.test.ts fails on the unmodified PR head (last-digit float differences), so all reruns use the pinned node",
+    "fixes": [
+      {
+        "finding": 1,
+        "problem": "effectStack applied every effect alone when any effect on the layer had a window or layer inputs, so a grade.* run was quantized after each effect",
+        "fix": "packages/renderer-core/src/composition/render/backend.ts: split only at effects with a window or layer inputs; contiguous plain effects reach applyEffects together",
+        "failingFirst": "color-grading-cg2 with the new check (gain 2, gain 0.5, then distort.displacement-map with a layer input): canvas2d besideLayerInputMaxError 127",
+        "after": "besideLayerInputMaxError 0 on Canvas and WebGL2; all other CG2 numbers unchanged",
+        "verification": "pnpm check:fast passed (470 files, 4,821 tests); browser color-grading-cg2, composition-effects, composition-mesh passed; composition-baselines 176 items, 36,061 frames unchanged"
+      }
+    ]
+  },
   "verification": {
     "checkFast": "passed: 470 test files, 4,821 tests",
     "browser": {

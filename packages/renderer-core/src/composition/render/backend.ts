@@ -331,7 +331,17 @@ export function executeGraph<S extends Surface>(
       backend.applyEffects(target, effects);
       return;
     }
-    for (const effect of effects) {
+    // Effects without inputs or a window still go to the backend as contiguous
+    // runs, so consecutive grade.* effects stay one float stage (CG2).
+    let start = 0;
+    const flush = (end: number) => {
+      if (end > start) backend.applyEffects(target, effects.slice(start, end));
+    };
+    for (let index = 0; index < effects.length; index++) {
+      const effect = effects[index]!;
+      if (!effect.layerInputs && !effect.window) continue;
+      flush(index);
+      start = index + 1;
       const inputs = new Map<string, S>();
       try {
         for (const [slot, ops] of Object.entries(effect.layerInputs ?? {}))
@@ -342,6 +352,7 @@ export function executeGraph<S extends Surface>(
         for (const source of inputs.values()) backend.releaseSurface(source);
       }
     }
+    flush(effects.length);
   };
   const mask = (
     tmp: S,

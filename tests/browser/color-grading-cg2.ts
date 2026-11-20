@@ -7,7 +7,8 @@
  * - Canvas equals the float64 reference exactly on opaque pixels; WebGL2 is
  *   within one 8-bit code value (owner decision 3); repeated WebGL2 renders
  *   are byte-identical;
- * - a value pushed above 1 by one grade effect is recovered by the next;
+ * - a value pushed above 1 by one grade effect is recovered by the next,
+ *   also beside an effect that the backend applies on its own;
  * - ten stacked neutral-sum corrections add no banding compared with one pass;
  * - layer kinds, animated controls and seeks keep backend parity within 1.
  *
@@ -229,7 +230,11 @@ try {
       );
       const render = (
         still: (typeof stills)[number],
-        effects: { effect: string; params: object }[],
+        effects: {
+          effect: string;
+          params: object;
+          inputs?: Record<string, string>;
+        }[],
         backend: "canvas2d" | "webgl2",
       ) => {
         const composition: Composition = {
@@ -262,8 +267,22 @@ try {
                 id: `g${i}`,
                 effect: e.effect,
                 params: e.params as never,
+                ...(e.inputs ? { inputs: e.inputs } : {}),
               })),
             },
+            // A disabled source for effects that read a layer input.
+            ...(effects.some((e) => e.inputs)
+              ? [
+                  {
+                    id: "map-source",
+                    type: "solid" as const,
+                    size: [still.width, still.height] as [number, number],
+                    color: "#808080",
+                    enabled: false,
+                    transform: { anchor: [0, 0] as [number, number] },
+                  },
+                ]
+              : []),
           ],
         };
         const preview = m.createCompositionPreview(
@@ -372,15 +391,38 @@ try {
           ],
           backend,
         );
+        // The same run beside an effect with a layer input (which the backend
+        // applies on its own) must still be fused: compare with that effect alone.
+        const mapped = {
+          effect: "distort.displacement-map",
+          params: { amount: [0, 0] },
+          inputs: { map: "map-source" },
+        };
+        const beside = render(
+          ramp,
+          [
+            { effect: "grade.primary", params: { gainMaster: 2 } },
+            { effect: "grade.primary", params: { gainMaster: 0.5 } },
+            mapped,
+          ],
+          backend,
+        );
+        const mappedAlone = render(ramp, [mapped], backend);
         let floatMax = 0,
-          byteMax = 0;
+          byteMax = 0,
+          besideMax = 0;
         for (let x = 0; x < 256; x++) {
           floatMax = Math.max(floatMax, Math.abs(float[x * 4]! - x));
           byteMax = Math.max(byteMax, Math.abs(bytes[x * 4]! - x));
+          besideMax = Math.max(
+            besideMax,
+            Math.abs(beside[x * 4]! - mappedAlone[x * 4]!),
+          );
         }
         return {
           backend,
           floatMaxError: floatMax,
+          besideLayerInputMaxError: besideMax,
           eightBitExposureMaxError: byteMax,
         };
       });
@@ -530,8 +572,14 @@ try {
     rows.filter((r) => r.case === "neutral-run").every((r) => r.identity),
     "a neutral run is an exact identity",
   );
-  for (const r of result.recovery)
+  for (const r of result.recovery) {
     assert.equal(r.floatMaxError, 0, `${r.backend}: recovered exactly`);
+    assert.equal(
+      r.besideLayerInputMaxError,
+      0,
+      `${r.backend}: recovered exactly beside a layer-input effect`,
+    );
+  }
   for (const b of result.banding) {
     assert.equal(
       b.distinctStacked,

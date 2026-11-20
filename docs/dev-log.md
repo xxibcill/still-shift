@@ -54,7 +54,7 @@ still hold before relying on them.
 
 - **Composition colour accuracy (2026-11-16):** owner decision D-colour ("Match players") merged on `main` via [PR #72](https://github.com/xxibcill/still-shift/pull/72): exports keep authored sRGB on every path (`composition-output-2`) and BT.709 footage decodes without the inverse OETF (`composition-media-decoder-3`). Footage-dependent lint numbers and renders over BT.709 footage changed ([results](./composition-colour-accuracy-results.json)); composition baselines did not. The ET7a candidates are re-rendered over corrected footage in editorial titles Phase 1 (below).
 
-- **Color grading engine (2026-11-20):** CGA merged on `main` (PR #70). The owner asked to continue CG0–CG15 and approved decisions 2 (GPL-3.0 port) and 3 (float parity bound). **CG0**, **CG1** and **CG2** are done on `codex/color-grading-cg0-cg2` (fixtures and vectors; `@still-shift/color-science`; the float grade stage with `grade.primary`, `grade.white-balance`, `grade.cdl`, `grade.rgb-mixer`), all checks met, no PR yet (owner asks first). **Stopping point after CG2:** report to the owner before CG3. Later owner decisions: working space and camera-transform priority (CG7), lab panel scope (CG14), log/10-bit footage and reference renders (CG15). Still open from CGA: whether block-mean RMS is the right look bound. Results: [CG0](./color-grading-cg0-results.json), [CG1](./color-grading-cg1-results.json), [CG2](./color-grading-cg2-results.json).
+- **Color grading engine (2026-11-20):** CGA merged on `main` (PR #70). The owner asked to continue CG0–CG15 and approved decisions 2 (GPL-3.0 port) and 3 (float parity bound). **CG0**, **CG1** and **CG2** are done on `codex/color-grading-cg0-cg2` (fixtures and vectors; `@still-shift/color-science`; the float grade stage with `grade.primary`, `grade.white-balance`, `grade.cdl`, `grade.rgb-mixer`), all checks met, in review as [PR #77](https://github.com/xxibcill/still-shift/pull/77); review findings are fixed on the branch, one commit each. **Stopping point after CG2:** report to the owner before CG3. Later owner decisions: working space and camera-transform priority (CG7), lab panel scope (CG14), log/10-bit footage and reference renders (CG15). Still open from CGA: whether block-mean RMS is the right look bound. Results: [CG0](./color-grading-cg0-results.json), [CG1](./color-grading-cg1-results.json), [CG2](./color-grading-cg2-results.json).
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
@@ -118,6 +118,14 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-21 — Color grading CG2: PR #77 review fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg0-cg2` (from b6c2f0d7).
+- **Scope:** the three findings of the [PR #77 review](https://github.com/xxibcill/still-shift/pull/77#pullrequestreview-5996579727), one commit each.
+- **Done:** (1) a `grade.*` run stays fused when another effect on the layer has a window or layer inputs (`effectStack` splits only at those effects; it was quantizing after every grade effect, 127 codes lost).
+- **Results:** `check:fast` passed; CG2, composition-effects, composition-mesh and composition-baselines (36,061 frames unchanged) passed. Run on Node 22.23.1: on Node 24 `composition-bake.test.ts` fails on the unmodified head (float last digits).
+- **Records:** [CG2 results, `reviewFixes`](./color-grading-cg2-results.json).
 
 ### 2026-11-20 — Color grading CG2: float grade stage and primary corrections
 
