@@ -118,6 +118,7 @@
     "test:browser:composition-font-fallback": "node --import tsx tests/browser/composition-font-fallback.ts",
     "test:browser:composition-effects": "node --import tsx tests/browser/composition-effects.ts",
     "test:browser:composition-grade-effects": "node --import tsx tests/browser/composition-grade-effects.ts",
+    "color:cg0-fixtures": "node --import tsx scripts/color/cg0-fixtures.ts",
     "color:cg0-vectors": "uv run --no-project --python 3.12.11 --with colour-science==0.4.6 --with opencolorio==2.4.2 python -I -W ignore::UserWarning scripts/color/cg0_reference_vectors.py",
     "test:browser:composition-exposure": "node --import tsx tests/browser/composition-exposure.ts",
     "test:browser:composition-webgl": "node --import tsx tests/browser/composition-webgl.ts",
