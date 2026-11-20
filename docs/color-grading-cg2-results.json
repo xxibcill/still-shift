@@ -44,6 +44,11 @@
       "test": "pnpm test:browser:color-grading-cg2"
     },
     {
+      "check": "Correct handling of premultiplied alpha: grade straight color, preserve coverage (PR #77 second review, Spec-4)",
+      "status": "met",
+      "evidence": "alpha-patches, 16,256 semi-transparent pixels per case x 11 cases: the stored premultiplied byte (round(v·a/255)) is un-premultiplied, graded by the float64 reference and re-premultiplied; the frame over the opaque black background equals that stored byte exactly on Canvas and WebGL2 (0 codes); fully transparent pixels stay 0. Before this check the parity test skipped every pixel with alpha < 255"
+    },
+    {
       "check": "A 16-step gray ramp through ten stacked neutral-sum corrections shows no added banding compared with one pass (measured, not viewed)",
       "status": "met",
       "evidence": "ten grade.primary corrections (gamma 1.5 / gain 0.8 then gain 1.25, five times) plus the inverse gamma: gray-steps-16 keeps 16 levels and gray-ramp-256 keeps 256, max difference 0 on both backends; the CG1 spike measured 57 of 256 levels for the same idea through 8-bit intermediates"

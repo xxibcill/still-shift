@@ -7,6 +7,8 @@
  * - Canvas equals the float64 reference exactly on opaque pixels; WebGL2 is
  *   within one 8-bit code value (owner decision 3); repeated WebGL2 renders
  *   are byte-identical;
+ * - semi-transparent pixels grade their straight color and keep coverage:
+ *   stored bytes match the reference (Canvas exact, WebGL2 within 1);
  * - a value pushed above 1 by one grade effect is recovered by the next,
  *   also beside an effect that the backend applies on its own and across a
  *   default (neutral) grade.cdl;
@@ -382,7 +384,11 @@ try {
             webglMax = 0,
             webglAtOne = 0,
             opaque = 0,
-            backendMax = 0;
+            backendMax = 0,
+            translucent = 0,
+            canvasTranslucentMax = 0,
+            webglTranslucentMax = 0,
+            transparentNonZero = 0;
           for (let i = 0; i < still.width * still.height; i++) {
             const at = i * 4;
             for (let c = 0; c < 4; c++)
@@ -390,7 +396,36 @@ try {
                 backendMax,
                 Math.abs(canvas[at + c]! - webgl[at + c]!),
               );
-            if (still.rgba[at + 3] !== 255) continue;
+            const alpha = still.rgba[at + 3]!;
+            if (alpha === 0) {
+              for (let c = 0; c < 3; c++)
+                if (canvas[at + c] || webgl[at + c]) transparentNonZero++;
+              continue;
+            }
+            if (alpha < 255) {
+              // Semi-transparent (Spec-4): the stored premultiplied byte is
+              // un-premultiplied, graded and re-premultiplied. Over the
+              // opaque black background the frame's byte is that stored byte.
+              translucent++;
+              const premultiply = (v: number) => Math.round((v * alpha) / 255);
+              const want = fg.floatGradeBytes(ops, [
+                premultiply(still.rgba[at]!) / alpha,
+                premultiply(still.rgba[at + 1]!) / alpha,
+                premultiply(still.rgba[at + 2]!) / alpha,
+              ]);
+              for (let c = 0; c < 3; c++) {
+                const expected = premultiply(want[c]!);
+                canvasTranslucentMax = Math.max(
+                  canvasTranslucentMax,
+                  Math.abs(canvas[at + c]! - expected),
+                );
+                webglTranslucentMax = Math.max(
+                  webglTranslucentMax,
+                  Math.abs(webgl[at + c]! - expected),
+                );
+              }
+              continue;
+            }
             opaque++;
             const want = fg.floatGradeBytes(ops, [
               still.rgba[at]! / 255,
@@ -415,6 +450,10 @@ try {
             webglVsReference: webglMax,
             webglChannelsAtOne: webglAtOne,
             backendMax,
+            translucentPixels: translucent,
+            canvasTranslucentVsReference: canvasTranslucentMax,
+            webglTranslucentVsReference: webglTranslucentMax,
+            transparentNonZero,
             repeatIdentical: (await hash(webgl)) === (await hash(again)),
             identity: plain
               ? canvas.every((v, i) => v === plain[0]![i]) &&
@@ -587,6 +626,7 @@ try {
           },
         ],
       });
+
       return {
         parity,
         recovery,
@@ -598,7 +638,10 @@ try {
         },
       };
     },
-    { stills, cases: CASES },
+    {
+      stills,
+      cases: CASES,
+    },
   );
 
   const proof = join(root, "benchmarks/results/color-grading-cg2");
@@ -616,6 +659,10 @@ try {
     webglChannelsAtOne: number;
     repeatIdentical: boolean;
     identity?: boolean;
+    translucentPixels: number;
+    canvasTranslucentVsReference: number;
+    webglTranslucentVsReference: number;
+    transparentNonZero: number;
   };
   const rows = result.parity as Row[];
   assert.deepEqual(
@@ -639,6 +686,22 @@ try {
   assert.ok(
     rows.filter((r) => r.case === "neutral-run").every((r) => r.identity),
     "a neutral run is an exact identity",
+  );
+  assert.deepEqual(
+    rows
+      .filter(
+        (r) =>
+          r.canvasTranslucentVsReference !== 0 ||
+          r.webglTranslucentVsReference > 1 ||
+          r.transparentNonZero !== 0,
+      )
+      .map((r) => `${r.case}/${r.still}`),
+    [],
+    "semi-transparent pixels: stored bytes match the graded straight color (Canvas exact, WebGL2 within 1); transparent pixels stay 0",
+  );
+  assert.ok(
+    rows.some((r) => r.translucentPixels > 0),
+    "the stills include semi-transparent pixels",
   );
   for (const r of result.recovery) {
     assert.equal(r.floatMaxError, 0, `${r.backend}: recovered exactly`);
@@ -678,6 +741,7 @@ try {
       recovery: result.recovery,
       banding: result.banding,
       kinds: result.kinds,
+      translucentPixels: rows.reduce((a, r) => a + r.translucentPixels, 0),
     }),
   );
 } finally {
