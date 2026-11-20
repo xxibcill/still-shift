@@ -7,12 +7,15 @@ import {
   HIGHLIGHT_RANGE,
   IDENTITY,
   lumaCoefficients,
+  NEUTRAL_CDL,
+  NEUTRAL_GRADE_PRIMARY,
   perChannel,
   rgbMixer,
   SHADOW_RANGE,
   TONAL_AMOUNT,
   whiteBalanceMatrix,
   type Cdl,
+  type GradePrimary,
   type Mat3,
   type Rgb,
 } from "@still-shift/color-science";
@@ -56,6 +59,22 @@ export type FloatGradeOp = {
   glsl(uniform: (name: string) => string): OpGlsl;
 };
 
+/** Every control of `value` equals `neutral`'s, except those in `ignore`. */
+function isNeutral<T extends object>(
+  value: T,
+  neutral: T,
+  ignore: readonly (keyof T)[] = [],
+) {
+  return (Object.keys(neutral) as (keyof T)[]).every((key) => {
+    if (ignore.includes(key)) return true;
+    const a = value[key] as number | Rgb,
+      b = neutral[key] as number | Rgb;
+    return typeof a === "number"
+      ? a === b
+      : a.every((v, c) => v === (b as Rgb)[c]);
+  });
+}
+
 const isIdentity = (m: Mat3) => m.every((v, i) => v === (i % 4 === 0 ? 1 : 0));
 
 /** Column-major (GLSL) from row-major. */
@@ -79,7 +98,7 @@ const OPERATORS: Readonly<
     const gamma = channel("gamma", (v) => v * master("gamma"));
     const gain = channel("gain", (v) => v * master("gain"));
     const offset = channel("offset", (v) => v + master("offset"));
-    const settings = {
+    const settings: GradePrimary = {
       lift,
       gamma,
       gain,
@@ -92,18 +111,8 @@ const OPERATORS: Readonly<
       shadows: n(p, "shadows"),
       highlights: n(p, "highlights"),
     };
-    const neutral =
-      lift.every((v) => v === 0) &&
-      gamma.every((v) => v === 1) &&
-      gain.every((v) => v === 1) &&
-      offset.every((v) => v === 0) &&
-      settings.contrast === 1 &&
-      settings.saturation === 1 &&
-      settings.hue === 0 &&
-      settings.colorBoost === 0 &&
-      settings.shadows === 0 &&
-      settings.highlights === 0;
-    if (neutral) return null;
+    // The pivot only matters when the contrast is not neutral.
+    if (isNeutral(settings, NEUTRAL_GRADE_PRIMARY, ["pivot"])) return null;
     const controls = gradePrimaryControls(settings);
     return {
       id: "grade.primary",
@@ -150,13 +159,8 @@ const OPERATORS: Readonly<
       saturation: n(p, "saturation"),
     };
     const clamp = n(p, "clamp") >= 0.5;
-    const neutral =
-      !clamp &&
-      cdl.slope.every((v) => v === 1) &&
-      cdl.offset.every((v) => v === 0) &&
-      cdl.power.every((v) => v === 1) &&
-      cdl.saturation === 1;
-    if (neutral) return null;
+    // The Release 1.2 clamp is never neutral: it clips values outside 0–1.
+    if (!clamp && isNeutral(cdl, NEUTRAL_CDL)) return null;
     return {
       id: "grade.cdl",
       apply: (v) => applyCdl(v, cdl, clamp ? "asc" : "no-clamp"),
