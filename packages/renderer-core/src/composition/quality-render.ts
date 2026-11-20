@@ -76,7 +76,13 @@ function createContrastProbes(
   });
   const probes = new Map<string, ContrastProbe>();
   const treated = resolved.textLegibility?.contrastMethod === "treated-edge";
-  for (const [id, reading] of textLegibilityFrames(comp, frames, resolved)) {
+  // The same glyph evidence as the final analysis, so both read the same
+  // frames of an outline-only layer.
+  const framing = textFramingEvidence(preview);
+  for (const [id, reading] of textLegibilityFrames(comp, frames, {
+    ...resolved,
+    ...(framing ? { textFramingEvidence: framing } : {}),
+  })) {
     const mask = textLegibilityMask(comp, id, { ring: treated });
     const layer = comp.layers.find(
       (candidate): candidate is TextLayer =>

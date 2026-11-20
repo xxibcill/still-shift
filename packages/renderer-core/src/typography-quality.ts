@@ -20,6 +20,7 @@ import {
   advanceReadingMotion,
   readingMotionFrame,
   outlinedReading,
+  type OutlinedText,
   type ReadingMotionRun,
 } from "./composition/reading-motion.ts";
 import { storyCameraTransform } from "./story-camera.ts";
@@ -828,11 +829,8 @@ export function analyzeCompositionTypography(
   fps: number,
   policy: ResolvedCompositionQualityPolicy,
   reports?: CompositionReadingWindowReport[],
-  /** ET6b: outline-only text layers and the frame size (profile only). */
-  outlined?: {
-    layers: ReadonlySet<string>;
-    viewport: { width: number; height: number };
-  },
+  /** ET6b: outline-only text layers, read by their outline (profile only). */
+  outlined?: OutlinedText,
 ) {
   const declared = analyzeDeclaredCompositionReading(frames, fps, policy);
   const speech = analyzeCompositionSpeechCaptions(frames, fps, policy);
@@ -928,12 +926,7 @@ export function analyzeCompositionTypography(
         outlined && policy.readingMotion
           ? {
               ...sample,
-              ...outlinedReading(
-                sample,
-                current.layers,
-                outlined.layers,
-                outlined.viewport,
-              ),
+              ...outlinedReading(sample, current, outlined),
             }
           : sample;
       for (const id of [...active.keys()]) {

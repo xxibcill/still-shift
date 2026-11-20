@@ -384,6 +384,11 @@ export type TextGlyphMotion = {
   opacity: number;
   /** Largest glyph blur, in layer-local pixels. */
   blur: number;
+  /**
+   * Thinnest text-animator stroke of a visible glyph, in layer-local pixels
+   * (0 when one is unstroked): whether an outline-only layer is drawn.
+   */
+  strokeWidth?: number;
 };
 /** Measured inputs for the ET5a framing and decoration rules (pixel lint). */
 export type TextFramingEvidence = {

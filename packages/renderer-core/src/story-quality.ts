@@ -4,7 +4,7 @@ import type { Composition } from "@still-shift/scene-contract";
 import { analyzeCompositionStillness } from "./story-continuous-quality.ts";
 import {
   READING_MOTION_VERSION,
-  strokedTextLayers,
+  outlinedText,
 } from "./composition/reading-motion.ts";
 import {
   analyzeCompositionTypography,
@@ -383,7 +383,7 @@ export function analyzeCompositionQuality(
       resolved,
       readingWindows,
       resolved.readingMotion
-        ? { layers: strokedTextLayers(comp), viewport: comp }
+        ? outlinedText(comp, resolved.textFramingEvidence?.glyphMotion)
         : undefined,
     ),
     ...compositionFramingFindings(comp, frames, resolved),

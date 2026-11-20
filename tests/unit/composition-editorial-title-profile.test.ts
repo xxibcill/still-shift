@@ -561,3 +561,76 @@ describe("size-split contrast (ET3-D1)", () => {
     ).toContain("text-contrast");
   });
 });
+
+describe("outline-only text reading (PR #76 review, finding 1)", () => {
+  const bounds = { title: [{ left: 0, top: -40, right: 300, bottom: 10 }] };
+  /** A transparent-fill title whose only stroke animator is `animator`. */
+  const hollow = (
+    animator: Partial<NonNullable<Composition["textAnimators"]>[number]>,
+  ) =>
+    title({
+      layers: [
+        {
+          id: "title",
+          type: "text",
+          text: "Olive grove at dusk",
+          fontAsset: "serif",
+          fontSize: 40,
+          color: "#FFFFFF00",
+          textRole: "heading",
+          transform: { position: [20, 300] },
+        },
+      ] as Composition["layers"],
+      textAnimators: [
+        {
+          node: "title",
+          unit: "glyph",
+          start: 0,
+          end: 1,
+          stagger: 0,
+          selector: { start: 0, end: 1 },
+          from: { stroke: "#000000", strokeWidth: 6 },
+          to: { stroke: "#000000", strokeWidth: 6 },
+          layer: "action",
+          ...animator,
+        } as NonNullable<Composition["textAnimators"]>[number],
+      ],
+    });
+  const lint = (
+    comp: Composition,
+    extra: Parameters<typeof analyzeCompositionQuality>[1] = {},
+  ) => {
+    const report = analyzeCompositionQuality(comp, {
+      profile: "editorial-title",
+      evaluation: { textBounds: bounds },
+      ...extra,
+    });
+    return {
+      readable: report.readingMotion?.windows[0]?.readableSeconds ?? 0,
+      failed: report.diagnostics.some((d) => d.code === "reading-time"),
+    };
+  };
+  it("reads a held outline from its first frame", () => {
+    expect(lint(hollow({}))).toEqual({ readable: 4, failed: false });
+  });
+  it("does not read the frames before a stroke is drawn", () => {
+    // The stroke appears at frame 90 of 96: 0.25 s of 1.33 s needed.
+    const late = lint(hollow({ start: 90, end: 91, from: { strokeWidth: 0 } }));
+    expect(late.readable).toBeLessThanOrEqual(0.25);
+    expect(late.failed).toBe(true);
+  });
+  it("does not read a stroke that only part of the selector reaches", () => {
+    expect(lint(hollow({ selector: { start: 0, end: 0.5 } })).readable).toBe(0);
+  });
+  it("follows the stroke drawn on each frame when pixel lint measures it", () => {
+    const measured = lint(hollow({}), {
+      textFramingEvidence: {
+        glyphMotion: ({ time }: { time: number }) => ({
+          ...glyphs(() => [0, 0]),
+          strokeWidth: time < 48 ? 0 : 4,
+        }),
+      },
+    } as Parameters<typeof analyzeCompositionQuality>[1]);
+    expect(measured.readable).toBe(2);
+  });
+});

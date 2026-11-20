@@ -18,7 +18,12 @@
  */
 import type { Composition } from "@still-shift/scene-contract";
 import type { Matrix } from "../node-transform.ts";
-import type { TextGlyphMotion } from "./quality-policy.ts";
+import type { TextFramingEvidence, TextGlyphMotion } from "./quality-policy.ts";
+import type {
+  CompositionQualityFrame,
+  CompositionQualitySample,
+} from "./quality-samples.ts";
+import { textEvidenceKey } from "./quality-rules.ts";
 
 /** Steps shorter than this, in output pixels per frame, carry no direction. */
 export const READING_MOTION_NOISE = 0.1;
@@ -202,45 +207,140 @@ export function strokedTextLayers(
       .map((layer) => layer.id),
   );
 }
-type OutlineSample = {
-  id: string;
-  ancestors: readonly string[];
-  onScreen: boolean;
-  opacity: number;
-  reveal: number;
-  clippedBounds: {
-    left: number;
-    top: number;
-    right: number;
-    bottom: number;
-  } | null;
-  state: {
-    opacity: number;
-    color?: readonly number[] | undefined;
-    drawable?: boolean;
-  };
+type TextAnimatorDeclaration = NonNullable<
+  Composition["textAnimators"]
+>[number];
+/**
+ * ET6b: how a text animator strokes its layer at `time`, judged from its
+ * declaration alone (no shaped layout): `"stroked"` only when it certainly
+ * gives every glyph a stroke wider than 0 there, `"skipped"` when it does
+ * not apply yet (a held destination before its start), else `"unknown"`.
+ * Partial or keyframed selectors, extra selectors, spans, weights, cues and
+ * signals can leave glyphs unstroked, so they are `"unknown"`.
+ */
+export function declaredTextStroke(
+  animator: TextAnimatorDeclaration,
+  time: number,
+): "stroked" | "skipped" | "unknown" {
+  if (time < animator.start && animator.to) return "skipped";
+  const selector = animator.selector,
+    offset = selector.offset ?? 0;
+  if (
+    animator.signal !== undefined ||
+    animator.cue !== undefined ||
+    animator.span !== undefined ||
+    animator.selectors?.length ||
+    animator.weight !== undefined ||
+    typeof selector.start !== "number" ||
+    typeof selector.end !== "number" ||
+    typeof offset !== "number" ||
+    selector.start + offset > 0 ||
+    selector.end + offset < 1 ||
+    (selector.shape !== undefined && selector.shape !== "square")
+  )
+    return "unknown";
+  const from = animator.from.strokeWidth ?? 0,
+    to = animator.to?.strokeWidth ?? 0;
+  // Before its start an entrance holds `from`; after its end every unit has
+  // reached `to`; in between a unit can be anywhere from one to the other.
+  const width =
+    time < animator.start
+      ? from
+      : time >= animator.end
+        ? to
+        : Math.min(from, to);
+  return width > 0 ? "stroked" : "unknown";
+}
+/**
+ * Whether every glyph of an outline-only layer is stroked at `time`, from
+ * its text animators' declarations: at least one certainly strokes it and
+ * none that sets a stroke width might leave a glyph unstroked.
+ */
+export function declaresTextStrokeAt(
+  animators: readonly TextAnimatorDeclaration[],
+  node: string,
+  time: number,
+) {
+  let stroked = false;
+  for (const animator of animators) {
+    if (
+      animator.node !== node ||
+      (animator.from.strokeWidth === undefined &&
+        animator.to?.strokeWidth === undefined)
+    )
+      continue;
+    const state = declaredTextStroke(animator, time);
+    if (state === "unknown") return false;
+    if (state === "stroked") stroked = true;
+  }
+  return stroked;
+}
+/** ET6b: what reading an outline-only layer needs, per composition. */
+export type OutlinedText = {
+  /** Candidate layers (`strokedTextLayers`). */
+  layers: ReadonlySet<string>;
+  textAnimators: readonly TextAnimatorDeclaration[];
+  viewport: { width: number; height: number };
+  /** Pixel lint's glyph poses: the stroke actually drawn on a frame. */
+  glyphMotion?: TextFramingEvidence["glyphMotion"];
 };
+export function outlinedText(
+  comp: Pick<Composition, "layers" | "textAnimators" | "width" | "height">,
+  glyphMotion?: TextFramingEvidence["glyphMotion"],
+): OutlinedText {
+  return {
+    layers: strokedTextLayers(comp),
+    textAnimators: comp.textAnimators ?? [],
+    viewport: { width: comp.width, height: comp.height },
+    ...(glyphMotion ? { glyphMotion } : {}),
+  };
+}
+type OutlineSample = CompositionQualitySample;
 /**
  * A sample's on-screen state and opacity for reading: unchanged unless it is
- * an outlined layer (`strokedTextLayers`) with a fully transparent fill, which
- * is then read at its layer and ancestor opacity, without the fill's alpha.
+ * an outlined layer (`strokedTextLayers`) with a fully transparent fill whose
+ * outline is drawn on this frame, which is then read at its layer and
+ * ancestor opacity, without the fill's alpha. The outline is measured from
+ * pixel lint's glyph poses when they are available, else judged from the
+ * text animators' declarations (`declaresTextStrokeAt`).
  */
-export function outlinedReading<S extends OutlineSample>(
-  sample: S,
-  layers: ReadonlyMap<string, { state: { opacity: number } }>,
-  stroked: ReadonlySet<string> | undefined,
-  viewport: { width: number; height: number },
+export function outlinedReading(
+  sample: OutlineSample,
+  frame: Pick<CompositionQualityFrame, "layers">,
+  outlined: OutlinedText | undefined,
 ): { onScreen: boolean; opacity: number } {
+  const unchanged = { onScreen: sample.onScreen, opacity: sample.opacity };
   if (
-    !stroked?.has(sample.id) ||
+    !outlined?.layers.has(sample.id) ||
     sample.onScreen ||
     (sample.state.color?.[3] ?? 1) > 0
   )
-    return { onScreen: sample.onScreen, opacity: sample.opacity };
+    return unchanged;
+  const key = outlined.glyphMotion
+    ? textEvidenceKey(frame as CompositionQualityFrame, sample)
+    : undefined;
+  const glyphs = key
+    ? outlined.glyphMotion!({
+        key,
+        state: sample.state.state ?? 0,
+        reveal: sample.state.reveal ?? 1,
+        time: sample.state.time,
+      })
+    : undefined;
+  const stroked =
+    glyphs?.strokeWidth !== undefined
+      ? glyphs.strokeWidth > 0
+      : declaresTextStrokeAt(
+          outlined.textAnimators,
+          sample.state.layer.id,
+          sample.state.time,
+        );
+  if (!stroked) return unchanged;
   let opacity = sample.state.opacity;
   for (const ancestor of sample.ancestors)
-    opacity *= layers.get(ancestor)?.state.opacity ?? 1;
-  const box = sample.clippedBounds;
+    opacity *= frame.layers.get(ancestor)?.state.opacity ?? 1;
+  const box = sample.clippedBounds,
+    viewport = outlined.viewport;
   const onScreen =
     sample.state.drawable !== false &&
     opacity > 1e-8 &&

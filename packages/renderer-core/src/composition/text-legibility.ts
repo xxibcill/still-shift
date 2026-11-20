@@ -20,7 +20,7 @@ import {
 import { readFontMetrics } from "../font-metrics.ts";
 import { resolvedTextStyle } from "../typography-style.ts";
 import { textNode, type TextLayer } from "./render/text-scenes.ts";
-import { outlinedReading, strokedTextLayers } from "./reading-motion.ts";
+import { outlinedReading, outlinedText } from "./reading-motion.ts";
 import type { CompositionQualityFrame } from "./quality-samples.ts";
 import {
   lintSeverity,
@@ -789,22 +789,24 @@ export function textLegibilityFrames(
   frames: readonly CompositionQualityFrame[],
   policy: Pick<
     ResolvedCompositionQualityPolicy,
-    "readingOpacity" | "readingReveal" | "textLegibility"
+    | "readingOpacity"
+    | "readingReveal"
+    | "textLegibility"
+    | "textFramingEvidence"
   >,
 ) {
   const windows = new Map<string, number[]>();
-  // ET6b: treated-edge reads outline-only (hollow) text by its outline.
-  const stroked =
+  // ET6b: treated-edge reads outline-only (hollow) text by its outline, on
+  // the frames it is drawn.
+  const outlined =
     policy.textLegibility?.contrastMethod === "treated-edge"
-      ? strokedTextLayers(comp)
+      ? outlinedText(comp, policy.textFramingEvidence?.glyphMotion)
       : undefined;
   for (const layer of textLegibilityLayers(comp).root) {
     const reading: number[] = [];
     frames.forEach((frame, at) => {
       const raw = frame.layers.get(layer.id);
-      const shown = raw
-        ? outlinedReading(raw, frame.layers, stroked, comp)
-        : undefined;
+      const shown = raw ? outlinedReading(raw, frame, outlined) : undefined;
       const sample = raw && { ...raw, ...shown };
       if (
         sample?.onScreen &&

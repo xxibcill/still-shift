@@ -1522,7 +1522,8 @@ export function typographyGlyphMotion(
   const layout = plan.raster.layout;
   const points: number[] = [];
   let opacity = 1,
-    blur = 0;
+    blur = 0,
+    strokeWidth = Infinity;
   layout.clusters.forEach((cluster, i) => {
     const pose = poses[i];
     if (!pose || !/\S/u.test(cluster.text)) return;
@@ -1535,8 +1536,15 @@ export function typographyGlyphMotion(
     points.push(x, y, x - dx, y - dy, x + dx, y + dy);
     opacity = Math.min(opacity, pose.opacity);
     blur = Math.max(blur, pose.blur);
+    strokeWidth = Math.min(strokeWidth, pose.strokeWidth * pose.scale);
   });
-  return { capHeight: layout.capHeight, points, opacity, blur };
+  return {
+    capHeight: layout.capHeight,
+    points,
+    opacity,
+    blur,
+    strokeWidth: strokeWidth === Infinity ? 0 : strokeWidth,
+  };
 }
 function drawTypographyContent(
   ctx: CanvasRenderingContext2D,
