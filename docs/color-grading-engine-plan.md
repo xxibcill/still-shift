@@ -244,7 +244,7 @@ These are recommendations to confirm at CG1, each with a fallback.
 | ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | --------------- |
 | CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Merged (PR #70) |
 | CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)        | 2–3                    | Done (branch)   |
-| CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | In progress     |
+| CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
 | CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Proposed        |
 | CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Proposed        |
 | CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed        |
@@ -534,15 +534,27 @@ and the three contract questions decide the shape of everything after.
   structured effect parameters (decision 4).
 - Write the provenance record (ported file → chroma-node commit → license).
 
-**Checks**
+**Checks** (2026-11-20, `codex/color-grading-cg0`; numbers in
+[CG1 results](./color-grading-cg1-results.json), decisions in
+[CG1 decisions](./color-grading-cg1-decisions.md), provenance in
+[`PROVENANCE.md`](../packages/color-science/PROVENANCE.md))
 
-- [ ] Every ported function matches its CG0 vectors within the stated tolerance.
-- [ ] Neutral parameters are an exact identity for every operator.
-- [ ] `pnpm check:boundaries` passes with the new package; it imports nothing
-      from DOM, Node or the renderer.
-- [ ] A written decision for each of the three questions, with spike evidence
-      and the fallback taken or rejected.
-- [ ] No rendering behavior changes; all existing baselines are unchanged.
+- [x] Every ported function matches its CG0 vectors within the stated
+      tolerance (85 tests). chroma-node's BT.1886, PQ, HLG and Apple Log
+      failed the vectors before porting and were rewritten from the
+      specifications; its tetrahedral path was trilinear and its `.cube`
+      parser ignored domains.
+- [x] Neutral parameters are an exact identity for every operator in CG1
+      (primary, CDL; identity LUTs within 1e-12).
+- [x] `pnpm check:boundaries` passes with the new package; it imports nothing
+      from DOM, Node or the renderer (enforced, with a DOM-free type check).
+- [x] A written decision for each of the three questions, with spike evidence
+      and the fallback taken or rejected: RGBA32F intermediates, one
+      quantization, no dither (RGBA16F rejected); the approved parity rule,
+      met by the spike (worst 1 code value, byte-identical repeat); flat scalar
+      parameters for CG2–CG6 and builder lowering for CG9 (nested type
+      deferred).
+- [x] No rendering behavior changes; all existing baselines are unchanged.
 
 ## CG2 — Float grade stage and primary corrections
 
