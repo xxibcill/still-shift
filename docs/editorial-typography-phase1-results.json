@@ -8,7 +8,7 @@
   "branch": "codex/editorial-titles-phase1",
   "base": "main 760a18a1 (Merge PR #73)",
   "toolchain": "Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
-  "status": "Re-review sheets ready for the owner gate; five small fixes and housekeeping committed. Not pushed.",
+  "status": "Re-review sheets ready for the owner gate; five small fixes and housekeeping committed. In review as PR #74.",
   "phases": {
     "phase1": "this record",
     "ownerGate1": "owner reviews the re-rendered sheets; sets ET6b's display-contrast level",

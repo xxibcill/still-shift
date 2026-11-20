@@ -43,7 +43,7 @@ still hold before relying on them.
 
 ## Current state
 
-- **Editorial titles Phase 1 (2026-11-20):** on `codex/editorial-titles-phase1` from `main` 760a18a1, six commits, **not pushed** (push only on the owner's request). The owner split the remaining work into three phases ([plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20)).
+- **Editorial titles Phase 1 (2026-11-20):** on `codex/editorial-titles-phase1` from `main` 760a18a1, in review as [PR #74](https://github.com/xxibcill/still-shift/pull/74). The owner split the remaining work into three phases ([plan](./editorial-typography-improvement-plan.md#remaining-phases-2026-11-20)).
   - **Re-review:** all 16 ET7a candidates re-rendered unchanged over the corrected (darker) footage; sources and exported compositions identical, every render hash changed, all pass strict coverage and lint. Agent judgement (not acceptance): none visibly worse, b02 slightly worse ("BLACK" over darker trousers).
   - **Fixes (opt-in or invisible; no baseline changes):** Prompt Black loads (only identity names count against the name budget); span styles resolve axes against their own font; decoration `growWithText` and `padding`; `light.glow` 1.1.0 `color` + `tint`.
   - **Owner gate (pending):** review the sheets in the primary checkout's git-ignored `benchmarks/results/editorial-titles-phase1-review/` and set ET6b's display-contrast level. Then Phase 2 (ET6b + EC); then the owner's licensed clip (D-auth) for Phase 3.
@@ -120,7 +120,7 @@ still hold before relying on them.
 
 ### 2026-11-20 — Editorial titles Phase 1: corrected re-review and small fixes
 
-- **Agent / branch:** Claude Code on `codex/editorial-titles-phase1` (from `main` 760a18a1); not pushed.
+- **Agent / branch:** Claude Code on `codex/editorial-titles-phase1` (from `main` 760a18a1); in review as [PR #74](https://github.com/xxibcill/still-shift/pull/74).
 - **Scope:** Phase 1 of the three-phase plan: re-review ET7a over corrected footage, the ET7a small fixes, housekeeping.
 - **Done:** fdf861b0 Prompt Black name budget; 7ad60b9c span axes resolve against their own font; 0f443d85 decoration `growWithText`; da12a33e decoration `padding`; 4fd40b8a `light.glow` 1.1.0 `color`/`tint`; a3ca508e `composition-text-measure` and `editorial-titles-phase1` in `pnpm test`; records.
 - **Results:** 16/16 candidates re-rendered like-for-like (same sources and compositions, new render hashes, lint passed). Treated display layers still ~1.0–1.9:1 (outline ring counted); b06 tag 6.8 → 6.01:1. Agent judgement only: none visibly worse, b02 slightly worse. No baseline changed (176 composition baselines, ET0); a 1.0.0 glow is byte-identical on Canvas and WebGL2. `check:fast` and nine browser groups pass.

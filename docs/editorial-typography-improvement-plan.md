@@ -167,7 +167,7 @@ PR, with an owner gate between them.
 
 Still deferred: ET7b, ET5c and D-home.
 
-**Phase 1 result (2026-11-20, not pushed):** see the
+**Phase 1 result (2026-11-20, in review as [PR #74](https://github.com/xxibcill/still-shift/pull/74)):** see the
 [Phase 1 results](./editorial-typography-phase1-results.json).
 
 - **Re-review.** All 16 candidates were re-rendered with unchanged sources
