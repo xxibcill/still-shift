@@ -9,6 +9,7 @@ import { cssColor } from "./canvas2d.ts";
 import type { Rgba } from "../evaluate/types.ts";
 import {
   glow,
+  glowColorBytes,
   directionalBlur,
   sineDisplacement,
   lightSweep,
@@ -96,6 +97,8 @@ const effects: Readonly<Record<string, CanvasEffect>> = {
       radius: params.radius as number,
       intensity: params.intensity as number,
       threshold: params.threshold as number,
+      tint: (params.tint as number | undefined) ?? 0,
+      color: glowColorBytes(params.color as Rgba | undefined),
     }),
   "distort.sine": (context, target, params) =>
     sineDisplacement(context, target, {

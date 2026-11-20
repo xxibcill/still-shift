@@ -9,15 +9,19 @@ import { loadComposition } from "../../packages/animation-engine/src/composition
 import { withRendererPage } from "../../packages/animation-engine/src/composition-browser-page.ts";
 
 /** Frame `frame` of a composition-1 JSON file as straight RGB8 (sRGB). */
-export async function rendererFrame(path: string, frame = 0) {
-  const loaded = await loadComposition(path, "canvas2d");
+export async function rendererFrame(
+  path: string,
+  frame = 0,
+  backend: "canvas2d" | "webgl2" = "canvas2d",
+) {
+  const loaded = await loadComposition(path, backend);
   const { width, height } = loaded.composition;
   const rgba = await withRendererPage(
     loaded.assetPaths,
     { cacheDirectoryPrefix: "renderer-frame-vite-" },
     (page) =>
       page.evaluate(
-        async ({ json, preparedMedia, frame }) => {
+        async ({ json, preparedMedia, frame, backend }) => {
           const renderer = (
             globalThis as typeof globalThis & {
               __stillShiftLintRenderer: typeof Renderer;
@@ -33,6 +37,7 @@ export async function rendererFrame(path: string, frame = 0) {
             document.createElement("canvas"),
             comp,
             resources,
+            { backend },
           );
           try {
             await preview.prepareFrame?.(frame);
@@ -47,6 +52,7 @@ export async function rendererFrame(path: string, frame = 0) {
           json: JSON.stringify(loaded.composition),
           preparedMedia: loaded.preparedMedia ?? null,
           frame,
+          backend,
         },
       ),
   );

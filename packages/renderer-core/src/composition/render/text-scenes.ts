@@ -3,11 +3,12 @@
  * preparation (browser) and exact-copy font coverage (Node, ET1) both read text
  * through these functions, so they inspect the same reachable copy.
  */
-import type {
-  Composition,
-  CompositionLayer,
-  CompositionScope,
-  TextAnimator,
+import {
+  declaredFontAxes,
+  type Composition,
+  type CompositionLayer,
+  type CompositionScope,
+  type TextAnimator,
 } from "@still-shift/scene-contract";
 import type { prepareTypography } from "../../typography-renderer.ts";
 import { resolvedTextStyle, type TextNode } from "../../typography-style.ts";
@@ -167,15 +168,17 @@ export function compositionFontTextRuns(
             `${layerPaths.get(layer.id)}.corrections.${index}.replacement`,
         ),
       );
-    return collectFontTextRuns(scene).map((run) => {
-      const event = /^textEvents\.(\d+)\.replacement$/u.exec(run.path ?? "");
-      const path = event
-        ? correctionPaths[Number(event[1])]
-        : run.path?.replace(
-            /^nodes\.\d+/u,
-            layerPaths.get(run.node ?? "") ?? "layers",
-          );
-      return { ...run, ...(path ? { path } : {}) };
-    });
+    return collectFontTextRuns(scene, declaredFontAxes(comp.assets)).map(
+      (run) => {
+        const event = /^textEvents\.(\d+)\.replacement$/u.exec(run.path ?? "");
+        const path = event
+          ? correctionPaths[Number(event[1])]
+          : run.path?.replace(
+              /^nodes\.\d+/u,
+              layerPaths.get(run.node ?? "") ?? "layers",
+            );
+        return { ...run, ...(path ? { path } : {}) };
+      },
+    );
   });
 }

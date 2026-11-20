@@ -28,6 +28,7 @@ const span = TextSpanSchema.safeExtend({
   start: compFrame,
   end: compFrame.positive(),
 });
+const decorationPadding = z.number().finite().min(0).max(1280);
 const decoration = TextDecorationSchema.extend({
   span: compositionId.optional(),
   offset: bounded.optional(),
@@ -38,6 +39,32 @@ const decoration = TextDecorationSchema.extend({
    * text. Off by default; existing compositions render unchanged.
    */
   fadeWithText: z.boolean().optional(),
+  /**
+   * Editorial titles Phase 1: on each line, the mark covers only the
+   * decorated glyphs the text animators have revealed (opacity and scale
+   * above 0), so a highlight grows with a glyph-by-glyph or word-by-word
+   * build instead of showing in full behind the first glyph. Off by default;
+   * existing compositions render unchanged.
+   */
+  growWithText: z.boolean().optional(),
+  /**
+   * Editorial titles Phase 1: space added around a `highlight` or `box`, in
+   * pixels, in CSS order: one value for every side, `[vertical, horizontal]`
+   * or `[top, right, bottom, left]`. A highlight's band grows about its
+   * unpadded centre line. Omitted, the mark is unchanged.
+   */
+  padding: z
+    .union([
+      decorationPadding,
+      z.tuple([decorationPadding, decorationPadding]),
+      z.tuple([
+        decorationPadding,
+        decorationPadding,
+        decorationPadding,
+        decorationPadding,
+      ]),
+    ])
+    .optional(),
 });
 const transition = TextTransitionSchema.extend({
   window: TextTransitionSchema.shape.window.safeExtend({

@@ -36,6 +36,23 @@ function tableRecord(font: ArrayBuffer, name: string) {
   }
   throw new Error("Missing fixture table " + name);
 }
+const promptBlackPath = "assets/editorial-titles/fonts/prompt-black.ttf";
+/** Name records with their absolute record and string offsets. */
+function nameRecords(font: ArrayBuffer) {
+  const data = new DataView(font);
+  const nameAt = data.getUint32(tableRecord(font, "name") + 8);
+  const stringsAt = nameAt + data.getUint16(nameAt + 4);
+  return Array.from({ length: data.getUint16(nameAt + 2) }, (_, i) => {
+    const recordAt = nameAt + 6 + i * 12;
+    return {
+      recordAt,
+      platform: data.getUint16(recordAt),
+      id: data.getUint16(recordAt + 6),
+      length: data.getUint16(recordAt + 8),
+      stringAt: stringsAt + data.getUint16(recordAt + 10),
+    };
+  });
+}
 function withCmap(subtable: ArrayBuffer, encoding = 10) {
   const original = bytes(plexPath);
   const cmap = new ArrayBuffer(12 + subtable.byteLength);
@@ -291,7 +308,11 @@ describe("bounded exact-font identity", () => {
     const stringsAt = nameAt + data.getUint16(nameAt + 4);
     for (let i = 0; i < data.getUint16(nameAt + 2); i++) {
       const at = nameAt + 6 + i * 12;
-      if (data.getUint16(at) === 3 && data.getUint16(at + 8) >= 2) {
+      if (
+        data.getUint16(at) === 3 &&
+        data.getUint16(at + 6) === 1 &&
+        data.getUint16(at + 8) >= 2
+      ) {
         data.setUint16(stringsAt + data.getUint16(at + 10), 0xd800);
         break;
       }
@@ -300,6 +321,49 @@ describe("bounded exact-font identity", () => {
     expect(() =>
       readFontIdentity(withCmap(cmap12([[0x1f600, 0x1f601, 0xffff]]))),
     ).toThrow(/font-cmap/);
+  });
+  it("reads identity past long non-identity names such as an embedded licence", () => {
+    // Prompt Black carries its whole licence in name ID 13 (8,716 bytes),
+    // over the 2,048-byte budget for a decoded name string (ET7a).
+    const prompt = bytes(promptBlackPath);
+    const licences = nameRecords(prompt).filter((r) => r.id === 13);
+    expect(licences.map((r) => [r.platform, r.length])).toEqual([
+      [1, 4358],
+      [3, 8716],
+    ]);
+    expect(readFontIdentity(prompt)).toMatchObject({
+      family: "Prompt",
+      subfamily: "Black",
+      postscriptName: "Prompt-Black",
+    });
+    // A malformed string in a name the identity never reads is skipped.
+    const plex = bytes(plexPath);
+    const copyright = nameRecords(plex).find((r) => r.id === 0 && r.length);
+    expect(copyright).toBeDefined();
+    new DataView(plex).setUint16(copyright!.stringAt, 0xd800);
+    expect(readFontIdentity(plex).family).toBe(
+      readFontIdentity(bytes(plexPath)).family,
+    );
+  });
+  it("keeps the name budget and extents for identity and skipped names alike", () => {
+    // An identity name over 2,048 bytes still fails: relabel ID 13 as ID 4.
+    const longIdentity = bytes(promptBlackPath);
+    const licence = nameRecords(longIdentity).find(
+      (r) => r.id === 13 && r.platform === 3,
+    )!;
+    new DataView(longIdentity).setUint16(licence.recordAt + 6, 4);
+    expect(() => readFontIdentity(longIdentity)).toThrow(
+      /font-metadata: invalid name string extent/,
+    );
+    // A skipped name whose string runs past the table still fails.
+    const outside = bytes(promptBlackPath);
+    const record = nameRecords(outside).find(
+      (r) => r.id === 13 && r.platform === 3,
+    )!;
+    new DataView(outside).setUint16(record.recordAt + 8, 0xfffe);
+    expect(() => readFontIdentity(outside)).toThrow(
+      /font-metadata: invalid name string extent/,
+    );
   });
   it("checks combining marks while explicitly ignoring shaping controls", () => {
     const diagnostics = inspectFontText(

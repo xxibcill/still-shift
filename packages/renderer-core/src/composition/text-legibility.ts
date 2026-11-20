@@ -12,6 +12,7 @@
  * reading window. All three are legibility signals, not visual acceptance.
  */
 import {
+  declaredFontAxes,
   parsePropertyPath,
   type Composition,
   type CompositionLayer,
@@ -718,12 +719,13 @@ export function analyzeTextLegibility(
 
     // x-height-floor
     const node = textNode(comp, layer);
+    const fontAxes = declaredFontAxes(comp.assets);
     const styles = [
       resolvedTextStyle(node, comp.textStyles ?? {}),
       ...(layer.spans ?? [])
         .filter((span) => span.style)
         .map((span) =>
-          resolvedTextStyle(node, comp.textStyles ?? {}, span.style),
+          resolvedTextStyle(node, comp.textStyles ?? {}, span.style, fontAxes),
         ),
     ];
     const measuredStyles = styles.flatMap((style) => {

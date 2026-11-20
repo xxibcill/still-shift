@@ -543,7 +543,10 @@ changing the contract.
   falls largely off-frame (`text-off-canvas`, [ET5a](#title-framing-and-decoration-guards-et5a)).
 - Decorations ignore text-animator opacity unless they set `fadeWithText: true`;
   pixel lint reports a decoration painting while its text is fully transparent
-  (`orphaned-decoration`).
+  (`orphaned-decoration`). With `growWithText: true` a decoration covers, on each
+  line, only the non-blank glyphs its text animators have revealed (opacity and
+  scale above 0), so a highlight grows with a glyph-by-glyph or word-by-word build;
+  a glyph counts from its first visible frame.
 - Transitions, decoration reveals, counts and text animators sample **layer time**,
   like keys; signal-driven animator selectors therefore also sample layer time.
   Font-axis and stroke caches prepare the rounded layer times reachable at output
@@ -961,6 +964,10 @@ Value forms:
 Text layers follow the story typography rules: spans fit every text state and do not
 overlap, decorations and animators name existing spans, variable-font axes stay in the
 pinned font's range, and text transitions do not overlap and name existing states.
+A span style that sets no `axes` inherits the layer style's axes, but only those its
+own font has: a static script span inside a `wght` 900 serif gets no `wght`. Inherited
+axes the span's font has keep their value and are still range-checked; axes a span
+style sets itself must exist on its font.
 
 Text animator `from.axes` and `to.axes` are deltas from each affected layer or span
 style, falling back to the font's default axis value. Axis names must exist on every
@@ -1616,6 +1623,7 @@ retain their original bounds.
 | `comp-text-box-size`               | A `textBox` text layer without `size`.                                                                                                                     |
 | `comp-text-span-range`             | A span ends after the text or one of its states, or overlaps another span.                                                                                 |
 | `comp-text-span-missing`           | A decoration or text animator names a span the text layer does not have.                                                                                   |
+| `comp-text-decoration-padding`     | A decoration other than a `highlight` or `box` sets `padding`.                                                                                             |
 | `comp-text-font-axis`              | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                              |
 | `comp-text-locale`                 | A text layer's locale is not recognised.                                                                                                                   |
 | `comp-text-transition`             | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.              |
@@ -1714,14 +1722,25 @@ radius progression are retained. No family evaluator runs during composition ren
 
 ### Directional blur, glow and sine displacement (CE6 dependency slice)
 
-The Canvas effect registry also provides these version `1.0.0` entries. All values
-are animatable scalars in the containing surface's pixel space.
+The Canvas effect registry also provides these entries, version `1.0.0` except
+`light.glow` `1.1.0`. All values are animatable scalars in the containing
+surface's pixel space, except `light.glow`'s `color`.
 
 | Effect             | Parameters (default; accepted range)                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | `blur.directional` | `length` (0; 0–1,000 pixels), `angle` (0; −36,000–36,000 degrees), `samples` (8; 2–64 integer samples)             |
-| `light.glow`       | `radius` (0; 0–1,000 pixels), `intensity` (1; 0–1), `threshold` (0; 0–1)                                           |
+| `light.glow`       | `radius` (0; 0–1,000 pixels), `intensity` (1; 0–1), `threshold` (0; 0–1), `tint` (0; 0–1), `color` (`#ffffff`)     |
 | `distort.sine`     | `amount` (0; −1,000–1,000 pixels), `wavelength` (100; 1–100,000 pixels), `phase` (0; −1,000,000–1,000,000 radians) |
+
+`light.glow` blurs the layer's own pixels, weighted by how far their luminance
+passes `threshold`, and screens the result over the layer. Version `1.1.0`
+(editorial titles Phase 1) adds `tint`: it blends each glowing pixel's colour
+toward `color` and its weight toward full coverage, so `tint: 1` glows in
+`color` from the layer's shape even when the layer is dark. `tint` 0, the
+default, renders exactly as `1.0.0` on Canvas and WebGL2, so a `color` set
+without `tint` would not show and fails validation (`comp-effect-params`); an
+explicit `tint`, even 0 or keyed from 0, is accepted. A screened glow only
+lightens; for a dark halo use a zero-offset `light.drop-shadow`.
 
 Directional blur averages premultiplied samples in fixed order with Float32
 accumulation. Authored sample counts must be integers; interpolation and driver
@@ -2255,6 +2274,19 @@ text. It follows only text-animator opacity: text hidden by the layer's
 needs the decoration's own `reveal` keyed, and the finding says so when
 `fadeWithText` is already set. `fadeWithText` is off by default and existing
 compositions render unchanged.
+
+A highlight behind text that types in glyph by glyph also needs to grow with
+it: `fadeWithText` alone shows the whole box once the first glyph appears.
+Set `growWithText: true` as well, so each line's mark spans only the revealed
+glyphs (editorial titles Phase 1). It is off by default and existing
+compositions render unchanged.
+
+A `highlight` or `box` can also set `padding` (Phase 1), in pixels and CSS
+order: one number for every side, `[vertical, horizontal]`, or
+`[top, right, bottom, left]`. A highlight's band grows about its unpadded
+centre line, so `comp measure`'s `centredOffset` keeps centring the unpadded
+band; its `paint` box and `padding` report what is drawn. Other kinds reject
+it (`comp-text-decoration-padding`). Without `padding` a mark is unchanged.
 
 ```json
 {

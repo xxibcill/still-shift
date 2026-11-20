@@ -25,7 +25,15 @@ import {
   evaluateTextPoses,
   textAnimationFrames,
 } from "../typography-animation.ts";
-import { decorationSegments } from "../typography-decorations.ts";
+import {
+  decorationBand,
+  decorationBoxBand,
+  decorationPadding,
+  decorationSegments,
+  type DecorationPadding,
+  type DrawnTextDecoration,
+} from "../typography-decorations.ts";
+import { glowWeight } from "../pixel-effects.ts";
 import {
   quantizeStrokeWidth,
   typographyContainerContent,
@@ -139,6 +147,8 @@ export type TextDecorationMeasure = {
   offset: number;
   /** Brush and ink line styles paint inside about this band, not exactly it. */
   approximate: boolean;
+  /** Resolved `padding` (Phase 1), present when the decoration sets one. */
+  padding?: DecorationPadding;
   segments: TextDecorationSegmentMeasure[];
   paint: MeasureBox | null;
 };
@@ -393,7 +403,9 @@ function decorationMeasures(
         ? layout.capHeight * 1.25
         : Math.max(1, layout.underlineThickness));
     const offset = mark.offset ?? 0;
-    const segments = decorationSegments(node, layout, mark.span).map(
+    const padding = decorationPadding(mark);
+    // The settled state: no poses, so growWithText covers every glyph.
+    const segments = decorationSegments(node, layout, mark).map(
       (segment): TextDecorationSegmentMeasure => {
         const line = layout.lines.findIndex(
           (l) => l.baseline === segment.baseline,
@@ -406,23 +418,19 @@ function decorationMeasures(
             : mark.kind === "strike" || mark.kind === "highlight"
               ? -layout.xHeight * 0.5
               : -layout.capHeight);
-        const paint: Bounds =
+        const painted =
           mark.kind === "box"
-            ? padBounds(
-                {
-                  left: segment.x,
-                  right: segment.x + segment.width,
-                  top: y,
-                  bottom: y + layout.capHeight + layout.descent,
-                },
-                thickness / 2,
-              )
-            : {
-                left: segment.x,
-                right: segment.x + segment.width,
-                top: y - thickness / 2,
-                bottom: y + thickness / 2,
-              };
+            ? decorationBoxBand(y, layout, padding)
+            : decorationBand(y, thickness, padding);
+        // The reported segment stays unpadded; its paint carries the padding.
+        const extent: Bounds = {
+          left: segment.x - padding.left,
+          right: segment.x + segment.width + padding.right,
+          top: painted.top,
+          bottom: painted.bottom,
+        };
+        const paint: Bounds =
+          mark.kind === "box" ? padBounds(extent, thickness / 2) : extent;
         const band = mark.kind === "highlight" || mark.kind === "strike";
         // Band centre with no offset; an offset moves it one for one.
         const centre = segment.baseline - layout.xHeight * 0.5;
@@ -454,6 +462,9 @@ function decorationMeasures(
       thickness,
       offset,
       approximate: mark.lineStyle === "ink" || mark.lineStyle === "brush",
+      ...((mark as DrawnTextDecoration).padding !== undefined
+        ? { padding }
+        : {}),
       segments,
       paint: maybeBox(unionBounds(segments.map((s) => s.paint))),
     };
@@ -820,7 +831,8 @@ export function measureTextEffects(
       const radii = keyedValues<number>(params.radius, 0);
       const intensities = keyedValues<number>(params.intensity, 1);
       const thresholds = keyedValues<number>(params.threshold, 0);
-      if (!radii || !intensities || !thresholds) {
+      const tints = keyedValues<number>(params.tint, 0);
+      if (!radii || !intensities || !thresholds || !tints) {
         unmeasured.push({
           id: effect.id,
           effect: effect.effect,
@@ -832,7 +844,10 @@ export function measureTextEffects(
       const threshold = Math.min(...thresholds);
       const strength =
         Math.max(...intensities) *
-        Math.max(0, (brightest - threshold) / Math.max(0.001, 1 - threshold));
+        glowWeight(
+          Math.max(0, (brightest - threshold) / Math.max(0.001, 1 - threshold)),
+          Math.max(...tints),
+        );
       const reach = sigma > 0 ? 3 * sigma + 2 : 0;
       const visibleReach =
         strength <= TEXT_EFFECT_VISIBLE_COVERAGE || sigma === 0

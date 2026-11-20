@@ -1,6 +1,7 @@
 import { MotionLayerSchema } from "../motion-craft.ts";
 import type { MotionEasing } from "../motion-easing.ts";
 import type { TextStyle } from "../typography.ts";
+import { declaredFontAxes, spanStyleOver } from "../typography-style.ts";
 import type {
   Composition,
   CompositionAsset,
@@ -124,14 +125,19 @@ function declaredStyle(
     : undefined;
 }
 
-function textRegions(comp: Composition, node: TextLayer) {
+function textRegions(
+  comp: Composition,
+  node: TextLayer,
+  assets: Map<string, CompositionAsset>,
+) {
   const base = {
     fontAsset: node.fontAsset,
     ...declaredStyle(comp, node.style),
   };
+  const fontAxes = declaredFontAxes(assets.values());
   const regions = (node.spans ?? []).map((span) => ({
     span: span.id,
-    style: { ...base, ...declaredStyle(comp, span.style) },
+    style: spanStyleOver(base, declaredStyle(comp, span.style), fontAxes),
     deltas: new Map<string, Bounds>(),
   }));
   let locale = node.locale ?? node.textBox?.locale ?? "en";
@@ -190,7 +196,7 @@ export function checkTextAnimatorAxes(
         (node): node is TextLayer =>
           node.type === "text" && targets.has(node.id),
       )
-      .map((node) => [node.id, { regions: textRegions(comp, node) }]),
+      .map((node) => [node.id, { regions: textRegions(comp, node, assets) }]),
   );
   for (const { animator, index } of animators) {
     const entry = animatedLayers.get(animator.node);

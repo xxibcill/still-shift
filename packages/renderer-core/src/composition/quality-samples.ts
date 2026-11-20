@@ -117,12 +117,13 @@ function shapedCopyCase(
   styles: Record<string, TextStyle>,
 ): string {
   const base = resolvedTextStyle(node, styles);
+  // Only `case` is read here, so span axes need no font lookup.
   const changesCase = (style: TextStyle) =>
     style.case === "upper" || style.case === "lower";
   if (
     !changesCase(base) &&
     !node.spans?.some((span) =>
-      changesCase(resolvedTextStyle(node, styles, span.style)),
+      changesCase(resolvedTextStyle(node, styles, span.style, undefined)),
     )
   )
     return text;
@@ -136,7 +137,7 @@ function shapedCopyCase(
       );
       return caseText(
         segment.segment,
-        resolvedTextStyle(node, styles, span?.style),
+        resolvedTextStyle(node, styles, span?.style, undefined),
         locale,
       );
     })

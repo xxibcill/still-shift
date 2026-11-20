@@ -458,7 +458,9 @@ const original = [
     screen: false,
     solid: false,
     calls: 14,
-    sha256: "efefe7c2c61d52b4960cbd499ce13cbd24fea555d700adc3d024a005c00dd2ae",
+    // light.glow 1.1.0 (editorial titles Phase 1): the threshold shader gains
+    // the tint uniforms; tint 0 renders byte-identically.
+    sha256: "c0bc6db5808d5928352036a5c2abe0bf443a75d920c3dd32e6f00902ba3c9080",
     shaderUnits: [561, 1371],
   },
   {
@@ -466,7 +468,7 @@ const original = [
     screen: true,
     solid: false,
     calls: 11,
-    sha256: "20aab2ad92e906484978a3709b2441a08677233679214c7c61bbb9ec26c1c369",
+    sha256: "71a7844bf3ca362771c55f397feb28b9c609ba075b8463d980b4bb04ce3cc9b1",
     shaderUnits: [561, 1371],
   },
 ] as const;

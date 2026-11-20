@@ -34,7 +34,11 @@ export type PreparedFontFallbacks = (
   bytes: ReadonlyMap<string, ArrayBuffer>,
 ) => ReadonlyMap<string, readonly { fallback: string; codePoints: number[] }[]>;
 import { readFontMetrics, type FontMetrics } from "./font-metrics.ts";
-import { resolvedTextStyle, styleFontKey } from "./typography-style.ts";
+import {
+  loadedFontAxes,
+  resolvedTextStyle,
+  styleFontKey,
+} from "./typography-style.ts";
 import type { TextStyle } from "../../scene-contract/src/typography.ts";
 import {
   inspectFontText,
@@ -134,6 +138,7 @@ export async function loadPreparedFonts(
             node,
             scene.textStyles ?? {},
             span?.style,
+            loadedFontAxes(fonts),
           );
           await loadTextStyleFont(style, fonts);
         }

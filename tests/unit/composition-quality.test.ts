@@ -9,7 +9,10 @@ import {
 } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import { textNode } from "../../packages/renderer-core/src/composition/render/text-scenes.ts";
-import { decorationFadesWithText } from "../../packages/renderer-core/src/typography-decorations.ts";
+import {
+  decorationFadesWithText,
+  type DrawnTextDecoration,
+} from "../../packages/renderer-core/src/typography-decorations.ts";
 import {
   composition,
   fixtures,
@@ -1609,6 +1612,11 @@ describe("ET5a text framing and decoration guards", () => {
     expect(found[0]!.message).toContain("set `fadeWithText: true`");
   });
 
+  it("suggests growWithText for a glyph-by-glyph or word-by-word build", () => {
+    const [found] = orphaned();
+    expect(found!.message).toContain("`growWithText: true`");
+  });
+
   it("carries fadeWithText from the layer to the drawn decoration", () => {
     const layer = title([100, 100], {
       decorations: [
@@ -1617,6 +1625,16 @@ describe("ET5a text framing and decoration guards", () => {
     }) as Extract<CompositionLayer, { type: "text" }>;
     const [mark] = textNode(composition([layer]), layer).decorations!;
     expect(decorationFadesWithText(mark!)).toBe(true);
+  });
+
+  it("carries growWithText from the layer to the drawn decoration (Phase 1)", () => {
+    const layer = title([100, 100], {
+      decorations: [
+        { kind: "highlight", color: "#c9d29a", growWithText: true },
+      ],
+    }) as Extract<CompositionLayer, { type: "text" }>;
+    const [mark] = textNode(composition([layer]), layer).decorations!;
+    expect((mark as DrawnTextDecoration).growWithText).toBe(true);
   });
 
   it("points to the decoration's reveal when fadeWithText is already set", () => {

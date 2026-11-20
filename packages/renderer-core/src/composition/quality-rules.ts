@@ -271,7 +271,7 @@ function orphanedDecorationMessage(
   const lead = `The ${mark?.kind ?? "text"} decoration stays visible while its text is fully transparent`;
   return mark?.fadeWithText
     ? `${lead}. \`fadeWithText\` follows only text-animator opacity, not the layer's \`reveal\`, a word reveal under a highlight or the text colour's alpha; key the decoration's \`reveal\` to match.`
-    : `${lead}; key its \`reveal\` or set \`fadeWithText: true\`.`;
+    : `${lead}; key its \`reveal\` or set \`fadeWithText: true\` (and \`growWithText: true\` when the text builds glyph by glyph or word by word, so the mark covers only the revealed glyphs).`;
 }
 /**
  * ET5a (O3): a highlight, underline, strike or box that paints while every

@@ -1472,7 +1472,7 @@ export function typographyOrphanedDecorations(
       const segments = decorationSegments(
         node,
         raster.layout,
-        mark.span,
+        mark,
         behind ? poses : revealed.poses,
       );
       const reveal = decorationReveal(mark, frame, prepared.scene.fps);

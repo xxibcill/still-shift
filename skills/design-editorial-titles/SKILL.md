@@ -95,20 +95,29 @@ colour that separates every word from the footage.
 - _Halo_: a drop shadow with offset `[0, 0]` in a dark or accent colour.
   Keep the edge margin and line gaps to its measured `visible` box, not the
   ink (a blur of 12 reaches about 19 px past the outline at 5%).
-  `light.glow` has no colour; it brightens the layer's own pixels.
+  For a light or neon glow use `light.glow` with `color` and `tint: 1`
+  (the `glow` helper): it glows in that colour from the text's shape but
+  only lightens the footage, so a dark halo stays a drop shadow.
 - _Box_: a `highlight` decoration (the `box` kind is a stroked outline). It
   centres on the baseline minus half the x-height, plus `offset`. Take the
   offset from the measurement (`highlightOffset` centres it on the cap band
   or on the label's ink): 0 for caps-only faces such as Bebas, −4.29 for a
   46 px Archivo label. Default thickness is 1.25 × cap height; the measured
-  decoration `paint` box is what it covers. It has no horizontal padding.
-  Set `fadeWithText: true`, and key its `reveal` when the text types in
-  glyph by glyph (the box does not follow per-glyph opacity).
+  decoration `paint` box is what it covers. Give it room with `padding`
+  (CSS order, e.g. `[6, 18]` for 6 px above and below and 18 px at the
+  sides); the measured `paint` box includes it.
+  Set `fadeWithText: true`, and when the text types in glyph by glyph or
+  word by word also `growWithText: true`: the box then covers only the
+  glyphs revealed so far, with no hand-keyed `reveal`.
 - _Hollow caps_: a transparent fill (`#FFFFFF00`) with an outline animator.
 
 **Timing.** Build from about 0.1–0.2 s to 1.4–1.9 s: word pops (scale 1.6–2.6
 → 1, 6–8 frames, stagger 6–8), a glyph typewriter (opacity, 1–4 frames,
-stagger 1–3), a drop or slide cascade, or caps tracking in. Hold untouched
+stagger 1–3), a drop or slide cascade, or caps tracking in. A text
+animator's `end` bounds the whole build (each unit's start is clamped to
+`end − 1`), so give it `start + (units − 1) × stagger + duration`; the
+`enter` helper's `duration` alone makes a typewriter land in a few frames.
+Hold untouched
 through the cuts. Exit in 0.3–0.5 s (fade with a small move, or reverse glyph
 order). Use the markers from the `research/editorial-titles-et7a/grammar.ts`
 helpers (`build`, `hold`, `exit`) so the check script picks the right frames.
@@ -221,13 +230,14 @@ render, sheets); the second adds `comp lint --pixels true --legibility true
 
 ## Known pitfalls (from the ET7a pilot)
 
-- Prompt Black is pinned but rejected by `font-metadata`: its name table
-  carries the full licence (8.7 KB) over the 2 KB name budget. Use Kanit
-  Black or Mitr instead. Run
-  `research/editorial-titles-et7a/probes/all-fonts.ts` after pinning new
-  faces.
-- A span's named style inherits the base style's `axes`; give a span style
-  for a font without that axis `axes: {}`.
+- Run `research/editorial-titles-et7a/probes/all-fonts.ts` after pinning
+  new faces. (Prompt Black, rejected in ET7a for its 8.7 KB embedded
+  licence, loads since Phase 1: only identity names count against the
+  2 KB name budget.)
+- A span's named style inherits the base style's `axes` only where its own
+  font has them, so a static script span in a variable serif needs no
+  `axes: {}` (since Phase 1). An inherited axis outside the span font's
+  range still fails; set it on the span style.
 - Drop shadows and halos make Canvas renders about ten times slower (a 7 s
   720×1280 clip: about 9 s without, about 100 s with).
 - Legibility lint renders two extra frames per text layer per reading frame:

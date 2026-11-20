@@ -172,11 +172,23 @@ export const dropShadow = (
 });
 
 /**
- * Coloured halo. `light.glow` has no colour (it brightens the layer's own
- * pixels), so a coloured glow is a zero-offset drop shadow.
+ * Coloured halo as a zero-offset drop shadow: it darkens or colours the
+ * footage behind the text (normal blending), so it is the halo for dark or
+ * saturated colours. The ET7a candidates use it.
  */
 export const halo = (color: string, blur = 16, opacity = 0.9) =>
   dropShadow(color, [0, 0], blur, opacity);
+
+/**
+ * Luminous coloured glow (`light.glow` 1.1.0, Phase 1): `tint: 1` glows in
+ * `color` from the text's shape. It screens over the footage, so it only
+ * lightens: use it for light or neon glows, and `halo` for dark ones.
+ */
+export const glow = (color: string, radius = 12, intensity = 0.9) => ({
+  id: "glow",
+  effect: "light.glow" as const,
+  params: { radius, intensity, color, tint: 1 },
+});
 
 /** Four-point sparkle star, a native shape. */
 export function sparkle(

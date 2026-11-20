@@ -2,6 +2,7 @@ import { compositionEffectDefinition } from "./effects.ts";
 import type { z } from "zod";
 import { formatSize } from "../output-format.ts";
 import { tabularFigures, type TextStyle } from "../typography.ts";
+import { declaredFontAxes, spanStyleOver } from "../typography-style.ts";
 import type {
   Composition,
   CompositionAsset,
@@ -219,6 +220,17 @@ function checkLayer(
     }
     if ((effect.inPoint ?? -Infinity) >= (effect.outPoint ?? Infinity))
       fail("comp-effect-time", at, "Effect inPoint must precede outPoint");
+    // light.glow 1.1.0 uses `color` only through `tint`, which defaults to 0.
+    if (
+      effect.effect === "light.glow" &&
+      effect.params?.color !== undefined &&
+      effect.params.tint === undefined
+    )
+      fail(
+        "comp-effect-params",
+        [...at, "params", "color"],
+        "light.glow color has no effect without tint; set tint (0–1, 1 glows fully in color)",
+      );
     const parsed = definition.params.safeParse(effect.params ?? {});
     if (!parsed.success)
       for (const issue of parsed.error.issues)
@@ -576,7 +588,11 @@ function checkText(
         `no text style "${span.style}"`,
       );
     else if (span.style) {
-      const effectiveStyle = { ...base, ...spanStyle };
+      const effectiveStyle = spanStyleOver(
+        base,
+        spanStyle,
+        declaredFontAxes(assets.values()),
+      );
       checkDisplayFont(fail, assets, effectiveStyle, [...spanPath, "style"]);
       checkAxes(
         fail,
@@ -593,6 +609,16 @@ function checkText(
         "comp-text-span-missing",
         [...path, "decorations", i, "span"],
         `no span "${decoration.span}"`,
+      );
+    if (
+      decoration.padding !== undefined &&
+      decoration.kind !== "highlight" &&
+      decoration.kind !== "box"
+    )
+      fail(
+        "comp-text-decoration-padding",
+        [...path, "decorations", i, "padding"],
+        `padding applies to highlight and box decorations, not ${decoration.kind}`,
       );
   });
 

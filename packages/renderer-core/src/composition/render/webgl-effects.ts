@@ -9,6 +9,7 @@ import {
   resizeRenderMetadata,
 } from "../../managed-metadata.ts";
 import { renderGpuEffect } from "./effect-plugins.ts";
+import { glowColorBytes } from "../../pixel-effects.ts";
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel } from "./webgl-blur-kernel.ts";
 import { boxBlur } from "./webgl-box-blur.ts";
@@ -1218,13 +1219,21 @@ ${FLOAT32_RATIONAL_SUM}
               this.bounds.clear(glow, null);
               if (inputRegion === undefined) this.bounds.full(glow);
               else this.bounds.include(glow, inputRegion);
+              // light.glow 1.1.0: `tint` blends the colour and the weight
+              // toward `glowColor` at full coverage, in the Canvas order.
+              const tint = (p.tint as number | undefined) ?? 0;
               this.device.pass(
-                `uniform float threshold; uniform float opacity;
+                `uniform float threshold; uniform float opacity; uniform float tint; uniform vec4 glowColor;
             void main() {
               vec4 value=texture(source,uv);
               vec3 rgb=value.a>0.0?bytes(vec4(value.rgb/value.a,1.0)).rgb:vec3(0.0);
               float luminance=dot(rgb,vec3(0.2126,0.7152,0.0722));
-              float alpha=floor(value.a * max(0.0,(luminance-threshold)/max(0.001,1.0-threshold))*255.0+0.5)/255.0;
+              float weight=max(0.0,(luminance-threshold)/max(0.001,1.0-threshold));
+              if (tint>0.0) {
+                weight=weight*(1.0-tint)+tint;
+                rgb=floor(rgb*255.0*(1.0-tint)+glowColor.rgb*255.0*tint+0.5)/255.0;
+              }
+              float alpha=floor(value.a * weight*255.0+0.5)/255.0;
               vec4 thresholded=floor(bytes(vec4(rgb*alpha,alpha))*255.0+0.5);
               pixel=floor(thresholded*(floor(opacity*255.0+0.5)+1.0)/256.0)/255.0;
             }`,
@@ -1233,6 +1242,13 @@ ${FLOAT32_RATIONAL_SUM}
                 builtinUniforms(phase, {
                   threshold: p.threshold as number,
                   opacity: p.intensity as number,
+                  tint,
+                  glowColor: builtinArray(
+                    phase,
+                    glowColorBytes(p.color as Rgba | undefined).map(
+                      (value) => value / 255,
+                    ),
+                  ),
                 }),
                 false,
                 inputRegion,

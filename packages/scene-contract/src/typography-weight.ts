@@ -1,7 +1,11 @@
 import { z } from "zod";
 import { FontAxisSchema } from "./typography.ts";
 import { TextWeightTreatmentSchema } from "./motion-craft.ts";
-import { resolvedTextStyle, type TextNode } from "./typography-style.ts";
+import {
+  declaredFontAxes,
+  resolvedTextStyle,
+  type TextNode,
+} from "./typography-style.ts";
 import type { TextEventScene, ResolvedTextEvent } from "./typography-events.ts";
 const finite = z.number().finite();
 export const TextWeightTreatmentReceiptSchema = z
@@ -70,6 +74,7 @@ export function resolveTextWeightTreatment(
   if (event.span && !span)
     throw Error("text-weight-span: unknown target span " + event.span);
   const base = resolvedTextStyle(node, styles);
+  const fontAxes = declaredFontAxes(scene.fonts);
   let useBase = true;
   // Count formatting may paint strings longer than its authored endpoints.
   // Retain the base until shared generated-string coverage can prove it unused.
@@ -107,14 +112,14 @@ export function resolveTextWeightTreatment(
     ? [
         {
           span: event.span,
-          style: resolvedTextStyle(node, styles, span?.style),
+          style: resolvedTextStyle(node, styles, span?.style, fontAxes),
         },
       ]
     : [
         ...(useBase ? [{ span: null, style: base }] : []),
         ...(node.spans ?? []).map((s) => ({
           span: s.id ?? null,
-          style: resolvedTextStyle(node, styles, s.style),
+          style: resolvedTextStyle(node, styles, s.style, fontAxes),
         })),
       ];
   const fonts = targets.map((target) => {

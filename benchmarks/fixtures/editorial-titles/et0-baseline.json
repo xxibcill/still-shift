@@ -373,7 +373,7 @@
             "code": "orphaned-decoration",
             "severity": "error",
             "node": "tag",
-            "message": "The highlight decoration stays visible while its text is fully transparent; key its `reveal` or set `fadeWithText: true`.",
+            "message": "The highlight decoration stays visible while its text is fully transparent; key its `reveal` or set `fadeWithText: true` (and `growWithText: true` when the text builds glyph by glyph or word by word, so the mark covers only the revealed glyphs).",
             "frames": [
               [4, 4],
               [70, 83]

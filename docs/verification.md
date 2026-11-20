@@ -37,6 +37,14 @@ composition environment needs a specific executable. It does not assume a
 repository `.venv` location. The depth protocol integration tests deliberately
 exercise `.venv/bin/python`, installed by `uv sync`, to verify the pinned service.
 
+## Editorial title groups
+
+`pnpm test` runs `pnpm test:browser:composition-text-measure` (ET6a `comp measure`
+geometry against rendered pixels) and `pnpm test:browser:editorial-titles-phase1`
+(the ET7a small fixes: span axes, decoration growth and padding, glow colour on
+Canvas and WebGL2) after `composition-quality`, which also runs the ET3 legibility
+and ET5a framing checks. Both groups use only committed synthetic fixtures.
+
 ## Composition baselines
 
 `pnpm test` ends with `pnpm test:browser:composition-baselines`. It renders every frame

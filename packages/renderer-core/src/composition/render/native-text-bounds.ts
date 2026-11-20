@@ -11,7 +11,11 @@ import {
   type TextPose,
 } from "../../typography-animation.ts";
 import { axisKey } from "../../typography-axes.ts";
-import { decorationSegments } from "../../typography-decorations.ts";
+import {
+  decorationPadding,
+  decorationSegments,
+  padSegment,
+} from "../../typography-decorations.ts";
 import { sampleCurve } from "../../curve.ts";
 import { scalarKeys } from "../../motion-craft.ts";
 import { easeMotion } from "../../motion-easing.ts";
@@ -58,12 +62,14 @@ export function nativeTypographyContentBounds(
             ),
           )
         : 1;
+      const padding = decorationPadding(mark);
+      // Every glyph of the span, grown or not: these bounds cover all frames.
       const segments = decorationSegments(
         node,
         raster.layout,
-        mark.span,
+        { span: mark.span },
         original,
-      );
+      ).map((segment) => padSegment(segment, padding));
       let remaining =
         segments.reduce((sum, segment) => sum + segment.width, 0) * amount;
       const thickness =
@@ -87,13 +93,14 @@ export function nativeTypographyContentBounds(
         glyphs.push({
           left: segment.x - reach + offset[0]!,
           right: segment.x + width + reach + offset[0]!,
-          top: y - reach + offset[1]!,
+          top: y - reach - padding.top + offset[1]!,
           bottom:
             y +
             (mark.kind === "box"
               ? raster.layout.capHeight + raster.layout.descent
               : 0) +
             reach +
+            padding.bottom +
             offset[1]!,
         });
       }

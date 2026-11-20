@@ -9,21 +9,120 @@ import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
 
 /**
  * A decoration as drawn: the prepared shape plus the composition-only
- * `fadeWithText` opt-in (ET5a), which `textNode` carries through.
+ * opt-ins `fadeWithText` (ET5a) and `growWithText` (editorial titles
+ * Phase 1), which `textNode` carries through.
  */
 export type DrawnTextDecoration = NonNullable<
   TextNode["decorations"]
->[number] & { fadeWithText?: boolean };
+>[number] & {
+  fadeWithText?: boolean;
+  growWithText?: boolean;
+  padding?: DecorationPaddingInput;
+};
 
+/**
+ * `padding` as the composition schema accepts it, in CSS order: one value
+ * for every side, `[vertical, horizontal]` or `[top, right, bottom, left]`.
+ */
+export type DecorationPaddingInput =
+  | number
+  | readonly [number, number]
+  | readonly [number, number, number, number];
+
+export type DecorationPadding = {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+};
+/** A decoration's `padding` in CSS order (Phase 1); zero when unset. */
+export function decorationPadding(
+  mark: DrawnTextDecoration,
+): DecorationPadding {
+  const p = mark.padding;
+  if (p === undefined) return { top: 0, right: 0, bottom: 0, left: 0 };
+  if (typeof p === "number") return { top: p, right: p, bottom: p, left: p };
+  if (p.length === 2)
+    return { top: p[0], right: p[1], bottom: p[0], left: p[1] };
+  return { top: p[0], right: p[1], bottom: p[2], left: p[3] };
+}
+/** A decoration segment widened by the horizontal padding. */
+export function padSegment<T extends { x: number; width: number }>(
+  segment: T,
+  padding: DecorationPadding,
+): T {
+  return {
+    ...segment,
+    x: segment.x - padding.left,
+    width: segment.width + padding.left + padding.right,
+  };
+}
+/**
+ * The band a highlight, underline or strike paints around centre line `y`:
+ * `thickness` grown by the vertical padding, about the unpadded centre.
+ * Unpadded, `top` and `bottom` are exactly `y ∓ thickness / 2`.
+ */
+export function decorationBand(
+  y: number,
+  thickness: number,
+  padding: DecorationPadding,
+) {
+  return {
+    top: y - thickness / 2 - padding.top,
+    bottom: y + thickness / 2 + padding.bottom,
+    height: thickness + padding.top + padding.bottom,
+  };
+}
+/**
+ * The rectangle a box decoration strokes from cap line `y`, through the
+ * descent, grown by the vertical padding (stroke width not included).
+ */
+export function decorationBoxBand(
+  y: number,
+  layout: { capHeight: number; descent: number },
+  padding: DecorationPadding,
+) {
+  return {
+    top: y - padding.top,
+    bottom: y + layout.capHeight + layout.descent + padding.bottom,
+    height: layout.capHeight + layout.descent + padding.top + padding.bottom,
+  };
+}
+
+/** A glyph a text animator has revealed: opacity and scale above 0. */
+const revealedPose = (pose: TextPose | undefined) =>
+  !pose || (pose.opacity > 0 && pose.scale !== 0);
+
+/**
+ * Which glyphs a decoration covers: its `span` (all text when unset), and
+ * with `growWithText` only those revealed so far. A decoration is one;
+ * bounds that must cover every frame pass `{ span }` alone.
+ */
+export type DecorationSelection = {
+  span?: string | undefined;
+  growWithText?: boolean | undefined;
+};
+
+/**
+ * Per line, the selected glyphs' extent. With `growWithText` and poses, only
+ * non-blank glyphs the animators have revealed count (a space is not an
+ * animator unit and keeps its rest pose), so a line with none revealed has
+ * no segment.
+ */
 export function decorationSegments(
   node: TextNode,
   layout: ShapedLayout,
-  span?: string,
+  { span, growWithText }: DecorationSelection,
   poses?: TextPose[],
 ) {
+  const grow = growWithText === true;
   return layout.lines.flatMap((line) => {
     const indices = line.clusters.filter(
-      (i) => !span || node.spans?.[layout.clusters[i]!.spanIndex]?.id === span,
+      (i) =>
+        (!span || node.spans?.[layout.clusters[i]!.spanIndex]?.id === span) &&
+        (!grow ||
+          !poses ||
+          (/\S/u.test(layout.clusters[i]!.text) && revealedPose(poses[i]))),
     );
     if (!indices.length) return [];
     const left = Math.min(
@@ -37,7 +136,16 @@ export function decorationSegments(
           (poses?.[i]?.x ?? 0),
       ),
     );
-    const baseline = line.baseline + (poses?.[indices[0]!]?.y ?? 0);
+    // A growing mark follows its most-revealed glyph (the first on ties), so
+    // a glyph still entering does not drag the band; fully revealed, that is
+    // the first glyph, as without `grow`.
+    const anchor =
+      grow && poses
+        ? indices.reduce((best, i) =>
+            (poses[i]?.opacity ?? 1) > (poses[best]?.opacity ?? 1) ? i : best,
+          )
+        : indices[0]!;
+    const baseline = line.baseline + (poses?.[anchor]?.y ?? 0);
     // Highest animator opacity of the decorated glyphs on this line (ET5a).
     const opacity = poses
       ? Math.max(
@@ -74,7 +182,10 @@ export function drawTextDecorations(
 ) {
   for (const [index, mark] of (node.decorations ?? []).entries()) {
     if ((mark.kind === "highlight") !== behind) continue;
-    const segments = decorationSegments(node, layout, mark.span, poses);
+    const padding = decorationPadding(mark);
+    const segments = decorationSegments(node, layout, mark, poses).map(
+      (segment) => padSegment(segment, padding),
+    );
     const reveal = decorationReveal(mark, frame, fps);
     const fades = decorationFadesWithText(mark);
     let remaining =
@@ -103,13 +214,17 @@ export function drawTextDecorations(
       ctx.fillStyle = mark.color;
       ctx.strokeStyle = mark.color;
       ctx.lineWidth = thickness;
+      const band = decorationBand(y, thickness, padding);
       if (mark.kind === "box") {
+        const box = decorationBoxBand(y, layout, padding);
         ctx.beginPath();
-        ctx.rect(segment.x, y, width, layout.capHeight + layout.descent);
+        ctx.rect(segment.x, box.top, width, box.height);
         ctx.stroke();
       } else if (!mark.lineStyle || mark.lineStyle === "uniform")
-        ctx.fillRect(segment.x, y - thickness / 2, width, thickness);
+        ctx.fillRect(segment.x, band.top, width, band.height);
       else {
+        // Exactly `y` when unpadded, so existing paths are unchanged.
+        const bandY = y + (padding.bottom - padding.top) / 2;
         const path: PreparedPath = {
           id: `${node.id}-decoration-${index}-${line}`,
           type: "path",
@@ -123,10 +238,10 @@ export function drawTextDecorations(
           gapAt: 0.6,
           gapSize: 0.1,
           stroke: mark.color,
-          lineWidth: thickness,
+          lineWidth: band.height,
           points: [
-            [segment.x, y],
-            [segment.x + segment.width, y],
+            [segment.x, bandY],
+            [segment.x + segment.width, bandY],
           ],
         };
         const trace = (points: [number, number][]) => {

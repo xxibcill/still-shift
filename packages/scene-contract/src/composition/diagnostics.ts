@@ -161,6 +161,8 @@ export const COMPOSITION_DIAGNOSTICS = {
     "A text span ends after the text or a state, or overlaps another span.",
   "comp-text-span-missing":
     "A decoration or text animator names an unknown span.",
+  "comp-text-decoration-padding":
+    "A decoration other than a highlight or box sets `padding`.",
   "comp-text-font-axis":
     "A style, span or animated variable-font axis is absent or outside the pinned font's range.",
   "comp-text-locale": "A text layer's locale is not recognised.",

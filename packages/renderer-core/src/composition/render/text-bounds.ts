@@ -6,7 +6,11 @@ import {
   type TextPose,
 } from "../../typography-animation.ts";
 import { axisKey } from "../../typography-axes.ts";
-import { decorationSegments } from "../../typography-decorations.ts";
+import {
+  decorationPadding,
+  decorationSegments,
+  padSegment,
+} from "../../typography-decorations.ts";
 import type {
   PreparedTypography,
   TextRaster,
@@ -167,17 +171,20 @@ export function animatedTextBounds(
         raster.layout.descent +
         Math.abs(raster.layout.underlinePosition) +
         thickness * 2;
+      const padding = decorationPadding(mark);
       for (const segment of decorationSegments(
         node,
         raster.layout,
-        mark.span,
+        // Every glyph of the span, grown or not: these bounds cover all frames.
+        { span: mark.span },
         poses,
-      ))
+      ).map((segment) => padSegment(segment, padding)))
         include({
           left: segment.x - thickness,
           right: segment.x + segment.width + thickness,
-          top: segment.baseline + (mark.offset ?? 0) - reach,
-          bottom: segment.baseline + (mark.offset ?? 0) + reach,
+          top: segment.baseline + (mark.offset ?? 0) - reach - padding.top,
+          bottom:
+            segment.baseline + (mark.offset ?? 0) + reach + padding.bottom,
         });
     }
   }
