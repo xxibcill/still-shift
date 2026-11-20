@@ -19,20 +19,26 @@ export type FontAxesLookup = (
   fontAsset: string,
 ) => Readonly<Record<string, unknown>> | undefined;
 
-/** Declared axes of a scene's fonts (a static font has none). */
+/**
+ * Declared axes of a scene's fonts (a static font has none). Accepts a
+ * scene's `fonts` or a composition's assets, whose non-font entries (any
+ * other `type`) are skipped.
+ */
 export function declaredFontAxes(
   fonts:
-    | readonly {
+    | Iterable<{
         id: string;
+        type?: string;
         variable?: Readonly<Record<string, unknown>> | undefined;
-      }[]
+      }>
     | undefined,
 ): FontAxesLookup | undefined {
   if (!fonts) return undefined;
-  return (id) => {
-    const font = fonts.find((f) => f.id === id);
-    return font ? (font.variable ?? {}) : undefined;
-  };
+  const axes = new Map<string, Readonly<Record<string, unknown>>>();
+  for (const font of fonts)
+    if ((font.type === undefined || font.type === "font") && !axes.has(font.id))
+      axes.set(font.id, font.variable ?? {});
+  return (id) => axes.get(id);
 }
 
 /**

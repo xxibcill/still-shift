@@ -2,7 +2,7 @@ import { compositionEffectDefinition } from "./effects.ts";
 import type { z } from "zod";
 import { formatSize } from "../output-format.ts";
 import { tabularFigures, type TextStyle } from "../typography.ts";
-import { spanStyleOver } from "../typography-style.ts";
+import { declaredFontAxes, spanStyleOver } from "../typography-style.ts";
 import type {
   Composition,
   CompositionAsset,
@@ -24,7 +24,7 @@ import {
   checkCameraWriters,
   spatialLayer,
 } from "./validate-spatial.ts";
-import { checkTextAnimatorAxes, pinnedFontAxes } from "./text-axes.ts";
+import { checkTextAnimatorAxes } from "./text-axes.ts";
 import { checkNative3DScope } from "./validate-native3d.ts";
 import {
   checkMediaAssets,
@@ -591,7 +591,7 @@ function checkText(
       const effectiveStyle = spanStyleOver(
         base,
         spanStyle,
-        pinnedFontAxes(assets),
+        declaredFontAxes(assets.values()),
       );
       checkDisplayFont(fail, assets, effectiveStyle, [...spanPath, "style"]);
       checkAxes(

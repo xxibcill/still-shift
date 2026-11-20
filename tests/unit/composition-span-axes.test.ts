@@ -127,4 +127,12 @@ describe("declaredFontAxes (Phase 1)", () => {
   it("is undefined without fonts", () => {
     expect(declaredFontAxes(undefined)).toBeUndefined();
   });
+  it("skips a composition's non-font assets", () => {
+    const assets = declaredFontAxes([
+      { id: "clip", type: "video" },
+      { id: "serif", type: "font", variable: { wght: [400, 900] } },
+    ]);
+    expect(assets!("clip")).toBeUndefined();
+    expect(Object.keys(assets!("serif")!)).toEqual(["wght"]);
+  });
 });

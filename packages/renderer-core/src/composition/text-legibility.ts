@@ -719,9 +719,7 @@ export function analyzeTextLegibility(
 
     // x-height-floor
     const node = textNode(comp, layer);
-    const fontAxes = declaredFontAxes(
-      comp.assets.filter((asset) => asset.type === "font"),
-    );
+    const fontAxes = declaredFontAxes(comp.assets);
     const styles = [
       resolvedTextStyle(node, comp.textStyles ?? {}),
       ...(layer.spans ?? [])

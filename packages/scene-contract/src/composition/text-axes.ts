@@ -1,7 +1,7 @@
 import { MotionLayerSchema } from "../motion-craft.ts";
 import type { MotionEasing } from "../motion-easing.ts";
 import type { TextStyle } from "../typography.ts";
-import { spanStyleOver, type FontAxesLookup } from "../typography-style.ts";
+import { declaredFontAxes, spanStyleOver } from "../typography-style.ts";
 import type {
   Composition,
   CompositionAsset,
@@ -125,16 +125,6 @@ function declaredStyle(
     : undefined;
 }
 
-/** Declared axes of pinned fonts (a static pinned font has none). */
-export function pinnedFontAxes(
-  assets: Map<string, CompositionAsset>,
-): FontAxesLookup {
-  return (id) => {
-    const font = assets.get(id);
-    return font?.type === "font" ? (font.variable ?? {}) : undefined;
-  };
-}
-
 function textRegions(
   comp: Composition,
   node: TextLayer,
@@ -144,13 +134,10 @@ function textRegions(
     fontAsset: node.fontAsset,
     ...declaredStyle(comp, node.style),
   };
+  const fontAxes = declaredFontAxes(assets.values());
   const regions = (node.spans ?? []).map((span) => ({
     span: span.id,
-    style: spanStyleOver(
-      base,
-      declaredStyle(comp, span.style),
-      pinnedFontAxes(assets),
-    ),
+    style: spanStyleOver(base, declaredStyle(comp, span.style), fontAxes),
     deltas: new Map<string, Bounds>(),
   }));
   let locale = node.locale ?? node.textBox?.locale ?? "en";

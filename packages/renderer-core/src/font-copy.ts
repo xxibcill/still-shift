@@ -10,7 +10,6 @@ import {
   declaredFontAxes,
   type FontAxesLookup,
 } from "@still-shift/scene-contract";
-export { declaredFontAxes };
 import { FONT_IDENTITY_LIMITS, type FontTextRun } from "./font-identity.ts";
 import { passageError } from "./passage-diagnostics.ts";
 
