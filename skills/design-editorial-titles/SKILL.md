@@ -101,7 +101,9 @@ colour that separates every word from the footage.
   offset from the measurement (`highlightOffset` centres it on the cap band
   or on the label's ink): 0 for caps-only faces such as Bebas, −4.29 for a
   46 px Archivo label. Default thickness is 1.25 × cap height; the measured
-  decoration `paint` box is what it covers. It has no horizontal padding.
+  decoration `paint` box is what it covers. Give it room with `padding`
+  (CSS order, e.g. `[6, 18]` for 6 px above and below and 18 px at the
+  sides); the measured `paint` box includes it.
   Set `fadeWithText: true`, and when the text types in glyph by glyph or
   word by word also `growWithText: true`: the box then covers only the
   glyphs revealed so far, with no hand-keyed `reveal`.

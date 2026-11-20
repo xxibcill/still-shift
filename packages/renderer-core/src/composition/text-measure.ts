@@ -25,7 +25,13 @@ import {
   evaluateTextPoses,
   textAnimationFrames,
 } from "../typography-animation.ts";
-import { decorationSegments } from "../typography-decorations.ts";
+import {
+  decorationBand,
+  decorationPadding,
+  decorationSegments,
+  type DecorationPadding,
+  type DrawnTextDecoration,
+} from "../typography-decorations.ts";
 import {
   quantizeStrokeWidth,
   typographyContainerContent,
@@ -139,6 +145,8 @@ export type TextDecorationMeasure = {
   offset: number;
   /** Brush and ink line styles paint inside about this band, not exactly it. */
   approximate: boolean;
+  /** Resolved `padding` (Phase 1), present when the decoration sets one. */
+  padding?: DecorationPadding;
   segments: TextDecorationSegmentMeasure[];
   paint: MeasureBox | null;
 };
@@ -393,6 +401,7 @@ function decorationMeasures(
         ? layout.capHeight * 1.25
         : Math.max(1, layout.underlineThickness));
     const offset = mark.offset ?? 0;
+    const padding = decorationPadding(mark);
     const segments = decorationSegments(node, layout, mark.span).map(
       (segment): TextDecorationSegmentMeasure => {
         const line = layout.lines.findIndex(
@@ -406,22 +415,25 @@ function decorationMeasures(
             : mark.kind === "strike" || mark.kind === "highlight"
               ? -layout.xHeight * 0.5
               : -layout.capHeight);
+        const painted = decorationBand(y, thickness, padding);
         const paint: Bounds =
           mark.kind === "box"
             ? padBounds(
                 {
-                  left: segment.x,
-                  right: segment.x + segment.width,
-                  top: y,
-                  bottom: y + layout.capHeight + layout.descent,
+                  left: segment.x - padding.left,
+                  right: segment.x + segment.width + padding.right,
+                  top: y - padding.top,
+                  bottom:
+                    y + layout.capHeight + layout.descent + padding.bottom,
                 },
                 thickness / 2,
               )
             : {
-                left: segment.x,
-                right: segment.x + segment.width,
-                top: y - thickness / 2,
-                bottom: y + thickness / 2,
+                left: segment.x - padding.left,
+                right: segment.x + segment.width + padding.right,
+                top: painted.top,
+                // Exactly as before when unpadded.
+                bottom: y + thickness / 2 + padding.bottom,
               };
         const band = mark.kind === "highlight" || mark.kind === "strike";
         // Band centre with no offset; an offset moves it one for one.
@@ -454,6 +466,9 @@ function decorationMeasures(
       thickness,
       offset,
       approximate: mark.lineStyle === "ink" || mark.lineStyle === "brush",
+      ...((mark as DrawnTextDecoration).padding !== undefined
+        ? { padding }
+        : {}),
       segments,
       paint: maybeBox(unionBounds(segments.map((s) => s.paint))),
     };

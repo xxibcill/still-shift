@@ -135,3 +135,45 @@ export const typedHighlight = {
     ) as Composition;
   },
 };
+
+/**
+ * Highlight horizontal padding (ET7a engine mapping: "no horizontal
+ * padding"): a Bebas label on a box that ends flush with its first and last
+ * glyph. `padding` is the Phase 1 field, in CSS order; `kind` switches to a
+ * stroked `box` decoration.
+ */
+export const paddedBox = {
+  ink: "#121212",
+  box: "#2F6F6A",
+  build(
+    padding?: number | [number, number] | [number, number, number, number],
+    kind: "highlight" | "box" = "highlight",
+  ) {
+    return comp(base("phase1-padded-box", [latin.bebas]), (c) => {
+      c.textStyle("tag", { fontAsset: "bebas", size: 96, tracking: 40 });
+      c.add(
+        text("ONE PANT", {
+          id: "tag",
+          style: "tag",
+          fontSize: 96,
+          color: paddedBox.ink,
+        })
+          .at(360, 640)
+          .with({
+            align: "center",
+            anchor: "baseline",
+            textRole: "label",
+            decorations: [
+              {
+                kind,
+                color: paddedBox.box,
+                offset: 0,
+                ...(kind === "box" ? { thickness: 4 } : {}),
+                ...(padding === undefined ? {} : { padding }),
+              },
+            ],
+          }),
+      );
+    }) as Composition;
+  },
+};

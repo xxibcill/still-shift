@@ -28,6 +28,7 @@ const span = TextSpanSchema.safeExtend({
   start: compFrame,
   end: compFrame.positive(),
 });
+const decorationPadding = z.number().finite().min(0).max(1280);
 const decoration = TextDecorationSchema.extend({
   span: compositionId.optional(),
   offset: bounded.optional(),
@@ -46,6 +47,24 @@ const decoration = TextDecorationSchema.extend({
    * existing compositions render unchanged.
    */
   growWithText: z.boolean().optional(),
+  /**
+   * Editorial titles Phase 1: space added around a `highlight` or `box`, in
+   * pixels, in CSS order: one value for every side, `[vertical, horizontal]`
+   * or `[top, right, bottom, left]`. A highlight's band grows about its
+   * unpadded centre line. Omitted, the mark is unchanged.
+   */
+  padding: z
+    .union([
+      decorationPadding,
+      z.tuple([decorationPadding, decorationPadding]),
+      z.tuple([
+        decorationPadding,
+        decorationPadding,
+        decorationPadding,
+        decorationPadding,
+      ]),
+    ])
+    .optional(),
 });
 const transition = TextTransitionSchema.extend({
   window: TextTransitionSchema.shape.window.safeExtend({

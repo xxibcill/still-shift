@@ -1623,6 +1623,7 @@ retain their original bounds.
 | `comp-text-box-size`               | A `textBox` text layer without `size`.                                                                                                                     |
 | `comp-text-span-range`             | A span ends after the text or one of its states, or overlaps another span.                                                                                 |
 | `comp-text-span-missing`           | A decoration or text animator names a span the text layer does not have.                                                                                   |
+| `comp-text-decoration-padding`     | A decoration other than a `highlight` or `box` sets `padding`.                                                                                             |
 | `comp-text-font-axis`              | A variable-font axis value (style, span or blended animator) is outside the pinned font's range, or the font is not variable.                              |
 | `comp-text-locale`                 | A text layer's locale is not recognised.                                                                                                                   |
 | `comp-text-transition`             | `transition` and `transitions` together, overlapping windows, a missing from/to state, or a count without numeric states and tabular figures.              |
@@ -2268,6 +2269,13 @@ it: `fadeWithText` alone shows the whole box once the first glyph appears.
 Set `growWithText: true` as well, so each line's mark spans only the revealed
 glyphs (editorial titles Phase 1). It is off by default and existing
 compositions render unchanged.
+
+A `highlight` or `box` can also set `padding` (Phase 1), in pixels and CSS
+order: one number for every side, `[vertical, horizontal]`, or
+`[top, right, bottom, left]`. A highlight's band grows about its unpadded
+centre line, so `comp measure`'s `centredOffset` keeps centring the unpadded
+band; its `paint` box and `padding` report what is drawn. Other kinds reject
+it (`comp-text-decoration-padding`). Without `padding` a mark is unchanged.
 
 ```json
 {

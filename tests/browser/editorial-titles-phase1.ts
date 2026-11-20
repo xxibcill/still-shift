@@ -16,6 +16,7 @@ import {
 import { measureCompositionFile } from "@still-shift/animation-engine";
 import {
   frame,
+  paddedBox,
   spanAxes,
   typedHighlight,
 } from "../../benchmarks/fixtures/editorial-titles/phase1-fixes.ts";
@@ -119,6 +120,71 @@ async function verifyTypedHighlight() {
 }
 
 /**
+ * `padding` on highlight and box decorations: `comp measure` reports the
+ * padded paint box, it grows by exactly the padding, and the rendered box
+ * agrees with it within 2 px per edge. Without padding the render is
+ * unchanged.
+ */
+async function verifyPadding() {
+  const paint = async (composition: Composition) => {
+    const report = await measure(composition);
+    const entry = report.layers.find((l) => l.key === "tag")!;
+    assert.ok(entry.measured && entry.origin, "padded box: measured layer");
+    const box = measured(report, "tag").decorations[0]!.paint!;
+    const [x, y] = entry.origin;
+    return {
+      left: box.left + x,
+      top: box.top + y,
+      right: box.right + x,
+      bottom: box.bottom + y,
+    };
+  };
+  const results: Record<string, unknown> = {};
+  for (const [kind, value, sides] of [
+    ["highlight", [6, 18], [6, 18, 6, 18]],
+    ["highlight", [2, 24, 10, 12], [2, 24, 10, 12]],
+    ["box", 14, [14, 14, 14, 14]],
+  ] as const) {
+    const padding = value as Parameters<typeof paddedBox.build>[0];
+    const plain = await paint(paddedBox.build(undefined, kind));
+    const padded = await paint(paddedBox.build(padding, kind));
+    const [top, right, bottom, left] = sides;
+    const grown = {
+      top: plain.top - padded.top,
+      right: padded.right - plain.right,
+      bottom: padded.bottom - plain.bottom,
+      left: plain.left - padded.left,
+    };
+    for (const [side, expected] of Object.entries({ top, right, bottom, left }))
+      assert.ok(
+        Math.abs(grown[side as keyof typeof grown] - expected) < 1e-6,
+        `padded ${kind}: ${side} grows by ${grown[side as keyof typeof grown]}, expected ${expected}`,
+      );
+    const pixels = colourBox(
+      (await render(paddedBox.build(padding, kind))).rgb,
+      paddedBox.box,
+      40,
+    )!;
+    const errors = {
+      left: pixels.left - padded.left,
+      top: pixels.top - padded.top,
+      right: pixels.right - padded.right,
+      bottom: pixels.bottom - padded.bottom,
+    };
+    for (const [side, error] of Object.entries(errors))
+      assert.ok(
+        Math.abs(error) <= 2,
+        `padded ${kind}: rendered ${side} edge is ${error} px from the measured paint box`,
+      );
+    results[`${kind} ${JSON.stringify(padding)}`] = {
+      grown,
+      pixelErrors: errors,
+    };
+  }
+  return results;
+}
+
+/**
  * A span style resolves axes against its own font: Pinyon gets no wght, the
  * layer validates, the span measures in Pinyon, and the render equals the
  * pilot's `axes: {}` workaround byte for byte.
@@ -155,6 +221,7 @@ export async function verifyPhase1() {
     const summary = {
       spanAxes: await verifySpanAxes(),
       typedHighlight: await verifyTypedHighlight(),
+      padding: await verifyPadding(),
     };
     console.log(`Editorial titles Phase 1: ${JSON.stringify(summary)}`);
     return summary;

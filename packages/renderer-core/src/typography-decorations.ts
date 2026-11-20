@@ -14,7 +14,42 @@ import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
  */
 export type DrawnTextDecoration = NonNullable<
   TextNode["decorations"]
->[number] & { fadeWithText?: boolean; growWithText?: boolean };
+>[number] & {
+  fadeWithText?: boolean;
+  growWithText?: boolean;
+  padding?: number | readonly number[];
+};
+
+export type DecorationPadding = {
+  top: number;
+  right: number;
+  bottom: number;
+  left: number;
+};
+/** A decoration's `padding` in CSS order (Phase 1); zero when unset. */
+export function decorationPadding(
+  mark: DrawnTextDecoration,
+): DecorationPadding {
+  const p = mark.padding;
+  if (p === undefined) return { top: 0, right: 0, bottom: 0, left: 0 };
+  if (typeof p === "number") return { top: p, right: p, bottom: p, left: p };
+  const [top = 0, right = top, bottom = top, left = right] = p;
+  return { top, right, bottom, left };
+}
+/**
+ * The band a highlight, underline or strike paints around centre line `y`:
+ * `thickness` grown by the vertical padding, about the unpadded centre.
+ */
+export function decorationBand(
+  y: number,
+  thickness: number,
+  padding: DecorationPadding,
+) {
+  return {
+    top: y - thickness / 2 - padding.top,
+    height: thickness + padding.top + padding.bottom,
+  };
+}
 
 /** A glyph a text animator has revealed: opacity and scale above 0. */
 const revealedPose = (pose: TextPose | undefined) =>
@@ -93,13 +128,18 @@ export function drawTextDecorations(
 ) {
   for (const [index, mark] of (node.decorations ?? []).entries()) {
     if ((mark.kind === "highlight") !== behind) continue;
+    const padding = decorationPadding(mark);
     const segments = decorationSegments(
       node,
       layout,
       mark.span,
       poses,
       decorationGrowsWithText(mark),
-    );
+    ).map((segment) => ({
+      ...segment,
+      x: segment.x - padding.left,
+      width: segment.width + padding.left + padding.right,
+    }));
     const reveal = decorationReveal(mark, frame, fps);
     const fades = decorationFadesWithText(mark);
     let remaining =
@@ -128,13 +168,21 @@ export function drawTextDecorations(
       ctx.fillStyle = mark.color;
       ctx.strokeStyle = mark.color;
       ctx.lineWidth = thickness;
+      const band = decorationBand(y, thickness, padding);
       if (mark.kind === "box") {
         ctx.beginPath();
-        ctx.rect(segment.x, y, width, layout.capHeight + layout.descent);
+        ctx.rect(
+          segment.x,
+          y - padding.top,
+          width,
+          layout.capHeight + layout.descent + padding.top + padding.bottom,
+        );
         ctx.stroke();
       } else if (!mark.lineStyle || mark.lineStyle === "uniform")
-        ctx.fillRect(segment.x, y - thickness / 2, width, thickness);
+        ctx.fillRect(segment.x, band.top, width, band.height);
       else {
+        // Exactly `y` when unpadded, so existing paths are unchanged.
+        const bandY = y + (padding.bottom - padding.top) / 2;
         const path: PreparedPath = {
           id: `${node.id}-decoration-${index}-${line}`,
           type: "path",
@@ -148,10 +196,10 @@ export function drawTextDecorations(
           gapAt: 0.6,
           gapSize: 0.1,
           stroke: mark.color,
-          lineWidth: thickness,
+          lineWidth: band.height,
           points: [
-            [segment.x, y],
-            [segment.x + segment.width, y],
+            [segment.x, bandY],
+            [segment.x + segment.width, bandY],
           ],
         };
         const trace = (points: [number, number][]) => {

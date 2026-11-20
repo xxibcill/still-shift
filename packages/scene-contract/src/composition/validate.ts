@@ -599,6 +599,16 @@ function checkText(
         [...path, "decorations", i, "span"],
         `no span "${decoration.span}"`,
       );
+    if (
+      decoration.padding !== undefined &&
+      decoration.kind !== "highlight" &&
+      decoration.kind !== "box"
+    )
+      fail(
+        "comp-text-decoration-padding",
+        [...path, "decorations", i, "padding"],
+        `padding applies to highlight and box decorations, not ${decoration.kind}`,
+      );
   });
 
   layer.corrections?.forEach((correction, i) => {

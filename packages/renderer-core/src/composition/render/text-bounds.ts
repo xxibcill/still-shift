@@ -6,7 +6,10 @@ import {
   type TextPose,
 } from "../../typography-animation.ts";
 import { axisKey } from "../../typography-axes.ts";
-import { decorationSegments } from "../../typography-decorations.ts";
+import {
+  decorationPadding,
+  decorationSegments,
+} from "../../typography-decorations.ts";
 import type {
   PreparedTypography,
   TextRaster,
@@ -167,6 +170,7 @@ export function animatedTextBounds(
         raster.layout.descent +
         Math.abs(raster.layout.underlinePosition) +
         thickness * 2;
+      const padding = decorationPadding(mark);
       for (const segment of decorationSegments(
         node,
         raster.layout,
@@ -174,10 +178,11 @@ export function animatedTextBounds(
         poses,
       ))
         include({
-          left: segment.x - thickness,
-          right: segment.x + segment.width + thickness,
-          top: segment.baseline + (mark.offset ?? 0) - reach,
-          bottom: segment.baseline + (mark.offset ?? 0) + reach,
+          left: segment.x - thickness - padding.left,
+          right: segment.x + segment.width + thickness + padding.right,
+          top: segment.baseline + (mark.offset ?? 0) - reach - padding.top,
+          bottom:
+            segment.baseline + (mark.offset ?? 0) + reach + padding.bottom,
         });
     }
   }
