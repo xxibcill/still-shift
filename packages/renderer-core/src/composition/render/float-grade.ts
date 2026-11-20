@@ -4,7 +4,9 @@ import {
   applyLinearMatrixEncoded,
   applyRgbMixer,
   gradePrimaryControls,
+  GRADE_LIMIT,
   HIGHLIGHT_RANGE,
+  LOG2_GRADE_LIMIT,
   IDENTITY,
   lumaCoefficients,
   NEUTRAL_CDL,
@@ -33,7 +35,9 @@ import type { RenderEffect } from "./graph.ts";
 
 /**
  * CG2 float grade stage. A run of consecutive `grade.*` effects is evaluated
- * on straight color, unclamped, in float — one fused fragment shader (float32)
+ * on straight color, unclamped within ±GRADE_LIMIT (every operator saturates
+ * there, so nothing overflows to Infinity or NaN on either backend), in
+ * float — one fused fragment shader (float32)
  * on WebGL, the @still-shift/color-science float64 references on Canvas — and
  * quantized once (round half up) on exit. Neutral operators are dropped, so a
  * neutral run is an exact identity on both backends. Parity rule (owner
@@ -189,7 +193,7 @@ const OPERATORS: Readonly<
       apply: (v) => applyRgbMixer(v, mixer),
       glsl: (u) => ({
         declare: `uniform mat3 ${u("Mix")};uniform vec3 ${u("MixOffset")};`,
-        call: `v=${u("Mix")}*v+${u("MixOffset")};`,
+        call: `v=gLimit3(${u("Mix")}*v+${u("MixOffset")});`,
         uniforms: {
           [u("Mix")]: columns(mixer.matrix),
           [u("MixOffset")]: [...mixer.offset],
@@ -221,7 +225,9 @@ export function floatGradeBytes(ops: readonly FloatGradeOp[], v: Rgb): Rgb {
 const GLSL_COMMON = `
 const vec3 LUMA=vec3(${lumaCoefficients("bt709").join(",")});
 float gSmooth(float e0,float e1,float x){float t=clamp((x-e0)/(e1-e0),0.0,1.0);return t*t*(3.0-2.0*t);}
-float gPow(float x,float p){return (x<0.0||p==1.0)?x:pow(x,p);}
+const float LIMIT=${GRADE_LIMIT.toFixed(1)};
+vec3 gLimit3(vec3 v){return clamp(v,-LIMIT,LIMIT);}
+float gPow(float x,float p){return (x<0.0||p==1.0)?x:(x>1.0&&log2(x)*p>=${LOG2_GRADE_LIMIT})?LIMIT:pow(x,p);}
 vec3 gPow3(vec3 x,vec3 p){return vec3(gPow(x.r,p.r),gPow(x.g,p.g),gPow(x.b,p.b));}
 float gDec(float v){float a=abs(v);float l=a<=0.04045?a/12.92:pow((a+0.055)/1.055,2.4);return v<0.0?-l:l;}
 float gEnc(float l){float a=abs(l);float v=a<=0.0031308?a*12.92:1.055*pow(a,1.0/2.4)-0.055;return l<0.0?-v:v;}
@@ -237,16 +243,16 @@ vec3 gPrimary(vec3 v,vec3 lift,vec3 gammaInv,vec3 gain,vec3 offs,vec4 tone,vec2 
   float sat=mx>0.0?clamp((mx-mn)/mx,0.0,1.0):0.0;
   float f=1.0+tone.w*(1.0-sat);
   float y2=dot(s,LUMA);
-  return y2*(1.0-f)+s*f;
+  return gLimit3(y2*(1.0-f)+s*f);
 }
-vec3 gWhite(vec3 v,mat3 m){vec3 l=m*vec3(gDec(v.r),gDec(v.g),gDec(v.b));return vec3(gEnc(l.r),gEnc(l.g),gEnc(l.b));}
+vec3 gWhite(vec3 v,mat3 m){vec3 l=m*vec3(gDec(v.r),gDec(v.g),gDec(v.b));return gLimit3(vec3(gEnc(l.r),gEnc(l.g),gEnc(l.b)));}
 vec3 gCdl(vec3 v,vec3 slope,vec3 offs,vec3 power,vec2 sc){
   vec3 t=v*slope+offs;
   if(sc.y>0.5)t=clamp(t,0.0,1.0);
   vec3 p=gPow3(t,power);
   float y=dot(p,LUMA);
   vec3 o=y+sc.x*(p-y);
-  return sc.y>0.5?clamp(o,0.0,1.0):o;
+  return sc.y>0.5?clamp(o,0.0,1.0):gLimit3(o);
 }`;
 
 /** One fused shader for the run (cached by the device per text). */

@@ -45,7 +45,9 @@ export type { CubeLut, LutInterpolation } from "./lut.ts";
 export { NEUTRAL_CDL, applyCdl } from "./cdl.ts";
 export type { Cdl } from "./cdl.ts";
 export {
+  GRADE_LIMIT,
   HIGHLIGHT_RANGE,
+  LOG2_GRADE_LIMIT,
   NEUTRAL_GRADE_PRIMARY,
   REFERENCE_CCT,
   SHADOW_RANGE,
@@ -54,8 +56,10 @@ export {
   applyGradePrimary,
   applyLinearMatrixEncoded,
   applyRgbMixer,
+  gradePow,
   gradePrimaryControls,
   hueRotationMatrix,
+  limitGrade,
   planckianXy,
   rgbMixer,
   srgbDecodeMirrored,

@@ -11,7 +11,9 @@
  *   also beside an effect that the backend applies on its own and across a
  *   default (neutral) grade.cdl;
  * - ten stacked neutral-sum corrections add no banding compared with one pass;
- * - layer kinds, animated controls and seeks keep backend parity within 1.
+ * - layer kinds, animated controls and seeks keep backend parity within 1;
+ * - settings at the contract bounds stay finite (every operator saturates at
+ *   ±GRADE_LIMIT), so they too meet the parity rule.
  *
  *   pnpm test:browser:color-grading-cg2
  */
@@ -60,7 +62,10 @@ const stills = await Promise.all(
 );
 
 type Effect = { effect: string; params: Record<string, number> };
-/** Cases: each operator typical and extreme, a full chain, and a neutral run. */
+/**
+ * Cases: each operator typical and extreme, a full chain, overflow at the
+ * contract bounds, and a neutral run.
+ */
 const CASES: Record<string, Effect[]> = {
   "primary-typical": [
     {
@@ -180,6 +185,52 @@ const CASES: Record<string, Effect[]> = {
       params: { rr: 1.1, rg: -0.1, bb: 0.9, bg: 0.1, strength: 0.8 },
     },
     { effect: "grade.primary", params: { saturation: 1.25, hue: -8 } },
+  ],
+  // PR #77 second review, Spec-1: contract-bound settings that overflowed
+  // float32 to Inf, then NaN (Inf − Inf) in the CDL saturation step.
+  "overflow-primary-cdl": [
+    {
+      effect: "grade.primary",
+      params: {
+        liftR: 1,
+        liftMaster: 1,
+        gammaR: 0.1,
+        gammaMaster: 0.1,
+        gainR: 16,
+        gainMaster: 16,
+      },
+    },
+    { effect: "grade.cdl", params: { slopeR: 8, powerR: 8, clamp: 0 } },
+  ],
+  "overflow-stacked": [
+    ...Array.from({ length: 3 }, () => ({
+      effect: "grade.primary",
+      params: {
+        liftMaster: 1,
+        gammaMaster: 0.1,
+        gainMaster: 16,
+        contrast: 4,
+        saturation: 4,
+        colorBoost: 1,
+      },
+    })),
+    {
+      effect: "grade.cdl",
+      params: {
+        slopeR: 8,
+        slopeG: 8,
+        slopeB: 8,
+        powerR: 8,
+        powerG: 8,
+        powerB: 8,
+        saturation: 4,
+        clamp: 0,
+      },
+    },
+    {
+      effect: "grade.rgb-mixer",
+      params: { rr: 4, rg: -4, gb: 4, br: -4, strength: 1 },
+    },
   ],
   "neutral-run": [
     { effect: "grade.primary", params: {} },

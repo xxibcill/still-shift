@@ -1,6 +1,7 @@
 /**
  * Float64 references for the CG2 `grade.*` operators. New code; every
- * operator is unclamped and its neutral setting is an exact identity.
+ * operator is unclamped within ±GRADE_LIMIT and its neutral setting is an
+ * exact identity.
  *
  * The legacy working space (CG2) is encoded sRGB, as the existing `color.*`
  * effects; `grade.white-balance` linearizes internally (sign-mirrored sRGB) to
@@ -26,6 +27,28 @@ import { transferFunction } from "./transfer.ts";
 const LUMA = lumaCoefficients("bt709");
 const luma = (v: readonly number[]) =>
   v[0]! * LUMA[0] + v[1]! * LUMA[1] + v[2]! * LUMA[2];
+/**
+ * The magnitude every operator saturates at, so no value in a grade run can
+ * overflow to Infinity or become NaN in float32 (the GPU) or float64. It is
+ * far outside any displayable value; inside ±GRADE_LIMIT nothing is clamped.
+ */
+export const GRADE_LIMIT = 10_000;
+/** log2(GRADE_LIMIT): `gradePow` saturates once x^p would reach the limit. */
+export const LOG2_GRADE_LIMIT = Math.log2(GRADE_LIMIT);
+/** Clamp to ±GRADE_LIMIT (an operator's output). */
+export const limitGrade = (v: number) =>
+  Math.min(GRADE_LIMIT, Math.max(-GRADE_LIMIT, v));
+/**
+ * x^p for the grade operators: negative x and p = 1 pass through, and a
+ * result that would reach GRADE_LIMIT is GRADE_LIMIT (decided in log2, so it
+ * never overflows). The GPU kernel mirrors this branch for branch.
+ */
+export function gradePow(x: number, p: number) {
+  if (x < 0 || p === 1) return x;
+  if (x > 1 && Math.log2(x) * p >= LOG2_GRADE_LIMIT) return GRADE_LIMIT;
+  return Math.pow(x, p);
+}
+
 const smoothstep = (e0: number, e1: number, x: number) => {
   const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
   return t * t * (3 - 2 * t);
@@ -102,14 +125,14 @@ export function gradePrimaryControls(p: GradePrimary): GradePrimaryControls {
 
 /**
  * lift (v + lift·(1 − v): black moves, white stays) → gamma (v^(1/gamma);
- * negative values unchanged) → gain → offset → contrast about the pivot →
- * shadows/highlights (luma-weighted offset) → saturation about Rec.709 luma →
- * hue rotation → color boost.
+ * negative values unchanged; `gradePow`) → gain → offset → contrast about the
+ * pivot → shadows/highlights (luma-weighted offset) → saturation about
+ * Rec.709 luma → hue rotation → color boost, limited to ±GRADE_LIMIT.
  */
 export function applyGradePrimary(rgb: Rgb, k: GradePrimaryControls): Rgb {
   const v = perChannel((c) => {
     const lifted = rgb[c] + k.lift[c] * (1 - rgb[c]);
-    const curved = lifted < 0 ? lifted : Math.pow(lifted, 1 / k.gamma[c]);
+    const curved = gradePow(lifted, 1 / k.gamma[c]);
     return (
       (curved * k.gain[c] + k.offset[c]) * k.contrast +
       k.pivot * (1 - k.contrast)
@@ -129,7 +152,7 @@ export function applyGradePrimary(rgb: Rgb, k: GradePrimaryControls): Rgb {
   const sat = max > 0 ? Math.min(1, Math.max(0, (max - min) / max)) : 0;
   const factor = 1 + k.colorBoost * (1 - sat);
   const y2 = luma(s);
-  return perChannel((c) => y2 * (1 - factor) + s[c] * factor);
+  return perChannel((c) => limitGrade(y2 * (1 - factor) + s[c] * factor));
 }
 
 // --- grade.white-balance -------------------------------------------------------
@@ -228,20 +251,23 @@ export const srgbDecodeMirrored = (v: number) =>
 export const srgbEncodeMirrored = (v: number) =>
   v < 0 ? -srgb.encode(-v) : srgb.encode(v);
 
-/** Encoded sRGB → linear → matrix → encoded sRGB. */
+/** Encoded sRGB → linear → matrix → encoded sRGB, limited to ±GRADE_LIMIT. */
 export function applyLinearMatrixEncoded(rgb: Rgb, m: Mat3): Rgb {
   const linear = apply(
     m,
     perChannel((c) => srgbDecodeMirrored(rgb[c])),
   );
-  return perChannel((c) => srgbEncodeMirrored(linear[c]));
+  return perChannel((c) => limitGrade(srgbEncodeMirrored(linear[c])));
 }
 
 // --- grade.rgb-mixer -------------------------------------------------------------
 
 export type RgbMixer = { matrix: Mat3; offset: Rgb };
 
-/** (I + strength·(M − I))·rgb + strength·offset, as `color.matrix` designs it. */
+/**
+ * (I + strength·(M − I))·rgb + strength·offset, as `color.matrix` designs it
+ * (`applyRgbMixer` limits the result to ±GRADE_LIMIT).
+ */
 export function rgbMixer(
   matrix: Mat3,
   offset: Rgb,
@@ -257,5 +283,5 @@ export function rgbMixer(
 }
 export function applyRgbMixer(rgb: Rgb, mixer: RgbMixer): Rgb {
   const mixed = apply(mixer.matrix, rgb);
-  return perChannel((c) => mixed[c] + mixer.offset[c]);
+  return perChannel((c) => limitGrade(mixed[c] + mixer.offset[c]));
 }

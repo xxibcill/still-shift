@@ -154,7 +154,11 @@ A run of consecutive `grade.*` effects on a layer is evaluated as one stage on
 straight color, unclamped, and quantized once (round half up) on exit: one
 fused fragment shader in float32 on WebGL2, and the float64 references of
 `@still-shift/color-science` on Canvas. Values pushed above 1 or below 0 by one
-operator are recovered by the next. Neutral operators are dropped, so a neutral
+operator are recovered by the next. Each operator saturates its output at
+±10,000 (`GRADE_LIMIT`) and every power saturates there before it can overflow,
+identically on both backends, so settings at the contract bounds stay finite
+(no Infinity or NaN) and meet the parity rule; nothing inside ±10,000 is
+clamped. Neutral operators are dropped, so a neutral
 run leaves pixels unchanged on both backends. The working space is encoded sRGB,
 as for `color.*`; white balance adapts in linear light. Parameters are flat
 scalars (CG1 decision 3), so paths, drivers, expressions and keys work as for

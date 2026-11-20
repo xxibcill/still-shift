@@ -4,9 +4,13 @@
  * `asc`: ASC CDL Release 1.2 (2009): out = clamp(in·slope + offset)^power,
  * then saturation with Rec.709 luma weights, then clamp to 0–1.
  * `no-clamp`: OpenColorIO's CDL_NO_CLAMP style: no clamps, and the power is
- * not applied to negative values (they pass through).
+ * not applied to negative values (they pass through). As every grade
+ * operator, it saturates at ±GRADE_LIMIT (`gradePow`, `limitGrade`) so a
+ * large slope and power cannot overflow; OpenColorIO's vectors stay far
+ * inside that range.
  */
 import { perChannel, type Rgb } from "./matrix.ts";
+import { gradePow, limitGrade } from "./grade.ts";
 import { lumaCoefficients } from "./primaries.ts";
 
 export type Cdl = {
@@ -32,11 +36,11 @@ export function applyCdl(
   const sop = perChannel((c) => {
     const v = rgb[c] * cdl.slope[c] + cdl.offset[c];
     if (style === "asc") return Math.pow(clamp01(v), cdl.power[c]);
-    return v < 0 ? v : Math.pow(v, cdl.power[c]);
+    return gradePow(v, cdl.power[c]);
   });
   const luma = sop[0] * LUMA[0] + sop[1] * LUMA[1] + sop[2] * LUMA[2];
   return perChannel((c) => {
     const v = luma + cdl.saturation * (sop[c] - luma);
-    return style === "asc" ? clamp01(v) : v;
+    return style === "asc" ? clamp01(v) : limitGrade(v);
   });
 }

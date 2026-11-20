@@ -5,11 +5,15 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  applyCdl,
   applyGradePrimary,
   applyLinearMatrixEncoded,
   applyRgbMixer,
+  GRADE_LIMIT,
+  gradePow,
   gradePrimaryControls,
   hueRotationMatrix,
+  limitGrade,
   NEUTRAL_GRADE_PRIMARY,
   planckianXy,
   rgbMixer,
@@ -267,6 +271,65 @@ describe("grade.rgb-mixer reference", () => {
     for (const v of SAMPLES) {
       expect(applyRgbMixer(v, identity)).toEqual(v);
       expect(applyRgbMixer(v, off)).toEqual(v);
+    }
+  });
+});
+
+describe("grade limit (PR #77 second review, Spec-1)", () => {
+  const extremePrimary = gradePrimaryControls({
+    ...NEUTRAL_GRADE_PRIMARY,
+    // Contract maxima, master combined: lift 1 + 1, gamma 0.1 × 0.1, gain 16 × 16.
+    lift: [2, 1, 1],
+    gamma: [0.01, 0.1, 0.1],
+    gain: [256, 16, 16],
+    contrast: 4,
+    saturation: 4,
+    colorBoost: 1,
+  });
+  const extremeCdl = {
+    slope: [8, 8, 8] as Rgb,
+    offset: [1, 1, 1] as Rgb,
+    power: [8, 8, 8] as Rgb,
+    saturation: 4,
+  };
+  const finiteWithin = (v: readonly number[]) =>
+    v.every((x) => Number.isFinite(x) && Math.abs(x) <= GRADE_LIMIT);
+
+  it("gradePow passes negatives and p = 1 through and saturates before overflow", () => {
+    expect(gradePow(-3, 8)).toBe(-3);
+    expect(gradePow(12345, 1)).toBe(12345);
+    expect(gradePow(0.25, 2)).toBe(0.0625);
+    expect(gradePow(2, 100)).toBe(GRADE_LIMIT);
+    expect(gradePow(1e300, 100)).toBe(GRADE_LIMIT);
+    expect(gradePow(9999, 1.0000001)).toBeLessThan(GRADE_LIMIT);
+  });
+  it("values inside the limit are not clamped", () => {
+    expect(limitGrade(9999.5)).toBe(9999.5);
+    expect(limitGrade(-12)).toBe(-12);
+    expect(limitGrade(1e12)).toBe(GRADE_LIMIT);
+    expect(limitGrade(-Infinity)).toBe(-GRADE_LIMIT);
+  });
+  it("no operator chain at the contract bounds leaves ±GRADE_LIMIT or becomes NaN", () => {
+    // The review's case: a black pixel through an extreme primary, then CDL.
+    let v: Rgb = [0, 0, 0];
+    v = applyGradePrimary(v, extremePrimary);
+    expect(v[0]).toBe(GRADE_LIMIT);
+    v = applyCdl(v, extremeCdl, "no-clamp");
+    expect(finiteWithin(v)).toBe(true);
+    // Stacked extremes, including a negative swing through lift.
+    for (const start of [
+      [0, 0, 0],
+      [1, 1, 1],
+      [0.5, 0.2, 0.9],
+    ] as Rgb[]) {
+      let x = start;
+      for (let i = 0; i < 4; i++) {
+        x = applyGradePrimary(x, extremePrimary);
+        x = applyCdl(x, extremeCdl, "no-clamp");
+        x = applyLinearMatrixEncoded(x, whiteBalanceMatrix(1667, -100)!);
+        x = applyRgbMixer(x, rgbMixer([4, -4, 4, -4, 4, -4, 4, 4, 4], x, 1));
+        expect(finiteWithin(x)).toBe(true);
+      }
     }
   });
 });
