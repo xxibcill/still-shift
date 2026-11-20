@@ -74,6 +74,28 @@ export const RING_CODE = "#00ff00";
  * pixels (any coverage) are left out of the treated-edge measure.
  */
 export const OCCLUDER_CODE = "#0000ff";
+/**
+ * `OCCLUDER_CODE` with the alpha of `color` (`#RRGGBB` or `#RRGGBBAA`, keyed
+ * colours key by key), so a transparent fill stays transparent in the mask.
+ */
+function occluderColor<T>(color: T): T {
+  const recolour = (value: unknown) =>
+    typeof value === "string" && value.length === 9
+      ? OCCLUDER_CODE + value.slice(7)
+      : OCCLUDER_CODE;
+  if (
+    color &&
+    typeof color === "object" &&
+    Array.isArray((color as { keys?: unknown }).keys)
+  )
+    return {
+      ...color,
+      keys: (color as unknown as { keys: { value: unknown }[] }).keys.map(
+        (key) => ({ ...key, value: recolour(key.value) }),
+      ),
+    } as T;
+  return recolour(color) as T;
+}
 /** ET6b `treated-edge` report version (the glyph-interior report keeps -1). */
 export const TREATED_EDGE_VERSION =
   "composition-text-legibility-treated-edge-1";
@@ -360,17 +382,20 @@ export function textLegibilityMask(
       delete text.blendMode;
       delete text.rasterize;
       delete text.corrections;
-      text.color = OCCLUDER_CODE;
+      // The occluder colour keeps each fill's alpha: a hollow (outline-only)
+      // layer above covers only where its outline is drawn.
+      text.color = occluderColor(text.color);
       if (text.spans)
         text.spans = text.spans.map((span) => {
           const plain = { ...span };
-          delete plain.color;
+          if (plain.color === undefined) delete plain.color;
+          else plain.color = occluderColor(plain.color);
           return plain;
         });
       if (text.decorations)
         text.decorations = text.decorations.map((mark) => ({
           ...mark,
-          color: OCCLUDER_CODE,
+          color: occluderColor(mark.color),
         }));
       return text;
     }

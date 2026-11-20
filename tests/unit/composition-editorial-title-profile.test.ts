@@ -683,3 +683,64 @@ describe("one condition reads outline-only text (PR #76 review, finding 2)", () 
     expect(report.readingMotion?.windows).toEqual([]);
   });
 });
+
+describe("hollow occluders (PR #76 review, finding 3)", () => {
+  it("keeps a stacked layer's fill alpha in the ring mask", () => {
+    const comp = title({
+      layers: [
+        {
+          id: "over",
+          type: "text",
+          text: "layer",
+          fontAsset: "serif",
+          fontSize: 80,
+          color: "#FFFFFF00",
+          spans: [{ id: "a", start: 0, end: 2, color: "#B3123A" }],
+        },
+        {
+          id: "keyed",
+          type: "text",
+          text: "keyed",
+          fontAsset: "serif",
+          fontSize: 80,
+          color: {
+            keys: [
+              { frame: 0, value: "#FFFFFF" },
+              { frame: 10, value: "#FFFFFF00" },
+            ],
+          },
+        },
+        ...title().layers,
+      ] as Composition["layers"],
+      textAnimators: [
+        {
+          node: "over",
+          unit: "glyph",
+          start: 0,
+          end: 1,
+          stagger: 0,
+          selector: { start: 0, end: 1 },
+          from: { stroke: "#000000", strokeWidth: 6 },
+          to: { stroke: "#000000", strokeWidth: 6 },
+          layer: "action",
+        },
+      ],
+    });
+    const ringed = textLegibilityMask(comp, "title", {
+      ring: true,
+    }).composition;
+    const over = ringed.layers.find((layer) => layer.id === "over")!;
+    expect(over).toMatchObject({
+      color: `${OCCLUDER_CODE}00`,
+      spans: [{ color: OCCLUDER_CODE }],
+    });
+    expect(
+      ringed.textAnimators!.find((animator) => animator.node === "over")!.from,
+    ).toMatchObject({ stroke: OCCLUDER_CODE, strokeWidth: 6 });
+    expect(ringed.layers.find((layer) => layer.id === "keyed")!).toMatchObject({
+      color: {
+        keys: [{ value: OCCLUDER_CODE }, { value: `${OCCLUDER_CODE}00` }],
+      },
+    });
+  });
+});
