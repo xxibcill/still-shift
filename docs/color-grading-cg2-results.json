@@ -54,6 +54,36 @@
       "evidence": "color.matrix and grade.rgb-mixer rendered with the same parameters on the 8 CG0 stills, both backends, opaque pixels whose float result stays in 0–1: max difference 1 code. owner-like (strength 0.6): 12,492 channels at 1 over 462,496 in-range pixel renders (42,464 clipped, excluded); strong (strength 1): 10,688 at 1 over 373,280 (131,680 clipped); channel swap: 0 over 504,960. The earlier unit test only re-derived the formula"
     },
     {
+      "check": "color.white-balance and grade.white-balance compared on the CG0 chart, difference recorded (plan re-check table; PR #77 second review, Spec-3)",
+      "status": "met (recorded)",
+      "evidence": "for each grade.white-balance setting, the closest color.white-balance (integer temperature and tint, mean byte difference over chart-24's distinct colors) is fitted, then both are rendered on chart-24 (98,304 pixels); Canvas and WebGL2 agree exactly",
+      "comparison": [
+        {
+          "grade": "3200 K, tint 0",
+          "closestColorWhiteBalance": "temperature -100, tint -5",
+          "meanDifference": 25.929,
+          "maxDifference": 83,
+          "neutralPatchMaxDifference": 64,
+          "note": "at the -100 bound: color.white-balance's one-stop range cannot reach a tungsten correction"
+        },
+        {
+          "grade": "5000 K, tint 0",
+          "closestColorWhiteBalance": "temperature -68, tint 13",
+          "meanDifference": 2.322,
+          "maxDifference": 35,
+          "neutralPatchMaxDifference": 1
+        },
+        {
+          "grade": "9000 K, tint 20",
+          "closestColorWhiteBalance": "temperature 57, tint -4",
+          "meanDifference": 2.177,
+          "maxDifference": 27,
+          "neutralPatchMaxDifference": 3
+        }
+      ],
+      "reading": "neutrals agree within 1–3 codes where color.white-balance can reach the correction; the larger differences are on saturated patches, where channel gains and Bradford adaptation diverge"
+    },
+    {
       "check": "A 16-step gray ramp through ten stacked neutral-sum corrections shows no added banding compared with one pass (measured, not viewed)",
       "status": "met",
       "evidence": "ten grade.primary corrections (gamma 1.5 / gain 0.8 then gain 1.25, five times) plus the inverse gamma: gray-steps-16 keeps 16 levels and gray-ramp-256 keeps 256, max difference 0 on both backends; the CG1 spike measured 57 of 256 levels for the same idea through 8-bit intermediates"

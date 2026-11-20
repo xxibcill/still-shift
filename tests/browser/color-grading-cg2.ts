@@ -10,6 +10,8 @@
  * - semi-transparent pixels grade their straight color and keep coverage:
  *   stored bytes match the reference (Canvas exact, WebGL2 within 1);
  * - `grade.rgb-mixer` equals `color.matrix` within one code on in-range values;
+ * - `grade.white-balance` is compared on the chart with the closest
+ *   `color.white-balance` and the difference recorded;
  * - a value pushed above 1 by one grade effect is recovered by the next,
  *   also beside an effect that the backend applies on its own and across a
  *   default (neutral) grade.cdl;
@@ -38,6 +40,7 @@ import { decodeCompositionRgbaPng } from "../../packages/animation-engine/src/co
 import { probeCompositionVideo } from "../../packages/animation-engine/src/composition-media-probe.ts";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as FloatGrade from "../../packages/renderer-core/src/composition/render/float-grade.ts";
+import type * as GradeEffects from "../../packages/renderer-core/src/composition/render/grade-effects.ts";
 import type * as ColorReference from "../helpers/composition-color-effect-reference.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import type * as Contract from "../../packages/scene-contract/src/index.ts";
@@ -265,6 +268,17 @@ const MIXERS: Record<string, Record<string, number>> = {
   },
   swap: { rr: 0, rg: 1, gr: 1, gg: 0, strength: 1 },
 };
+/**
+ * `grade.white-balance` settings compared on the CG0 chart with the closest
+ * `color.white-balance` (PR #77 second review, Spec-3: "The two are compared
+ * on the CG0 chart and the difference recorded").
+ */
+const WHITE_BALANCES = [
+  { temperature: 3200, tint: 0 },
+  { temperature: 5000, tint: 0 },
+  { temperature: 9000, tint: 20 },
+];
+
 const server = await createServer({
   root,
   configFile: false,
@@ -278,7 +292,7 @@ try {
   await page.addInitScript("window.__name = (fn) => fn;");
   await page.goto(server.resolvedUrls!.local[0]!);
   const result = await page.evaluate(
-    async ({ stills, cases, mixers }) => {
+    async ({ stills, cases, mixers, whiteBalances }) => {
       const m = (await import(
         String("/packages/renderer-core/src/index.ts")
       )) as typeof Render;
@@ -288,6 +302,11 @@ try {
       const contract = (await import(
         String("/packages/scene-contract/src/index.ts")
       )) as typeof Contract;
+      const gradeEffects = (await import(
+        String(
+          "/packages/renderer-core/src/composition/render/grade-effects.ts",
+        )
+      )) as typeof GradeEffects;
       const defaults = (id: string) =>
         Object.fromEntries(
           Object.entries(
@@ -707,10 +726,98 @@ try {
             });
           }
       }
+      // Spec-3: grade.white-balance against the closest color.white-balance
+      // on the CG0 chart (fitted on the chart's distinct colors, then both
+      // rendered on both backends).
+      const chart = stills.find((still) => still.id === "chart-24")!;
+      const chartPixels = opaquePixels(chart);
+      const chartColors = [
+        ...new Set(
+          chartPixels.map(
+            (at) =>
+              (chart.rgba[at]! << 16) |
+              (chart.rgba[at + 1]! << 8) |
+              chart.rgba[at + 2]!,
+          ),
+        ),
+      ].map((v) => [v >> 16, (v >> 8) & 255, v & 255] as const);
+      const whiteBalanceRows = [];
+      for (const setting of whiteBalances) {
+        const op = fg.floatGradeOp("grade.white-balance", setting)!;
+        const target = chartColors.map((rgb) =>
+          op
+            .apply([rgb[0] / 255, rgb[1] / 255, rgb[2] / 255])
+            .map((v) => fg.quantizeGrade(v)),
+        );
+        const misfit = (temperature: number, tint: number) => {
+          const controls = gradeEffects.gradeControls("color.white-balance", {
+            temperature,
+            tint,
+          });
+          const out = [0, 0, 0];
+          let sum = 0;
+          chartColors.forEach((rgb, i) => {
+            gradeEffects.gradeBytes(controls, rgb[0], rgb[1], rgb[2], out, 0);
+            for (let c = 0; c < 3; c++)
+              sum += Math.abs(out[c]! - target[i]![c]!);
+          });
+          return sum / (chartColors.length * 3);
+        };
+        let best = { temperature: 0, tint: 0, misfit: Infinity };
+        const search = (center: typeof best, span: number, step: number) => {
+          for (let t = -span; t <= span; t += step)
+            for (let n = -span; n <= span; n += step) {
+              const temperature = Math.max(
+                -100,
+                Math.min(100, center.temperature + t),
+              );
+              const tint = Math.max(-100, Math.min(100, center.tint + n));
+              const m = misfit(temperature, tint);
+              if (m < best.misfit) best = { temperature, tint, misfit: m };
+            }
+        };
+        search(best, 100, 5);
+        search(best, 5, 1);
+        const fitted = { temperature: best.temperature, tint: best.tint };
+        const neutral = (at: number) =>
+          chart.rgba[at] === chart.rgba[at + 1] &&
+          chart.rgba[at + 1] === chart.rgba[at + 2];
+        for (const backend of ["canvas2d", "webgl2"] as const) {
+          const graded = render(
+            chart,
+            [{ effect: "grade.white-balance", params: setting }],
+            backend,
+          );
+          const gains = render(
+            chart,
+            [{ effect: "color.white-balance", params: fitted }],
+            backend,
+          );
+          let maxDifference = 0,
+            sum = 0,
+            neutralMax = 0;
+          for (const at of chartPixels)
+            for (let c = 0; c < 3; c++) {
+              const d = Math.abs(graded[at + c]! - gains[at + c]!);
+              maxDifference = Math.max(maxDifference, d);
+              sum += d;
+              if (neutral(at)) neutralMax = Math.max(neutralMax, d);
+            }
+          whiteBalanceRows.push({
+            grade: setting,
+            closestColorWhiteBalance: fitted,
+            backend,
+            maxDifference,
+            meanDifference:
+              Math.round((sum / (chartPixels.length * 3)) * 1000) / 1000,
+            neutralPatchMaxDifference: neutralMax,
+          });
+        }
+      }
 
       return {
         parity,
-        counterparts: { mixer: mixerRows },
+        counterparts: { mixer: mixerRows, whiteBalance: whiteBalanceRows },
         recovery,
         banding,
         kinds: {
@@ -724,6 +831,7 @@ try {
       stills,
       cases: CASES,
       mixers: MIXERS,
+      whiteBalances: WHITE_BALANCES,
     },
   );
 
@@ -793,6 +901,20 @@ try {
     [],
     "grade.rgb-mixer equals color.matrix within one code on in-range values",
   );
+  for (const setting of WHITE_BALANCES) {
+    const [canvas, webgl] = result.counterparts.whiteBalance
+      .filter(
+        (r) =>
+          r.grade.temperature === setting.temperature &&
+          r.grade.tint === setting.tint,
+      )
+      .map(({ backend: _, ...r }) => r);
+    assert.deepEqual(
+      canvas,
+      webgl,
+      `white-balance comparison ${setting.temperature} K is the same on both backends`,
+    );
+  }
   for (const r of result.recovery) {
     assert.equal(r.floatMaxError, 0, `${r.backend}: recovered exactly`);
     assert.equal(
@@ -845,6 +967,9 @@ try {
           0,
         ),
       },
+      whiteBalanceVsColorWhiteBalance: result.counterparts.whiteBalance.filter(
+        (r) => r.backend === "canvas2d",
+      ),
     }),
   );
 } finally {

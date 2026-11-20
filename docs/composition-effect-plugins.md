@@ -180,7 +180,10 @@ any effect.
   (positive is greener, so the result turns magenta). Setting the temperature
   to the scene's light neutralizes it: 3200 K cools a tungsten scene.
   6500 K with tint 0 is the identity. Unlike `color.white-balance` (channel
-  gains), this keeps neutrals neutral under any illuminant on the locus.
+  gains), this keeps neutrals neutral under any illuminant on the locus. On
+  the CG0 chart the closest `color.white-balance` setting differs by a mean of
+  about 2 codes at 5000 K and 9000 K (up to 35 on saturated patches), and
+  cannot reach a 3200 K correction ([CG2 results](./color-grading-cg2-results.json)).
 - `grade.cdl`: ASC CDL slope, offset, power (per channel) and saturation;
   `clamp` 0 (the default) is unclamped with the power skipped for negative
   values (OpenColorIO's no-clamp style), so a default CDL is neutral inside a
