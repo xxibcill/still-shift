@@ -95,7 +95,9 @@ colour that separates every word from the footage.
 - _Halo_: a drop shadow with offset `[0, 0]` in a dark or accent colour.
   Keep the edge margin and line gaps to its measured `visible` box, not the
   ink (a blur of 12 reaches about 19 px past the outline at 5%).
-  `light.glow` has no colour; it brightens the layer's own pixels.
+  For a light or neon glow use `light.glow` with `color` and `tint: 1`
+  (the `glow` helper): it glows in that colour from the text's shape but
+  only lightens the footage, so a dark halo stays a drop shadow.
 - _Box_: a `highlight` decoration (the `box` kind is a stroked outline). It
   centres on the baseline minus half the x-height, plus `offset`. Take the
   offset from the measurement (`highlightOffset` centres it on the cap band

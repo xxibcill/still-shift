@@ -29,7 +29,7 @@ function defineEffect(
   options: Pick<
     CompositionEffectDefinition,
     "generatesContent" | "preservesOpaque" | "usesLayerSpace"
-  > = {},
+  > & { version?: string } = {},
 ): CompositionEffectDefinition {
   return defineCompositionEffect({
     version: "1.0.0",
@@ -124,11 +124,19 @@ export const COMPOSITION_EFFECTS: Readonly<
     angle: { default: 0, min: -36000, max: 36000 },
     samples: { default: 8, min: 2, max: 64, integer: true },
   }),
-  "light.glow": defineEffect({
-    radius: { default: 0, min: 0, max: 1000 },
-    intensity: { default: 1, min: 0, max: 1 },
-    threshold: { default: 0, min: 0, max: 1 },
-  }),
+  // 1.1.0 (editorial titles Phase 1): `tint` blends the glow from the
+  // layer's own colour and luminance weight toward `color` at full coverage.
+  // `tint` 0, the default, is the 1.0.0 glow.
+  "light.glow": defineEffect(
+    {
+      radius: { default: 0, min: 0, max: 1000 },
+      intensity: { default: 1, min: 0, max: 1 },
+      threshold: { default: 0, min: 0, max: 1 },
+      tint: { default: 0, min: 0, max: 1 },
+    },
+    { color: "#ffffff" },
+    { version: "1.1.0" },
+  ),
   "distort.sine": defineEffect({
     amount: { default: 0, min: -1000, max: 1000 },
     wavelength: { default: 100, min: 1, max: 100000 },

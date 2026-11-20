@@ -835,7 +835,8 @@ export function measureTextEffects(
       const radii = keyedValues<number>(params.radius, 0);
       const intensities = keyedValues<number>(params.intensity, 1);
       const thresholds = keyedValues<number>(params.threshold, 0);
-      if (!radii || !intensities || !thresholds) {
+      const tints = keyedValues<number>(params.tint, 0);
+      if (!radii || !intensities || !thresholds || !tints) {
         unmeasured.push({
           id: effect.id,
           effect: effect.effect,
@@ -845,9 +846,16 @@ export function measureTextEffects(
       }
       const sigma = Math.max(...radii);
       const threshold = Math.min(...thresholds);
+      // light.glow 1.1.0: `tint` blends the luminance weight toward full
+      // coverage (exactly the 1.0.0 weight at tint 0).
+      const tint = Math.max(...tints);
+      const weight = Math.max(
+        0,
+        (brightest - threshold) / Math.max(0.001, 1 - threshold),
+      );
       const strength =
         Math.max(...intensities) *
-        Math.max(0, (brightest - threshold) / Math.max(0.001, 1 - threshold));
+        (tint > 0 ? weight * (1 - tint) + tint : weight);
       const reach = sigma > 0 ? 3 * sigma + 2 : 0;
       const visibleReach =
         strength <= TEXT_EFFECT_VISIBLE_COVERAGE || sigma === 0

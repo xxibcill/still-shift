@@ -1722,14 +1722,23 @@ radius progression are retained. No family evaluator runs during composition ren
 
 ### Directional blur, glow and sine displacement (CE6 dependency slice)
 
-The Canvas effect registry also provides these version `1.0.0` entries. All values
-are animatable scalars in the containing surface's pixel space.
+The Canvas effect registry also provides these entries, version `1.0.0` except
+`light.glow` `1.1.0`. All values are animatable scalars in the containing
+surface's pixel space, except `light.glow`'s `color`.
 
 | Effect             | Parameters (default; accepted range)                                                                               |
 | ------------------ | ------------------------------------------------------------------------------------------------------------------ |
 | `blur.directional` | `length` (0; 0–1,000 pixels), `angle` (0; −36,000–36,000 degrees), `samples` (8; 2–64 integer samples)             |
-| `light.glow`       | `radius` (0; 0–1,000 pixels), `intensity` (1; 0–1), `threshold` (0; 0–1)                                           |
+| `light.glow`       | `radius` (0; 0–1,000 pixels), `intensity` (1; 0–1), `threshold` (0; 0–1), `tint` (0; 0–1), `color` (`#ffffff`)     |
 | `distort.sine`     | `amount` (0; −1,000–1,000 pixels), `wavelength` (100; 1–100,000 pixels), `phase` (0; −1,000,000–1,000,000 radians) |
+
+`light.glow` blurs the layer's own pixels, weighted by how far their luminance
+passes `threshold`, and screens the result over the layer. Version `1.1.0`
+(editorial titles Phase 1) adds `tint`: it blends each glowing pixel's colour
+toward `color` and its weight toward full coverage, so `tint: 1` glows in
+`color` from the layer's shape even when the layer is dark. `tint` 0, the
+default, renders exactly as `1.0.0` on Canvas and WebGL2. A screened glow only
+lightens; for a dark halo use a zero-offset `light.drop-shadow`.
 
 Directional blur averages premultiplied samples in fixed order with Float32
 accumulation. Authored sample counts must be integers; interpolation and driver

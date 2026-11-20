@@ -13,9 +13,19 @@ export type PixelEffectContext<S extends PixelSurface> = {
 export function glow<S extends PixelSurface>(
   context: PixelEffectContext<S>,
   layer: S,
-  effect: { radius: number; intensity: number; threshold: number },
+  effect: {
+    radius: number;
+    intensity: number;
+    threshold: number;
+    /** 0–1: blend toward `color` at full coverage (light.glow 1.1.0). */
+    tint?: number;
+    /** Glow colour as 0–255 sRGB bytes, used with `tint`. */
+    color?: readonly [number, number, number];
+  },
 ) {
   if (!effect.intensity || !effect.radius) return;
+  const tint = effect.tint ?? 0,
+    color = effect.color ?? [255, 255, 255];
   const { width, height } = layer.canvas;
   const scratch = context.createSurface(width, height);
   try {
@@ -27,14 +37,18 @@ export function glow<S extends PixelSurface>(
           0.7152 * pixels.data[i + 1]! +
           0.0722 * pixels.data[i + 2]!) /
         255;
-      pixels.data[i + 3] = Math.round(
-        pixels.data[i + 3]! *
-          Math.max(
-            0,
-            (luminance - effect.threshold) /
-              Math.max(0.001, 1 - effect.threshold),
-          ),
+      let weight = Math.max(
+        0,
+        (luminance - effect.threshold) / Math.max(0.001, 1 - effect.threshold),
       );
+      if (tint > 0) {
+        weight = weight * (1 - tint) + tint;
+        for (let c = 0; c < 3; c++)
+          pixels.data[i + c] = Math.round(
+            pixels.data[i + c]! * (1 - tint) + color[c]! * tint,
+          );
+      }
+      pixels.data[i + 3] = Math.round(pixels.data[i + 3]! * weight);
     }
     scratch.ctx.putImageData(pixels, 0, 0);
     layer.ctx.save();

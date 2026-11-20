@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
   CommerceSceneSchema,
+  compositionEffectDefinition,
   validateComposition,
   resolvePropertyPath,
   type Composition,
@@ -172,10 +173,13 @@ describe("composition effect stack", () => {
       const effects = evaluateComp(comp, frame).layers[0]!.effects;
       expect(effects.map((e) => e.id)).toEqual(["direction", "glow", "wave"]);
       expect(effects[0]!.params.samples).toBe(Math.round(2 + (frame / 10) * 3));
+      // light.glow 1.1.0 adds tint (default 0) and color (default white).
       expect(effects[1]!.params).toEqual({
         radius: 5,
         threshold: 0,
         intensity: 1,
+        tint: 0,
+        color: [1, 1, 1, 1],
       });
       expect(evaluateProperty(comp, "box.effects[wave].phase", frame)).toBe(
         (frame / 10) * 4,
@@ -185,6 +189,13 @@ describe("composition effect stack", () => {
     const invalid = structuredClone(comp);
     invalid.layers[0]!.effects![0]!.params!.samples = 2.5;
     expect(validateComposition(invalid).ok).toBe(false);
+  });
+
+  it("versions light.glow 1.1.0 for its color and tint (Phase 1)", () => {
+    expect(compositionEffectDefinition("light.glow")?.version).toBe("1.1.0");
+    expect(
+      Object.keys(compositionEffectDefinition("light.glow")!.properties).sort(),
+    ).toEqual(["color", "intensity", "radius", "threshold", "tint"]);
   });
 
   it.each(["directional-blur", "glow", "displacement"])(

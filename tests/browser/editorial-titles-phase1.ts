@@ -15,6 +15,7 @@ import {
 } from "@still-shift/scene-contract";
 import { measureCompositionFile } from "@still-shift/animation-engine";
 import {
+  colouredGlow,
   frame,
   paddedBox,
   spanAxes,
@@ -30,8 +31,11 @@ async function write(composition: Composition) {
   await writeFile(path, JSON.stringify(composition));
   return path;
 }
-const render = async (composition: Composition, frameIndex = 0) =>
-  rendererFrame(await write(composition), frameIndex);
+const render = async (
+  composition: Composition,
+  frameIndex = 0,
+  backend: "canvas2d" | "webgl2" = "canvas2d",
+) => rendererFrame(await write(composition), frameIndex, backend);
 const measure = async (composition: Composition) =>
   measureCompositionFile(await write(composition));
 
@@ -185,6 +189,83 @@ async function verifyPadding() {
 }
 
 /**
+ * `light.glow` `color` and `tint` (effect 1.1.0): around dark plum caps on a
+ * dark frame, an untinted glow barely shows; a lavender tint glows lavender
+ * from the glyphs' coverage, on Canvas and WebGL2 alike. `tint` 0 (the
+ * default) renders exactly as the 1.0.0 parameters did on both backends.
+ */
+async function verifyColouredGlow() {
+  const night = rgbOf(colouredGlow.night);
+  const backends = ["canvas2d", "webgl2"] as const;
+  const plain = (await render(colouredGlow.build())).rgb;
+  // The ring: pixels within 14 px of the text's ink, not ink themselves.
+  const ink: number[] = [];
+  for (let i = 0; i < plain.length; i += 3)
+    if (plain.subarray(i, i + 3).some((v, c) => Math.abs(v - night[c]!) > 4))
+      ink.push(i / 3);
+  const inkSet = new Set(ink);
+  const xs = ink.map((p) => p % frame.width),
+    ys = ink.map((p) => Math.floor(p / frame.width));
+  const ring: number[] = [];
+  for (let y = Math.min(...ys) - 14; y <= Math.max(...ys) + 14; y++)
+    for (let x = Math.min(...xs) - 14; x <= Math.max(...xs) + 14; x++)
+      if (!inkSet.has(y * frame.width + x)) ring.push(y * frame.width + x);
+  const mean = (pixels: Buffer) =>
+    [0, 1, 2].map(
+      (c) =>
+        Math.round(
+          (ring.reduce((sum, p) => sum + pixels[p * 3 + c]!, 0) / ring.length) *
+            100,
+        ) / 100,
+    );
+  const base = { radius: 10, intensity: 1 };
+  const tinted = { ...base, color: colouredGlow.lavender, tint: 1 };
+  const results: Record<string, unknown> = { night };
+  for (const backend of backends) {
+    const old = (await render(colouredGlow.build(base), 0, backend)).rgb;
+    const zero = (
+      await render(
+        colouredGlow.build({ ...base, color: colouredGlow.lavender, tint: 0 }),
+        0,
+        backend,
+      )
+    ).rgb;
+    assert.ok(old.equals(zero), `coloured glow: tint 0 unchanged (${backend})`);
+    const glow = (await render(colouredGlow.build(tinted), 0, backend)).rgb;
+    const ringMean = mean(glow);
+    // Lift over the night frame, per channel: lavender lifts blue most, then
+    // red, then green.
+    const [r, g, b] = ringMean.map((v, c) => v - night[c]!) as [
+      number,
+      number,
+      number,
+    ];
+    const untinted = mean(old);
+    assert.ok(
+      b > 20 && r > 15 && b > r && r > g,
+      `coloured glow (${backend}): lavender ring expected, lift ${[r, g, b]} over ${night}`,
+    );
+    assert.ok(
+      untinted[2]! - night[2]! < 5,
+      `coloured glow (${backend}): untinted ring ${untinted} should barely show`,
+    );
+    results[backend] = { untintedRing: untinted, tintedRing: ringMean };
+  }
+  const [canvas, webgl] = await Promise.all(
+    backends.map(
+      async (backend) =>
+        (await render(colouredGlow.build(tinted), 0, backend)).rgb,
+    ),
+  );
+  let worst = 0;
+  for (let i = 0; i < canvas!.length; i++)
+    worst = Math.max(worst, Math.abs(canvas![i]! - webgl![i]!));
+  assert.ok(worst <= 3, `coloured glow: Canvas and WebGL2 differ by ${worst}`);
+  results.backendWorstDifference = worst;
+  return results;
+}
+
+/**
  * A span style resolves axes against its own font: Pinyon gets no wght, the
  * layer validates, the span measures in Pinyon, and the render equals the
  * pilot's `axes: {}` workaround byte for byte.
@@ -222,6 +303,7 @@ export async function verifyPhase1() {
       spanAxes: await verifySpanAxes(),
       typedHighlight: await verifyTypedHighlight(),
       padding: await verifyPadding(),
+      colouredGlow: await verifyColouredGlow(),
     };
     console.log(`Editorial titles Phase 1: ${JSON.stringify(summary)}`);
     return summary;

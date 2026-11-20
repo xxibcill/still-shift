@@ -466,6 +466,30 @@ describe("effect extents", () => {
     expect(glow(["#0A0A0A"]).visibleReach).toBeNull();
   });
 
+  it("weights a tinted glow toward full coverage (light.glow 1.1.0)", () => {
+    const glow = (params: Record<string, number | string>) =>
+      measureTextEffects(
+        [{ id: "g", effect: "light.glow", params }] as Effects,
+        state(),
+        ["#111111"],
+      )!.list[0]!;
+    const base = { radius: 10, intensity: 0.8, threshold: 0 };
+    const dim = 0.8 * (17 / 255);
+    expect(glow({ ...base, tint: 0, color: "#C8B4FF" }).strength).toBe(
+      glow(base).strength,
+    );
+    expect(glow({ ...base, tint: 1, color: "#C8B4FF" }).strength).toBeCloseTo(
+      0.8,
+      9,
+    );
+    expect(glow({ ...base, tint: 0.5 }).strength).toBeCloseTo(
+      0.8 * (17 / 255 / 2 + 0.5),
+      9,
+    );
+    expect(glow({ ...base, tint: 1 }).visibleReach).toBeGreaterThan(0);
+    expect(glow(base).strength).toBeCloseTo(dim, 9);
+  });
+
   it("bounds a glow by its radius even when no measured colour passes the threshold", () => {
     const measured = measureTextEffects(
       [

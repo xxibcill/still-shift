@@ -177,3 +177,45 @@ export const paddedBox = {
     }) as Composition;
   },
 };
+
+/**
+ * Coloured glow (ET7a: `light.glow` has no colour, so the pilot faked
+ * coloured halos with a zero-offset drop shadow). Dark plum caps over a dark
+ * frame: an untinted glow takes the glyphs' own dim colour and weight, so it
+ * barely shows; `tint` 1 with a lavender `color` gives a lavender glow from
+ * the glyphs' coverage. `glow` is the effect's params (Phase 1 fields
+ * included); omitted, the layer has no glow.
+ */
+export const colouredGlow = {
+  ink: "#3B1F4A",
+  night: "#101820",
+  lavender: "#C8B4FF",
+  build(glow?: Record<string, number | string>) {
+    return comp(
+      base("phase1-coloured-glow", [latin.anton], 1, colouredGlow.night),
+      (c) => {
+        c.add(
+          text("GLOW", {
+            id: "glow",
+            fontAsset: "anton",
+            fontSize: 160,
+            color: colouredGlow.ink,
+          })
+            .at(360, 700)
+            .with({
+              align: "center",
+              anchor: "baseline",
+              textRole: "heading",
+              ...(glow
+                ? {
+                    effects: [
+                      { id: "halo", effect: "light.glow", params: glow },
+                    ],
+                  }
+                : {}),
+            }),
+        );
+      },
+    ) as Composition;
+  },
+};

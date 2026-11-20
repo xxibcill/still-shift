@@ -31,6 +31,14 @@ type CanvasEffect = (
   placement: RenderEffect["placement"],
 ) => void;
 
+/** A glow colour as sRGB bytes (white when absent). */
+function glowColor(color: Rgba | undefined): [number, number, number] {
+  const [r, g, b] = color ?? [1, 1, 1, 1];
+  return [r, g, b].map((v) =>
+    Math.round(Math.max(0, Math.min(1, v)) * 255),
+  ) as [number, number, number];
+}
+
 const effects: Readonly<Record<string, CanvasEffect>> = {
   "light.sweep": (context, target, params, placement) => {
     if (!placement)
@@ -96,6 +104,8 @@ const effects: Readonly<Record<string, CanvasEffect>> = {
       radius: params.radius as number,
       intensity: params.intensity as number,
       threshold: params.threshold as number,
+      tint: (params.tint as number | undefined) ?? 0,
+      color: glowColor(params.color as Rgba | undefined),
     }),
   "distort.sine": (context, target, params) =>
     sineDisplacement(context, target, {
