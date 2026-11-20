@@ -24,6 +24,7 @@ import { outlinedReading, outlinedText } from "./reading-motion.ts";
 import type { CompositionQualityFrame } from "./quality-samples.ts";
 import {
   lintSeverity,
+  readsOutlinedText,
   TEXT_LEGIBILITY_CODES,
   type MotionLintDiagnostic,
   type ResolvedCompositionQualityPolicy,
@@ -798,10 +799,9 @@ export function textLegibilityFrames(
   const windows = new Map<string, number[]>();
   // ET6b: treated-edge reads outline-only (hollow) text by its outline, on
   // the frames it is drawn.
-  const outlined =
-    policy.textLegibility?.contrastMethod === "treated-edge"
-      ? outlinedText(comp, policy.textFramingEvidence?.glyphMotion)
-      : undefined;
+  const outlined = readsOutlinedText(policy)
+    ? outlinedText(comp, policy.textFramingEvidence?.glyphMotion)
+    : undefined;
   for (const layer of textLegibilityLayers(comp).root) {
     const reading: number[] = [];
     frames.forEach((frame, at) => {

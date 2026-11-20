@@ -470,6 +470,19 @@ export function declaresTextLegibility(
       (policy.profile ?? stored.profile) === "editorial-title",
   );
 }
+/**
+ * ET6b: whether lint reads outline-only (hollow) text layers by their
+ * outline. One condition for both the reading-time windows and the
+ * legibility reading frames: the `treated-edge` contrast measure, the one
+ * that can measure such a layer.
+ */
+export function readsOutlinedText(policy: {
+  textLegibility?:
+    | { contrastMethod?: TextContrastMethod | undefined }
+    | undefined;
+}) {
+  return policy.textLegibility?.contrastMethod === "treated-edge";
+}
 export function resolveCompositionQualityPolicy(
   comp: Composition,
   input: CompositionQualityPolicy,

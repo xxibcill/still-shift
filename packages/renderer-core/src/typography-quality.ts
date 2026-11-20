@@ -829,7 +829,7 @@ export function analyzeCompositionTypography(
   fps: number,
   policy: ResolvedCompositionQualityPolicy,
   reports?: CompositionReadingWindowReport[],
-  /** ET6b: outline-only text layers, read by their outline (profile only). */
+  /** ET6b: outline-only text layers, read by their outline (`readsOutlinedText`). */
   outlined?: OutlinedText,
 ) {
   const declared = analyzeDeclaredCompositionReading(frames, fps, policy);
@@ -923,7 +923,7 @@ export function analyzeCompositionTypography(
       const current = frames[frame]!;
       // ET6b: an outline-only layer is read by its outline.
       const reading = (sample: CompositionQualitySample) =>
-        outlined && policy.readingMotion
+        outlined
           ? {
               ...sample,
               ...outlinedReading(sample, current, outlined),

@@ -634,3 +634,52 @@ describe("outline-only text reading (PR #76 review, finding 1)", () => {
     expect(measured.readable).toBe(2);
   });
 });
+
+describe("one condition reads outline-only text (PR #76 review, finding 2)", () => {
+  /** A transparent-fill title stroked from frame 91 of 96 (0 at frame 90). */
+  const late = title({
+    layers: [
+      {
+        id: "title",
+        type: "text",
+        text: "Olive grove at dusk",
+        fontAsset: "serif",
+        fontSize: 40,
+        color: "#FFFFFF00",
+        textRole: "heading",
+        transform: { position: [20, 300] },
+      },
+    ] as Composition["layers"],
+    textAnimators: [
+      {
+        node: "title",
+        unit: "glyph",
+        start: 90,
+        end: 91,
+        stagger: 0,
+        selector: { start: 0, end: 1 },
+        from: { strokeWidth: 0 },
+        to: { stroke: "#000000", strokeWidth: 6 },
+        layer: "action",
+      },
+    ],
+  });
+  const evaluation = {
+    textBounds: { title: [{ left: 0, top: -40, right: 300, bottom: 10 }] },
+  };
+  it("reads it for reading time and legibility under treated-edge alone", () => {
+    const report = analyzeCompositionQuality(late, {
+      evaluation,
+      textLegibility: { contrastMethod: "treated-edge" },
+    });
+    expect(report.textLegibility?.layers[0]?.readingFrames).toBe(5);
+    expect(report.diagnostics.map((d) => d.code)).toContain("reading-time");
+  });
+  it("does not read it for reading time under reading motion alone", () => {
+    const report = analyzeCompositionQuality(late, {
+      evaluation,
+      readingMotion: { velocity: 1 },
+    });
+    expect(report.readingMotion?.windows).toEqual([]);
+  });
+});

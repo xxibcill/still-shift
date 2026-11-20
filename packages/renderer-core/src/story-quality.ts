@@ -24,6 +24,7 @@ import {
   compositionVelocityFindings,
 } from "./composition/quality-rules.ts";
 import {
+  readsOutlinedText,
   resolveCompositionQualityPolicy,
   type CompositionQualityPolicy,
   type MotionLintDiagnostic,
@@ -382,7 +383,7 @@ export function analyzeCompositionQuality(
       comp.fps,
       resolved,
       readingWindows,
-      resolved.readingMotion
+      readsOutlinedText(resolved)
         ? outlinedText(comp, resolved.textFramingEvidence?.glyphMotion)
         : undefined,
     ),
