@@ -2232,6 +2232,91 @@ per frame), so long caption runs fit WebGL2's per-page context limit. On
 the 7 s 1080×1920 proof clip, see the
 [ET3 results](./editorial-typography-et3-results.json) for measured runtime.
 
+### Editorial title lint profile (ET6b)
+
+`"profile": "editorial-title"` in the lint policy or the saved
+`metadata.readingPolicy`, or `--profile editorial-title`, opts into settings
+for display titles over video. Without it, reports are unchanged.
+
+```sh
+pnpm --silent still-shift comp lint --input title.ts --pixels true --profile editorial-title
+```
+
+```json
+{
+  "profile": "editorial-title",
+  "readingMotion": { "velocity": 1, "displacement": 2 },
+  "textLegibility": {
+    "contrastMethod": "treated-edge",
+    "display": {
+      "minimumSize": 24,
+      "contrast": 1.5,
+      "small": 4.5,
+      "percentile": 0.5
+    }
+  }
+}
+```
+
+These are the profile's defaults; values declared in the policy win. The
+profile turns the legibility rules on (as `--legibility true` does) and keeps
+the phone floor (6 px x-height at 360 px, ET3-D2).
+
+**Reading motion (D-read).** Slow, steady movement while a title holds counts
+as reading time: about one letter-height per second or less, in one
+direction. Pixel lint follows each visible glyph's centre and the two ends of
+its advance, after text animators, through the layer transform. A frame
+continues a reading run while every point moves at most `velocity`
+letter-heights per second (the letter height is the shaped layout's cap
+height at the layer's scale), has travelled at most `displacement`
+letter-heights since the run began, and has not turned more than 90° from the
+direction it first moved in during the run; steps under 0.1 px have no
+direction, so a drift that eases to a stop is fine. Glyphs blurred over
+0.5 px, or below reading opacity, end a run. Fast motion, jitter,
+back-and-forth and spinning therefore do not count. The `reading-time`
+requirement itself (words per second per role) is unchanged. Without
+measured glyphs (state lint, or text without a pinned font) the layer's
+transformed corners are followed, a letter is 0.7 of the font size, and any
+text-animator change still ends a run, as by default. The report's
+`readingMotion` section lists each window's readable seconds, its peak speed
+and travel on reading frames, and how often a run ended and why (`speed`,
+`reversal`, `travel`, `blur`). Declared reading windows and speech captions
+keep their own rules.
+
+**Treated-edge contrast.** ET3 compares each glyph pixel with the frame
+behind it, so an outline's ring counts as glyph and shadows and halos get no
+credit. The profile measures what a reader sees at the edge of each letter,
+on the rendered frame (no background render is needed). The glyph mask draws
+the fill in its word codes and the text-animator outline in a ring code. At
+each fill pixel on a letter's edge, the **fill edge** compares the mean
+linear luminance of the fill in a small window with that of every pixel there
+that is neither fill nor anti-aliased edge: the outline, halo, shadow or
+footage just outside the letter. At each outline pixel on the outside of the
+ring, the **outer edge** compares the outlined letter (fill and ring) with the
+pixels outside it. The window reaches one review pixel past the anti-aliased
+edge (`round(width / reviewWidth) + 1` px), so an outline thinner than a phone
+pixel blends with the footage beside it and earns little. Each edge's value
+is the `contrastPercentile` (5th) of its pixels, or for display text
+`display.percentile` (the profile uses the median: a large word reads when
+most of its edge is clear, and the owner accepted crimson-on-black and
+cream-on-cream stretches of words that read as a whole); a word's value is the better
+of the two, so outlined and hollow (outline-only) letters are credited by
+their outline. Untreated text has no ring, and its value is its fill against
+the footage beside it. Layers report the two edges behind their worst value
+under `edges`. Hollow text, which samples otherwise treat as invisible (its
+fill alpha is 0), is read by its outline.
+
+**Size-split targets (ET3-D1).** With `display`, a layer whose smallest font
+size (spans included) at the layer's scale is at least `minimumSize` px at
+the review width (24, WCAG's large-text size) uses the display level
+`contrast`; smaller text keeps `small` (4.5:1). The role targets do not apply.
+The display level (1.5:1 at the median edge) is proposed from the 16 ET7a
+candidates the owner accepted (lowest 1.63:1) with a margin, above untreated
+or hairline-outlined display text over matching footage (about 1.2:1); the
+owner confirms it on near-threshold variants (see
+[Phase 2 results](./editorial-typography-phase2-results.json)). The
+report version is `composition-text-legibility-treated-edge-1`.
+
 ### Title framing and decoration guards (ET5a)
 
 Two title traps used to pass every check: centred text hanging half off the

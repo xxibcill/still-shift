@@ -3,7 +3,12 @@ import { classifyPhysicalProofHolds } from "./composition/physical-proof-quality
 import type { Composition } from "@still-shift/scene-contract";
 import { analyzeCompositionStillness } from "./story-continuous-quality.ts";
 import {
+  READING_MOTION_VERSION,
+  strokedTextLayers,
+} from "./composition/reading-motion.ts";
+import {
   analyzeCompositionTypography,
+  type CompositionReadingWindowReport,
   analyzeDeclaredCompositionReading,
   analyzeCompositionSpeechCaptions,
 } from "./typography-quality.ts";
@@ -364,13 +369,23 @@ export function analyzeCompositionQuality(
     comp.fps,
     resolved,
   ).windows;
+  const readingWindows: CompositionReadingWindowReport[] | undefined =
+    resolved.readingMotion ? [] : undefined;
   const diagnostics: MotionLintDiagnostic[] = [
     ...semantic.diagnostics,
     ...analyzeCompositionStillness(
       frames.map((f) => f.signature),
       resolved,
     ),
-    ...analyzeCompositionTypography(frames, comp.fps, resolved),
+    ...analyzeCompositionTypography(
+      frames,
+      comp.fps,
+      resolved,
+      readingWindows,
+      resolved.readingMotion
+        ? { layers: strokedTextLayers(comp), viewport: comp }
+        : undefined,
+    ),
     ...compositionFramingFindings(comp, frames, resolved),
     ...compositionDecorationFindings(frames, resolved),
     ...compositionPopFindings(frames, resolved),
@@ -517,6 +532,19 @@ export function analyzeCompositionQuality(
     },
     ...(readingDeclarations.length ? { readingDeclarations } : {}),
     ...(physicalProofHolds.length ? { physicalProofHolds } : {}),
+    ...(resolved.profile ? { profile: resolved.profile } : {}),
+    ...(resolved.readingMotion
+      ? {
+          readingMotion: {
+            version: READING_MOTION_VERSION,
+            rule: "D-read: slow, steady one-direction motion counts as reading time" as const,
+            velocity: resolved.readingMotion.velocity,
+            displacement: resolved.readingMotion.displacement,
+            units: "letter-heights (cap height at the layer's scale)" as const,
+            windows: readingWindows!,
+          },
+        }
+      : {}),
     ...(textLegibility ? { textLegibility: textLegibility.report } : {}),
     ...(resolved.speechCaptions?.length
       ? {

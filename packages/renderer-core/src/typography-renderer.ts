@@ -1499,6 +1499,45 @@ export function typographyOrphanedDecorations(
   }
   return [...painted].filter((index) => !inked.has(index));
 }
+/**
+ * ET6b reading motion: where each visible glyph is drawn at `frame`, after
+ * text animators and the word reveal, in layer-local pixels: its centre (the
+ * pose anchor plus offset) and the two ends of its advance along its own
+ * scale and rotation. Undefined while two copies blend.
+ */
+export function typographyGlyphMotion(
+  node: TextNode,
+  state: { state: number; reveal: number },
+  prepared: PreparedTypography,
+  frame: number,
+) {
+  const plan = typographyDrawPlan(node, state, prepared, frame);
+  if (plan.kind !== "single") return undefined;
+  const { poses } = typographyRevealPoses(
+    node,
+    plan.raster,
+    plan.poses,
+    state.reveal,
+  );
+  const layout = plan.raster.layout;
+  const points: number[] = [];
+  let opacity = 1,
+    blur = 0;
+  layout.clusters.forEach((cluster, i) => {
+    const pose = poses[i];
+    if (!pose || !/\S/u.test(cluster.text)) return;
+    const x = pose.anchorX + pose.x,
+      y = pose.anchorY + pose.y,
+      angle = (pose.rotation * Math.PI) / 180,
+      half = (cluster.advance / 2) * pose.scale,
+      dx = Math.cos(angle) * half,
+      dy = Math.sin(angle) * half;
+    points.push(x, y, x - dx, y - dy, x + dx, y + dy);
+    opacity = Math.min(opacity, pose.opacity);
+    blur = Math.max(blur, pose.blur);
+  });
+  return { capHeight: layout.capHeight, points, opacity, blur };
+}
 function drawTypographyContent(
   ctx: CanvasRenderingContext2D,
   node: TextNode,
