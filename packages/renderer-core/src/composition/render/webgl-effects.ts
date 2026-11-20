@@ -9,6 +9,7 @@ import {
   resizeRenderMetadata,
 } from "../../managed-metadata.ts";
 import { renderGpuEffect } from "./effect-plugins.ts";
+import { floatGradeRun } from "./float-grade.ts";
 import { glowColorBytes } from "../../pixel-effects.ts";
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel } from "./webgl-blur-kernel.ts";
@@ -769,8 +770,17 @@ export class WebglEffects {
     effects: RenderEffect[],
     layers?: ReadonlyMap<string, WebglSurface>,
   ) {
-    for (const effect of effects) {
+    for (let index = 0; index < effects.length; index++) {
+      const effect = effects[index]!;
       if (!effect.enabled) continue;
+      // CG2: consecutive grade.* effects run as one float stage.
+      const run = floatGradeRun(effects, index);
+      if (run) {
+        renderGpuEffect(this.device, dst, effect, layers, run.plugin);
+        this.bounds.full(dst);
+        index = run.end;
+        continue;
+      }
       if (renderGpuEffect(this.device, dst, effect, layers)) {
         this.bounds.full(dst);
         continue;

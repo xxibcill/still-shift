@@ -1,4 +1,5 @@
 import { renderCanvasEffect } from "./effect-plugins.ts";
+import { floatGradeRun } from "./float-grade.ts";
 import type { RenderEffect } from "./graph.ts";
 import {
   paintRadialLight,
@@ -126,8 +127,16 @@ export function applyCanvasEffects(
   stack: RenderEffect[],
   layers?: ReadonlyMap<string, CanvasSurface>,
 ) {
-  for (const effect of stack) {
+  for (let index = 0; index < stack.length; index++) {
+    const effect = stack[index]!;
     if (!effect.enabled) continue;
+    // CG2: consecutive grade.* effects run as one float stage.
+    const run = floatGradeRun(stack, index);
+    if (run) {
+      renderCanvasEffect(context, target, effect, layers, run.plugin);
+      index = run.end;
+      continue;
+    }
     if (renderCanvasEffect(context, target, effect, layers)) continue;
     const render = Object.hasOwn(effects, effect.effect)
       ? effects[effect.effect]
