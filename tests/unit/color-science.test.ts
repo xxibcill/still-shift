@@ -8,13 +8,11 @@ import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   applyCdl,
-  applyPrimaryCorrection,
   COLOR_SPACE_IDS,
   colorSpace,
   INPUT_TRANSFORMS,
   inputTransform,
   lumaCoefficients,
-  NEUTRAL_PRIMARY,
   parseCubeLut,
   rgbConversionMatrix,
   rgbToXyzMatrix,
@@ -268,60 +266,5 @@ describe("LUTs (CG0 lut-interpolation.json and luts/*.cube)", () => {
             expect(Math.abs(v - rgb[c]!)).toBeLessThan(1e-12),
           );
     }
-  });
-});
-
-describe("primary correction float64 reference (ported, unclamped)", () => {
-  it("neutral parameters are an exact identity, including out-of-range values", () => {
-    for (const rgb of [
-      [0, 0.5, 1],
-      [-0.2, 1.7, 0.18],
-      [12, -3, 0.001],
-    ] as Rgb[])
-      expect(applyPrimaryCorrection(rgb, NEUTRAL_PRIMARY)).toEqual(rgb);
-  });
-  it("a value pushed above 1 by one correction is recovered by the next", () => {
-    const up = applyPrimaryCorrection([0.6, 0.7, 0.9], {
-      ...NEUTRAL_PRIMARY,
-      gain: [2, 2, 2],
-    });
-    expect(Math.max(...up)).toBeGreaterThan(1);
-    const back = applyPrimaryCorrection(up, {
-      ...NEUTRAL_PRIMARY,
-      gain: [0.5, 0.5, 0.5],
-    });
-    expect(
-      worst(
-        back.map((v, i) => [v, [0.6, 0.7, 0.9][i]!]),
-        1e-15,
-      ),
-    ).toEqual([]);
-  });
-  it("matches its published form: lift, gamma, gain, offset, contrast at pivot, Rec.709 saturation", () => {
-    const c = {
-      ...NEUTRAL_PRIMARY,
-      lift: [0.02, 0, -0.01],
-      gamma: [1.1, 1, 0.9],
-      gain: [1.2, 1, 0.95],
-      offset: [0.01, 0, 0],
-      contrast: 1.3,
-      pivot: 0.435,
-      saturation: 0.8,
-    } as const;
-    const rgb: Rgb = [0.3, 0.5, 0.7];
-    const step = rgb
-      .map(
-        (v, i) =>
-          Math.pow(v + c.lift[i]!, 1 / c.gamma[i]!) * c.gain[i]! + c.offset[i]!,
-      )
-      .map((v) => v * c.contrast + c.pivot * (1 - c.contrast));
-    const y = 0.2126 * step[0]! + 0.7152 * step[1]! + 0.0722 * step[2]!;
-    const want = step.map((v) => y * (1 - c.saturation) + v * c.saturation);
-    expect(
-      worst(
-        applyPrimaryCorrection(rgb, c).map((v, i) => [v, want[i]!]),
-        1e-15,
-      ),
-    ).toEqual([]);
   });
 });

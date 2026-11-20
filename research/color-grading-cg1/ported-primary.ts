@@ -1,23 +1,21 @@
 /**
- * Primary correction float64 reference: lift, gamma, gain, offset, contrast
- * around a pivot and Rec.709 saturation.
+ * The CG1 port of chroma-node's primary correction, kept with the CG1
+ * float-stage spike that measured it. The package's only primary correction is
+ * CG2's `applyGradePrimary` (`grade.primary`); this one differs in its lift
+ * (`v + lift`, not `v + lift·(1 − v)`) and has no tonal, hue or boost controls.
  *
  * Provenance: ported from chroma-node `applyPrimaryCorrection`
- * (`src/shared/colorEngine.ts`, b804dc0). Changes:
+ * (`src/shared/colorEngine.ts`, b804dc0; GPL-3.0 by owner decision 2). Changes:
  * - no clamps: chroma-node clamps the result to 0–1 and gamma's input to ≥ 0,
  *   so highlights pushed above 1 could not be recovered by a later node;
  *   gamma now leaves negative values unchanged;
  * - contrast and saturation are written as mixes (`v·k + p·(1 − k)`) so the
- *   neutral setting is an exact identity in floating point;
- * - temperature/tint (an RGB scale there) and the controls chroma-node declares
- *   but never evaluates (hue shift, color boost, midtone detail, shadows,
- *   highlights) are not ported; CG2 defines them;
- * - chroma-node's `PRIMARY_RANGES` are not kept: the bounds of the
- *   `grade.primary` zod contract (`@still-shift/scene-contract`) are the
- *   only authoring bounds.
+ *   neutral setting is an exact identity in floating point.
  */
-import type { Rgb } from "./matrix.ts";
-import { lumaCoefficients } from "./primaries.ts";
+import {
+  lumaCoefficients,
+  type Rgb,
+} from "../../packages/color-science/src/index.ts";
 
 export type PrimaryCorrection = {
   lift: Rgb;

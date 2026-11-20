@@ -44,8 +44,6 @@ export {
 export type { CubeLut, LutInterpolation } from "./lut.ts";
 export { NEUTRAL_CDL, applyCdl } from "./cdl.ts";
 export type { Cdl } from "./cdl.ts";
-export { NEUTRAL_PRIMARY, applyPrimaryCorrection } from "./primary.ts";
-export type { PrimaryCorrection } from "./primary.ts";
 export {
   HIGHLIGHT_RANGE,
   NEUTRAL_GRADE_PRIMARY,

@@ -28,6 +28,7 @@ import {
 } from "@still-shift/execution-runtime";
 import { decodeCompositionRgbaPng } from "../../packages/animation-engine/src/composition-media-color.ts";
 import type * as Science from "../../packages/color-science/src/index.ts";
+import type * as Ported from "./ported-primary.ts";
 
 const root = resolve(import.meta.dirname, "../..");
 const STILLS = [
@@ -68,6 +69,9 @@ try {
       const cs = (await import(
         String("/packages/color-science/src/index.ts")
       )) as typeof Science;
+      const ported = (await import(
+        String("/research/color-grading-cg1/ported-primary.ts")
+      )) as typeof Ported;
       const canvas = document.createElement("canvas");
       const gl = canvas.getContext("webgl2", { antialias: false })!;
       const ext = {
@@ -162,7 +166,7 @@ try {
       };
 
       type Pass =
-        | { op: 0; p: Science.PrimaryCorrection }
+        | { op: 0; p: Ported.PrimaryCorrection }
         | { op: 1; cdl: Science.Cdl }
         | { op: 2; k: number }
         | { op: 3; k: number };
@@ -184,7 +188,7 @@ try {
         } else gl.uniform1f(u("k"), pass.k);
       };
       const reference = (rgb: Science.Rgb, pass: Pass): Science.Rgb => {
-        if (pass.op === 0) return cs.applyPrimaryCorrection(rgb, pass.p);
+        if (pass.op === 0) return ported.applyPrimaryCorrection(rgb, pass.p);
         if (pass.op === 1) return cs.applyCdl(rgb, pass.cdl, "no-clamp");
         if (pass.op === 3)
           return [rgb[0] * pass.k, rgb[1] * pass.k, rgb[2] * pass.k];
@@ -341,18 +345,18 @@ try {
           {
             op: 0,
             p: {
-              ...cs.NEUTRAL_PRIMARY,
+              ...ported.NEUTRAL_PRIMARY,
               gamma: [1.6, 1.6, 1.6],
               gain: [0.8, 0.8, 0.8],
             },
           },
-          { op: 0, p: { ...cs.NEUTRAL_PRIMARY, gain: [1.25, 1.25, 1.25] } },
+          { op: 0, p: { ...ported.NEUTRAL_PRIMARY, gain: [1.25, 1.25, 1.25] } },
         );
       // Undo the gammas exactly: gamma 1.6 five times composes to x^(1/1.6^5); add the inverse at the end.
       stack.push({
         op: 0,
         p: {
-          ...cs.NEUTRAL_PRIMARY,
+          ...ported.NEUTRAL_PRIMARY,
           gamma: [1 / 1.6 ** 5, 1 / 1.6 ** 5, 1 / 1.6 ** 5],
         },
       });
