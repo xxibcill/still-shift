@@ -8,7 +8,10 @@
 // For one candidate program it runs, as separate CLI processes:
 //   1. `comp validate --font-coverage strict` (stops on errors);
 //   2. `comp render --font-coverage strict` into a fresh iteration folder;
-//   3. `comp lint --pixels true --legibility true --font-coverage strict`;
+//   3. `comp lint --pixels true --profile editorial-title --font-coverage strict`
+//      (ET6b: the treated-edge contrast measure, size-split targets and the
+//      D-read reading rule; `--profile none` lints with the ET3 defaults,
+//      `--legibility true`);
 //   4. entrance, hold and exit contact sheets from the render, at native size
 //      and at phone scale (360×640 per frame), taken at the candidate's
 //      `build`, `hold` and `exit` markers;
@@ -21,6 +24,10 @@
 // `--lint-only true` lints the latest iteration again without rendering, for
 // a change to the saved reading policy (waivers) only; it refuses any other
 // change to the composition.
+//
+// `--waivers ignore` lints without the composition's saved legibility
+// waivers (ET6b: the profile should make them unnecessary); the summary
+// records which layers had one.
 //
 // `--overview a` tiles the latest hold frame of every candidate for reel A
 // into one phone-scale sheet for side-by-side review.
@@ -44,8 +51,14 @@ const { values } = parseArgs({
     lint: { type: "string", default: "true" },
     "lint-only": { type: "string", default: "false" },
     overview: { type: "string" },
+    profile: { type: "string", default: "editorial-title" },
+    waivers: { type: "string", default: "keep" },
   },
 });
+if (!["editorial-title", "none"].includes(values.profile!))
+  throw new Error("--profile takes editorial-title or none");
+if (!["keep", "ignore"].includes(values.waivers!))
+  throw new Error("--waivers takes keep or ignore");
 
 type Diagnostic = {
   code: string;
@@ -65,6 +78,10 @@ type LegibilityLayer = {
   worst?: { contrast: number; frame: number; word: string };
   xHeight?: { reviewPixels: number };
   waiver?: unknown;
+  contrastTarget?: number;
+  displaySize?: number;
+  sizeClass?: string;
+  edges?: { fill: number; outer: number | null };
 };
 
 async function still(args: string[]) {
@@ -284,17 +301,45 @@ async function lintInto(
   summary: Record<string, unknown>,
 ) {
   const strict = ["--font-coverage", "strict"];
+  const profile =
+    values.profile === "none"
+      ? ["--legibility", "true"]
+      : ["--profile", values.profile!];
+  // ET6b: lint without the saved legibility waivers. A policy file replaces
+  // the saved `textLegibility` as a whole, so it keeps the rest of it.
+  const saved = (
+    JSON.parse(await readFile(join(out, "composition.json"), "utf8")) as {
+      metadata?: {
+        readingPolicy?: {
+          textLegibility?: { waivers?: { layer: string }[] };
+        };
+      };
+    }
+  ).metadata?.readingPolicy?.textLegibility;
+  const waived = saved?.waivers?.map((waiver) => waiver.layer) ?? [];
+  const policy: string[] = [];
+  if (values.waivers === "ignore" && waived.length) {
+    const path = join(out, "lint-policy-no-waivers.json");
+    await writeFile(
+      path,
+      JSON.stringify({ textLegibility: { ...saved, waivers: [] } }, null, 2),
+    );
+    policy.push("--policy", path);
+  }
   const lint = await still([
     "lint",
     "--input",
     program,
     "--pixels",
     "true",
-    "--legibility",
-    "true",
+    ...profile,
+    ...policy,
     ...strict,
   ]);
   await writeFile(join(out, "lint.json"), JSON.stringify(lint.report));
+  const motion = lint.report.readingMotion as
+    | { windows?: Record<string, unknown>[] }
+    | undefined;
   const diagnostics = (lint.report.diagnostics as Diagnostic[]) ?? [];
   const legibility = lint.report.textLegibility as
     | { layers?: LegibilityLayer[]; limitations?: unknown }
@@ -302,6 +347,9 @@ async function lintInto(
   summary.lint = {
     status: lint.report.status,
     seconds: lint.seconds,
+    profile: values.profile,
+    savedWaivers: waived,
+    waivers: waived.length ? values.waivers : "none saved",
     errors: diagnostics
       .filter((d) => d.severity === "error")
       .map((d) => ({
@@ -343,9 +391,15 @@ async function lintInto(
       readingFrames: layer.readingFrames,
       measuredFrames: layer.measuredFrames,
       worst: layer.worst,
+      ...(layer.edges ? { edges: layer.edges } : {}),
+      contrastTarget: layer.contrastTarget,
+      ...(layer.sizeClass
+        ? { sizeClass: layer.sizeClass, displaySize: layer.displaySize }
+        : {}),
       xHeightAt360: layer.xHeight?.reviewPixels,
       waived: layer.waiver !== undefined,
     })),
+    ...(motion?.windows ? { readingMotion: motion.windows } : {}),
     limitations: legibility?.limitations,
   };
 }

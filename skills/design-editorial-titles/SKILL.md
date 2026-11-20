@@ -197,28 +197,43 @@ pnpm exec tsx scripts/editorial-titles/et7a-check.ts --input <candidate.ts>
 ```
 
 The first is a fast visual pass (validate with `--font-coverage strict`,
-render, sheets); the second adds `comp lint --pixels true --legibility true
---font-coverage strict`. Each run is a new `rNN` folder under
-`benchmarks/results/editorial-titles-et7a/<candidate>/`.
+render, sheets); the second adds `comp lint --pixels true --profile
+editorial-title --font-coverage strict`. Each run is a new `rNN` folder under
+`benchmarks/results/editorial-titles-et7a/<candidate>/`. Save the profile in
+the candidate too, so any lint of it uses the same rules:
+`metadata: editorialProfile()` (from `research/editorial-titles-et7a/grammar.ts`).
 
 1. **Validate.** Strict coverage must pass. Fix located errors first.
    (`comp measure --font-coverage strict` runs the same gate.)
 2. **Look at the phone sheet** (entrance, hold, exit rows at 360×640) and the
    native sheets: face clear on every hold frame, nothing cut off, every word
    readable at phone size, the build reads in order, nothing orphaned.
-3. **Lint.** Errors (`text-off-canvas`, `orphaned-decoration`) must be fixed.
-   Legibility findings are fixed or waived with a reason:
-   - labels (role `label`, 4.5:1): put them on a box; never waive;
-   - display layers (role `heading`) with an outline, shadow or halo: the
-     contrast measure compares glyph pixels with the footage directly behind
-     them. It counts an outline's ring as glyph pixels and credits no shadow
-     or halo, so it reports 1.0–1.5:1 on text that reads well (a dark outline
-     over dark clothing measures about 1:1). G1 allows large display text
-     below 3:1. Waive `text-contrast` for those layers with that reason
-     (`displayWaivers` in `research/editorial-titles-et7a/grammar.ts`, saved in
-     `metadata.readingPolicy.textLegibility.waivers`), and only after
-     looking at the hold frames yourself. A halo alone is often too weak for
+3. **Lint.** Errors (`text-off-canvas`, `orphaned-decoration`, and
+   `reading-time`) must be fixed. The `editorial-title` profile (ET6b) is made
+   for these lockups, so legibility findings are fixed, not waived:
+   - **Contrast is measured at the letter edges**, outline, halo and shadow
+     included: the fill against what is drawn just outside it, and the
+     outlined letter against the footage. A word scores the better edge. Text
+     at least 24 px tall on a 360 px phone (48 px at 720, 72 px at 1080) is
+     display text and needs the display level (`EDITORIAL_TITLE_PROFILE` in
+     the lint policy; 1.5:1, proposed and pending the owner) at the median of its
+     edge; smaller text needs 4.5:1 at its weakest 5%.
+   - Labels (small text): put them on a box; the box is their backdrop.
+   - Display text below the level: give it an outline of at least
+     `strokeWidth` 8 at 720 px (4 px visible; thinner than a phone pixel earns
+     almost nothing), or a stronger halo. A halo alone is often too weak for
      a thin script: give scripts an outline.
+   - Hollow (outline-only) text is measured by its outline.
+   - Overlapping words are fine: a text layer stacked above another is left
+     out of the lower one's measurement.
+   - **Reading time:** gentle hold drift counts (D-read): about one
+     letter-height per second or less, one direction, no shaking or
+     back-and-forth. The report's `readingMotion` lists each layer's peak
+     speed and why a run ended.
+   - Waivers (`metadata.readingPolicy.textLegibility.waivers`) are for a
+     deliberate exception only, with a reason, after looking at the frames;
+     the check script's `--waivers ignore` shows what the layer measures
+     without them.
 4. **Record** each iteration: what you changed and the cause, from this list:
    _placement_ (face, framing), _overflow_ (off-canvas), _contrast_,
    _collision_ (words or marks overlapping badly), _seams_, _missing
@@ -238,10 +253,11 @@ render, sheets); the second adds `comp lint --pixels true --legibility true
   font has them, so a static script span in a variable serif needs no
   `axes: {}` (since Phase 1). An inherited axis outside the span font's
   range still fails; set it on the span style.
-- Drop shadows and halos make Canvas renders about ten times slower (a 7 s
-  720×1280 clip: about 9 s without, about 100 s with).
-- Legibility lint renders two extra frames per text layer per reading frame:
-  several minutes per candidate. Use `--lint false` while iterating on looks.
+- Drop shadows and halos used to make Canvas renders about ten times slower;
+  since EC (Phase 2) the shadow is computed only around the text, so a halo
+  adds seconds, not minutes.
+- Profile lint renders one extra frame (the glyph mask) per text layer per
+  reading frame: tens of seconds per candidate.
 
 ## What to keep out of git
 
