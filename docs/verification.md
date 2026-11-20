@@ -19,6 +19,12 @@ package's release program, declarations included, without writing files. It
 reports declaration errors such as TS2742 that `pnpm build` (`tsc --noEmit`)
 skips.
 
+`pnpm check:boundaries` (in `check:fast` and `check`) checks workspace package
+dependencies and then type-checks `@still-shift/color-science` on its own
+(`packages/color-science/tsconfig.json`), with no DOM or Node types, so the
+color-science core stays pure: a browser or Node API used there fails the
+check.
+
 `test:unit` remains an alias for the unit group. Tests that spawn processes moved
 from `tests/unit` to `tests/runtime`; no lock-recovery or media assertions were
 removed. Unit runs are capped at four workers. Runtime and integration files run
