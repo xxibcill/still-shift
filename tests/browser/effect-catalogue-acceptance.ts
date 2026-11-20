@@ -8,6 +8,7 @@ import { format } from "prettier";
 import type { Page } from "playwright";
 import {
   compositionEffectDefinition,
+  FLOAT_GRADE_EFFECT_IDS,
   GRADE_EFFECT_IDS,
   type Composition,
 } from "@still-shift/scene-contract";
@@ -46,6 +47,8 @@ export async function runEffectCatalogueAcceptance(
     writing = process.argv.includes("--write-ce6-baseline"),
     /** CGA grade effects have their own baseline file; the CE6 files stay frozen. */
     writingGrade = process.argv.includes("--write-grade-baseline"),
+    /** CG2 float grade effects: their own baseline file, written once. */
+    writingFloatGrade = process.argv.includes("--write-float-grade-baseline"),
     directory = await mkdtemp(join(tmpdir(), "ce6-native-export-"));
   const fixtures: [string, Composition][] = [];
   const items: Record<
@@ -238,7 +241,10 @@ export async function runEffectCatalogueAcceptance(
             environment,
             items: Object.fromEntries(
               Object.entries(items).filter(
-                ([id]) => id !== "catalogue-mesh" && id !== "catalogue-grade",
+                ([id]) =>
+                  id !== "catalogue-mesh" &&
+                  id !== "catalogue-grade" &&
+                  id !== "catalogue-float-grade",
               ),
             ),
           }),
@@ -381,6 +387,47 @@ export async function runEffectCatalogueAcceptance(
       assert.deepEqual(Object.keys(grade.items), ["catalogue-grade"]);
       assert.deepEqual(grade.effectVersions, gradeVersions);
       expected["catalogue-grade"] = grade.items["catalogue-grade"];
+      assert.equal(Object.hasOwn(expected, "catalogue-float-grade"), false);
+      const floatGradePath = join(
+        baselineDirectory,
+        `${environment.platform}-${environment.arch}-float-grade-1.json`,
+      );
+      const floatGradeVersions = Object.fromEntries(
+        FLOAT_GRADE_EFFECT_IDS.map((id) => [
+          id,
+          compositionEffectDefinition(id)!.version,
+        ]),
+      );
+      if (writingFloatGrade)
+        await writeFile(
+          floatGradePath,
+          await format(
+            JSON.stringify({
+              version: "composition-float-grade-catalogue-baseline-1",
+              environment,
+              effectVersions: floatGradeVersions,
+              items: {
+                "catalogue-float-grade": items["catalogue-float-grade"],
+              },
+            }),
+            { parser: "json" },
+          ),
+        );
+      const floatGrade = JSON.parse(await readFile(floatGradePath, "utf8"));
+      assert.equal(
+        floatGrade.version,
+        "composition-float-grade-catalogue-baseline-1",
+      );
+      assert.equal(
+        floatGrade.environment.rasterFingerprint,
+        environment.rasterFingerprint,
+      );
+      assert.deepEqual(Object.keys(floatGrade.items), [
+        "catalogue-float-grade",
+      ]);
+      assert.deepEqual(floatGrade.effectVersions, floatGradeVersions);
+      expected["catalogue-float-grade"] =
+        floatGrade.items["catalogue-float-grade"];
       assert.deepEqual(items, expected, "CE6 full-frame hashes");
     }
     const hardware = await shapeHardwarePreview(root, fixtures);
