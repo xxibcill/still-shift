@@ -9,21 +9,37 @@ import type { PreparedPath } from "../../scene-contract/src/prepared.ts";
 
 /**
  * A decoration as drawn: the prepared shape plus the composition-only
- * `fadeWithText` opt-in (ET5a), which `textNode` carries through.
+ * opt-ins `fadeWithText` (ET5a) and `growWithText` (editorial titles
+ * Phase 1), which `textNode` carries through.
  */
 export type DrawnTextDecoration = NonNullable<
   TextNode["decorations"]
->[number] & { fadeWithText?: boolean };
+>[number] & { fadeWithText?: boolean; growWithText?: boolean };
 
+/** A glyph a text animator has revealed: opacity and scale above 0. */
+const revealedPose = (pose: TextPose | undefined) =>
+  !pose || (pose.opacity > 0 && pose.scale !== 0);
+
+/**
+ * Per line, the decorated glyphs' extent. With `grow` (`growWithText`) and
+ * poses, only non-blank glyphs the animators have revealed count (a space is
+ * not an animator unit and keeps its rest pose), so a line with none
+ * revealed has no segment.
+ */
 export function decorationSegments(
   node: TextNode,
   layout: ShapedLayout,
   span?: string,
   poses?: TextPose[],
+  grow = false,
 ) {
   return layout.lines.flatMap((line) => {
     const indices = line.clusters.filter(
-      (i) => !span || node.spans?.[layout.clusters[i]!.spanIndex]?.id === span,
+      (i) =>
+        (!span || node.spans?.[layout.clusters[i]!.spanIndex]?.id === span) &&
+        (!grow ||
+          !poses ||
+          (/\S/u.test(layout.clusters[i]!.text) && revealedPose(poses[i]))),
     );
     if (!indices.length) return [];
     const left = Math.min(
@@ -63,6 +79,9 @@ export function decorationReveal(
 /** ET5a: the mark follows its text's animator opacity (composition opt-in). */
 export const decorationFadesWithText = (mark: DrawnTextDecoration) =>
   mark.fadeWithText === true;
+/** Phase 1: the mark covers only revealed glyphs (composition opt-in). */
+export const decorationGrowsWithText = (mark: DrawnTextDecoration) =>
+  mark.growWithText === true;
 export function drawTextDecorations(
   ctx: CanvasRenderingContext2D,
   node: TextNode,
@@ -74,7 +93,13 @@ export function drawTextDecorations(
 ) {
   for (const [index, mark] of (node.decorations ?? []).entries()) {
     if ((mark.kind === "highlight") !== behind) continue;
-    const segments = decorationSegments(node, layout, mark.span, poses);
+    const segments = decorationSegments(
+      node,
+      layout,
+      mark.span,
+      poses,
+      decorationGrowsWithText(mark),
+    );
     const reveal = decorationReveal(mark, frame, fps);
     const fades = decorationFadesWithText(mark);
     let remaining =

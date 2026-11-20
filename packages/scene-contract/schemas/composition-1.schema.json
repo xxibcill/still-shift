@@ -1795,7 +1795,8 @@
                       "enum": ["uniform", "ink", "brush"]
                     },
                     "reveal": { "$ref": "#/$defs/__schema98" },
-                    "fadeWithText": { "type": "boolean" }
+                    "fadeWithText": { "type": "boolean" },
+                    "growWithText": { "type": "boolean" }
                   },
                   "required": ["kind", "color"],
                   "additionalProperties": false

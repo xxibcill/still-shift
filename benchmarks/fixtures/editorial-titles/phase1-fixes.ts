@@ -76,3 +76,62 @@ export const spanAxes = {
     ) as Composition;
   },
 };
+
+/**
+ * b06 r01–r03: a boxed label typed glyph by glyph. The highlight showed in
+ * full behind the first typed glyph (it follows line opacity, not the
+ * per-glyph build); the pilot keyed its `reveal` to the typing by hand.
+ * `grow` sets the Phase 1 `growWithText`. Glyph `i` starts fading in at
+ * frame `typing.start + i * typing.stagger`.
+ */
+export const typedHighlight = {
+  ink: "#121212",
+  box: "#FFE14D",
+  copy: "No. 05",
+  typing: { start: 4, stagger: 4, duration: 2 },
+  frames: 36,
+  build(grow: boolean, options: { animate?: boolean } = {}) {
+    const { typing } = typedHighlight;
+    return comp(
+      base("phase1-typed-highlight", [latin.bebas], typedHighlight.frames),
+      (c) => {
+        c.textStyle("tag", { fontAsset: "bebas", size: 120, tracking: 40 });
+        c.add(
+          text(typedHighlight.copy, {
+            id: "tag",
+            style: "tag",
+            fontSize: 120,
+            color: typedHighlight.ink,
+          })
+            .at(360, 640)
+            .with({
+              align: "center",
+              anchor: "baseline",
+              textRole: "label",
+              decorations: [
+                {
+                  kind: "highlight",
+                  color: typedHighlight.box,
+                  offset: 0,
+                  fadeWithText: true,
+                  ...(grow ? { growWithText: true } : {}),
+                },
+              ],
+            }),
+        );
+        if (options.animate !== false)
+          c.textAnimator({
+            node: "tag",
+            unit: "glyph",
+            start: typing.start,
+            // `end` bounds the whole build: each glyph's start is clamped
+            // to end − 1, so it must leave room for every glyph's stagger.
+            end: typing.start + 5 * typing.stagger + typing.duration,
+            stagger: typing.stagger,
+            selector: { start: 0, end: 1 },
+            from: { opacity: 0 },
+          });
+      },
+    ) as Composition;
+  },
+};

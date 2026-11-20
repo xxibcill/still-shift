@@ -38,6 +38,14 @@ const decoration = TextDecorationSchema.extend({
    * text. Off by default; existing compositions render unchanged.
    */
   fadeWithText: z.boolean().optional(),
+  /**
+   * Editorial titles Phase 1: on each line, the mark covers only the
+   * decorated glyphs the text animators have revealed (opacity and scale
+   * above 0), so a highlight grows with a glyph-by-glyph or word-by-word
+   * build instead of showing in full behind the first glyph. Off by default;
+   * existing compositions render unchanged.
+   */
+  growWithText: z.boolean().optional(),
 });
 const transition = TextTransitionSchema.extend({
   window: TextTransitionSchema.shape.window.safeExtend({

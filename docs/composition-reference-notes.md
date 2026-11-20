@@ -543,7 +543,10 @@ changing the contract.
   falls largely off-frame (`text-off-canvas`, [ET5a](#title-framing-and-decoration-guards-et5a)).
 - Decorations ignore text-animator opacity unless they set `fadeWithText: true`;
   pixel lint reports a decoration painting while its text is fully transparent
-  (`orphaned-decoration`).
+  (`orphaned-decoration`). With `growWithText: true` a decoration covers, on each
+  line, only the non-blank glyphs its text animators have revealed (opacity and
+  scale above 0), so a highlight grows with a glyph-by-glyph or word-by-word build;
+  a glyph counts from its first visible frame.
 - Transitions, decoration reveals, counts and text animators sample **layer time**,
   like keys; signal-driven animator selectors therefore also sample layer time.
   Font-axis and stroke caches prepare the rounded layer times reachable at output
@@ -2258,6 +2261,12 @@ text. It follows only text-animator opacity: text hidden by the layer's
 `reveal`, by a word reveal under a highlight, or by its colour's alpha still
 needs the decoration's own `reveal` keyed, and the finding says so when
 `fadeWithText` is already set. `fadeWithText` is off by default and existing
+compositions render unchanged.
+
+A highlight behind text that types in glyph by glyph also needs to grow with
+it: `fadeWithText` alone shows the whole box once the first glyph appears.
+Set `growWithText: true` as well, so each line's mark spans only the revealed
+glyphs (editorial titles Phase 1). It is off by default and existing
 compositions render unchanged.
 
 ```json

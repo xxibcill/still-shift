@@ -102,13 +102,18 @@ colour that separates every word from the footage.
   or on the label's ink): 0 for caps-only faces such as Bebas, −4.29 for a
   46 px Archivo label. Default thickness is 1.25 × cap height; the measured
   decoration `paint` box is what it covers. It has no horizontal padding.
-  Set `fadeWithText: true`, and key its `reveal` when the text types in
-  glyph by glyph (the box does not follow per-glyph opacity).
+  Set `fadeWithText: true`, and when the text types in glyph by glyph or
+  word by word also `growWithText: true`: the box then covers only the
+  glyphs revealed so far, with no hand-keyed `reveal`.
 - _Hollow caps_: a transparent fill (`#FFFFFF00`) with an outline animator.
 
 **Timing.** Build from about 0.1–0.2 s to 1.4–1.9 s: word pops (scale 1.6–2.6
 → 1, 6–8 frames, stagger 6–8), a glyph typewriter (opacity, 1–4 frames,
-stagger 1–3), a drop or slide cascade, or caps tracking in. Hold untouched
+stagger 1–3), a drop or slide cascade, or caps tracking in. A text
+animator's `end` bounds the whole build (each unit's start is clamped to
+`end − 1`), so give it `start + (units − 1) × stagger + duration`; the
+`enter` helper's `duration` alone makes a typewriter land in a few frames.
+Hold untouched
 through the cuts. Exit in 0.3–0.5 s (fade with a small move, or reverse glyph
 order). Use the markers from the `research/editorial-titles-et7a/grammar.ts`
 helpers (`build`, `hold`, `exit`) so the check script picks the right frames.

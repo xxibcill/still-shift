@@ -9,7 +9,10 @@ import {
 } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import { analyzeCompositionQuality } from "../../packages/renderer-core/src/story-quality.ts";
 import { textNode } from "../../packages/renderer-core/src/composition/render/text-scenes.ts";
-import { decorationFadesWithText } from "../../packages/renderer-core/src/typography-decorations.ts";
+import {
+  decorationFadesWithText,
+  decorationGrowsWithText,
+} from "../../packages/renderer-core/src/typography-decorations.ts";
 import {
   composition,
   fixtures,
@@ -1617,6 +1620,19 @@ describe("ET5a text framing and decoration guards", () => {
     }) as Extract<CompositionLayer, { type: "text" }>;
     const [mark] = textNode(composition([layer]), layer).decorations!;
     expect(decorationFadesWithText(mark!)).toBe(true);
+  });
+
+  it("carries growWithText from the layer to the drawn decoration (Phase 1)", () => {
+    const layer = title([100, 100], {
+      decorations: [
+        { kind: "highlight", color: "#c9d29a", growWithText: true },
+      ],
+    }) as Extract<CompositionLayer, { type: "text" }>;
+    const [mark] = textNode(composition([layer]), layer).decorations!;
+    expect(decorationGrowsWithText(mark!)).toBe(true);
+    expect(decorationGrowsWithText({ ...mark!, growWithText: false })).toBe(
+      false,
+    );
   });
 
   it("points to the decoration's reveal when fadeWithText is already set", () => {
