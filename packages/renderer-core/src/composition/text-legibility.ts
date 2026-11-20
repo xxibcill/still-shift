@@ -993,7 +993,7 @@ export function analyzeTextLegibility(
       readingFrames: reading.length,
       contrastTarget: targets[role],
     };
-    const { styles, node } = textLayerStyles(comp, layer);
+    const { styles } = textLayerStyles(comp, layer);
     if (display) {
       const size = textDisplaySize(comp, layer, frames, reading, reviewWidth);
       entry.displaySize = round(size);
