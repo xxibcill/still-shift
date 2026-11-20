@@ -18,7 +18,7 @@
     "effects": {
       "grade.primary": "lift (black moves, white stays), gamma (negatives unchanged), gain, offset per channel and master; contrast about pivot; luma-weighted shadows/highlights; saturation; hue rotation about Rec.709 luma; color boost",
       "grade.white-balance": "Bradford adaptation in linear light from a Planckian temperature (Kang 2002, 1667-25000 K) plus a Duv tint (tint/5000, positive greener) to the 6500 K locus white",
-      "grade.cdl": "ASC CDL slope/offset/power/saturation; clamp 1 = Release 1.2, 0 = unclamped (power skipped below 0)",
+      "grade.cdl": "ASC CDL slope/offset/power/saturation; clamp 0 (default) = unclamped (power skipped below 0), 1 = Release 1.2",
       "grade.rgb-mixer": "color.matrix's parameters and design formula in float"
     },
     "stage": "consecutive grade.* effects fuse into one stage on straight color: one generated float32 fragment shader on WebGL2, color-science float64 on Canvas; one half-up quantization on exit with the CGA premultiply rule; neutral operators dropped",
@@ -67,7 +67,8 @@
   ],
   "ce6": {
     "cell": "catalogue-float-grade (benchmarks/fixtures/composition/ce6/catalogue-float-grade.json)",
-    "baseline": "tests/visual/composition-effect-catalogue/darwin-arm64-float-grade-1.json, written with --write-float-grade-baseline, then checked; the frozen CE6 baseline files are unchanged"
+    "baseline": "tests/visual/composition-effect-catalogue/darwin-arm64-float-grade-1.json, written with --write-float-grade-baseline, then checked; the frozen CE6 baseline files are unchanged",
+    "baselineRewrite": "2026-11-21 (review finding 3): the grade.cdl clamp default changed to 0, so darwin-arm64-float-grade-1.json was rewritten once with --write-float-grade-baseline (only catalogue-float-grade: 22 of 32 frames per backend, the frames where the CDL case is visible) and then checked; the frozen CE6 baseline files are unchanged"
   },
   "failedRunsAndReruns": [
     "CG2 browser test before the renderer wiring: failed with comp-effect-unavailable: grade.primary has no Canvas implementation (failing first).",
@@ -98,6 +99,14 @@
         "failedRuns": [
           "pnpm test:package without STILL_SHIFT_PNPM_STORE failed at its first step, the locked production npm audit: high advisories for vite and zod in the unchanged lock. Not caused by this fix; the audit was skipped on the rerun and still needs a dependency decision before any release."
         ]
+      },
+      {
+        "finding": 3,
+        "problem": "grade.cdl defaulted to clamp 1 and floatGradeOp only treats a CDL without clamp as neutral, so a default CDL inside a run clamped the intermediate value to 0-1",
+        "fix": "default clamp 0 (OpenColorIO no-clamp style); Release 1.2 clamping stays available with clamp 1; contract comment, effect docs and the generated reference updated",
+        "failingFirst": "color-grading-cg2 with the new check (gain 2, default grade.cdl, gain 0.5): canvas2d defaultCdlMaxError 127; composition-effects then failed on the float-grade baseline before it was rewritten",
+        "after": "defaultCdlMaxError 0 on Canvas and WebGL2; composition-effects passes against the rewritten float-grade baseline",
+        "verification": "pnpm check:fast passed (470 files, 4,821 tests); browser color-grading-cg2 and composition-effects passed"
       }
     ]
   },

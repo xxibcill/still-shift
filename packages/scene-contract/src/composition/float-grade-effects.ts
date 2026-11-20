@@ -88,13 +88,16 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
     temperature: scalar(6500, 1667, 25000),
     tint: scalar(0, -100, 100),
   }),
-  /** ASC CDL; `clamp` 1 is Release 1.2 (clamped), 0 the unclamped style. */
+  /**
+   * ASC CDL; `clamp` 0 (default) is the unclamped style, so the default is
+   * neutral inside a run; 1 is Release 1.2 (clamped to 0–1).
+   */
   "grade.cdl": effect({
     ...channels("slope", 1, 0, 8, false),
     ...channels("offset", 0, -1, 1, false),
     ...channels("power", 1, 0.1, 8, false),
     saturation: scalar(1, 0, 4),
-    clamp: scalar(1, 0, 1, true),
+    clamp: scalar(0, 0, 1, true),
   }),
   /** `color.matrix`'s parameters and design formula, evaluated in float. */
   "grade.rgb-mixer": effect({

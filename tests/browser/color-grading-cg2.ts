@@ -8,7 +8,8 @@
  *   within one 8-bit code value (owner decision 3); repeated WebGL2 renders
  *   are byte-identical;
  * - a value pushed above 1 by one grade effect is recovered by the next,
- *   also beside an effect that the backend applies on its own;
+ *   also beside an effect that the backend applies on its own and across a
+ *   default (neutral) grade.cdl;
  * - ten stacked neutral-sum corrections add no banding compared with one pass;
  * - layer kinds, animated controls and seeks keep backend parity within 1.
  *
@@ -408,9 +409,20 @@ try {
           backend,
         );
         const mappedAlone = render(ramp, [mapped], backend);
+        // A default grade.cdl inside the run is neutral: it must not clamp.
+        const defaultCdl = render(
+          ramp,
+          [
+            { effect: "grade.primary", params: { gainMaster: 2 } },
+            { effect: "grade.cdl", params: {} },
+            { effect: "grade.primary", params: { gainMaster: 0.5 } },
+          ],
+          backend,
+        );
         let floatMax = 0,
           byteMax = 0,
-          besideMax = 0;
+          besideMax = 0,
+          defaultCdlMax = 0;
         for (let x = 0; x < 256; x++) {
           floatMax = Math.max(floatMax, Math.abs(float[x * 4]! - x));
           byteMax = Math.max(byteMax, Math.abs(bytes[x * 4]! - x));
@@ -418,11 +430,16 @@ try {
             besideMax,
             Math.abs(beside[x * 4]! - mappedAlone[x * 4]!),
           );
+          defaultCdlMax = Math.max(
+            defaultCdlMax,
+            Math.abs(defaultCdl[x * 4]! - x),
+          );
         }
         return {
           backend,
           floatMaxError: floatMax,
           besideLayerInputMaxError: besideMax,
+          defaultCdlMaxError: defaultCdlMax,
           eightBitExposureMaxError: byteMax,
         };
       });
@@ -578,6 +595,11 @@ try {
       r.besideLayerInputMaxError,
       0,
       `${r.backend}: recovered exactly beside a layer-input effect`,
+    );
+    assert.equal(
+      r.defaultCdlMaxError,
+      0,
+      `${r.backend}: a default grade.cdl inside the run does not clamp`,
     );
   }
   for (const b of result.banding) {

@@ -957,7 +957,7 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `grade.cdl`                    | `powerG`         | scalar | `1`                         | 0.1–8                                        |
 | `grade.cdl`                    | `powerB`         | scalar | `1`                         | 0.1–8                                        |
 | `grade.cdl`                    | `saturation`     | scalar | `1`                         | 0–4                                          |
-| `grade.cdl`                    | `clamp`          | scalar | `1`                         | 0–1 (integer)                                |
+| `grade.cdl`                    | `clamp`          | scalar | `0`                         | 0–1 (integer)                                |
 | `grade.rgb-mixer`              | `rr`             | scalar | `1`                         | -4–4                                         |
 | `grade.rgb-mixer`              | `rg`             | scalar | `0`                         | -4–4                                         |
 | `grade.rgb-mixer`              | `rb`             | scalar | `0`                         | -4–4                                         |

@@ -178,8 +178,10 @@ any effect.
   6500 K with tint 0 is the identity. Unlike `color.white-balance` (channel
   gains), this keeps neutrals neutral under any illuminant on the locus.
 - `grade.cdl`: ASC CDL slope, offset, power (per channel) and saturation;
-  `clamp` 1 is Release 1.2 (clamped), 0 is unclamped with the power skipped for
-  negative values (OpenColorIO's no-clamp style).
+  `clamp` 0 (the default) is unclamped with the power skipped for negative
+  values (OpenColorIO's no-clamp style), so a default CDL is neutral inside a
+  run; `clamp` 1 is Release 1.2, clamped to 0–1 before the power and after
+  saturation.
 - `grade.rgb-mixer`: `color.matrix`'s parameters and formula
   (`(I + strength·(M − I))·rgb + strength·offset`) in float, without the 1/4096
   quantization.
