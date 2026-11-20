@@ -166,5 +166,125 @@
     }
   },
   "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks",
-  "next": "Stopping point after CG2: report to the owner. Then CG3 (scopes, probes, measurement), which can build on comp color-stats."
+  "next": "Stopping point after CG2: report to the owner. Then CG3 (scopes, probes, measurement), which can build on comp color-stats.",
+  "secondReviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/77#pullrequestreview-5997235181",
+    "environment": "node 22.23.1 (toolchain.json), darwin-arm64, pinned Chromium / SwiftShader",
+    "fixes": [
+      {
+        "finding": "Spec-1",
+        "commit": "27e59233",
+        "problem": "WebGL2 rendered NaN (0) where Canvas rendered 255 for contract-bound settings (float32 overflow, then Inf − Inf)",
+        "fix": "every operator saturates at ±GRADE_LIMIT (10,000); gradePow saturates before overflow; the shader mirrors both",
+        "evidence": "new CG2 cases overflow-primary-cdl and overflow-stacked: WebGL2 255 codes from the reference on all 8 stills before, Canvas 0 and WebGL2 ≤ 1 after; earlier cases unchanged; composition-effects (CE6, float-grade baseline included) unchanged"
+      },
+      {
+        "finding": "Spec-2",
+        "commit": "d573a1d9",
+        "problem": "grade.rgb-mixer was never rendered against color.matrix",
+        "fix": "CG2 browser test renders both with the same parameters",
+        "evidence": "max difference 1 code on in-range values"
+      },
+      {
+        "finding": "Spec-3",
+        "commit": "8222589f",
+        "problem": "the white-balance comparison the plan asks for was missing",
+        "fix": "closest color.white-balance fitted per grade.white-balance setting on chart-24, both rendered, difference recorded",
+        "evidence": "checks[5].comparison"
+      },
+      {
+        "finding": "Spec-4",
+        "commit": "154b6ca4",
+        "problem": "semi-transparent pixels were only compared between backends",
+        "fix": "compared with the un-premultiply, grade, re-premultiply reference",
+        "evidence": "16,256 pixels x 11 cases exact on both backends"
+      },
+      {
+        "finding": "Spec-5",
+        "commit": "cd342ea2",
+        "problem": "fused shader instead of RGBA32F surfaces not recorded",
+        "fix": "delivered.deviations, CG1 decision 1 'As built in CG2', plan CG2 scope note"
+      },
+      {
+        "finding": "Spec-6",
+        "commit": "2e2dd4ae",
+        "problem": "PRIMARY_RANGES disagreed with the grade.primary contract and was unused",
+        "fix": "removed; the zod contract holds the only bounds (CG1 decisions, Parameter bounds)"
+      },
+      {
+        "finding": "Spec-7",
+        "commit": "0404d6f6",
+        "problem": "unclamped grade.cdl default not recorded against 'exact to the specification'",
+        "fix": "delivered.deviations, plan CDL check and effect docs"
+      },
+      {
+        "finding": "Std-1",
+        "commit": "909e38f7",
+        "problem": "npm audit release blocker missing from dev-log Current state",
+        "fix": "added"
+      },
+      {
+        "finding": "Std-2",
+        "commit": "d09e369f",
+        "problem": "'all checks met' read as one full pass",
+        "fix": "names the tiers that ran and those that did not"
+      },
+      {
+        "finding": "Std-3",
+        "commit": "4a6d95f1",
+        "problem": "verification.md did not describe the color-science type check in check:boundaries",
+        "fix": "described"
+      },
+      {
+        "finding": "Std-4",
+        "commit": "da7c1a68",
+        "problem": "three switches on the effect id in float-grade.ts",
+        "fix": "one OPERATORS entry per effect (parameters, float64 reference, GLSL)",
+        "evidence": "identical shader text, uniforms and bytes on 400 random chains"
+      },
+      {
+        "finding": "Std-5",
+        "commit": "9eb6641b",
+        "problem": "duplicated version check, copy shader, run walk and luma constants",
+        "fix": "effect-shared.ts, effectStages, lumaCoefficients('bt709')",
+        "evidence": "native appearance closure regenerated in the same commit"
+      },
+      {
+        "finding": "Std-6",
+        "commit": "41dd6200",
+        "problem": "two primary corrections with different lift in the package",
+        "fix": "the CG1 port moved beside its spike (research/color-grading-cg1/ported-primary.ts)"
+      },
+      {
+        "finding": "Std-7",
+        "commit": "cf34ef18",
+        "problem": "number[] matrices and `as unknown as Rgb` casts",
+        "fix": "Mat3 and Rgb with a perChannel helper"
+      },
+      {
+        "finding": "Std-8",
+        "commit": "e40fbb6e",
+        "problem": "neutral settings restated by hand",
+        "fix": "isNeutral against NEUTRAL_GRADE_PRIMARY and NEUTRAL_CDL",
+        "evidence": "same ops, shader text and bytes on 400 random chains"
+      },
+      {
+        "finding": "Std-9",
+        "commit": "3318b330",
+        "problem": "run splitting had no unit test",
+        "fix": "tests/unit/composition-float-grade-run.test.ts (6 tests)"
+      }
+    ],
+    "verification": {
+      "checkFast": "passed: 471 test files, 4,826 tests (155 s)",
+      "browser": {
+        "color-grading-cg2": "passed at the tip: 88 parity rows (Canvas 0, WebGL2 ≤ 1, 32 channels at 1), recovery, banding, 108 layer-kind cases at 0, semi-transparent and counterpart checks, native-video export",
+        "composition-effects": "passed after the Spec-1 fix (11 min 42 s), CE6 baselines including catalogue-float-grade unchanged; later commits change tests and docs only",
+        "color-grading-cg0": "unchanged (273 renders, 21 at delta 1)",
+        "composition-grade-effects": "passed (max delta 0)",
+        "composition-baselines": "run 1 failed: 7 legacy/* items (legacy oracle) differed on all 168 frames; those 7 alone passed on rerun, and a full rerun passed: 176 items, 36,061 frames unchanged (263 s). Not reproduced; treated as environmental"
+      },
+      "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks (test:package not rerun after primary.ts left the package; check:package-types passed in check:fast)"
+    }
+  }
 }
