@@ -350,7 +350,7 @@ export function discCentre(frame: number): [number, number] {
   ];
 }
 
-function movingFrame(frame: number) {
+export function movingFrame(frame: number) {
   const { width, height, disc, background } = MOVING_CLIP;
   const [cx, cy] = discCentre(frame);
   const rgb = new Uint8Array(width * height * 3);
