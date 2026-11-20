@@ -9,6 +9,7 @@ import {
   resizeRenderMetadata,
 } from "../../managed-metadata.ts";
 import { renderGpuEffect } from "./effect-plugins.ts";
+import { glowColorBytes } from "../../pixel-effects.ts";
 import { FLOAT32_RATIONAL_SUM } from "./webgl-float-sum.ts";
 import { blurKernel } from "./webgl-blur-kernel.ts";
 import { boxBlur } from "./webgl-box-blur.ts";
@@ -1244,10 +1245,8 @@ ${FLOAT32_RATIONAL_SUM}
                   tint,
                   glowColor: builtinArray(
                     phase,
-                    ((p.color as Rgba | undefined) ?? [1, 1, 1, 1]).map(
-                      // Clamped like Canvas's glowColor().
-                      (value) =>
-                        Math.round(Math.max(0, Math.min(1, value)) * 255) / 255,
+                    glowColorBytes(p.color as Rgba | undefined).map(
+                      (value) => value / 255,
                     ),
                   ),
                 }),

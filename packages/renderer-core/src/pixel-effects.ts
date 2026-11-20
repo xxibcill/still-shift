@@ -10,6 +10,24 @@ export type PixelEffectContext<S extends PixelSurface> = {
   clear(surface: S, background: null): void;
 };
 
+/**
+ * A `light.glow` colour (0–1 RGBA, white when absent) as 0–255 sRGB bytes,
+ * clamped and rounded as both backends upload it.
+ */
+export function glowColorBytes(color?: readonly number[]): number[] {
+  return (color ?? [1, 1, 1, 1]).map((value) =>
+    Math.round(Math.max(0, Math.min(1, value)) * 255),
+  );
+}
+/**
+ * `light.glow` 1.1.0 coverage: `tint` blends the luminance weight toward
+ * full coverage; `tint` 0 is exactly the 1.0.0 weight. The WebGL2 shader
+ * mirrors this formula.
+ */
+export function glowWeight(weight: number, tint: number) {
+  return tint > 0 ? weight * (1 - tint) + tint : weight;
+}
+
 export function glow<S extends PixelSurface>(
   context: PixelEffectContext<S>,
   layer: S,
@@ -19,13 +37,13 @@ export function glow<S extends PixelSurface>(
     threshold: number;
     /** 0–1: blend toward `color` at full coverage (light.glow 1.1.0). */
     tint?: number;
-    /** Glow colour as 0–255 sRGB bytes, used with `tint`. */
-    color?: readonly [number, number, number];
+    /** Glow colour as 0–255 sRGB bytes (`glowColorBytes`), used with `tint`. */
+    color?: readonly number[];
   },
 ) {
   if (!effect.intensity || !effect.radius) return;
   const tint = effect.tint ?? 0,
-    color = effect.color ?? [255, 255, 255];
+    color = effect.color ?? glowColorBytes();
   const { width, height } = layer.canvas;
   const scratch = context.createSurface(width, height);
   try {
@@ -37,17 +55,19 @@ export function glow<S extends PixelSurface>(
           0.7152 * pixels.data[i + 1]! +
           0.0722 * pixels.data[i + 2]!) /
         255;
-      let weight = Math.max(
-        0,
-        (luminance - effect.threshold) / Math.max(0.001, 1 - effect.threshold),
+      const weight = glowWeight(
+        Math.max(
+          0,
+          (luminance - effect.threshold) /
+            Math.max(0.001, 1 - effect.threshold),
+        ),
+        tint,
       );
-      if (tint > 0) {
-        weight = weight * (1 - tint) + tint;
+      if (tint > 0)
         for (let c = 0; c < 3; c++)
           pixels.data[i + c] = Math.round(
             pixels.data[i + c]! * (1 - tint) + color[c]! * tint,
           );
-      }
       pixels.data[i + 3] = Math.round(pixels.data[i + 3]! * weight);
     }
     scratch.ctx.putImageData(pixels, 0, 0);
