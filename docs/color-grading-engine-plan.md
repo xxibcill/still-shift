@@ -587,7 +587,10 @@ unclamped pipeline that the remaining operators run in.
       next: gain 2 then 0.5 is exact on both backends (8-bit `color.exposure`
       loses 127 codes; chroma-node clamps every stage).
 - [x] `grade.cdl` matches the ASC reference values within tolerance (1e-12 in
-      float64; Canvas exact and WebGL2 within 1 on the renderer).
+      float64; Canvas exact and WebGL2 within 1 on the renderer). Release 1.2
+      is `clamp: 1`; the default `clamp: 0` is OpenColorIO's no-clamp style,
+      so a default CDL is neutral inside a run (a recorded deviation in the
+      CG2 results).
 - [x] GPU matches the float64 reference within the approved parity bound on all
       CG0 fixtures; repeated renders are byte-identical (72 rows: Canvas 0,
       WebGL2 ≤ 1 with 32 channels at 1).

@@ -188,7 +188,8 @@ any effect.
   `clamp` 0 (the default) is unclamped with the power skipped for negative
   values (OpenColorIO's no-clamp style), so a default CDL is neutral inside a
   run; `clamp` 1 is Release 1.2, clamped to 0–1 before the power and after
-  saturation.
+  saturation. Use `clamp` 1 for a CDL that must match other tools' ASC CDL
+  output.
 - `grade.rgb-mixer`: `color.matrix`'s parameters and formula
   (`(I + strength·(M − I))·rgb + strength·offset`) in float, without the 1/4096
   quantization.
