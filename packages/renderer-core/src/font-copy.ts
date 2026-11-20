@@ -6,6 +6,7 @@ import {
   resolvedTextStyle,
   type TextNode,
 } from "./typography-style.ts";
+import type { FontAxesLookup } from "@still-shift/scene-contract";
 import { FONT_IDENTITY_LIMITS, type FontTextRun } from "./font-identity.ts";
 import { passageError } from "./passage-diagnostics.ts";
 
@@ -24,9 +25,32 @@ export type FontCopyScene = Parameters<typeof typographyTextValues>[0] & {
 };
 export type CollectedFontTextRun = FontTextRun & { fontAsset: string };
 
-/** Collect the same generated values and per-grapheme case transforms as shaping. */
+/** Declared axes of a scene's fonts (a static font has none). */
+export function declaredFontAxes(
+  fonts:
+    | readonly {
+        id: string;
+        variable?: Readonly<Record<string, unknown>> | undefined;
+      }[]
+    | undefined,
+): FontAxesLookup | undefined {
+  if (!fonts) return undefined;
+  return (id) => {
+    const font = fonts.find((f) => f.id === id);
+    return font ? (font.variable ?? {}) : undefined;
+  };
+}
+
+/**
+ * Collect the same generated values and per-grapheme case transforms as
+ * shaping. `fontAxes` resolves span styles' inherited axes against their own
+ * fonts, as shaping does; it defaults to the scene's declared fonts.
+ */
 export function collectFontTextRuns(
   scene: FontCopyScene,
+  fontAxes: FontAxesLookup | undefined = declaredFontAxes(
+    (scene as { fonts?: Parameters<typeof declaredFontAxes>[0] }).fonts,
+  ),
 ): CollectedFontTextRun[] {
   const runs: CollectedFontTextRun[] = [];
   let codeUnits = 0;
@@ -41,7 +65,7 @@ export function collectFontTextRuns(
         "font-copy-budget: reachable copy exceeds the inspection budget",
         { node: node.id, path },
       );
-    runs.push(...textRuns(node, text, scene.textStyles ?? {}, path));
+    runs.push(...textRuns(node, text, scene.textStyles ?? {}, path, fontAxes));
   };
   for (const [nodeIndex, node] of (scene.nodes ?? []).entries()) {
     if (node.type !== "text") continue;
@@ -82,6 +106,7 @@ function textRuns(
   text: string,
   styles: Record<string, TextStyle>,
   path: string,
+  fontAxes: FontAxesLookup | undefined,
 ): CollectedFontTextRun[] {
   const locale = node.locale ?? node.textBox?.locale ?? "en";
   const runs: CollectedFontTextRun[] = [];
@@ -91,7 +116,7 @@ function textRuns(
     const span = node.spans?.find(
       (span) => index >= span.start && index < span.end,
     );
-    const style = resolvedTextStyle(node, styles, span?.style);
+    const style = resolvedTextStyle(node, styles, span?.style, fontAxes);
     if (!style.fontAsset) continue;
     const value = caseText(segment.segment, style, locale);
     const previous = runs.at(-1);

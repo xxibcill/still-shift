@@ -5,8 +5,13 @@ import {
   ROLE_LEADING,
   opticalTracking,
   resolvedTextStyle,
+  type FontAxesLookup,
 } from "@still-shift/scene-contract";
 export { ROLE_LEADING, opticalTracking, resolvedTextStyle };
+/** Axes of loaded fonts, so span styles resolve against their own font. */
+export function loadedFontAxes(fonts: Map<string, LoadedFont>): FontAxesLookup {
+  return (id) => fonts.get(id)?.metrics?.axes;
+}
 export type { TextNode } from "@still-shift/scene-contract";
 export function styleFontKey(style: TextStyle) {
   return `${style.fontAsset}:${JSON.stringify([Object.entries(style.features ?? {}).sort(), Object.entries(style.axes ?? {}).sort(), style.case === "small-caps", style.figures ?? null])}`;

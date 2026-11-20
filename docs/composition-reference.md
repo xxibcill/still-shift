@@ -2336,6 +2336,10 @@ Value forms:
 Text layers follow the story typography rules: spans fit every text state and do not
 overlap, decorations and animators name existing spans, variable-font axes stay in the
 pinned font's range, and text transitions do not overlap and name existing states.
+A span style that sets no `axes` inherits the layer style's axes, but only those its
+own font has: a static script span inside a `wght` 900 serif gets no `wght`. Inherited
+axes the span's font has keep their value and are still range-checked; axes a span
+style sets itself must exist on its font.
 
 Text animator `from.axes` and `to.axes` are deltas from each affected layer or span
 style, falling back to the font's default axis value. Axis names must exist on every

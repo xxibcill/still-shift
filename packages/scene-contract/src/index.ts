@@ -59,6 +59,8 @@ export {
   ROLE_LEADING,
   opticalTracking,
   resolvedTextStyle,
+  spanStyleOver,
+  type FontAxesLookup,
   type TextNode,
 } from "./typography-style.ts";
 export {

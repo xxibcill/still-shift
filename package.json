@@ -124,6 +124,7 @@
     "test:browser:composition-webgl-export": "node --import tsx tests/browser/composition-webgl-export.ts",
     "test:browser:composition-quality": "node --import tsx tests/browser/composition-quality.ts",
     "test:browser:composition-text-measure": "node --import tsx tests/browser/composition-text-measure.ts",
+    "test:browser:editorial-titles-phase1": "node --import tsx tests/browser/editorial-titles-phase1.ts",
     "composition:lint-corpus": "node --import tsx scripts/composition/lint-corpus.ts",
     "composition:lint-acceptance": "node --import tsx scripts/composition/lint-acceptance.ts",
     "test:browser:composition-passage": "node --import tsx tests/browser/passage-authoring.ts --composition",

@@ -11,6 +11,7 @@ import {
   type TextAnimationContext,
 } from "./typography-animation.ts";
 import {
+  loadedFontAxes,
   resolvedTextStyle,
   styleFontKey,
   type TextNode,
@@ -103,7 +104,12 @@ export async function loadTextAnimationFonts(
       for (const deltas of variants.values())
         for (const span of [undefined, ...(node.spans ?? [])]) {
           const style = supportedAxisStyle(
-            resolvedTextStyle(node, scene.textStyles ?? {}, span?.style),
+            resolvedTextStyle(
+              node,
+              scene.textStyles ?? {},
+              span?.style,
+              loadedFontAxes(fonts),
+            ),
             deltas,
             fonts,
           );
@@ -144,7 +150,7 @@ export function axisLayout(
   const spans = node.spans?.map((span, i) => {
     const id = `${node.id}-axis-span-${i}`;
     varied[id] = supportedAxisStyle(
-      resolvedTextStyle(node, styles, span.style),
+      resolvedTextStyle(node, styles, span.style, loadedFontAxes(fonts)),
       axes,
       fonts,
     );

@@ -26,7 +26,7 @@ import {
 } from "../../typography-renderer.ts";
 import { loadTextStyleFont } from "../../prepared-fonts.ts";
 import { loadTextAnimationFonts } from "../../typography-axes.ts";
-import { resolvedTextStyle } from "../../typography-style.ts";
+import { loadedFontAxes, resolvedTextStyle } from "../../typography-style.ts";
 import { componentText } from "../../component-values.ts";
 import { resolveTextEvents } from "../../typography-events.ts";
 import { passageError } from "../../passage-diagnostics.ts";
@@ -177,7 +177,12 @@ function typographyProvider(id: string): CanvasContentProvider {
       const data = parse(layer, path);
       for (const span of [undefined, ...(data.node.spans ?? [])])
         await loadTextStyleFont(
-          resolvedTextStyle(data.node, data.textStyles, span?.style),
+          resolvedTextStyle(
+            data.node,
+            data.textStyles,
+            span?.style,
+            loadedFontAxes(fonts),
+          ),
           fonts,
         );
       await loadTextAnimationFonts(textScene(data, layer.sampleTimes), fonts);

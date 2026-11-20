@@ -2,6 +2,7 @@ import type { TextStyle } from "../../scene-contract/src/typography.ts";
 import {
   applyTextStyle,
   caseText,
+  loadedFontAxes,
   resolvedTextStyle,
   type TextNode,
 } from "./typography-style.ts";
@@ -226,7 +227,12 @@ export function shapeText(
     const spanIndex =
       node.spans?.findIndex((span) => i >= span.start && i < span.end) ?? -1;
     const span = node.spans?.[spanIndex];
-    const style = resolvedTextStyle(node, styles, span?.style);
+    const style = resolvedTextStyle(
+      node,
+      styles,
+      span?.style,
+      loadedFontAxes(fonts),
+    );
     return {
       start: s.index,
       end: s.index + s.segment.length,

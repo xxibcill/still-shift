@@ -225,8 +225,10 @@ render, sheets); the second adds `comp lint --pixels true --legibility true
   new faces. (Prompt Black, rejected in ET7a for its 8.7 KB embedded
   licence, loads since Phase 1: only identity names count against the
   2 KB name budget.)
-- A span's named style inherits the base style's `axes`; give a span style
-  for a font without that axis `axes: {}`.
+- A span's named style inherits the base style's `axes` only where its own
+  font has them, so a static script span in a variable serif needs no
+  `axes: {}` (since Phase 1). An inherited axis outside the span font's
+  range still fails; set it on the span style.
 - Drop shadows and halos make Canvas renders about ten times slower (a 7 s
   720×1280 clip: about 9 s without, about 100 s with).
 - Legibility lint renders two extra frames per text layer per reading frame:
