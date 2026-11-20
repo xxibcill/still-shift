@@ -68,7 +68,8 @@ export const thai = {
   mitr: await load("mitr", "mitr-bold.ttf", { weight: "700" }),
   // Rejected by `font-metadata` in ET7a (its 8.7 KB licence in name ID 13 was
   // over the 2 KB name budget); loads since the identity reads only identity
-  // names (Phase 1).
+  // names (Phase 1). Candidate sources stay frozen at their recorded SHA-256,
+  // so b05's "Prompt Black is rejected" comment describes ET7a, not today.
   promptBlack: await load("prompt-black", "prompt-black.ttf", {
     weight: "900",
   }),
