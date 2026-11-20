@@ -5,6 +5,7 @@ import {
   applyRgbMixer,
   gradePrimaryControls,
   HIGHLIGHT_RANGE,
+  IDENTITY,
   lumaCoefficients,
   perChannel,
   rgbMixer,
@@ -12,10 +13,8 @@ import {
   TONAL_AMOUNT,
   whiteBalanceMatrix,
   type Cdl,
-  type GradePrimaryControls,
   type Mat3,
   type Rgb,
-  type RgbMixer,
 } from "@still-shift/color-science";
 import {
   COLOR_MATRIX_COEFFICIENTS,
@@ -45,102 +44,162 @@ const CHANNELS = ["R", "G", "B"] as const;
 const rgb = (p: Params, name: string): Rgb =>
   perChannel((c) => n(p, `${name}${CHANNELS[c]}`));
 
-export type FloatGradeOp =
-  | { id: "grade.primary"; controls: GradePrimaryControls }
-  | { id: "grade.white-balance"; matrix: Mat3 }
-  | { id: "grade.cdl"; cdl: Cdl; clamp: boolean }
-  | { id: "grade.rgb-mixer"; mixer: RgbMixer };
+type Uniforms = Record<string, number | number[]>;
+type OpGlsl = { declare: string; call: string; uniforms: Uniforms };
+
+/** One operator of a run: its float64 reference and its fused-shader GLSL. */
+export type FloatGradeOp = {
+  readonly id: FloatGradeEffectId;
+  /** The float64 reference (the Canvas path and tests). */
+  apply(v: Rgb): Rgb;
+  /** Uniform declarations, the call and uniform values; `uniform` names them. */
+  glsl(uniform: (name: string) => string): OpGlsl;
+};
 
 const isIdentity = (m: Mat3) => m.every((v, i) => v === (i % 4 === 0 ? 1 : 0));
 
-/** Float64 controls for one effect, or null when its settings are neutral. */
-export function floatGradeOp(
+/** Column-major (GLSL) from row-major. */
+const columns = (m: Mat3) =>
+  [0, 1, 2].flatMap((c) => [m[c]!, m[3 + c]!, m[6 + c]!]);
+
+/**
+ * Each operator in one place: its sampled parameters → an op (float64
+ * reference and GLSL), or null when the settings are neutral.
+ */
+const OPERATORS: Readonly<
+  Record<FloatGradeEffectId, (p: Params) => FloatGradeOp | null>
+> = {
+  "grade.primary": (p) => {
+    const master = (name: string) => n(p, `${name}Master`);
+    const channel = (name: string, combine: (v: number) => number) => {
+      const values = rgb(p, name);
+      return perChannel((c) => combine(values[c]));
+    };
+    const lift = channel("lift", (v) => v + master("lift"));
+    const gamma = channel("gamma", (v) => v * master("gamma"));
+    const gain = channel("gain", (v) => v * master("gain"));
+    const offset = channel("offset", (v) => v + master("offset"));
+    const settings = {
+      lift,
+      gamma,
+      gain,
+      offset,
+      contrast: n(p, "contrast"),
+      pivot: n(p, "pivot"),
+      saturation: n(p, "saturation"),
+      hue: n(p, "hue"),
+      colorBoost: n(p, "colorBoost"),
+      shadows: n(p, "shadows"),
+      highlights: n(p, "highlights"),
+    };
+    const neutral =
+      lift.every((v) => v === 0) &&
+      gamma.every((v) => v === 1) &&
+      gain.every((v) => v === 1) &&
+      offset.every((v) => v === 0) &&
+      settings.contrast === 1 &&
+      settings.saturation === 1 &&
+      settings.hue === 0 &&
+      settings.colorBoost === 0 &&
+      settings.shadows === 0 &&
+      settings.highlights === 0;
+    if (neutral) return null;
+    const controls = gradePrimaryControls(settings);
+    return {
+      id: "grade.primary",
+      apply: (v) => applyGradePrimary(v, controls),
+      glsl: (u) => ({
+        declare: `uniform vec3 ${u("Lift")};uniform vec3 ${u("Gamma")};uniform vec3 ${u("Gain")};uniform vec3 ${u("Offset")};uniform vec4 ${u("Tone")};uniform vec2 ${u("Tonal")};uniform float ${u("HueOn")};uniform mat3 ${u("Hue")};`,
+        call: `v=gPrimary(v,${u("Lift")},${u("Gamma")},${u("Gain")},${u("Offset")},${u("Tone")},${u("Tonal")},${u("HueOn")},${u("Hue")});`,
+        uniforms: {
+          [u("Lift")]: [...controls.lift],
+          [u("Gamma")]: controls.gamma.map((g) => 1 / g),
+          [u("Gain")]: [...controls.gain],
+          [u("Offset")]: [...controls.offset],
+          [u("Tone")]: [
+            controls.contrast,
+            controls.pivot,
+            controls.saturation,
+            controls.colorBoost,
+          ],
+          [u("Tonal")]: [controls.shadows, controls.highlights],
+          [u("HueOn")]: controls.hueMatrix ? 1 : 0,
+          [u("Hue")]: columns(controls.hueMatrix ?? IDENTITY),
+        },
+      }),
+    };
+  },
+  "grade.white-balance": (p) => {
+    const matrix = whiteBalanceMatrix(n(p, "temperature"), n(p, "tint"));
+    if (!matrix) return null;
+    return {
+      id: "grade.white-balance",
+      apply: (v) => applyLinearMatrixEncoded(v, matrix),
+      glsl: (u) => ({
+        declare: `uniform mat3 ${u("White")};`,
+        call: `v=gWhite(v,${u("White")});`,
+        uniforms: { [u("White")]: columns(matrix) },
+      }),
+    };
+  },
+  "grade.cdl": (p) => {
+    const cdl: Cdl = {
+      slope: rgb(p, "slope"),
+      offset: rgb(p, "offset"),
+      power: rgb(p, "power"),
+      saturation: n(p, "saturation"),
+    };
+    const clamp = n(p, "clamp") >= 0.5;
+    const neutral =
+      !clamp &&
+      cdl.slope.every((v) => v === 1) &&
+      cdl.offset.every((v) => v === 0) &&
+      cdl.power.every((v) => v === 1) &&
+      cdl.saturation === 1;
+    if (neutral) return null;
+    return {
+      id: "grade.cdl",
+      apply: (v) => applyCdl(v, cdl, clamp ? "asc" : "no-clamp"),
+      glsl: (u) => ({
+        declare: `uniform vec3 ${u("Slope")};uniform vec3 ${u("CdlOffset")};uniform vec3 ${u("Power")};uniform vec2 ${u("Sat")};`,
+        call: `v=gCdl(v,${u("Slope")},${u("CdlOffset")},${u("Power")},${u("Sat")});`,
+        uniforms: {
+          [u("Slope")]: [...cdl.slope],
+          [u("CdlOffset")]: [...cdl.offset],
+          [u("Power")]: [...cdl.power],
+          [u("Sat")]: [cdl.saturation, clamp ? 1 : 0],
+        },
+      }),
+    };
+  },
+  "grade.rgb-mixer": (p) => {
+    const mixer = rgbMixer(
+      COLOR_MATRIX_COEFFICIENTS.flat().map((name) => n(p, name)),
+      perChannel((c) => n(p, COLOR_MATRIX_OFFSETS[c]!)),
+      n(p, "strength"),
+    );
+    if (isIdentity(mixer.matrix) && mixer.offset.every((v) => v === 0))
+      return null;
+    return {
+      id: "grade.rgb-mixer",
+      apply: (v) => applyRgbMixer(v, mixer),
+      glsl: (u) => ({
+        declare: `uniform mat3 ${u("Mix")};uniform vec3 ${u("MixOffset")};`,
+        call: `v=${u("Mix")}*v+${u("MixOffset")};`,
+        uniforms: {
+          [u("Mix")]: columns(mixer.matrix),
+          [u("MixOffset")]: [...mixer.offset],
+        },
+      }),
+    };
+  },
+};
+
+/** The op for one effect's sampled parameters, or null when neutral. */
+export const floatGradeOp = (
   id: FloatGradeEffectId,
   p: Params,
-): FloatGradeOp | null {
-  switch (id) {
-    case "grade.primary": {
-      const m = (name: string) => n(p, `${name}Master`);
-      const channel = (name: string, combine: (v: number) => number) => {
-        const values = rgb(p, name);
-        return perChannel((c) => combine(values[c]));
-      };
-      const lift = channel("lift", (v) => v + m("lift"));
-      const gamma = channel("gamma", (v) => v * m("gamma"));
-      const gain = channel("gain", (v) => v * m("gain"));
-      const offset = channel("offset", (v) => v + m("offset"));
-      const settings = {
-        lift,
-        gamma,
-        gain,
-        offset,
-        contrast: n(p, "contrast"),
-        pivot: n(p, "pivot"),
-        saturation: n(p, "saturation"),
-        hue: n(p, "hue"),
-        colorBoost: n(p, "colorBoost"),
-        shadows: n(p, "shadows"),
-        highlights: n(p, "highlights"),
-      };
-      const neutral =
-        lift.every((v) => v === 0) &&
-        gamma.every((v) => v === 1) &&
-        gain.every((v) => v === 1) &&
-        offset.every((v) => v === 0) &&
-        settings.contrast === 1 &&
-        settings.saturation === 1 &&
-        settings.hue === 0 &&
-        settings.colorBoost === 0 &&
-        settings.shadows === 0 &&
-        settings.highlights === 0;
-      return neutral ? null : { id, controls: gradePrimaryControls(settings) };
-    }
-    case "grade.white-balance": {
-      const matrix = whiteBalanceMatrix(n(p, "temperature"), n(p, "tint"));
-      return matrix ? { id, matrix } : null;
-    }
-    case "grade.cdl": {
-      const cdl: Cdl = {
-        slope: rgb(p, "slope"),
-        offset: rgb(p, "offset"),
-        power: rgb(p, "power"),
-        saturation: n(p, "saturation"),
-      };
-      const clamp = n(p, "clamp") >= 0.5;
-      const neutral =
-        !clamp &&
-        cdl.slope.every((v) => v === 1) &&
-        cdl.offset.every((v) => v === 0) &&
-        cdl.power.every((v) => v === 1) &&
-        cdl.saturation === 1;
-      return neutral ? null : { id, cdl, clamp };
-    }
-    case "grade.rgb-mixer": {
-      const mixer = rgbMixer(
-        COLOR_MATRIX_COEFFICIENTS.flat().map((name) => n(p, name)),
-        perChannel((c) => n(p, COLOR_MATRIX_OFFSETS[c]!)),
-        n(p, "strength"),
-      );
-      return isIdentity(mixer.matrix) && mixer.offset.every((v) => v === 0)
-        ? null
-        : { id, mixer };
-    }
-  }
-}
-
-/** The float64 reference for one op (the Canvas path and tests). */
-export function applyFloatGradeOp(op: FloatGradeOp, v: Rgb): Rgb {
-  switch (op.id) {
-    case "grade.primary":
-      return applyGradePrimary(v, op.controls);
-    case "grade.white-balance":
-      return applyLinearMatrixEncoded(v, op.matrix);
-    case "grade.cdl":
-      return applyCdl(v, op.cdl, op.clamp ? "asc" : "no-clamp");
-    case "grade.rgb-mixer":
-      return applyRgbMixer(v, op.mixer);
-  }
-}
+): FloatGradeOp | null => OPERATORS[id](p);
 
 /** Straight float → straight byte, half up, clamped (the one quantization). */
 export const quantizeGrade = (v: number) =>
@@ -149,7 +208,7 @@ export const quantizeGrade = (v: number) =>
 /** The run on one straight color (0–1 floats in, bytes out). */
 export function floatGradeBytes(ops: readonly FloatGradeOp[], v: Rgb): Rgb {
   let value = v;
-  for (const op of ops) value = applyFloatGradeOp(op, value);
+  for (const op of ops) value = op.apply(value);
   return perChannel((c) => quantizeGrade(value[c]));
 }
 
@@ -186,62 +245,9 @@ vec3 gCdl(vec3 v,vec3 slope,vec3 offs,vec3 power,vec2 sc){
   return sc.y>0.5?clamp(o,0.0,1.0):o;
 }`;
 
-/** Column-major (GLSL) from row-major. */
-const columns = (m: Mat3) =>
-  [0, 1, 2].flatMap((c) => [m[c]!, m[3 + c]!, m[6 + c]!]);
-
-function opGlsl(op: FloatGradeOp, i: number) {
-  const u = (name: string) => `g${i}${name}`;
-  switch (op.id) {
-    case "grade.primary": {
-      const k = op.controls;
-      return {
-        declare: `uniform vec3 ${u("Lift")};uniform vec3 ${u("Gamma")};uniform vec3 ${u("Gain")};uniform vec3 ${u("Offset")};uniform vec4 ${u("Tone")};uniform vec2 ${u("Tonal")};uniform float ${u("HueOn")};uniform mat3 ${u("Hue")};`,
-        call: `v=gPrimary(v,${u("Lift")},${u("Gamma")},${u("Gain")},${u("Offset")},${u("Tone")},${u("Tonal")},${u("HueOn")},${u("Hue")});`,
-        uniforms: {
-          [u("Lift")]: [...k.lift],
-          [u("Gamma")]: k.gamma.map((g) => 1 / g),
-          [u("Gain")]: [...k.gain],
-          [u("Offset")]: [...k.offset],
-          [u("Tone")]: [k.contrast, k.pivot, k.saturation, k.colorBoost],
-          [u("Tonal")]: [k.shadows, k.highlights],
-          [u("HueOn")]: k.hueMatrix ? 1 : 0,
-          [u("Hue")]: columns(k.hueMatrix ?? [1, 0, 0, 0, 1, 0, 0, 0, 1]),
-        },
-      };
-    }
-    case "grade.white-balance":
-      return {
-        declare: `uniform mat3 ${u("White")};`,
-        call: `v=gWhite(v,${u("White")});`,
-        uniforms: { [u("White")]: columns(op.matrix) },
-      };
-    case "grade.cdl":
-      return {
-        declare: `uniform vec3 ${u("Slope")};uniform vec3 ${u("CdlOffset")};uniform vec3 ${u("Power")};uniform vec2 ${u("Sat")};`,
-        call: `v=gCdl(v,${u("Slope")},${u("CdlOffset")},${u("Power")},${u("Sat")});`,
-        uniforms: {
-          [u("Slope")]: [...op.cdl.slope],
-          [u("CdlOffset")]: [...op.cdl.offset],
-          [u("Power")]: [...op.cdl.power],
-          [u("Sat")]: [op.cdl.saturation, op.clamp ? 1 : 0],
-        },
-      };
-    case "grade.rgb-mixer":
-      return {
-        declare: `uniform mat3 ${u("Mix")};uniform vec3 ${u("MixOffset")};`,
-        call: `v=${u("Mix")}*v+${u("MixOffset")};`,
-        uniforms: {
-          [u("Mix")]: columns(op.mixer.matrix),
-          [u("MixOffset")]: [...op.mixer.offset],
-        },
-      };
-  }
-}
-
 /** One fused shader for the run (cached by the device per text). */
 export function floatGradeShader(ops: readonly FloatGradeOp[]) {
-  const parts = ops.map(opGlsl);
+  const parts = ops.map((op, i) => op.glsl((name) => `g${i}${name}`));
   const fragment = `${GLSL_COMMON}
 ${parts.map((p) => p.declare).join("\n")}
 void main(){
@@ -255,10 +261,7 @@ void main(){
 }`;
   return {
     fragment,
-    uniforms: Object.assign({}, ...parts.map((p) => p.uniforms)) as Record<
-      string,
-      number | number[]
-    >,
+    uniforms: Object.assign({}, ...parts.map((p) => p.uniforms)) as Uniforms,
   };
 }
 
