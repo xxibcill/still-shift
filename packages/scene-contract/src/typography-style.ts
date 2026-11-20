@@ -70,10 +70,21 @@ export function spanStyleOver<T extends TextStyle>(
 }
 
 /**
+ * A text node's style, or with `spanStyle` that span's style over it.
  * `fontAxes` resolves a span style's inherited axes against its own font.
- * Pass it wherever the result's `axes` are read; callers that read only
- * case, size or font may omit it.
+ * It is required with a span style, so a caller that reads only case, size
+ * or font passes `undefined` deliberately rather than by omission.
  */
+export function resolvedTextStyle(
+  node: TextNode,
+  styles: Record<string, TextStyle>,
+): TextStyle;
+export function resolvedTextStyle(
+  node: TextNode,
+  styles: Record<string, TextStyle>,
+  spanStyle: string | undefined,
+  fontAxes: FontAxesLookup | undefined,
+): TextStyle;
 export function resolvedTextStyle(
   node: TextNode,
   styles: Record<string, TextStyle>,

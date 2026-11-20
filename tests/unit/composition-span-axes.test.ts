@@ -102,7 +102,7 @@ describe("span style axes", () => {
       wght: 900,
     });
     // Without font knowledge the old merge is unchanged.
-    expect(resolvedTextStyle(node, styles, "amp").axes).toEqual({
+    expect(resolvedTextStyle(node, styles, "amp", undefined).axes).toEqual({
       wght: 900,
       opsz: 96,
     });
