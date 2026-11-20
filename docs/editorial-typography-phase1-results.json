@@ -8,10 +8,10 @@
   "branch": "codex/editorial-titles-phase1",
   "base": "main 760a18a1 (Merge PR #73)",
   "toolchain": "Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
-  "status": "Re-review sheets ready for the owner gate; five small fixes and housekeeping committed. In review as PR #74.",
+  "status": "Owner reviewed the corrected re-render sheets and accepted all 16 (\"all yes\"); Phase 1 owner gate passed. Small fixes, housekeeping and review fixes committed. In review as PR #74.",
   "phases": {
     "phase1": "this record",
-    "ownerGate1": "owner reviews the re-rendered sheets; sets ET6b's display-contrast level",
+    "ownerGate1": "done 2026-11-20: \"all yes\" on the corrected sheets (see ownerReview)",
     "phase2": "ET6b (editorial-title lint profile: D-read drift, size-split contrast, outline/shadow/halo credit) and EC (shadow/halo cost)",
     "ownerGate2": "owner supplies one owned or licensed clip (D-auth)",
     "phase3": "confirming 8-candidate run with committed sheets; ET4 reduced or dropped; ET9 release verification",
@@ -1557,6 +1557,40 @@
         "pnpm check / pnpm test in full and release checks (not a release)",
         "Soundtrack groups (unaffected)"
       ]
+    }
+  },
+  "ownerReview": {
+    "date": "2026-11-20",
+    "status": "done",
+    "ownerWords": "all yes",
+    "scope": "One answer covering all 16 candidates, given after reviewing the corrected-footage sheets (benchmarks/results/editorial-titles-phase1-review/ in the primary checkout, local only); no per-candidate comments and no title named as weak.",
+    "verdicts": {
+      "a01-layer-it-up": "accepted",
+      "a02-lace-leather": "accepted",
+      "a03-thai-get-dressed": "accepted",
+      "a04-thai-look-slay": "accepted",
+      "a05-plaid-season": "accepted",
+      "a06-soft-sunday": "accepted",
+      "a07-black-cami-era": "accepted",
+      "a08-todays-ootd": "accepted",
+      "b01-one-pant": "accepted",
+      "b02-brown-new-black": "accepted",
+      "b03-thai-one-pant": "accepted",
+      "b04-golden-hour": "accepted",
+      "b05-thai-steal-look": "accepted",
+      "b06-fit-check": "accepted",
+      "b07-chocolate-trousers": "accepted",
+      "b08-main-character": "accepted"
+    },
+    "successMeasure": {
+      "bar": "At least 3 of 8 accepted per clip, on two clips",
+      "result": "pass on corrected footage: reel A 8/8, reel B 8/8",
+      "caveat": "Both clips are third-party reels used local only; D-auth stays open (Phase 3 confirms on an owned or licensed clip)."
+    },
+    "agentJudgementVsOwner": "The agent had judged b02 slightly worse; the owner accepted it. Agent judgements stay separate and are not acceptance.",
+    "et6bDisplayLevel": {
+      "whatThisSets": "An upper bound only: ET6b's display-contrast rule, measured fill against its own outline/shadow/halo ring, must pass all 16 accepted candidates on the corrected renders. The owner flagged none as weak, so there is no owner-marked negative to set a lower bound.",
+      "phase2": "Compute each treated display layer's fill-vs-ring contrast on these 16 corrected renders; propose the level as the lowest measured value among them (with a margin), and show the owner the near-threshold layers plus deliberately weakened variants (e.g. the ET7a halo-only scripts a06 r01 and b04 r01, which the agent caught as weak) to confirm where failing starts."
     }
   }
 }

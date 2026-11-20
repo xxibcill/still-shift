@@ -152,8 +152,11 @@ PR, with an owner gate between them.
    axis inheritance, highlight under per-glyph builds, box padding and glow
    colour. Housekeeping adds missing test groups to `pnpm test`. Results:
    [Phase 1 results](./editorial-typography-phase1-results.json).
-2. **Owner gate:** the owner reviews the re-rendered sheets. That review sets
-   ET6b's display-contrast level (ET3-D1's boundary).
+2. **Owner gate (done 2026-11-20):** the owner reviewed the re-rendered sheets
+   and answered "all yes": all 16 accepted on corrected footage (8/8 per reel).
+   No title was named weak, so ET6b's display-contrast level must pass all 16;
+   Phase 2 proposes the level from their measured fill-vs-ring contrast and
+   confirms it with the owner on near-threshold and weakened variants.
 3. **Phase 2:** [ET6b](#et6b--editorial-title-lint-profile), the
    `editorial-title` lint profile with the D-read drift rule, size-split
    contrast and credit for outline, shadow and halo; plus
