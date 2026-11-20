@@ -63,10 +63,11 @@ export function nativeTypographyContentBounds(
           )
         : 1;
       const padding = decorationPadding(mark);
+      // Every glyph of the span, grown or not: these bounds cover all frames.
       const segments = decorationSegments(
         node,
         raster.layout,
-        mark.span,
+        { span: mark.span },
         original,
       ).map((segment) => padSegment(segment, padding));
       let remaining =

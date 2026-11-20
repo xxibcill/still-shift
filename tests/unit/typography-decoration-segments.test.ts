@@ -20,7 +20,7 @@ const layout = {
 const pose = (opacity: number, y: number) =>
   ({ x: 0, y, scale: 1, opacity }) as TextPose;
 const grown = (poses: TextPose[]) =>
-  decorationSegments(node, layout, undefined, poses, true)[0]!;
+  decorationSegments(node, layout, { growWithText: true }, poses)[0]!;
 
 describe("decorationSegments with growWithText", () => {
   it("follows the settled glyph during a reverse drop build", () => {
@@ -37,8 +37,6 @@ describe("decorationSegments with growWithText", () => {
   it("matches the ungrown baseline once every glyph is revealed", () => {
     const poses = [pose(1, 4), pose(1, 8), pose(1, 0)];
     expect(grown(poses).baseline).toBe(104);
-    expect(
-      decorationSegments(node, layout, undefined, poses, false)[0]!.baseline,
-    ).toBe(104);
+    expect(decorationSegments(node, layout, {}, poses)[0]!.baseline).toBe(104);
   });
 });

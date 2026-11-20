@@ -175,7 +175,8 @@ export function animatedTextBounds(
       for (const segment of decorationSegments(
         node,
         raster.layout,
-        mark.span,
+        // Every glyph of the span, grown or not: these bounds cover all frames.
+        { span: mark.span },
         poses,
       ).map((segment) => padSegment(segment, padding)))
         include({

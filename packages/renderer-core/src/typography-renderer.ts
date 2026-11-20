@@ -39,7 +39,6 @@ import {
 } from "./typography-transition.ts";
 import {
   decorationFadesWithText,
-  decorationGrowsWithText,
   decorationReveal,
   decorationSegments,
   drawTextDecorations,
@@ -1473,9 +1472,8 @@ export function typographyOrphanedDecorations(
       const segments = decorationSegments(
         node,
         raster.layout,
-        mark.span,
+        mark,
         behind ? poses : revealed.poses,
-        decorationGrowsWithText(mark),
       );
       const reveal = decorationReveal(mark, frame, prepared.scene.fps);
       if (

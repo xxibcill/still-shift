@@ -404,7 +404,8 @@ function decorationMeasures(
         : Math.max(1, layout.underlineThickness));
     const offset = mark.offset ?? 0;
     const padding = decorationPadding(mark);
-    const segments = decorationSegments(node, layout, mark.span).map(
+    // The settled state: no poses, so growWithText covers every glyph.
+    const segments = decorationSegments(node, layout, mark).map(
       (segment): TextDecorationSegmentMeasure => {
         const line = layout.lines.findIndex(
           (l) => l.baseline === segment.baseline,
