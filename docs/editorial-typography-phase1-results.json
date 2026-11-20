@@ -1470,7 +1470,93 @@
       "Full unit run during the parallel re-render: 3 tests timed out (mechanism-slotted-retention x2, mechanism-cue-plate-overlays x1); they pass alone and in every later full run.",
       "pnpm check:fast first run: one lint error (above)."
     ],
-    "note": "The browser groups ran before the lint fix, which only replaced a destructuring with an equivalent copy-and-delete; the unit suite and check:fast ran after it."
+    "note": "The browser groups ran before the lint fix, which only replaced a destructuring with an equivalent copy-and-delete; the unit suite and check:fast ran after it.",
+    "supersededBy": "reviewFixes.verification: this block predates c04d5598, 2bae9108 and 6deeee68, and et0-baseline --check failed at 6deeee68 (see reviewFixes)."
   },
-  "agentScores": "None. Visual verdicts above are the agent's judgement; the owner gate decides."
+  "agentScores": "None. Visual verdicts above are the agent's judgement; the owner gate decides.",
+  "reviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/74#pullrequestreview-5989610756",
+    "method": "Review of the PR head 6deeee68 on three axes (repo standards, the Phase 1 spec, correctness), one inline comment per finding (17). Code findings fixed one commit each; the rest recorded below without a change.",
+    "fixed": [
+      {
+        "commit": "d43613c7",
+        "finding": "b05 still calls Prompt Black rejected",
+        "fix": "Note beside the font in research fonts.ts; the frozen candidate source keeps its pinned SHA-256."
+      },
+      {
+        "commit": "1586e75f",
+        "finding": "growWithText baseline follows the first revealed glyph",
+        "fix": "A growing mark follows its line's most-revealed glyph (first on ties); settled frames and non-growing marks unchanged. Failing-first unit test."
+      },
+      {
+        "commit": "00d3445c",
+        "finding": "light.glow color without tint renders nothing new",
+        "fix": "Validation rejects color with tint omitted (comp-effect-params at params.color); an explicit tint, even 0 or keyed, is accepted. Failing-first unit test; reference notes updated."
+      },
+      {
+        "commit": "708e5039",
+        "finding": "padding typed as number | number[]",
+        "fix": "Typed as the schema's number, pair or four-tuple; unit test pins the three forms."
+      },
+      {
+        "commit": "86976f71",
+        "finding": "padding geometry duplicated",
+        "fix": "padSegment, decorationBand (with bottom) and decorationBoxBand shared by drawing, bounds and measure; drawing and measure arithmetic unchanged."
+      },
+      {
+        "commit": "137fedeb",
+        "finding": "glow colour clamp and tint weight duplicated",
+        "fix": "glowColorBytes() and glowWeight() in pixel-effects.ts; pinned WebGL2 trace hashes unchanged."
+      },
+      {
+        "commit": "00496d1d",
+        "finding": "three font-axes lookups",
+        "fix": "One declaredFontAxes over any fonts or assets; pinnedFontAxes and font-copy's re-export removed. loadedFontAxes kept: it reads loaded font metrics."
+      },
+      {
+        "commit": "f5012c60",
+        "finding": "callers can silently omit fontAxes",
+        "fix": "resolvedTextStyle overloads require the lookup with a span style; case-only callers pass undefined explicitly."
+      },
+      {
+        "commit": "46105615",
+        "finding": "decorationSegments flag argument",
+        "fix": "Takes a DecorationSelection (the mark); bounds pass { span } alone to cover every frame."
+      },
+      {
+        "commit": "4ad0f5bb",
+        "finding": "stale verification (ET0 part)",
+        "fix": "ET0 baseline re-recorded: only the orphaned-decoration message from c04d5598 changes; every outcome is the same."
+      }
+    ],
+    "notChanged": {
+      "PR bundles several changes": "Splitting would rewrite pushed history; Phase 1 is defined as a small-fixes batch.",
+      "Milestone-named test group and fixture": "Renaming would make the Phase 1 records and plan references stale; left as named.",
+      "Browser test imports research code": "Existing practice (composition-colour-accuracy, composition-text-measure).",
+      "Failing-first tests not visible in history": "Cannot be shown after the fact; the review-fix tests above were run red before their fixes.",
+      "Three standalone groups outside pnpm test": "Owner decision, unchanged.",
+      "Scope wider than ET7a asked (four-side padding, growWithText on every kind, tint, skill pitfall)": "Owner awareness; kept.",
+      "Reveal counts any opacity above 0": "Documented behaviour; kept."
+    },
+    "verification": {
+      "toolchain": "pnpm toolchain:check passed (Node 22.23.1, pnpm 10.29.3)",
+      "pnpm check:fast": "passed at 46105615 (468 test files, 4,720 tests; 171 s)",
+      "test:browser:editorial-titles-phase1": "passed (150 s)",
+      "test:browser:composition-text-measure": "passed (186 s)",
+      "test:browser:typography": "passed (23 s)",
+      "test:browser:composition-quality": "passed (328 s)",
+      "tests/browser/composition-text-legibility.ts": "passed (53 s)",
+      "test:browser:composition-colour-accuracy": "passed (16 s)",
+      "test:browser:composition-webgl": "passed (329 s)",
+      "test:browser:composition-effects": "passed (154 s)",
+      "test:browser:composition-baselines": "passed: 176 items, 36,061 frames, all ok (baselines unchanged)",
+      "et0-baseline --check": "failed at 46105615 (and so at the PR head 6deeee68): the orphaned-decoration message changed in c04d5598 after ET0 was recorded. Re-recorded in 4ad0f5bb; --check then matched.",
+      "retainedFailures": ["et0-baseline --check, first run (above)."],
+      "note": "The groups above ran at 46105615; 4ad0f5bb changes only the ET0 baseline JSON, which et0-baseline --check verified afterwards.",
+      "notRun": [
+        "pnpm check / pnpm test in full and release checks (not a release)",
+        "Soundtrack groups (unaffected)"
+      ]
+    }
+  }
 }

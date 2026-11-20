@@ -47,6 +47,7 @@ still hold before relying on them.
   - **Re-review:** all 16 ET7a candidates re-rendered unchanged over the corrected (darker) footage; sources and exported compositions identical, every render hash changed, all pass strict coverage and lint. Agent judgement (not acceptance): none visibly worse, b02 slightly worse ("BLACK" over darker trousers).
   - **Fixes (opt-in or invisible; no baseline changes):** Prompt Black loads (only identity names count against the name budget); span styles resolve axes against their own font; decoration `growWithText` and `padding`; `light.glow` 1.1.0 `color` + `tint`.
   - **Owner gate (pending):** review the sheets in the primary checkout's git-ignored `benchmarks/results/editorial-titles-phase1-review/` and set ET6b's display-contrast level. Then Phase 2 (ET6b + EC); then the owner's licensed clip (D-auth) for Phase 3.
+  - **Review (2026-11-20):** [PR #74 review](https://github.com/xxibcill/still-shift/pull/74#pullrequestreview-5989610756), 17 findings. Ten fixed on the branch, one commit each (growWithText baseline, glow `color` needs `tint`, shared padding/glow/font-axes helpers, required axes lookup, ET0 re-record); seven unchanged with reasons in the results. The PR head's ET0 `--check` had failed on a message change; re-recorded, outcomes unchanged.
   - Records: [Phase 1 results](./editorial-typography-phase1-results.json).
 
 - **Package build on `main` (2026-11-17):** `pnpm build:package` failed at `main` 6235ab3e with TS2742 on `textLayers` and `textLegibilityLayers` (inferred types reference zod internals; added after 0.2.0). Fixed with explicit return types, type-only; emitted JavaScript unchanged. New `pnpm check:package-types` runs the release compile's diagnostics without writing `dist/` and is part of `check:fast` and `check`, because `tsc --noEmit` skips declaration emit. In review on `claude/fix-package-declaration-emit`. [PR #73 review](https://github.com/xxibcill/still-shift/pull/73#pullrequestreview-5935334390): findings 1–2 fixed (clean check failure output; `docs/verification.md` names the check); finding 3, the `claude/` branch prefix against AGENTS.md's `codex/`, is an owner decision (rename or keep).
@@ -117,6 +118,16 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-20 — Editorial titles Phase 1: PR #74 review fixes
+
+- **Agent / branch:** Claude Code on `codex/editorial-titles-phase1` ([PR #74](https://github.com/xxibcill/still-shift/pull/74)).
+- **Scope:** review the PR head 6deeee68 (standards, Phase 1 spec, correctness) and fix its findings, one commit per finding.
+- **Done:** [review](https://github.com/xxibcill/still-shift/pull/74#pullrequestreview-5989610756) with 17 inline findings. Fixed: d43613c7 b05 note; 1586e75f growing mark follows its most-revealed glyph; 00d3445c `light.glow` `color` without `tint` fails validation; 708e5039 padding tuple type; 86976f71 shared padding geometry; 137fedeb shared glow clamp/weight; 00496d1d one `declaredFontAxes`; f5012c60 `resolvedTextStyle` requires the axes lookup with a span style; 46105615 `decorationSegments` takes the mark; 4ad0f5bb ET0 re-record.
+- **Results:** `check:fast` (4,720 tests) and nine browser groups pass on Node 22.23.1; 176 composition baselines unchanged. `et0-baseline --check` failed first, also at the PR head: c04d5598 changed the orphaned-decoration message after ET0 was recorded. Re-recorded (message only), then matched.
+- **Rejected / do not repeat:** editing frozen ET7a candidate sources (their SHA-256 are pinned by records and `et7a-check`); anchoring a growing mark on the first decorated glyph (the band would sit at a hidden glyph's entrance offset).
+- **Open / next:** unchanged by design, recorded in the results: the PR's bundling, milestone names, research import in the browser test, the three standalone groups (owner), wider-than-asked scope, the reveal threshold. Phase 1 owner gate as before.
+- **Records:** [Phase 1 results](./editorial-typography-phase1-results.json) (`reviewFixes`).
 
 ### 2026-11-20 — Editorial titles Phase 1: corrected re-review and small fixes
 
