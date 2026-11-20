@@ -35,6 +35,29 @@ afterEach(async () => {
 });
 
 describe("workspace dependency boundaries", () => {
+  it("keeps @still-shift/color-science free of Node, DOM-runtime and workspace imports", async () => {
+    const root = await fixture();
+    const directory = join(root, "packages", "color-science");
+    await mkdir(join(directory, "src"), { recursive: true });
+    await writeFile(
+      join(directory, "package.json"),
+      JSON.stringify({
+        name: "@still-shift/color-science",
+        dependencies: { "@still-shift/execution-runtime": "workspace:*" },
+      }),
+    );
+    await writeFile(
+      join(directory, "src/index.ts"),
+      'import { readFile } from "node:fs/promises"; import "@still-shift/execution-runtime";',
+    );
+    expect(await checkPackageBoundaries(root)).toEqual([
+      expect.stringContaining("color-science must not import Node built-ins"),
+      expect.stringContaining(
+        "color-science must not depend on other packages",
+      ),
+    ]);
+  });
+
   it("allows public runtime imports with declared dependencies", async () => {
     const root = await fixture();
     await writeFile(

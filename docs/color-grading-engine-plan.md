@@ -240,25 +240,25 @@ These are recommendations to confirm at CG1, each with a fallback.
 
 ## Milestone tracker
 
-| ID   | Milestone                                          | Depends on                  | Estimate (active days) | Status          |
-| ---- | -------------------------------------------------- | --------------------------- | ---------------------- | --------------- |
-| CGA  | Auto exposure, contrast, saturation, white balance | owner: review               | 5–8                    | Merged (PR #70) |
-| CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)     | 2–3                    | In progress     |
-| CG1  | Color-science core and contract design             | CG0, owner: license, parity | 4–6                    | Proposed        |
-| CG2  | Float grade stage and primary corrections          | CG1                         | 5–8 (WB, mixer seeded) | Proposed        |
-| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)            | 3–5 (stats seeded)     | Proposed        |
-| CG4  | Curves and tonal-range tools                       | CG2                         | 4–6                    | Proposed        |
-| CG5  | LUT and CDL interchange                            | CG2                         | 3–5                    | Proposed        |
-| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                    | 6–9                    | Proposed        |
-| CG7  | Scene-referred input and working space             | CG2, owner: working space   | 6–10 (BT.601 done)     | Proposed        |
-| CG8  | Output transforms and 10-bit delivery              | CG7                         | 5–8                    | Proposed        |
-| CG9  | Node graph and reusable looks                      | CG4–CG6                     | 6–10                   | Proposed        |
-| CG10 | Grade lint and solvers                             | CG3, CG6                    | 4–6 (solvers seeded)   | Proposed        |
-| CG11 | AI and code authoring surface                      | CG9, CG10                   | 4–7                    | Proposed        |
-| CG12 | Tracking and object mattes                         | CG6                         | 5–8                    | Proposed        |
-| CG13 | Texture and finishing operations                   | CG6                         | 4–7                    | Proposed        |
-| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope      | 8–15                   | Proposed        |
-| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage    | 3–5                    | Proposed        |
+| ID   | Milestone                                          | Depends on                     | Estimate (active days) | Status          |
+| ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | --------------- |
+| CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Merged (PR #70) |
+| CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)        | 2–3                    | Done (branch)   |
+| CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | In progress     |
+| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Proposed        |
+| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Proposed        |
+| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed        |
+| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed        |
+| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed        |
+| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
+| CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed        |
+| CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed        |
+| CG10 | Grade lint and solvers                             | CG3, CG6                       | 4–6 (solvers seeded)   | Proposed        |
+| CG11 | AI and code authoring surface                      | CG9, CG10                      | 4–7                    | Proposed        |
+| CG12 | Tracking and object mattes                         | CG6                            | 5–8                    | Proposed        |
+| CG13 | Texture and finishing operations                   | CG6                            | 4–7                    | Proposed        |
+| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope         | 8–15                   | Proposed        |
+| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage       | 3–5                    | Proposed        |
 
 CGA stands alone at about 5–8 active days. CG0–CG15 total about 75–122 active days. Estimates are planning ranges, not deadlines;
 re-estimate at entry against the then-current code.
@@ -895,7 +895,13 @@ grade by a person and one by an AI, reviewed by the owner.
 1. Approve CGA alone, or CGA plus a first stopping point in the larger plan.
    Decisions 2–9 are not needed for CGA.
 2. Confirm ported chroma-node code enters this repository under GPL-3.0.
+   **Decided 2026-11-20: approved** ("Approve both"); provenance per ported
+   file records the chroma-node source commit.
 3. Approve the bounded parity rule for the float grade stage (decision 3).
+   **Decided 2026-11-20: approved** ("Approve both"): the float64 reference is
+   authoritative, the GPU matches it within one 8-bit code value, repeat renders
+   on one machine are byte-identical; existing effects keep their current
+   parity (exact for the CGA three, within one code for the original ten).
 4. Choose the default working space for color-managed projects (CG7).
 5. Priority order of camera input transforms (CG7).
 6. Whether the lab grading workspace (CG14) is in scope.

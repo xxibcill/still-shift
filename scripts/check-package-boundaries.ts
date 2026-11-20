@@ -92,6 +92,8 @@ function imports(source: string, path: string): string[] {
   return references;
 }
 
+const COLOR_SCIENCE = "@still-shift/color-science";
+
 const contains = (directory: string, path: string) =>
   path === directory || path.startsWith(directory + sep);
 
@@ -102,6 +104,26 @@ export async function checkPackageBoundaries(root: string): Promise<string[]> {
   for (const owner of packages) {
     for (const file of await sourceFiles(resolve(owner.directory, "src"))) {
       for (const specifier of imports(await readFile(file, "utf8"), file)) {
+        // CG1: the color-science core is pure math, usable from the browser,
+        // Node and workers alike.
+        if (owner.name === COLOR_SCIENCE) {
+          const local = specifier.startsWith(".");
+          if (isBuiltin(specifier))
+            diagnostics.push(
+              `${relative(root, file)}: color-science must not import Node built-ins (${specifier})`,
+            );
+          else if (!local)
+            diagnostics.push(
+              `${relative(root, file)}: color-science must not depend on other packages (${specifier})`,
+            );
+          else if (
+            !contains(owner.directory, resolve(dirname(file), specifier))
+          )
+            diagnostics.push(
+              `${relative(root, file)}: color-science must not import outside its package (${specifier})`,
+            );
+          continue;
+        }
         if (isBuiltin(specifier)) continue;
         const path = specifier.startsWith(".")
           ? resolve(dirname(file), specifier)

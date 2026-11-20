@@ -91,7 +91,7 @@
     "test:fast": "pnpm test:unit",
     "test:runtime": "vitest run tests/runtime --maxWorkers=2 --no-file-parallelism",
     "test:browser:smoke": "pnpm test:browser:lab-session && node --import tsx tests/browser/reusable-components.ts --smoke-only --ui-export --timing-only",
-    "check:boundaries": "node --import tsx scripts/check-package-boundaries.ts",
+    "check:boundaries": "node --import tsx scripts/check-package-boundaries.ts && tsc --noEmit -p packages/color-science/tsconfig.json",
     "format:check:ts": "prettier --check \"{apps,benchmarks,docs,examples,packages,research,scripts,services,skills,tests,tools}/**/*.{css,html,json,md,mts,ts}\" \"*.{json,mts,yaml,yml}\" README.md ROADMAP.md",
     "lint:ts": "eslint .",
     "check:fast": "pnpm schema:check && pnpm check:boundaries && pnpm format:check:ts && pnpm lint:ts && pnpm build && pnpm check:package-types && pnpm test:fast",
