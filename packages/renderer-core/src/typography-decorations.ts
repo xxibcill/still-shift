@@ -17,8 +17,17 @@ export type DrawnTextDecoration = NonNullable<
 >[number] & {
   fadeWithText?: boolean;
   growWithText?: boolean;
-  padding?: number | readonly number[];
+  padding?: DecorationPaddingInput;
 };
+
+/**
+ * `padding` as the composition schema accepts it, in CSS order: one value
+ * for every side, `[vertical, horizontal]` or `[top, right, bottom, left]`.
+ */
+export type DecorationPaddingInput =
+  | number
+  | readonly [number, number]
+  | readonly [number, number, number, number];
 
 export type DecorationPadding = {
   top: number;
@@ -33,8 +42,9 @@ export function decorationPadding(
   const p = mark.padding;
   if (p === undefined) return { top: 0, right: 0, bottom: 0, left: 0 };
   if (typeof p === "number") return { top: p, right: p, bottom: p, left: p };
-  const [top = 0, right = top, bottom = top, left = right] = p;
-  return { top, right, bottom, left };
+  if (p.length === 2)
+    return { top: p[0], right: p[1], bottom: p[0], left: p[1] };
+  return { top: p[0], right: p[1], bottom: p[2], left: p[3] };
 }
 /**
  * The band a highlight, underline or strike paints around centre line `y`:

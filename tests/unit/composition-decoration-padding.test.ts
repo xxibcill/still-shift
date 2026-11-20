@@ -6,6 +6,10 @@ import {
   validateComposition,
   type Composition,
 } from "@still-shift/scene-contract";
+import {
+  decorationPadding,
+  type DrawnTextDecoration,
+} from "../../packages/renderer-core/src/typography-decorations.ts";
 
 const doc = (): Composition => ({
   schemaVersion: "composition-1",
@@ -66,5 +70,23 @@ describe("decoration padding (Phase 1)", () => {
   it("rejects negative or three-value padding", () => {
     expect(withPadding("highlight", -2)).not.toEqual([]);
     expect(withPadding("highlight", [1, 2, 3])).not.toEqual([]);
+  });
+  it.each([
+    [undefined, [0, 0, 0, 0]],
+    [12, [12, 12, 12, 12]],
+    [
+      [6, 18],
+      [6, 18, 6, 18],
+    ],
+    [
+      [4, 20, 8, 16],
+      [4, 20, 8, 16],
+    ],
+  ] as const)("resolves padding %j in CSS order", (padding, sides) => {
+    const mark = { kind: "highlight", color: "#ffe14d", padding };
+    const { top, right, bottom, left } = decorationPadding(
+      mark as DrawnTextDecoration,
+    );
+    expect([top, right, bottom, left]).toEqual(sides);
   });
 });
