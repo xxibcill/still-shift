@@ -19,6 +19,7 @@ import {
 } from "./matrix.ts";
 import {
   chromaticAdaptationMatrix,
+  colorSpace,
   lumaCoefficients,
   rgbToXyzMatrix,
 } from "./primaries.ts";
@@ -197,48 +198,94 @@ function locusSlope(cct: number, x: number) {
   return 3 * p * x * x + 2 * q * x + r;
 }
 
-/** Tint ±100 is Duv ±0.02 in CIE 1960 uv; positive is greener (above the locus). */
+/**
+ * Tint ±100 moves the illuminant ±0.02 Duv in CIE 1960 uv, perpendicular to
+ * the locus; positive is greener.
+ */
 export const TINT_DUV_PER_UNIT = 1 / 5000;
 export const REFERENCE_CCT = 6500;
+/** The white `grade.white-balance` adapts to: BT.709's (D65). */
+export const WHITE_BALANCE_TARGET = colorSpace("bt709").white;
 
-/** The illuminant white for a temperature and tint, as xy. */
-export function temperatureTintWhite(
-  cct: number,
-  tint: number,
-): [number, number] {
-  const [x, y] = planckianXy(cct);
-  if (tint === 0) return [x, y];
+type Uv = [number, number];
+const xyToUv = ([x, y]: readonly [number, number]): Uv => {
   const d = -2 * x + 12 * y + 3;
-  const u = (4 * x) / d,
-    v = (6 * y) / d;
+  return [(4 * x) / d, (6 * y) / d];
+};
+const uvToXy = ([u, v]: readonly [number, number]): [number, number] => {
+  const e = 2 * u - 8 * v + 4;
+  return [(3 * u) / e, (2 * v) / e];
+};
+
+/**
+ * The locus point at `cct` in CIE 1960 uv with its unit tangent (toward
+ * lower temperatures) and unit normal (toward greener, positive Duv).
+ */
+function locusFrame(cct: number) {
+  const [x, y] = planckianXy(cct);
+  const d = -2 * x + 12 * y + 3;
   // Tangent in uv from the xy tangent (1, dy/dx) through the Jacobian.
   const dydx = locusSlope(cct, x);
   const tu = (4 * d + 8 * x - 48 * x * dydx) / (d * d);
   const tv = (12 * y + (6 * d - 72 * y) * dydx) / (d * d);
   const norm = Math.hypot(tu, tv);
-  let nu = -tv / norm,
-    nv = tu / norm;
-  if (nv < 0) {
-    nu = -nu;
-    nv = -nv;
-  }
-  const duv = tint * TINT_DUV_PER_UNIT;
-  const u2 = u + duv * nu,
-    v2 = v + duv * nv;
-  const e = 2 * u2 - 8 * v2 + 4;
-  return [(3 * u2) / e, (2 * v2) / e];
+  const tangent: Uv = [tu / norm, tv / norm];
+  const normal: Uv =
+    tangent[0] >= 0 ? [-tangent[1], tangent[0]] : [tangent[1], -tangent[0]];
+  return { point: xyToUv([x, y]), tangent, normal };
+}
+
+/**
+ * D65's position relative to the 6500 K locus point, in that point's frame:
+ * about +0.0032 along the normal (daylight lies above the black-body locus)
+ * and a much smaller amount along the tangent. The tint-0 line keeps this
+ * offset in the frame of every temperature, so 6500 K with tint 0 is D65
+ * exactly and a light on the locus itself (tungsten, a black body) is
+ * neutralized by tint ≈ −16 at its own temperature.
+ */
+export const TINT_ZERO_OFFSET: {
+  readonly normal: number;
+  readonly tangent: number;
+} = (() => {
+  const { point, tangent, normal } = locusFrame(REFERENCE_CCT);
+  const target = xyToUv(WHITE_BALANCE_TARGET);
+  const du = target[0] - point[0],
+    dv = target[1] - point[1];
+  return {
+    normal: du * normal[0] + dv * normal[1],
+    tangent: du * tangent[0] + dv * tangent[1],
+  };
+})();
+
+/**
+ * The illuminant white for a temperature and tint, as xy: the locus point
+ * moved by the tint-0 offset and then by `tint` Duv along the normal.
+ */
+export function temperatureTintWhite(
+  cct: number,
+  tint: number,
+): [number, number] {
+  if (cct === REFERENCE_CCT && tint === 0) return [...WHITE_BALANCE_TARGET];
+  const { point, tangent, normal } = locusFrame(cct);
+  const n = TINT_ZERO_OFFSET.normal + tint * TINT_DUV_PER_UNIT,
+    t = TINT_ZERO_OFFSET.tangent;
+  return uvToXy([
+    point[0] + n * normal[0] + t * tangent[0],
+    point[1] + n * normal[1] + t * tangent[1],
+  ]);
 }
 
 /**
  * Linear BT.709 RGB matrix adapting the stated illuminant (temperature, tint)
- * to the 6500 K locus white with Bradford; null (identity) at 6500 K, tint 0.
+ * to D65, BT.709's white, with Bradford, so a grey lit by that illuminant
+ * becomes neutral; null (identity) at 6500 K, tint 0, which is D65.
  */
 export function whiteBalanceMatrix(cct: number, tint: number): Mat3 | null {
   if (cct === REFERENCE_CCT && tint === 0) return null;
   const npm = rgbToXyzMatrix("bt709");
   const cat = chromaticAdaptationMatrix(
     temperatureTintWhite(cct, tint),
-    planckianXy(REFERENCE_CCT),
+    WHITE_BALANCE_TARGET,
     "bradford",
   );
   return multiply(invert(npm), multiply(cat, npm));

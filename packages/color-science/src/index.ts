@@ -52,6 +52,8 @@ export {
   REFERENCE_CCT,
   SHADOW_RANGE,
   TINT_DUV_PER_UNIT,
+  TINT_ZERO_OFFSET,
+  WHITE_BALANCE_TARGET,
   TONAL_AMOUNT,
   applyGradePrimary,
   applyLinearMatrixEncoded,

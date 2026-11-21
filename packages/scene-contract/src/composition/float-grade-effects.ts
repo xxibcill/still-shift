@@ -81,8 +81,9 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
   }),
   /**
    * Chromatic adaptation (Bradford) in linear light from the stated
-   * illuminant (Planckian temperature in kelvin, tint as Duv/5000 off the
-   * locus, positive greener) to the 6500 K locus white.
+   * illuminant to D65, BT.709's white: temperature in kelvin on the Planckian
+   * locus, tint as Duv/5000 (positive greener) from a tint-0 line that keeps
+   * D65's offset above the locus, so 6500 K with tint 0 is D65 (identity).
    */
   "grade.white-balance": effect({
     temperature: scalar(6500, 1667, 25000),

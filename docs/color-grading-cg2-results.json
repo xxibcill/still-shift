@@ -17,7 +17,7 @@
   "delivered": {
     "effects": {
       "grade.primary": "lift (black moves, white stays), gamma (negatives unchanged), gain, offset per channel and master; contrast about pivot; luma-weighted shadows/highlights; saturation; hue rotation about Rec.709 luma; color boost",
-      "grade.white-balance": "Bradford adaptation in linear light from a Planckian temperature (Kang 2002, 1667-25000 K) plus a Duv tint (tint/5000, positive greener) to the 6500 K locus white",
+      "grade.white-balance": "Bradford adaptation in linear light from a Planckian temperature (Kang 2002, 1667-25000 K) plus a Duv tint (tint/5000, positive greener, perpendicular to the locus) to D65, BT.709's white. Tint 0 keeps D65's offset from the locus (+0.00317 Duv, 1.6e-5 along it) at every temperature, so 6500 K tint 0 is D65 and the identity (PR #77 third review)",
       "grade.cdl": "ASC CDL slope/offset/power/saturation; clamp 0 (default) = unclamped (power skipped below 0), 1 = Release 1.2",
       "grade.rgb-mixer": "color.matrix's parameters and design formula in float"
     },
@@ -64,28 +64,28 @@
       "comparison": [
         {
           "grade": "3200 K, tint 0",
-          "closestColorWhiteBalance": "temperature -100, tint -5",
-          "meanDifference": 25.929,
-          "maxDifference": 83,
-          "neutralPatchMaxDifference": 64,
+          "closestColorWhiteBalance": "temperature -100, tint -10",
+          "meanDifference": 28.557,
+          "maxDifference": 82,
+          "neutralPatchMaxDifference": 65,
           "note": "at the -100 bound: color.white-balance's one-stop range cannot reach a tungsten correction"
         },
         {
           "grade": "5000 K, tint 0",
-          "closestColorWhiteBalance": "temperature -68, tint 13",
-          "meanDifference": 2.322,
+          "closestColorWhiteBalance": "temperature -72, tint 14",
+          "meanDifference": 2.329,
           "maxDifference": 35,
           "neutralPatchMaxDifference": 1
         },
         {
           "grade": "9000 K, tint 20",
           "closestColorWhiteBalance": "temperature 57, tint -4",
-          "meanDifference": 2.177,
-          "maxDifference": 27,
-          "neutralPatchMaxDifference": 3
+          "meanDifference": 2.262,
+          "maxDifference": 30,
+          "neutralPatchMaxDifference": 4
         }
       ],
-      "reading": "neutrals agree within 1–3 codes where color.white-balance can reach the correction; the larger differences are on saturated patches, where channel gains and Bradford adaptation diverge"
+      "reading": "neutrals agree within 1–4 codes where color.white-balance can reach the correction; the larger differences are on saturated patches, where channel gains and Bradford adaptation diverge. Re-measured after the D65 target (PR #77 third review); before it: 3200 K mean 25.929 / max 83 / neutral 64, 5000 K 2.322 / 35 / 1, 9000 K 2.177 / 27 / 3"
     },
     {
       "check": "A 16-step gray ramp through ten stacked neutral-sum corrections shows no added banding compared with one pass (measured, not viewed)",
@@ -112,7 +112,8 @@
   "ce6": {
     "cell": "catalogue-float-grade (benchmarks/fixtures/composition/ce6/catalogue-float-grade.json)",
     "baseline": "tests/visual/composition-effect-catalogue/darwin-arm64-float-grade-1.json, written with --write-float-grade-baseline, then checked; the frozen CE6 baseline files are unchanged",
-    "baselineRewrite": "2026-11-21 (review finding 3): the grade.cdl clamp default changed to 0, so darwin-arm64-float-grade-1.json was rewritten once with --write-float-grade-baseline (only catalogue-float-grade: 22 of 32 frames per backend, the frames where the CDL case is visible) and then checked; the frozen CE6 baseline files are unchanged"
+    "baselineRewrite": "2026-11-21 (review finding 3): the grade.cdl clamp default changed to 0, so darwin-arm64-float-grade-1.json was rewritten once with --write-float-grade-baseline (only catalogue-float-grade: 22 of 32 frames per backend, the frames where the CDL case is visible) and then checked; the frozen CE6 baseline files are unchanged",
+    "baselineRewrite2": "2026-11-21 (PR #77 third review, D65 white-balance target): darwin-arm64-float-grade-1.json rewritten once more with --write-float-grade-baseline. Before the rewrite composition-effects failed on catalogue-float-grade's full-frame hashes (the white-balance change was caught); the rewrite changed only catalogue-float-grade, 30 of 32 frames per backend (its grade.white-balance key is animated across the clip); the frozen CE6 baseline files are unchanged"
   },
   "failedRunsAndReruns": [
     "CG2 browser test before the renderer wiring: failed with comp-effect-unavailable: grade.primary has no Canvas implementation (failing first).",
@@ -285,6 +286,22 @@
         "composition-baselines": "run 1 failed: 7 legacy/* items (legacy oracle) differed on all 168 frames; those 7 alone passed on rerun, and a full rerun passed: 176 items, 36,061 frames unchanged (263 s). Not reproduced; treated as environmental"
       },
       "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks (test:package not rerun after primary.ts left the package; check:package-types passed in check:fast)"
+    }
+  },
+  "thirdReview": {
+    "review": "agent review after merging main 51ffe62a into the branch (merge 0811876e); the owner chose \"Adapt to D65\"",
+    "environment": "node 22.23.1 (toolchain.json), darwin-arm64, pinned Chromium / SwiftShader",
+    "finding": "grade.white-balance adapted the stated illuminant to the 6500 K Planckian-locus white, not D65 (BT.709's white), so a grey lit by any locus illuminant came out magenta, not neutral: 18% grey at 2000, 3200, 5000 and 9000 K ended at (120, 117, 120), a white card at 3200 K at (260, 253, 259). The unit test passed because it compared with planckianXy(6500), not R = G = B",
+    "fix": "the target is D65; tint 0 is the locus moved by D65's offset from the 6500 K locus point, held in each temperature's own tangent/normal frame (normal +0.003173, tangent -1.6e-5), so 6500 K tint 0 is D65 exactly and stays the identity; defaults and bounds unchanged. A first attempt that moved the locus by one fixed uv offset made greys neutral but left a 3200 K black-body light about 3.5 codes amber at any tint (the 6500 K normal is not perpendicular to the locus at 3200 K), so the offset is carried in the local frame",
+    "evidence": "unit: a grey lit by temperatureTintWhite(t, tint) becomes R = G = B within 1e-12 for (2000, 0), (3200, 0), (5000, 30), (9000, -40), (1667, -100), (25000, 100); a light on the black-body locus at 2000, 3200, 5000 K is neutralized by tint -15.87 within 0.1 code at 40% grey; tint stays perpendicular at Duv = tint/5000; the Bradford vectors now adapt to D65 (temperature.json regenerated with colour-science 0.4.6; the other 10 vector files byte-identical)",
+    "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks",
+    "verification": {
+      "checkFast": "passed: 473 test files, 4,866 tests",
+      "vectors": "pnpm color:cg0-vectors --check: identical (11 files)",
+      "browser": {
+        "color-grading-cg2": "passed: 88 parity rows (Canvas 0, WebGL2 ≤ 1, 32 channels at 1), recovery, banding, native-video export; white-balance comparison re-measured (checks)",
+        "composition-effects": "failed first on catalogue-float-grade's full-frame hashes (expected: the white-balance output changed); passed after the one float-grade baseline rewrite, frozen CE6 baselines unchanged"
+      }
     }
   }
 }

@@ -1300,7 +1300,7 @@ WB_SAMPLES = [2000.0, 3200.0, 5000.0, 6500.0, 9000.0]
 def temperature() -> dict:
     out = header(
         "temperature",
-        "Planckian locus chromaticity by correlated colour temperature (Kang et al. 2002 cubic approximation), and Bradford adaptation matrices in linear BT.709 RGB from each sample's locus white to the 6500 K locus white (the reference white of grade.white-balance).",
+        "Planckian locus chromaticity by correlated colour temperature (Kang et al. 2002 cubic approximation), and Bradford adaptation matrices in linear BT.709 RGB from each sample's locus white to D65 (BT.709's white, the target white of grade.white-balance).",
     )
     out["source"] = (
         "Kang, B., Moon, O., Hong, C., Lee, H., Cho, B., Kim, Y. (2002), Design of Advanced Color Temperature Control System for HDTV Applications, Journal of the Korean Physical Society 41(6), 865-871"
@@ -1317,7 +1317,7 @@ def temperature() -> dict:
         colour.RGB_COLOURSPACES["ITU-R BT.709"].primaries,
         colour.RGB_COLOURSPACES["ITU-R BT.709"].whitepoint,
     )
-    reference = colour.xy_to_XYZ(colour.temperature.CCT_to_xy_Kang2002(6500.0))
+    reference = colour.xy_to_XYZ(colour.RGB_COLOURSPACES["ITU-R BT.709"].whitepoint)
     adaptation = []
     for t in WB_SAMPLES:
         source = colour.xy_to_XYZ(colour.temperature.CCT_to_xy_Kang2002(t))
@@ -1325,7 +1325,7 @@ def temperature() -> dict:
             source, reference, transform="Bradford"
         )
         adaptation.append({"cct": f(t), "linearBt709": matrix(np.linalg.inv(npm) @ cat @ npm)})
-    out["bradfordToReference"] = adaptation
+    out["bradfordToD65"] = adaptation
     return out
 
 
