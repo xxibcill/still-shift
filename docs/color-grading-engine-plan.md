@@ -671,7 +671,9 @@ renderer's 8-bit output per effect stage, not values inside a fused grade run.
 - [x] Identity curves are exact identities (the operator is dropped); spline
       evaluation matches reference vectors (SciPy PCHIP within 1e-12); no
       overshoot outside the control hull for monotone inputs (500 seeded
-      curves).
+      curves). The three operators match independent NumPy/SciPy reference
+      vectors (`grade-operators.json`, 12 cases, within 1e-9; added in the
+      PR #78 review, F4).
 - [x] Each hue/saturation curve changes only its target dimension on the sweep
       fixtures, within tolerance (measured with CG3): float64 < 1e-9;
       rendered off-target luma ≤ 0.0019 and radius ≤ 0.002 on in-gamut pixels

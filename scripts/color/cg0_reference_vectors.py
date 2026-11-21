@@ -14,6 +14,9 @@ benchmarks/fixtures/color/cg0/vectors/:
 - cdl.json: ASC CDL v1.2 slope/offset/power/saturation cases;
 - lut-interpolation.json and luts/*.cube: trilinear and tetrahedral cases on
   generated (license-free) LUTs.
+- spline.json: PCHIP curve samples (SciPy), and grade-operators.json:
+  grade.curves, grade.hue-curves and grade.tonal outputs from an independent
+  NumPy/SciPy implementation (CG4).
 
 The references are colour-science (formula implementations that cite each
 vendor document) and OpenColorIO (an independent implementation, float32 CPU).
@@ -1468,6 +1471,277 @@ def spline() -> dict:
 
 
 # --------------------------------------------------------------------------
+# CG4 grade operators: grade.curves, grade.hue-curves, grade.tonal (added in
+# the PR #78 review). An independent NumPy/SciPy implementation of the
+# operators as docs/composition-effect-plugins.md defines them: SciPy PCHIP
+# curves baked to 1024 float32 entries, linear table sampling, BT.709 Y'CbCr.
+# --------------------------------------------------------------------------
+
+CURVE_TABLE_SIZE = 1024
+GRADE_LIMIT = 10_000.0
+KR, KG, KB = 0.2126, 0.7152, 0.0722
+CB_SCALE, CR_SCALE = 1.8556, 1.5748
+HUE_SATURATION_SCALE = 0.5
+HUE_LUMA_AMOUNT = 0.5
+HUE_CHROMA_FADE = 0.02
+
+
+def limit(v):
+    return np.clip(v, -GRADE_LIMIT, GRADE_LIMIT)
+
+
+def bake_table(points, periodic=False) -> np.ndarray:
+    from scipy.interpolate import PchipInterpolator
+
+    knots = np.array(periodic_points(points) if periodic else points, dtype=np.float64)
+    span = CURVE_TABLE_SIZE if periodic else CURVE_TABLE_SIZE - 1
+    xs = np.arange(CURVE_TABLE_SIZE, dtype=np.float64) / span
+    baked = PchipInterpolator(knots[:, 0], knots[:, 1])(xs)
+    return baked.astype(np.float32).astype(np.float64)
+
+
+def sample_table(table: np.ndarray, x: float, periodic=False) -> float:
+    n = len(table)
+    if periodic:
+        t = (x - math.floor(x)) * n
+        i = int(math.floor(t)) % n
+        a, b = table[i], table[(i + 1) % n]
+        return a + (b - a) * (t - math.floor(t))
+    if x <= 0:
+        return table[0] + x * (table[1] - table[0]) * (n - 1)
+    if x >= 1:
+        return table[-1] + (x - 1) * (table[-1] - table[-2]) * (n - 1)
+    t = x * (n - 1)
+    i = min(int(math.floor(t)), n - 2)
+    return table[i] + (table[i + 1] - table[i]) * (t - i)
+
+
+def luma(v) -> float:
+    return KR * v[0] + KG * v[1] + KB * v[2]
+
+
+def smoothstep(e0, e1, x):
+    t = min(1.0, max(0.0, (x - e0) / (e1 - e0)))
+    return t * t * (3 - 2 * t)
+
+
+IDENTITY_CURVE = [[0, 0], [1, 1]]
+FLAT_CURVE = [[0, 0.5], [1, 0.5]]
+
+
+def op_curves(params):
+    curves = {k: params.get(k, IDENTITY_CURVE) for k in ("master", "red", "green", "blue")}
+    tables = {
+        k: None if all(x == y for x, y in pts) else bake_table(pts) for k, pts in curves.items()
+    }
+    mix = params.get("lumaMix", 0)
+
+    def apply(v):
+        c = [
+            limit(sample_table(tables[k], v[i])) if tables[k] is not None else v[i]
+            for i, k in enumerate(("red", "green", "blue"))
+        ]
+        master = tables["master"]
+        if master is None:
+            return c
+        rgb = [limit(sample_table(master, x)) for x in c]
+        if mix == 0:
+            return rgb
+        lift = sample_table(master, luma(c)) - luma(c)
+        return [limit(rgb[i] * (1 - mix) + (c[i] + lift) * mix) for i in range(3)]
+
+    return apply
+
+
+HUE_KEYS = ("hueVsHue", "hueVsSat", "hueVsLum", "lumVsSat", "satVsSat", "satVsLum")
+
+
+def op_hue_curves(params):
+    tables = {}
+    for key in HUE_KEYS:
+        pts = params.get(key, FLAT_CURVE)
+        tables[key] = (
+            None if all(y == 0.5 for _, y in pts) else bake_table(pts, key.startswith("hue"))
+        )
+
+    def apply(v):
+        y = luma(v)
+        cb, cr = (v[2] - y) / CB_SCALE, (v[0] - y) / CR_SCALE
+        radius = math.hypot(cb, cr)
+        hue = math.atan2(cr, cb) / (2 * math.pi)
+        sat = min(1.0, radius / HUE_SATURATION_SCALE)
+        t = min(1.0, radius / HUE_CHROMA_FADE)
+        w = t * t * (3 - 2 * t)
+        at = lambda key, x, wrap=False: sample_table(tables[key], x, wrap)  # noqa: E731
+        gain, offset = 1.0, 0.0
+        if tables["hueVsSat"] is not None:
+            gain *= 1 + w * (2 * at("hueVsSat", hue, True) - 1)
+        if tables["lumVsSat"] is not None:
+            gain *= 2 * at("lumVsSat", min(1.0, max(0.0, y)))
+        if tables["satVsSat"] is not None:
+            gain *= 2 * at("satVsSat", sat)
+        if tables["hueVsLum"] is not None:
+            offset += w * (at("hueVsLum", hue, True) - 0.5) * HUE_LUMA_AMOUNT
+        if tables["satVsLum"] is not None:
+            offset += (at("satVsLum", sat) - 0.5) * HUE_LUMA_AMOUNT
+        cb2, cr2 = cb * gain, cr * gain
+        if tables["hueVsHue"] is not None:
+            turn = w * (at("hueVsHue", hue, True) - 0.5) * 2 * math.pi
+            cb2, cr2 = (
+                cb2 * math.cos(turn) - cr2 * math.sin(turn),
+                cb2 * math.sin(turn) + cr2 * math.cos(turn),
+            )
+        y2 = y + offset
+        r, b = y2 + CR_SCALE * cr2, y2 + CB_SCALE * cb2
+        return [limit(r), limit((y2 - KR * r - KB * b) / KG), limit(b)]
+
+    return apply
+
+
+TONAL_NEUTRAL = {
+    "shadow": [0, 0, 0],
+    "mid": [0, 0, 0],
+    "highlight": [0, 0, 0],
+    "shadowExposure": 0,
+    "midExposure": 0,
+    "highlightExposure": 0,
+    "shadowEnd": 0.33,
+    "highlightStart": 0.66,
+    "falloff": 0.15,
+    "softClipHigh": 1,
+    "softClipLow": 0,
+}
+
+
+def op_tonal(params):
+    p = {**TONAL_NEUTRAL, **params}
+
+    def apply(v):
+        y = luma(v)
+        f = p["falloff"]
+        ws = 1 - smoothstep(p["shadowEnd"] - f, p["shadowEnd"] + f, y)
+        wh = smoothstep(p["highlightStart"] - f, p["highlightStart"] + f, y)
+        wm = max(0.0, 1 - ws - wh)
+        scale = 2.0 ** (
+            ws * p["shadowExposure"] + wm * p["midExposure"] + wh * p["highlightExposure"]
+        )
+        out = []
+        for c in range(3):
+            x = v[c] * scale + (ws * p["shadow"][c] + wm * p["mid"][c] + wh * p["highlight"][c])
+            hk, lk = p["softClipHigh"], p["softClipLow"]
+            if hk < 1 and x > hk:
+                x = hk + (1 - hk) * (1 - math.exp(-(x - hk) / (1 - hk)))
+            if lk > 0 and x < lk:
+                x = lk * math.exp(-(lk - x) / lk)
+            out.append(limit(x))
+        return out
+
+    return apply
+
+
+GRADE_OPERATOR_CASES = [
+    (
+        "grade.curves",
+        "per-channel",
+        {"red": [[0, 0.05], [0.5, 0.55], [1, 1]], "blue": [[0, 0], [0.6, 0.5], [1, 0.95]]},
+    ),
+    ("grade.curves", "master-s-curve", {"master": [[0, 0], [0.25, 0.18], [0.75, 0.84], [1, 1]]}),
+    ("grade.curves", "master-luma-only", {"master": [[0, 0], [0.3, 0.4], [1, 1]], "lumaMix": 1}),
+    (
+        "grade.curves",
+        "master-half-luma",
+        {
+            "master": [[0, 0.1], [0.5, 0.45], [1, 0.9]],
+            "green": [[0, 0], [0.5, 0.6], [1, 1]],
+            "lumaMix": 0.5,
+        },
+    ),
+    ("grade.hue-curves", "hue-vs-hue", {"hueVsHue": [[0, 0.5], [0.1, 0.6], [0.3, 0.5], [1, 0.5]]}),
+    (
+        "grade.hue-curves",
+        "hue-vs-sat-wrap",
+        {"hueVsSat": [[0, 0.8], [0.1, 0.6], [0.5, 0.5], [0.9, 0.6], [1, 0.8]]},
+    ),
+    (
+        "grade.hue-curves",
+        "hue-vs-lum",
+        {"hueVsLum": [[0, 0.5], [0.33, 0.7], [0.66, 0.5], [1, 0.5]]},
+    ),
+    ("grade.hue-curves", "lum-vs-sat", {"lumVsSat": [[0, 0.3], [0.5, 0.5], [1, 0.7]]}),
+    (
+        "grade.hue-curves",
+        "sat-vs-sat-and-lum",
+        {"satVsSat": [[0, 0.5], [0.5, 0.65], [1, 0.5]], "satVsLum": [[0, 0.5], [1, 0.35]]},
+    ),
+    (
+        "grade.tonal",
+        "offsets",
+        {"shadow": [0.02, 0, -0.01], "mid": [0, 0.01, 0], "highlight": [-0.02, 0, 0.03]},
+    ),
+    (
+        "grade.tonal",
+        "zone-exposure",
+        {
+            "shadowExposure": 0.5,
+            "midExposure": -0.25,
+            "highlightExposure": -0.5,
+            "shadowEnd": 0.25,
+            "highlightStart": 0.7,
+            "falloff": 0.1,
+        },
+    ),
+    ("grade.tonal", "soft-clip", {"midExposure": 0.75, "softClipHigh": 0.85, "softClipLow": 0.05}),
+]
+
+GRADE_OPERATOR_INPUTS = (
+    [[g, g, g] for g in (0.0, 0.05, 0.18, 0.33, 0.5, 0.66, 0.9, 1.0)]
+    + [[1, 0, 0], [0, 1, 0], [0, 0, 1], [1, 1, 0], [0, 1, 1], [1, 0, 1]]
+    + [[0.8, 0.55, 0.42], [0.62, 0.42, 0.33], [0.35, 0.22, 0.17]]
+    + [[0.31, 0.3, 0.32], [0.505, 0.5, 0.495], [0.12, 0.6, 0.85], [0.95, 0.4, 0.05]]
+    + [[-0.05, 0.2, 0.4], [1.2, 0.9, 0.7], [1.5, 1.5, 1.5], [-0.1, -0.1, -0.1]]
+)
+
+
+def grade_operators() -> dict:
+    import scipy
+
+    out = header(
+        "grade-operators",
+        "CG4 grade operators on straight encoded RGB floats: grade.curves (per-channel PCHIP curves, then the master curve, mixed toward a luma lift by lumaMix), grade.hue-curves (BT.709 Y'CbCr hue, saturation and luma curves) and grade.tonal (three-range offsets, zone exposure in stops and high/low soft clip). An independent NumPy/SciPy implementation: SciPy PCHIP curves baked to 1024 float32 entries and linearly sampled, as the renderer bakes them.",
+    )
+    out["references"]["scipy"] = scipy.__version__
+    out["source"] = (
+        "docs/composition-effect-plugins.md (curves and tonal ranges, CG4); PCHIP as scipy.interpolate.PchipInterpolator; BT.709 luma (ITU-R BT.709-6 item 3.2)"
+    )
+    out["tolerances"] = {
+        "float64Port": {
+            "absolute": 1e-9,
+            "use": "The renderer's float64 reference must match every output within 1e-9 (its own PCHIP agrees with SciPy within 1e-12 before the float32 bake).",
+        }
+    }
+    ops = {"grade.curves": op_curves, "grade.hue-curves": op_hue_curves, "grade.tonal": op_tonal}
+    cases = []
+    for effect, cid, params in GRADE_OPERATOR_CASES:
+        apply = ops[effect](params)
+        outputs = [floats(apply([float(c) for c in v])) for v in GRADE_OPERATOR_INPUTS]
+        require(
+            all(math.isfinite(c) for o in outputs for c in o),
+            f"{effect} {cid}: non-finite output",
+        )
+        cases.append(
+            {
+                "effect": effect,
+                "id": cid,
+                "params": params,
+                "input": matrix(GRADE_OPERATOR_INPUTS),
+                "output": outputs,
+            }
+        )
+    out["cases"] = cases
+    return out
+
+
+# --------------------------------------------------------------------------
 
 
 def dump(value) -> str:
@@ -1503,6 +1777,7 @@ def build() -> dict[str, str]:
     files["lut-interpolation.json"] = dump(lut)
     files["temperature.json"] = dump(temperature())
     files["spline.json"] = dump(spline())
+    files["grade-operators.json"] = dump(grade_operators())
     return files
 
 
