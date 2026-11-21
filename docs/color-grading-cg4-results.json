@@ -66,7 +66,17 @@
     "Curve rules test: a static endpoint error is reported by the shared curve schema as its union's 'Invalid input', not the endpoint message; the test asserts the rejection (existing behaviour, as for color.curves).",
     "CE6 coverage unit test failed until the new catalogue-curve-grade cell existed."
   ],
-  "verification": "filled after the run",
+  "verification": {
+    "checkFast": "passed first time: 476 test files, 4,910 tests",
+    "browser": {
+      "color-grading-cg4": "passed (54 rows, Canvas 0, WebGL2 <= 1)",
+      "color-grading-cg2": "passed (88 rows) with the shared GLSL extended",
+      "color-grading-cg0": "unchanged (273 renders)",
+      "composition-effects": "curve-grade baseline written then checked; frozen CE6 and CG2 float-grade baselines unchanged"
+    },
+    "integration": "composition-scopes (CG3): 7 passed",
+    "notRunHere": "composition-baselines (no grade effects in them; run at the end of CG5)"
+  },
   "notRun": "pnpm check, full pnpm test, runtime tier, release checks",
   "next": "CG5 (LUT and CDL interchange) on codex/color-grading-cg5"
 }
