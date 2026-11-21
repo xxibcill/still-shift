@@ -698,6 +698,17 @@ describe("composition-1 fixtures", () => {
       },
     };
     expect(validateComposition(nativePbr).ok).toBe(true);
+    // CG5: the CE6 lut-grade cell carries the lut asset.
+    const lutGrade = JSON.parse(
+      readFileSync(
+        resolve(
+          root,
+          "benchmarks/fixtures/composition/ce6/catalogue-lut-grade.json",
+        ),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(lutGrade).ok).toBe(true);
     expect(validateComposition(nativeContract)).toMatchObject({
       ok: true,
       diagnostics: [],
@@ -722,6 +733,7 @@ describe("composition-1 fixtures", () => {
             ...nativeMedia.assets,
             ...nativeContract.assets,
             ...nativePbr.assets,
+            ...lutGrade.assets,
           ].filter((a) => a.type === type),
         ),
         type,

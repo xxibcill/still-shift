@@ -3,7 +3,7 @@ import { spawn } from "node:child_process";
 import { createHash } from "node:crypto";
 import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { dirname, join } from "node:path";
 import { format } from "prettier";
 import type { Page } from "playwright";
 import {
@@ -21,11 +21,13 @@ import {
 } from "@still-shift/execution-runtime";
 import { ffmpegArguments } from "@still-shift/execution-runtime/export";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
+import type * as Luts from "../../packages/renderer-core/src/composition/render/luts.ts";
 import { shapeHardwarePreview } from "./shape-hardware.ts";
 import {
   CE6_NATIVE_FIXTURES,
   CG2_FLOAT_GRADE_EFFECTS,
   CG4_CURVE_GRADE_EFFECTS,
+  CG5_LUT_GRADE_EFFECTS,
 } from "../../benchmarks/fixtures/composition/ce6/catalogue.ts";
 
 const digest = (bytes: Uint8Array | string) =>
@@ -54,8 +56,14 @@ export async function runEffectCatalogueAcceptance(
     writingFloatGrade = process.argv.includes("--write-float-grade-baseline"),
     /** CG4 curve and tonal grade effects: their own baseline file. */
     writingCurveGrade = process.argv.includes("--write-curve-grade-baseline"),
+    /** CG5 grade.lut (a pinned LUT asset): its own baseline file. */
+    writingLutGrade = process.argv.includes("--write-lut-grade-baseline"),
     directory = await mkdtemp(join(tmpdir(), "ce6-native-export-"));
   const fixtures: [string, Composition][] = [];
+  const fixtureLuts = new Map<
+    string,
+    readonly (readonly [string, string, string])[]
+  >();
   const items: Record<
       string,
       { source: string; canvas2d: string[]; webgl2: string[] }
@@ -71,88 +79,113 @@ export async function runEffectCatalogueAcceptance(
         ),
         doc = JSON.parse(await readFile(sourcePath, "utf8")) as Composition;
       fixtures.push([name, doc]);
-      const result = await page.evaluate(async (json: string) => {
-        const doc = JSON.parse(json) as Composition,
-          url = "/packages/renderer-core/src/index.ts",
-          m = (await import(url)) as typeof Render,
-          canvases = [
-            document.createElement("canvas"),
-            document.createElement("canvas"),
-          ],
-          previews = canvases.map((canvas, i) =>
-            m.createCompositionPreview(
-              canvas,
-              doc,
-              { images: new Map(), fonts: new Map() },
-              { backend: i ? "webgl2" : "canvas2d" },
-            ),
-          ),
-          hashes: [string[], string[]] = [[], []],
-          pngs: [string[], string[]] = [[], []],
-          samples: Record<string, string> = {},
-          sampleCounts: Record<string, number> = {};
-        let maxDelta = 0;
-        const hash = async (bytes: Uint8ClampedArray) =>
-          Array.from(
-            new Uint8Array(
-              await crypto.subtle.digest("SHA-256", bytes.slice().buffer),
-            ),
-          )
-            .map((byte) => byte.toString(16).padStart(2, "0"))
-            .join("");
-        try {
-          const forward = Array.from({ length: doc.frameCount }, (_, i) => i);
-          for (const [pass, frames] of [
-            forward,
-            [...forward].reverse(),
-            [16, 0, 31, 7, 8, 15, 16, 1, 14, 30, 0],
-          ].entries())
-            for (const frame of frames) {
-              const rendered = previews.map((preview) =>
-                  preview.renderFrame(frame),
+      // CG5: LUT assets are read here and prepared in the page.
+      const lutTexts = await Promise.all(
+        doc.assets.flatMap((asset) =>
+          asset.type === "lut"
+            ? [
+                readFile(join(dirname(sourcePath), asset.path), "utf8").then(
+                  (text) => [asset.id, asset.sha256, text] as const,
                 ),
-                pixels = previews.map((preview) => preview.readPixels()),
-                comparison = m.compareFrames(
-                  pixels[0]!,
-                  pixels[1]!,
-                  doc.width,
-                  doc.height,
-                );
-              if (!m.meetsTier(comparison, "near"))
-                throw Error(
-                  `${doc.id}/${frame}: backend ${JSON.stringify(comparison)}`,
-                );
-              maxDelta = Math.max(maxDelta, comparison.maxChannelDelta);
-              for (const i of [0, 1]) {
-                const value = await hash(pixels[i]!);
-                if (pass && hashes[i]![frame] !== value)
+              ]
+            : [],
+        ),
+      );
+      fixtureLuts.set(name, lutTexts);
+      const result = await page.evaluate(
+        async ([json, lutTexts]) => {
+          const doc = JSON.parse(json) as Composition,
+            url = "/packages/renderer-core/src/index.ts",
+            m = (await import(url)) as typeof Render,
+            lutModule = (await import(
+              String("/packages/renderer-core/src/composition/render/luts.ts")
+            )) as typeof Luts,
+            luts = new Map(
+              lutTexts.map(([id, sha, text]) => [
+                id,
+                lutModule.prepareLut(sha, text),
+              ]),
+            ),
+            canvases = [
+              document.createElement("canvas"),
+              document.createElement("canvas"),
+            ],
+            previews = canvases.map((canvas, i) =>
+              m.createCompositionPreview(
+                canvas,
+                doc,
+                { images: new Map(), fonts: new Map(), luts },
+                { backend: i ? "webgl2" : "canvas2d" },
+              ),
+            ),
+            hashes: [string[], string[]] = [[], []],
+            pngs: [string[], string[]] = [[], []],
+            samples: Record<string, string> = {},
+            sampleCounts: Record<string, number> = {};
+          let maxDelta = 0;
+          const hash = async (bytes: Uint8ClampedArray) =>
+            Array.from(
+              new Uint8Array(
+                await crypto.subtle.digest("SHA-256", bytes.slice().buffer),
+              ),
+            )
+              .map((byte) => byte.toString(16).padStart(2, "0"))
+              .join("");
+          try {
+            const forward = Array.from({ length: doc.frameCount }, (_, i) => i);
+            for (const [pass, frames] of [
+              forward,
+              [...forward].reverse(),
+              [16, 0, 31, 7, 8, 15, 16, 1, 14, 30, 0],
+            ].entries())
+              for (const frame of frames) {
+                const rendered = previews.map((preview) =>
+                    preview.renderFrame(frame),
+                  ),
+                  pixels = previews.map((preview) => preview.readPixels()),
+                  comparison = m.compareFrames(
+                    pixels[0]!,
+                    pixels[1]!,
+                    doc.width,
+                    doc.height,
+                  );
+                if (!m.meetsTier(comparison, "near"))
                   throw Error(
-                    `${doc.id}/${frame}/${i}: seek history changed pixels`,
+                    `${doc.id}/${frame}: backend ${JSON.stringify(comparison)}`,
                   );
+                maxDelta = Math.max(maxDelta, comparison.maxChannelDelta);
+                for (const i of [0, 1]) {
+                  const value = await hash(pixels[i]!);
+                  if (pass && hashes[i]![frame] !== value)
+                    throw Error(
+                      `${doc.id}/${frame}/${i}: seek history changed pixels`,
+                    );
+                  if (!pass) {
+                    hashes[i]!.push(value);
+                    pngs[i]!.push(
+                      canvases[i]!.toDataURL("image/png").split(",")[1]!,
+                    );
+                  }
+                }
                 if (!pass) {
-                  hashes[i]!.push(value);
-                  pngs[i]!.push(
-                    canvases[i]!.toDataURL("image/png").split(",")[1]!,
-                  );
+                  sampleCounts[String(frame)] = rendered[0]!.samples;
+                  if ([0, 8, 16, 31].includes(frame))
+                    samples[String(frame)] = pngs[0]![frame]!;
                 }
               }
-              if (!pass) {
-                sampleCounts[String(frame)] = rendered[0]!.samples;
-                if ([0, 8, 16, 31].includes(frame))
-                  samples[String(frame)] = pngs[0]![frame]!;
-              }
-            }
-        } finally {
-          previews.forEach((preview) => preview.dispose());
-        }
-        return {
-          hashes,
-          pngs,
-          samples,
-          sampleCounts,
-          maxDelta,
-        };
-      }, JSON.stringify(doc));
+          } finally {
+            previews.forEach((preview) => preview.dispose());
+          }
+          return {
+            hashes,
+            pngs,
+            samples,
+            sampleCounts,
+            maxDelta,
+          };
+        },
+        [JSON.stringify(doc), lutTexts] as const,
+      );
       items[name] = {
         source: digest(JSON.stringify(doc)),
         canvas2d: result.hashes[0],
@@ -250,7 +283,8 @@ export async function runEffectCatalogueAcceptance(
                   id !== "catalogue-mesh" &&
                   id !== "catalogue-grade" &&
                   id !== "catalogue-float-grade" &&
-                  id !== "catalogue-curve-grade",
+                  id !== "catalogue-curve-grade" &&
+                  id !== "catalogue-lut-grade",
               ),
             ),
           }),
@@ -476,9 +510,46 @@ export async function runEffectCatalogueAcceptance(
       assert.deepEqual(curveGrade.effectVersions, curveGradeVersions);
       expected["catalogue-curve-grade"] =
         curveGrade.items["catalogue-curve-grade"];
+      // CG5: grade.lut, its own cell and baseline file.
+      assert.equal(Object.hasOwn(expected, "catalogue-lut-grade"), false);
+      const lutGradePath = join(
+        baselineDirectory,
+        `${environment.platform}-${environment.arch}-lut-grade-1.json`,
+      );
+      const lutGradeVersions = Object.fromEntries(
+        CG5_LUT_GRADE_EFFECTS.map((id) => [
+          id,
+          compositionEffectDefinition(id)!.version,
+        ]),
+      );
+      if (writingLutGrade)
+        await writeFile(
+          lutGradePath,
+          await format(
+            JSON.stringify({
+              version: "composition-lut-grade-catalogue-baseline-1",
+              environment,
+              effectVersions: lutGradeVersions,
+              items: { "catalogue-lut-grade": items["catalogue-lut-grade"] },
+            }),
+            { parser: "json" },
+          ),
+        );
+      const lutGrade = JSON.parse(await readFile(lutGradePath, "utf8"));
+      assert.equal(
+        lutGrade.version,
+        "composition-lut-grade-catalogue-baseline-1",
+      );
+      assert.equal(
+        lutGrade.environment.rasterFingerprint,
+        environment.rasterFingerprint,
+      );
+      assert.deepEqual(Object.keys(lutGrade.items), ["catalogue-lut-grade"]);
+      assert.deepEqual(lutGrade.effectVersions, lutGradeVersions);
+      expected["catalogue-lut-grade"] = lutGrade.items["catalogue-lut-grade"];
       assert.deepEqual(items, expected, "CE6 full-frame hashes");
     }
-    const hardware = await shapeHardwarePreview(root, fixtures);
+    const hardware = await shapeHardwarePreview(root, fixtures, fixtureLuts);
     await writeFile(
       join(proof, "native-acceptance.json"),
       JSON.stringify(

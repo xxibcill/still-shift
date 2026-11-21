@@ -1,3 +1,4 @@
+import { bakeCubeLut, writeCubeLut } from "@still-shift/color-science";
 import {
   FLOAT_GRADE_EFFECT_IDS,
   GRADE_EFFECT_IDS,
@@ -266,6 +267,7 @@ export const CE6_NATIVE_FIXTURES = [
   "catalogue-grade",
   "catalogue-float-grade",
   "catalogue-curve-grade",
+  "catalogue-lut-grade",
 ] as const;
 /** CGA grade effects, kept out of the frozen color catalogue cell layout. */
 const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
@@ -273,8 +275,38 @@ const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
 export const CG2_FLOAT_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(0, 4);
 /** CG4 curve and tonal grade effects: their own cell and baseline file. */
 export const CG4_CURVE_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(4, 7);
-// CG5's grade.lut needs a pinned LUT asset, which these cells do not carry;
-// it is covered by pnpm test:browser:color-grading-cg5.
+/**
+ * CG5: grade.lut, its own cell and baseline file. Its LUT asset is generated
+ * here (license-free) and committed as `lut-grade.cube`; the unit test checks
+ * the file against this text and its pinned hash.
+ */
+export const CG5_LUT_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(7);
+export const CE6_LUT_FILE = "lut-grade.cube";
+export const CE6_LUT_SHA256 =
+  "sha256:100e6cd1bbe34bea93153ff71dd5d2dd20b05a6a90a44a9a5edeb7f6d9ad703d";
+export function ce6LutText(): string {
+  // A warm, gently compressed look on a 17-point grid.
+  const look = ([r, g, b]: readonly number[]) =>
+    [
+      0.04 + 0.92 * Math.pow(r!, 0.95) + 0.03 * g! * b!,
+      0.02 + 0.9 * g! + 0.04 * r! * (1 - g!),
+      0.06 + 0.82 * Math.pow(b!, 1.1) - 0.03 * r! * g!,
+    ] as [number, number, number];
+  return writeCubeLut(
+    bakeCubeLut(look, 17, {
+      title: "Still Shift CE6 generated LUT (license-free test data)",
+    }),
+  );
+}
+/** grade.lut needs an asset, so it is not in ce6EffectCases (the cost probe). */
+const LUT_GRADE_PARAMS = {
+  intensity: {
+    keys: [
+      { frame: 0, value: 0.4, easing: "linear" as const },
+      { frame: 31, value: 1, easing: "linear" as const },
+    ],
+  },
+};
 
 /** Each catalogue cell is a native isolated group with independently moving paints. */
 export function ce6NativeFixtures(): [string, Composition][] {
@@ -302,6 +334,7 @@ export function ce6NativeFixtures(): [string, Composition][] {
       [...GRADE_EFFECTS],
       [...CG2_FLOAT_GRADE_EFFECTS],
       [...CG4_CURVE_GRADE_EFFECTS],
+      [...CG5_LUT_GRADE_EFFECTS],
     ];
   return families.map((effects, family) => {
     const doc: Composition = {
@@ -316,6 +349,16 @@ export function ce6NativeFixtures(): [string, Composition][] {
       layers: [],
     };
     if (family === 5) doc.colorSpace = "linear-srgb";
+    if (effects.includes("grade.lut"))
+      doc.assets.push({
+        id: "look",
+        type: "lut",
+        path: CE6_LUT_FILE,
+        sha256: CE6_LUT_SHA256,
+        format: "cube",
+        inputSpace: "legacy-srgb",
+        outputSpace: "legacy-srgb",
+      });
     const columns = 4,
       rows = Math.ceil(effects.length / columns),
       cellWidth = 80,
@@ -340,8 +383,9 @@ export function ce6NativeFixtures(): [string, Composition][] {
           {
             id: "treatment",
             effect: id,
-            params: cases[id]!,
+            params: id === "grade.lut" ? LUT_GRADE_PARAMS : cases[id]!,
             ...(source ? { inputs: { map: "map" } } : {}),
+            ...(id === "grade.lut" ? { assets: { lut: "look" } } : {}),
           },
         ],
       });
