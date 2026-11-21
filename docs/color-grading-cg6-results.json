@@ -1,0 +1,108 @@
+{
+  "schema": "still-shift-milestone-results-1",
+  "milestone": "CG6",
+  "title": "Keys: qualifiers, windows and matte finesse",
+  "date": "2026-11-21",
+  "branch": "codex/color-grading-cg6",
+  "base": "main c3553e60 (CG0-CG5 merged: PR #77, PR #78)",
+  "plan": "docs/color-grading-engine-plan.md#cg6--keys-qualifiers-windows-and-matte-finesse",
+  "decisions": "docs/color-grading-cg6-decisions.md",
+  "environment": {
+    "node": "22.23.1 (pinned; the shell default 24.16.0 was not used)",
+    "pnpm": "10.29.3",
+    "browser": "pinned Chromium 151.0.7922.34 / SwiftShader",
+    "platform": "darwin-arm64",
+    "ffmpeg": "8.0.1 (decoding the CG0 moving clip for the browser group)"
+  },
+  "visualAcceptance": "none: software measurements only. The owner has not looked at any key or matte view.",
+  "delivered": {
+    "contractDecision": "One new effect grade.key 1.0.0 that scopes the grade.* operations after it in its grade run, up to the next grade.key or the end of the run (keyed variants of every grade.* would add about 50 parameters and a version bump to each of 8 effects; a run-level key block has no place in the contract). A CG9 serial node lowers to grade.key + its operators. Spike table and semantics in the decisions file.",
+    "contract": "grade.key params: qualifier 0-4 (none, HSL, RGB, luma, sampled OKLab) with HSL names matching comp probe's suggestion; matte finesse (clipBlack/White, denoise, cleanBlack/White, shrinkGrow, blur, inOutRatio, invert); ellipse/rectangle window (centre, size, rotation, roundness, feather, expansion, invert); linear gradient; external matte (matteMode alpha/luma, levels, invert); gain, offset; view 0-3. usesLayerSpace (windows follow the layer or `space`). New effect-definition field optionalLayers: the `matte` slot may stay unbound; validation and both effect contexts honour it.",
+    "colorScience": "packages/color-science/src/keys.ts: float64 reference for qualifiers, finesse, gradient, matte levels, key combination, mixing, views and the matte flicker metric; scopes.suggestSampledKey (farthest-point OKLab samples). OKLab now has one home (linearToOklab), used by scopes.",
+    "renderer": "float-grade-keys.ts: key spec, float64 frame evaluation (Canvas), GLSL (qualifiers in the fused run shader) and GPU finesse passes (3x3 median, separable square morphology, the blur.gaussian three-box kernel, in/out ratio and invert) on float32 bits in RGBA8 textures. float-grade.ts splits a run into segments at keys; key-free runs keep their exact shader text and Canvas path. Shape windows become a renderer input: a white solid carrying the window as a layer mask (ellipsePath/rectanglePath, rotated) in the key's layer space, drawn by the mask rasterizer. backend.effectStack keeps grade.* effects with inputs inside their run under run-scoped slot names.",
+    "untouchedPixels": "A pixel no scoped operation touched (every key 0) leaves the run as its source texel on WebGL2 and its read-back bytes on Canvas, so pixels outside a key are byte-identical on any alpha.",
+    "cli": "comp grade key --layer --effect [--frame | --frame-range] [--backend] [--isolate] [--view key|highlight|contrast --still <png>] [--output]: per-frame mean key, keyed fraction and frame-to-frame flicker (still-shift-grade-key-1). comp probe schema 2 adds gradeKey (HSL params) and gradeKeySampled (sampled OKLab params). comp grade bake refuses grade.key.",
+    "previewAndViews": "Matte views are the view parameter, so every preview and render shows them; the CLI writes them with comp grade key --view. A key editor in the lab is CG14.",
+    "ce6": "Cell catalogue-key-grade (grade.key scoping a grade.primary inside an animated ellipse window, with finesse) and baseline tests/visual/composition-effect-catalogue/darwin-arm64-key-grade-1.json. CG5_LUT_GRADE_EFFECTS pinned to slice(7, 8) so grade.key cannot enter the frozen LUT cell."
+  },
+  "checks": {
+    "qualifierSweeps": {
+      "met": true,
+      "float64": "keys.ts HSL qualifier equals masks written from the definition (closed-form HSL from HSV, circular hue distance, BT.709 luma, outward Hermite) to 1e-12 on the exact sweep design colors (5 hue-sweep cases x 2 rows x 360 columns, 3 saturation-sweep cases x 6 hues x 256 columns); on the 8-bit fixture bytes within 0.07, the first-order bound from 8-bit input error and softness slope",
+      "rendered": "12 gray-key renders (hue and saturation sweeps x 6 qualifier cases) against the analytic mask of each pixel's own HSV: Canvas max 0, WebGL2 max 1 (192 channels at 1, all in the saturation-range case on the saturation sweep)",
+      "chromaNodeAudit": "research/color-grading-cg6/chroma-node-audit.json: chroma-node evaluateQualifierMask (b804dc0) equals the analytic masks on every chromatic sample (2,256 samples x 5 cases, difference 0) and differs by up to 1 on every neutral sample: it reads gray as hue 0 deg, so a hue range containing red selected every gray. Fixed in the port: a neutral pixel has no hue and is selected by hue only at full width."
+    },
+    "keyFromInput": {
+      "met": true,
+      "statement": "docs/color-grading-cg6-decisions.md (Semantics) and the grade.key contract comment",
+      "test": "hue sweep, key on orange (30 +- 20 deg, softness 10) scoping a 180 deg hue rotation: 3,776 pixels keyed and changed; a key taken from the output would differ on 7,552 pixels; rendered output equals the input-keyed reference (Canvas 0, WebGL2 0)"
+    },
+    "windowEdges": {
+      "met": true,
+      "result": "4 windows (ellipse hard; ellipse rotated 25 deg with feather 12 and expansion 4; rounded rectangle rotated -15 deg with feather 6 and expansion -3; rectangle with fractional centre and size): the gray key view equals a white solid layer carrying the same mask path, feather and expansion over black, max difference 0 on Canvas and WebGL2",
+      "note": "Equal by construction: the renderer draws the window as that layer mask (decision 5). The linear gradient has no edge and is computed directly (deviation)."
+    },
+    "matteStability": {
+      "met": true,
+      "metric": "mean absolute frame-to-frame change of the 8-bit gray key (0-1), the fraction of pixels that changed and the largest change, per frame",
+      "browserGroup": "moving-disc.mp4 (48 frames, decoded with ffmpeg to RGBA), background key HSL hue 75 +- 15 (softness 8), saturation >= 0.1. Away from a 3 px band around the disc edge in either frame: raw mean change 0.004262, with finesse (denoise 2, cleanBlack 1, cleanWhite 1, blur 1.5) 0.003210 (-24.7%), both backends equal to 6 decimals; all pixels 0.009300 -> 0.008218 (-11.6%). The changed-pixel fraction does not fall (0.1201 -> 0.1212): the blur spreads small changes over more pixels.",
+      "cli": "comp grade key on a composition of the same clip through the native media path (WebGL2, frames 0:48, 47 flicker values each): raw mean change 0.009599, changed fraction 0.1456; finesse 0.008399 (-12.5%), 0.1423",
+      "notMeasured": "No temporal denoise exists; finesse is spatial only. The metric does not separate legitimate motion from chatter in general (the browser group excludes the disc edge using the clip's stated trajectory)."
+    },
+    "outsideKeyByteIdentical": {
+      "met": true,
+      "result": "66 rows (11 non-view configurations x chart-24, skin-tones, alpha-patches x 2 backends): 1,647,554 pixels with key 0 in the float64 reference, 0 changed against the render without effects (opaque and translucent pixels)"
+    }
+  },
+  "parity": {
+    "rule": "owner decision 3: float64 reference authoritative, WebGL2 within one 8-bit code value, repeat renders byte-identical",
+    "configurations": "13 configurations x 3 stills = 39 rows (HSL soft and hard, RGB, luma, sampled OKLab, finesse with in-ratio, finesse with out-ratio and shrink, gain/offset, ellipse window, inverted rounded rectangle with luma, gradient, highlight view, high-contrast view with blur): Canvas max 0 against the reference written from color-science; WebGL2 max 1 (20 channels at 1 in total); every repeated WebGL2 render byte-identical",
+    "externalMatte": "alpha mode (hidden masked solid: a layer window) and luma mode with inverted levels (hidden image layer): Canvas 0, WebGL2 0",
+    "identities": "a default grade.key, and a key scoping only a neutral operation, are byte-identical to no effect; a second default key ends the first key's scope (Canvas 0, WebGL2 0)"
+  },
+  "deviations": [
+    "The linear gradient window is computed in layer space (0 at gradientStart, 1 at gradientEnd), not produced as mask data: a gradient has no edge for the mask rasterizer. Exact on both backends.",
+    "Morphology (clean black/white, shrink/grow) uses a square structuring element (separable, exact); a disc would round corners but costs (2r+1)^2 reads per pixel.",
+    "Clean black and clean white are morphological opening and closing of the given radius; denoise is passes of a 3x3 median. Other graders define these controls differently; the definitions are documented, not matched to a product.",
+    "Finesse and invert refine the qualifier matte only (with no qualifier they do nothing); windows and the external matte have their own invert; gain and offset apply to the combined key.",
+    "A key's view ends the run's processing (later operations in the run are not applied).",
+    "comp probe's report schema moved to still-shift-color-probe-2 (two added fields); comp probe still cannot render video layers (it renders without preparing native media frames), a CG3 limitation found here and left unchanged."
+  ],
+  "failedRunsAndReruns": [
+    "Unit run 1 of tests/unit/color-science-keys.test.ts: 19/19 failed before keys.ts existed (red state).",
+    "Unit run 2: 2 of 19 failed: the 8-bit sweep tolerance (0.03) was derived for hue error only; luma and saturation softness slopes allow up to 0.06. The test was split: the exact design colors must match the analytic mask to 1e-12 and the 8-bit bytes within 0.07.",
+    "boundaries run: tsc rejected Float64Array<ArrayBufferLike> and a readonly Rgb assignment; fixed.",
+    "Browser run 1: Node heap exhausted passing 48 clip frames as number arrays to the page; frames now cross as base64.",
+    "Browser run 2 (red): page.evaluate TypeError 'OPERATORS[id] is not a function' (no renderer for grade.key yet).",
+    "Browser run 3: failures in windows, the sampled key, window configurations and the alpha matte. Causes: the test read alpha from opaque output frames (coverage is the white-over-black RGB); evaluated color parameters arrive as 0-1 RGBA arrays, not hex, so the sampled key read NaN (renderer fixed); the key-from-input check compared keyed counts, which are equal by symmetry (now compares the keyed sets).",
+    "Browser run 4: passed.",
+    "Unit run (full, concurrent with browser groups): 4,974 of 4,975 passed; tests/unit/mechanism-slotted-retention.test.ts timed out at 5 s under load; rerun alone: 4 of 4 passed in 7 s (unrelated to CG6).",
+    "Contract unit test: the clip/matte invariant expectation was written against static validation, but validateParams runs at evaluation (after drivers), as for grade.tonal; the test calls validateParams directly.",
+    "Integration run 1: the probe suggestion's 6-decimal rounding keyed the probed patch at 0.9999999975, not 1; the assertion is > 0.9999.",
+    "CLI on the moving clip, run 1: ReferenceError __name (tsx wraps named functions in page code); run 2: comp-media-not-ready (native frames were not prepared); run 3: the key covered a quarter of the frame because the ad-hoc composition's video layer had no transform (its centre sat at the origin), not a renderer fault; run 4 with an explicit transform: passed.",
+    "check:fast run 1: stale native appearance closure (two new modules); regenerated with pnpm native3d:identity:generate."
+  ],
+  "verification": {
+    "toolchain": "Node 22.23.1, pnpm 10.29.3, pinned Chromium (pnpm check:fast includes the toolchain-bound build and tests)",
+    "checkFast": "passed on run 2: 482 test files, 4,981 tests (run 1 failed on the stale native appearance closure, regenerated)",
+    "unit": "full pnpm test:unit earlier in the session: 4,974 of 4,975 (one unrelated timeout, passed on rerun)",
+    "integration": "composition-scopes (comp probe schema 2, comp grade key) and composition-grade-interchange (bake refuses grade.key): 18 passed",
+    "browser": {
+      "color-grading-cg6": "passed twice; the final report is byte-identical to the earlier passing run",
+      "color-grading-cg0": "unchanged (273 renders, parity max 1 as recorded in CG0)",
+      "color-grading-cg2": "passed",
+      "color-grading-cg4": "passed",
+      "color-grading-cg5": "passed",
+      "composition-grade-effects": "passed (CGA exact parity unchanged)",
+      "composition-effects": "passed; new baseline darwin-arm64-key-grade-1.json written once with --write-key-grade-baseline, then checked without it; every other CE6 baseline (frozen catalogue, CGA grade, CG2 float, CG4 curve, CG5 LUT, mesh) unchanged",
+      "composition-baselines": "run 1 failed: 7 legacy items (chronicle-reveal, resource-flow, access-pressure, comparison-build, pose-prop-change, crisis-fracture, vertical-chronicle-reveal), every frame differing. Not reproduced: two of them pass alone on this branch and on main c3553e60 (scratch worktree), and full run 2 passed 176 of 176 items, 36,061 frames. Cause not identified; retained here."
+    },
+    "clipMeasurement": "comp grade key on the moving clip (raw and finesse, WebGL2, 48 frames) as recorded under checks.matteStability"
+  },
+  "notRun": [
+    "pnpm check, the full pnpm test, the runtime and depth tiers and the release checks.",
+    "Owner footage (Hana sweater) was not used.",
+    "No human visual or matte-quality review."
+  ],
+  "next": "Stopping point after CG6: report to the owner. Follow-ups: comp probe on video layers (prepare native frames); CG7 working space; CG9 lowers serial nodes to grade.key."
+}

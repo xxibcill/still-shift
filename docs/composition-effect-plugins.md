@@ -388,6 +388,11 @@ input of the operations it scopes, never their output.
   frame (mean, keyed fraction, frame-to-frame flicker) and writes a view with
   `--view key|highlight|contrast --still <new.png>`.
 
+`pnpm test:browser:color-grading-cg6` checks qualifier keys against analytic
+masks on the CG0 sweeps, the key taken from the input, window edges against
+the mask rasterizer, byte-identical pixels outside keys, float64 parity on
+both backends and the matte-stability metric on the moving CG0 clip.
+
 ## Native transitions
 
 `transition.linear-wipe`, `transition.radial-wipe`,
