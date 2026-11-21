@@ -691,8 +691,13 @@ const opsOf = (
     return op ? [op] : [];
   });
 
-/** Effects whose op needs data beyond its parameters (CG5: a LUT asset). */
-const needsSource = (id: string) => id === "grade.lut";
+/**
+ * Effects whose op needs data beyond its parameters: those whose contract
+ * declares asset slots (CG5: grade.lut's LUT). Their prepared assets ride on
+ * the render effect, so they always run as a run, never as the lone kernel.
+ */
+const needsSource = (id: string) =>
+  Object.keys(compositionEffectDefinition(id)?.requiresAssets ?? {}).length > 0;
 
 const single = new Map<string, Readonly<CompositionEffectPlugin>>();
 /** One `grade.*` effect alone: a run of length one. */
