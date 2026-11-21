@@ -1,4 +1,4 @@
-import { EFFECT_LUTS, type PreparedLut } from "./luts.ts";
+import { bindEffectLuts, EFFECT_LUTS, type PreparedLut } from "./luts.ts";
 import {
   MESH_DIAGNOSTIC_LOCATION,
   type MeshDiagnosticLocation,
@@ -689,15 +689,11 @@ class GraphBuilder {
   }
   /** CG5: bind each asset slot's hash and, when loaded, its prepared LUT. */
   private effectAssets(original: EvaluatedEffect): RenderEffect {
-    const hashes: Record<string, string> = {};
-    const luts: Record<string, PreparedLut> = {};
-    for (const [slot, id] of Object.entries(original.assets!)) {
-      const asset = this.comp.assets.find((candidate) => candidate.id === id);
-      if (asset?.type !== "lut") continue;
-      hashes[slot] = asset.sha256;
-      const prepared = this.options.luts?.get(id);
-      if (prepared?.sha256 === asset.sha256) luts[slot] = prepared;
-    }
+    const { hashes, luts } = bindEffectLuts(
+      this.comp.assets,
+      original.assets!,
+      (asset) => this.options.luts?.get(asset.id),
+    );
     return { ...original, assetHashes: hashes, [EFFECT_LUTS]: luts };
   }
   private effectInputs(

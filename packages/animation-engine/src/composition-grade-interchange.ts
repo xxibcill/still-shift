@@ -28,6 +28,7 @@ import {
 import { evaluateComp } from "../../renderer-core/src/composition/evaluate/evaluate.ts";
 import { floatGradeOp } from "../../renderer-core/src/composition/render/float-grade.ts";
 import {
+  bindEffectLuts,
   EFFECT_LUTS,
   preparedLut,
 } from "../../renderer-core/src/composition/render/luts.ts";
@@ -105,13 +106,14 @@ export async function bakeCompositionGrade(
         `Cannot bake ${effect.effect} ("${effect.id}"): only grade.* operators are pointwise; a LUT cannot hold blurs, keys, distortions or the legacy color.* byte kernels`,
         at,
       );
-    const lutSlots: Record<string, ReturnType<typeof preparedLut>> = {};
-    for (const [name, id] of Object.entries(effect.assets ?? {})) {
-      const asset = source.composition.assets.find((a) => a.id === id);
-      const lut = source.luts?.get(id);
-      if (asset?.type === "lut" && lut)
-        lutSlots[name] = preparedLut(asset.sha256, lut);
-    }
+    const { luts: lutSlots } = bindEffectLuts(
+      source.composition.assets,
+      effect.assets ?? {},
+      (asset) => {
+        const lut = source.luts?.get(asset.id);
+        return lut && preparedLut(asset.sha256, lut);
+      },
+    );
     const op = floatGradeOp(
       effect.effect as FloatGradeEffectId,
       effect.params as never,

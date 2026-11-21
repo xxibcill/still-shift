@@ -1,4 +1,8 @@
 import { parseCubeLut, type CubeLut } from "@still-shift/color-science";
+import type {
+  CompositionAsset,
+  CompositionLutAsset,
+} from "@still-shift/scene-contract";
 
 /**
  * CG5: a parsed `.cube` LUT asset as both backends read it. The Canvas
@@ -33,6 +37,27 @@ export function preparedLut(sha256: string, lut: CubeLut): PreparedLut {
   floats.set(shaper);
   floats.set(lut.data, shaper.length);
   return Object.freeze({ sha256, lut, floats, base: shaper.length });
+}
+
+/**
+ * An effect's asset slots bound to `lut` assets: each slot's pinned hash, and
+ * its prepared LUT when `prepared` has one whose hash matches the pin.
+ */
+export function bindEffectLuts(
+  assets: readonly CompositionAsset[],
+  slots: Readonly<Record<string, string>>,
+  prepared: (asset: CompositionLutAsset) => PreparedLut | undefined,
+) {
+  const hashes: Record<string, string> = {};
+  const luts: Record<string, PreparedLut> = {};
+  for (const [slot, id] of Object.entries(slots)) {
+    const asset = assets.find((candidate) => candidate.id === id);
+    if (asset?.type !== "lut") continue;
+    hashes[slot] = asset.sha256;
+    const lut = prepared(asset);
+    if (lut?.sha256 === asset.sha256) luts[slot] = lut;
+  }
+  return { hashes, luts };
 }
 
 /** The run's LUT floats as RGBA8 texture bytes (each float32's bits, little-endian). */
