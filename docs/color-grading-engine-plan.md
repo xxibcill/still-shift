@@ -249,7 +249,7 @@ These are recommendations to confirm at CG1, each with a fallback.
 | CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
 | CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
 | CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Done (branch)   |
-| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed        |
+| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Done (branch)   |
 | CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed        |
 | CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed        |
 | CG7  | Scene-referred input and working space             | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
@@ -663,14 +663,25 @@ renderer's 8-bit output per effect stage, not values inside a fused grade run.
   with knee.
 - Curves baked to float tables on the CPU for deterministic GPU evaluation.
 
-**Checks**
+**Checks** (2026-11-21, `codex/color-grading-cg4`; numbers in
+[CG4 results](./color-grading-cg4-results.json); operators in
+[curves and tonal ranges](./composition-effect-plugins.md#curves-and-tonal-ranges-cg4))
 
-- [ ] Identity curves are exact identities; spline evaluation matches reference
-      vectors; no overshoot outside the control hull for monotone inputs.
-- [ ] Each hue/saturation curve changes only its target dimension on the sweep
-      fixtures, within tolerance (measured with CG3).
-- [ ] Hue curves are continuous across the 0°/360° wrap.
-- [ ] Animated curve points keep the existing ordering and point-count rules.
+- [x] Identity curves are exact identities (the operator is dropped); spline
+      evaluation matches reference vectors (SciPy PCHIP within 1e-12); no
+      overshoot outside the control hull for monotone inputs (500 seeded
+      curves).
+- [x] Each hue/saturation curve changes only its target dimension on the sweep
+      fixtures, within tolerance (measured with CG3): float64 < 1e-9;
+      rendered off-target luma ≤ 0.0019 and radius ≤ 0.002 on in-gamut pixels
+      (gamut-clipped pixels counted, not measured).
+- [x] Hue curves are continuous across the 0°/360° wrap (float64 and both
+      backends).
+- [x] Animated curve points keep the existing ordering and point-count rules
+      (the existing `curve` parameter; crossing x fails at its frame).
+
+_As built:_ the three ranges of `grade.tonal` carry the zone exposure; the
+GPU reads baked float32 curve tables bit-exactly through an RGBA8 texture.
 
 ## CG5 — LUT and CDL interchange
 

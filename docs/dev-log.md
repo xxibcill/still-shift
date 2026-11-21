@@ -128,6 +128,16 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-21 — Color grading CG4: curves and tonal-range tools
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg4`, cut from `codex/color-grading-cg3` (same worktree), with PR #77's tip 50e5d033 (D65 white balance) merged in. Started on the owner's "Continue to CG4 and CG5", relayed by the planning session (sequential: both touch the effect registry and grade stage).
+- **Scope:** [CG4](./color-grading-engine-plan.md#cg4--curves-and-tonal-range-tools).
+- **Done:** PCHIP splines in `color-science` (SciPy-exact, new CG0 `spline.json`), baked float32 curve tables; float64 references and fused GPU kernels for `grade.curves` (RGB then master, `lumaMix`), `grade.hue-curves` (six curves in Y′CbCr, periodic hue curves) and `grade.tonal` (three-range offsets and exposure with boundaries and falloff, soft clip); contract on the existing `curve` parameter; CE6 cell `catalogue-curve-grade` with its own baseline; [docs](./composition-effect-plugins.md#curves-and-tonal-ranges-cg4) and skill.
+- **Results:** all four CG4 checks met: identity curves dropped (exact), splines within 1e-12 of SciPy, no overshoot over 500 seeded monotone curves; each hue/saturation curve moves only its dimension (float64 < 1e-9; rendered and measured with CG3: off-target luma ≤ 0.0019, radius ≤ 0.002 on in-gamut pixels); hue wrap continuous on both backends; curve point rules hold. Parity: 54 rows, Canvas = reference, WebGL2 ≤ 1, repeats identical; 81 layer-kind/animation cases within 1.
+- **Rejected / do not repeat:** measuring rendered hue rotation on gamut-edge colors without excluding clipped results (the 8-bit output clips them and moves every dimension); `Array.prototype.sort()` on numbers in tests (string order).
+- **Open / next:** CG5 on `codex/color-grading-cg5`; owner report after CG5. Not run: `pnpm check`, full `pnpm test`, runtime tier, release checks.
+- **Records:** [CG4 results](./color-grading-cg4-results.json).
+
 ### 2026-11-21 — Color grading CG3: scopes, probes and machine-readable measurement
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg3`, cut from `codex/color-grading-cg0-cg2` (PR #77) 77722bb0 in its own worktree (`.claude/worktrees/color-grading-cg3`, owner's choice: the PR #77 review session was committing in the CG0–CG2 worktree); PR #77's later tip 0811876e (with `main` 51ffe62a) merged in. Started on the owner's "Yes, continue to CG3", relayed by the planning session.

@@ -208,6 +208,44 @@ backend parity, and a graded native-video composition exports with the effect
 versions in its scene manifest. The CE6 cell `catalogue-float-grade` has its
 own baseline file (`darwin-arm64-float-grade-1.json`).
 
+### Curves and tonal ranges (CG4)
+
+`grade.curves`, `grade.hue-curves` and `grade.tonal` join the float grade
+stage ([plan, CG4](./color-grading-engine-plan.md#cg4--curves-and-tonal-range-tools)).
+Curves use the ordinary `curve` parameter (2–16 points, endpoints at x = 0 and
+x = 1, animatable points with a fixed count, x strictly increasing after
+drivers and expressions). They are monotone cubic (PCHIP) splines: between two
+control points a curve never leaves their range, and it matches SciPy's
+`PchipInterpolator` within 1e-12. Each curve is baked on the CPU into a
+1024-entry float32 table that both backends sample the same way (linear
+interpolation, linear extrapolation beyond 0–1). Identity and flat curves
+leave pixels unchanged.
+
+- `grade.curves`: `red`, `green` and `blue` curves, then `master`; `lumaMix`
+  moves the master curve from every channel (0) to luma only (1, chroma
+  differences kept).
+- `grade.hue-curves`: six curves in BT.709 Y′CbCr. The x axes are hue (the
+  vectorscope angle, periodic: a hue curve's two ends must share y), luma Y′
+  and saturation (chroma radius / 0.5). y = 0.5 is neutral: `hueVsHue` rotates
+  by (y − 0.5) turns, `hueVsSat`, `lumVsSat` and `satVsSat` multiply the chroma
+  radius by 2y, `hueVsLum` and `satVsLum` add (y − 0.5)·0.5 to Y′. Every curve
+  reads the input, so each changes only its own dimension; hue-indexed curves
+  fade in over a chroma radius of 0.02 (hue is undefined for greys).
+- `grade.tonal`: shadow, midtone and highlight color offsets (`shadowR` …
+  `highlightB`) and exposure in stops, weighted by Y′ with movable boundaries
+  (`shadowEnd`, `highlightStart`, no higher than it) and a smooth `falloff`;
+  then high and low soft clip with a C¹ knee (`softClipHigh` 1 and
+  `softClipLow` 0 are off).
+
+`pnpm test:browser:color-grading-cg4` checks the operators, a chain with CG2
+operators and neutral settings on the CG0 stills (Canvas equals the float64
+reference, WebGL2 within one code value, repeats byte-identical), measures
+each hue/saturation curve's effect on the rendered sweeps with the CG3 scope
+functions (only its own dimension moves, beyond 8-bit rounding), checks the
+hue wrap on both backends and the layer-kind/animation/seek matrix. The CE6 cell
+`catalogue-curve-grade` has its own baseline file
+(`darwin-arm64-curve-grade-1.json`).
+
 ## Native transitions
 
 `transition.linear-wipe`, `transition.radial-wipe`,
