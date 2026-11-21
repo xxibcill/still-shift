@@ -107,6 +107,21 @@ export type FloatGradeOp = {
 /** The effect a run member came from (its prepared LUTs ride under a symbol). */
 type OpSource = { [EFFECT_LUTS]?: Readonly<Record<string, PreparedLut>> };
 
+/**
+ * The baked tables of the curves that are present (null: identity or flat),
+ * and, given the run's texture rows for those tables, every curve's row (−1
+ * when absent) in the order the kernel reads them.
+ */
+function curveTables(present: readonly (Float32Array | null)[]) {
+  return {
+    tables: present.filter((t): t is Float32Array => t !== null),
+    rowsOf(rows: readonly number[]) {
+      let next = 0;
+      return present.map((t) => (t ? rows[next++]! : -1));
+    },
+  };
+}
+
 /** Every control of `value` equals `neutral`'s, except those in `ignore`. */
 function isNeutral<T extends object>(
   value: T,
@@ -258,20 +273,18 @@ const OPERATORS: Readonly<
       lumaMix: n(p, "lumaMix"),
     });
     if (!controls) return null;
-    const present = [
+    const { tables, rowsOf } = curveTables([
       controls.red,
       controls.green,
       controls.blue,
       controls.master,
-    ];
-    const tables = present.filter((t): t is Float32Array => t !== null);
+    ]);
     return {
       id: "grade.curves",
       apply: (v) => applyGradeCurves(v, controls),
       tables,
       glsl: (u, rows) => {
-        let next = 0;
-        const row = present.map((t) => (t ? rows[next++]! : -1));
+        const row = rowsOf(rows);
         return {
           declare: `uniform vec4 ${u("Rows")};uniform float ${u("LumaMix")};`,
           call: `v=gCurves(v,${u("Rows")},${u("LumaMix")});`,
@@ -287,15 +300,15 @@ const OPERATORS: Readonly<
       ) as Parameters<typeof gradeHueCurvesControls>[0],
     );
     if (!controls) return null;
-    const present = HUE_CURVE_KEYS.map((key) => controls[key]);
-    const tables = present.filter((t): t is Float32Array => t !== null);
+    const { tables, rowsOf } = curveTables(
+      HUE_CURVE_KEYS.map((key) => controls[key]),
+    );
     return {
       id: "grade.hue-curves",
       apply: (v) => applyGradeHueCurves(v, controls),
       tables,
       glsl: (u, rows) => {
-        let next = 0;
-        const row = present.map((t) => (t ? rows[next++]! : -1));
+        const row = rowsOf(rows);
         return {
           declare: `uniform vec3 ${u("HueRows")};uniform vec3 ${u("SatRows")};`,
           call: `v=gHueCurves(v,${u("HueRows")},${u("SatRows")});`,
@@ -446,10 +459,12 @@ vec3 gCdl(vec3 v,vec3 slope,vec3 offs,vec3 power,vec2 sc){
   vec3 o=y+sc.x*(p-y);
   return sc.y>0.5?clamp(o,0.0,1.0):gLimit3(o);
 }
-// CG4: curve tables are float32 bit patterns, one per RGBA8 texel of the
-// backdrop texture (row = curve), read back exactly.
+// CG4/CG5: curve and LUT tables are float32 bit patterns, one per RGBA8
+// texel (little-endian), read back exactly.
+float gBits(vec4 texel){uvec4 b=uvec4(floor(texel*255.0+0.5));return uintBitsToFloat(b.r|(b.g<<8u)|(b.b<<16u)|(b.a<<24u));}
+// CG4: curve tables are rows of the backdrop texture (row = curve).
 const float TABLE_N=${CURVE_TABLE_SIZE.toFixed(1)};
-float gTex(int i,int row){uvec4 b=uvec4(floor(texelFetch(backdrop,ivec2(i,row),0)*255.0+0.5));return uintBitsToFloat(b.r|(b.g<<8u)|(b.b<<16u)|(b.a<<24u));}
+float gTex(int i,int row){return gBits(texelFetch(backdrop,ivec2(i,row),0));}
 float gCurve(int row,float x){
   if(x<=0.0){float a=gTex(0,row);return a+x*(gTex(1,row)-a)*(TABLE_N-1.0);}
   if(x>=1.0){float a=gTex(${CURVE_TABLE_SIZE - 1},row);return a+(x-1.0)*(a-gTex(${CURVE_TABLE_SIZE - 2},row))*(TABLE_N-1.0);}
@@ -508,10 +523,9 @@ vec3 gTonal(vec3 v,vec3 so,vec3 mo,vec3 ho,vec3 ex,vec3 rng,vec2 clip){
   vec3 x=v*exp2(ws*ex.x+wm*ex.y+wh*ex.z)+(ws*so+wm*mo+wh*ho);
   return gLimit3(vec3(gSoftClip(x.r,clip),gSoftClip(x.g,clip),gSoftClip(x.b,clip)));
 }
-// CG5: LUT tables are float32 bit patterns, one per RGBA8 texel of the
-// coverage texture (LUT_W wide), read back exactly. Mirrors sampleLut.
+// CG5: LUT tables fill the coverage texture (LUT_W wide). Mirrors sampleLut.
 const int LUT_W=${LUT_TEXTURE_WIDTH};
-float gLutTex(int i){uvec4 b=uvec4(floor(texelFetch(coverage,ivec2(i%LUT_W,i/LUT_W),0)*255.0+0.5));return uintBitsToFloat(b.r|(b.g<<8u)|(b.b<<16u)|(b.a<<24u));}
+float gLutTex(int i){return gBits(texelFetch(coverage,ivec2(i%LUT_W,i/LUT_W),0));}
 vec3 gLut1(vec3 v,int base,int size,vec3 lo,vec3 hi){
   vec3 x=(clamp(v,lo,hi)-lo)/(hi-lo)*float(size-1);
   vec3 o;
