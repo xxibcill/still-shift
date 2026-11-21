@@ -16,18 +16,19 @@
  */
 import assert from "node:assert/strict";
 import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
-import { createServer } from "vite";
-import { launchRenderBrowser } from "@still-shift/execution-runtime";
-import { decodeCompositionRgbaPng } from "../../packages/animation-engine/src/composition-media-color.ts";
+import { join } from "node:path";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as FloatGrade from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 import type * as Luts from "../../packages/renderer-core/src/composition/render/luts.ts";
 import type * as Science from "../../packages/color-science/src/index.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import type * as Contract from "../../packages/scene-contract/src/index.ts";
+import {
+  loadCg0Stills,
+  openColorGradingPage,
+  repositoryRoot as root,
+} from "../helpers/color-grading-browser.ts";
 
-const root = resolve(import.meta.dirname, "../..");
 const vectors = join(root, "benchmarks/fixtures/color/cg0/vectors/luts");
 const fixtureLuts = Object.fromEntries(
   await Promise.all(
@@ -37,16 +38,7 @@ const fixtureLuts = Object.fromEntries(
   ),
 ) as Record<string, string>;
 const STILLS = ["chart-24", "hue-sweep", "skin-tones", "noisy-gradient"];
-const stills = await Promise.all(
-  STILLS.map(async (id) => {
-    const { width, height, rgba } = decodeCompositionRgbaPng(
-      await readFile(
-        join(root, `benchmarks/fixtures/color/cg0/stills/${id}.png`),
-      ),
-    );
-    return { id, width, height, rgba: [...rgba] };
-  }),
-);
+const stills = await loadCg0Stills(STILLS);
 // Edge and random samples: every gray, channel values at the 17- and 65-point
 // grid nodes and the ends, ties between channels (tetrahedral branch edges),
 // and seeded random colors.
@@ -77,18 +69,8 @@ const stills = await Promise.all(
   stills.push({ id: "edges-random", width, height, rgba });
 }
 
-const server = await createServer({
-  root,
-  configFile: false,
-  logLevel: "error",
-  server: { host: "127.0.0.1", port: 0 },
-});
-await server.listen();
-const browser = await launchRenderBrowser();
+const { page, close } = await openColorGradingPage();
 try {
-  const page = await browser.newPage();
-  await page.addInitScript("window.__name = (fn) => fn;");
-  await page.goto(server.resolvedUrls!.local[0]!);
   const result = await page.evaluate(
     async ({ stills, fixtureLuts }) => {
       const m = (await import(
@@ -641,6 +623,5 @@ try {
     }),
   );
 } finally {
-  await browser.close();
-  await server.close();
+  await close();
 }

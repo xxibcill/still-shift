@@ -15,19 +15,20 @@
  *   pnpm test:browser:color-grading-cg4
  */
 import assert from "node:assert/strict";
-import { mkdir, readFile, writeFile } from "node:fs/promises";
-import { join, resolve } from "node:path";
-import { createServer } from "vite";
-import { launchRenderBrowser } from "@still-shift/execution-runtime";
-import { decodeCompositionRgbaPng } from "../../packages/animation-engine/src/composition-media-color.ts";
+import { mkdir, writeFile } from "node:fs/promises";
+import { join } from "node:path";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import type * as FloatGrade from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 import type * as Science from "../../packages/color-science/src/index.ts";
 import type * as ColorReference from "../helpers/composition-color-effect-reference.ts";
 import type { Composition } from "@still-shift/scene-contract";
 import type * as Contract from "../../packages/scene-contract/src/index.ts";
+import {
+  loadCg0Stills,
+  openColorGradingPage,
+  repositoryRoot as root,
+} from "../helpers/color-grading-browser.ts";
 
-const root = resolve(import.meta.dirname, "../..");
 const STILLS = [
   "gray-ramp-256",
   "chart-24",
@@ -36,16 +37,7 @@ const STILLS = [
   "skin-tones",
   "noisy-gradient",
 ];
-const stills = await Promise.all(
-  STILLS.map(async (id) => {
-    const { width, height, rgba } = decodeCompositionRgbaPng(
-      await readFile(
-        join(root, `benchmarks/fixtures/color/cg0/stills/${id}.png`),
-      ),
-    );
-    return { id, width, height, rgba: [...rgba] };
-  }),
-);
+const stills = await loadCg0Stills(STILLS);
 
 const S: [number, number][] = [
   [0, 0],
@@ -242,18 +234,8 @@ const SINGLES: {
   },
 ];
 
-const server = await createServer({
-  root,
-  configFile: false,
-  logLevel: "error",
-  server: { host: "127.0.0.1", port: 0 },
-});
-await server.listen();
-const browser = await launchRenderBrowser();
+const { page, close } = await openColorGradingPage();
 try {
-  const page = await browser.newPage();
-  await page.addInitScript("window.__name = (fn) => fn;");
-  await page.goto(server.resolvedUrls!.local[0]!);
   const result = await page.evaluate(
     async ({ stills, cases, singles }) => {
       const m = (await import(
@@ -665,6 +647,5 @@ try {
     }),
   );
 } finally {
-  await browser.close();
-  await server.close();
+  await close();
 }
