@@ -1,15 +1,9 @@
 /**
- * CG3 commands: `comp scopes`, `comp probe` and `comp grade diff`; CG5:
- * `comp grade bake`, `comp grade cdl-export` and `comp grade cdl-import`.
- * Reports are deterministic JSON; outputs (report, images, stills, LUTs,
- * CDL files) are never overwritten.
+ * CG3 measurement commands: `comp scopes`, `comp probe` and `comp grade diff`.
+ * Reports are deterministic JSON; outputs (report, images, stills) are never
+ * overwritten.
  */
-import { readFile } from "node:fs/promises";
 import {
-  bakeCompositionGrade,
-  cdlFileKind,
-  exportCompositionCdl,
-  importCdl,
   diffColorGrade,
   measureColorScopes,
   probeCompositionFile,
@@ -19,7 +13,7 @@ import { programError } from "./errors.ts";
 import type { CompositionIo } from "./commands.ts";
 import { backend, count, newOutput, writeNew } from "./color.ts";
 
-const json = (value: unknown) => JSON.stringify(value) + "\n";
+export const json = (value: unknown) => JSON.stringify(value) + "\n";
 
 function integers(text: string, option: string, length: number): number[] {
   const values = text.split(",").map((part) => Number(part.trim()));
@@ -54,7 +48,7 @@ function frameRange(values: Map<string, string>) {
     );
   return [Number(match![1]), Number(match![2])] as const;
 }
-function flag(values: Map<string, string>, name: string) {
+export function flag(values: Map<string, string>, name: string) {
   const text = values.get(name);
   if (text === undefined) return undefined;
   if (text !== "true" && text !== "false")
@@ -65,7 +59,7 @@ function flag(values: Map<string, string>, name: string) {
     );
   return text === "true";
 }
-function wholeFrame(values: Map<string, string>) {
+export function wholeFrame(values: Map<string, string>) {
   const frame = values.get("frame");
   if (frame !== undefined && !/^\d+$/.test(frame))
     programError(
@@ -75,7 +69,7 @@ function wholeFrame(values: Map<string, string>) {
     );
   return frame === undefined ? undefined : Number(frame);
 }
-async function emit(
+export async function emit(
   io: CompositionIo,
   report: unknown,
   output: string | undefined,
@@ -194,88 +188,6 @@ export async function runScopeCommand(
       requireArgument(values, "before"),
       requireArgument(values, "after"),
       { frames: count(values, "frames", 100_000), still, sheet },
-    );
-    await emit(io, report, output);
-    return 0;
-  }
-  if (command === "grade" && args[1] === "bake") {
-    const values = parseNamedArguments(args.slice(2), [
-      "input",
-      "layer",
-      "frame",
-      "size",
-      "title",
-      "output",
-    ]);
-    const output = await newOutput(requireArgument(values, "output"), "output");
-    if (!/\.cube$/i.test(output))
-      programError(
-        "comp-program-option",
-        "--output must end in .cube",
-        "output",
-      );
-    const size = values.get("size");
-    if (size !== undefined && !/^\d+$/.test(size))
-      programError(
-        "comp-program-option",
-        "--size must be a whole number of grid points (2–129)",
-        "size",
-      );
-    const { cube, report } = await bakeCompositionGrade(
-      requireArgument(values, "input"),
-      {
-        layer: requireArgument(values, "layer"),
-        frame: wholeFrame(values),
-        size: size === undefined ? undefined : Number(size),
-        title: values.get("title"),
-      },
-    );
-    await writeNew(output, cube, "output");
-    io.stdout(json({ status: "baked", output, ...report }));
-    return 0;
-  }
-  if (command === "grade" && args[1] === "cdl-export") {
-    const values = parseNamedArguments(args.slice(2), [
-      "input",
-      "layer",
-      "effect",
-      "frame",
-      "output",
-    ]);
-    const output = await newOutput(requireArgument(values, "output"), "output");
-    const kind = cdlFileKind(output);
-    if (!kind)
-      programError(
-        "comp-program-option",
-        "--output must end in .cc, .ccc or .cdl",
-        "output",
-      );
-    const { text, report } = await exportCompositionCdl(
-      requireArgument(values, "input"),
-      {
-        layer: requireArgument(values, "layer"),
-        kind: kind!,
-        effect: values.get("effect"),
-        frame: wholeFrame(values),
-      },
-    );
-    await writeNew(output, text, "output");
-    io.stdout(json({ status: "exported", output, ...report }));
-    return 0;
-  }
-  if (command === "grade" && args[1] === "cdl-import") {
-    const values = parseNamedArguments(args.slice(2), [
-      "input",
-      "correction",
-      "clamp",
-      "output",
-    ]);
-    const output = values.has("output")
-      ? await newOutput(values.get("output")!, "output")
-      : undefined;
-    const report = importCdl(
-      await readFile(requireArgument(values, "input"), "utf8"),
-      { correction: values.get("correction"), clamp: flag(values, "clamp") },
     );
     await emit(io, report, output);
     return 0;
