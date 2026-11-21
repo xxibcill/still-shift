@@ -12,6 +12,7 @@
  * beyond 0–1 (the unclamped float stage keeps values outside that range).
  * Periodic (hue) curves wrap.
  */
+import { limitGrade } from "./grade.ts";
 import type { Rgb } from "./matrix.ts";
 
 export type CurvePoints = readonly (readonly [number, number])[];
@@ -167,15 +168,15 @@ export function applyGradeCurves(
 ): [number, number, number] {
   const tables = [k.red, k.green, k.blue];
   const c = [0, 1, 2].map((i) =>
-    tables[i] ? sampleCurveTable(tables[i]!, v[i]!) : v[i]!,
+    tables[i] ? limitGrade(sampleCurveTable(tables[i]!, v[i]!)) : v[i]!,
   );
   if (!k.master) return c as [number, number, number];
-  const rgb = c.map((x) => sampleCurveTable(k.master!, x));
+  const rgb = c.map((x) => limitGrade(sampleCurveTable(k.master!, x)));
   if (k.lumaMix === 0) return rgb as [number, number, number];
   const y = luma(c);
   const lift = sampleCurveTable(k.master, y) - y;
-  return c.map(
-    (x, i) => rgb[i]! * (1 - k.lumaMix) + (x + lift) * k.lumaMix,
+  return c.map((x, i) =>
+    limitGrade(rgb[i]! * (1 - k.lumaMix) + (x + lift) * k.lumaMix),
   ) as [number, number, number];
 }
 
@@ -265,7 +266,11 @@ export function applyGradeHueCurves(
   const y2 = y + offset;
   const r = y2 + 1.5748 * cr2,
     b = y2 + 1.8556 * cb2;
-  return [r, (y2 - LUMA[0] * r - LUMA[2] * b) / LUMA[1], b];
+  return [
+    limitGrade(r),
+    limitGrade((y2 - LUMA[0] * r - LUMA[2] * b) / LUMA[1]),
+    limitGrade(b),
+  ];
 }
 
 // --- grade.tonal ------------------------------------------------------------------
@@ -341,6 +346,6 @@ export function applyGradeTonal(
       x = hk + (1 - hk) * (1 - Math.exp(-(x - hk) / (1 - hk)));
     const lk = t.softClipLow;
     if (lk > 0 && x < lk) x = lk * Math.exp(-(lk - x) / lk);
-    return x;
+    return limitGrade(x);
   }) as [number, number, number];
 }
