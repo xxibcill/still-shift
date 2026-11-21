@@ -5,6 +5,7 @@
  */
 import { describe, expect, it } from "vitest";
 import {
+  COMPOSITION_DIAGNOSTICS,
   compositionEffectDefinition,
   isFloatGradeEffect,
   validateComposition,
@@ -82,6 +83,16 @@ describe("grade.lut contract", () => {
         }),
       ),
     ).toEqual([]);
+  });
+  it("registers its diagnostic codes for the composition reference", () => {
+    for (const code of [
+      "comp-effect-asset",
+      "comp-lut-unreadable",
+      "comp-lut-invalid",
+      "comp-lut-checksum",
+      "comp-lut-not-ready",
+    ])
+      expect(COMPOSITION_DIAGNOSTICS, code).toHaveProperty(code);
   });
   it("needs its asset slot, bound to a LUT asset that exists", () => {
     expect(diagnostics(comp({ effect: "grade.lut" }))).toEqual([

@@ -1316,6 +1316,10 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-media-color`                   | Source color metadata is unsupported or inconsistent.                                                    |
 | `comp-media-limit`                   | Media exceeds a configured source or decoded-resource limit.                                             |
 | `comp-media-sequence`                | A numbered sequence pattern or manifest is invalid.                                                      |
+| `comp-lut-unreadable`                | A LUT asset file cannot be read.                                                                         |
+| `comp-lut-invalid`                   | A LUT file is malformed, too large, or its table size is out of range.                                   |
+| `comp-lut-checksum`                  | LUT bytes differ from the asset's pinned SHA-256.                                                        |
+| `comp-lut-not-ready`                 | Load LUT assets with the composition resources before drawing `grade.lut`.                               |
 | `comp-media-trim`                    | A source trim or fade lies outside the pinned source interval.                                           |
 | `comp-media-audio-property`          | A visual-only property is authored on an audio layer.                                                    |
 | `comp-media-narration-clock`         | Narration has a nonidentity local or inherited source clock.                                             |
@@ -1330,6 +1334,7 @@ Schema validation yields stable codes with JSON paths; builder input also yields
 | `comp-schema`                        | Any other structural error.                                                                              |
 | `comp-limit`                         | An array, string or record exceeds its size limit.                                                       |
 | `comp-effect-layer`                  | An effect input slot is missing, undeclared or outside its scope.                                        |
+| `comp-effect-asset`                  | An effect asset slot is missing, undeclared or bound to the wrong asset type.                            |
 | `comp-effect-cycle`                  | Layer inputs, mattes or group descendants form a render dependency cycle.                                |
 | `comp-effect-budget`                 | The scoped effect source graph exceeds its bounded work budget.                                          |
 | `comp-effect-registration`           | Effect registration requires a unique ID, valid definition and GPU callback.                             |
