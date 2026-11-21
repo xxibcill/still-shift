@@ -681,8 +681,13 @@ renderer's 8-bit output per effect stage, not values inside a fused grade run.
 - [x] Animated curve points keep the existing ordering and point-count rules
       (the existing `curve` parameter; crossing x fails at its frame).
 
-_As built:_ the three ranges of `grade.tonal` carry the zone exposure; the
-GPU reads baked float32 curve tables bit-exactly through an RGBA8 texture.
+_As built:_ zone exposure is three zones, the same shadow, midtone and
+highlight ranges as the wheels: `shadowExposure`, `midExposure` and
+`highlightExposure` in stops, weighted by the ranges' adjustable boundaries
+(`shadowEnd`, `highlightStart`) and one shared smoothstep `falloff`. More zones
+(for example five or more HDR-style zones) and a falloff per zone are not
+built; whether they are needed is an owner decision. The GPU reads baked
+float32 curve tables bit-exactly through an RGBA8 texture.
 
 ## CG5 — LUT and CDL interchange
 
