@@ -8,7 +8,6 @@ import { format } from "prettier";
 import type { Page } from "playwright";
 import {
   compositionEffectDefinition,
-  FLOAT_GRADE_EFFECT_IDS,
   GRADE_EFFECT_IDS,
   type Composition,
 } from "@still-shift/scene-contract";
@@ -23,7 +22,11 @@ import {
 import { ffmpegArguments } from "@still-shift/execution-runtime/export";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
 import { shapeHardwarePreview } from "./shape-hardware.ts";
-import { CE6_NATIVE_FIXTURES } from "../../benchmarks/fixtures/composition/ce6/catalogue.ts";
+import {
+  CE6_NATIVE_FIXTURES,
+  CG2_FLOAT_GRADE_EFFECTS,
+  CG4_CURVE_GRADE_EFFECTS,
+} from "../../benchmarks/fixtures/composition/ce6/catalogue.ts";
 
 const digest = (bytes: Uint8Array | string) =>
   createHash("sha256").update(bytes).digest("hex");
@@ -49,6 +52,8 @@ export async function runEffectCatalogueAcceptance(
     writingGrade = process.argv.includes("--write-grade-baseline"),
     /** CG2 float grade effects: their own baseline file, written once. */
     writingFloatGrade = process.argv.includes("--write-float-grade-baseline"),
+    /** CG4 curve and tonal grade effects: their own baseline file. */
+    writingCurveGrade = process.argv.includes("--write-curve-grade-baseline"),
     directory = await mkdtemp(join(tmpdir(), "ce6-native-export-"));
   const fixtures: [string, Composition][] = [];
   const items: Record<
@@ -244,7 +249,8 @@ export async function runEffectCatalogueAcceptance(
                 ([id]) =>
                   id !== "catalogue-mesh" &&
                   id !== "catalogue-grade" &&
-                  id !== "catalogue-float-grade",
+                  id !== "catalogue-float-grade" &&
+                  id !== "catalogue-curve-grade",
               ),
             ),
           }),
@@ -393,7 +399,7 @@ export async function runEffectCatalogueAcceptance(
         `${environment.platform}-${environment.arch}-float-grade-1.json`,
       );
       const floatGradeVersions = Object.fromEntries(
-        FLOAT_GRADE_EFFECT_IDS.map((id) => [
+        CG2_FLOAT_GRADE_EFFECTS.map((id) => [
           id,
           compositionEffectDefinition(id)!.version,
         ]),
@@ -428,6 +434,48 @@ export async function runEffectCatalogueAcceptance(
       assert.deepEqual(floatGrade.effectVersions, floatGradeVersions);
       expected["catalogue-float-grade"] =
         floatGrade.items["catalogue-float-grade"];
+      // CG4: curve and tonal grade effects, their own cell and baseline file.
+      assert.equal(Object.hasOwn(expected, "catalogue-curve-grade"), false);
+      const curveGradePath = join(
+        baselineDirectory,
+        `${environment.platform}-${environment.arch}-curve-grade-1.json`,
+      );
+      const curveGradeVersions = Object.fromEntries(
+        CG4_CURVE_GRADE_EFFECTS.map((id) => [
+          id,
+          compositionEffectDefinition(id)!.version,
+        ]),
+      );
+      if (writingCurveGrade)
+        await writeFile(
+          curveGradePath,
+          await format(
+            JSON.stringify({
+              version: "composition-curve-grade-catalogue-baseline-1",
+              environment,
+              effectVersions: curveGradeVersions,
+              items: {
+                "catalogue-curve-grade": items["catalogue-curve-grade"],
+              },
+            }),
+            { parser: "json" },
+          ),
+        );
+      const curveGrade = JSON.parse(await readFile(curveGradePath, "utf8"));
+      assert.equal(
+        curveGrade.version,
+        "composition-curve-grade-catalogue-baseline-1",
+      );
+      assert.equal(
+        curveGrade.environment.rasterFingerprint,
+        environment.rasterFingerprint,
+      );
+      assert.deepEqual(Object.keys(curveGrade.items), [
+        "catalogue-curve-grade",
+      ]);
+      assert.deepEqual(curveGrade.effectVersions, curveGradeVersions);
+      expected["catalogue-curve-grade"] =
+        curveGrade.items["catalogue-curve-grade"];
       assert.deepEqual(items, expected, "CE6 full-frame hashes");
     }
     const hardware = await shapeHardwarePreview(root, fixtures);

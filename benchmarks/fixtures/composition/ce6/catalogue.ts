@@ -90,6 +90,40 @@ export function ce6EffectCases(
       bo: 0.02,
       strength: animated(0.2, 1),
     },
+    "grade.curves": {
+      master: [
+        [0, 0],
+        [0.25, 0.18],
+        [0.75, 0.84],
+        [1, 1],
+      ],
+      red: [[0, 0.04], { x: 0.5, y: animated(0.45, 0.6) }, [1, 1]],
+      lumaMix: 0.3,
+    },
+    "grade.hue-curves": {
+      hueVsHue: [
+        [0, 0.5],
+        { x: 0.1, y: animated(0.5, 0.62) },
+        [0.3, 0.5],
+        [1, 0.5],
+      ],
+      hueVsSat: [
+        [0, 0.7],
+        [0.5, 0.5],
+        [1, 0.7],
+      ],
+      satVsLum: [
+        [0, 0.5],
+        [1, 0.42],
+      ],
+    },
+    "grade.tonal": {
+      shadowB: 0.05,
+      highlightR: 0.04,
+      shadowExposure: animated(0, 0.8),
+      highlightExposure: -0.4,
+      softClipHigh: 0.85,
+    },
     "transition.linear-wipe": {
       progress: animated(0.1, 0.85),
       softness: 0.15,
@@ -231,9 +265,14 @@ export const CE6_NATIVE_FIXTURES = [
   "catalogue-mesh",
   "catalogue-grade",
   "catalogue-float-grade",
+  "catalogue-curve-grade",
 ] as const;
 /** CGA grade effects, kept out of the frozen color catalogue cell layout. */
 const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
+/** The CG2 float grade cell keeps its four effects (and its baseline). */
+export const CG2_FLOAT_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(0, 4);
+/** CG4 curve and tonal grade effects: their own cell and baseline file. */
+export const CG4_CURVE_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(4);
 
 /** Each catalogue cell is a native isolated group with independently moving paints. */
 export function ce6NativeFixtures(): [string, Composition][] {
@@ -259,7 +298,8 @@ export function ce6NativeFixtures(): [string, Composition][] {
       ["time.echo", "distort.displacement-map", "transition.gradient-wipe"],
       ["distort.mesh-warp", "distort.puppet"],
       [...GRADE_EFFECTS],
-      [...FLOAT_GRADE_EFFECT_IDS],
+      [...CG2_FLOAT_GRADE_EFFECTS],
+      [...CG4_CURVE_GRADE_EFFECTS],
     ];
   return families.map((effects, family) => {
     const doc: Composition = {
