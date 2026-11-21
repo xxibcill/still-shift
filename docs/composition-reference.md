@@ -999,6 +999,8 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `grade.tonal`                  | `falloff`           | scalar | `0.15`                      | 0.01–0.5                                     |
 | `grade.tonal`                  | `softClipHigh`      | scalar | `1`                         | 0.5–1                                        |
 | `grade.tonal`                  | `softClipLow`       | scalar | `0`                         | 0–0.5                                        |
+| `grade.lut`                    | `intensity`         | scalar | `1`                         | 0–1                                          |
+| `grade.lut`                    | `interpolation`     | scalar | `0`                         | 0–1 (integer)                                |
 | `transition.linear-wipe`       | `progress`          | scalar | `0`                         | 0–1                                          |
 | `transition.linear-wipe`       | `softness`          | scalar | `0`                         | 0–1                                          |
 | `transition.linear-wipe`       | `angle`             | scalar | `0`                         | -36000–36000                                 |

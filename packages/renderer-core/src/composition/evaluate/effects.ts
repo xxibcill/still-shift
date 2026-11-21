@@ -19,6 +19,8 @@ export type EvaluatedEffect = {
   enabled: boolean;
   space?: string;
   inputs?: Readonly<Record<string, string>>;
+  /** CG5: asset slots bound to asset IDs (as authored). */
+  assets?: Readonly<Record<string, string>>;
   params: Record<string, number | Rgba | Point | Point[]>;
 };
 
@@ -55,6 +57,7 @@ export function sampleEffects(
       version: definition.version,
       ...(effect.space ? { space: effect.space } : {}),
       ...(effect.inputs ? { inputs: { ...effect.inputs } } : {}),
+      ...(effect.assets ? { assets: { ...effect.assets } } : {}),
       enabled:
         effect.enabled !== false &&
         time >= (effect.inPoint ?? -Infinity) &&

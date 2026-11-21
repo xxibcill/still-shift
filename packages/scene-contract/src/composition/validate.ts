@@ -196,6 +196,27 @@ function checkLayer(
           ? `No coordinate layer "${effect.space}" in this scope`
           : "This effect uses surface coordinates",
       );
+    const assetSlots = definition.requiresAssets ?? {};
+    for (const slot of new Set([
+      ...Object.keys(assetSlots),
+      ...Object.keys(effect.assets ?? {}),
+    ])) {
+      const id = effect.assets?.[slot],
+        type = Object.hasOwn(assetSlots, slot) ? assetSlots[slot] : undefined,
+        asset = id === undefined ? undefined : assets.get(id);
+      if (!type || !asset || asset.type !== type)
+        fail(
+          "comp-effect-asset",
+          [...at, "assets", slot],
+          !type
+            ? `Undeclared effect asset slot "${slot}"`
+            : id === undefined
+              ? `${effect.effect} needs a ${type} asset in its "${slot}" asset slot`
+              : !asset
+                ? `No ${type.toUpperCase()} asset "${id}"`
+                : `Asset "${id}" is not a ${type} asset`,
+        );
+    }
     const slots = definition.requiresLayers ?? [];
     for (const slot of new Set([
       ...slots,

@@ -23,12 +23,14 @@ const scalar = (
 const effect = (
   properties: Record<string, EffectProperty>,
   validateParams?: CompositionEffectDefinition["validateParams"],
+  extra: Partial<CompositionEffectDefinition> = {},
 ) =>
   defineCompositionEffect({
     version: "1.0.0",
     properties,
     preservesOpaque: true,
     ...(validateParams ? { validateParams } : {}),
+    ...extra,
   });
 const curve = (
   defaultPoints: readonly (readonly [number, number])[],
@@ -72,6 +74,7 @@ export const FLOAT_GRADE_EFFECT_IDS = [
   "grade.curves",
   "grade.hue-curves",
   "grade.tonal",
+  "grade.lut",
 ] as const;
 export type FloatGradeEffectId = (typeof FLOAT_GRADE_EFFECT_IDS)[number];
 export const isFloatGradeEffect = (id: string): id is FloatGradeEffectId =>
@@ -195,5 +198,20 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
       if ((params.shadowEnd as number) > (params.highlightStart as number))
         throw Error("shadowEnd must not be above highlightStart");
     },
+  ),
+  /**
+   * CG5: the pinned `.cube` LUT asset bound to the `lut` slot, from its
+   * declared input space to its output space (both the working space).
+   * Inputs are clamped to the table's domain (and the shaper's); 3D tables
+   * interpolate tetrahedrally (`interpolation` 0, default) or trilinearly
+   * (1). `intensity` mixes the result with the input; 0 drops the operator.
+   */
+  "grade.lut": effect(
+    {
+      intensity: scalar(1, 0, 1),
+      interpolation: scalar(0, 0, 1, true),
+    },
+    undefined,
+    { requiresAssets: { lut: "lut" } },
   ),
 };
