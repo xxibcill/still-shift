@@ -272,7 +272,9 @@ const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
 /** The CG2 float grade cell keeps its four effects (and its baseline). */
 export const CG2_FLOAT_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(0, 4);
 /** CG4 curve and tonal grade effects: their own cell and baseline file. */
-export const CG4_CURVE_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(4);
+export const CG4_CURVE_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(4, 7);
+// CG5's grade.lut needs a pinned LUT asset, which these cells do not carry;
+// it is covered by pnpm test:browser:color-grading-cg5.
 
 /** Each catalogue cell is a native isolated group with independently moving paints. */
 export function ce6NativeFixtures(): [string, Composition][] {
