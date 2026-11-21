@@ -1,9 +1,11 @@
 # Color grading engine: port and upgrade plan
 
-Date: 2026-11-16. Status: **CGA built on `codex/cga-auto-color`, owner review
-pending (one check partly met); CG0–CG15 proposed, not started.** The owner's
-stated minimum need is the [fast track (CGA)](#fast-track-the-minimum-need);
-CG0–CG15 are the optional long-range upgrade.
+Date: 2026-11-16; re-checked against `main` 894c9d32 on 2026-11-20. Status:
+**CGA merged on `main` (PR #70); the owner asked to continue the whole upgrade
+(2026-11-20); CG0–CG2 done on `codex/color-grading-cg0-cg2` (stopping point after CG2).** The owner's stated
+minimum need was the [fast track (CGA)](#fast-track-the-minimum-need); CG0–CG15
+are the long-range upgrade, re-scoped in
+[re-check against `main`](#re-check-against-main-2026-11-20).
 Sources audited: `~/Documents/guthib/chroma-node` at `b804dc0` (owner's separate
 repository, with uncommitted roadmap edits) and this checkout at `e6eb7b06`. No
 package source changed and nothing was rendered for this plan.
@@ -140,21 +142,26 @@ stores, the natural-language keyword parser and cloud-AI settings, and
   expressions; versioned effect identity in export metadata.
 - Ten `color.*` effects (levels, curves, exposure, hue-saturation, tint and
   others), all evaluated on encoded sRGB bytes with exact Canvas/WebGL parity.
+  CGA added three more (`color.matrix`, `color.white-balance`,
+  `color.vibrance`), so there are thirteen as of 2026-11-20. _Correction
+  (CG0, 2026-11-20):_ only the three CGA effects are byte-exact between
+  backends; the original ten meet the CE6 near tier (at most one code value),
+  and 21 of the 273 CG0 renders differ by one.
 - The WebGL2 device already allocates `RGBA32F` targets behind
   `EXT_color_buffer_float` for blur sums.
 
 ### Still Shift: what blocks frontier-level grading today
 
-| Limit                                                           | Where                                                      | Consequence                                            |
-| --------------------------------------------------------------- | ---------------------------------------------------------- | ------------------------------------------------------ |
-| Surfaces are premultiplied sRGB `RGBA8`; effects round to bytes | `render/webgl-device.ts`, effect plugin contract           | Stacked corrections band and clip                      |
-| Media is SDR BT.709 only, decoded to an RGBA8 PNG cache         | `composition/media.ts`, `composition-media*.ts`            | No log, 10-bit, wide-gamut or HDR sources              |
-| No working color space or input/output transforms               | composition contract                                       | No scene-referred grading; LUTs have no declared space |
-| Effect parameters are scalar, color, point and curve only       | `effect-definition.ts`                                     | No LUT assets, node graphs or per-effect keys          |
-| No color-keyed selection                                        | —                                                          | No qualifier                                           |
-| No scopes or pixel probes; grade state is not measurable        | CLI                                                        | An AI cannot see what it changed                       |
-| `comp lint --pixels` fails on native-video compositions         | [dev log](./dev-log.md), finding O4 in the editorial proof | Grade lint on video depends on that fix (ET2)          |
-| Output profiles are 8-bit BT.709 except ProRes 4444             | `composition-output*.ts`                                   | No 10-bit delivery for graded log footage              |
+| Limit                                                           | Where                                            | Consequence                                            |
+| --------------------------------------------------------------- | ------------------------------------------------ | ------------------------------------------------------ |
+| Surfaces are premultiplied sRGB `RGBA8`; effects round to bytes | `render/webgl-device.ts`, effect plugin contract | Stacked corrections band and clip                      |
+| Media is SDR BT.709 only, decoded to an RGBA8 PNG cache         | `composition/media.ts`, `composition-media*.ts`  | No log, 10-bit, wide-gamut or HDR sources              |
+| No working color space or input/output transforms               | composition contract                             | No scene-referred grading; LUTs have no declared space |
+| Effect parameters are scalar, color, point and curve only       | `effect-definition.ts`                           | No LUT assets, node graphs or per-effect keys          |
+| No color-keyed selection                                        | —                                                | No qualifier                                           |
+| No scopes or pixel probes; grade state is not measurable        | CLI                                              | An AI cannot see what it changed                       |
+| ~~`comp lint --pixels` fails on native-video compositions~~     | Fixed by ET2 (PR #62); CG0 records it passing    | No longer blocks grade lint on video                   |
+| Output profiles are 8-bit BT.709 except ProRes 4444             | `composition-output*.ts`                         | No 10-bit delivery for graded log footage              |
 
 ## Design decisions proposed
 
@@ -174,7 +181,8 @@ These are recommendations to confirm at CG1, each with a fallback.
    deterministic dither. Existing `color.*` effects and every existing baseline
    stay byte-identical.
 3. **A different parity rule for the float stage.** Existing color effects prove
-   exact byte parity between Canvas and WebGL. Float `pow` and `log` are not
+   backend parity between Canvas and WebGL: byte-exact for the three CGA
+   effects, within one code value for the original ten (measured in CG0). Float `pow` and `log` are not
    bit-identical across GPUs. Proposal: the float64 reference in
    `color-science` is authoritative; the GPU must match it within one 8-bit code
    value (or the equivalent at higher depth) on the fixture set, and repeated
@@ -232,25 +240,25 @@ These are recommendations to confirm at CG1, each with a fallback.
 
 ## Milestone tracker
 
-| ID   | Milestone                                          | Depends on                     | Estimate (active days) | Status              |
-| ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | ------------------- |
-| CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Built; owner review |
-| CG0  | Fixtures, reference vectors and baseline           | owner: approval                | 2–3                    | Proposed            |
-| CG1  | Color-science core and contract design             | CG0, owner: license, parity    | 4–6                    | Proposed            |
-| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8                    | Proposed            |
-| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 for video pixel lint) | 4–6                    | Proposed            |
-| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed            |
-| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed            |
-| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed            |
-| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 7–11                   | Proposed            |
-| CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed            |
-| CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed            |
-| CG10 | Grade lint and solvers                             | CG3, CG6                       | 5–8                    | Proposed            |
-| CG11 | AI and code authoring surface                      | CG9, CG10                      | 4–7                    | Proposed            |
-| CG12 | Tracking and object mattes                         | CG6                            | 5–8                    | Proposed            |
-| CG13 | Texture and finishing operations                   | CG6                            | 4–7                    | Proposed            |
-| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope         | 8–15                   | Proposed            |
-| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage       | 3–5                    | Proposed            |
+| ID   | Milestone                                          | Depends on                     | Estimate (active days) | Status          |
+| ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | --------------- |
+| CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Merged (PR #70) |
+| CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)        | 2–3                    | Done (branch)   |
+| CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
+| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
+| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Proposed        |
+| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed        |
+| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed        |
+| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed        |
+| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
+| CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed        |
+| CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed        |
+| CG10 | Grade lint and solvers                             | CG3, CG6                       | 4–6 (solvers seeded)   | Proposed        |
+| CG11 | AI and code authoring surface                      | CG9, CG10                      | 4–7                    | Proposed        |
+| CG12 | Tracking and object mattes                         | CG6                            | 5–8                    | Proposed        |
+| CG13 | Texture and finishing operations                   | CG6                            | 4–7                    | Proposed        |
+| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope         | 8–15                   | Proposed        |
+| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage       | 3–5                    | Proposed        |
 
 CGA stands alone at about 5–8 active days. CG0–CG15 total about 75–122 active days. Estimates are planning ranges, not deadlines;
 re-estimate at entry against the then-current code.
@@ -271,6 +279,33 @@ Useful stopping points:
 - **After CG11:** the complete code and AI workflow.
 
 ---
+
+## Re-check against `main` (2026-11-20)
+
+CGA and the composition colour-accuracy decision (D-colour, PR #72) landed on
+`main` after this plan was written. They deliver parts of later milestones. Those
+parts are folded in below, not rebuilt; each later milestone starts from them.
+
+| Delivered on `main`                                                                                                                                                         | Was planned in | Now                                                                                                                                                                                                                                              |
+| --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | -------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| BT.601 (`smpte170m`) SDR sources decode with BT.601 coefficients (CGA)                                                                                                      | CG7            | Done. CG7 extends the color contract from this matrix list; it does not re-add BT.601.                                                                                                                                                           |
+| BT.709-tagged SDR video is display-equivalent to sRGB on decode (`composition-media-decoder-3`) and export (`composition-output-2`) (D-colour)                              | CG7, CG8       | The legacy working space keeps this rule. The CGA finding "`comp render` tags sRGB pixels BT.709, so a re-imported render is ~5% brighter" is resolved by it; CG0 records the round trip. Scene-referred modes (CG7) define the OETF explicitly. |
+| `color.matrix` (3×3 + offset, strength), exact 8-bit parity                                                                                                                 | CG2 (mixer)    | Stays as the 8-bit effect. CG2's `grade.rgb-mixer` is its float-stage counterpart and must equal it within the parity bound on in-range values.                                                                                                  |
+| `color.white-balance` (temperature/tint as linear-light channel gains), exact 8-bit parity                                                                                  | CG2            | Stays. CG2 adds chromatic adaptation in the float stage as a new operator; it does not change this effect. The two are compared on the CG0 chart and the difference recorded.                                                                    |
+| `color.vibrance` (saturation-aware, skin-protecting), exact 8-bit parity                                                                                                    | CG2 (boost)    | Stays. `grade.primary` color boost is the float counterpart.                                                                                                                                                                                     |
+| `comp color-stats`: media-path luma percentiles, black/white points, clipped and crushed fractions, saturation distribution, neutral cast, per clip                         | CG3            | The start of `comp scopes` statistics. CG3 adds regions, frame ranges, scopes, probes and a schema, and keeps `color-stats` output stable (or versions it).                                                                                      |
+| `comp auto-color` (staged white balance → exposure → contrast → saturation solver) and `comp look fit\|apply` (match a before/after pair with one 3×3 + offset; look files) | CG10, CG9      | CG10 extends these solvers to the float operators (CDL recovery, neutral region, chart match) and reuses their residual reports. CGA look files are migrated, not replaced, when CG9 defines looks.                                              |
+| ET2: `comp lint --pixels` measures native-video compositions (PR #62)                                                                                                       | CG3/CG10 dep.  | No longer a dependency. CG0 records it passing on a CG0 clip.                                                                                                                                                                                    |
+
+CG0 found one more (2026-11-20): `comp render` already has 10-bit containers
+(`hevc10`, `prores422hq`, `png16`, from CE15), but they carry the renderer's
+8-bit pixels (a 256-code ramp exported as `hevc10` keeps 256 levels). CG8's
+"10-bit delivery profiles" is therefore high-bit pixels into the existing
+profiles plus correct tags, not new profiles.
+
+Estimates in the tracker are revised for CG2, CG3, CG7 and CG10 accordingly.
+Owner decisions 2 and 3 (license and parity rule) are still needed before CG1
+code; CG0 needs neither.
 
 ## CGA — Automatic exposure, contrast, saturation and white balance for flat SDR clips
 
@@ -461,14 +496,24 @@ outputs need a recorded baseline before a second pipeline is added.
 - Record the current behavior of the ten `color.*` effects and of
   `comp lint --pixels` on a native-video fixture.
 
-**Checks**
+**Checks** (2026-11-20, `codex/color-grading-cg0-cg2`; numbers in
+[CG0 results](./color-grading-cg0-results.json) and the
+[fixture README](../benchmarks/fixtures/color/cg0/README.md))
 
-- [ ] Generators reproduce every fixture byte-identically on rerun.
-- [ ] Each reference vector names its source and the tolerance it is good for.
-- [ ] Baseline hashes for existing color effects recorded; `pnpm check:fast`
-      passes; no existing baseline changes.
-- [ ] The video pixel-lint failure is reproduced or shown fixed, with the
-      command and output retained.
+- [x] Generators reproduce every fixture byte-identically on rerun: 49 fixture
+      files (`pnpm color:cg0-fixtures --check`) and 10 vector files
+      (`pnpm color:cg0-vectors --check`), on darwin-arm64 with the pinned
+      toolchain.
+- [x] Each reference vector names its source and the tolerance it is good for:
+      19 transfer functions (11 with published anchors or an independent
+      OpenColorIO check, all asserted), 19 primaries sets with three published
+      matrices, nine camera input transforms, eight CDL cases, five LUTs.
+- [x] Baseline hashes for existing color effects recorded (13 effects × 3
+      settings × 7 stills, both backends, plus gray-ramp transfer tables);
+      `pnpm check:fast` passes; no existing baseline changes.
+- [x] The video pixel-lint failure is shown fixed (ET2): `comp lint --pixels
+true` on a graded native-video composition exits 0 with pixels measured;
+      command and report retained in `cg0-baseline.json`.
 
 ## CG1 — Color-science core and contract design
 
@@ -489,15 +534,27 @@ and the three contract questions decide the shape of everything after.
   structured effect parameters (decision 4).
 - Write the provenance record (ported file → chroma-node commit → license).
 
-**Checks**
+**Checks** (2026-11-20, `codex/color-grading-cg0-cg2`; numbers in
+[CG1 results](./color-grading-cg1-results.json), decisions in
+[CG1 decisions](./color-grading-cg1-decisions.md), provenance in
+[`PROVENANCE.md`](../packages/color-science/PROVENANCE.md))
 
-- [ ] Every ported function matches its CG0 vectors within the stated tolerance.
-- [ ] Neutral parameters are an exact identity for every operator.
-- [ ] `pnpm check:boundaries` passes with the new package; it imports nothing
-      from DOM, Node or the renderer.
-- [ ] A written decision for each of the three questions, with spike evidence
-      and the fallback taken or rejected.
-- [ ] No rendering behavior changes; all existing baselines are unchanged.
+- [x] Every ported function matches its CG0 vectors within the stated
+      tolerance (85 tests). chroma-node's BT.1886, PQ, HLG and Apple Log
+      failed the vectors before porting and were rewritten from the
+      specifications; its tetrahedral path was trilinear and its `.cube`
+      parser ignored domains.
+- [x] Neutral parameters are an exact identity for every operator in CG1
+      (primary, CDL; identity LUTs within 1e-12).
+- [x] `pnpm check:boundaries` passes with the new package; it imports nothing
+      from DOM, Node or the renderer (enforced, with a DOM-free type check).
+- [x] A written decision for each of the three questions, with spike evidence
+      and the fallback taken or rejected: RGBA32F intermediates, one
+      quantization, no dither (RGBA16F rejected); the approved parity rule,
+      met by the spike (worst 1 code value, byte-identical repeat); flat scalar
+      parameters for CG2–CG6 and builder lowering for CG9 (nested type
+      deferred).
+- [x] No rendering behavior changes; all existing baselines are unchanged.
 
 ## CG2 — Float grade stage and primary corrections
 
@@ -509,7 +566,9 @@ unclamped pipeline that the remaining operators run in.
 - Renderer support for a floating-point grade stage: float scratch surfaces
   inside the effect ownership and memory limits, one quantization on exit,
   correct handling of premultiplied alpha (grade straight color, preserve
-  coverage).
+  coverage). (As built: the pointwise CG2 run is one fused shader with
+  float32 registers and no float surfaces; see the
+  [CG1 decisions](./color-grading-cg1-decisions.md#1-float-grade-stage).)
 - `grade.primary`: lift, gamma, gain, offset (RGB and master), contrast and
   pivot, saturation, hue rotation, color boost, shadows, highlights and midtone
   detail — including the five controls chroma-node declares but never evaluates.
@@ -520,18 +579,31 @@ unclamped pipeline that the remaining operators run in.
 - All parameters animatable; works on video, sequence, image, precomp and
   adjustment layers.
 
-**Checks**
+**Checks** (2026-11-20, `codex/color-grading-cg0-cg2`; numbers in
+[CG2 results](./color-grading-cg2-results.json); operators in
+[float grade stage](./composition-effect-plugins.md#float-grade-stage-cg2))
 
-- [ ] Fixture: a value pushed above 1.0 by one operation is recovered by the
-      next (fails on the chroma-node math, passes here).
-- [ ] `grade.cdl` matches the ASC reference values within tolerance.
-- [ ] GPU matches the float64 reference within the approved parity bound on all
-      CG0 fixtures; repeated renders are byte-identical.
-- [ ] A 16-step gray ramp through ten stacked neutral-sum corrections shows no
-      added banding compared with one pass (measured, not viewed).
-- [ ] A graded native-video composition renders and exports through the existing
-      path; effect versions appear in export metadata.
-- [ ] Existing `color.*` baselines unchanged.
+- [x] Fixture: a value pushed above 1.0 by one operation is recovered by the
+      next: gain 2 then 0.5 is exact on both backends (8-bit `color.exposure`
+      loses 127 codes; chroma-node clamps every stage).
+- [x] `grade.cdl` matches the ASC reference values within tolerance (1e-12 in
+      float64; Canvas exact and WebGL2 within 1 on the renderer). Release 1.2
+      is `clamp: 1`; the default `clamp: 0` is OpenColorIO's no-clamp style,
+      so a default CDL is neutral inside a run (a recorded deviation in the
+      CG2 results).
+- [x] GPU matches the float64 reference within the approved parity bound on all
+      CG0 fixtures; repeated renders are byte-identical (72 rows: Canvas 0,
+      WebGL2 ≤ 1 with 32 channels at 1).
+- [x] A 16-step gray ramp through ten stacked neutral-sum corrections shows no
+      added banding compared with one pass (16/16 and 256/256 levels, max
+      difference 0).
+- [x] A graded native-video composition renders and exports through the existing
+      path; effect versions appear in export metadata (both backends, 48/48
+      frames, scene manifest `effectVersions`).
+- [x] Existing `color.*` baselines unchanged.
+
+_Deviation:_ midtone detail is spatial, not pointwise, and moves to CG13 so the
+stage stays one fused pointwise pass.
 
 ## CG3 — Scopes, probes and machine-readable measurement
 
@@ -850,7 +922,13 @@ grade by a person and one by an AI, reviewed by the owner.
 1. Approve CGA alone, or CGA plus a first stopping point in the larger plan.
    Decisions 2–9 are not needed for CGA.
 2. Confirm ported chroma-node code enters this repository under GPL-3.0.
+   **Decided 2026-11-20: approved** ("Approve both"); provenance per ported
+   file records the chroma-node source commit.
 3. Approve the bounded parity rule for the float grade stage (decision 3).
+   **Decided 2026-11-20: approved** ("Approve both"): the float64 reference is
+   authoritative, the GPU matches it within one 8-bit code value, repeat renders
+   on one machine are byte-identical; existing effects keep their current
+   parity (exact for the CGA three, within one code for the original ten).
 4. Choose the default working space for color-managed projects (CG7).
 5. Priority order of camera input transforms (CG7).
 6. Whether the lab grading workspace (CG14) is in scope.

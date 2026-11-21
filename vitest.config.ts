@@ -27,6 +27,10 @@ export default defineConfig({
         "./packages/animation-engine/src/index.ts",
         import.meta.url,
       ).pathname,
+      "@still-shift/color-science": new URL(
+        "./packages/color-science/src/index.ts",
+        import.meta.url,
+      ).pathname,
       "@still-shift/scene-contract": new URL(
         "./packages/scene-contract/src/index.ts",
         import.meta.url,

@@ -21,6 +21,8 @@ import { sampledBlurKernel } from "./sampled-blur.ts";
 import { transitionEffectKernel } from "./transition-effects.ts";
 import { colorEffectKernel } from "./color-effects.ts";
 import { gradeEffectKernel } from "./grade-effects.ts";
+import { floatGradeKernel } from "./float-grade.ts";
+import { assertEffectVersion, COPY_SHADER } from "./effect-shared.ts";
 import {
   compositionEffectDefinition,
   registerCompositionEffectDefinition,
@@ -101,6 +103,7 @@ export const compositionEffectPlugin = (id: string) =>
   plugins.get(id) ??
   colorEffectKernel(id) ??
   gradeEffectKernel(id) ??
+  floatGradeKernel(id) ??
   transitionEffectKernel(id) ??
   sampledBlurKernel(id) ??
   warpEffectKernel(id) ??
@@ -196,7 +199,7 @@ function effectCopy(
   source: WebglSurface,
 ) {
   try {
-    device.pass(COPY, output, (phase.copy = [source]));
+    device.pass(COPY_SHADER, output, (phase.copy = [source]));
   } finally {
     if (phase.copy) phase.copy.length = 0;
     phase.copy = undefined;
@@ -303,17 +306,9 @@ class EffectSurfaces<S extends { width: number; height: number }> {
 }
 function checkedPlugin(effect: RenderEffect) {
   const plugin = compositionEffectPlugin(effect.effect);
-  if (
-    plugin &&
-    effect.version !== undefined &&
-    effect.version !== plugin.definition.version
-  )
-    throw Error(
-      `comp-effect-version: ${effect.effect} differs from its sampled definition`,
-    );
+  if (plugin) assertEffectVersion(effect, plugin.definition.version);
   return plugin;
 }
-const COPY = "void main() {pixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);}";
 
 /** Transactional GPU stage: publish only a valid output; always release scratch textures. */
 export function renderGpuEffect(
@@ -321,8 +316,10 @@ export function renderGpuEffect(
   target: WebglSurface,
   effect: RenderEffect,
   layers?: ReadonlyMap<string, WebglSurface>,
+  /** A fused run (CG2 float grade) that stands in for `effect`'s plugin. */
+  override?: Readonly<CompositionEffectPlugin>,
 ): boolean {
-  const plugin = checkedPlugin(effect);
+  const plugin = override ?? checkedPlugin(effect);
   if (!plugin) return false;
   const phase = effectControl<WebglSurface>();
   let failed = false;
@@ -422,8 +419,10 @@ export function renderCanvasEffect(
   target: CanvasSurface,
   effect: RenderEffect,
   layers?: ReadonlyMap<string, CanvasSurface>,
+  /** A fused run (CG2 float grade) that stands in for `effect`'s plugin. */
+  override?: Readonly<CompositionEffectPlugin>,
 ): boolean {
-  const plugin = checkedPlugin(effect);
+  const plugin = override ?? checkedPlugin(effect);
   if (!plugin) return false;
   if (!plugin.renderCanvas)
     throw Error(

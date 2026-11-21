@@ -1,0 +1,113 @@
+{
+  "schema": "still-shift-milestone-results-1",
+  "milestone": "CG1",
+  "title": "Color grading engine: color-science core and contract design",
+  "date": "2026-11-20",
+  "branch": "codex/color-grading-cg0-cg2",
+  "base": "main 894c9d32 (CG1 continues on the CG0 branch, after CG0's commits)",
+  "plan": "docs/color-grading-engine-plan.md#cg1--color-science-core-and-contract-design",
+  "decisions": "docs/color-grading-cg1-decisions.md",
+  "ownerDecisions": {
+    "2": "approved 2026-11-20 (\"Approve both\"): ported chroma-node code enters under GPL-3.0; provenance per file in packages/color-science/PROVENANCE.md",
+    "3": "approved 2026-11-20 (\"Approve both\"): float64 reference authoritative; GPU within one 8-bit code value; repeat renders byte-identical; existing effects keep their current parity"
+  },
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "browser": "pinned Chromium 151.0.7922.34 / SwiftShader (chromium-software-2)",
+    "platform": "darwin-arm64"
+  },
+  "visualAcceptance": "none: CG1 is math, contract decisions and spikes",
+  "chromaNodeAudit": {
+    "source": "chroma-node b804dc0fb7473e5c8066e2c3e41cf16b6a2401f4, src/shared/colorEngine.ts, imported read-only and measured against the CG0 vectors before porting",
+    "results": {
+      "srgb": "decode 1.1e-16, encode 2.2e-16 (kept)",
+      "bt1886": "0.31 error: decode returns its input (rewritten)",
+      "pq": "relative error 1.0 decode, 9930 encode: wrong formula (rewritten)",
+      "hlg": "0.72 decode, 1.73 encode: invented form (rewritten)",
+      "appleLog": "NaN: 'empirical curve fit' takes the power of a negative number (rewritten)",
+      "rgbToXyzBt709": "1.1e-16 (ported)",
+      "lutCube5": "trilinear 9.9e-8 (ported); its 'tetrahedral' path is trilinear: 5.5e-3 from tetrahedral (tetrahedral new)",
+      "lutDomain": "0.27 error: DOMAIN_MIN/MAX ignored (fixed)"
+    }
+  },
+  "checks": [
+    {
+      "check": "Every ported function matches its CG0 vectors within the stated tolerance",
+      "status": "met",
+      "test": "tests/unit/color-science.test.ts",
+      "tests": 85,
+      "coverage": {
+        "transferFunctions": "19 functions: encode (128 samples), extra points and decode (65) within 1e-12; published anchors within their precision",
+        "primaries": "19 spaces: RGB->XYZ and inverse within 1e-12; published IEC/ACES matrices within their precision; luma coefficients; BT.709->BT.2020, AP0->AP1, AP1->BT.709 (Bradford) within 1e-12",
+        "inputTransforms": "9 validated camera transforms within 2e-5 relative of OpenColorIO end to end",
+        "cdl": "8 cases: ASC v1.2 within 1e-12; no-clamp within 2e-6 of OpenColorIO",
+        "luts": "5 LUTs (incl. a non-unit domain and 1D): tetrahedral and trilinear within 2e-6 of OpenColorIO; identity LUTs 2/17/33 within 1e-12; malformed, oversized and inverted-domain files rejected with their line"
+      },
+      "mutationCheck": "a 1e-7 change to one LogC3 constant, a 1e-8 change to an N-Log constant and one wrong tetrahedral term each fail the tests (then restored)"
+    },
+    {
+      "check": "Neutral parameters are an exact identity for every operator",
+      "status": "met",
+      "evidence": "primary correction: exact for in-range and out-of-range inputs (-0.2, 1.7, 12, -3); identity LUTs within 1e-12 (exact only to the table's decimal precision); CDL identity is exact by the formula (slope 1, offset 0, power 1, saturation 1) and its CG0 'identity' case matches within 1e-12; transfers have no neutral parameter (round trips recorded in CG0)",
+      "note": "Operators in CG1 are primary (ported subset), CDL and LUT sampling; CG2 adds the rest under the same rule."
+    },
+    {
+      "check": "pnpm check:boundaries passes with the new package; it imports nothing from DOM, Node or the renderer",
+      "status": "met",
+      "evidence": "check:boundaries now rejects any Node built-in, workspace package or out-of-package import in @still-shift/color-science (new unit test, failing first) and type-checks the package with lib ES2023 and no DOM; a deliberate `document` reference fails with TS2584",
+      "dependencies": "none"
+    },
+    {
+      "check": "A written decision for each of the three questions, with spike evidence and the fallback taken or rejected",
+      "status": "met",
+      "document": "docs/color-grading-cg1-decisions.md",
+      "floatStage": {
+        "decision": "RGBA32F intermediates, straight color, one round-half-up quantization on exit, no dither by default",
+        "spike": "research/color-grading-cg1/float-stage-spike.json",
+        "parityRgba32f": "worst 1 code value on 32 of 703,104 channels; float difference <= 2.7e-6",
+        "parityRgba16f": "worst 1 code value on up to 26,176 channels per still; float difference <= 1.6e-3 (rejected)",
+        "recovery": "gain 2 then 0.5: RGBA8 127 codes lost; RGBA16F and RGBA32F 0",
+        "banding": "11 neutral-sum passes on a 256 ramp: RGBA8 57 levels (max error 12); RGBA32F 256 levels (0)",
+        "unormRounding": "GPU float->RGBA8 equals round-half-up on 256/256 tie samples",
+        "repeat": "byte-identical",
+        "memory": "RGBA32F 31.6 MiB at 1080p, 126.6 MiB at 4K per surface; pixel budget 7.375 GiB (1 worker) to 1.75 GiB (4 workers)",
+        "fallbackRejected": "RGBA16F (precision)"
+      },
+      "parityRule": {
+        "decision": "owner decision 3 as approved; Canvas runs the float64 reference",
+        "evidence": "the RGBA32F spike chain meets the bound and repeats byte-identically"
+      },
+      "structuredParameters": {
+        "decision": "flat scalar parameters for CG2-CG6; CG9 starts from builder lowering",
+        "spike": "research/color-grading-cg1/structured-params-spike.json",
+        "evidence": "effects[grade].rr/.strength resolve as scalars and a driver on strength validates and evaluates (0, 0.53, 1); .lift, .lift.r and .nodes[skin].primary.gain fail with comp-path-property; a nested type touches 8 files",
+        "fallbackTaken": "builder lowering for CG9; nested 'group' property type rejected for now"
+      }
+    },
+    {
+      "check": "No rendering behavior changes; all existing baselines are unchanged",
+      "status": "met",
+      "evidence": "no renderer, contract or media source changed; the new package is imported only by tests and research scripts; composition baselines 176 items unchanged, CG0 effect baseline unchanged"
+    }
+  ],
+  "registry": {
+    "validated": 9,
+    "unavailable": 7,
+    "rule": "unavailable entries carry a reason and throw when run; unknown ids throw"
+  },
+  "verification": {
+    "checkFast": [
+      "run 1 failed format:check on pnpm-lock.yaml (pnpm install rewrote its quoting); fixed in its own commit",
+      "run 2 passed: 469 test files, 4,806 tests"
+    ],
+    "browser": {
+      "color-grading-cg0": "unchanged (273 renders)",
+      "composition-grade-effects": "passed (max delta 0)",
+      "composition-baselines": "176 items, 36,061 frames unchanged (264.2 s)"
+    },
+    "caveat": "Run 1's background chain kept going into the browser groups after check:fast failed and overlapped run 2 for part of the time; both chains passed every group, and the figures above are from the last complete run."
+  },
+  "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks",
+  "next": "CG2 (float grade stage and primary corrections); CG3 can run in parallel."
+}

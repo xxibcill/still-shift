@@ -1,0 +1,307 @@
+{
+  "schema": "still-shift-milestone-results-1",
+  "milestone": "CG2",
+  "title": "Color grading engine: float grade stage and primary corrections",
+  "date": "2026-11-20",
+  "branch": "codex/color-grading-cg0-cg2",
+  "base": "main 894c9d32 (CG2 continues after CG0 and CG1 on the same branch)",
+  "plan": "docs/color-grading-engine-plan.md#cg2--float-grade-stage-and-primary-corrections",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "ffmpeg": "8.0.1",
+    "browser": "pinned Chromium 151.0.7922.34 / SwiftShader (chromium-software-2)",
+    "platform": "darwin-arm64"
+  },
+  "visualAcceptance": "none: software measurements only; no owner review of graded pictures yet",
+  "delivered": {
+    "effects": {
+      "grade.primary": "lift (black moves, white stays), gamma (negatives unchanged), gain, offset per channel and master; contrast about pivot; luma-weighted shadows/highlights; saturation; hue rotation about Rec.709 luma; color boost",
+      "grade.white-balance": "Bradford adaptation in linear light from a Planckian temperature (Kang 2002, 1667-25000 K) plus a Duv tint (tint/5000, positive greener, perpendicular to the locus) to D65, BT.709's white. Tint 0 keeps D65's offset from the locus (+0.00317 Duv, 1.6e-5 along it) at every temperature, so 6500 K tint 0 is D65 and the identity (PR #77 third review)",
+      "grade.cdl": "ASC CDL slope/offset/power/saturation; clamp 0 (default) = unclamped (power skipped below 0), 1 = Release 1.2",
+      "grade.rgb-mixer": "color.matrix's parameters and design formula in float"
+    },
+    "stage": "consecutive grade.* effects fuse into one stage on straight color: one generated float32 fragment shader on WebGL2, color-science float64 on Canvas; one half-up quantization on exit with the CGA premultiply rule; neutral operators dropped",
+    "deviations": [
+      "midtone detail (listed under grade.primary in the plan) is spatial, not pointwise; deferred to CG13 (texture operations) so the stage stays fused and pointwise",
+      "float intermediates (PR #77 second review, Spec-5): CG1 decision 1 called for RGBA32F intermediate surfaces reserved through createRenderStorage, and the plan's CG2 scope for float scratch surfaces. Because every CG2 operator is pointwise, a run is fused into one fragment shader instead: intermediate values live in float32 registers (the same precision as RGBA32F texels), the stage reads and writes only the layer's existing RGBA8 surfaces, and no float surface is allocated, so there is nothing to reserve and the memory cost is that of any 8-bit effect. Float surfaces and their createRenderStorage reservation return with the first operator that needs neighbouring pixels inside a run (CG13 texture operations or later)",
+      "grade.cdl default style (PR #77 second review, Spec-7): the plan asks for ASC CDL \"exact to the specification\". Release 1.2 (clamp to 0–1 before the power and after saturation) is `clamp: 1` and matches the ASC vectors within 1e-12; the default is `clamp: 0`, OpenColorIO's CDL_NO_CLAMP style (power skipped below 0), so that a default grade.cdl is neutral inside a run instead of clipping it (first review, finding 3). A CDL exchanged with other tools that expect Release 1.2 needs `clamp: 1`"
+    ],
+    "references": "packages/color-science/src/grade.ts; vectors/temperature.json added to CG0 (Kang 2002 locus, Bradford matrices); other CG0 vector files unchanged"
+  },
+  "checks": [
+    {
+      "check": "Fixture: a value pushed above 1.0 by one operation is recovered by the next (fails on the chroma-node math, passes here)",
+      "status": "met",
+      "evidence": "gray-ramp-256 through grade.primary gain 2 then gain 0.5: max error 0 on Canvas and WebGL2; the same with color.exposure +1/-1 stop (8-bit) loses up to 127 codes; chroma-node's applyPrimaryCorrection clamps every stage to 0-1 (CG1 audit), so it cannot recover",
+      "unit": "tests/unit/color-science-grade.test.ts: float64 recovery exact"
+    },
+    {
+      "check": "grade.cdl matches the ASC reference values within tolerance",
+      "status": "met",
+      "evidence": "the stage's CDL is color-science applyCdl, which matches the CG0 ASC v1.2 vectors within 1e-12 (8 cases, CG1 tests); on the renderer the cdl-asc and cdl-unclamped cases match the float64 reference exactly on Canvas and within 1 code on WebGL2 (0 channels at 1)"
+    },
+    {
+      "check": "GPU matches the float64 reference within the approved parity bound on all CG0 fixtures; repeated renders are byte-identical",
+      "status": "met",
+      "evidence": "9 cases (each operator typical and extreme, a five-operator chain, a neutral run) x 8 CG0 stills = 72 rows: Canvas vs reference 0 on every opaque pixel; WebGL2 vs reference max 1, 32 channels at 1 in total (16 in white-balance-warm-scene, 16 in mixer-owner-like); every repeated WebGL2 render byte-identical; the neutral run is an exact identity on both backends",
+      "test": "pnpm test:browser:color-grading-cg2"
+    },
+    {
+      "check": "Correct handling of premultiplied alpha: grade straight color, preserve coverage (PR #77 second review, Spec-4)",
+      "status": "met",
+      "evidence": "alpha-patches, 16,256 semi-transparent pixels per case x 11 cases: the stored premultiplied byte (round(v·a/255)) is un-premultiplied, graded by the float64 reference and re-premultiplied; the frame over the opaque black background equals that stored byte exactly on Canvas and WebGL2 (0 codes); fully transparent pixels stay 0. Before this check the parity test skipped every pixel with alpha < 255"
+    },
+    {
+      "check": "grade.rgb-mixer equals color.matrix within the parity bound on in-range values (plan re-check table; PR #77 second review, Spec-2)",
+      "status": "met",
+      "evidence": "color.matrix and grade.rgb-mixer rendered with the same parameters on the 8 CG0 stills, both backends, opaque pixels whose float result stays in 0–1: max difference 1 code. owner-like (strength 0.6): 12,492 channels at 1 over 462,496 in-range pixel renders (42,464 clipped, excluded); strong (strength 1): 10,688 at 1 over 373,280 (131,680 clipped); channel swap: 0 over 504,960. The earlier unit test only re-derived the formula"
+    },
+    {
+      "check": "color.white-balance and grade.white-balance compared on the CG0 chart, difference recorded (plan re-check table; PR #77 second review, Spec-3)",
+      "status": "met (recorded)",
+      "evidence": "for each grade.white-balance setting, the closest color.white-balance (integer temperature and tint, mean byte difference over chart-24's distinct colors) is fitted, then both are rendered on chart-24 (98,304 pixels); Canvas and WebGL2 agree exactly",
+      "comparison": [
+        {
+          "grade": "3200 K, tint 0",
+          "closestColorWhiteBalance": "temperature -100, tint -10",
+          "meanDifference": 28.557,
+          "maxDifference": 82,
+          "neutralPatchMaxDifference": 65,
+          "note": "at the -100 bound: color.white-balance's one-stop range cannot reach a tungsten correction"
+        },
+        {
+          "grade": "5000 K, tint 0",
+          "closestColorWhiteBalance": "temperature -72, tint 14",
+          "meanDifference": 2.329,
+          "maxDifference": 35,
+          "neutralPatchMaxDifference": 1
+        },
+        {
+          "grade": "9000 K, tint 20",
+          "closestColorWhiteBalance": "temperature 57, tint -4",
+          "meanDifference": 2.262,
+          "maxDifference": 30,
+          "neutralPatchMaxDifference": 4
+        }
+      ],
+      "reading": "neutrals agree within 1–4 codes where color.white-balance can reach the correction; the larger differences are on saturated patches, where channel gains and Bradford adaptation diverge. Re-measured after the D65 target (PR #77 third review); before it: 3200 K mean 25.929 / max 83 / neutral 64, 5000 K 2.322 / 35 / 1, 9000 K 2.177 / 27 / 3"
+    },
+    {
+      "check": "A 16-step gray ramp through ten stacked neutral-sum corrections shows no added banding compared with one pass (measured, not viewed)",
+      "status": "met",
+      "evidence": "ten grade.primary corrections (gamma 1.5 / gain 0.8 then gain 1.25, five times) plus the inverse gamma: gray-steps-16 keeps 16 levels and gray-ramp-256 keeps 256, max difference 0 on both backends; the CG1 spike measured 57 of 256 levels for the same idea through 8-bit intermediates"
+    },
+    {
+      "check": "A graded native-video composition renders and exports through the existing path; effect versions appear in export metadata",
+      "status": "met",
+      "evidence": "CG0 moving-disc.mp4 with the five-operator chain, comp render on canvas2d and webgl2: 48/48 frames each; the scene manifest's effectVersions lists grade.primary, grade.white-balance, grade.cdl and grade.rgb-mixer at 1.0.0",
+      "note": "This section was added to the test and committed (a1705a23) before it was first run; the first run passed."
+    },
+    {
+      "check": "Existing color.* baselines unchanged",
+      "status": "met",
+      "evidence": "color.* effects are untouched; the CG0 color-effect baseline, the CGA grade parity test, the CE6 catalogue (frozen files) and the composition baselines are rerun"
+    },
+    {
+      "check": "All parameters animatable; works on video, sequence, image, precomp and adjustment layers",
+      "status": "met (plan scope)",
+      "evidence": "108 layer-kind/animation/seek cases (solid, image, text, shape, provider, group, precomp, collapsed precomp, adjustment; static and keyed controls; forward, reverse and random seeks), 1,296 frames, backend difference 0; native video exported above; PNG sequences use the same layer effect path (not separately rendered)"
+    }
+  ],
+  "ce6": {
+    "cell": "catalogue-float-grade (benchmarks/fixtures/composition/ce6/catalogue-float-grade.json)",
+    "baseline": "tests/visual/composition-effect-catalogue/darwin-arm64-float-grade-1.json, written with --write-float-grade-baseline, then checked; the frozen CE6 baseline files are unchanged",
+    "baselineRewrite": "2026-11-21 (review finding 3): the grade.cdl clamp default changed to 0, so darwin-arm64-float-grade-1.json was rewritten once with --write-float-grade-baseline (only catalogue-float-grade: 22 of 32 frames per backend, the frames where the CDL case is visible) and then checked; the frozen CE6 baseline files are unchanged",
+    "baselineRewrite2": "2026-11-21 (PR #77 third review, D65 white-balance target): darwin-arm64-float-grade-1.json rewritten once more with --write-float-grade-baseline. Before the rewrite composition-effects failed on catalogue-float-grade's full-frame hashes (the white-balance change was caught); the rewrite changed only catalogue-float-grade, 30 of 32 frames per backend (its grade.white-balance key is animated across the clip); the frozen CE6 baseline files are unchanged"
+  },
+  "failedRunsAndReruns": [
+    "CG2 browser test before the renderer wiring: failed with comp-effect-unavailable: grade.primary has no Canvas implementation (failing first).",
+    "CG2 browser test run 1: the banding stack's undo gamma 1/1.6^5 = 0.095 was below the contract minimum 0.1 and validation rejected it; the fixture now uses 1.5 (1/1.5^5 = 0.13), the bound is unchanged.",
+    "Unit tests (float64 references): the tint-perpendicularity and illuminant-neutralization tests first failed on their own coarse references (one-sided difference, a 7-digit published sRGB matrix); with a central difference and the exact matrix they hold at 1e-9 and 1e-12.",
+    "schema:check failed on a stale native appearance closure after the renderer change; regenerated with pnpm native3d:identity:generate (identity only, as for earlier renderer edits).",
+    "CE6 unit coverage failed once the effects were registered (no catalogue cell yet); the new cell fixed it."
+  ],
+  "reviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/77#pullrequestreview-5996579727",
+    "environment": "node 22.23.1 (toolchain.json); on node 24.16.0 tests/unit/composition-bake.test.ts fails on the unmodified PR head (last-digit float differences), so all reruns use the pinned node",
+    "fixes": [
+      {
+        "finding": 1,
+        "problem": "effectStack applied every effect alone when any effect on the layer had a window or layer inputs, so a grade.* run was quantized after each effect",
+        "fix": "packages/renderer-core/src/composition/render/backend.ts: split only at effects with a window or layer inputs; contiguous plain effects reach applyEffects together",
+        "failingFirst": "color-grading-cg2 with the new check (gain 2, gain 0.5, then distort.displacement-map with a layer input): canvas2d besideLayerInputMaxError 127",
+        "after": "besideLayerInputMaxError 0 on Canvas and WebGL2; all other CG2 numbers unchanged",
+        "verification": "pnpm check:fast passed (470 files, 4,821 tests); browser color-grading-cg2, composition-effects, composition-mesh passed; composition-baselines 176 items, 36,061 frames unchanged"
+      },
+      {
+        "finding": 2,
+        "problem": "scripts/release/package-layout.ts did not list packages/color-science, so the npm build left the bare @still-shift/color-science import in the emitted renderer and the corresponding source omitted the package",
+        "fix": "add packages/color-science to workspaceDirectories (alias rewrite and corresponding source)",
+        "failingFirst": "pnpm build:package at the PR head: importing dist/npm/packages/renderer-core/src/index.js failed with ERR_MODULE_NOT_FOUND for @still-shift/color-science (from float-grade.js); dist/npm/source/packages had no color-science",
+        "after": "float-grade.js imports ../../../../color-science/src/index.js; source/packages/color-science is shipped",
+        "verification": "pnpm test:package passed with STILL_SHIFT_PNPM_STORE set (offline install, installed API imports, canvas2d and webgl2 exports, corresponding source rebuild)",
+        "failedRuns": [
+          "pnpm test:package without STILL_SHIFT_PNPM_STORE failed at its first step, the locked production npm audit: high advisories for vite and zod in the unchanged lock. Not caused by this fix; the audit was skipped on the rerun and still needs a dependency decision before any release."
+        ]
+      },
+      {
+        "finding": 3,
+        "problem": "grade.cdl defaulted to clamp 1 and floatGradeOp only treats a CDL without clamp as neutral, so a default CDL inside a run clamped the intermediate value to 0-1",
+        "fix": "default clamp 0 (OpenColorIO no-clamp style); Release 1.2 clamping stays available with clamp 1; contract comment, effect docs and the generated reference updated",
+        "failingFirst": "color-grading-cg2 with the new check (gain 2, default grade.cdl, gain 0.5): canvas2d defaultCdlMaxError 127; composition-effects then failed on the float-grade baseline before it was rewritten",
+        "after": "defaultCdlMaxError 0 on Canvas and WebGL2; composition-effects passes against the rewritten float-grade baseline",
+        "verification": "pnpm check:fast passed (470 files, 4,821 tests); browser color-grading-cg2 and composition-effects passed"
+      }
+    ]
+  },
+  "verification": {
+    "checkFast": "passed: 470 test files, 4,821 tests",
+    "browser": {
+      "color-grading-cg2": "passed (parity, recovery, banding, layer kinds, native-video export)",
+      "color-grading-cg0": "unchanged (273 renders, 21 at delta 1): color.* behavior unchanged",
+      "composition-grade-effects": "passed (CGA effects: max delta 0)",
+      "composition-colour-accuracy": "passed",
+      "composition-effects": "passed, CE6 frozen baselines unchanged; float-grade baseline written then checked",
+      "composition-baselines": "176 items, 36,061 frames unchanged (268.6 s)"
+    }
+  },
+  "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks",
+  "next": "Stopping point after CG2: report to the owner. Then CG3 (scopes, probes, measurement), which can build on comp color-stats.",
+  "secondReviewFixes": {
+    "review": "https://github.com/xxibcill/still-shift/pull/77#pullrequestreview-5997235181",
+    "environment": "node 22.23.1 (toolchain.json), darwin-arm64, pinned Chromium / SwiftShader",
+    "fixes": [
+      {
+        "finding": "Spec-1",
+        "commit": "27e59233",
+        "problem": "WebGL2 rendered NaN (0) where Canvas rendered 255 for contract-bound settings (float32 overflow, then Inf − Inf)",
+        "fix": "every operator saturates at ±GRADE_LIMIT (10,000); gradePow saturates before overflow; the shader mirrors both",
+        "evidence": "new CG2 cases overflow-primary-cdl and overflow-stacked: WebGL2 255 codes from the reference on all 8 stills before, Canvas 0 and WebGL2 ≤ 1 after; earlier cases unchanged; composition-effects (CE6, float-grade baseline included) unchanged"
+      },
+      {
+        "finding": "Spec-2",
+        "commit": "d573a1d9",
+        "problem": "grade.rgb-mixer was never rendered against color.matrix",
+        "fix": "CG2 browser test renders both with the same parameters",
+        "evidence": "max difference 1 code on in-range values"
+      },
+      {
+        "finding": "Spec-3",
+        "commit": "8222589f",
+        "problem": "the white-balance comparison the plan asks for was missing",
+        "fix": "closest color.white-balance fitted per grade.white-balance setting on chart-24, both rendered, difference recorded",
+        "evidence": "checks[5].comparison"
+      },
+      {
+        "finding": "Spec-4",
+        "commit": "154b6ca4",
+        "problem": "semi-transparent pixels were only compared between backends",
+        "fix": "compared with the un-premultiply, grade, re-premultiply reference",
+        "evidence": "16,256 pixels x 11 cases exact on both backends"
+      },
+      {
+        "finding": "Spec-5",
+        "commit": "cd342ea2",
+        "problem": "fused shader instead of RGBA32F surfaces not recorded",
+        "fix": "delivered.deviations, CG1 decision 1 'As built in CG2', plan CG2 scope note"
+      },
+      {
+        "finding": "Spec-6",
+        "commit": "2e2dd4ae",
+        "problem": "PRIMARY_RANGES disagreed with the grade.primary contract and was unused",
+        "fix": "removed; the zod contract holds the only bounds (CG1 decisions, Parameter bounds)"
+      },
+      {
+        "finding": "Spec-7",
+        "commit": "0404d6f6",
+        "problem": "unclamped grade.cdl default not recorded against 'exact to the specification'",
+        "fix": "delivered.deviations, plan CDL check and effect docs"
+      },
+      {
+        "finding": "Std-1",
+        "commit": "909e38f7",
+        "problem": "npm audit release blocker missing from dev-log Current state",
+        "fix": "added"
+      },
+      {
+        "finding": "Std-2",
+        "commit": "d09e369f",
+        "problem": "'all checks met' read as one full pass",
+        "fix": "names the tiers that ran and those that did not"
+      },
+      {
+        "finding": "Std-3",
+        "commit": "4a6d95f1",
+        "problem": "verification.md did not describe the color-science type check in check:boundaries",
+        "fix": "described"
+      },
+      {
+        "finding": "Std-4",
+        "commit": "da7c1a68",
+        "problem": "three switches on the effect id in float-grade.ts",
+        "fix": "one OPERATORS entry per effect (parameters, float64 reference, GLSL)",
+        "evidence": "identical shader text, uniforms and bytes on 400 random chains"
+      },
+      {
+        "finding": "Std-5",
+        "commit": "9eb6641b",
+        "problem": "duplicated version check, copy shader, run walk and luma constants",
+        "fix": "effect-shared.ts, effectStages, lumaCoefficients('bt709')",
+        "evidence": "native appearance closure regenerated in the same commit"
+      },
+      {
+        "finding": "Std-6",
+        "commit": "41dd6200",
+        "problem": "two primary corrections with different lift in the package",
+        "fix": "the CG1 port moved beside its spike (research/color-grading-cg1/ported-primary.ts)"
+      },
+      {
+        "finding": "Std-7",
+        "commit": "cf34ef18",
+        "problem": "number[] matrices and `as unknown as Rgb` casts",
+        "fix": "Mat3 and Rgb with a perChannel helper"
+      },
+      {
+        "finding": "Std-8",
+        "commit": "e40fbb6e",
+        "problem": "neutral settings restated by hand",
+        "fix": "isNeutral against NEUTRAL_GRADE_PRIMARY and NEUTRAL_CDL",
+        "evidence": "same ops, shader text and bytes on 400 random chains"
+      },
+      {
+        "finding": "Std-9",
+        "commit": "3318b330",
+        "problem": "run splitting had no unit test",
+        "fix": "tests/unit/composition-float-grade-run.test.ts (6 tests)"
+      }
+    ],
+    "verification": {
+      "checkFast": "passed: 471 test files, 4,826 tests (155 s)",
+      "browser": {
+        "color-grading-cg2": "passed at the tip: 88 parity rows (Canvas 0, WebGL2 ≤ 1, 32 channels at 1), recovery, banding, 108 layer-kind cases at 0, semi-transparent and counterpart checks, native-video export",
+        "composition-effects": "passed after the Spec-1 fix (11 min 42 s), CE6 baselines including catalogue-float-grade unchanged; later commits change tests and docs only",
+        "color-grading-cg0": "unchanged (273 renders, 21 at delta 1)",
+        "composition-grade-effects": "passed (max delta 0)",
+        "composition-baselines": "run 1 failed: 7 legacy/* items (legacy oracle) differed on all 168 frames; those 7 alone passed on rerun, and a full rerun passed: 176 items, 36,061 frames unchanged (263 s). Not reproduced; treated as environmental"
+      },
+      "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks (test:package not rerun after primary.ts left the package; check:package-types passed in check:fast)"
+    }
+  },
+  "thirdReview": {
+    "review": "agent review after merging main 51ffe62a into the branch (merge 0811876e); the owner chose \"Adapt to D65\"",
+    "environment": "node 22.23.1 (toolchain.json), darwin-arm64, pinned Chromium / SwiftShader",
+    "finding": "grade.white-balance adapted the stated illuminant to the 6500 K Planckian-locus white, not D65 (BT.709's white), so a grey lit by any locus illuminant came out magenta, not neutral: 18% grey at 2000, 3200, 5000 and 9000 K ended at (120, 117, 120), a white card at 3200 K at (260, 253, 259). The unit test passed because it compared with planckianXy(6500), not R = G = B",
+    "fix": "the target is D65; tint 0 is the locus moved by D65's offset from the 6500 K locus point, held in each temperature's own tangent/normal frame (normal +0.003173, tangent -1.6e-5), so 6500 K tint 0 is D65 exactly and stays the identity; defaults and bounds unchanged. A first attempt that moved the locus by one fixed uv offset made greys neutral but left a 3200 K black-body light about 3.5 codes amber at any tint (the 6500 K normal is not perpendicular to the locus at 3200 K), so the offset is carried in the local frame",
+    "evidence": "unit: a grey lit by temperatureTintWhite(t, tint) becomes R = G = B within 1e-12 for (2000, 0), (3200, 0), (5000, 30), (9000, -40), (1667, -100), (25000, 100); a light on the black-body locus at 2000, 3200, 5000 K is neutralized by tint -15.87 within 0.1 code at 40% grey; tint stays perpendicular at Duv = tint/5000; the Bradford vectors now adapt to D65 (temperature.json regenerated with colour-science 0.4.6; the other 10 vector files byte-identical)",
+    "notRun": "pnpm check, full pnpm test, runtime and integration tiers, release checks",
+    "verification": {
+      "checkFast": "passed: 473 test files, 4,866 tests",
+      "vectors": "pnpm color:cg0-vectors --check: identical (11 files)",
+      "browser": {
+        "color-grading-cg2": "passed: 88 parity rows (Canvas 0, WebGL2 ≤ 1, 32 channels at 1), recovery, banding, native-video export; white-balance comparison re-measured (checks)",
+        "composition-effects": "failed first on catalogue-float-grade's full-frame hashes (expected: the white-balance output changed); passed after the one float-grade baseline rewrite, frozen CE6 baselines unchanged"
+      }
+    }
+  }
+}

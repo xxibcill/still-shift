@@ -16,6 +16,7 @@
         "./packages/animation-engine/src/index.ts"
       ],
       "@still-shift/scene-contract": ["./packages/scene-contract/src/index.ts"],
+      "@still-shift/color-science": ["./packages/color-science/src/index.ts"],
       "@still-shift/execution-runtime": [
         "./packages/execution-runtime/src/index.ts"
       ],

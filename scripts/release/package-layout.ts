@@ -3,6 +3,7 @@ import { resolve } from "node:path";
 
 export const workspaceDirectories = [
   "packages/animation-engine",
+  "packages/color-science",
   "packages/execution-runtime",
   "packages/motion-builder",
   "packages/renderer-core",

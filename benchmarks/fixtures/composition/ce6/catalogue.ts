@@ -1,4 +1,7 @@
-import { GRADE_EFFECT_IDS } from "@still-shift/scene-contract";
+import {
+  FLOAT_GRADE_EFFECT_IDS,
+  GRADE_EFFECT_IDS,
+} from "@still-shift/scene-contract";
 import type {
   Composition,
   CompositionLayer,
@@ -57,6 +60,36 @@ export function ce6EffectCases(
     },
     "color.white-balance": { temperature: animated(-40, 40), tint: 15 },
     "color.vibrance": { vibrance: animated(0, 80), saturation: 10 },
+    "grade.primary": {
+      liftMaster: 0.04,
+      gammaB: 0.9,
+      gainMaster: animated(0.8, 1.6),
+      contrast: 1.2,
+      pivot: 0.45,
+      saturation: 1.3,
+      hue: animated(-20, 20),
+      shadows: 0.2,
+    },
+    "grade.white-balance": {
+      temperature: animated(3000, 9000),
+      tint: 12,
+    },
+    "grade.cdl": {
+      slopeR: 1.1,
+      slopeB: 0.92,
+      offsetG: animated(-0.05, 0.05),
+      powerR: 0.9,
+      powerB: 1.15,
+      saturation: 1.2,
+    },
+    "grade.rgb-mixer": {
+      rr: 1.2,
+      rg: -0.15,
+      gb: -0.1,
+      bb: 1.25,
+      bo: 0.02,
+      strength: animated(0.2, 1),
+    },
     "transition.linear-wipe": {
       progress: animated(0.1, 0.85),
       softness: 0.15,
@@ -197,6 +230,7 @@ export const CE6_NATIVE_FIXTURES = [
   "catalogue-history-linear",
   "catalogue-mesh",
   "catalogue-grade",
+  "catalogue-float-grade",
 ] as const;
 /** CGA grade effects, kept out of the frozen color catalogue cell layout. */
 const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
@@ -225,6 +259,7 @@ export function ce6NativeFixtures(): [string, Composition][] {
       ["time.echo", "distort.displacement-map", "transition.gradient-wipe"],
       ["distort.mesh-warp", "distort.puppet"],
       [...GRADE_EFFECTS],
+      [...FLOAT_GRADE_EFFECT_IDS],
     ];
   return families.map((effects, family) => {
     const doc: Composition = {

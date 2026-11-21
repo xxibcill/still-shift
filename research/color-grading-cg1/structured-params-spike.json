@@ -1,0 +1,84 @@
+{
+  "schema": "still-shift-color-cg1-spike-1",
+  "command": "node --import tsx research/color-grading-cg1/structured-params-spike.ts",
+  "pathResolution": {
+    "card.effects[grade].rr": {
+      "path": "card.effects[grade].rr",
+      "scope": [],
+      "layer": {
+        "id": "card",
+        "type": "solid",
+        "color": "#808080",
+        "size": [64, 64],
+        "effects": [
+          {
+            "id": "grade",
+            "effect": "color.matrix",
+            "params": { "rr": 1.1, "strength": 0.5 }
+          }
+        ]
+      },
+      "type": "scalar",
+      "readOnly": false
+    },
+    "card.effects[grade].strength": {
+      "path": "card.effects[grade].strength",
+      "scope": [],
+      "layer": {
+        "id": "card",
+        "type": "solid",
+        "color": "#808080",
+        "size": [64, 64],
+        "effects": [
+          {
+            "id": "grade",
+            "effect": "color.matrix",
+            "params": { "rr": 1.1, "strength": 0.5 }
+          }
+        ]
+      },
+      "type": "scalar",
+      "readOnly": false
+    },
+    "card.effects[grade].lift": {
+      "code": "comp-path-property",
+      "message": "\"card.effects[grade].lift\" does not name an effect parameter"
+    },
+    "card.effects[grade].lift.r": {
+      "code": "comp-path-property",
+      "message": "\"card.effects[grade].lift.r\" does not name an effect parameter"
+    },
+    "card.effects[grade].nodes[skin].primary.gain": {
+      "code": "comp-path-property",
+      "message": "\"card.effects[grade].nodes[skin].primary.gain\" does not name an effect parameter"
+    }
+  },
+  "flatDriver": {
+    "target": "card.effects[grade].strength",
+    "valid": true,
+    "strengthAtFrames0_12_23": [0, 0.5325881482699104, 1]
+  },
+  "nestedDriver": {
+    "target": "card.effects[grade].nodes[skin].primary.gain",
+    "valid": false,
+    "diagnostics": [
+      {
+        "code": "comp-path-property",
+        "message": "\"card.effects[grade].nodes[skin].primary.gain\" does not name an effect parameter"
+      }
+    ]
+  },
+  "nestedContractTouchpoints": {
+    "files": 8,
+    "list": [
+      "apps/lab/src/composition-keys.ts",
+      "packages/motion-builder/src/property-access.ts",
+      "packages/renderer-core/src/composition/evaluate/effects.ts",
+      "packages/renderer-core/src/composition/render/color-effects.ts",
+      "packages/scene-contract/src/composition/effect-definition.ts",
+      "packages/scene-contract/src/composition/expression-check.ts",
+      "packages/scene-contract/src/composition/expressions.ts",
+      "packages/scene-contract/src/composition/resolve.ts"
+    ]
+  }
+}

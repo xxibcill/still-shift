@@ -84,6 +84,8 @@ importers:
         specifier: 4.1.5
         version: 4.1.5
 
+  packages/color-science: {}
+
   packages/execution-runtime:
     dependencies:
       "@still-shift/renderer-core":
@@ -110,6 +112,9 @@ importers:
 
   packages/renderer-core:
     dependencies:
+      "@still-shift/color-science":
+        specifier: workspace:*
+        version: link:../color-science
       "@still-shift/scene-contract":
         specifier: workspace:*
         version: link:../scene-contract

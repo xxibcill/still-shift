@@ -1,0 +1,8 @@
+{
+  "name": "@still-shift/color-science",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "exports": "./src/index.ts",
+  "license": "GPL-3.0-only"
+}

@@ -1,0 +1,170 @@
+{
+  "schema": "still-shift-color-cg1-spike-1",
+  "environment": {
+    "profile": "chromium-software-2",
+    "browserVersion": "151.0.7922.34",
+    "webglRenderer": "ANGLE (Google, Vulkan 1.3.0 (SwiftShader Device (LLVM 10.0.0) (0x0000C0DE)), SwiftShader driver)",
+    "rasterFingerprint": "sha256:cf238cf2dddb639b7503248b282588056b2a0e559116a0f906acb1cfc1b166ba",
+    "platform": "darwin",
+    "arch": "arm64"
+  },
+  "command": "node --import tsx research/color-grading-cg1/float-stage-spike.ts",
+  "ext": {
+    "colorBufferFloat": true,
+    "colorBufferHalfFloat": true,
+    "textureFloatLinear": true,
+    "floatBlend": true,
+    "maxTextureSize": 8192
+  },
+  "complete": { "rgba16f": true, "rgba32f": true },
+  "parity": [
+    {
+      "format": "rgba32f",
+      "still": "gray-ramp-256",
+      "channels": 24576,
+      "maxCodeDifference": 0,
+      "channelsDiffering": 0,
+      "maxFloatDifference": 0.0000025097680846908332
+    },
+    {
+      "format": "rgba32f",
+      "still": "chart-24",
+      "channels": 294912,
+      "maxCodeDifference": 0,
+      "channelsDiffering": 0,
+      "maxFloatDifference": 0.0000013890931482851698
+    },
+    {
+      "format": "rgba32f",
+      "still": "hue-sweep",
+      "channels": 69120,
+      "maxCodeDifference": 1,
+      "channelsDiffering": 32,
+      "maxFloatDifference": 0.0000025275577841821217
+    },
+    {
+      "format": "rgba32f",
+      "still": "saturation-sweep",
+      "channels": 73728,
+      "maxCodeDifference": 0,
+      "channelsDiffering": 0,
+      "maxFloatDifference": 0.0000027234892607808092
+    },
+    {
+      "format": "rgba32f",
+      "still": "skin-tones",
+      "channels": 147456,
+      "maxCodeDifference": 0,
+      "channelsDiffering": 0,
+      "maxFloatDifference": 0.0000018146715048406037
+    },
+    {
+      "format": "rgba32f",
+      "still": "noisy-gradient",
+      "channels": 98304,
+      "maxCodeDifference": 0,
+      "channelsDiffering": 0,
+      "maxFloatDifference": 0.0000013338129298823276
+    },
+    {
+      "format": "rgba32f",
+      "still": "alpha-patches",
+      "channels": 49152,
+      "maxCodeDifference": 0,
+      "channelsDiffering": 0,
+      "maxFloatDifference": 0.0000011499150953664383
+    },
+    {
+      "format": "rgba16f",
+      "still": "gray-ramp-256",
+      "channels": 24576,
+      "maxCodeDifference": 1,
+      "channelsDiffering": 544,
+      "maxFloatDifference": 0.0015481886123966948
+    },
+    {
+      "format": "rgba16f",
+      "still": "chart-24",
+      "channels": 294912,
+      "maxCodeDifference": 1,
+      "channelsDiffering": 26176,
+      "maxFloatDifference": 0.0012222356281264002
+    },
+    {
+      "format": "rgba16f",
+      "still": "hue-sweep",
+      "channels": 69120,
+      "maxCodeDifference": 1,
+      "channelsDiffering": 1248,
+      "maxFloatDifference": 0.0015690890629946885
+    },
+    {
+      "format": "rgba16f",
+      "still": "saturation-sweep",
+      "channels": 73728,
+      "maxCodeDifference": 1,
+      "channelsDiffering": 848,
+      "maxFloatDifference": 0.0015102995797662278
+    },
+    {
+      "format": "rgba16f",
+      "still": "skin-tones",
+      "channels": 147456,
+      "maxCodeDifference": 1,
+      "channelsDiffering": 4096,
+      "maxFloatDifference": 0.0015456357188474712
+    },
+    {
+      "format": "rgba16f",
+      "still": "noisy-gradient",
+      "channels": 98304,
+      "maxCodeDifference": 1,
+      "channelsDiffering": 3363,
+      "maxFloatDifference": 0.0006388419713740934
+    },
+    {
+      "format": "rgba16f",
+      "still": "alpha-patches",
+      "channels": 49152,
+      "maxCodeDifference": 0,
+      "channelsDiffering": 0,
+      "maxFloatDifference": 0.0007375820020676382
+    }
+  ],
+  "recovery": [
+    { "intermediate": "rgba8", "maxCodeErrorAfterRecovery": 127 },
+    { "intermediate": "rgba16f", "maxCodeErrorAfterRecovery": 0 },
+    { "intermediate": "rgba32f", "maxCodeErrorAfterRecovery": 0 }
+  ],
+  "banding": [
+    {
+      "intermediate": "rgba8",
+      "passes": 11,
+      "distinctLevels": 57,
+      "maxCodeError": 12
+    },
+    {
+      "intermediate": "rgba32f",
+      "passes": 11,
+      "distinctLevels": 256,
+      "maxCodeError": 0
+    }
+  ],
+  "unorm": { "samples": 256, "gpuVsHalfUpDiffer": 0 },
+  "repeat": {
+    "identical": true,
+    "sha256": "e86fa644c25eb5936d268397924ddf1f5c6b64082c47f00f1bbce59f6c0b4b8b"
+  },
+  "memory": {
+    "bytesPerPixel": { "rgba8": 4, "rgba16f": 8, "rgba32f": 16 },
+    "surfaceMiB": {
+      "1080p": { "rgba8": 7.9, "rgba16f": 15.8, "rgba32f": 31.6 },
+      "4K UHD": { "rgba8": 31.6, "rgba16f": 63.3, "rgba32f": 126.6 }
+    },
+    "pixelBudgetGiB": {
+      "oneWorker": 7.375,
+      "fourWorkers": 1.75,
+      "source": "compositionWorkerMemoryLimits: (8 GiB - 512 MiB node allowance) / workers - 1/8 GiB metadata"
+    }
+  }
+}

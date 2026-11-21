@@ -1,0 +1,495 @@
+{
+  "schema": "still-shift-color-cg0-baseline-1",
+  "generator": "scripts/color/cg0-baseline.ts",
+  "platform": "darwin-arm64",
+  "fixtures": {
+    "stills/gray-ramp-256.png": "sha256:c0424c8980b76c6ad24c8a02bec454d5883776e3504728b387cb7fdfe5243112",
+    "stills/gray-steps-16.png": "sha256:9c15930feb7a270682ca5b453a4e2b9f4e2c014cae1311edfedbdec71cc71be0",
+    "stills/rgb-ramps.png": "sha256:eb3aaadb3a8831976b67432832be0c76065a8bb8f1aefa12d2f508231a507a13",
+    "stills/hue-sweep.png": "sha256:05885d4c7a0a149c28f9cfa87265a2bc1731239f87b78ffa5fc99f584a0e6eec",
+    "stills/saturation-sweep.png": "sha256:aed51ca7b077796515e5a7df3bb134abc66dec0a513026df92b052e8a9d54805",
+    "stills/chart-24.png": "sha256:c4c5a84287d30fec769e1528b58e4d95513a3a3bd0d7c53b47fb75b7f2d4a264",
+    "stills/skin-tones.png": "sha256:48729c1a101ac39d74faea316aea0f4dd8ea37e1fe1cefcc66612d230b444847",
+    "stills/noisy-gradient.png": "sha256:3d107cd4abeb4e8ef772fcb9e4cc84068d4c0de24e86bb932486e92a6c626784",
+    "stills/alpha-patches.png": "sha256:cb19443fa040be52fd3ce7ab604313b80c674a5bf9e55a523b5696ee6f26ed32",
+    "media/moving-disc.mp4": "sha256:6ab8aa2f1060be8127ef491dd076c8f221772d02aeba12bc63352906d312dce2",
+    "ramps/srgb.png": "sha256:76a8f0711ab0f325826227664533c6ba660cf7149483e88f02d85b88769f86c6",
+    "ramps/srgb-10bit.mkv": "sha256:cd8648d2b8640ede8055fbf69396486fb3ffabfbdf724839feb4b0390db8d1b5",
+    "ramps/bt709.png": "sha256:a93ad3cd69e9e846e50fa87472a669489f4bb6ab91a3ab32f8f17ab34ce1b7bb",
+    "ramps/bt709-10bit.mkv": "sha256:dfe7d1e62e7d83100e6de3bdb565271db5661309e0abb240d84788014c72ec31",
+    "ramps/bt1886.png": "sha256:31e900aad6580a0c02702862f484905c8fab971221fc759f316880486df7529c",
+    "ramps/bt1886-10bit.mkv": "sha256:a7af3f9662dce27aca8df25244c81f262dc902a39007612508d9d98b0ea5dc34",
+    "ramps/pq.png": "sha256:2b169304859201a70e0a8665214f27ccbcee982c0212dea2cb729e37d1f5aae6",
+    "ramps/pq-10bit.mkv": "sha256:05be8bb6f9627fe1cd0dc714a0ee12636d2ce728849a0a60d242b8ef29367148",
+    "ramps/hlg.png": "sha256:289484e90bf9d30c8fe44830350716897959f802115a1ff1b911c1d37d6484d2",
+    "ramps/hlg-10bit.mkv": "sha256:8f92f3cd8f2dda59b57ebf0ec8b58407703912732af274c3cc1e427aa2fae8b1",
+    "ramps/acescct.png": "sha256:0da79b33dc0eb2130eac05b98696fad2abb473349083e140757d34d15438c476",
+    "ramps/acescct-10bit.mkv": "sha256:494d2a3cfee36c7496094cb2953e99ac60040ce93c6b7d44bb01c0d6c92db395",
+    "ramps/arri-logc3.png": "sha256:4f42464fe9d7ce2857cf18a7a799cebe6bb60fcc645737f22932da14ac3e03f8",
+    "ramps/arri-logc3-10bit.mkv": "sha256:a022d0093cb1fc2ea6c8a6166df62d4c9b1bcaef0e04c41cfacd2a2ec4972ebb",
+    "ramps/arri-logc4.png": "sha256:47e3f6ac86d4582bc294870c84b34f79823d3d63bfabcc667f442d0e131df26d",
+    "ramps/arri-logc4-10bit.mkv": "sha256:a653078434673f4b3cdc35695ac96a19036465bc419bba32b6d86fb2a7cb5f5b",
+    "ramps/sony-slog3.png": "sha256:586942bd338fa61504b2a1d3f47e7097bda18af98d13797a92811cde469234a3",
+    "ramps/sony-slog3-10bit.mkv": "sha256:9d306c6fb5bdf551a9189dbd8d595bee99a496e69f3b232b15b1e77e48640483",
+    "ramps/panasonic-vlog.png": "sha256:73848cac2b66ec3f6eb232973c35796c3cbe6e42a36b51a167f008b043004635",
+    "ramps/panasonic-vlog-10bit.mkv": "sha256:54a5f8c506fc64f4c8d54718c758e58c039429e49e021d52d0f333925c3f421b",
+    "ramps/apple-log.png": "sha256:bb7333c76833255cc73067670ad78bc90a976477f7e8b204b464c2aab5848a39",
+    "ramps/apple-log-10bit.mkv": "sha256:9d89191aee9263786e4790390480fc07e1c8a5bd6b83f3b27c867a3e1c70a3c9",
+    "ramps/canon-log2.png": "sha256:95493e8ba6d4b047441879711d82158525a4e3d09910c6ac819942a15ad2c153",
+    "ramps/canon-log2-10bit.mkv": "sha256:d6ab831dd0f0ced264df606f749b9f542d9a7bf3085be14423b34f55715d1f7c",
+    "ramps/canon-log3.png": "sha256:eba4cc3ddf692f59046bdcb6c673b7257024e9dc34afb2785dadc3670a76b72b",
+    "ramps/canon-log3-10bit.mkv": "sha256:6614d50698a881b0598f04842e3525be8f300194116895a453ced40963ca4182",
+    "ramps/red-log3g10.png": "sha256:eca8c4bceac164979b5767559a4a099ade5fd1f390932079bf8d9b8b7d764ea9",
+    "ramps/red-log3g10-10bit.mkv": "sha256:7ab62e7b1706d9b95a3371575bf1c7bc6c855777f9ea112637e76761b50fd546",
+    "ramps/bmd-film-gen5.png": "sha256:5c14c7ff878726ec2a64cba48a366acfa51ba6766991b110f6276880efb348be",
+    "ramps/bmd-film-gen5-10bit.mkv": "sha256:d3720d34fd63bc0f479637f776c892b472f7f0c18d6d03566b1074d19cbf02e2",
+    "ramps/dji-dlog.png": "sha256:46d1b729d822ab4971d2c78a6970dcbb6aacf7dbe12294d9193ba493664bf957",
+    "ramps/dji-dlog-10bit.mkv": "sha256:f1ded5e6ee86ecfdcfba8430367a847c13e17fccbee99644811c9e7afb7bd4db",
+    "ramps/fujifilm-flog.png": "sha256:864bb55d4d5d4c597ccd42977706e1faf10328225f20d7d7a87df3f9d85fc414",
+    "ramps/fujifilm-flog-10bit.mkv": "sha256:c213d58cba982ab08fdce369df4dfa98dc423aed7ca58ca8bb5b19e52fcb7315",
+    "ramps/fujifilm-flog2.png": "sha256:f5dd0f4d9aea711711f88136786f8aafdfbf114fdd80077d0264a9a98dbaae29",
+    "ramps/fujifilm-flog2-10bit.mkv": "sha256:692344af7d697c6a41679f4e34f5b86326b39b53e561a56e88b70c782b58bc91",
+    "ramps/nikon-nlog.png": "sha256:0ceec2529c70965041bcfe5dbec8f1a5ccbd05f77e30ef33169a05d1693c0f5a",
+    "ramps/nikon-nlog-10bit.mkv": "sha256:5a216576418f0e6985bbb82cd4c72452ad6297da6bb197cadea58cb45e93a36f"
+  },
+  "probes": {
+    "media/moving-disc.mp4": {
+      "accepted": true,
+      "frameCount": 48,
+      "frameRate": { "numerator": 24, "denominator": 1 },
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "matrix": "bt709",
+        "range": "tv"
+      }
+    },
+    "ramps/srgb.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/srgb-10bit.mkv": {
+      "accepted": true,
+      "frameCount": 2,
+      "frameRate": { "numerator": 24, "denominator": 1 },
+      "color": {
+        "primaries": "bt709",
+        "transfer": "iec61966-2-1",
+        "matrix": "bt709",
+        "range": "tv"
+      },
+      "decoded": {
+        "decodedTo": "RGBA8 (composition-media-decoder-3)",
+        "distinctLevels": 122,
+        "sourceSamples": 128,
+        "maxErrorIn8BitCodes": 0.588
+      }
+    },
+    "ramps/bt709.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/bt709-10bit.mkv": {
+      "accepted": true,
+      "frameCount": 2,
+      "frameRate": { "numerator": 24, "denominator": 1 },
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "matrix": "bt709",
+        "range": "tv"
+      },
+      "decoded": {
+        "decodedTo": "RGBA8 (composition-media-decoder-3)",
+        "distinctLevels": 127,
+        "sourceSamples": 128,
+        "maxErrorIn8BitCodes": 0.569
+      }
+    },
+    "ramps/bt1886.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/bt1886-10bit.mkv": {
+      "accepted": true,
+      "frameCount": 2,
+      "frameRate": { "numerator": 24, "denominator": 1 },
+      "color": {
+        "primaries": "bt709",
+        "transfer": "bt709",
+        "matrix": "bt709",
+        "range": "tv"
+      },
+      "decoded": {
+        "decodedTo": "RGBA8 (composition-media-decoder-3)",
+        "distinctLevels": 123,
+        "sourceSamples": 128,
+        "maxErrorIn8BitCodes": 0.637
+      }
+    },
+    "ramps/pq.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/pq-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/hlg.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/hlg-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/acescct.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/acescct-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/arri-logc3.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/arri-logc3-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/arri-logc4.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/arri-logc4-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/sony-slog3.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/sony-slog3-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/panasonic-vlog.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/panasonic-vlog-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/apple-log.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/apple-log-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/canon-log2.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/canon-log2-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/canon-log3.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/canon-log3-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/red-log3g10.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/red-log3g10-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/bmd-film-gen5.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/bmd-film-gen5-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/dji-dlog.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/dji-dlog-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/fujifilm-flog.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/fujifilm-flog-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/fujifilm-flog2.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/fujifilm-flog2-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    },
+    "ramps/nikon-nlog.png": {
+      "accepted": true,
+      "width": 1024,
+      "height": 16,
+      "bitDepth": 16,
+      "colorType": 2,
+      "colorAuthority": "authored-untagged-srgb"
+    },
+    "ramps/nikon-nlog-10bit.mkv": {
+      "accepted": false,
+      "code": "comp-media-color",
+      "message": "Source needs supported explicit SDR color metadata"
+    }
+  },
+  "movingClip": {
+    "path": "media/moving-disc.mp4",
+    "method": "openColorClip + readColorFrames (the renderer's media path, composition-media-decoder-3) against the generator's exact RGB frames; disc centroid from red-dominant pixels",
+    "frames": [
+      {
+        "ordinal": 0,
+        "meanAbs": 1.6828,
+        "p99": 5,
+        "max": 67,
+        "discPixels": 4012,
+        "centroidError": 0.02
+      },
+      {
+        "ordinal": 12,
+        "meanAbs": 1.7866,
+        "p99": 6,
+        "max": 64,
+        "discPixels": 4010,
+        "centroidError": 0.078
+      },
+      {
+        "ordinal": 24,
+        "meanAbs": 1.7626,
+        "p99": 6,
+        "max": 69,
+        "discPixels": 4020,
+        "centroidError": 0.095
+      },
+      {
+        "ordinal": 36,
+        "meanAbs": 1.757,
+        "p99": 6,
+        "max": 69,
+        "discPixels": 4014,
+        "centroidError": 0.047
+      },
+      {
+        "ordinal": 47,
+        "meanAbs": 1.8354,
+        "p99": 6,
+        "max": 66,
+        "discPixels": 3996,
+        "centroidError": 0.029
+      }
+    ]
+  },
+  "videoPixelLint": {
+    "command": "pnpm --silent still-shift comp lint --input <tmp>/lint.json --pixels true",
+    "composition": "one native video layer (CG0 moving-disc.mp4) with a color.levels grade",
+    "exitCode": 0,
+    "report": {
+      "version": "composition-motion-lint-1",
+      "composition": "cg0-video-pixel-lint",
+      "frameCount": 48,
+      "fps": 24,
+      "status": "passed",
+      "measured": {
+        "evaluatedState": true,
+        "pixels": true,
+        "pixelMethod": "grayscale-energy",
+        "textBounds": true
+      },
+      "diagnostics": [
+        {
+          "code": "outside-safe-area",
+          "severity": "warning",
+          "nodes": ["clip"],
+          "node": "clip",
+          "path": "layers.0",
+          "frames": [0, 47],
+          "measured": 1,
+          "message": "Layer leaves the 5.0% safe inset.",
+          "shot": "cg0-video-pixel-lint"
+        }
+      ],
+      "semantic": {
+        "version": "composition-semantic-context-1",
+        "status": "unassessed",
+        "profile": "legacy",
+        "associations": [],
+        "policy": {
+          "version": "composition-semantic-context-policy-1",
+          "profile": "legacy",
+          "readingOpacity": 0.9,
+          "readingReveal": 0.95,
+          "associations": []
+        },
+        "method": "declared-copy-and-measured-layer-context",
+        "factualTruth": "unassessed",
+        "renderedGlyphReadability": "requires-encoded-review"
+      },
+      "limitations": [
+        "Coverage lint measures geometry; image alpha and arbitrary mask coverage require the renderer's asset coverage validation."
+      ],
+      "backend": "canvas2d",
+      "rendererVersion": "composition-canvas-1.47.8",
+      "validationDiagnostics": []
+    },
+    "stderr": ""
+  },
+  "exportImportRoundTrip": {
+    "composition": "stills/gray-steps-16.png as one image layer, rendered with the default MP4 profile, then probed and decoded as a video through the media path (green channel, central 16x16 of each step)",
+    "exportTags": {
+      "pix_fmt": "yuv420p",
+      "color_range": "tv",
+      "color_space": "bt709",
+      "color_transfer": "bt709",
+      "color_primaries": "bt709"
+    },
+    "steps": [
+      { "source": 0, "imported": 0, "delta": 0 },
+      { "source": 17, "imported": 17, "delta": 0 },
+      { "source": 34, "imported": 34, "delta": 0 },
+      { "source": 51, "imported": 51, "delta": 0 },
+      { "source": 68, "imported": 68, "delta": 0 },
+      { "source": 85, "imported": 85, "delta": 0 },
+      { "source": 102, "imported": 102, "delta": 0 },
+      { "source": 119, "imported": 119, "delta": 0 },
+      { "source": 136, "imported": 136, "delta": 0 },
+      { "source": 153, "imported": 153, "delta": 0 },
+      { "source": 170, "imported": 170, "delta": 0 },
+      { "source": 187, "imported": 187, "delta": 0 },
+      { "source": 204, "imported": 204, "delta": 0 },
+      { "source": 221, "imported": 221, "delta": 0 },
+      { "source": 238, "imported": 238, "delta": 0 },
+      { "source": 255, "imported": 255, "delta": 0 }
+    ],
+    "maxAbsDelta": 0,
+    "meanDelta": 0,
+    "note": "Before D-colour (decoder 2), BT.709-tagged footage was lifted on import (code 16 -> 31, 128 -> 140; CGA measured about +5% median on the owner's re-imported edit). Decoder 3 and output 2 treat BT.709 SDR as display-equivalent to sRGB."
+  },
+  "tenBitExport": {
+    "composition": "stills/gray-ramp-256.png (256 distinct 8-bit codes) rendered with --format hevc10",
+    "stream": {
+      "codec_name": "hevc",
+      "pix_fmt": "yuv420p10le",
+      "color_range": "tv",
+      "color_transfer": "bt709"
+    },
+    "distinctLumaLevels": 256,
+    "lumaRange": [65, 942],
+    "medianStep": 3,
+    "note": "The 10-bit profile carries the renderer's 8-bit pixels: at most 256 levels, about 3.4 10-bit codes apart. CG8 must raise this, not only the container depth."
+  }
+}

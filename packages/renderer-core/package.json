@@ -10,6 +10,7 @@
     "./native3d-browser": "./src/native3d/browser.ts"
   },
   "dependencies": {
+    "@still-shift/color-science": "workspace:*",
     "@still-shift/scene-contract": "workspace:*",
     "@types/three": "0.186.0",
     "clipper2-ts": "2.0.1-18",

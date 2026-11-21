@@ -20,6 +20,45 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "color-science/src/cdl.ts",
+    url: new URL("../../../color-science/src/cdl.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/errors.ts",
+    url: new URL("../../../color-science/src/errors.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/grade.ts",
+    url: new URL("../../../color-science/src/grade.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/index.ts",
+    url: new URL("../../../color-science/src/index.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/input-transforms.ts",
+    url: new URL(
+      "../../../color-science/src/input-transforms.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "color-science/src/lut.ts",
+    url: new URL("../../../color-science/src/lut.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/matrix.ts",
+    url: new URL("../../../color-science/src/matrix.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/primaries.ts",
+    url: new URL("../../../color-science/src/primaries.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/transfer.ts",
+    url: new URL("../../../color-science/src/transfer.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/alpha-coverage.ts",
     url: new URL("../alpha-coverage.ts", import.meta.url),
   },
@@ -343,6 +382,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../composition/render/effect-plugins.ts", import.meta.url),
   },
   {
+    name: "renderer-core/src/composition/render/effect-shared.ts",
+    url: new URL("../composition/render/effect-shared.ts", import.meta.url),
+  },
+  {
     name: "renderer-core/src/composition/render/effect-window.ts",
     url: new URL("../composition/render/effect-window.ts", import.meta.url),
   },
@@ -357,6 +400,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/composition/render/flat-lighting.ts",
     url: new URL("../composition/render/flat-lighting.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/composition/render/float-grade.ts",
+    url: new URL("../composition/render/float-grade.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/composition/render/grade-effects.ts",
@@ -1434,6 +1481,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/composition/expressions.ts",
     url: new URL(
       "../../../scene-contract/src/composition/expressions.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/composition/float-grade-effects.ts",
+    url: new URL(
+      "../../../scene-contract/src/composition/float-grade-effects.ts",
       import.meta.url,
     ),
   },
