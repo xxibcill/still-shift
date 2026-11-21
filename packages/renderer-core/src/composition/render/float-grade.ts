@@ -76,6 +76,15 @@ const rgb = (p: Params, name: string): Rgb =>
 
 type Uniforms = Record<string, number | number[]>;
 type OpGlsl = { declare: string; call: string; uniforms: Uniforms };
+/**
+ * Where the run put an op's resources: `rows[i]` is the texture row of
+ * `tables[i]` (CG4), `lutBase` the float offset of `lutFloats` in the run's
+ * LUT texture (CG5). A new resource kind is a new field here.
+ */
+type OpResources = {
+  readonly rows: readonly number[];
+  readonly lutBase: number;
+};
 
 /** One operator of a run: its float64 reference and its fused-shader GLSL. */
 export type FloatGradeOp = {
@@ -93,15 +102,10 @@ export type FloatGradeOp = {
    */
   readonly lutFloats?: Float32Array;
   /**
-   * Uniform declarations, the call and uniform values; `uniform` names them,
-   * `rows[i]` is the texture row of `tables[i]` and `lutBase` the float offset
-   * of `lutFloats` in the run's LUT texture.
+   * Uniform declarations, the call and uniform values; `uniform` names them
+   * and `resources` locates the op's tables and LUT in the run's textures.
    */
-  glsl(
-    uniform: (name: string) => string,
-    rows: readonly number[],
-    lutBase: number,
-  ): OpGlsl;
+  glsl(uniform: (name: string) => string, resources: OpResources): OpGlsl;
 };
 
 /** The effect a run member came from (its prepared LUTs ride under a symbol). */
@@ -283,7 +287,7 @@ const OPERATORS: Readonly<
       id: "grade.curves",
       apply: (v) => applyGradeCurves(v, controls),
       tables,
-      glsl: (u, rows) => {
+      glsl: (u, { rows }) => {
         const row = rowsOf(rows);
         return {
           declare: `uniform vec4 ${u("Rows")};uniform float ${u("LumaMix")};`,
@@ -307,7 +311,7 @@ const OPERATORS: Readonly<
       id: "grade.hue-curves",
       apply: (v) => applyGradeHueCurves(v, controls),
       tables,
-      glsl: (u, rows) => {
+      glsl: (u, { rows }) => {
         const row = rowsOf(rows);
         return {
           declare: `uniform vec3 ${u("HueRows")};uniform vec3 ${u("SatRows")};`,
@@ -386,7 +390,7 @@ const OPERATORS: Readonly<
         return perChannel((c) => limitGrade(v[c] + intensity * (o[c] - v[c])));
       },
       lutFloats: prepared.floats,
-      glsl: (u, _rows, lutBase) => ({
+      glsl: (u, { lutBase }) => ({
         declare: `uniform vec4 ${u("Lut")};uniform vec3 ${u("LutLo")};uniform vec3 ${u("LutHi")};uniform vec4 ${u("Shaper")};uniform vec3 ${u("ShaperLo")};uniform vec3 ${u("ShaperHi")};`,
         call: `v=gLut(v,${u("Lut")},${u("LutLo")},${u("LutHi")},${u("Shaper")},${u("ShaperLo")},${u("ShaperHi")});`,
         uniforms: {
@@ -577,7 +581,7 @@ export function floatGradeShader(ops: readonly FloatGradeOp[]) {
       lutFloats.push(op.lutFloats);
       lutLength += op.lutFloats.length;
     }
-    return op.glsl((name) => `g${i}${name}`, rows, lutBase);
+    return op.glsl((name) => `g${i}${name}`, { rows, lutBase });
   });
   const fragment = `${GLSL_COMMON}
 ${parts.map((p) => p.declare).join("\n")}
