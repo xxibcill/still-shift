@@ -1,0 +1,82 @@
+{
+  "schema": "still-shift-milestone-results-1",
+  "milestone": "CG4",
+  "title": "Color grading engine: curves and tonal-range tools",
+  "date": "2026-11-21",
+  "branch": "codex/color-grading-cg4",
+  "base": "codex/color-grading-cg3 ff4ded57, with PR #77's tip 50e5d033 (D65 white balance) merged in",
+  "plan": "docs/color-grading-engine-plan.md#cg4--curves-and-tonal-range-tools",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "browser": "pinned Chromium 151.0.7922.34 / SwiftShader (chromium-software-2)",
+    "platform": "darwin-arm64",
+    "referenceGenerators": "scipy 1.18.1 (PchipInterpolator) via the CG0 vector generator (development only)"
+  },
+  "visualAcceptance": "none: software measurements only",
+  "delivered": {
+    "splines": "PCHIP (Fritsch-Carlson monotone cubic Hermite, Fritsch-Butland derivatives) matching scipy within 1e-12; periodic hue curves; baked to 1024-entry float32 tables with linear extrapolation",
+    "effects": {
+      "grade.curves": "red, green, blue then master curves; lumaMix 0-1 (master on luma only, chroma kept)",
+      "grade.hue-curves": "hueVsHue, hueVsSat, hueVsLum, lumVsSat, satVsSat, satVsLum in BT.709 Y'CbCr, y = 0.5 neutral",
+      "grade.tonal": "shadow/mid/highlight RGB offsets and exposure (stops) with shadowEnd, highlightStart and falloff, then C1 high and low soft clip"
+    },
+    "gpu": "curve tables uploaded as one RGBA8 texture whose texels carry each float32's bits (read back exactly with uintBitsToFloat); sampled as the reference does",
+    "vectors": "benchmarks/fixtures/color/cg0/vectors/spline.json (new; other vector files unchanged); grade-operators.json added in the PR #78 review (F4): grade.curves, grade.hue-curves and grade.tonal from an independent NumPy/SciPy implementation, 12 cases within 1e-9 (tests/unit/composition-grade-operator-vectors.test.ts)",
+    "notInPlanWording": "the plan names 'saturation vs luminance' and the five hue/saturation curves; all six are in grade.hue-curves. Zone-based exposure is per range (three zones), not the ten zones of the CG3 exposure scope."
+  },
+  "checks": [
+    {
+      "check": "Identity curves are exact identities; spline evaluation matches reference vectors; no overshoot outside the control hull for monotone inputs",
+      "status": "met",
+      "evidence": "identity (and flat hue) curves give null controls, so the operator is dropped and pixels are unchanged on both backends (browser 'neutral' case); 10 spline cases within 1e-12 of scipy, periodic included; 500 seeded monotone curves sampled at 2001 points stay within each segment's control range and never decrease"
+    },
+    {
+      "check": "Each hue/saturation curve changes only its target dimension on the sweep fixtures, within tolerance (measured with CG3)",
+      "status": "met",
+      "evidence": "float64: on the CG0 hue sweep, saturation sweep and skin tones, off-target vectorscope angle, chroma radius and luma move by < 1e-9 (radius, luma) or 1e-6 degrees (angle). Rendered (both backends), measured with the CG3 functions (vectorscopeAngle, chroma709, encodedLuma) on pixels whose float result stays in 0-1: off-target luma <= 0.0019 (half an 8-bit step), off-target radius <= 0.0020, off-target angle <= 1.7 degrees (skin tones, low chroma), while the target dimension moves by 90 degrees, 0.04-0.17 radius or 0.10-0.13 luma",
+      "note": "On fully saturated hue-sweep colors a hue rotation can leave the gamut; the 8-bit output clips those values and then moves every dimension. They are excluded from the rendered measurement and counted (clipped in benchmarks/results/color-grading-cg4/curves.json); the float64 measurement covers every pixel."
+    },
+    {
+      "check": "Hue curves are continuous across the 0 deg/360 deg wrap",
+      "status": "met",
+      "evidence": "float64: |f(1 - 1e-9) - f(0)| < 1e-8; a colour 0.02 degrees either side of +Cb keeps its chroma within 1e-5; rendered: the step across the hue sweep's wrap is no larger than its neighbours' step on both backends"
+    },
+    {
+      "check": "Animated curve points keep the existing ordering and point-count rules",
+      "status": "met",
+      "test": "tests/unit/composition-grade-curves.test.ts",
+      "evidence": "the CG4 curves use the existing curve parameter: animated y validates and evaluates; a keyed curve whose point count changes is rejected; endpoints away from 0/1 and 17 points are rejected; an animated x that crosses its neighbour fails at the crossing frame ('strictly increasing'); periodic hue curves with different end y and tonal ranges out of order fail with comp-effect-params"
+    }
+  ],
+  "parity": {
+    "test": "pnpm test:browser:color-grading-cg4",
+    "rows": 54,
+    "canvasVsReference": 0,
+    "webglVsReference": 1,
+    "repeat": "byte-identical",
+    "layerKinds": "81 cases, 972 frames, backend difference <= 1 (animated curve points included)"
+  },
+  "failedRunsAndReruns": [
+    "Unit tests were written first and all 26 failed before the module existed.",
+    "Unit run 2: the no-overshoot test failed on its own segment lookup (x = 1 fell back to the first segment) and the baked-table bound (1e-6) failed at 1.01e-6; the lookup was fixed and the bound set to 1e-5 from the measurement.",
+    "Unit run 3: the no-overshoot test timed out (3 million expect calls); it now counts violations and asserts once, and sorts numerically (the default sort compared strings).",
+    "Browser test before the CG4 kernels (HEAD renderer): failed with 'OPERATORS[id] is not a function' (failing first).",
+    "Browser run 1: hueVsHue changed the chroma radius by 0.34 on the rendered hue sweep: rotated saturated colors leave the gamut and the 8-bit output clips them. The rendered separation check now measures in-gamut pixels and counts the clipped ones.",
+    "Curve rules test: a static endpoint error is reported by the shared curve schema as its union's 'Invalid input', not the endpoint message; the test asserts the rejection (existing behaviour, as for color.curves).",
+    "CE6 coverage unit test failed until the new catalogue-curve-grade cell existed."
+  ],
+  "verification": {
+    "checkFast": "passed first time: 476 test files, 4,910 tests",
+    "browser": {
+      "color-grading-cg4": "passed (54 rows, Canvas 0, WebGL2 <= 1)",
+      "color-grading-cg2": "passed (88 rows) with the shared GLSL extended",
+      "color-grading-cg0": "unchanged (273 renders)",
+      "composition-effects": "curve-grade baseline written then checked; frozen CE6 and CG2 float-grade baselines unchanged"
+    },
+    "integration": "composition-scopes (CG3): 7 passed",
+    "notRunHere": "composition-baselines (no grade effects in them; run at the end of CG5)"
+  },
+  "notRun": "pnpm check, full pnpm test, runtime tier, release checks",
+  "next": "CG5 (LUT and CDL interchange) on codex/color-grading-cg5"
+}

@@ -16,6 +16,8 @@ import {
 } from "./composition-media.ts";
 import { validatePreparedAssets } from "./prepared-animation-engine.ts";
 import { prepareCompositionAudio } from "./composition-audio-mix.ts";
+import { prepareCompositionLuts } from "./composition-luts.ts";
+import type { CubeLut } from "@still-shift/color-science";
 import {
   prepareCompositionNative3D,
   type CompositionNative3DPreparation,
@@ -59,6 +61,8 @@ export type CompositionSource = {
   preparedMedia?: CompositionPreparedMedia;
   preparedAudio?: CompositionPreparedAudio;
   preparedNative3D?: CompositionPreparedNative3DVersions;
+  /** CG5: parsed LUT assets by ID (verified before rendering). */
+  luts?: ReadonlyMap<string, CubeLut>;
   native3D?: CompositionNative3DPreparation["native3D"];
   nativeAppearanceCodeIdentity?: NativeAppearanceCodeIdentity;
   nativeAppearanceCodeSha256?: string;
@@ -117,6 +121,7 @@ export async function readCompositionSource(
       },
       dirname(sourcePath),
     );
+    const luts = await prepareCompositionLuts(composition, dirname(sourcePath));
     const fonts = await checkCompositionFonts(
       composition,
       assetPaths,
@@ -139,6 +144,7 @@ export async function readCompositionSource(
       fontCoverage: fonts.report,
       assetPaths: {
         ...assetPaths,
+        ...luts.assetPaths,
         ...native?.assetPaths,
         ...media?.assetPaths,
         ...audio?.assetPaths,
@@ -157,6 +163,7 @@ export async function readCompositionSource(
           }
         : {}),
       ...(audio ? { preparedAudio: audio.preparedAudio } : {}),
+      ...(luts.luts.size ? { luts: luts.luts } : {}),
       ...(media || audio
         ? {
             mediaSourcePaths: {

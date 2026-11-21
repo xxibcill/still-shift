@@ -106,6 +106,14 @@ export const EffectInstanceSchema = z
         "At most eight effect inputs",
       )
       .optional(),
+    /** CG5: declared effect asset slots, each bound to an asset by ID. */
+    assets: z
+      .record(compositionId, compositionId)
+      .refine(
+        (value) => Object.keys(value).length <= 4,
+        "At most four effect assets",
+      )
+      .optional(),
     inPoint: keyFrame.optional(),
     outPoint: keyFrame.optional(),
     params: boundedJson(z.record(compositionId, z.json())).optional(),

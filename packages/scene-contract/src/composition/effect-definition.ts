@@ -12,6 +12,7 @@ export * from "./effect-curves.ts";
 import { z } from "zod";
 import { animatable, animatableScalar, AnimatableColorSchema } from "./keys.ts";
 import { finite } from "./primitives.ts";
+import { EFFECT_ASSET_TYPES, type EffectAssetType } from "./luts.ts";
 
 /** The contract owns validation and paths; the graph and backends execute effect stages. */
 export type EffectScalar = {
@@ -59,6 +60,8 @@ export type CompositionEffectDefinition = {
   usesLayerSpace?: boolean;
   /** Named input slots bound to same-scope layer IDs on each effect instance. */
   requiresLayers?: readonly string[];
+  /** CG5: named asset slots (slot → asset type) bound on each effect instance. */
+  requiresAssets?: Readonly<Record<string, EffectAssetType>>;
 };
 
 function propertySchema(property: EffectProperty): z.ZodType {
@@ -118,6 +121,20 @@ export function defineCompositionEffect(
   )
     throw Error(
       "comp-effect-definition: input slots must be unique bounded identifiers (at most eight)",
+    );
+  if (
+    definition.requiresAssets &&
+    (Object.keys(definition.requiresAssets).length > 4 ||
+      Object.entries(definition.requiresAssets).some(
+        ([name, type]) =>
+          !/^[a-zA-Z][\w-]*$/.test(name) ||
+          name.length > 128 ||
+          Object.hasOwn(Object.prototype, name) ||
+          !(EFFECT_ASSET_TYPES as readonly string[]).includes(type),
+      ))
+  )
+    throw Error(
+      "comp-effect-definition: asset slots must be bounded identifiers of known asset types (at most four)",
     );
   const properties = Object.fromEntries(
     Object.entries(definition.properties).map(([name, property]) => {

@@ -21,6 +21,14 @@ export type CubeLut = {
   domainMax: [number, number, number];
   /** RGB triples; 3D in .cube order (red fastest, then green, then blue). */
   data: Float64Array;
+  /** CG5: a 1D shaper applied before the 3D table (Resolve `.cube`). */
+  shaper?: {
+    kind: "1d";
+    size: number;
+    domainMin: [number, number, number];
+    domainMax: [number, number, number];
+    data: Float64Array;
+  };
 };
 
 export const MAX_LUT_3D_SIZE = 129;
@@ -30,12 +38,26 @@ function fail(line: number, message: string): never {
   throw new ColorScienceError(`.cube line ${line}: ${message}`);
 }
 
+type Triple = [number, number, number];
+
+/**
+ * `.cube` numbers are decimal (optionally with an exponent): only these
+ * characters, so `Number` cannot read a hexadecimal, binary or octal literal.
+ */
+const DECIMAL_ROW = /^[-+.\deE\s]+$/;
+
+/**
+ * Parse a `.cube` file: Adobe/Iridas (one `LUT_1D_SIZE` or `LUT_3D_SIZE`,
+ * optional `DOMAIN_MIN`/`DOMAIN_MAX`) or Resolve (CG5: both sizes, the 1D
+ * shaper's rows first, with `LUT_1D_INPUT_RANGE` / `LUT_3D_INPUT_RANGE`).
+ */
 export function parseCubeLut(text: string): CubeLut {
-  let kind: "1d" | "3d" | undefined,
-    size = 0,
+  let size1 = 0,
+    size3 = 0,
     title: string | undefined;
-  let domainMin: [number, number, number] = [0, 0, 0],
-    domainMax: [number, number, number] = [1, 1, 1];
+  let domainMin: Triple | undefined, domainMax: Triple | undefined;
+  let range1: [number, number] | undefined,
+    range3: [number, number] | undefined;
   const values: number[] = [];
   const lines = text.split(/\r?\n/);
   for (let index = 0; index < lines.length; index++) {
@@ -43,25 +65,30 @@ export function parseCubeLut(text: string): CubeLut {
     const trimmed = lines[index]!.trim();
     if (trimmed === "" || trimmed.startsWith("#")) continue;
     const [keyword, ...rest] = trimmed.split(/\s+/);
-    const triple = () => {
-      if (rest.length !== 3) fail(line, `${keyword} needs three numbers`);
+    const numbers = (count: number) => {
+      if (rest.length !== count)
+        fail(line, `${keyword} needs ${count} numbers`);
       const nums = rest.map(Number);
-      if (!nums.every(Number.isFinite))
+      if (!DECIMAL_ROW.test(rest.join(" ")) || !nums.every(Number.isFinite))
         fail(line, `${keyword} values must be finite numbers`);
-      return nums as [number, number, number];
+      return nums;
+    };
+    const header = () => {
+      if (values.length) fail(line, `${keyword} must come before the table`);
     };
     if (keyword === "TITLE") {
       const match = /^TITLE\s+"(.*)"$/.exec(trimmed);
       if (!match) fail(line, "TITLE must be a quoted string");
       title = match[1];
     } else if (keyword === "LUT_3D_SIZE" || keyword === "LUT_1D_SIZE") {
-      if (kind) fail(line, "only one LUT_3D_SIZE or LUT_1D_SIZE is supported");
-      if (values.length) fail(line, `${keyword} must come before the table`);
-      kind = keyword === "LUT_3D_SIZE" ? "3d" : "1d";
-      size = Number(rest[0]);
-      const max = kind === "3d" ? MAX_LUT_3D_SIZE : MAX_LUT_1D_SIZE;
+      header();
+      const three = keyword === "LUT_3D_SIZE";
+      if (three ? size3 : size1) fail(line, `${keyword} is given twice`);
+      const size = Number(rest[0]);
+      const max = three ? MAX_LUT_3D_SIZE : MAX_LUT_1D_SIZE;
       if (
         rest.length !== 1 ||
+        !DECIMAL_ROW.test(rest[0]!) ||
         !Number.isInteger(size) ||
         size < 2 ||
         size > max
@@ -70,35 +97,185 @@ export function parseCubeLut(text: string): CubeLut {
           line,
           `${keyword} size ${rest.join(" ")} must be an integer from 2 to ${max}`,
         );
-    } else if (keyword === "DOMAIN_MIN") domainMin = triple();
-    else if (keyword === "DOMAIN_MAX") domainMax = triple();
-    else if (/^[-+.\d]/.test(keyword!)) {
-      if (!kind) fail(line, "table data before LUT_3D_SIZE or LUT_1D_SIZE");
+      if (three) size3 = size;
+      else size1 = size;
+    } else if (keyword === "DOMAIN_MIN") {
+      header();
+      domainMin = numbers(3) as Triple;
+    } else if (keyword === "DOMAIN_MAX") {
+      header();
+      domainMax = numbers(3) as Triple;
+    } else if (keyword === "LUT_1D_INPUT_RANGE") {
+      header();
+      range1 = numbers(2) as [number, number];
+    } else if (keyword === "LUT_3D_INPUT_RANGE") {
+      header();
+      range3 = numbers(2) as [number, number];
+    } else if (/^[-+.\d]/.test(keyword!)) {
+      if (!size1 && !size3)
+        fail(line, "table data before LUT_3D_SIZE or LUT_1D_SIZE");
       const nums = trimmed.split(/\s+/).map(Number);
-      if (nums.length !== 3 || !nums.every(Number.isFinite))
+      if (
+        nums.length !== 3 ||
+        !DECIMAL_ROW.test(trimmed) ||
+        !nums.every(Number.isFinite)
+      )
         fail(line, "table rows must be three finite numbers");
       values.push(...nums);
     } else fail(line, `unknown keyword ${keyword}`);
   }
-  if (!kind)
+  if (!size1 && !size3)
     throw new ColorScienceError(".cube file has no LUT_3D_SIZE or LUT_1D_SIZE");
-  const expected = kind === "3d" ? size ** 3 : size;
+  const shaped = size1 > 0 && size3 > 0;
+  if (shaped && (domainMin || domainMax))
+    throw new ColorScienceError(
+      ".cube with a shaper uses LUT_1D_INPUT_RANGE and LUT_3D_INPUT_RANGE, not DOMAIN_MIN/MAX",
+    );
+  // A range for a table the file does not hold, or two ranges for the one
+  // it does, is a mistake in the file: never guess which was meant.
+  if (range1 && !size1)
+    throw new ColorScienceError(
+      ".cube has LUT_1D_INPUT_RANGE but no LUT_1D_SIZE",
+    );
+  if (range3 && !size3)
+    throw new ColorScienceError(
+      ".cube has LUT_3D_INPUT_RANGE but no LUT_3D_SIZE",
+    );
+  if (!shaped && (domainMin || domainMax) && (range1 || range3))
+    throw new ColorScienceError(
+      `.cube gives both DOMAIN_MIN/MAX and ${range3 ? "LUT_3D_INPUT_RANGE" : "LUT_1D_INPUT_RANGE"}; use one`,
+    );
+  const expected = size1 + size3 ** 3;
   if (values.length !== expected * 3)
     throw new ColorScienceError(
-      `.cube ${kind.toUpperCase()} size ${size}: expected ${expected} entries, found ${values.length / 3}`,
+      shaped
+        ? `.cube shaper size ${size1} and 3D size ${size3}: expected ${expected} entries, found ${values.length / 3}`
+        : `.cube ${size3 ? "3D" : "1D"} size ${size3 || size1}: expected ${expected} entries, found ${values.length / 3}`,
     );
-  for (let c = 0; c < 3; c++)
-    if (!(domainMax[c]! > domainMin[c]!))
-      throw new ColorScienceError(
-        `.cube domain must have DOMAIN_MAX above DOMAIN_MIN on every channel`,
-      );
+  const domain = (
+    range: [number, number] | undefined,
+    min = range
+      ? ([range[0], range[0], range[0]] as Triple)
+      : ([0, 0, 0] as Triple),
+    max = range
+      ? ([range[1], range[1], range[1]] as Triple)
+      : ([1, 1, 1] as Triple),
+  ) => {
+    for (let c = 0; c < 3; c++)
+      if (!(max[c]! > min[c]!))
+        throw new ColorScienceError(
+          ".cube domain must have its maximum above its minimum on every channel",
+        );
+    return { domainMin: min, domainMax: max };
+  };
+  const data = Float64Array.from(values);
+  const main = size3
+    ? {
+        kind: "3d" as const,
+        size: size3,
+        ...(shaped ? domain(range3) : domain(range3, domainMin, domainMax)),
+        data: shaped ? data.slice(size1 * 3) : data,
+      }
+    : {
+        kind: "1d" as const,
+        size: size1,
+        ...domain(range1, domainMin, domainMax),
+        data,
+      };
   return {
-    kind,
+    ...main,
     ...(title === undefined ? {} : { title }),
+    ...(shaped
+      ? {
+          shaper: {
+            kind: "1d" as const,
+            size: size1,
+            ...domain(range1),
+            data: data.slice(0, size1 * 3),
+          },
+        }
+      : {}),
+  };
+}
+
+/**
+ * Deterministic `.cube` text (10 decimals); shapers use the Resolve form. A
+ * title is one quoted line: its quotes become apostrophes and its line breaks
+ * spaces, so the file always parses back.
+ */
+export function writeCubeLut(lut: CubeLut): string {
+  const f = (v: number) => (Object.is(v, -0) ? 0 : v).toFixed(10);
+  const lines = [
+    ...(lut.title !== undefined
+      ? [
+          `TITLE "${lut.title.replace(/"/g, "'").replace(/\s*[\r\n]+\s*/g, " ")}"`,
+        ]
+      : []),
+  ];
+  // One push per row: a 65³ table is too many arguments for one call.
+  const triples = (data: Float64Array) => {
+    for (let i = 0; i < data.length; i += 3)
+      lines.push(`${f(data[i]!)} ${f(data[i + 1]!)} ${f(data[i + 2]!)}`);
+  };
+  const uniform = (min: Triple, max: Triple) =>
+    min.every((v) => v === min[0]) && max.every((v) => v === max[0]);
+  if (lut.shaper) {
+    if (
+      !uniform(lut.shaper.domainMin, lut.shaper.domainMax) ||
+      !uniform(lut.domainMin, lut.domainMax)
+    )
+      throw new ColorScienceError(
+        "A shaper LUT needs the same range on every channel",
+      );
+    lines.push(
+      `LUT_1D_SIZE ${lut.shaper.size}`,
+      `LUT_3D_SIZE ${lut.size}`,
+      `LUT_1D_INPUT_RANGE ${f(lut.shaper.domainMin[0])} ${f(lut.shaper.domainMax[0])}`,
+      `LUT_3D_INPUT_RANGE ${f(lut.domainMin[0])} ${f(lut.domainMax[0])}`,
+    );
+    triples(lut.shaper.data);
+  } else {
+    lines.push(
+      `${lut.kind === "3d" ? "LUT_3D_SIZE" : "LUT_1D_SIZE"} ${lut.size}`,
+    );
+    if (
+      lut.domainMin.some((v) => v !== 0) ||
+      lut.domainMax.some((v) => v !== 1)
+    )
+      lines.push(
+        `DOMAIN_MIN ${lut.domainMin.map(f).join(" ")}`,
+        `DOMAIN_MAX ${lut.domainMax.map(f).join(" ")}`,
+      );
+  }
+  triples(lut.data);
+  return lines.join("\n") + "\n";
+}
+
+/** A `size`³ 3D LUT over 0–1 holding `transform` at every node. */
+export function bakeCubeLut(
+  transform: (rgb: Rgb) => Rgb,
+  size: number,
+  options: { title?: string } = {},
+): CubeLut {
+  if (!Number.isInteger(size) || size < 2 || size > MAX_LUT_3D_SIZE)
+    throw new ColorScienceError(
+      `Bake size ${size} must be an integer from 2 to ${MAX_LUT_3D_SIZE}`,
+    );
+  const data = new Float64Array(size ** 3 * 3);
+  const n = size - 1;
+  for (let b = 0; b < size; b++)
+    for (let g = 0; g < size; g++)
+      for (let r = 0; r < size; r++) {
+        const out = transform([r / n, g / n, b / n]);
+        data.set(out, ((b * size + g) * size + r) * 3);
+      }
+  return {
+    kind: "3d",
+    ...(options.title === undefined ? {} : { title: options.title }),
     size,
-    domainMin,
-    domainMax,
-    data: Float64Array.from(values),
+    domainMin: [0, 0, 0],
+    domainMax: [1, 1, 1],
+    data,
   };
 }
 
@@ -136,6 +313,7 @@ export function sampleLut(
   interpolation: LutInterpolation = "tetrahedral",
 ): [number, number, number] {
   if (lut.kind === "1d") return sample1d(lut, rgb);
+  if (lut.shaper) rgb = sample1d(lut.shaper as CubeLut, rgb);
   const n = lut.size - 1;
   const [x, y, z] = index(lut, rgb);
   const r0 = Math.min(Math.floor(x), n - 1),

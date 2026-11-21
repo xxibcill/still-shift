@@ -14,12 +14,18 @@ import {
   strictestTier,
 } from "../../packages/renderer-core/src/frame-tolerance.ts";
 import type * as Render from "../../packages/renderer-core/src/index.ts";
+import type * as Luts from "../../packages/renderer-core/src/composition/render/luts.ts";
 import type { Composition } from "@still-shift/scene-contract";
 
 /** Fresh contexts keep hardware Canvas from migrating after repeated readbacks. */
 export async function shapeHardwarePreview(
   root: string,
   fixtures: readonly (readonly [string, Composition])[],
+  /** CG5: LUT asset texts ([id, sha256, text]) by fixture, prepared in the page. */
+  lutTexts: ReadonlyMap<
+    string,
+    readonly (readonly [string, string, string])[]
+  > = new Map(),
 ) {
   const cache = await mkdtemp(join(tmpdir(), "native-shape-hardware-")),
     server = await createServer({
@@ -67,17 +73,33 @@ export async function shapeHardwarePreview(
                 json,
                 backend,
                 frame,
+                luts,
               }: {
                 json: string;
                 backend: "canvas2d" | "webgl2";
                 frame: number;
+                luts: (readonly [string, string, string])[];
               }) => {
                 const url = "/packages/renderer-core/src/index.ts",
                   m = (await import(url)) as typeof Render,
+                  lutModule = (await import(
+                    String(
+                      "/packages/renderer-core/src/composition/render/luts.ts",
+                    )
+                  )) as typeof Luts,
                   preview = m.createCompositionPreview(
                     document.createElement("canvas"),
                     JSON.parse(json),
-                    { images: new Map(), fonts: new Map() },
+                    {
+                      images: new Map(),
+                      fonts: new Map(),
+                      luts: new Map(
+                        luts.map(([id, sha, text]) => [
+                          id,
+                          lutModule.prepareLut(sha, text),
+                        ]),
+                      ),
+                    },
                     { backend },
                   );
                 try {
@@ -93,7 +115,12 @@ export async function shapeHardwarePreview(
                   preview.dispose();
                 }
               },
-              { json: JSON.stringify(doc), backend, frame },
+              {
+                json: JSON.stringify(doc),
+                backend,
+                frame,
+                luts: [...(lutTexts.get(fixture) ?? [])],
+              },
             );
             pixels.push(Buffer.from(encoded, "base64"));
           }

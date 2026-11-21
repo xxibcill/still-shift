@@ -76,7 +76,11 @@ const unit = (values: Map<string, string>, name: string) => {
     programError("comp-program-option", `--${name} must be 0–1`, name);
   return value;
 };
-const count = (values: Map<string, string>, name: string, max: number) => {
+export const count = (
+  values: Map<string, string>,
+  name: string,
+  max: number,
+) => {
   const text = values.get(name);
   if (text === undefined) return undefined;
   const value = Number(text);
@@ -88,7 +92,7 @@ const count = (values: Map<string, string>, name: string, max: number) => {
     );
   return value;
 };
-const backend = (values: Map<string, string>) => {
+export const backend = (values: Map<string, string>) => {
   const value = values.get("backend") ?? "canvas2d";
   if (value !== "canvas2d" && value !== "webgl2")
     programError(
@@ -111,7 +115,7 @@ async function loadLook(
   return parseColorLook(value);
 }
 /** Outputs are never overwritten: resolve a path that must not exist yet. */
-async function newOutput(path: string, option: string): Promise<string> {
+export async function newOutput(path: string, option: string): Promise<string> {
   const resolved = resolve(path);
   if (
     await access(resolved).then(
@@ -127,7 +131,7 @@ async function newOutput(path: string, option: string): Promise<string> {
   return resolved;
 }
 /** Write a new file; fails rather than replacing one that appeared meanwhile. */
-async function writeNew(path: string, text: string, option: string) {
+export async function writeNew(path: string, text: string, option: string) {
   try {
     await writeFile(path, text, { flag: "wx" });
   } catch (error) {

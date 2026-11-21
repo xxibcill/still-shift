@@ -25,9 +25,19 @@ import {
 } from "./primaries.ts";
 import { transferFunction } from "./transfer.ts";
 
-const LUMA = lumaCoefficients("bt709");
-const luma = (v: readonly number[]) =>
+/** BT.709 luma weights Kr, Kg, Kb (the grade operators' and scopes' Y′). */
+export const BT709_LUMA = lumaCoefficients("bt709");
+const LUMA = BT709_LUMA;
+/** BT.709 Y′ of encoded R′G′B′. */
+export const luma709 = (v: readonly number[]) =>
   v[0]! * LUMA[0] + v[1]! * LUMA[1] + v[2]! * LUMA[2];
+const luma = luma709;
+/**
+ * BT.709 Y′CbCr chroma scales, 2(1 − Kb) and 2(1 − Kr):
+ * Cb = (B′ − Y′) / BT709_CB_SCALE, Cr = (R′ − Y′) / BT709_CR_SCALE.
+ */
+export const BT709_CB_SCALE = 1.8556;
+export const BT709_CR_SCALE = 1.5748;
 /**
  * The magnitude every operator saturates at, so no value in a grade run can
  * overflow to Infinity or become NaN in float32 (the GPU) or float64. It is
@@ -50,7 +60,8 @@ export function gradePow(x: number, p: number) {
   return Math.pow(x, p);
 }
 
-const smoothstep = (e0: number, e1: number, x: number) => {
+/** Hermite smoothstep of x between e0 and e1 (clamped to 0–1). */
+export const smoothstep = (e0: number, e1: number, x: number) => {
   const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
   return t * t * (3 - 2 * t);
 };

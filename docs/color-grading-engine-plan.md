@@ -2,7 +2,10 @@
 
 Date: 2026-11-16; re-checked against `main` 894c9d32 on 2026-11-20. Status:
 **CGA merged on `main` (PR #70); the owner asked to continue the whole upgrade
-(2026-11-20); CG0–CG2 done on `codex/color-grading-cg0-cg2` (stopping point after CG2).** The owner's stated
+(2026-11-20); CG0–CG2 done on `codex/color-grading-cg0-cg2` (PR #77); the owner
+said "Yes, continue to CG3", then "Continue to CG4 and CG5"; CG3–CG5 done on
+`codex/color-grading-cg3-cg5`, in review as PR #78 (targets `main`; PR #77 is merged).** The
+owner's stated
 minimum need was the [fast track (CGA)](#fast-track-the-minimum-need); CG0–CG15
 are the long-range upgrade, re-scoped in
 [re-check against `main`](#re-check-against-main-2026-11-20).
@@ -246,9 +249,9 @@ These are recommendations to confirm at CG1, each with a fallback.
 | CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)        | 2–3                    | Done (branch)   |
 | CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
 | CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
-| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Proposed        |
-| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed        |
-| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed        |
+| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Done (branch)   |
+| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Done (branch)   |
+| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Done (branch)   |
 | CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed        |
 | CG7  | Scene-referred input and working space             | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
 | CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed        |
@@ -626,14 +629,28 @@ grade from a picture alone. This is the engine's eyes, so it comes early.
   a contact sheet across the clip.
 - Output is deterministic and schema-validated so it can be diffed and tested.
 
-**Checks**
+**Checks** (2026-11-21, `codex/color-grading-cg3`; numbers in
+[CG3 results](./color-grading-cg3-results.json); commands in the
+[CLI README](../tools/still-shift-cli/README.md#color-measurement-scopes-probe-and-grade-diff))
 
-- [ ] Statistics on CG0 synthetic fixtures match analytically known values.
-- [ ] Scope JSON is byte-stable across reruns and validated by a schema.
-- [ ] Probe before/after values match the float64 reference for a graded pixel.
-- [ ] Works on a native-video frame range within the existing media memory
-      limits; over-budget requests fail with a clear diagnostic.
-- [ ] Documented in the CLI README and generated reference.
+- [x] Statistics on CG0 synthetic fixtures match analytically known values
+      (12 tests: ramps, sweeps, primaries, skin line, chart neutrals at D65,
+      false color, zones, pixel coordinates).
+- [x] Scope JSON is byte-stable across reruns and validated by a schema (JSON
+      and scope PNGs identical on rerun; `ColorScopesReportSchema`).
+- [x] Probe before/after values match the float64 reference for a graded pixel
+      (exact on Canvas, stage by stage).
+- [x] Works on a native-video frame range within the existing media memory
+      limits; over-budget requests fail with a clear diagnostic (batches of
+      `mediaLimits.decodedFrameBytes`, identical results; `comp-scope-limit`).
+- [x] Documented in the CLI README and generated reference (the generated
+      skill; the composition reference covers fields, not CLI commands).
+
+_As built:_ `comp scopes` embeds `comp color-stats`' statistics unchanged
+(the measurement is now an accumulator with the same summation order). RGB,
+YRGB and YCbCr parades are written as scope images (YCbCr added in the PR #78
+review, F2); HDR scopes and CIE 1976 are not built; the probe reports the
+renderer's 8-bit output per effect stage, not values inside a fused grade run.
 
 ## CG4 — Curves and tonal-range tools
 
@@ -648,14 +665,32 @@ grade from a picture alone. This is the engine's eyes, so it comes early.
   with knee.
 - Curves baked to float tables on the CPU for deterministic GPU evaluation.
 
-**Checks**
+**Checks** (2026-11-21, `codex/color-grading-cg4`; numbers in
+[CG4 results](./color-grading-cg4-results.json); operators in
+[curves and tonal ranges](./composition-effect-plugins.md#curves-and-tonal-ranges-cg4))
 
-- [ ] Identity curves are exact identities; spline evaluation matches reference
-      vectors; no overshoot outside the control hull for monotone inputs.
-- [ ] Each hue/saturation curve changes only its target dimension on the sweep
-      fixtures, within tolerance (measured with CG3).
-- [ ] Hue curves are continuous across the 0°/360° wrap.
-- [ ] Animated curve points keep the existing ordering and point-count rules.
+- [x] Identity curves are exact identities (the operator is dropped); spline
+      evaluation matches reference vectors (SciPy PCHIP within 1e-12); no
+      overshoot outside the control hull for monotone inputs (500 seeded
+      curves). The three operators match independent NumPy/SciPy reference
+      vectors (`grade-operators.json`, 12 cases, within 1e-9; added in the
+      PR #78 review, F4).
+- [x] Each hue/saturation curve changes only its target dimension on the sweep
+      fixtures, within tolerance (measured with CG3): float64 < 1e-9;
+      rendered off-target luma ≤ 0.0019 and radius ≤ 0.002 on in-gamut pixels
+      (gamut-clipped pixels counted, not measured).
+- [x] Hue curves are continuous across the 0°/360° wrap (float64 and both
+      backends).
+- [x] Animated curve points keep the existing ordering and point-count rules
+      (the existing `curve` parameter; crossing x fails at its frame).
+
+_As built:_ zone exposure is three zones, the same shadow, midtone and
+highlight ranges as the wheels: `shadowExposure`, `midExposure` and
+`highlightExposure` in stops, weighted by the ranges' adjustable boundaries
+(`shadowEnd`, `highlightStart`) and one shared smoothstep `falloff`. More zones
+(for example five or more HDR-style zones) and a falloff per zone are not
+built; whether they are needed is an owner decision. The GPU reads baked
+float32 curve tables bit-exactly through an RGBA8 texture.
 
 ## CG5 — LUT and CDL interchange
 
@@ -669,14 +704,31 @@ grade from a picture alone. This is the engine's eyes, so it comes early.
 - Bake a grade stack to `.cube` for use elsewhere; import and export ASC CDL
   (`.cdl`, `.cc`, `.ccc`).
 
-**Checks**
+**Checks** (2026-11-21, `codex/color-grading-cg5`; numbers in
+[CG5 results](./color-grading-cg5-results.json); operators in
+[LUTs and CDL interchange](./composition-effect-plugins.md#luts-and-cdl-interchange-cg5))
 
-- [ ] Identity LUTs of several sizes are identities within tolerance.
-- [ ] GPU tetrahedral matches the CPU reference on random and edge samples.
-- [ ] Malformed, oversized or wrong-hash LUTs fail before rendering.
-- [ ] A baked `.cube` of a pointwise stack reproduces that stack within the
-      stated tolerance; a non-pointwise stack (keys, blur) refuses to bake.
-- [ ] CDL round trip preserves values exactly as text.
+- [x] Identity LUTs of several sizes are identities within tolerance: 3D
+      2–65, 1D and behind a shaper; float64 exact where nodes are k/2ⁿ, ≤ 5e-11
+      otherwise (10-decimal text); 160 renders byte-identical to no effect.
+- [x] GPU tetrahedral matches the CPU reference on random and edge samples
+      (and trilinear, 1D, shaper, domain, intensity, 65³): 45 rows, Canvas = the
+      float64 reference, WebGL2 ≤ 1 code value, repeats byte-identical.
+- [x] Malformed, oversized or wrong-hash LUTs fail before rendering, with
+      located diagnostics when the composition is read (no browser).
+- [x] A baked `.cube` of a pointwise stack reproduces that stack within the
+      stated tolerance (33³ ≤ 2 code values, 65³ ≤ 1); a non-pointwise stack
+      (any effect that is not `grade.*`, blur included) refuses to bake.
+- [x] CDL round trip preserves values exactly (deviation from "exactly as
+      text"): exact float64 values written as canonical shortest decimals, so
+      `1.0000` re-exports as `1`; a re-export of an import is byte-identical.
+      Correction ids that are not composition ids are renamed (`001` →
+      `cdl-001`) and listed in the import report's `renamed` (PR #78 review,
+      F5). Keeping the source spelling is an owner decision.
+
+_As built:_ LUTs are `lut` assets bound through a new effect `assets` slot;
+spaces accept only `legacy-srgb` until CG7; CE6 cell `catalogue-lut-grade`
+(generated LUT) has its own baseline. Deviations are listed in the results.
 
 ## CG6 — Keys: qualifiers, windows and matte finesse
 

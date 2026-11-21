@@ -20,8 +20,16 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "color-science/src/cdl-xml.ts",
+    url: new URL("../../../color-science/src/cdl-xml.ts", import.meta.url),
+  },
+  {
     name: "color-science/src/cdl.ts",
     url: new URL("../../../color-science/src/cdl.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/curves.ts",
+    url: new URL("../../../color-science/src/curves.ts", import.meta.url),
   },
   {
     name: "color-science/src/errors.ts",
@@ -53,6 +61,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "color-science/src/primaries.ts",
     url: new URL("../../../color-science/src/primaries.ts", import.meta.url),
+  },
+  {
+    name: "color-science/src/scopes.ts",
+    url: new URL("../../../color-science/src/scopes.ts", import.meta.url),
   },
   {
     name: "color-science/src/transfer.ts",
@@ -424,6 +436,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/composition/render/linear-color.ts",
     url: new URL("../composition/render/linear-color.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/composition/render/luts.ts",
+    url: new URL("../composition/render/luts.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/composition/render/map-effects.ts",
@@ -1516,6 +1532,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/composition/layers.ts",
     url: new URL(
       "../../../scene-contract/src/composition/layers.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/composition/luts.ts",
+    url: new URL(
+      "../../../scene-contract/src/composition/luts.ts",
       import.meta.url,
     ),
   },

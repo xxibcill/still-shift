@@ -231,6 +231,28 @@
             "type": "object",
             "properties": {
               "id": { "$ref": "#/$defs/__schema0" },
+              "type": { "type": "string", "const": "lut" },
+              "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
+              "sha256": { "$ref": "#/$defs/__schema197" },
+              "format": { "type": "string", "const": "cube" },
+              "inputSpace": { "type": "string", "enum": ["legacy-srgb"] },
+              "outputSpace": { "type": "string", "enum": ["legacy-srgb"] }
+            },
+            "required": [
+              "id",
+              "type",
+              "path",
+              "sha256",
+              "format",
+              "inputSpace",
+              "outputSpace"
+            ],
+            "additionalProperties": false
+          },
+          {
+            "type": "object",
+            "properties": {
+              "id": { "$ref": "#/$defs/__schema0" },
               "type": { "type": "string", "const": "native3d" },
               "path": { "type": "string", "minLength": 1, "maxLength": 1024 },
               "sha256": { "$ref": "#/$defs/__schema197" },
@@ -5089,6 +5111,11 @@
           "enabled": { "type": "boolean" },
           "space": { "$ref": "#/$defs/__schema0" },
           "inputs": {
+            "type": "object",
+            "propertyNames": { "$ref": "#/$defs/__schema0" },
+            "additionalProperties": { "$ref": "#/$defs/__schema0" }
+          },
+          "assets": {
             "type": "object",
             "propertyNames": { "$ref": "#/$defs/__schema0" },
             "additionalProperties": { "$ref": "#/$defs/__schema0" }

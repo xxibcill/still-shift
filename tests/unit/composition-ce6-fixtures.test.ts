@@ -1,8 +1,14 @@
 import { describe, expect, it } from "vitest";
 import { readFileSync } from "node:fs";
+import { createHash } from "node:crypto";
 import { validateComposition } from "@still-shift/scene-contract";
 import { COMPOSITION_EFFECTS } from "../../packages/scene-contract/src/composition/effects.ts";
-import { ce6NativeFixtures } from "../../benchmarks/fixtures/composition/ce6/catalogue.ts";
+import {
+  CE6_LUT_FILE,
+  CE6_LUT_SHA256,
+  ce6LutText,
+  ce6NativeFixtures,
+} from "../../benchmarks/fixtures/composition/ce6/catalogue.ts";
 
 describe("CE6 native catalogue acceptance", () => {
   it("covers every registered builtin in validated standalone compositions", () => {
@@ -29,6 +35,19 @@ describe("CE6 native catalogue acceptance", () => {
     );
     expect(fixtures.some(([, comp]) => comp.colorSpace === "linear-srgb")).toBe(
       true,
+    );
+  });
+  it("pins the generated CG5 LUT that the lut-grade cell uses", () => {
+    const text = readFileSync(
+      new URL(
+        `../../benchmarks/fixtures/composition/ce6/${CE6_LUT_FILE}`,
+        import.meta.url,
+      ),
+      "utf8",
+    );
+    expect(text).toBe(ce6LutText());
+    expect(`sha256:${createHash("sha256").update(text).digest("hex")}`).toBe(
+      CE6_LUT_SHA256,
     );
   });
 });

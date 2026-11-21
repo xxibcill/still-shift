@@ -20,12 +20,31 @@ const scalar = (
   max,
   ...(integer ? { integer: true } : {}),
 });
-const effect = (properties: Record<string, EffectProperty>) =>
+const effect = (
+  properties: Record<string, EffectProperty>,
+  validateParams?: CompositionEffectDefinition["validateParams"],
+  extra: Partial<CompositionEffectDefinition> = {},
+) =>
   defineCompositionEffect({
     version: "1.0.0",
     properties,
     preservesOpaque: true,
+    ...(validateParams ? { validateParams } : {}),
+    ...extra,
   });
+const curve = (
+  defaultPoints: readonly (readonly [number, number])[],
+): EffectProperty => ({ type: "curve", default: defaultPoints });
+const IDENTITY_CURVE = [
+  [0, 0],
+  [1, 1],
+] as const;
+const FLAT_CURVE = [
+  [0, 0.5],
+  [1, 0.5],
+] as const;
+/** CG4: hue-indexed curves are periodic; their two ends are one point. */
+export const PERIODIC_GRADE_CURVES = ["hueVsHue", "hueVsSat", "hueVsLum"];
 const channels = (
   name: string,
   value: number,
@@ -52,6 +71,10 @@ export const FLOAT_GRADE_EFFECT_IDS = [
   "grade.white-balance",
   "grade.cdl",
   "grade.rgb-mixer",
+  "grade.curves",
+  "grade.hue-curves",
+  "grade.tonal",
+  "grade.lut",
 ] as const;
 export type FloatGradeEffectId = (typeof FLOAT_GRADE_EFFECT_IDS)[number];
 export const isFloatGradeEffect = (id: string): id is FloatGradeEffectId =>
@@ -115,4 +138,80 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
     ),
     strength: scalar(1, 0, 1),
   }),
+  /**
+   * CG4: monotone cubic (PCHIP) curves, per channel then master; `lumaMix`
+   * moves the master curve from every channel (0) to luma only (1, chroma
+   * kept). Identity curves leave pixels unchanged.
+   */
+  "grade.curves": effect({
+    master: curve(IDENTITY_CURVE),
+    red: curve(IDENTITY_CURVE),
+    green: curve(IDENTITY_CURVE),
+    blue: curve(IDENTITY_CURVE),
+    lumaMix: scalar(0, 0, 1),
+  }),
+  /**
+   * CG4: curves over hue (vectorscope angle, periodic), luma and saturation
+   * (chroma radius / 0.5), in BT.709 Y′CbCr. y = 0.5 is neutral: hue vs hue
+   * rotates by (y − 0.5) turns, the saturation curves multiply chroma by 2y,
+   * the luma curves add (y − 0.5)·0.5. Each changes only its own dimension.
+   */
+  "grade.hue-curves": effect(
+    {
+      hueVsHue: curve(FLAT_CURVE),
+      hueVsSat: curve(FLAT_CURVE),
+      hueVsLum: curve(FLAT_CURVE),
+      lumVsSat: curve(FLAT_CURVE),
+      satVsSat: curve(FLAT_CURVE),
+      satVsLum: curve(FLAT_CURVE),
+    },
+    (params) => {
+      for (const key of PERIODIC_GRADE_CURVES) {
+        const points = params[key] as readonly (readonly number[])[];
+        if (points[0]![1] !== points.at(-1)![1])
+          throw Error(
+            `${key} is periodic: its points at x = 0 and x = 1 must have the same y`,
+          );
+      }
+    },
+  ),
+  /**
+   * CG4: shadow/midtone/highlight color offsets and exposure (stops) weighted
+   * by luma with movable boundaries and smooth falloff, then high and low soft
+   * clip (knee 1 and 0 are off).
+   */
+  "grade.tonal": effect(
+    {
+      ...channels("shadow", 0, -1, 1, false),
+      ...channels("mid", 0, -1, 1, false),
+      ...channels("highlight", 0, -1, 1, false),
+      shadowExposure: scalar(0, -4, 4),
+      midExposure: scalar(0, -4, 4),
+      highlightExposure: scalar(0, -4, 4),
+      shadowEnd: scalar(0.33, 0, 1),
+      highlightStart: scalar(0.66, 0, 1),
+      falloff: scalar(0.15, 0.01, 0.5),
+      softClipHigh: scalar(1, 0.5, 1),
+      softClipLow: scalar(0, 0, 0.5),
+    },
+    (params) => {
+      if ((params.shadowEnd as number) > (params.highlightStart as number))
+        throw Error("shadowEnd must not be above highlightStart");
+    },
+  ),
+  /**
+   * CG5: the pinned `.cube` LUT asset bound to the `lut` slot, from its
+   * declared input space to its output space (both the working space).
+   * Inputs are clamped to the table's domain (and the shaper's); 3D tables
+   * interpolate tetrahedrally (`interpolation` 0, default) or trilinearly
+   * (1). `intensity` mixes the result with the input; 0 drops the operator.
+   */
+  "grade.lut": effect(
+    {
+      intensity: scalar(1, 0, 1),
+      interpolation: scalar(0, 0, 1, true),
+    },
+    undefined,
+    { requiresAssets: { lut: "lut" } },
+  ),
 };

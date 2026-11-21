@@ -59,6 +59,9 @@ importers:
 
   packages/animation-engine:
     dependencies:
+      "@still-shift/color-science":
+        specifier: workspace:*
+        version: link:../color-science
       "@still-shift/execution-runtime":
         specifier: workspace:*
         version: link:../execution-runtime

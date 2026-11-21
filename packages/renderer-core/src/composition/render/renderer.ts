@@ -25,7 +25,9 @@ import {
 } from "./webgl2.ts";
 import type { RenderBackend, Surface } from "./backend.ts";
 import type { RenderGraphOptions } from "./graph.ts";
+import { prepareLut, type PreparedLut } from "./luts.ts";
 import {
+  lutAssetProblem,
   validateComposition,
   type Composition,
   type CompositionPreparedMedia,
@@ -226,6 +228,8 @@ export type CompositionResources = {
   /** PNG signatures verified from asset bytes, independent of filenames and URLs. */
   pngImages?: ReadonlySet<string>;
   fonts: Map<string, LoadedFont>;
+  /** CG5: `.cube` LUT assets, verified and parsed, by asset ID. */
+  luts?: ReadonlyMap<string, PreparedLut>;
   providerFonts?: ReadonlyMap<string, ReadonlyMap<string, LoadedFont>>;
 };
 
@@ -329,6 +333,31 @@ export async function loadCompositionResources(
         pngImages.add(asset.id);
       releaseRenderPixels(bytes);
     });
+    const luts = new Map<string, PreparedLut>();
+    await mapRenderResources(composition.assets, async (asset) => {
+      if (asset.type !== "lut") return;
+      const response = await fetch(assetUrl(asset.id), {
+        signal: options.signal ?? null,
+      });
+      if (!response.ok) throw new Error(`Asset unavailable: ${asset.id}`);
+      const bytes = await readRenderAssetBody(response);
+      try {
+        const problem =
+          lutAssetProblem(asset, bytes.byteLength) ??
+          lutAssetProblem(
+            asset,
+            bytes.byteLength,
+            `sha256:${await sha256Hex(bytes)}`,
+          );
+        if (problem) throw new Error(problem.message);
+        luts.set(
+          asset.id,
+          prepareLut(asset.sha256, new TextDecoder().decode(bytes)),
+        );
+      } finally {
+        releaseRenderPixels(bytes);
+      }
+    });
     const fonts = await loadCompositionFonts(
       composition,
       assetUrl,
@@ -338,6 +367,7 @@ export async function loadCompositionResources(
     options.signal?.throwIfAborted();
     return {
       images,
+      ...(luts.size ? { luts } : {}),
       ...(native3D
         ? {
             native3D,
@@ -651,6 +681,7 @@ function prepareCompositionPreviewOnCanvas(
   }
   const renderingOptions: RenderGraphOptions = {
     ...evaluationOptions,
+    ...(resources.luts ? { luts: resources.luts } : {}),
     nativeArtworkBounds: text.nativeContentBounds,
   };
   const drawProvider = prepareCompositionProviders(

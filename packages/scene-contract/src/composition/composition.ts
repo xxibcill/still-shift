@@ -36,6 +36,7 @@ import {
   CompositionAudioAssetSchema,
   CompositionMediaLimitsSchema,
 } from "./media.ts";
+import { CompositionLutAssetSchema } from "./luts.ts";
 import { validateCompositionSemantics } from "./validate.ts";
 import { CompositionBehaviourSchema } from "./behaviours.ts";
 import { EXPRESSION_LIMITS } from "./expression-ast.ts";
@@ -85,6 +86,7 @@ export const CompositionAssetSchema = z.discriminatedUnion("type", [
   CompositionVideoAssetSchema,
   CompositionSequenceAssetSchema,
   CompositionAudioAssetSchema,
+  CompositionLutAssetSchema,
   CompositionNative3DAssetVersionsSchema,
 ]);
 

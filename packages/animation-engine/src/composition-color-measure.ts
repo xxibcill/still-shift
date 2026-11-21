@@ -106,6 +106,21 @@ export function measureColorFrames(
   { frames, width }: ColorFrameSet,
   options: { step?: number } = {},
 ): ColorStatistics {
+  const accumulator = colorStatisticsAccumulator(width, options);
+  for (const frame of frames) accumulator.add(frame);
+  return accumulator.finish();
+}
+
+/**
+ * The same statistics one frame at a time, so CG3 `comp scopes` can measure
+ * long frame ranges in batches within the media memory limits. Add frames in
+ * ordinal order: the sums run in `measureColorFrames`' order, so both give
+ * identical reports.
+ */
+export function colorStatisticsAccumulator(
+  width: number,
+  options: { step?: number } = {},
+) {
   const step = options.step ?? 2;
   const lumaBins = new Float64Array(4096),
     satBins = new Float64Array(4096);
@@ -127,7 +142,7 @@ export function measureColorFrames(
     nSum = 0,
     nSquares = 0;
   const perFrame: { ordinal: number; medianLuma: number }[] = [];
-  for (const frame of frames) {
+  const add = (frame: ColorFrameLike) => {
     const data = frame.rgba,
       height = data.length / 4 / width;
     const frameBins = new Uint32Array(256 * 256);
@@ -177,62 +192,65 @@ export function measureColorFrames(
       }
     }
     perFrame.push({ ordinal: frame.ordinal, medianLuma: round(median) });
-  }
-  const mean = pixels ? sum / pixels : 0;
-  const linearMean = neutralSum.map((value) =>
-    neutralCount ? value / neutralCount : 0,
-  ) as [number, number, number];
-  const balance = neutralCount
-    ? neutralizingWhiteBalance(linearMean)
-    : { temperature: 0, tint: 0 };
-  let continuity = 0;
-  for (let i = 1; i < perFrame.length; i++)
-    continuity += Math.abs(
-      perFrame[i]!.medianLuma - perFrame[i - 1]!.medianLuma,
-    );
-  const p = (q: number) => round(percentile(lumaBins, pixels, q));
-  const s = (q: number) => round(percentile(satBins, pixels, q));
-  return {
-    pixels,
-    luma: {
-      mean: round(mean),
-      stdev: round(Math.sqrt(Math.max(0, squares / pixels - mean * mean))),
-      p005: p(0.005),
-      p01: p(0.01),
-      p05: p(0.05),
-      p25: p(0.25),
-      p50: p(0.5),
-      p75: p(0.75),
-      p95: p(0.95),
-      p99: p(0.99),
-      p995: p(0.995),
-    },
-    clippedFraction: round(clipped / pixels),
-    crushedFraction: round(crushed / pixels),
-    saturation: {
-      mean: round(satSum / pixels),
-      p10: s(0.1),
-      p50: s(0.5),
-      p90: s(0.9),
-      p99: s(0.99),
-      strongFraction: round(strong / pixels),
-    },
-    neutral: {
-      pixels: neutralCount,
-      fraction: round(neutralCount / pixels),
-      linearMean: linearMean.map((value) => round(value)) as [
-        number,
-        number,
-        number,
-      ],
-      temperature: round(balance.temperature, 3),
-      tint: round(balance.tint, 3),
-      temperatureSpread: round(spread(tSum, tSquares, neutralCount), 3),
-      tintSpread: round(spread(nSum, nSquares, neutralCount), 3),
-    },
-    frames: perFrame,
-    medianLumaContinuity: round(
-      perFrame.length > 1 ? continuity / (perFrame.length - 1) : 0,
-    ),
   };
+  const finish = (): ColorStatistics => {
+    const mean = pixels ? sum / pixels : 0;
+    const linearMean = neutralSum.map((value) =>
+      neutralCount ? value / neutralCount : 0,
+    ) as [number, number, number];
+    const balance = neutralCount
+      ? neutralizingWhiteBalance(linearMean)
+      : { temperature: 0, tint: 0 };
+    let continuity = 0;
+    for (let i = 1; i < perFrame.length; i++)
+      continuity += Math.abs(
+        perFrame[i]!.medianLuma - perFrame[i - 1]!.medianLuma,
+      );
+    const p = (q: number) => round(percentile(lumaBins, pixels, q));
+    const s = (q: number) => round(percentile(satBins, pixels, q));
+    return {
+      pixels,
+      luma: {
+        mean: round(mean),
+        stdev: round(Math.sqrt(Math.max(0, squares / pixels - mean * mean))),
+        p005: p(0.005),
+        p01: p(0.01),
+        p05: p(0.05),
+        p25: p(0.25),
+        p50: p(0.5),
+        p75: p(0.75),
+        p95: p(0.95),
+        p99: p(0.99),
+        p995: p(0.995),
+      },
+      clippedFraction: round(clipped / pixels),
+      crushedFraction: round(crushed / pixels),
+      saturation: {
+        mean: round(satSum / pixels),
+        p10: s(0.1),
+        p50: s(0.5),
+        p90: s(0.9),
+        p99: s(0.99),
+        strongFraction: round(strong / pixels),
+      },
+      neutral: {
+        pixels: neutralCount,
+        fraction: round(neutralCount / pixels),
+        linearMean: linearMean.map((value) => round(value)) as [
+          number,
+          number,
+          number,
+        ],
+        temperature: round(balance.temperature, 3),
+        tint: round(balance.tint, 3),
+        temperatureSpread: round(spread(tSum, tSquares, neutralCount), 3),
+        tintSpread: round(spread(nSum, nSquares, neutralCount), 3),
+      },
+      frames: perFrame,
+      medianLumaContinuity: round(
+        perFrame.length > 1 ? continuity / (perFrame.length - 1) : 0,
+      ),
+    };
+  };
+  return { add, finish };
 }

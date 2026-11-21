@@ -1,5 +1,20 @@
 import {
+  BT709_CB_SCALE,
+  BT709_CR_SCALE,
   applyCdl,
+  applyGradeCurves,
+  applyGradeHueCurves,
+  applyGradeTonal,
+  CURVE_TABLE_SIZE,
+  gradeCurvesControls,
+  gradeHueCurvesControls,
+  HUE_CURVE_CHROMA_FADE,
+  HUE_CURVE_KEYS,
+  HUE_CURVE_LUMA_AMOUNT,
+  HUE_CURVE_SATURATION_SCALE,
+  NEUTRAL_GRADE_TONAL,
+  type CurvePoints,
+  type GradeTonal,
   applyGradePrimary,
   applyLinearMatrixEncoded,
   applyRgbMixer,
@@ -8,11 +23,13 @@ import {
   HIGHLIGHT_RANGE,
   LOG2_GRADE_LIMIT,
   IDENTITY,
+  limitGrade,
   lumaCoefficients,
   NEUTRAL_CDL,
   NEUTRAL_GRADE_PRIMARY,
   perChannel,
   rgbMixer,
+  sampleLut,
   SHADOW_RANGE,
   TONAL_AMOUNT,
   whiteBalanceMatrix,
@@ -32,6 +49,12 @@ import { readRenderImageData } from "../../managed-memory-context.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import { assertEffectVersion, COPY_SHADER } from "./effect-shared.ts";
 import type { RenderEffect } from "./graph.ts";
+import {
+  EFFECT_LUTS,
+  LUT_TEXTURE_WIDTH,
+  lutTextureBytes,
+  type PreparedLut,
+} from "./luts.ts";
 
 /**
  * CG2 float grade stage. A run of consecutive `grade.*` effects is evaluated
@@ -53,15 +76,55 @@ const rgb = (p: Params, name: string): Rgb =>
 
 type Uniforms = Record<string, number | number[]>;
 type OpGlsl = { declare: string; call: string; uniforms: Uniforms };
+/**
+ * Where the run put an op's resources: `rows[i]` is the texture row of
+ * `tables[i]` (CG4), `lutBase` the float offset of `lutFloats` in the run's
+ * LUT texture (CG5). A new resource kind is a new field here.
+ */
+type OpResources = {
+  readonly rows: readonly number[];
+  readonly lutBase: number;
+};
 
 /** One operator of a run: its float64 reference and its fused-shader GLSL. */
 export type FloatGradeOp = {
   readonly id: FloatGradeEffectId;
   /** The float64 reference (the Canvas path and tests). */
   apply(v: Rgb): Rgb;
-  /** Uniform declarations, the call and uniform values; `uniform` names them. */
-  glsl(uniform: (name: string) => string): OpGlsl;
+  /**
+   * CG4: baked curve tables (CURVE_TABLE_SIZE float32 entries each) the
+   * kernel samples; the run uploads them as rows of one texture.
+   */
+  readonly tables?: readonly Float32Array[];
+  /**
+   * CG5: LUT floats (PreparedLut.floats) the kernel reads; the run packs
+   * every op's into one texture.
+   */
+  readonly lutFloats?: Float32Array;
+  /**
+   * Uniform declarations, the call and uniform values; `uniform` names them
+   * and `resources` locates the op's tables and LUT in the run's textures.
+   */
+  glsl(uniform: (name: string) => string, resources: OpResources): OpGlsl;
 };
+
+/** The effect a run member came from (its prepared LUTs ride under a symbol). */
+type OpSource = { [EFFECT_LUTS]?: Readonly<Record<string, PreparedLut>> };
+
+/**
+ * The baked tables of the curves that are present (null: identity or flat),
+ * and, given the run's texture rows for those tables, every curve's row (−1
+ * when absent) in the order the kernel reads them.
+ */
+function curveTables(present: readonly (Float32Array | null)[]) {
+  return {
+    tables: present.filter((t): t is Float32Array => t !== null),
+    rowsOf(rows: readonly number[]) {
+      let next = 0;
+      return present.map((t) => (t ? rows[next++]! : -1));
+    },
+  };
+}
 
 /** Every control of `value` equals `neutral`'s, except those in `ignore`. */
 function isNeutral<T extends object>(
@@ -79,6 +142,16 @@ function isNeutral<T extends object>(
   });
 }
 
+/**
+ * A float offset in the run's LUT texture as its texel [row, column]. The
+ * offset itself can pass 2^24 (a float32 uniform holds every integer only up
+ * to there); the row and the column never do.
+ */
+export const lutTexel = (offset: number): [number, number] => [
+  Math.floor(offset / LUT_TEXTURE_WIDTH),
+  offset % LUT_TEXTURE_WIDTH,
+];
+
 const isIdentity = (m: Mat3) => m.every((v, i) => v === (i % 4 === 0 ? 1 : 0));
 
 /** Column-major (GLSL) from row-major. */
@@ -90,7 +163,10 @@ const columns = (m: Mat3) =>
  * reference and GLSL), or null when the settings are neutral.
  */
 const OPERATORS: Readonly<
-  Record<FloatGradeEffectId, (p: Params) => FloatGradeOp | null>
+  Record<
+    FloatGradeEffectId,
+    (p: Params, source?: OpSource) => FloatGradeOp | null
+  >
 > = {
   "grade.primary": (p) => {
     const master = (name: string) => n(p, `${name}Master`);
@@ -201,13 +277,161 @@ const OPERATORS: Readonly<
       }),
     };
   },
+  "grade.curves": (p) => {
+    const points = (name: string) => p[name] as unknown as CurvePoints;
+    const controls = gradeCurvesControls({
+      master: points("master"),
+      red: points("red"),
+      green: points("green"),
+      blue: points("blue"),
+      lumaMix: n(p, "lumaMix"),
+    });
+    if (!controls) return null;
+    const { tables, rowsOf } = curveTables([
+      controls.red,
+      controls.green,
+      controls.blue,
+      controls.master,
+    ]);
+    return {
+      id: "grade.curves",
+      apply: (v) => applyGradeCurves(v, controls),
+      tables,
+      glsl: (u, { rows }) => {
+        const row = rowsOf(rows);
+        return {
+          declare: `uniform vec4 ${u("Rows")};uniform float ${u("LumaMix")};`,
+          call: `v=gCurves(v,${u("Rows")},${u("LumaMix")});`,
+          uniforms: { [u("Rows")]: row, [u("LumaMix")]: controls.lumaMix },
+        };
+      },
+    };
+  },
+  "grade.hue-curves": (p) => {
+    const controls = gradeHueCurvesControls(
+      Object.fromEntries(
+        HUE_CURVE_KEYS.map((key) => [key, p[key] as unknown as CurvePoints]),
+      ) as Parameters<typeof gradeHueCurvesControls>[0],
+    );
+    if (!controls) return null;
+    const { tables, rowsOf } = curveTables(
+      HUE_CURVE_KEYS.map((key) => controls[key]),
+    );
+    return {
+      id: "grade.hue-curves",
+      apply: (v) => applyGradeHueCurves(v, controls),
+      tables,
+      glsl: (u, { rows }) => {
+        const row = rowsOf(rows);
+        return {
+          declare: `uniform vec3 ${u("HueRows")};uniform vec3 ${u("SatRows")};`,
+          call: `v=gHueCurves(v,${u("HueRows")},${u("SatRows")});`,
+          uniforms: {
+            [u("HueRows")]: row.slice(0, 3),
+            [u("SatRows")]: row.slice(3, 6),
+          },
+        };
+      },
+    };
+  },
+  "grade.tonal": (p) => {
+    const settings: GradeTonal = {
+      shadowOffset: rgb(p, "shadow"),
+      midOffset: rgb(p, "mid"),
+      highlightOffset: rgb(p, "highlight"),
+      shadowExposure: n(p, "shadowExposure"),
+      midExposure: n(p, "midExposure"),
+      highlightExposure: n(p, "highlightExposure"),
+      shadowEnd: n(p, "shadowEnd"),
+      highlightStart: n(p, "highlightStart"),
+      falloff: n(p, "falloff"),
+      softClipHigh: n(p, "softClipHigh"),
+      softClipLow: n(p, "softClipLow"),
+    };
+    // The range boundaries only matter when a range changes something.
+    if (
+      isNeutral(settings, NEUTRAL_GRADE_TONAL, [
+        "shadowEnd",
+        "highlightStart",
+        "falloff",
+      ])
+    )
+      return null;
+    return {
+      id: "grade.tonal",
+      apply: (v) => applyGradeTonal(v, settings),
+      glsl: (u) => ({
+        declare: `uniform vec3 ${u("ShadowOffset")};uniform vec3 ${u("MidOffset")};uniform vec3 ${u("HighOffset")};uniform vec3 ${u("Exposure")};uniform vec3 ${u("Ranges")};uniform vec2 ${u("Clip")};`,
+        call: `v=gTonal(v,${u("ShadowOffset")},${u("MidOffset")},${u("HighOffset")},${u("Exposure")},${u("Ranges")},${u("Clip")});`,
+        uniforms: {
+          [u("ShadowOffset")]: [...settings.shadowOffset],
+          [u("MidOffset")]: [...settings.midOffset],
+          [u("HighOffset")]: [...settings.highlightOffset],
+          [u("Exposure")]: [
+            settings.shadowExposure,
+            settings.midExposure,
+            settings.highlightExposure,
+          ],
+          [u("Ranges")]: [
+            settings.shadowEnd,
+            settings.highlightStart,
+            settings.falloff,
+          ],
+          [u("Clip")]: [settings.softClipHigh, settings.softClipLow],
+        },
+      }),
+    };
+  },
+  "grade.lut": (p, source) => {
+    const intensity = n(p, "intensity");
+    if (intensity === 0) return null;
+    const prepared = source?.[EFFECT_LUTS]?.lut;
+    if (!prepared)
+      throw Error(
+        "comp-lut-not-ready: grade.lut needs its LUT asset loaded with the composition resources",
+      );
+    const { lut } = prepared;
+    const trilinear = n(p, "interpolation") >= 0.5;
+    const interpolation = trilinear ? "trilinear" : "tetrahedral";
+    return {
+      id: "grade.lut",
+      apply: (v) => {
+        const o = sampleLut(lut, v, interpolation);
+        return perChannel((c) => limitGrade(v[c] + intensity * (o[c] - v[c])));
+      },
+      lutFloats: prepared.floats,
+      glsl: (u, { lutBase }) => ({
+        declare: `uniform vec4 ${u("Lut")};uniform vec4 ${u("LutAt")};uniform vec3 ${u("LutLo")};uniform vec3 ${u("LutHi")};uniform float ${u("ShaperSize")};uniform vec3 ${u("ShaperLo")};uniform vec3 ${u("ShaperHi")};`,
+        call: `v=gLut(v,${u("Lut")},${u("LutAt")},${u("LutLo")},${u("LutHi")},${u("ShaperSize")},${u("ShaperLo")},${u("ShaperHi")});`,
+        uniforms: {
+          [u("Lut")]: [
+            lut.size,
+            lut.kind === "3d" ? 1 : 0,
+            trilinear ? 1 : 0,
+            intensity,
+          ],
+          // The main table's texel, then the shaper's (it comes first).
+          [u("LutAt")]: [
+            ...lutTexel(lutBase + prepared.base),
+            ...lutTexel(lutBase),
+          ],
+          [u("LutLo")]: [...lut.domainMin],
+          [u("LutHi")]: [...lut.domainMax],
+          [u("ShaperSize")]: lut.shaper?.size ?? 0,
+          [u("ShaperLo")]: [...(lut.shaper?.domainMin ?? [0, 0, 0])],
+          [u("ShaperHi")]: [...(lut.shaper?.domainMax ?? [1, 1, 1])],
+        },
+      }),
+    };
+  },
 };
 
 /** The op for one effect's sampled parameters, or null when neutral. */
 export const floatGradeOp = (
   id: FloatGradeEffectId,
   p: Params,
-): FloatGradeOp | null => OPERATORS[id](p);
+  source?: OpSource,
+): FloatGradeOp | null => OPERATORS[id](p, source);
 
 /** Straight float → straight byte, half up, clamped (the one quantization). */
 export const quantizeGrade = (v: number) =>
@@ -253,11 +477,130 @@ vec3 gCdl(vec3 v,vec3 slope,vec3 offs,vec3 power,vec2 sc){
   float y=dot(p,LUMA);
   vec3 o=y+sc.x*(p-y);
   return sc.y>0.5?clamp(o,0.0,1.0):gLimit3(o);
+}
+// CG4/CG5: curve and LUT tables are float32 bit patterns, one per RGBA8
+// texel (little-endian), read back exactly.
+float gBits(vec4 texel){uvec4 b=uvec4(floor(texel*255.0+0.5));return uintBitsToFloat(b.r|(b.g<<8u)|(b.b<<16u)|(b.a<<24u));}
+// CG4: curve tables are rows of the backdrop texture (row = curve).
+const float TABLE_N=${CURVE_TABLE_SIZE.toFixed(1)};
+float gTex(int i,int row){return gBits(texelFetch(backdrop,ivec2(i,row),0));}
+float gCurve(int row,float x){
+  if(x<=0.0){float a=gTex(0,row);return a+x*(gTex(1,row)-a)*(TABLE_N-1.0);}
+  if(x>=1.0){float a=gTex(${CURVE_TABLE_SIZE - 1},row);return a+(x-1.0)*(a-gTex(${CURVE_TABLE_SIZE - 2},row))*(TABLE_N-1.0);}
+  float t=x*(TABLE_N-1.0);int i=min(int(floor(t)),${CURVE_TABLE_SIZE - 2});float a=gTex(i,row);return a+(gTex(i+1,row)-a)*(t-float(i));
+}
+float gCurveWrap(int row,float x){
+  float t=(x-floor(x))*TABLE_N;int i=int(floor(t))%${CURVE_TABLE_SIZE};float a=gTex(i,row);
+  return a+(gTex((i+1)%${CURVE_TABLE_SIZE},row)-a)*(t-floor(t));
+}
+float gLimit(float v){return clamp(v,-LIMIT,LIMIT);}
+vec3 gCurves(vec3 v,vec4 rows,float lumaMix){
+  vec3 c=vec3(rows.x>=0.0?gLimit(gCurve(int(rows.x),v.r)):v.r,rows.y>=0.0?gLimit(gCurve(int(rows.y),v.g)):v.g,rows.z>=0.0?gLimit(gCurve(int(rows.z),v.b)):v.b);
+  if(rows.w<0.0)return c;
+  int m=int(rows.w);
+  vec3 rgb=gLimit3(vec3(gCurve(m,c.r),gCurve(m,c.g),gCurve(m,c.b)));
+  if(lumaMix==0.0)return rgb;
+  float y=dot(c,LUMA);
+  float lift=gCurve(m,y)-y;
+  return gLimit3(rgb*(1.0-lumaMix)+(c+lift)*lumaMix);
+}
+vec3 gHueCurves(vec3 v,vec3 hueRows,vec3 satRows){
+  float y=dot(v,LUMA);
+  float cb=(v.b-y)/${BT709_CB_SCALE},cr=(v.r-y)/${BT709_CR_SCALE};
+  float radius=length(vec2(cb,cr));
+  float hue=radius>0.0?atan(cr,cb)/6.283185307179586:0.0;
+  float sat=min(1.0,radius/${HUE_CURVE_SATURATION_SCALE.toFixed(4)});
+  float t=min(1.0,radius/${HUE_CURVE_CHROMA_FADE.toFixed(4)});
+  float w=t*t*(3.0-2.0*t);
+  float gain=1.0,offs=0.0;
+  if(hueRows.y>=0.0)gain*=1.0+w*(2.0*gCurveWrap(int(hueRows.y),hue)-1.0);
+  if(satRows.x>=0.0)gain*=2.0*gCurve(int(satRows.x),clamp(y,0.0,1.0));
+  if(satRows.y>=0.0)gain*=2.0*gCurve(int(satRows.y),sat);
+  if(hueRows.z>=0.0)offs+=w*(gCurveWrap(int(hueRows.z),hue)-0.5)*${HUE_CURVE_LUMA_AMOUNT.toFixed(4)};
+  if(satRows.z>=0.0)offs+=(gCurve(int(satRows.z),sat)-0.5)*${HUE_CURVE_LUMA_AMOUNT.toFixed(4)};
+  float cb2=cb*gain,cr2=cr*gain;
+  if(hueRows.x>=0.0){
+    float turn=w*(gCurveWrap(int(hueRows.x),hue)-0.5)*6.283185307179586;
+    float c=cos(turn),s=sin(turn);
+    float nb=cb2*c-cr2*s;cr2=cb2*s+cr2*c;cb2=nb;
+  }
+  float y2=y+offs;
+  float r=y2+${BT709_CR_SCALE}*cr2,b=y2+${BT709_CB_SCALE}*cb2;
+  return gLimit3(vec3(r,(y2-LUMA.r*r-LUMA.b*b)/LUMA.g,b));
+}
+float gSoftClip(float x,vec2 clip){
+  float hk=clip.x,lk=clip.y;
+  if(hk<1.0&&x>hk)x=hk+(1.0-hk)*(1.0-exp(-(x-hk)/(1.0-hk)));
+  if(lk>0.0&&x<lk)x=lk*exp(-(lk-x)/lk);
+  return x;
+}
+vec3 gTonal(vec3 v,vec3 so,vec3 mo,vec3 ho,vec3 ex,vec3 rng,vec2 clip){
+  float y=dot(v,LUMA);
+  float ws=1.0-gSmooth(rng.x-rng.z,rng.x+rng.z,y);
+  float wh=gSmooth(rng.y-rng.z,rng.y+rng.z,y);
+  float wm=max(0.0,1.0-ws-wh);
+  vec3 x=v*exp2(ws*ex.x+wm*ex.y+wh*ex.z)+(ws*so+wm*mo+wh*ho);
+  return gLimit3(vec3(gSoftClip(x.r,clip),gSoftClip(x.g,clip),gSoftClip(x.b,clip)));
+}
+// CG5: LUT tables fill the coverage texture (LUT_W wide). Mirrors sampleLut.
+const int LUT_W=${LUT_TEXTURE_WIDTH};
+float gLutTex(int i){return gBits(texelFetch(coverage,ivec2(i%LUT_W,i/LUT_W),0));}
+vec3 gLut1(vec3 v,int base,int size,vec3 lo,vec3 hi){
+  vec3 x=(clamp(v,lo,hi)-lo)/(hi-lo)*float(size-1);
+  vec3 o;
+  for(int c=0;c<3;c++){int i=min(int(floor(x[c])),size-2);float a=gLutTex(base+i*3+c);o[c]=a+(gLutTex(base+(i+1)*3+c)-a)*(x[c]-float(i));}
+  return o;
+}
+vec3 gLutNode(int base,int size,ivec3 p){int k=base+((p.z*size+p.y)*size+p.x)*3;return vec3(gLutTex(k),gLutTex(k+1),gLutTex(k+2));}
+vec3 gLut3(vec3 v,int base,int size,vec3 lo,vec3 hi,bool tri){
+  vec3 x=(clamp(v,lo,hi)-lo)/(hi-lo)*float(size-1);
+  ivec3 i=min(ivec3(floor(x)),ivec3(size-2));
+  vec3 f=x-vec3(i);
+  vec3 c000=gLutNode(base,size,i),c111=gLutNode(base,size,i+ivec3(1));
+  vec3 c100=gLutNode(base,size,i+ivec3(1,0,0)),c010=gLutNode(base,size,i+ivec3(0,1,0)),c001=gLutNode(base,size,i+ivec3(0,0,1));
+  vec3 c110=gLutNode(base,size,i+ivec3(1,1,0)),c101=gLutNode(base,size,i+ivec3(1,0,1)),c011=gLutNode(base,size,i+ivec3(0,1,1));
+  if(tri){
+    vec3 c00=c000+(c100-c000)*f.x,c10=c010+(c110-c010)*f.x,c01=c001+(c101-c001)*f.x,c11=c011+(c111-c011)*f.x;
+    vec3 c0=c00+(c10-c00)*f.y,c1=c01+(c11-c01)*f.y;
+    return c0+(c1-c0)*f.z;
+  }
+  if(f.x>f.y){
+    if(f.y>f.z)return c000+f.x*(c100-c000)+f.y*(c110-c100)+f.z*(c111-c110);
+    if(f.x>f.z)return c000+f.x*(c100-c000)+f.z*(c101-c100)+f.y*(c111-c101);
+    return c000+f.z*(c001-c000)+f.x*(c101-c001)+f.y*(c111-c101);
+  }
+  if(f.z>f.y)return c000+f.z*(c001-c000)+f.y*(c011-c001)+f.x*(c111-c011);
+  if(f.z>f.x)return c000+f.y*(c010-c000)+f.z*(c011-c010)+f.x*(c111-c011);
+  return c000+f.y*(c010-c000)+f.x*(c110-c010)+f.z*(c111-c110);
+}
+// A table's float offset arrives as its texel (row, column): each is exact in
+// a float uniform, and the offset itself (up to 8192 rows) is rebuilt in ints.
+int gLutBase(vec2 at){return int(at.x)*LUT_W+int(at.y);}
+vec3 gLut(vec3 v,vec4 lut,vec4 at,vec3 lo,vec3 hi,float shaperSize,vec3 slo,vec3 shi){
+  vec3 x=v;
+  int shSize=int(shaperSize);
+  if(shSize>0)x=gLut1(x,gLutBase(at.zw),shSize,slo,shi);
+  int base=gLutBase(at.xy),size=int(lut.x);
+  vec3 o=lut.y>0.5?gLut3(x,base,size,lo,hi,lut.z>0.5):gLut1(x,base,size,lo,hi);
+  return gLimit3(v+lut.w*(o-v));
 }`;
 
 /** One fused shader for the run (cached by the device per text). */
 export function floatGradeShader(ops: readonly FloatGradeOp[]) {
-  const parts = ops.map((op, i) => op.glsl((name) => `g${i}${name}`));
+  // Every op's tables, in order, become consecutive texture rows.
+  const tables: Float32Array[] = [];
+  // Every op's LUT floats, in order, are packed into one texture.
+  const lutFloats: Float32Array[] = [];
+  let lutLength = 0;
+  const parts = ops.map((op, i) => {
+    const rows = (op.tables ?? []).map((table) => tables.push(table) - 1);
+    const lutBase = lutLength;
+    if (op.lutFloats) {
+      lutFloats.push(op.lutFloats);
+      lutLength += op.lutFloats.length;
+    }
+    return op.glsl((name) => `g${i}${name}`, { rows, lutBase });
+  });
   const fragment = `${GLSL_COMMON}
 ${parts.map((p) => p.declare).join("\n")}
 void main(){
@@ -272,7 +615,21 @@ void main(){
   return {
     fragment,
     uniforms: Object.assign({}, ...parts.map((p) => p.uniforms)) as Uniforms,
+    tables,
+    lutFloats,
   };
+}
+
+/** Curve tables as texture bytes: each float32's bits, little-endian, per texel. */
+export function curveTableBytes(tables: readonly Float32Array[]) {
+  const bytes = new Uint8Array(CURVE_TABLE_SIZE * tables.length * 4);
+  tables.forEach((table, row) =>
+    bytes.set(
+      new Uint8Array(table.buffer, table.byteOffset, table.byteLength),
+      row * CURVE_TABLE_SIZE * 4,
+    ),
+  );
+  return bytes;
 }
 
 // --- Plugins and runs -----------------------------------------------------------
@@ -295,8 +652,24 @@ function runPlugin(
         context.pass(COPY_SHADER, output, [input]);
         return output;
       }
-      const { fragment, uniforms } = floatGradeShader(ops);
-      context.pass(fragment, output, [input], uniforms);
+      const { fragment, uniforms, tables, lutFloats } = floatGradeShader(ops);
+      if (!tables.length && !lutFloats.length) {
+        context.pass(fragment, output, [input], uniforms);
+        return output;
+      }
+      const inputs = [input, input];
+      if (tables.length) {
+        const table = context.createSurface(CURVE_TABLE_SIZE, tables.length);
+        context.uploadBytes(table, curveTableBytes(tables));
+        inputs[1] = table;
+      }
+      if (lutFloats.length) {
+        const { bytes, width, height } = lutTextureBytes(lutFloats);
+        const luts = context.createSurface(width, height);
+        context.uploadBytes(luts, bytes);
+        inputs.push(luts);
+      }
+      context.pass(fragment, output, inputs, uniforms);
       return output;
     },
     renderCanvas(context, input, params) {
@@ -332,11 +705,21 @@ function runPlugin(
   };
 }
 
-const opsOf = (effects: readonly { effect: string; params: Params }[]) =>
+const opsOf = (
+  effects: readonly ({ effect: string; params: Params } & OpSource)[],
+) =>
   effects.flatMap((e) => {
-    const op = floatGradeOp(e.effect as FloatGradeEffectId, e.params);
+    const op = floatGradeOp(e.effect as FloatGradeEffectId, e.params, e);
     return op ? [op] : [];
   });
+
+/**
+ * Effects whose op needs data beyond its parameters: those whose contract
+ * declares asset slots (CG5: grade.lut's LUT). Their prepared assets ride on
+ * the render effect, so they always run as a run, never as the lone kernel.
+ */
+const needsSource = (id: string) =>
+  Object.keys(compositionEffectDefinition(id)?.requiresAssets ?? {}).length > 0;
 
 const single = new Map<string, Readonly<CompositionEffectPlugin>>();
 /** One `grade.*` effect alone: a run of length one. */
@@ -358,7 +741,8 @@ export function floatGradeKernel(
 /**
  * The run starting at `start` (consecutive `grade.*` effects without a
  * window; disabled effects inside it are skipped), as one plugin, or
- * undefined when `start` does not begin a run of two or more.
+ * undefined when `start` does not begin a run of two or more (a lone
+ * `grade.lut` is a run of one: its op needs the effect's prepared LUT).
  */
 export function floatGradeRun(
   stack: readonly RenderEffect[],
@@ -383,7 +767,9 @@ export function floatGradeRun(
     members.push(effect);
     end = i;
   }
-  if (members.length < 2) return undefined;
+  // A lone grade.lut still runs as a run: its op needs the effect's LUT.
+  if (members.length < 2 && !members.some((m) => needsSource(m.effect)))
+    return undefined;
   return {
     plugin: Object.freeze(runPlugin(first.effect, () => opsOf(members))),
     end,

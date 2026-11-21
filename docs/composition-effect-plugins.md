@@ -208,6 +208,108 @@ backend parity, and a graded native-video composition exports with the effect
 versions in its scene manifest. The CE6 cell `catalogue-float-grade` has its
 own baseline file (`darwin-arm64-float-grade-1.json`).
 
+### Curves and tonal ranges (CG4)
+
+`grade.curves`, `grade.hue-curves` and `grade.tonal` join the float grade
+stage ([plan, CG4](./color-grading-engine-plan.md#cg4--curves-and-tonal-range-tools)).
+Curves use the ordinary `curve` parameter (2–16 points, endpoints at x = 0 and
+x = 1, animatable points with a fixed count, x strictly increasing after
+drivers and expressions). They are monotone cubic (PCHIP) splines: between two
+control points a curve never leaves their range, and it matches SciPy's
+`PchipInterpolator` within 1e-12. Each curve is baked on the CPU into a
+1024-entry float32 table that both backends sample the same way (linear
+interpolation, linear extrapolation beyond 0–1). Identity and flat curves
+leave pixels unchanged.
+
+- `grade.curves`: `red`, `green` and `blue` curves, then `master`; `lumaMix`
+  moves the master curve from every channel (0) to luma only (1, chroma
+  differences kept).
+- `grade.hue-curves`: six curves in BT.709 Y′CbCr. The x axes are hue (the
+  vectorscope angle, periodic: a hue curve's two ends must share y), luma Y′
+  and saturation (chroma radius / 0.5). y = 0.5 is neutral: `hueVsHue` rotates
+  by (y − 0.5) turns, `hueVsSat`, `lumVsSat` and `satVsSat` multiply the chroma
+  radius by 2y, `hueVsLum` and `satVsLum` add (y − 0.5)·0.5 to Y′. Every curve
+  reads the input, so each changes only its own dimension; hue-indexed curves
+  fade in over a chroma radius of 0.02 (hue is undefined for greys).
+- `grade.tonal`: shadow, midtone and highlight color offsets (`shadowR` …
+  `highlightB`) and exposure in stops, weighted by Y′ with movable boundaries
+  (`shadowEnd`, `highlightStart`, no higher than it) and a smooth `falloff`;
+  then high and low soft clip with a C¹ knee (`softClipHigh` 1 and
+  `softClipLow` 0 are off).
+
+`pnpm test:browser:color-grading-cg4` checks the operators, a chain with CG2
+operators and neutral settings on the CG0 stills (Canvas equals the float64
+reference, WebGL2 within one code value, repeats byte-identical), measures
+each hue/saturation curve's effect on the rendered sweeps with the CG3 scope
+functions (only its own dimension moves, beyond 8-bit rounding), checks the
+hue wrap on both backends and the layer-kind/animation/seek matrix. The CE6 cell
+`catalogue-curve-grade` has its own baseline file
+(`darwin-arm64-curve-grade-1.json`).
+
+### LUTs and CDL interchange (CG5)
+
+`grade.lut` applies a pinned `.cube` LUT inside the float grade stage
+([plan, CG5](./color-grading-engine-plan.md#cg5--lut-and-cdl-interchange)).
+The LUT is a composition asset; the effect binds it through its `lut` asset
+slot:
+
+```json
+{
+  "id": "look",
+  "type": "lut",
+  "path": "looks/warm.cube",
+  "sha256": "sha256:…",
+  "format": "cube",
+  "inputSpace": "legacy-srgb",
+  "outputSpace": "legacy-srgb"
+}
+```
+
+```json
+{
+  "id": "warm",
+  "effect": "grade.lut",
+  "assets": { "lut": "look" },
+  "params": { "intensity": 0.8 }
+}
+```
+
+- Formats: `.cube` 1D (up to 65,536 entries), 3D (sizes 2–129, so 65³ and
+  larger) with `DOMAIN_MIN`/`DOMAIN_MAX`, and Resolve's 3D-behind-a-1D-shaper
+  form (`LUT_1D_INPUT_RANGE`, `LUT_3D_INPUT_RANGE`). Numbers are decimal. A
+  range keyword for a table the file does not hold, or `DOMAIN_MIN`/`DOMAIN_MAX`
+  together with an input range, is an error. Files are at most 128 MiB.
+- Spaces: `inputSpace` and `outputSpace` must be declared. `legacy-srgb` (the
+  display-referred working space, BT.709 footage display-equivalent) is the
+  only value until CG7 adds working spaces; a LUT made for camera log or ACES
+  input cannot be applied correctly before then.
+- Before rendering, every LUT asset is read, size-checked, SHA-256-checked and
+  parsed when the composition is loaded (`comp-lut-unreadable`,
+  `comp-lut-checksum`, `comp-lut-invalid` with the `.cube` line). The page
+  re-verifies the bytes it fetches.
+- Evaluation: inputs are clamped to the table's domain (and the shaper's);
+  3D tables interpolate tetrahedrally (`interpolation` 0, default) or
+  trilinearly (1); `intensity` mixes the result with the input, and 0 drops
+  the operator. Canvas samples the float64 table; WebGL2 reads the same table
+  as float32 bit-exactly from a texture, in the same fused shader as the
+  other `grade.*` operators. Preview and export use the same kernel.
+
+`comp grade bake` writes a layer's grade stack as a `.cube` for other tools,
+and `comp grade cdl-export` / `cdl-import` exchange `grade.cdl` values as ASC
+CDL (`.cc`, `.ccc`, `.cdl`); see the
+[CLI reference](../tools/still-shift-cli/README.md#grade-interchange-luts-and-asc-cdl).
+A bake holds only pointwise operators (`grade.*`); any other effect refuses
+to bake. Tolerance: a 33³ bake reproduces the stack within 2 code values
+(65³ within 1) on the CG0 stills; a channel that crosses zero into a CDL power
+puts a kink in one grid cell (up to 4.2·10⁻³ at 33³, still one code value).
+
+`pnpm test:browser:color-grading-cg5` checks identity LUTs (pixels unchanged
+on both backends), nine LUT cases on random, edge and graded stills (Canvas
+equals the float64 reference, WebGL2 within one code value, repeats
+byte-identical), animated intensity and 33³/65³ bakes. The CE6 cell
+`catalogue-lut-grade` (a generated 17³ LUT, `lut-grade.cube`) has its own
+baseline file (`darwin-arm64-lut-grade-1.json`).
+
 ## Native transitions
 
 `transition.linear-wipe`, `transition.radial-wipe`,

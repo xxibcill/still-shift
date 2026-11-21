@@ -23,6 +23,7 @@ provides composition authoring instructions.
 | Prepared illustration/story/cinematic scene | `animate-scene`                                                                         | Verified scene, layers and assets                   |
 | Commerce                                    | `prepare-commerce`, `animate-scene`                                                     | Brief, product imagery, copy and sources            |
 | Color correction of flat SDR clips          | `comp color-stats`, `look fit`, `look apply`, `auto-color`                              | MP4/MOV clips or a folder; optional graded example  |
+| Color measurement                           | `comp scopes`, `probe`, `grade diff`                                                    | Clips, or a composition and one layer               |
 | Multiple independent images                 | `batch`                                                                                 | JSONL manifest                                      |
 | Passage timing and portrait checks          | `passage import-narration`, `passage lint`                                              | Passage plan and measured word/SRT timing           |
 | Saved audio project                         | `soundtrack validate`, `inspect`, `edit`, `render`, `retime`, `package`, `from-passage` | `soundtrack-project-1`, optional passage/narration  |
@@ -426,6 +427,81 @@ failures are recorded and the rest continue, and `auto-color-summary.json` lists
 the results (exit 1 when any clip failed). Outputs must not already exist. The
 source must have an integer frame rate up to 60 fps. Software checks are not
 visual acceptance: review the result yourself.
+
+## Color measurement: scopes, probe and grade diff
+
+These commands measure what a grade does, so a person or an AI can check a
+change by numbers
+([CG3 plan](../../docs/color-grading-engine-plan.md#cg3--scopes-probes-and-machine-readable-measurement)).
+Reports are deterministic JSON; outputs are never overwritten.
+
+```sh
+pnpm --silent still-shift comp scopes --input clip.mp4 --frames 12 --images scopes/
+pnpm --silent still-shift comp scopes --input clip.mp4 --frame-range 48:96 --region 400,300,200,200
+pnpm --silent still-shift comp probe --input graded.composition.json --layer clip --at 512,300 --radius 2 --frame 24
+pnpm --silent still-shift comp grade diff --before raw.mp4 --after graded.mp4 --still split.png --sheet sheet.png
+```
+
+- **`scopes`** reads a clip through the composition media path (the pixels the
+  renderer draws). Select evenly sampled `--frames` (default 12) or a
+  `--frame-range start:end` (end exclusive), and optionally a `--region
+x,y,w,h`. The report (`still-shift-color-scopes-1`, validated by a schema)
+  embeds the `color-stats` statistics unchanged and adds per-channel black and
+  white points (0.5% and 99.5%), a 10° hue histogram of chromatic pixels, the
+  skin-tone line (mean vectorscope angle of skin-like pixels and its deviation
+  from 123°), false-color shares and ten exposure zones. `--images` writes
+  `waveform.png`, `parade.png` (RGB), `parade-yrgb.png`, `parade-ycbcr.png`
+  (chroma centred), `vectorscope.png` (with the skin line) and
+  `cie1931.png` into a new folder. Frames are decoded in batches within the
+  media limit for live decoded pictures (`mediaLimits.decodedFrameBytes`, 128
+  MiB by default), so long ranges fit; a single frame over the limit fails
+  with `comp-scope-limit` before decoding.
+- **`probe`** renders a composition frame once per stage of one layer's effect
+  stack (the input, then after each effect) and reports the pixel at `--at` (a
+  square of side 2·`--radius`+1) or a `--region`, in encoded, linear, HSL,
+  CIELAB and OKLab coordinates, plus suggested HSL qualifier ranges for the
+  region (at most 3840×2160 pixels; a larger one fails with
+  `comp-probe-region`). Other layers are disabled unless `--isolate false`; the layer's
+  parents stay, and so does a group's content (the layers parented into it).
+  Values are the renderer's 8-bit output (`--backend canvas2d` is the float64
+  grade reference exactly).
+- **`grade diff`** compares two clips of one size: both statistics and their
+  changes (luma percentiles, saturation, neutral cast), a split still of the
+  middle sampled frame (before left, after right) and a contact sheet (one row
+  per sampled frame, before | after).
+
+## Grade interchange: LUTs and ASC CDL
+
+```sh
+pnpm --silent still-shift comp grade bake --input graded.composition.json --layer clip --size 33 --output look.cube
+pnpm --silent still-shift comp grade cdl-export --input graded.composition.json --layer clip --output shot.cc
+pnpm --silent still-shift comp grade cdl-import --input shots.ccc --correction shot_010
+```
+
+- **`grade bake`** evaluates a root layer's effect stack at `--frame`
+  (default 0) and writes it as a 3D `.cube` (`--size` 2–129 grid points,
+  default 33; optional `--title`) over the 0–1 input range. Only `grade.*`
+  operators are pointwise; any other enabled effect fails with
+  `comp-grade-not-pointwise` naming it. Disabled and neutral effects are listed
+  as skipped. A 33³ bake reproduces the stack within 2 code values (65³ within
+  1); see [LUTs and CDL interchange](../../docs/composition-effect-plugins.md#luts-and-cdl-interchange-cg5).
+- **`grade cdl-export`** writes the layer's enabled `grade.cdl` effects (or
+  one, `--effect`) as `.cc` (exactly one correction), `.ccc` or `.cdl`, chosen
+  by the extension. Each correction's id is the effect id. Values are written
+  as the shortest decimal that reads back as the same number, so they survive
+  exactly; the report notes effects in the unclamped style (`clamp` 0), which
+  ASC readers apply with the Release 1.2 clamp.
+- **`grade cdl-import`** reads `.cc`, `.ccc` or `.cdl` and prints
+  `grade.cdl` effect instances (all corrections, or `--correction id`), with
+  `clamp` 1 (Release 1.2) unless `--clamp false`. Values outside `grade.cdl`'s
+  bounds fail with `comp-cdl-range`. A correction id that is not a composition
+  id (`001`, `shot 010`) becomes `cdl-001`, `cdl-shot-010` (made unique); the
+  report's `renamed` lists each source id beside its effect id. Numbers are
+  re-spelled canonically (`1.0000` → `1`): the values survive exactly, the
+  original spelling does not.
+
+Outputs are never overwritten. Pin a baked `.cube` as a `lut` asset to apply it
+with `grade.lut`.
 
 ## Narration timing and passages
 
