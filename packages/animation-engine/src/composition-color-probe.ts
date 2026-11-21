@@ -4,8 +4,9 @@
  *
  * Stage k renders the composition with the layer's first k effects (stage 0
  * is the input, with no effects). With `isolate` (default) every other layer
- * that is not the probed layer or one of its parents is disabled, so values
- * are the layer's own pixels over the background. Rendering is the export
+ * is disabled, except the probed layer's parents and, for a group, its content
+ * (the layers parented into it), so values are the layer's own pixels over the
+ * background. Rendering is the export
  * renderer's, in the pinned browser (as `comp lint --pixels`); values are the
  * 8-bit output, reported in encoded, linear, HSL, CIELAB and OKLab
  * coordinates, with a qualifier suggestion for the sampled region.
@@ -90,12 +91,23 @@ export async function probeCompositionFile(
         { path: "frame" },
       );
     const region = probeRegion(comp, request);
-    // Layers kept when isolating: the probed layer and its parent chain.
+    // Layers kept when isolating: the probed layer, its parent chain and, for
+    // a group, its content (every layer with the group in its parent chain).
+    const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
     const keep = new Set<string>([layer!.id]);
-    for (let parent = layer!.parent; parent; ) {
+    for (let parent = layer!.parent; parent; parent = parentOf.get(parent))
       keep.add(parent);
-      parent = comp.layers.find((l) => l.id === parent)?.parent;
-    }
+    if (layer!.type === "group")
+      for (const candidate of comp.layers)
+        for (
+          let parent = candidate.parent;
+          parent;
+          parent = parentOf.get(parent)
+        )
+          if (parent === layer!.id) {
+            keep.add(candidate.id);
+            break;
+          }
     const effects = layer!.effects ?? [];
     const variants: Composition[] = Array.from(
       { length: effects.length + 1 },

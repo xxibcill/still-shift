@@ -252,6 +252,87 @@ describe("comp probe", () => {
       ]);
     expect(report.qualifier.hue).not.toBeNull();
   });
+  it("keeps a group's content when isolating, and drops unrelated layers", async () => {
+    const primary = { gainMaster: 1.2 };
+    const solid = (id: string, color: string, parent?: string) => ({
+      id,
+      type: "solid",
+      ...(parent ? { parent } : {}),
+      size: [64, 64],
+      color,
+      transform: { anchor: [0, 0], position: [0, 0] },
+    });
+    const composition = {
+      schemaVersion: "composition-1",
+      id: "cg3-probe-group",
+      width: 64,
+      height: 64,
+      fps: 24,
+      frameCount: 1,
+      background: "#000000",
+      assets: [],
+      layers: [
+        solid("under", "#ffffff"),
+        {
+          id: "cell",
+          type: "group",
+          size: [64, 64],
+          transform: { anchor: [0, 0], position: [0, 0] },
+          effects: [
+            { id: "primary", effect: "grade.primary", params: primary },
+          ],
+        },
+        {
+          id: "inner",
+          type: "group",
+          parent: "cell",
+          size: [64, 64],
+          transform: { anchor: [0, 0], position: [0, 0] },
+        },
+        // Half the frame, inside a nested group: content two levels down.
+        { ...solid("paint", "#c08040", "inner"), size: [32, 64] },
+        { ...solid("over", "#ffffff"), size: [16, 64] },
+      ],
+    };
+    const input = join(root, "probe-group.json");
+    await writeFile(input, JSON.stringify(composition));
+    const probe = async (at: string) => {
+      const result = await run([
+        "probe",
+        "--input",
+        input,
+        "--layer",
+        "cell",
+        "--at",
+        at,
+      ]);
+      expect(result.code, result.stderr).toBe(0);
+      return (
+        JSON.parse(result.stdout) as { stages: { bytes: number[] }[] }
+      ).stages.map((stage) => stage.bytes);
+    };
+    const op = floatGradeOp("grade.primary", {
+      ...Object.fromEntries(
+        Object.entries(
+          compositionEffectDefinition("grade.primary")!.properties,
+        ).map(([k, p]) => [k, p.default as number]),
+      ),
+      ...primary,
+    })!;
+    const paint = [192, 128, 64];
+    const graded = floatGradeBytes(
+      [op],
+      paint.map((v) => v / 255) as [number, number, number],
+    );
+    // The group's own pixels, though "over" and "under" cover this point.
+    expect(await probe("8,32")).toEqual([paint, graded]);
+    expect(await probe("24,32")).toEqual([paint, graded]);
+    // Outside the paint: the background, not the unrelated white layers.
+    expect(await probe("48,32")).toEqual([
+      [0, 0, 0],
+      [0, 0, 0],
+    ]);
+  });
 });
 
 describe("comp grade diff", () => {
