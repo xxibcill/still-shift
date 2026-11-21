@@ -59,16 +59,22 @@ export function flag(values: Map<string, string>, name: string) {
     );
   return text === "true";
 }
-export function wholeFrame(values: Map<string, string>) {
-  const frame = values.get("frame");
-  if (frame !== undefined && !/^\d+$/.test(frame))
-    programError(
-      "comp-program-option",
-      "--frame must be a whole frame number",
-      "frame",
-    );
-  return frame === undefined ? undefined : Number(frame);
+/** An optional whole-number option; `rule` completes "--name must be …". */
+export function wholeNumber(
+  values: Map<string, string>,
+  name: string,
+  rule: string,
+) {
+  const text = values.get(name);
+  if (text !== undefined && !/^\d+$/.test(text))
+    programError("comp-program-option", `--${name} must be ${rule}`, name);
+  return text === undefined ? undefined : Number(text);
 }
+export const wholeFrame = (values: Map<string, string>) =>
+  wholeNumber(values, "frame", "a whole frame number");
+/** An optional output path that must not exist yet. */
+export const optionalOutput = (values: Map<string, string>, name: string) =>
+  values.has(name) ? newOutput(values.get(name)!, name) : undefined;
 export async function emit(
   io: CompositionIo,
   report: unknown,
@@ -100,12 +106,8 @@ export async function runScopeCommand(
         "Give --frames or --frame-range, not both",
         "frames",
       );
-    const output = values.has("output")
-      ? await newOutput(values.get("output")!, "output")
-      : undefined;
-    const images = values.has("images")
-      ? await newOutput(values.get("images")!, "images")
-      : undefined;
+    const output = await optionalOutput(values, "output");
+    const images = await optionalOutput(values, "images");
     const report = await measureColorScopes(
       requireArgument(values, "input"),
       {
@@ -130,23 +132,9 @@ export async function runScopeCommand(
       "isolate",
       "output",
     ]);
-    const output = values.has("output")
-      ? await newOutput(values.get("output")!, "output")
-      : undefined;
-    const radius = values.get("radius");
-    if (radius !== undefined && !/^\d+$/.test(radius))
-      programError(
-        "comp-program-option",
-        "--radius must be a whole number of pixels",
-        "radius",
-      );
-    const frame = values.get("frame");
-    if (frame !== undefined && !/^\d+$/.test(frame))
-      programError(
-        "comp-program-option",
-        "--frame must be a whole frame number",
-        "frame",
-      );
+    const output = await optionalOutput(values, "output");
+    const radius = wholeNumber(values, "radius", "a whole number of pixels");
+    const frame = wholeFrame(values);
     const at = values.get("at");
     const report = await probeCompositionFile(
       requireArgument(values, "input"),
@@ -156,9 +144,9 @@ export async function runScopeCommand(
           at === undefined
             ? undefined
             : (integers(at, "at", 2) as unknown as [number, number]),
-        radius: radius === undefined ? undefined : Number(radius),
+        radius,
         region: regionOf(values),
-        frame: frame === undefined ? undefined : Number(frame),
+        frame,
         backend: backend(values),
         isolate: flag(values, "isolate"),
       },
@@ -175,15 +163,9 @@ export async function runScopeCommand(
       "sheet",
       "output",
     ]);
-    const output = values.has("output")
-      ? await newOutput(values.get("output")!, "output")
-      : undefined;
-    const still = values.has("still")
-      ? await newOutput(values.get("still")!, "still")
-      : undefined;
-    const sheet = values.has("sheet")
-      ? await newOutput(values.get("sheet")!, "sheet")
-      : undefined;
+    const output = await optionalOutput(values, "output");
+    const still = await optionalOutput(values, "still");
+    const sheet = await optionalOutput(values, "sheet");
     const report = await diffColorGrade(
       requireArgument(values, "before"),
       requireArgument(values, "after"),

@@ -14,7 +14,14 @@ import { parseNamedArguments, requireArgument } from "../named-options.ts";
 import { programError } from "./errors.ts";
 import type { CompositionIo } from "./commands.ts";
 import { newOutput, writeNew } from "./color.ts";
-import { emit, flag, json, wholeFrame } from "./color-scopes.ts";
+import {
+  emit,
+  flag,
+  json,
+  optionalOutput,
+  wholeFrame,
+  wholeNumber,
+} from "./color-scopes.ts";
 
 /** `comp grade bake|cdl-export|cdl-import`; other commands are not handled. */
 export async function runInterchangeCommand(
@@ -38,19 +45,17 @@ export async function runInterchangeCommand(
         "--output must end in .cube",
         "output",
       );
-    const size = values.get("size");
-    if (size !== undefined && !/^\d+$/.test(size))
-      programError(
-        "comp-program-option",
-        "--size must be a whole number of grid points (2–129)",
-        "size",
-      );
+    const size = wholeNumber(
+      values,
+      "size",
+      "a whole number of grid points (2–129)",
+    );
     const { cube, report } = await bakeCompositionGrade(
       requireArgument(values, "input"),
       {
         layer: requireArgument(values, "layer"),
         frame: wholeFrame(values),
-        size: size === undefined ? undefined : Number(size),
+        size,
         title: values.get("title"),
       },
     );
@@ -94,9 +99,7 @@ export async function runInterchangeCommand(
       "clamp",
       "output",
     ]);
-    const output = values.has("output")
-      ? await newOutput(values.get("output")!, "output")
-      : undefined;
+    const output = await optionalOutput(values, "output");
     const report = importCdl(
       await readFile(requireArgument(values, "input"), "utf8"),
       { correction: values.get("correction"), clamp: flag(values, "clamp") },
