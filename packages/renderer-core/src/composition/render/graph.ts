@@ -1,3 +1,4 @@
+import { EFFECT_LUTS, type PreparedLut } from "./luts.ts";
 import {
   MESH_DIAGNOSTIC_LOCATION,
   type MeshDiagnosticLocation,
@@ -85,6 +86,10 @@ export type RenderEffect = EvaluatedEffect & {
   };
   /** Input slots rendered independently at this scope and clock. */
   layerInputs?: Readonly<Record<string, RenderOp[]>>;
+  /** CG5: the SHA-256 of each bound asset (keys the effect's visual identity). */
+  assetHashes?: Readonly<Record<string, string>>;
+  /** CG5: prepared LUTs by asset slot (a symbol: never serialized). */
+  [EFFECT_LUTS]?: Readonly<Record<string, PreparedLut>>;
 };
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
@@ -356,6 +361,8 @@ export type RenderGraphOptions = EvaluationOptions & {
   nativeArtworkPreparation?: boolean;
   /** Internal association inventory; executeGraph rejects its incomplete artwork graph. */
   nativePassDiscovery?: boolean;
+  /** CG5: LUT assets parsed with the composition resources, by asset ID. */
+  luts?: ReadonlyMap<string, PreparedLut>;
 };
 
 /** Native pass pixels cannot be retained as a substitute for a required actual draw. */
@@ -680,6 +687,19 @@ class GraphBuilder {
       path: `${prefix}layers.${layer}.effects.${slot}.params`,
     };
   }
+  /** CG5: bind each asset slot's hash and, when loaded, its prepared LUT. */
+  private effectAssets(original: EvaluatedEffect): RenderEffect {
+    const hashes: Record<string, string> = {};
+    const luts: Record<string, PreparedLut> = {};
+    for (const [slot, id] of Object.entries(original.assets!)) {
+      const asset = this.comp.assets.find((candidate) => candidate.id === id);
+      if (asset?.type !== "lut") continue;
+      hashes[slot] = asset.sha256;
+      const prepared = this.options.luts?.get(id);
+      if (prepared?.sha256 === asset.sha256) luts[slot] = prepared;
+    }
+    return { ...original, assetHashes: hashes, [EFFECT_LUTS]: luts };
+  }
   private effectInputs(
     scope: Scope,
     original: EvaluatedEffect,
@@ -687,6 +707,7 @@ class GraphBuilder {
     seen: Set<string>,
     state: EvaluatedLayer,
   ): RenderEffect {
+    if (original.assets) original = this.effectAssets(original);
     const effect: RenderEffect = isMeshEffect(original)
       ? {
           ...original,
