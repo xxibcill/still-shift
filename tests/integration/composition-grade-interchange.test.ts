@@ -360,6 +360,39 @@ describe("comp grade cdl-export / cdl-import", () => {
     ]);
     expect(failure(one.stderr).diagnostics[0]!.code).toBe("comp-cdl-count");
   });
+  it("keeps a correction id that is not a composition id, renamed and reported", async () => {
+    const sop = `<SOPNode><Slope>1.1 1 1</Slope><Offset>0 0 0</Offset><Power>1 1 1</Power></SOPNode>`;
+    const path = join(root, "ids.ccc");
+    await writeFile(
+      path,
+      `<ColorCorrectionCollection xmlns="urn:ASC:CDL:v1.2">${[
+        "001",
+        "shot 010",
+        "cdl-001",
+        undefined,
+      ]
+        .map(
+          (id) =>
+            `<ColorCorrection${id === undefined ? "" : ` id="${id}"`}>${sop}</ColorCorrection>`,
+        )
+        .join("")}</ColorCorrectionCollection>`,
+    );
+    const result = await run(["grade", "cdl-import", "--input", path]);
+    expect(result.code, result.stderr).toBe(0);
+    const report = JSON.parse(result.stdout);
+    expect(report.effects.map((e: { id: string }) => e.id)).toEqual([
+      "cdl-001",
+      "cdl-shot-010",
+      "cdl-001-2",
+      "cdl-4",
+    ]);
+    expect(report.renamed).toEqual([
+      { correction: "001", id: "cdl-001" },
+      { correction: "shot 010", id: "cdl-shot-010" },
+      { correction: "cdl-001", id: "cdl-001-2" },
+      { correction: null, id: "cdl-4" },
+    ]);
+  });
   it("rejects values outside grade.cdl's bounds", async () => {
     const path = join(root, "steep.cc");
     await writeFile(

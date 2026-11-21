@@ -246,7 +246,38 @@ export type CdlImportReport = {
     description?: string;
     params: Record<string, number>;
   }[];
+  /**
+   * Corrections whose id is not a composition id (e.g. "001" or "shot 010"),
+   * or repeats one, with the effect id each was given.
+   */
+  renamed?: { correction: string | null; id: string }[];
 };
+
+const COMPOSITION_ID = /^[a-zA-Z][\w-]*$/;
+/**
+ * The effect id for a correction: its own id when that is a composition id,
+ * else `cdl-` and the id with other characters turned into "-" (or the
+ * correction's position when nothing is left), made unique.
+ */
+function correctionEffectId(
+  correction: string | undefined,
+  index: number,
+  used: Set<string>,
+) {
+  const base =
+    correction && COMPOSITION_ID.test(correction) && correction.length <= 128
+      ? correction
+      : `cdl-${
+          (correction ?? "")
+            .replace(/[^\w-]+/g, "-")
+            .replace(/^-+|-+$/g, "")
+            .slice(0, 100) || index + 1
+        }`;
+  let id = base;
+  for (let n = 2; used.has(id); n++) id = `${base}-${n}`;
+  used.add(id);
+  return id;
+}
 
 /**
  * ASC CDL text → `grade.cdl` effect instances (one per correction, or the
@@ -271,6 +302,8 @@ export function importCdl(
       { path: "correction" },
     );
   const definition = compositionEffectDefinition("grade.cdl")!;
+  const used = new Set<string>();
+  const renamed: NonNullable<CdlImportReport["renamed"]> = [];
   const effects = chosen.map((correction, index) => {
     const { cdl } = correction;
     const params: Record<string, number> = {
@@ -294,10 +327,9 @@ export function importCdl(
           .join("; ")}`,
         { path: `corrections.${index}` },
       );
-    const id =
-      correction.id && /^[a-zA-Z][\w-]*$/.test(correction.id)
-        ? correction.id
-        : `cdl-${index + 1}`;
+    const id = correctionEffectId(correction.id, index, used);
+    if (id !== correction.id)
+      renamed.push({ correction: correction.id ?? null, id });
     return {
       id,
       effect: "grade.cdl" as const,
@@ -307,5 +339,10 @@ export function importCdl(
       params,
     };
   });
-  return { schema: "still-shift.cdl-import-1", kind: document.kind, effects };
+  return {
+    schema: "still-shift.cdl-import-1",
+    kind: document.kind,
+    effects,
+    ...(renamed.length ? { renamed } : {}),
+  };
 }

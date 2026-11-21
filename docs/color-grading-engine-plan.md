@@ -718,8 +718,12 @@ float32 curve tables bit-exactly through an RGBA8 texture.
 - [x] A baked `.cube` of a pointwise stack reproduces that stack within the
       stated tolerance (33³ ≤ 2 code values, 65³ ≤ 1); a non-pointwise stack
       (any effect that is not `grade.*`, blur included) refuses to bake.
-- [x] CDL round trip preserves values exactly as text: exact float64 values
-      in canonical shortest decimals; re-export byte-identical.
+- [x] CDL round trip preserves values exactly (deviation from "exactly as
+      text"): exact float64 values written as canonical shortest decimals, so
+      `1.0000` re-exports as `1`; a re-export of an import is byte-identical.
+      Correction ids that are not composition ids are renamed (`001` →
+      `cdl-001`) and listed in the import report's `renamed` (PR #78 review,
+      F5). Keeping the source spelling is an owner decision.
 
 _As built:_ LUTs are `lut` assets bound through a new effect `assets` slot;
 spaces accept only `legacy-srgb` until CG7; CE6 cell `catalogue-lut-grade`

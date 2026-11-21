@@ -492,7 +492,11 @@ pnpm --silent still-shift comp grade cdl-import --input shots.ccc --correction s
 - **`grade cdl-import`** reads `.cc`, `.ccc` or `.cdl` and prints
   `grade.cdl` effect instances (all corrections, or `--correction id`), with
   `clamp` 1 (Release 1.2) unless `--clamp false`. Values outside `grade.cdl`'s
-  bounds fail with `comp-cdl-range`.
+  bounds fail with `comp-cdl-range`. A correction id that is not a composition
+  id (`001`, `shot 010`) becomes `cdl-001`, `cdl-shot-010` (made unique); the
+  report's `renamed` lists each source id beside its effect id. Numbers are
+  re-spelled canonically (`1.0000` → `1`): the values survive exactly, the
+  original spelling does not.
 
 Outputs are never overwritten. Pin a baked `.cube` as a `lut` asset to apply it
 with `grade.lut`.
