@@ -45,7 +45,8 @@ function hsv(h: number, s: number, v: number): Rgb {
   return [r + m, g + m, b + m];
 }
 const byte = (v: number) => Math.max(0, Math.min(255, Math.round(v * 255)));
-const encoded = (rgb: Rgb): Rgb => rgb.map((v) => byte(v) / 255) as Rgb;
+const encoded = (rgb: Rgb): Rgb =>
+  rgb.map((v) => byte(v) / 255) as unknown as Rgb;
 
 // Analytic masks from the design values, written from the definition (not
 // from the port): hue distance on the circle, HSL saturation in closed form

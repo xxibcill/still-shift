@@ -58,6 +58,7 @@ import {
 } from "../evaluate/spatial-geometry.ts";
 import { spatialStackOrder } from "./spatial-order.ts";
 import { prepareFlatLighting, type FlatLighting } from "./flat-lighting.ts";
+import { withKeyWindow } from "./float-grade-keys.ts";
 import {
   IDENTITY_MATRIX,
   matrixFromTransform,
@@ -1697,19 +1698,22 @@ class GraphBuilder {
             );
           effectMatrix = affine;
         }
-        return {
-          ...captured,
-          placement: {
-            matrix: effectMatrix,
-            transforms: [effectMatrix],
-            ...(isMeshEffect(effect)
-              ? {
-                  ownerCollapsed: isCollapsedMeshPlacement(matrix),
-                  referenceCollapsed: isCollapsedMeshPlacement(effectMatrix),
-                }
-              : {}),
+        return withKeyWindow(
+          {
+            ...captured,
+            placement: {
+              matrix: effectMatrix,
+              transforms: [effectMatrix],
+              ...(isMeshEffect(effect)
+                ? {
+                    ownerCollapsed: isCollapsedMeshPlacement(matrix),
+                    referenceCollapsed: isCollapsedMeshPlacement(effectMatrix),
+                  }
+                : {}),
+            },
           },
-        };
+          key,
+        );
       });
     const masks = options.raw ? [] : this.masks(state, matrix, transforms);
     const lights = this.exposureScope(scope, state).tree.lights;
@@ -2109,22 +2113,28 @@ class GraphBuilder {
         const source = effect.space ? scope.byId.get(effect.space)! : state;
         const effectMatrix = multiplyMatrix(frame.matrix, source.screenMatrix),
           effectTransforms = this.transforms(scope, source, frame);
-        return {
-          ...effect,
-          placement: {
-            matrix: effectMatrix,
-            transforms: effectTransforms,
-            ...(isMeshEffect(effect)
-              ? {
-                  ownerCollapsed: isCollapsedMeshPlacement(matrix, transforms),
-                  referenceCollapsed: isCollapsedMeshPlacement(
-                    effectMatrix,
-                    effectTransforms,
-                  ),
-                }
-              : {}),
+        return withKeyWindow(
+          {
+            ...effect,
+            placement: {
+              matrix: effectMatrix,
+              transforms: effectTransforms,
+              ...(isMeshEffect(effect)
+                ? {
+                    ownerCollapsed: isCollapsedMeshPlacement(
+                      matrix,
+                      transforms,
+                    ),
+                    referenceCollapsed: isCollapsedMeshPlacement(
+                      effectMatrix,
+                      effectTransforms,
+                    ),
+                  }
+                : {}),
+            },
           },
-        };
+          key,
+        );
       });
     const matte = options.raw ? null : this.matte(scope, state, frame, seen);
     if (echo && layer.type !== "adjustment") {

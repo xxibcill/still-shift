@@ -32,6 +32,22 @@ const effect = (
     ...(validateParams ? { validateParams } : {}),
     ...extra,
   });
+const vec2 = (
+  x: number,
+  y: number,
+  min: number,
+  max: number,
+): EffectProperty => ({
+  type: "vec2",
+  default: [x, y],
+  min,
+  max,
+});
+const flag = (value = 0) => scalar(value, 0, 1, true);
+/** CG6: the most picked samples a sampled 3D key holds. */
+export const GRADE_KEY_SAMPLES = 8;
+/** CG6: `grade.key`'s optional external matte slot. */
+export const GRADE_KEY_MATTE_SLOT = "matte";
 const curve = (
   defaultPoints: readonly (readonly [number, number])[],
 ): EffectProperty => ({ type: "curve", default: defaultPoints });
@@ -75,6 +91,7 @@ export const FLOAT_GRADE_EFFECT_IDS = [
   "grade.hue-curves",
   "grade.tonal",
   "grade.lut",
+  "grade.key",
 ] as const;
 export type FloatGradeEffectId = (typeof FLOAT_GRADE_EFFECT_IDS)[number];
 export const isFloatGradeEffect = (id: string): id is FloatGradeEffectId =>
@@ -213,5 +230,81 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
     },
     undefined,
     { requiresAssets: { lut: "lut" } },
+  ),
+  /**
+   * CG6: a key for the `grade.*` operations after it in its grade run, up to
+   * the next `grade.key` or the end of the run, computed from the value
+   * entering the key (the operations' input, never their output). Key =
+   * clamp(gain · Q · W · G · M + offset, 0, 1): Q the qualifier (`qualifier`
+   * 0 none, 1 HSL, 2 RGB, 3 luma, 4 sampled OKLab) after matte finesse and
+   * `invert` (finesse and invert need a qualifier); W the ellipse (1) or
+   * rectangle (2) window, a layer mask in layer space; G the linear gradient;
+   * M the optional `matte` layer (alpha 0 or luma 1, levels, invert). Each
+   * pixel mixes input and result by the key; `view` 1–3 shows the key (gray,
+   * highlight, high contrast). Every default selects everything (key 1).
+   */
+  "grade.key": effect(
+    {
+      qualifier: scalar(0, 0, 4, true),
+      hueCenter: scalar(0, 0, 360),
+      hueWidth: scalar(360, 0, 360),
+      hueSoftness: scalar(0, 0, 180),
+      saturationMin: scalar(0, 0, 1),
+      saturationMax: scalar(1, 0, 1),
+      saturationSoftness: scalar(0, 0, 1),
+      luminanceMin: scalar(0, 0, 1),
+      luminanceMax: scalar(1, 0, 1),
+      luminanceSoftness: scalar(0, 0, 1),
+      redMin: scalar(0, 0, 1),
+      redMax: scalar(1, 0, 1),
+      greenMin: scalar(0, 0, 1),
+      greenMax: scalar(1, 0, 1),
+      blueMin: scalar(0, 0, 1),
+      blueMax: scalar(1, 0, 1),
+      rgbSoftness: scalar(0, 0, 1),
+      sampleCount: scalar(0, 0, GRADE_KEY_SAMPLES, true),
+      ...Object.fromEntries(
+        Array.from({ length: GRADE_KEY_SAMPLES }, (_, i) => [
+          `sample${i + 1}`,
+          { type: "color", default: "#808080" } as EffectProperty,
+        ]),
+      ),
+      sampleRadius: scalar(0.05, 0, 1),
+      sampleSoftness: scalar(0.05, 0, 1),
+      clipBlack: scalar(0, 0, 1),
+      clipWhite: scalar(1, 0, 1),
+      denoise: scalar(0, 0, 8, true),
+      cleanBlack: scalar(0, 0, 32, true),
+      cleanWhite: scalar(0, 0, 32, true),
+      shrinkGrow: scalar(0, -32, 32, true),
+      blur: scalar(0, 0, 64),
+      inOutRatio: scalar(0, -1, 1),
+      invert: flag(),
+      window: scalar(0, 0, 2, true),
+      windowCenter: vec2(0, 0, -100000, 100000),
+      windowSize: vec2(100, 100, 0, 100000),
+      windowRotation: scalar(0, -3600, 3600),
+      windowRoundness: scalar(0, 0, 100000),
+      windowFeather: scalar(0, 0, 1000),
+      windowExpansion: scalar(0, -1000, 1000),
+      windowInvert: flag(),
+      gradient: flag(),
+      gradientStart: vec2(0, 0, -100000, 100000),
+      gradientEnd: vec2(0, 100, -100000, 100000),
+      matteMode: flag(),
+      matteLow: scalar(0, 0, 1),
+      matteHigh: scalar(1, 0, 1),
+      matteInvert: flag(),
+      gain: scalar(1, 0, 4),
+      offset: scalar(0, -1, 1),
+      view: scalar(0, 0, 3, true),
+    },
+    (params) => {
+      if ((params.clipBlack as number) >= (params.clipWhite as number))
+        throw Error("clipBlack must be below clipWhite");
+      if (params.matteLow === params.matteHigh)
+        throw Error("matteLow and matteHigh must differ");
+    },
+    { usesLayerSpace: true, optionalLayers: [GRADE_KEY_MATTE_SLOT] },
   ),
 };

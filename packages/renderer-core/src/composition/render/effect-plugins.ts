@@ -346,6 +346,16 @@ export function renderGpuEffect(
       effectCopy(phase, device, copy, source);
       inputs.set(slot, copy);
     }
+    // CG6: optional slots are copied only when bound.
+    for (const slot of plugin.definition.optionalLayers ?? []) {
+      const source = layers?.get(slot);
+      if (!source) continue;
+      if (source.width !== target.width || source.height !== target.height)
+        throw Error(`comp-effect-layer: incompatible input "${slot}"`);
+      const copy = surfaces.create(source.width, source.height);
+      effectCopy(phase, device, copy, source);
+      inputs.set(slot, copy);
+    }
     const context: GpuEffectContext = (phase.context = {
       layers: inputs,
       placement: effect.placement,
@@ -449,6 +459,15 @@ export function renderCanvasEffect(
         throw Error(
           `comp-effect-layer: missing or incompatible input "${slot}"`,
         );
+      const copy = surfaces.create(source.width, source.height);
+      copy.ctx.drawImage(source.canvas, 0, 0);
+      inputs.set(slot, copy);
+    }
+    for (const slot of plugin.definition.optionalLayers ?? []) {
+      const source = layers?.get(slot);
+      if (!source) continue;
+      if (source.width !== target.width || source.height !== target.height)
+        throw Error(`comp-effect-layer: incompatible input "${slot}"`);
       const copy = surfaces.create(source.width, source.height);
       copy.ctx.drawImage(source.canvas, 0, 0);
       inputs.set(slot, copy);

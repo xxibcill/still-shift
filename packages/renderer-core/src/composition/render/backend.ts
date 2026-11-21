@@ -4,7 +4,11 @@ import {
   type CompositionRenderStatistics,
 } from "./statistics.ts";
 import { renderBatches } from "./batches.ts";
-import { compositionEffectDefinition } from "@still-shift/scene-contract";
+import {
+  compositionEffectDefinition,
+  isFloatGradeEffect,
+} from "@still-shift/scene-contract";
+import { keyLayerSlot } from "./float-grade-keys.ts";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { FlatLighting } from "./flat-lighting.ts";
 import {
@@ -333,26 +337,48 @@ export function executeGraph<S extends Surface>(
     }
     // Effects without inputs or a window still go to the backend as contiguous
     // runs, so consecutive grade.* effects stay one float stage (CG2).
+    // CG6: a grade.* effect's inputs (a key's window and matte) stay inside
+    // its run, under run-scoped slot names.
     let start = 0;
+    const scoped = new Map<string, S>();
     const flush = (end: number) => {
-      if (end > start) backend.applyEffects(target, effects.slice(start, end));
-    };
-    for (let index = 0; index < effects.length; index++) {
-      const effect = effects[index]!;
-      if (!effect.layerInputs && !effect.window) continue;
-      flush(index);
-      start = index + 1;
-      const inputs = new Map<string, S>();
       try {
-        for (const [slot, ops] of Object.entries(effect.layerInputs ?? {}))
-          inputs.set(slot, isolated(ops, target));
-        if (effect.window) applyWindowEffect(backend, target, effect, inputs);
-        else backend.applyEffects(target, [effect], inputs);
+        if (end > start)
+          backend.applyEffects(
+            target,
+            effects.slice(start, end),
+            scoped.size ? scoped : undefined,
+          );
       } finally {
-        for (const source of inputs.values()) backend.releaseSurface(source);
+        for (const source of scoped.values()) backend.releaseSurface(source);
+        scoped.clear();
       }
+    };
+    try {
+      for (let index = 0; index < effects.length; index++) {
+        const effect = effects[index]!;
+        if (!effect.layerInputs && !effect.window) continue;
+        if (!effect.window && isFloatGradeEffect(effect.effect)) {
+          for (const [slot, ops] of Object.entries(effect.layerInputs ?? {}))
+            scoped.set(keyLayerSlot(effect.id, slot), isolated(ops, target));
+          continue;
+        }
+        flush(index);
+        start = index + 1;
+        const inputs = new Map<string, S>();
+        try {
+          for (const [slot, ops] of Object.entries(effect.layerInputs ?? {}))
+            inputs.set(slot, isolated(ops, target));
+          if (effect.window) applyWindowEffect(backend, target, effect, inputs);
+          else backend.applyEffects(target, [effect], inputs);
+        } finally {
+          for (const source of inputs.values()) backend.releaseSurface(source);
+        }
+      }
+      flush(effects.length);
+    } finally {
+      for (const source of scoped.values()) backend.releaseSurface(source);
     }
-    flush(effects.length);
   };
   const mask = (
     tmp: S,

@@ -60,6 +60,11 @@ export type CompositionEffectDefinition = {
   usesLayerSpace?: boolean;
   /** Named input slots bound to same-scope layer IDs on each effect instance. */
   requiresLayers?: readonly string[];
+  /**
+   * CG6: named input slots an instance may leave unbound (`grade.key`'s
+   * external matte). Required and optional slots share the eight-slot bound.
+   */
+  optionalLayers?: readonly string[];
   /** CG5: named asset slots (slot → asset type) bound on each effect instance. */
   requiresAssets?: Readonly<Record<string, EffectAssetType>>;
 };
@@ -107,12 +112,15 @@ export function defineCompositionEffect(
     throw Error(
       "comp-effect-definition: parameter validation must be callable",
     );
+  const layerSlots = [
+    ...(definition.requiresLayers ?? []),
+    ...(definition.optionalLayers ?? []),
+  ];
   if (
-    definition.requiresLayers &&
-    (definition.requiresLayers.length > 8 ||
-      new Set(definition.requiresLayers).size !==
-        definition.requiresLayers.length ||
-      definition.requiresLayers.some(
+    layerSlots.length &&
+    (layerSlots.length > 8 ||
+      new Set(layerSlots).size !== layerSlots.length ||
+      layerSlots.some(
         (name) =>
           !/^[a-zA-Z][\w-]*$/.test(name) ||
           name.length > 128 ||
@@ -197,6 +205,9 @@ export function defineCompositionEffect(
     properties: Object.freeze(properties),
     ...(definition.requiresLayers
       ? { requiresLayers: Object.freeze([...definition.requiresLayers]) }
+      : {}),
+    ...(definition.optionalLayers
+      ? { optionalLayers: Object.freeze([...definition.optionalLayers]) }
       : {}),
     params,
   });
