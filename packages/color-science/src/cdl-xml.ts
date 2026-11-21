@@ -73,15 +73,17 @@ const encode = (text: string) =>
     .replace(/>/g, "&gt;")
     .replace(/"/g, "&quot;");
 
-/** Local name: namespace prefixes are ignored. */
+/** An element's local name: its namespace prefix is ignored. */
 const local = (name: string) => name.slice(name.indexOf(":") + 1);
 
 function parseXml(text: string): XmlElement {
   const source = text.replace(/^\uFEFF/, "");
   const root: XmlElement = { name: "", attributes: {}, children: [], text: "" };
   const stack: XmlElement[] = [root];
+  // Sticky: every character must belong to a token (nothing is skipped). A
+  // tag spans its quoted attribute values, which may contain ">".
   const token =
-    /<!--[\s\S]*?-->|<\?[\s\S]*?\?>|<!\[CDATA\[|<!|<\/?[^<>]*>|[^<]+/g;
+    /<!--[\s\S]*?-->|<\?[\s\S]*?\?>|<!\[CDATA\[|<!|<\/?(?:[^<>"']|"[^"]*"|'[^']*')*>|[^<]+/y;
   let match: RegExpExecArray | null;
   let consumed = 0;
   while ((match = token.exec(source))) {
@@ -113,12 +115,12 @@ function parseXml(text: string): XmlElement {
       );
     if (!body) fail(`malformed tag ${part.slice(0, 60)}`);
     const attributes: Record<string, string> = {};
+    // Names as written: an unprefixed attribute is in no namespace, so a
+    // prefixed one (`xml:id`) is a different attribute, never `id`.
     for (const attribute of body![2]!.matchAll(
       /([^\s=]+)\s*=\s*(?:"([^"]*)"|'([^']*)')/g,
     ))
-      attributes[local(attribute[1]!)] = decode(
-        attribute[2] ?? attribute[3] ?? "",
-      );
+      attributes[attribute[1]!] = decode(attribute[2] ?? attribute[3] ?? "");
     const element: XmlElement = {
       name: body![1]!,
       attributes,

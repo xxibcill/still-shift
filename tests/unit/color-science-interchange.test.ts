@@ -130,6 +130,30 @@ describe("ASC CDL XML", () => {
     expect(quoted).toContain('id="a&amp;b"');
     expect(parseCdlXml(quoted)).toEqual(doc);
   });
+  it("reads id from the plain attribute only, and values that contain >", () => {
+    const sat = "<SatNode><Saturation>1</Saturation></SatNode>";
+    expect(
+      parseCdlXml(
+        `<ColorCorrection id="real" xml:id="other" xmlns:x="urn:x" x:id="third">${sat}</ColorCorrection>`,
+      ).corrections[0]!.id,
+    ).toBe("real");
+    expect(
+      parseCdlXml(`<ColorCorrection xml:id="other">${sat}</ColorCorrection>`)
+        .corrections[0]!.id,
+    ).toBeUndefined();
+    const doc = parseCdlXml(
+      `<ColorCorrection id="a>b" note='c > "d"'>${sat}</ColorCorrection>`,
+    );
+    expect(doc.corrections[0]!.id).toBe("a>b");
+    expect(parseCdlXml(writeCdlXml(doc))).toEqual(doc);
+    // Nothing is skipped: a stray "<" or an unclosed quote is an error.
+    expect(() =>
+      parseCdlXml(`<ColorCorrection><${sat}</ColorCorrection>`),
+    ).toThrow(/ASC CDL/);
+    expect(() =>
+      parseCdlXml(`<ColorCorrection id="a>${sat}</ColorCorrection>`),
+    ).toThrow(/ASC CDL/);
+  });
   it("names the file kind from the extension", () => {
     expect([
       cdlFileKind("a.cc"),
