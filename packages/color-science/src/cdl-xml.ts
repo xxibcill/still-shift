@@ -77,7 +77,7 @@ const encode = (text: string) =>
 const local = (name: string) => name.slice(name.indexOf(":") + 1);
 
 function parseXml(text: string): XmlElement {
-  const source = text.replace(/^﻿/, "");
+  const source = text.replace(/^\uFEFF/, "");
   const root: XmlElement = { name: "", attributes: {}, children: [], text: "" };
   const stack: XmlElement[] = [root];
   const token =

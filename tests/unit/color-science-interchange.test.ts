@@ -121,6 +121,7 @@ describe("ASC CDL XML", () => {
         saturation: 1,
       },
     });
+    expect(parseCdlXml(`\uFEFF${CC}`).corrections[0]!.id).toBe("shot_010");
     expect(
       parseCdlXml(CC.replace(/SatNode/g, "SATNode")).corrections[0]!.cdl
         .saturation,
