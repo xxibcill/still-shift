@@ -5,9 +5,9 @@
  * CDL files) are never overwritten.
  */
 import { readFile } from "node:fs/promises";
-import { cdlFileKind } from "@still-shift/color-science";
 import {
   bakeCompositionGrade,
+  cdlFileKind,
   exportCompositionCdl,
   importCdl,
   diffColorGrade,

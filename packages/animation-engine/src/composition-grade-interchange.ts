@@ -34,6 +34,8 @@ import {
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { readCompositionSource } from "./composition-source.ts";
 
+export { cdlFileKind } from "@still-shift/color-science";
+
 const DEFAULT_BAKE_SIZE = 33;
 
 export type GradeBakeReport = {
