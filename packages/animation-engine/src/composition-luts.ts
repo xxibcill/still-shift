@@ -2,10 +2,7 @@ import { createHash } from "node:crypto";
 import { readFile, stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import { parseCubeLut, type CubeLut } from "@still-shift/color-science";
-import {
-  MAX_LUT_FILE_BYTES,
-  type Composition,
-} from "@still-shift/scene-contract";
+import { lutAssetProblem, type Composition } from "@still-shift/scene-contract";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 
 export type CompositionLutPreparation = {
@@ -40,20 +37,15 @@ export async function prepareCompositionLuts(
         at,
       );
     }
-    if (size > MAX_LUT_FILE_BYTES)
-      passageError(
-        "comp-lut-invalid",
-        `LUT ${asset.id} is ${size} bytes; the limit is ${MAX_LUT_FILE_BYTES}`,
-        at,
-      );
+    const tooLarge = lutAssetProblem(asset, size);
+    if (tooLarge) passageError(tooLarge.code, tooLarge.message, at);
     const bytes = await readFile(path);
     const digest = `sha256:${createHash("sha256").update(bytes).digest("hex")}`;
-    if (digest !== asset.sha256)
-      passageError(
-        "comp-lut-checksum",
-        `LUT checksum differs: ${asset.id} is ${digest}, the composition pins ${asset.sha256}`,
-        { path: `assets.${index}.sha256` },
-      );
+    const problem = lutAssetProblem(asset, bytes.byteLength, digest);
+    if (problem)
+      passageError(problem.code, problem.message, {
+        path: `assets.${index}${problem.code === "comp-lut-checksum" ? ".sha256" : ""}`,
+      });
     try {
       luts.set(asset.id, parseCubeLut(bytes.toString("utf8")));
     } catch (error) {

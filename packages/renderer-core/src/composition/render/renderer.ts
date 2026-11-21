@@ -27,7 +27,7 @@ import type { RenderBackend, Surface } from "./backend.ts";
 import type { RenderGraphOptions } from "./graph.ts";
 import { prepareLut, type PreparedLut } from "./luts.ts";
 import {
-  MAX_LUT_FILE_BYTES,
+  lutAssetProblem,
   validateComposition,
   type Composition,
   type CompositionPreparedMedia,
@@ -342,10 +342,14 @@ export async function loadCompositionResources(
       if (!response.ok) throw new Error(`Asset unavailable: ${asset.id}`);
       const bytes = await readRenderAssetBody(response);
       try {
-        if (bytes.byteLength > MAX_LUT_FILE_BYTES)
-          throw new Error(`LUT asset is too large: ${asset.id}`);
-        if (`sha256:${await sha256Hex(bytes)}` !== asset.sha256)
-          throw new Error(`Asset checksum differs: ${asset.id}`);
+        const problem =
+          lutAssetProblem(asset, bytes.byteLength) ??
+          lutAssetProblem(
+            asset,
+            bytes.byteLength,
+            `sha256:${await sha256Hex(bytes)}`,
+          );
+        if (problem) throw new Error(problem.message);
         luts.set(
           asset.id,
           prepareLut(asset.sha256, new TextDecoder().decode(bytes)),

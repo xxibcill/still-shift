@@ -36,3 +36,30 @@ export type EffectAssetType = (typeof EFFECT_ASSET_TYPES)[number];
 
 /** The largest `.cube` text a composition reads (a 129³ table is ~90 MB). */
 export const MAX_LUT_FILE_BYTES = 128 * 1024 * 1024;
+
+export type LutAssetProblem = {
+  code: "comp-lut-invalid" | "comp-lut-checksum";
+  message: string;
+};
+/**
+ * The one rule for a LUT asset's bytes, checked where they are read (Node
+ * before rendering, and again in the page): the size limit, then, once the
+ * bytes are hashed, the pinned SHA-256 (`digest` as `sha256:<hex>`).
+ */
+export function lutAssetProblem(
+  asset: Pick<CompositionLutAsset, "id" | "sha256">,
+  byteLength: number,
+  digest?: string,
+): LutAssetProblem | undefined {
+  if (byteLength > MAX_LUT_FILE_BYTES)
+    return {
+      code: "comp-lut-invalid",
+      message: `LUT ${asset.id} is ${byteLength} bytes; the limit is ${MAX_LUT_FILE_BYTES}`,
+    };
+  if (digest !== undefined && digest !== asset.sha256)
+    return {
+      code: "comp-lut-checksum",
+      message: `LUT checksum differs: ${asset.id} is ${digest}, the composition pins ${asset.sha256}`,
+    };
+  return undefined;
+}
