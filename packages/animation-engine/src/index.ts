@@ -211,3 +211,5 @@ export * from "./composition-color-shots.ts";
 export * from "./composition-color-matrix-fit.ts";
 export * from "./composition-color-solve.ts";
 export * from "./composition-auto-color.ts";
+export * from "./composition-color-scopes.ts";
+export * from "./composition-color-probe.ts";

@@ -5,6 +5,7 @@
   "type": "module",
   "exports": "./src/index.ts",
   "dependencies": {
+    "@still-shift/color-science": "workspace:*",
     "@still-shift/execution-runtime": "workspace:*",
     "@still-shift/renderer-core": "workspace:*",
     "@still-shift/scene-contract": "workspace:*",
