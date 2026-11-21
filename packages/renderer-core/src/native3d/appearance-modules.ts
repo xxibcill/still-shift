@@ -51,6 +51,10 @@ export const native3DAppearanceModules: readonly {
     ),
   },
   {
+    name: "color-science/src/keys.ts",
+    url: new URL("../../../color-science/src/keys.ts", import.meta.url),
+  },
+  {
     name: "color-science/src/lut.ts",
     url: new URL("../../../color-science/src/lut.ts", import.meta.url),
   },
@@ -412,6 +416,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/composition/render/flat-lighting.ts",
     url: new URL("../composition/render/flat-lighting.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/composition/render/float-grade-keys.ts",
+    url: new URL("../composition/render/float-grade-keys.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/composition/render/float-grade.ts",
