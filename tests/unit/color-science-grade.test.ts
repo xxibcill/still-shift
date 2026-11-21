@@ -9,6 +9,8 @@ import {
   applyGradePrimary,
   applyLinearMatrixEncoded,
   applyRgbMixer,
+  chromaticAdaptationMatrix,
+  colorSpace,
   GRADE_LIMIT,
   gradePow,
   gradePrimaryControls,
@@ -18,8 +20,13 @@ import {
   planckianXy,
   rgbMixer,
   rgbToXyzMatrix,
+  srgbDecodeMirrored,
+  srgbEncodeMirrored,
   temperatureTintWhite,
+  TINT_DUV_PER_UNIT,
+  TINT_ZERO_OFFSET,
   transferFunction,
+  WHITE_BALANCE_TARGET,
   whiteBalanceMatrix,
   type Rgb,
 } from "@still-shift/color-science";
@@ -45,6 +52,39 @@ const SAMPLES: Rgb[] = [
 const close = (a: readonly number[], b: readonly number[], tol: number) =>
   a.every((v, i) => Math.abs(v - b[i]!) <= tol * Math.max(1, Math.abs(b[i]!)));
 const luma = (v: Rgb) => 0.2126 * v[0] + 0.7152 * v[1] + 0.0722 * v[2];
+const srgb = transferFunction("srgb");
+const uv = ([x, y]: readonly number[]): [number, number] => {
+  const d = -2 * x! + 12 * y! + 3;
+  return [(4 * x!) / d, (6 * y!) / d];
+};
+const sub = (a: readonly number[], b: readonly number[]): [number, number] => [
+  a[0]! - b[0]!,
+  a[1]! - b[1]!,
+];
+const multiplyMat = (a: readonly number[], b: readonly number[]) =>
+  [0, 1, 2].flatMap((r) =>
+    [0, 1, 2].map((c) =>
+      [0, 1, 2].reduce((sum, k) => sum + a[r * 3 + k]! * b[k * 3 + c]!, 0),
+    ),
+  );
+/** Linear BT.709 RGB of a 40% grey lit by the white `xy` (Y = 0.4). */
+const lit = ([x, y]: readonly number[]): Rgb => {
+  const xyz = [x! / y!, 1, (1 - x! - y!) / y!];
+  const toRgb = rgbToXyzMatrix("bt709", "inverse");
+  return [0, 1, 2].map(
+    (r) =>
+      0.4 *
+      (toRgb[r * 3]! * xyz[0]! +
+        toRgb[r * 3 + 1]! * xyz[1]! +
+        toRgb[r * 3 + 2]! * xyz[2]!),
+  ) as unknown as Rgb;
+};
+/** `linear` through grade.white-balance (encoded sRGB in and out), as linear. */
+const whiteBalanced = (linear: Rgb, t: number, tint: number) =>
+  applyLinearMatrixEncoded(
+    linear.map((v) => srgbEncodeMirrored(v)) as unknown as Rgb,
+    whiteBalanceMatrix(t, tint)!,
+  ).map((v) => srgbDecodeMirrored(v));
 
 describe("grade.primary reference", () => {
   const neutral = gradePrimaryControls(NEUTRAL_GRADE_PRIMARY);
@@ -163,76 +203,88 @@ describe("grade.white-balance reference", () => {
     );
     expect(() => planckianXy(1000)).toThrow(/1667/);
   });
-  it("tint 0 adaptation matches the Bradford vectors within 1e-12", () => {
-    for (const item of vectors.bradfordToReference) {
-      const m = whiteBalanceMatrix(item.cct, 0);
-      if (item.cct === 6500) expect(m).toBeNull();
-      else
-        expect(
-          close(m!, item.linearBt709.flat(), 1e-12),
-          String(item.cct),
-        ).toBe(true);
+  it("Bradford adaptation from a locus white to D65 matches the vectors within 1e-12", () => {
+    const npm = rgbToXyzMatrix("bt709");
+    const toRgb = rgbToXyzMatrix("bt709", "inverse");
+    for (const item of vectors.bradfordToD65) {
+      const cat = chromaticAdaptationMatrix(
+        planckianXy(item.cct),
+        WHITE_BALANCE_TARGET,
+        "bradford",
+      );
+      const m = multiplyMat(toRgb, multiplyMat(cat, npm));
+      expect(close(m, item.linearBt709.flat(), 1e-12), String(item.cct)).toBe(
+        true,
+      );
     }
+  });
+  it("adapts to D65, BT.709's white", () => {
+    expect(WHITE_BALANCE_TARGET).toEqual(colorSpace("bt709").white);
+    expect(temperatureTintWhite(6500, 0)).toEqual([0.3127, 0.329]);
   });
   it("6500 K and tint 0 is an exact identity; other settings are not", () => {
     expect(whiteBalanceMatrix(6500, 0)).toBeNull();
     expect(whiteBalanceMatrix(6500, 10)).not.toBeNull();
   });
+  it("the tint-0 line keeps D65's offset from the locus at every temperature", () => {
+    // D65 is about +0.0032 Duv above the 6500 K locus point, almost all of it
+    // along the normal (published: Duv ≈ 0.0032 at CCT ≈ 6504 K).
+    expect(TINT_ZERO_OFFSET.normal).toBeCloseTo(0.00317, 5);
+    expect(Math.abs(TINT_ZERO_OFFSET.tangent)).toBeLessThan(2e-5);
+    // The offset of the computed 6500 K white is D65 to float precision.
+    const at6500 = temperatureTintWhite(6500, 1e-12);
+    expect(close(at6500, [0.3127, 0.329], 1e-12)).toBe(true);
+    for (const t of [2000, 3200, 5000, 9000]) {
+      const step = sub(uv(temperatureTintWhite(t, 0)), uv(planckianXy(t)));
+      expect(Math.hypot(...step), String(t)).toBeCloseTo(
+        Math.hypot(TINT_ZERO_OFFSET.normal, TINT_ZERO_OFFSET.tangent),
+        12,
+      );
+      expect(step[1]).toBeGreaterThan(0); // above the locus: greener
+    }
+  });
   it("tint moves the white perpendicular to the locus by Duv = tint / 5000 in CIE 1960 uv", () => {
-    const uv = ([x, y]: readonly number[]) => {
-      const d = -2 * x! + 12 * y! + 3;
-      return [(4 * x!) / d, (6 * y!) / d];
-    };
     for (const t of [2500, 5000, 9000]) {
-      const base = uv(planckianXy(t)),
-        moved = uv(temperatureTintWhite(t, 50));
-      const step = [moved[0]! - base[0]!, moved[1]! - base[1]!];
-      expect(Math.hypot(step[0]!, step[1]!)).toBeCloseTo(0.01, 12);
+      const step = sub(
+        uv(temperatureTintWhite(t, 50)),
+        uv(temperatureTintWhite(t, 0)),
+      );
+      expect(Math.hypot(...step)).toBeCloseTo(0.01, 12);
       expect(step[1]).toBeGreaterThan(0); // positive tint: greener illuminant
-      const along = [
-        uv(planckianXy(t + 1))[0]! - uv(planckianXy(t - 1))[0]!,
-        uv(planckianXy(t + 1))[1]! - uv(planckianXy(t - 1))[1]!,
-      ];
+      const along = sub(uv(planckianXy(t + 1)), uv(planckianXy(t - 1)));
       expect(
-        Math.abs(step[0]! * along[0]! + step[1]! * along[1]!) /
-          Math.hypot(along[0]!, along[1]!),
+        Math.abs(step[0] * along[0] + step[1] * along[1]) /
+          Math.hypot(...along),
       ).toBeLessThan(1e-9);
     }
   });
-  it("neutralizes the stated illuminant: its white becomes neutral", () => {
-    const srgb = transferFunction("srgb");
+  it("neutralizes the stated illuminant: a grey lit by it becomes R = G = B", () => {
     for (const [t, tint] of [
+      [2000, 0],
       [3200, 0],
       [5000, 30],
       [9000, -40],
+      [1667, -100],
+      [25000, 100],
     ] as const) {
-      // The illuminant's white as encoded sRGB, scaled into range.
-      const m = whiteBalanceMatrix(t, tint)!;
-      const xy = temperatureTintWhite(t, tint);
-      const xyz = [xy[0] / xy[1], 1, (1 - xy[0] - xy[1]) / xy[1]];
-      const toRgb = rgbToXyzMatrix("bt709", "inverse");
-      const lin = [0, 1, 2].map(
-        (r) =>
-          0.4 *
-          (toRgb[r * 3]! * xyz[0]! +
-            toRgb[r * 3 + 1]! * xyz[1]! +
-            toRgb[r * 3 + 2]! * xyz[2]!),
+      const out = whiteBalanced(lit(temperatureTintWhite(t, tint)), t, tint);
+      expect(Math.max(...out) - Math.min(...out), `${t} ${tint}`).toBeLessThan(
+        1e-12,
       );
-      const out = applyLinearMatrixEncoded(
-        lin.map((v) => srgb.encode(v)) as unknown as Rgb,
-        m,
-      ).map((v) => srgb.decode(v));
-      const ref = planckianXy(6500);
-      const refXyz = [ref[0] / ref[1], 1, (1 - ref[0] - ref[1]) / ref[1]];
-      const refRgb = [0, 1, 2].map(
-        (r) =>
-          toRgb[r * 3]! * refXyz[0]! +
-          toRgb[r * 3 + 1]! * refXyz[1]! +
-          toRgb[r * 3 + 2]! * refXyz[2]!,
-      );
-      // Output is proportional to the reference white's RGB.
-      const ratio = out.map((v, i) => v / refRgb[i]!);
-      expect(Math.max(...ratio) - Math.min(...ratio)).toBeLessThan(1e-12);
+    }
+  });
+  it("a light on the black-body locus is neutralized by tint ≈ −16 at its temperature", () => {
+    const tint = -TINT_ZERO_OFFSET.normal / TINT_DUV_PER_UNIT;
+    expect(tint).toBeCloseTo(-15.87, 2);
+    for (const t of [2000, 3200, 5000]) {
+      const out = whiteBalanced(lit(planckianXy(t)), t, tint);
+      // Only D65's small along-locus offset remains: well under 0.1 of an
+      // 8-bit code at 40% linear grey.
+      const encoded = out.map((v) => srgb.encode(v) * 255);
+      expect(
+        Math.max(...encoded) - Math.min(...encoded),
+        String(t),
+      ).toBeLessThan(0.1);
     }
   });
   it("warm illuminant settings cool a grey; cool settings warm it", () => {
