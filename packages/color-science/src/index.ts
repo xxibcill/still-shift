@@ -68,3 +68,32 @@ export {
   whiteBalanceMatrix,
 } from "./grade.ts";
 export type { GradePrimary, GradePrimaryControls, RgbMixer } from "./grade.ts";
+export {
+  binOf,
+  chroma709,
+  chromaticity,
+  cieHistogram,
+  encodedLuma,
+  exposureZone,
+  FALSE_COLOR_RANGES,
+  falseColorClass,
+  forEachPixel,
+  frameRegion,
+  histograms,
+  hsv,
+  lumaWaveform,
+  pixelCoordinates,
+  rgbParade,
+  SKIN_LINE_DEGREES,
+  SRGB_LINEAR_TABLE,
+  suggestQualifier,
+  vectorscope,
+  vectorscopeAngle,
+} from "./scopes.ts";
+export type {
+  Histogram2D,
+  Histograms,
+  PixelCoordinates,
+  Region,
+  RgbaFrame,
+} from "./scopes.ts";
