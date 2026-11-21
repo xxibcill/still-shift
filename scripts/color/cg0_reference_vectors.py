@@ -1330,6 +1330,79 @@ def temperature() -> dict:
 
 
 # --------------------------------------------------------------------------
+# Monotone curve splines (added for CG4 curves)
+# --------------------------------------------------------------------------
+
+SPLINE_CASES = [
+    ("identity", [[0, 0], [1, 1]], False),
+    ("s-curve", [[0, 0], [0.25, 0.18], [0.5, 0.5], [0.75, 0.84], [1, 1]], False),
+    ("lift-and-crush", [[0, 0.08], [0.2, 0.15], [0.8, 0.92], [1, 0.97]], False),
+    ("non-monotone", [[0, 0.2], [0.3, 0.9], [0.5, 0.4], [0.7, 0.4], [1, 0.8]], False),
+    ("flat-segment", [[0, 0], [0.4, 0.5], [0.6, 0.5], [1, 1]], False),
+    (
+        "sixteen-points",
+        [[i / 15, (i / 15) ** 0.6 if i % 3 else (i / 15) ** 0.9] for i in range(16)],
+        False,
+    ),
+    ("tight-controls", [[0, 0], [0.5, 0.2], [0.500001, 0.8], [1, 1]], False),
+    ("hue-flat", [[0, 0.5], [1, 0.5]], True),
+    ("hue-bump", [[0, 0.5], [0.1, 0.7], [0.25, 0.5], [1, 0.5]], True),
+    ("hue-wrap-bump", [[0, 0.65], [0.08, 0.6], [0.5, 0.5], [0.92, 0.6], [1, 0.65]], True),
+]
+
+
+def periodic_points(points):
+    """Points over one period (x = 1 dropped: it equals x = 0), then extended
+    two points to each side, as the renderer's periodic curves do."""
+    inner = [p for p in points if p[0] < 1]
+    head = [[p[0] + 1, p[1]] for p in inner[:2]]
+    tail = [[p[0] - 1, p[1]] for p in inner[-2:]]
+    return tail + inner + head
+
+
+def spline() -> dict:
+    import scipy
+    from scipy.interpolate import PchipInterpolator
+
+    out = header(
+        "spline",
+        "Monotone piecewise cubic Hermite interpolation (PCHIP) of curve control points, as scipy.interpolate.PchipInterpolator evaluates it: interior derivatives by the weighted harmonic mean (zero at local extrema), end derivatives by the three-point formula limited to keep shape. Periodic (hue) curves drop the x = 1 point and extend the points by two on each side before interpolating.",
+    )
+    out["references"]["scipy"] = scipy.__version__
+    out["source"] = (
+        "Fritsch, F. N. and Carlson, R. E. (1980), Monotone Piecewise Cubic Interpolation, SIAM J. Numer. Anal. 17(2); Fritsch and Butland (1984) weighted harmonic mean derivatives, as implemented by scipy.interpolate.PchipInterpolator"
+    )
+    out["tolerances"] = {
+        "float64Port": {
+            "absolute": 1e-12,
+            "use": "A float64 port of the same PCHIP derivatives and Hermite evaluation must match every sample within 1e-12.",
+        }
+    }
+    xs = np.arange(257) / 256.0
+    cases = []
+    for cid, points, periodic in SPLINE_CASES:
+        knots = periodic_points(points) if periodic else points
+        k = np.array(knots, dtype=np.float64)
+        interp = PchipInterpolator(k[:, 0], k[:, 1])
+        samples = np.unique(
+            np.concatenate([xs, np.array([p[0] for p in points], dtype=np.float64)])
+        )
+        if periodic:
+            samples = samples[samples < 1]
+        cases.append(
+            {
+                "id": cid,
+                "periodic": periodic,
+                "points": matrix(points),
+                "x": floats(samples),
+                "y": floats(interp(samples)),
+            }
+        )
+    out["cases"] = cases
+    return out
+
+
+# --------------------------------------------------------------------------
 
 
 def dump(value) -> str:
@@ -1364,6 +1437,7 @@ def build() -> dict[str, str]:
     files["cdl.json"] = dump(cdl())
     files["lut-interpolation.json"] = dump(lut)
     files["temperature.json"] = dump(temperature())
+    files["spline.json"] = dump(spline())
     return files
 
 

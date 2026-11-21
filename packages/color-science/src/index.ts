@@ -99,3 +99,27 @@ export type {
   Region,
   RgbaFrame,
 } from "./scopes.ts";
+export {
+  applyGradeCurves,
+  applyGradeHueCurves,
+  applyGradeTonal,
+  bakeCurve,
+  CURVE_TABLE_SIZE,
+  gradeCurvesControls,
+  gradeHueCurvesControls,
+  HUE_CURVE_CHROMA_FADE,
+  HUE_CURVE_KEYS,
+  HUE_CURVE_LUMA_AMOUNT,
+  HUE_CURVE_SATURATION_SCALE,
+  NEUTRAL_GRADE_TONAL,
+  pchip,
+  sampleCurveTable,
+} from "./curves.ts";
+export type {
+  CurvePoints,
+  GradeCurves,
+  GradeCurvesControls,
+  GradeHueCurves,
+  GradeHueCurvesControls,
+  GradeTonal,
+} from "./curves.ts";
