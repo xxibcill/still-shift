@@ -189,6 +189,7 @@ try {
         backend: "canvas2d" | "webgl2",
         luts = prepared,
         frame = 0,
+        inset = 0,
       ) => {
         const used = [
           ...new Set(effects.flatMap((e) => (e.lut ? [e.lut] : []))),
@@ -227,7 +228,7 @@ try {
               sources: [{ asset: "still" }],
               size: [still.width, still.height],
               fit: "stretch",
-              transform: { anchor: [0, 0] },
+              transform: { anchor: [0, 0], position: [-inset, -inset] },
               effects: effects.map((e, i) => ({
                 id: `g${i}`,
                 effect: e.effect,
@@ -528,7 +529,34 @@ try {
       } catch (error) {
         missing = String((error as Error).message);
       }
-      return { identities, parity, animation, bakes, missing };
+      // 5. A grade.lut before a mesh warp runs inside an effect window: the
+      // layer overhangs the viewport, so the mesh capture is larger than it.
+      const windowed = [];
+      for (const backend of ["canvas2d", "webgl2"] as const) {
+        const still = stills[0]!;
+        const mesh: Effect = {
+          effect: "distort.mesh-warp",
+          params: { size: [still.width, still.height] },
+        };
+        const lut: Effect = { effect: "grade.lut", lut: "cube-17" };
+        let error = "";
+        let changed = 0;
+        let vsUnwarped = 0;
+        try {
+          const warped = render(still, [mesh], backend, prepared, 0, 16);
+          const graded = render(still, [lut, mesh], backend, prepared, 0, 16);
+          const plain = render(still, [lut], backend, prepared, 0, 16);
+          for (let i = 0; i < graded.length; i++) {
+            if (i % 4 === 3) continue;
+            if (graded[i] !== warped[i]) changed++;
+            vsUnwarped = Math.max(vsUnwarped, Math.abs(graded[i]! - plain[i]!));
+          }
+        } catch (caught) {
+          error = String((caught as Error).message);
+        }
+        windowed.push({ backend, error, changed, vsUnwarped });
+      }
+      return { identities, parity, animation, bakes, missing, windowed };
     },
     { stills, fixtureLuts },
   );
@@ -583,6 +611,10 @@ try {
     `animated intensity: ${JSON.stringify(result.animation)}`,
   );
   assert.match(result.missing, /comp-lut-not-ready/);
+  for (const w of result.windowed) {
+    assert.equal(w.error, "", `${w.backend}: windowed grade.lut renders`);
+    assert.ok(w.changed > 0, `${w.backend}: windowed grade.lut grades`);
+  }
   const bakeMax = (size: number) =>
     Math.max(
       ...result.bakes.filter((b) => b.size === size).map((b) => b.maxDelta),
@@ -605,6 +637,7 @@ try {
       bake33: bakeMax(33),
       bake65: bakeMax(65),
       missing: result.missing.slice(0, 80),
+      windowed: result.windowed,
     }),
   );
 } finally {
