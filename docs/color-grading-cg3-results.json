@@ -15,7 +15,7 @@
   },
   "visualAcceptance": "none: measurement tooling only; the scope images were looked at by the agent as a sanity check, which is not acceptance",
   "delivered": {
-    "colorScience": "packages/color-science/src/scopes.ts: luma waveform, RGB parade, BT.709 vectorscope, RGB/luma/hue/saturation histograms, CIE 1931 xy, SDR false color, exposure zones (ported from chroma-node scopeAnalysis.ts b804dc0); new: 123-degree skin-tone line, pixel coordinates (encoded, linear, HSL, CIELAB, OKLab), HSL qualifier suggestions",
+    "colorScience": "packages/color-science/src/scopes.ts: luma waveform, RGB parade (YRGB and YCbCr parades added in the PR #78 review), BT.709 vectorscope, RGB/luma/hue/saturation histograms, CIE 1931 xy, SDR false color, exposure zones (ported from chroma-node scopeAnalysis.ts b804dc0); new: 123-degree skin-tone line, pixel coordinates (encoded, linear, HSL, CIELAB, OKLab), HSL qualifier suggestions",
     "reuse": "comp color-stats' measureColorFrames is now a wrapper over colorStatisticsAccumulator (same summation order); comp scopes embeds its ColorStatistics unchanged and the CGA color integration tests (21) pass",
     "commands": {
       "comp scopes": "evenly sampled frames or --frame-range start:end, optional --region; report still-shift-color-scopes-1 validated by a zod schema; optional waveform/parade/vectorscope/CIE PNGs",
@@ -28,7 +28,7 @@
       "regions and alpha-0 skipping",
       "neutral luma is exact (the Rec.709 weights sum to 0.9999999999999999 in float64, which moved exact zone boundaries)"
     ],
-    "deferred": "scope types beyond the measured set (YCbCr/YRGB parades, HDR waveform, CIE 1976) and probe coordinates at arbitrary graph nodes (CG9) are not built; the chroma-node HDR false-color ranges wait for CG7/CG8"
+    "deferred": "scope types beyond the measured set (HDR waveform, CIE 1976; YRGB and YCbCr parades were added in the PR #78 review, F2) and probe coordinates at arbitrary graph nodes (CG9) are not built; the chroma-node HDR false-color ranges wait for CG7/CG8"
   },
   "checks": [
     {

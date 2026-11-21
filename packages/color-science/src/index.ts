@@ -95,6 +95,7 @@ export {
   suggestQualifier,
   vectorscope,
   vectorscopeAngle,
+  ycbcrParade,
 } from "./scopes.ts";
 export type {
   Histogram2D,

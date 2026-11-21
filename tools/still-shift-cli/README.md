@@ -450,7 +450,8 @@ x,y,w,h`. The report (`still-shift-color-scopes-1`, validated by a schema)
   white points (0.5% and 99.5%), a 10° hue histogram of chromatic pixels, the
   skin-tone line (mean vectorscope angle of skin-like pixels and its deviation
   from 123°), false-color shares and ten exposure zones. `--images` writes
-  `waveform.png`, `parade.png`, `vectorscope.png` (with the skin line) and
+  `waveform.png`, `parade.png` (RGB), `parade-yrgb.png`, `parade-ycbcr.png`
+  (chroma centred), `vectorscope.png` (with the skin line) and
   `cie1931.png` into a new folder. Frames are decoded in batches within the
   media limit for live decoded pictures (`mediaLimits.decodedFrameBytes`, 128
   MiB by default), so long ranges fit; a single frame over the limit fails

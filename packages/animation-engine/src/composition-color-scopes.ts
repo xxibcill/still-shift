@@ -25,6 +25,7 @@ import {
   hsv,
   lumaWaveform,
   rgbParade,
+  ycbcrParade,
   SKIN_LINE_DEGREES,
   vectorscope,
   vectorscopeAngle,
@@ -344,6 +345,7 @@ async function forEachBatch(
 type ScopeImages = {
   waveform: Histogram2D;
   parade: [Histogram2D, Histogram2D, Histogram2D];
+  ycbcr: [Histogram2D, Histogram2D, Histogram2D];
   vectorscope: Histogram2D;
   cie: Histogram2D;
 };
@@ -395,7 +397,7 @@ function skinLine(rgba: Uint8Array, size: number) {
 }
 
 export type ColorScopesOptions = ColorFrameOptions & {
-  /** A new directory for waveform, parade, vectorscope and CIE PNGs. */
+  /** A new directory for waveform, RGB/YRGB/YCbCr parade, vectorscope and CIE PNGs. */
   imagesDirectory?: string | undefined;
 };
 
@@ -425,6 +427,7 @@ export async function measureColorScopes(
     ? {
         waveform: empty(),
         parade: [empty(), empty(), empty()],
+        ycbcr: [empty(), empty(), empty()],
         vectorscope: empty(),
         cie: empty(),
       }
@@ -437,6 +440,9 @@ export async function measureColorScopes(
         addInto(images.waveform, lumaWaveform(frame, 256, 256, region));
         rgbParade(frame, 256, 256, region).forEach((h, c) =>
           addInto(images.parade[c]!, h),
+        );
+        ycbcrParade(frame, 256, 256, region).forEach((h, c) =>
+          addInto(images.ycbcr[c]!, h),
         );
         addInto(images.vectorscope, vectorscope(frame, 256, region));
         addInto(images.cie, cieHistogram(frame, 256, region));
@@ -454,6 +460,26 @@ export async function measureColorScopes(
           [255, 70, 70],
           [70, 255, 70],
           [90, 120, 255],
+        ]),
+      ],
+      [
+        "parade-yrgb.png",
+        scopeImage(
+          [images.waveform, ...images.parade],
+          [
+            [230, 230, 230],
+            [255, 70, 70],
+            [70, 255, 70],
+            [90, 120, 255],
+          ],
+        ),
+      ],
+      [
+        "parade-ycbcr.png",
+        scopeImage(images.ycbcr, [
+          [230, 230, 230],
+          [90, 120, 255],
+          [255, 70, 70],
         ]),
       ],
       [

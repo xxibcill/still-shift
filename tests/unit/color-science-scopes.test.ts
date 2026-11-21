@@ -22,6 +22,7 @@ import {
   suggestQualifier,
   vectorscope,
   vectorscopeAngle,
+  ycbcrParade,
   type RgbaFrame,
 } from "@still-shift/color-science";
 
@@ -71,6 +72,33 @@ describe("waveform, parade and histograms on ramps", () => {
     const h = histograms(frame);
     expect(h.red[0]).toBe(32 + 64 * 256);
     expect(h.red[200]).toBe(32);
+  });
+  it("YCbCr parade: the gray ramp's Y′ is the diagonal and its chroma sits at neutral", () => {
+    const [y, cb, cr] = ycbcrParade(ramp);
+    for (let x = 0; x < 256; x++) {
+      expect(y.counts[(255 - x) * 256 + x]).toBe(32);
+      // Cb = Cr = 0 → 0.5 → bin 128, drawn at row 127.
+      expect(cb.counts[127 * 256 + x]).toBe(32);
+      expect(cr.counts[127 * 256 + x]).toBe(32);
+    }
+    expect(cb.samples).toBe(256 * 32);
+  });
+  it("YCbCr parade: BT.709 primaries land at their analytic Cb/Cr", () => {
+    const rgba = new Uint8Array(3 * 4);
+    rgba.set([255, 0, 0, 255, 0, 255, 0, 255, 0, 0, 255, 255]);
+    const [y, cb, cr] = ycbcrParade({ width: 3, height: 1, rgba }, 3, 256);
+    const rowOf = (h: typeof y, column: number) => {
+      for (let row = 0; row < 256; row++)
+        if (h.counts[row * 3 + column]) return row;
+      return -1;
+    };
+    // Red: Y′ 0.2126, Cr +0.5 (top row); blue: Cb +0.5 (top row).
+    expect(rowOf(y, 0)).toBe(255 - Math.floor(0.2126 * 256));
+    expect(rowOf(cr, 0)).toBe(0);
+    expect(rowOf(cb, 2)).toBe(0);
+    // Green: Cb and Cr both negative.
+    expect(rowOf(cb, 1)).toBeGreaterThan(127);
+    expect(rowOf(cr, 1)).toBeGreaterThan(127);
   });
 });
 

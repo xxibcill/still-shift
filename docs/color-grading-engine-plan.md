@@ -646,8 +646,9 @@ grade from a picture alone. This is the engine's eyes, so it comes early.
       skill; the composition reference covers fields, not CLI commands).
 
 _As built:_ `comp scopes` embeds `comp color-stats`' statistics unchanged
-(the measurement is now an accumulator with the same summation order). YCbCr
-and YRGB parades, HDR scopes and CIE 1976 are not built; the probe reports the
+(the measurement is now an accumulator with the same summation order). RGB,
+YRGB and YCbCr parades are written as scope images (YCbCr added in the PR #78
+review, F2); HDR scopes and CIE 1976 are not built; the probe reports the
 renderer's 8-bit output per effect stage, not values inside a fused grade run.
 
 ## CG4 — Curves and tonal-range tools

@@ -9,7 +9,8 @@
  * `bins − 1`, so the last bin held one value); the hue histogram skips
  * achromatic pixels (chroma-node counted greys as hue 0, red); frames accept a
  * region and alpha-0 pixels are skipped. The skin-tone line, pixel coordinates
- * (linear, HSL, CIELAB, OKLab) and qualifier suggestions are new.
+ * (linear, HSL, CIELAB, OKLab), qualifier suggestions and the YCbCr parade
+ * are new.
  */
 import { ColorScienceError } from "./errors.ts";
 import { transferFunction } from "./transfer.ts";
@@ -159,6 +160,40 @@ export function rgbParade(
       const values = [r, g, b];
       for (let c = 0; c < 3; c++) {
         const row = levels - 1 - binOf(values[c]! / 255, levels);
+        out[c]!.counts[row * columns + column]!++;
+        out[c]!.samples++;
+      }
+    },
+    area,
+  );
+  return out;
+}
+
+/**
+ * YCbCr parade: waveforms of BT.709 Y′, Cb and Cr (chroma offset by 0.5, so
+ * neutral sits mid-height and row 0 is +0.5). A YRGB parade is
+ * `[lumaWaveform, ...rgbParade]`.
+ */
+export function ycbcrParade(
+  frame: RgbaFrame,
+  columns = 256,
+  levels = 256,
+  region?: Region,
+): [Histogram2D, Histogram2D, Histogram2D] {
+  const area = frameRegion(frame, region);
+  const out: [Histogram2D, Histogram2D, Histogram2D] = [
+    histogram2D(columns, levels),
+    histogram2D(columns, levels),
+    histogram2D(columns, levels),
+  ];
+  forEachPixel(
+    frame,
+    (r, g, b, x) => {
+      const column = binOf((x - area.x) / area.width, columns);
+      const [cb, cr] = chroma709(r, g, b);
+      const values = [encodedLuma(r, g, b), cb + 0.5, cr + 0.5];
+      for (let c = 0; c < 3; c++) {
+        const row = levels - 1 - binOf(values[c]!, levels);
         out[c]!.counts[row * columns + column]!++;
         out[c]!.samples++;
       }
