@@ -38,12 +38,16 @@ export type {
 export {
   MAX_LUT_1D_SIZE,
   MAX_LUT_3D_SIZE,
+  bakeCubeLut,
   parseCubeLut,
   sampleLut,
+  writeCubeLut,
 } from "./lut.ts";
 export type { CubeLut, LutInterpolation } from "./lut.ts";
 export { NEUTRAL_CDL, applyCdl } from "./cdl.ts";
 export type { Cdl } from "./cdl.ts";
+export { cdlFileKind, cdlNumber, parseCdlXml, writeCdlXml } from "./cdl-xml.ts";
+export type { CdlCorrection, CdlDocument, CdlFileKind } from "./cdl-xml.ts";
 export {
   GRADE_LIMIT,
   HIGHLIGHT_RANGE,
