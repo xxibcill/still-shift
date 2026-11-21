@@ -67,7 +67,18 @@
     "schema:check flagged the native appearance closure after the renderer's color-science import gained the scope module; regenerated (identity only)."
   ],
   "workspace": "CG3 runs in its own worktree (.claude/worktrees/color-grading-cg3) at the owner's choice, because the PR #77 review session was committing in the CG0-CG2 worktree.",
-  "verification": "filled after the run",
+  "verification": {
+    "checkFast": [
+      "run 1 failed format:check on one line of composition-color-scopes.ts (from a sed type fix); formatted in its own commit",
+      "run 2 passed: 474 test files, 4,875 tests"
+    ],
+    "integration": "composition-scopes, composition-color (CGA), composition-color-cli: 3 files, 32 tests passed",
+    "browser": {
+      "color-grading-cg2": "passed after merging the PR #77 tip (88 parity rows: Canvas 0, WebGL2 <= 1)",
+      "color-grading-cg0": "unchanged (273 renders)"
+    },
+    "notRunHere": "composition-baselines and composition-effects: CG3 changes no renderer source; the merged main/PR #77 renderer changes were verified on their own branches"
+  },
   "notRun": "pnpm check, full pnpm test, runtime tier, release checks",
   "next": "Report to the owner. Then CG4 (curves and tonal-range tools) and CG5 (LUT and CDL interchange), which can run in parallel after CG2."
 }
