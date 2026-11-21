@@ -13,6 +13,7 @@
  * are new.
  */
 import { ColorScienceError } from "./errors.ts";
+import { BT709_CB_SCALE, BT709_CR_SCALE, BT709_LUMA } from "./grade.ts";
 import { transferFunction } from "./transfer.ts";
 
 export type RgbaFrame = {
@@ -23,7 +24,7 @@ export type RgbaFrame = {
 /** Pixel rectangle: x, y of the top-left pixel, width and height in pixels. */
 export type Region = { x: number; y: number; width: number; height: number };
 
-const LUMA = [0.2126, 0.7152, 0.0722] as const;
+const LUMA = BT709_LUMA;
 const srgb = transferFunction("srgb");
 /** Encoded byte → linear light, by table. */
 export const SRGB_LINEAR_TABLE = Float64Array.from({ length: 256 }, (_, v) =>
@@ -84,7 +85,7 @@ export const encodedLuma = (r: number, g: number, b: number) =>
 /** BT.709 Cb, Cr of encoded bytes (each −0.5…0.5). */
 export function chroma709(r: number, g: number, b: number): [number, number] {
   const y = encodedLuma(r, g, b);
-  return [(b / 255 - y) / 1.8556, (r / 255 - y) / 1.5748];
+  return [(b / 255 - y) / BT709_CB_SCALE, (r / 255 - y) / BT709_CR_SCALE];
 }
 
 /** HSV hue (degrees, null when achromatic), saturation and value of bytes. */

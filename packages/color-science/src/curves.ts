@@ -12,13 +12,17 @@
  * beyond 0–1 (the unclamped float stage keeps values outside that range).
  * Periodic (hue) curves wrap.
  */
-import { limitGrade } from "./grade.ts";
+import {
+  BT709_CB_SCALE,
+  BT709_CR_SCALE,
+  BT709_LUMA as LUMA,
+  limitGrade,
+  luma709 as luma,
+  smoothstep,
+} from "./grade.ts";
 import type { Rgb } from "./matrix.ts";
 
 export type CurvePoints = readonly (readonly [number, number])[];
-const LUMA = [0.2126, 0.7152, 0.0722] as const;
-const luma = (v: readonly number[]) =>
-  LUMA[0] * v[0]! + LUMA[1] * v[1]! + LUMA[2] * v[2]!;
 const sign = (v: number) => (v > 0 ? 1 : v < 0 ? -1 : 0);
 
 /** Control points for one period (x = 1 dropped), extended two each side. */
@@ -237,8 +241,8 @@ export function applyGradeHueCurves(
   k: GradeHueCurvesControls,
 ): [number, number, number] {
   const y = luma(v);
-  const cb = (v[2] - y) / 1.8556,
-    cr = (v[0] - y) / 1.5748;
+  const cb = (v[2] - y) / BT709_CB_SCALE,
+    cr = (v[0] - y) / BT709_CR_SCALE;
   const radius = Math.hypot(cb, cr);
   const hue = Math.atan2(cr, cb) / (2 * Math.PI);
   const sat = Math.min(1, radius / HUE_CURVE_SATURATION_SCALE);
@@ -264,8 +268,8 @@ export function applyGradeHueCurves(
     [cb2, cr2] = [cb2 * c - cr2 * s, cb2 * s + cr2 * c];
   }
   const y2 = y + offset;
-  const r = y2 + 1.5748 * cr2,
-    b = y2 + 1.8556 * cb2;
+  const r = y2 + BT709_CR_SCALE * cr2,
+    b = y2 + BT709_CB_SCALE * cb2;
   return [
     limitGrade(r),
     limitGrade((y2 - LUMA[0] * r - LUMA[2] * b) / LUMA[1]),
@@ -304,10 +308,6 @@ export const NEUTRAL_GRADE_TONAL: GradeTonal = {
   falloff: 0.15,
   softClipHigh: 1,
   softClipLow: 0,
-};
-const smoothstep = (e0: number, e1: number, x: number) => {
-  const t = Math.min(1, Math.max(0, (x - e0) / (e1 - e0)));
-  return t * t * (3 - 2 * t);
 };
 
 /**

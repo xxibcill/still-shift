@@ -1,4 +1,6 @@
 import {
+  BT709_CB_SCALE,
+  BT709_CR_SCALE,
   applyCdl,
   applyGradeCurves,
   applyGradeHueCurves,
@@ -470,7 +472,7 @@ vec3 gCurves(vec3 v,vec4 rows,float lumaMix){
 }
 vec3 gHueCurves(vec3 v,vec3 hueRows,vec3 satRows){
   float y=dot(v,LUMA);
-  float cb=(v.b-y)/1.8556,cr=(v.r-y)/1.5748;
+  float cb=(v.b-y)/${BT709_CB_SCALE},cr=(v.r-y)/${BT709_CR_SCALE};
   float radius=length(vec2(cb,cr));
   float hue=radius>0.0?atan(cr,cb)/6.283185307179586:0.0;
   float sat=min(1.0,radius/${HUE_CURVE_SATURATION_SCALE.toFixed(4)});
@@ -489,7 +491,7 @@ vec3 gHueCurves(vec3 v,vec3 hueRows,vec3 satRows){
     float nb=cb2*c-cr2*s;cr2=cb2*s+cr2*c;cb2=nb;
   }
   float y2=y+offs;
-  float r=y2+1.5748*cr2,b=y2+1.8556*cb2;
+  float r=y2+${BT709_CR_SCALE}*cr2,b=y2+${BT709_CB_SCALE}*cb2;
   return gLimit3(vec3(r,(y2-LUMA.r*r-LUMA.b*b)/LUMA.g,b));
 }
 float gSoftClip(float x,vec2 clip){
