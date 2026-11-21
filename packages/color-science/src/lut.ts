@@ -176,17 +176,16 @@ export function parseCubeLut(text: string): CubeLut {
 /** Deterministic `.cube` text (10 decimals); shapers use the Resolve form. */
 export function writeCubeLut(lut: CubeLut): string {
   const f = (v: number) => (Object.is(v, -0) ? 0 : v).toFixed(10);
-  const triples = (data: Float64Array) => {
-    const out: string[] = [];
-    for (let i = 0; i < data.length; i += 3)
-      out.push(`${f(data[i]!)} ${f(data[i + 1]!)} ${f(data[i + 2]!)}`);
-    return out;
-  };
   const lines = [
     ...(lut.title !== undefined
       ? [`TITLE "${lut.title.replace(/"/g, "'")}"`]
       : []),
   ];
+  // One push per row: a 65³ table is too many arguments for one call.
+  const triples = (data: Float64Array) => {
+    for (let i = 0; i < data.length; i += 3)
+      lines.push(`${f(data[i]!)} ${f(data[i + 1]!)} ${f(data[i + 2]!)}`);
+  };
   const uniform = (min: Triple, max: Triple) =>
     min.every((v) => v === min[0]) && max.every((v) => v === max[0]);
   if (lut.shaper) {
@@ -202,8 +201,8 @@ export function writeCubeLut(lut: CubeLut): string {
       `LUT_3D_SIZE ${lut.size}`,
       `LUT_1D_INPUT_RANGE ${f(lut.shaper.domainMin[0])} ${f(lut.shaper.domainMax[0])}`,
       `LUT_3D_INPUT_RANGE ${f(lut.domainMin[0])} ${f(lut.domainMax[0])}`,
-      ...triples(lut.shaper.data),
     );
+    triples(lut.shaper.data);
   } else {
     lines.push(
       `${lut.kind === "3d" ? "LUT_3D_SIZE" : "LUT_1D_SIZE"} ${lut.size}`,
@@ -217,7 +216,7 @@ export function writeCubeLut(lut: CubeLut): string {
         `DOMAIN_MAX ${lut.domainMax.map(f).join(" ")}`,
       );
   }
-  lines.push(...triples(lut.data));
+  triples(lut.data);
   return lines.join("\n") + "\n";
 }
 

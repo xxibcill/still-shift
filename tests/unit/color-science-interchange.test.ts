@@ -2,6 +2,8 @@
  * CG5: LUT and CDL interchange in @still-shift/color-science — ASC CDL XML
  * (.cc, .ccc, .cdl) read and write, `.cube` writing and baking.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   applyCdl,
@@ -16,6 +18,10 @@ import {
   type Rgb,
 } from "@still-shift/color-science";
 
+const vectors = join(
+  import.meta.dirname,
+  "../../benchmarks/fixtures/color/cg0/vectors/luts",
+);
 const CC = `<?xml version="1.0" encoding="UTF-8"?>
 <ColorCorrection id="shot_010">
   <SOPNode>
@@ -177,6 +183,17 @@ describe(".cube writing and baking", () => {
     expect(
       Math.max(...back.data.map((v, i) => Math.abs(v - lut.data[i]!))),
     ).toBeLessThan(5e-11);
+  });
+  it("writes and reads back a 65³ table and a shaper LUT", () => {
+    const big = bakeCubeLut((v) => v, 65);
+    expect(parseCubeLut(writeCubeLut(big)).data.length).toBe(65 ** 3 * 3);
+    const shaped = parseCubeLut(
+      readFileSync(join(vectors, "cube-9-shaper.cube"), "utf8"),
+    );
+    const back = parseCubeLut(writeCubeLut(shaped));
+    expect(back.shaper?.size).toBe(32);
+    expect(back.shaper?.domainMax).toEqual([4, 4, 4]);
+    expect([...back.data]).toEqual([...shaped.data]);
   });
   it("bakes the identity exactly at the grid nodes", () => {
     const lut = bakeCubeLut((v) => v, 17);
