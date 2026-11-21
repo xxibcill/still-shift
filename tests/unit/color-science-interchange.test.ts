@@ -185,6 +185,58 @@ describe(".cube writing and baking", () => {
       Math.max(...back.data.map((v, i) => Math.abs(v - lut.data[i]!))),
     ).toBeLessThan(5e-11);
   });
+  it("writes a title as one line that parses back", () => {
+    const lut = bakeCubeLut((v) => v, 2, {
+      title: 'warm "look"\nLUT_3D_SIZE 3',
+    });
+    const text = writeCubeLut(lut);
+    expect(text.split("\n")[0]).toBe(`TITLE "warm 'look' LUT_3D_SIZE 3"`);
+    const back = parseCubeLut(text);
+    expect(back.size).toBe(2);
+    expect(back.title).toBe("warm 'look' LUT_3D_SIZE 3");
+  });
+  it("reads decimal numbers only", () => {
+    const rows = "0 0 0\n1 0 0\n0 1 0\n1 1 0\n0 0 1\n1 0 1\n0 1 1\n1 1 1\n";
+    expect(parseCubeLut(`LUT_3D_SIZE 2\n${rows}`).size).toBe(2);
+    expect(
+      parseCubeLut(`LUT_3D_SIZE 2\n${rows.replace("1 0 0", "1e0 +0.0 -.0")}`)
+        .data[3],
+    ).toBe(1);
+    expect(() => parseCubeLut(`LUT_3D_SIZE 0x2\n${rows}`)).toThrow(
+      /line 1: LUT_3D_SIZE size 0x2 must be an integer from 2 to 129/,
+    );
+    expect(() =>
+      parseCubeLut(`LUT_3D_SIZE 2\n${rows.replace("1 0 0", "0x1 0 0")}`),
+    ).toThrow(/line 3: table rows must be three finite numbers/);
+    expect(() =>
+      parseCubeLut(`LUT_3D_SIZE 2\n${rows.replace("1 0 0", "0b1 0 0")}`),
+    ).toThrow(/line 3/);
+    expect(() =>
+      parseCubeLut(`LUT_3D_SIZE 2\nDOMAIN_MAX 0x2 2 2\n${rows}`),
+    ).toThrow(/line 2: DOMAIN_MAX values must be finite numbers/);
+  });
+  it("rejects a range for a missing table, or two ranges for one table", () => {
+    const rows = "0 0 0\n1 0 0\n0 1 0\n1 1 0\n0 0 1\n1 0 1\n0 1 1\n1 1 1\n";
+    // Resolve's range on a plain 3D or 1D table is read.
+    expect(
+      parseCubeLut(`LUT_3D_SIZE 2\nLUT_3D_INPUT_RANGE 0 4\n${rows}`).domainMax,
+    ).toEqual([4, 4, 4]);
+    expect(
+      parseCubeLut("LUT_1D_SIZE 2\nLUT_1D_INPUT_RANGE 0 4\n0 0 0\n1 1 1\n")
+        .domainMax,
+    ).toEqual([4, 4, 4]);
+    expect(() =>
+      parseCubeLut(`LUT_3D_SIZE 2\nLUT_1D_INPUT_RANGE 0 4\n${rows}`),
+    ).toThrow(/LUT_1D_INPUT_RANGE but no LUT_1D_SIZE/);
+    expect(() =>
+      parseCubeLut("LUT_1D_SIZE 2\nLUT_3D_INPUT_RANGE 0 4\n0 0 0\n1 1 1\n"),
+    ).toThrow(/LUT_3D_INPUT_RANGE but no LUT_3D_SIZE/);
+    expect(() =>
+      parseCubeLut(
+        `LUT_3D_SIZE 2\nDOMAIN_MIN -1 -1 -1\nLUT_3D_INPUT_RANGE 0 4\n${rows}`,
+      ),
+    ).toThrow(/both DOMAIN_MIN\/MAX and LUT_3D_INPUT_RANGE/);
+  });
   it("writes and reads back a 65³ table and a shaper LUT", () => {
     const big = bakeCubeLut((v) => v, 65);
     expect(parseCubeLut(writeCubeLut(big)).data.length).toBe(65 ** 3 * 3);

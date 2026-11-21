@@ -41,6 +41,12 @@ function fail(line: number, message: string): never {
 type Triple = [number, number, number];
 
 /**
+ * `.cube` numbers are decimal (optionally with an exponent): only these
+ * characters, so `Number` cannot read a hexadecimal, binary or octal literal.
+ */
+const DECIMAL_ROW = /^[-+.\deE\s]+$/;
+
+/**
  * Parse a `.cube` file: Adobe/Iridas (one `LUT_1D_SIZE` or `LUT_3D_SIZE`,
  * optional `DOMAIN_MIN`/`DOMAIN_MAX`) or Resolve (CG5: both sizes, the 1D
  * shaper's rows first, with `LUT_1D_INPUT_RANGE` / `LUT_3D_INPUT_RANGE`).
@@ -63,7 +69,7 @@ export function parseCubeLut(text: string): CubeLut {
       if (rest.length !== count)
         fail(line, `${keyword} needs ${count} numbers`);
       const nums = rest.map(Number);
-      if (!nums.every(Number.isFinite))
+      if (!DECIMAL_ROW.test(rest.join(" ")) || !nums.every(Number.isFinite))
         fail(line, `${keyword} values must be finite numbers`);
       return nums;
     };
@@ -82,6 +88,7 @@ export function parseCubeLut(text: string): CubeLut {
       const max = three ? MAX_LUT_3D_SIZE : MAX_LUT_1D_SIZE;
       if (
         rest.length !== 1 ||
+        !DECIMAL_ROW.test(rest[0]!) ||
         !Number.isInteger(size) ||
         size < 2 ||
         size > max
@@ -108,7 +115,11 @@ export function parseCubeLut(text: string): CubeLut {
       if (!size1 && !size3)
         fail(line, "table data before LUT_3D_SIZE or LUT_1D_SIZE");
       const nums = trimmed.split(/\s+/).map(Number);
-      if (nums.length !== 3 || !nums.every(Number.isFinite))
+      if (
+        nums.length !== 3 ||
+        !DECIMAL_ROW.test(trimmed) ||
+        !nums.every(Number.isFinite)
+      )
         fail(line, "table rows must be three finite numbers");
       values.push(...nums);
     } else fail(line, `unknown keyword ${keyword}`);
@@ -119,6 +130,20 @@ export function parseCubeLut(text: string): CubeLut {
   if (shaped && (domainMin || domainMax))
     throw new ColorScienceError(
       ".cube with a shaper uses LUT_1D_INPUT_RANGE and LUT_3D_INPUT_RANGE, not DOMAIN_MIN/MAX",
+    );
+  // A range for a table the file does not hold, or two ranges for the one
+  // it does, is a mistake in the file: never guess which was meant.
+  if (range1 && !size1)
+    throw new ColorScienceError(
+      ".cube has LUT_1D_INPUT_RANGE but no LUT_1D_SIZE",
+    );
+  if (range3 && !size3)
+    throw new ColorScienceError(
+      ".cube has LUT_3D_INPUT_RANGE but no LUT_3D_SIZE",
+    );
+  if (!shaped && (domainMin || domainMax) && (range1 || range3))
+    throw new ColorScienceError(
+      `.cube gives both DOMAIN_MIN/MAX and ${range3 ? "LUT_3D_INPUT_RANGE" : "LUT_1D_INPUT_RANGE"}; use one`,
     );
   const expected = size1 + size3 ** 3;
   if (values.length !== expected * 3)
@@ -173,12 +198,18 @@ export function parseCubeLut(text: string): CubeLut {
   };
 }
 
-/** Deterministic `.cube` text (10 decimals); shapers use the Resolve form. */
+/**
+ * Deterministic `.cube` text (10 decimals); shapers use the Resolve form. A
+ * title is one quoted line: its quotes become apostrophes and its line breaks
+ * spaces, so the file always parses back.
+ */
 export function writeCubeLut(lut: CubeLut): string {
   const f = (v: number) => (Object.is(v, -0) ? 0 : v).toFixed(10);
   const lines = [
     ...(lut.title !== undefined
-      ? [`TITLE "${lut.title.replace(/"/g, "'")}"`]
+      ? [
+          `TITLE "${lut.title.replace(/"/g, "'").replace(/\s*[\r\n]+\s*/g, " ")}"`,
+        ]
       : []),
   ];
   // One push per row: a 65³ table is too many arguments for one call.

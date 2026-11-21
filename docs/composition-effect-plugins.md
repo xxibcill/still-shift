@@ -276,7 +276,9 @@ slot:
 
 - Formats: `.cube` 1D (up to 65,536 entries), 3D (sizes 2–129, so 65³ and
   larger) with `DOMAIN_MIN`/`DOMAIN_MAX`, and Resolve's 3D-behind-a-1D-shaper
-  form (`LUT_1D_INPUT_RANGE`, `LUT_3D_INPUT_RANGE`). Files are at most 128 MiB.
+  form (`LUT_1D_INPUT_RANGE`, `LUT_3D_INPUT_RANGE`). Numbers are decimal. A
+  range keyword for a table the file does not hold, or `DOMAIN_MIN`/`DOMAIN_MAX`
+  together with an input range, is an error. Files are at most 128 MiB.
 - Spaces: `inputSpace` and `outputSpace` must be declared. `legacy-srgb` (the
   display-referred working space, BT.709 footage display-equivalent) is the
   only value until CG7 adds working spaces; a LUT made for camera log or ACES
