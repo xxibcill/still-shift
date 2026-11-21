@@ -18,6 +18,8 @@ import {
   type CompositionQualityPolicy,
   TEXT_LEGIBILITY_CODES,
   type TextLegibilityCode,
+  COMPOSITION_LINT_PROFILES,
+  type CompositionLintProfile,
   passageDiagnostics,
   type CompositionBackend,
 } from "@still-shift/renderer-core";
@@ -85,6 +87,20 @@ function fontCoverageOption(values: Map<string, string>) {
       "font-coverage",
     );
   return value as "legacy" | "strict" | undefined;
+}
+/** ET6b: `--profile editorial-title`, or `none` to override a saved profile. */
+function lintProfileOption(values: Map<string, string>) {
+  const value = values.get("profile");
+  if (
+    value !== undefined &&
+    !(COMPOSITION_LINT_PROFILES as readonly string[]).includes(value)
+  )
+    programError(
+      "comp-program-option",
+      `--profile must be one of ${COMPOSITION_LINT_PROFILES.join(", ")}`,
+      "profile",
+    );
+  return value as CompositionLintProfile | undefined;
 }
 /** ET3: `--strict text-contrast[,x-height-floor,platform-safe-zone]`. */
 function strictLegibilityOption(values: Map<string, string>) {
@@ -409,6 +425,7 @@ export async function runCompositionCommand(
           "font-coverage",
           "legibility",
           "strict",
+          "profile",
         ]),
         input = requireArgument(values, "input");
       const backend = backendOption(values);
@@ -417,11 +434,15 @@ export async function runCompositionCommand(
         path = values.get("policy");
       const strict = strictLegibilityOption(values);
       const legibility = booleanOption(values, "legibility");
-      const filePolicy = path
+      const profile = lintProfileOption(values);
+      const loadedPolicy: CompositionQualityPolicy = path
         ? CompositionQualityPolicySchema.parse(
             JSON.parse(await readFile(resolve(path), "utf8")),
           )
         : {};
+      // ET6b: `--profile editorial-title` opts into the profile's defaults;
+      // `--profile none` lints without one saved in the composition.
+      const filePolicy = profile ? { ...loadedPolicy, profile } : loadedPolicy;
       return await withOwnedSignals("lint", io, async (signal) => {
         const program = await loadProgram(input, { signal });
         signal.throwIfAborted();

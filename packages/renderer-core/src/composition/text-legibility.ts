@@ -20,13 +20,16 @@ import {
 import { readFontMetrics } from "../font-metrics.ts";
 import { resolvedTextStyle } from "../typography-style.ts";
 import { textNode, type TextLayer } from "./render/text-scenes.ts";
+import { outlinedReading, outlinedText } from "./reading-motion.ts";
 import type { CompositionQualityFrame } from "./quality-samples.ts";
 import {
   lintSeverity,
+  readsOutlinedText,
   TEXT_LEGIBILITY_CODES,
   type MotionLintDiagnostic,
   type ResolvedCompositionQualityPolicy,
   type TextContrastLayerEvidence,
+  type TextContrastSample,
   type TextLegibilityCode,
   type TextLegibilityEvidence,
 } from "./quality-policy.ts";
@@ -40,6 +43,16 @@ export const DEFAULT_CONTRAST_TARGETS = {
   body: 4.5,
 } as const;
 export const DEFAULT_CONTRAST_PERCENTILE = 0.05;
+/**
+ * ET6b size split when `display` is declared without values (ET3-D1): WCAG's
+ * large-text size, 24 CSS px, at the review width; small text keeps 4.5:1.
+ * The `editorial-title` profile sets its own display level.
+ */
+export const DEFAULT_DISPLAY = {
+  minimumSize: 24,
+  contrast: 3,
+  small: 4.5,
+} as const;
 /** A typical phone viewport in CSS pixels. */
 export const DEFAULT_REVIEW_WIDTH = 360;
 /** About the x-height of 12 px CSS type, the usual floor for phone UI text. */
@@ -54,6 +67,38 @@ export const MINIMUM_WORD_PIXELS = 16;
 export const BACKDROP_EFFECTS = ["light.drop-shadow", "light.glow"] as const;
 /** Word codes are R = 255, G/B = 4 + 8k; 32 × 32 words fit. */
 const MAX_CODED_WORDS = 1024;
+/** ET6b: the outline ring's mask colour; no word code has R below 254. */
+export const RING_CODE = "#00ff00";
+/**
+ * ET6b: the mask colour of text layers stacked above the measured one; their
+ * pixels (any coverage) are left out of the treated-edge measure.
+ */
+export const OCCLUDER_CODE = "#0000ff";
+/**
+ * `OCCLUDER_CODE` with the alpha of `color` (`#RRGGBB` or `#RRGGBBAA`, keyed
+ * colours key by key), so a transparent fill stays transparent in the mask.
+ */
+function occluderColor<T>(color: T): T {
+  const recolour = (value: unknown) =>
+    typeof value === "string" && value.length === 9
+      ? OCCLUDER_CODE + value.slice(7)
+      : OCCLUDER_CODE;
+  if (
+    color &&
+    typeof color === "object" &&
+    Array.isArray((color as { keys?: unknown }).keys)
+  )
+    return {
+      ...color,
+      keys: (color as unknown as { keys: { value: unknown }[] }).keys.map(
+        (key) => ({ ...key, value: recolour(key.value) }),
+      ),
+    } as T;
+  return recolour(color) as T;
+}
+/** ET6b `treated-edge` report version (the glyph-interior report keeps -1). */
+export const TREATED_EDGE_VERSION =
+  "composition-text-legibility-treated-edge-1";
 
 const linear = Array.from({ length: 256 }, (_, value) => {
   const c = value / 255;
@@ -227,6 +272,14 @@ function withoutOpacityMotion(
 export function textLegibilityMask(
   comp: Composition,
   layerId: string,
+  options: {
+    /**
+     * ET6b `treated-edge`: draw text-animator strokes (the outline ring) in
+     * `RING_CODE` instead of the word codes, so the ring is told apart from
+     * the fill.
+     */
+    ring?: boolean;
+  } = {},
 ): {
   composition: Composition;
   evidence: Pick<
@@ -301,9 +354,51 @@ export function textLegibilityMask(
   // Mutate a clone only; the source composition stays untouched.
   const mask = structuredClone(comp);
   mask.background = "#000000";
+  // ET6b treated-edge: root text layers stacked above this one (earlier in
+  // the list) paint over it; they are drawn as occluders so the measure
+  // leaves out the parts of this layer they cover.
+  const targetIndex = comp.layers.indexOf(target);
+  const occluders = new Set(
+    options.ring
+      ? comp.layers
+          .slice(0, targetIndex)
+          .filter(
+            (layer) =>
+              layer.type === "text" &&
+              !layer.parent &&
+              layer.enabled !== false &&
+              !layer.guide &&
+              layer.id !== matte,
+          )
+          .map((layer) => layer.id)
+      : [],
+  );
   mask.layers = mask.layers.map((layer): CompositionLayer => {
     delete layer.solo;
     delete layer.coverage;
+    if (occluders.has(layer.id)) {
+      const text = layer as TextLayer;
+      delete text.effects;
+      delete text.blendMode;
+      delete text.rasterize;
+      delete text.corrections;
+      // The occluder colour keeps each fill's alpha: a hollow (outline-only)
+      // layer above covers only where its outline is drawn.
+      text.color = occluderColor(text.color);
+      if (text.spans)
+        text.spans = text.spans.map((span) => {
+          const plain = { ...span };
+          if (plain.color === undefined) delete plain.color;
+          else plain.color = occluderColor(plain.color);
+          return plain;
+        });
+      if (text.decorations)
+        text.decorations = text.decorations.map((mark) => ({
+          ...mark,
+          color: occluderColor(mark.color),
+        }));
+      return text;
+    }
     if (layer.id === layerId) {
       const text = layer as TextLayer;
       delete text.decorations;
@@ -326,11 +421,12 @@ export function textLegibilityMask(
     mask,
     new Set(
       mask.layers
-        .filter((layer) => layer.id !== matte)
+        .filter((layer) => layer.id !== matte && !occluders.has(layer.id))
         .map((layer) => layer.id),
     ),
   );
-  withoutAnimatorColor(mask, layerId);
+  withoutAnimatorColor(mask, layerId, options.ring ? RING_CODE : undefined);
+  for (const id of occluders) withoutAnimatorColor(mask, id, OCCLUDER_CODE);
   return {
     composition: mask,
     evidence: {
@@ -343,17 +439,32 @@ export function textLegibilityMask(
   };
 }
 
-/** Drop colour from a text animator's properties, so the layer colour decides. */
-function withoutAnimatorColor(composition: Composition, layerId: string) {
+/**
+ * Drop colour from a text animator's properties, so the layer colour decides.
+ * With `ring`, an animator that strokes keeps a stroke, in that colour.
+ */
+function withoutAnimatorColor(
+  composition: Composition,
+  layerId: string,
+  ring?: string,
+) {
   if (composition.textAnimators)
     composition.textAnimators = composition.textAnimators.map((animator) => {
       if (animator.node !== layerId) return animator;
+      const strokes =
+        ring !== undefined &&
+        [animator.from, animator.to ?? {}].some(
+          (properties) =>
+            properties.stroke !== undefined ||
+            properties.strokeWidth !== undefined,
+        );
       const strip = <T extends Record<string, unknown>>(properties: T) => {
-        const rest = { ...properties };
+        const rest: Record<string, unknown> = { ...properties };
         delete rest.color;
         delete rest.fill;
         delete rest.stroke;
-        return rest;
+        if (strokes) rest.stroke = ring;
+        return rest as T;
       };
       return {
         ...animator,
@@ -452,6 +563,229 @@ export function measureTextContrastPixels(
   });
 }
 
+/**
+ * ET6b `treated-edge` window half-size: one review pixel beyond the
+ * anti-aliased edge pixel, so a ring narrower than a phone pixel blends with
+ * the footage beside it, as it does on the phone.
+ */
+export function treatedEdgeRadius(width: number, reviewWidth: number) {
+  return Math.max(1, Math.round(width / reviewWidth)) + 1;
+}
+
+/** Mask classes besides word codes: anti-aliased fill edge, ring, outside, and the ring's own anti-aliased outer edge. */
+const FILL_EDGE = -1,
+  RING = -2,
+  OUTSIDE = -3,
+  RING_EDGE = -4,
+  OCCLUDED = -5;
+/**
+ * ET6b `treated-edge` contrast on one frame: what a reader sees at the edges
+ * of the letters, with outlines, halos and shadows as they are rendered.
+ *
+ * `mask` is the glyph mask drawn with `ring: true`: fill pixels carry their
+ * word code, the outline ring `RING_CODE`, the rest is black. At each fill
+ * pixel on the edge of a letter, the fill edge compares the mean (linear)
+ * luminance of the rendered fill in a `radius` window with that of every
+ * rendered pixel there that is neither fill nor anti-aliased edge: the ring,
+ * halo, shadow or footage just outside the letter. At each ring pixel on the
+ * outside of the outline, the outer edge compares the outlined letter (fill
+ * and ring) with the rendered pixels outside it, which credits outlined
+ * and hollow letters. Pixels of text layers stacked above (`OCCLUDER_CODE`)
+ * and edges against them are left out. Each is the `percentile` of its edge pixels; a word's
+ * value is the better of the two. Untreated text has no ring, so both are
+ * its fill against the footage beside it.
+ */
+export function measureTreatedTextContrastPixels(
+  front: Uint8ClampedArray | Uint8Array,
+  mask: Uint8ClampedArray | Uint8Array,
+  width: number,
+  height: number,
+  wordCount: number,
+  percentile: number,
+  radius: number,
+  layerAttribution = false,
+): ([number, number, number, number | null] | null)[] {
+  const pixels = width * height;
+  const code = new Int32Array(pixels);
+  let left = width,
+    top = height,
+    right = -1,
+    bottom = -1;
+  for (let pixel = 0, at = 0; pixel < pixels; pixel++, at += 4) {
+    const r = mask[at]!,
+      g = mask[at + 1]!,
+      b = mask[at + 2]!;
+    let value: number;
+    if (r <= 1 && g <= 1 && b <= 1) value = OUTSIDE;
+    else if (r <= 1 && g <= 1) value = OCCLUDED;
+    else if (r <= 1 && g >= 254 && b <= 1) value = RING;
+    // Ring over black: no fill colour mixed in.
+    else if (r <= 1 && b <= 1) value = RING_EDGE;
+    else {
+      const word = decodeWordCode(r, g, b);
+      value =
+        word < 0 || word >= wordCount ? FILL_EDGE : layerAttribution ? 0 : word;
+    }
+    code[pixel] = value;
+    if (value !== OUTSIDE && value !== OCCLUDED) {
+      const x = pixel % width,
+        y = (pixel - x) / width;
+      if (x < left) left = x;
+      if (x > right) right = x;
+      if (y < top) top = y;
+      if (y > bottom) bottom = y;
+    }
+  }
+  const empty = new Array<null>(wordCount).fill(null);
+  if (right < 0) return empty;
+  left = Math.max(0, left - radius - 1);
+  top = Math.max(0, top - radius - 1);
+  right = Math.min(width - 1, right + radius + 1);
+  bottom = Math.min(height - 1, bottom + radius + 1);
+  const w = right - left + 1,
+    h = bottom - top + 1,
+    stride = w + 1;
+  // Summed-area tables over the box: counts and luminance sums of the fill,
+  // of what surrounds the fill (ring and outside), of the outlined letter
+  // (fill and ring) and of the outside.
+  const tables = Array.from(
+    { length: 8 },
+    () => new Float64Array(stride * (h + 1)),
+  );
+  const [fillN, fillL, aroundN, aroundL, letterN, letterL, outN, outL] =
+    tables as [
+      Float64Array,
+      Float64Array,
+      Float64Array,
+      Float64Array,
+      Float64Array,
+      Float64Array,
+      Float64Array,
+      Float64Array,
+    ];
+  for (let y = 0; y < h; y++) {
+    const rowSums = new Float64Array(8);
+    for (let x = 0; x < w; x++) {
+      const pixel = (top + y) * width + left + x,
+        at = pixel * 4,
+        value = code[pixel]!,
+        lum = relativeLuminance(front[at]!, front[at + 1]!, front[at + 2]!);
+      if (value >= 0) {
+        rowSums[0]!++;
+        rowSums[1]! += lum;
+        rowSums[4]!++;
+        rowSums[5]! += lum;
+      } else if (value === RING) {
+        rowSums[2]!++;
+        rowSums[3]! += lum;
+        rowSums[4]!++;
+        rowSums[5]! += lum;
+      } else if (value === OUTSIDE) {
+        rowSums[2]!++;
+        rowSums[3]! += lum;
+        rowSums[6]!++;
+        rowSums[7]! += lum;
+      }
+      const cell = (y + 1) * stride + x + 1,
+        above = y * stride + x + 1;
+      for (let t = 0; t < 8; t++)
+        tables[t]![cell] = tables[t]![above]! + rowSums[t]!;
+    }
+  }
+  const box = (table: Float64Array, x: number, y: number) => {
+    const x0 = Math.max(0, x - radius - left),
+      y0 = Math.max(0, y - radius - top),
+      x1 = Math.min(w, x + radius - left + 1),
+      y1 = Math.min(h, y + radius - top + 1);
+    return (
+      table[y1 * stride + x1]! -
+      table[y0 * stride + x1]! -
+      table[y1 * stride + x0]! +
+      table[y0 * stride + x0]!
+    );
+  };
+  // Ring pixels belong to the word whose fill they surround: spread word
+  // labels from the fill through the ring and the edge pixels between them.
+  const label = new Int32Array(pixels).fill(-1);
+  const queue: number[] = [];
+  for (let y = top; y <= bottom; y++)
+    for (let x = left; x <= right; x++) {
+      const pixel = y * width + x;
+      if (code[pixel]! >= 0) {
+        label[pixel] = code[pixel]!;
+        queue.push(pixel);
+      }
+    }
+  for (let head = 0; head < queue.length; head++) {
+    const pixel = queue[head]!,
+      x = pixel % width;
+    for (const next of [
+      x > 0 ? pixel - 1 : -1,
+      x < width - 1 ? pixel + 1 : -1,
+      pixel - width,
+      pixel + width,
+    ]) {
+      if (next < 0 || next >= pixels || label[next]! >= 0) continue;
+      const value = code[next]!;
+      if (value !== RING && value !== FILL_EDGE) continue;
+      label[next] = label[pixel]!;
+      queue.push(next);
+    }
+  }
+  const fill: number[][] = Array.from({ length: wordCount }, () => []);
+  const outer: number[][] = Array.from({ length: wordCount }, () => []);
+  const neighbours = (pixel: number, x: number, y: number) => [
+    x > 0 ? code[pixel - 1]! : OUTSIDE,
+    x < width - 1 ? code[pixel + 1]! : OUTSIDE,
+    y > 0 ? code[pixel - width]! : OUTSIDE,
+    y < height - 1 ? code[pixel + width]! : OUTSIDE,
+  ];
+  for (let y = top; y <= bottom; y++)
+    for (let x = left; x <= right; x++) {
+      const pixel = y * width + x,
+        value = code[pixel]!;
+      if (value >= 0) {
+        const next = neighbours(pixel, x, y);
+        // An edge against a layer stacked above is that layer's edge.
+        if (next.every((n) => n >= 0) || next.includes(OCCLUDED)) continue;
+        const around = box(aroundN, x, y);
+        if (!around) continue;
+        fill[value]!.push(
+          wcagContrast(
+            box(fillL, x, y) / box(fillN, x, y),
+            box(aroundL, x, y) / around,
+          ),
+        );
+      } else if (value === RING && label[pixel]! >= 0) {
+        const next = neighbours(pixel, x, y);
+        if (
+          !next.some((n) => n === OUTSIDE || n === RING_EDGE) ||
+          next.includes(OCCLUDED)
+        )
+          continue;
+        const outside = box(outN, x, y);
+        if (!outside) continue;
+        outer[label[pixel]!]!.push(
+          wcagContrast(
+            box(letterL, x, y) / box(letterN, x, y),
+            box(outL, x, y) / outside,
+          ),
+        );
+      }
+    }
+  const pick = (values: number[]) => {
+    values.sort((a, b) => a - b);
+    return values[Math.floor(values.length * percentile)]!;
+  };
+  return fill.map((edges, word) => {
+    if (edges.length < MINIMUM_WORD_PIXELS) return null;
+    const inner = pick(edges),
+      ring =
+        outer[word]!.length >= MINIMUM_WORD_PIXELS ? pick(outer[word]!) : null;
+    return [Math.max(inner, ring ?? 0), edges.length, inner, ring];
+  });
+}
+
 /** Root text layers ET3 measures, and the precomp text it does not. */
 export function textLegibilityLayers(comp: Composition): {
   root: TextLayer[];
@@ -481,14 +815,24 @@ export function textLegibilityFrames(
   frames: readonly CompositionQualityFrame[],
   policy: Pick<
     ResolvedCompositionQualityPolicy,
-    "readingOpacity" | "readingReveal"
+    | "readingOpacity"
+    | "readingReveal"
+    | "textLegibility"
+    | "textFramingEvidence"
   >,
 ) {
   const windows = new Map<string, number[]>();
+  // ET6b: treated-edge reads outline-only (hollow) text by its outline, on
+  // the frames it is drawn.
+  const outlined = readsOutlinedText(policy)
+    ? outlinedText(comp, policy.textFramingEvidence?.glyphMotion)
+    : undefined;
   for (const layer of textLegibilityLayers(comp).root) {
     const reading: number[] = [];
     frames.forEach((frame, at) => {
-      const sample = frame.layers.get(layer.id);
+      const raw = frame.layers.get(layer.id);
+      const shown = raw ? outlinedReading(raw, frame, outlined) : undefined;
+      const sample = raw && { ...raw, ...shown };
       if (
         sample?.onScreen &&
         sample.text !== undefined &&
@@ -516,6 +860,75 @@ function ranges(frames: number[], cuts: ReadonlySet<number>) {
   return out;
 }
 
+/** The resolved styles of a root text layer: its own and its spans'. */
+function textLayerStyles(comp: Composition, layer: TextLayer) {
+  const node = textNode(comp, layer);
+  const fontAxes = declaredFontAxes(comp.assets);
+  return {
+    node,
+    styles: [
+      resolvedTextStyle(node, comp.textStyles ?? {}),
+      ...(layer.spans ?? [])
+        .filter((span) => span.style)
+        .map((span) =>
+          resolvedTextStyle(node, comp.textStyles ?? {}, span.style, fontAxes),
+        ),
+    ],
+  };
+}
+/**
+ * ET6b size split: the smallest font size of a root text layer (its spans
+ * included), at its layer scale, in pixels at the review width, over its
+ * reading frames.
+ */
+export function textDisplaySize(
+  comp: Composition,
+  layer: TextLayer,
+  frames: readonly CompositionQualityFrame[],
+  reading: readonly number[],
+  reviewWidth: number,
+) {
+  const { styles, node } = textLayerStyles(comp, layer);
+  const smallest = Math.min(
+    ...styles.map((style) => style.size ?? node.fontSize),
+  );
+  let size = Infinity;
+  for (const frame of reading)
+    size = Math.min(
+      size,
+      (smallest *
+        Math.abs(frames[frame]!.layers.get(layer.id)!.scale[1]) *
+        reviewWidth) /
+        comp.width,
+    );
+  return size === Infinity ? (smallest * reviewWidth) / comp.width : size;
+}
+/**
+ * The contrast percentile a root text layer is measured at: ET6b display
+ * text may declare its own (`display.percentile`), all else the policy's.
+ */
+export function textContrastPercentile(
+  comp: Composition,
+  layer: TextLayer,
+  frames: readonly CompositionQualityFrame[],
+  reading: readonly number[],
+  settings: NonNullable<ResolvedCompositionQualityPolicy["textLegibility"]>,
+) {
+  const base = settings.contrastPercentile ?? DEFAULT_CONTRAST_PERCENTILE;
+  const display = settings.display;
+  if (display?.percentile === undefined) return base;
+  const size = textDisplaySize(
+    comp,
+    layer,
+    frames,
+    reading,
+    settings.reviewWidth ?? DEFAULT_REVIEW_WIDTH,
+  );
+  return size >= (display.minimumSize ?? DEFAULT_DISPLAY.minimumSize)
+    ? display.percentile
+    : base;
+}
+
 /**
  * Diagnostics and the report section for the ET3 rules. Runs only when the
  * policy declares `textLegibility`; contrast needs rendered-pixel evidence.
@@ -536,6 +949,18 @@ export function analyzeTextLegibility(
     body: settings.contrast?.body ?? DEFAULT_CONTRAST_TARGETS.body,
   };
   const percentile = settings.contrastPercentile ?? DEFAULT_CONTRAST_PERCENTILE;
+  const method = settings.contrastMethod ?? "glyph-interior";
+  const display = settings.display
+    ? {
+        minimumSize:
+          settings.display.minimumSize ?? DEFAULT_DISPLAY.minimumSize,
+        contrast: settings.display.contrast ?? DEFAULT_DISPLAY.contrast,
+        small: settings.display.small ?? DEFAULT_DISPLAY.small,
+        ...(settings.display.percentile !== undefined
+          ? { percentile: settings.display.percentile }
+          : {}),
+      }
+    : undefined;
   const reviewWidth = settings.reviewWidth ?? DEFAULT_REVIEW_WIDTH;
   const minimumXHeight = settings.minimumXHeight ?? DEFAULT_MINIMUM_X_HEIGHT;
   const safeZones = settings.safeZones ?? [];
@@ -581,12 +1006,30 @@ export function analyzeTextLegibility(
         fonts: string[];
       };
       waiver?: { reason: string; codes: TextLegibilityCode[] };
+      /** ET6b: smallest font size at the review width over the reading frames. */
+      displaySize?: number;
+      /** ET6b: the size class that chose the contrast target. */
+      sizeClass?: "display" | "small";
+      /** ET6b: the display percentile, when it differs from the policy's. */
+      contrastPercentile?: number;
+      /** ET6b `treated-edge`: the two edges behind the worst value. */
+      edges?: { fill: number; outer: number | null };
     } = {
       layer: layer.id,
       role,
       readingFrames: reading.length,
       contrastTarget: targets[role],
     };
+    const { styles } = textLayerStyles(comp, layer);
+    if (display) {
+      const size = textDisplaySize(comp, layer, frames, reading, reviewWidth);
+      entry.displaySize = round(size);
+      entry.sizeClass = size >= display.minimumSize ? "display" : "small";
+      entry.contrastTarget =
+        entry.sizeClass === "display" ? display.contrast : display.small;
+      if (entry.sizeClass === "display" && display.percentile !== undefined)
+        entry.contrastPercentile = display.percentile;
+    }
     const push = (
       code: TextLegibilityCode,
       frames: [number, number],
@@ -613,17 +1056,18 @@ export function analyzeTextLegibility(
       entry.attribution = contrast.attribution;
       if (contrast.attributionReason)
         entry.attributionReason = contrast.attributionReason;
-      const target = targets[role];
+      const target = entry.contrastTarget;
       const wordWorst = contrast.words.map(
         () =>
           null as null | {
             contrast: number;
             frame: number;
+            edges?: { fill: number; outer: number | null };
           },
       );
       let measuredFrames = 0;
       const below: number[] = [];
-      const perFrame = new Map<number, ([number, number] | null)[]>();
+      const perFrame = new Map<number, (TextContrastSample | null)[]>();
       for (const sample of contrast.frames) {
         perFrame.set(sample.frame, sample.words);
         let lowest = Infinity;
@@ -631,7 +1075,18 @@ export function analyzeTextLegibility(
           if (!value) return;
           lowest = Math.min(lowest, value[0]);
           if (!wordWorst[i] || value[0] < wordWorst[i]!.contrast)
-            wordWorst[i] = { contrast: value[0], frame: sample.frame };
+            wordWorst[i] = {
+              contrast: value[0],
+              frame: sample.frame,
+              ...(value.length === 4
+                ? {
+                    edges: {
+                      fill: round(value[2]),
+                      outer: value[3] === null ? null : round(value[3]),
+                    },
+                  }
+                : {}),
+            };
         });
         if (lowest === Infinity) continue;
         measuredFrames++;
@@ -659,12 +1114,15 @@ export function analyzeTextLegibility(
             : best,
         -1,
       );
-      if (worstIndex >= 0)
+      if (worstIndex >= 0) {
         entry.worst = {
           contrast: round(wordWorst[worstIndex]!.contrast),
           frame: wordWorst[worstIndex]!.frame,
           word: contrast.words[worstIndex]!.word,
         };
+        if (wordWorst[worstIndex]!.edges)
+          entry.edges = wordWorst[worstIndex]!.edges;
+      }
       for (const [start, end] of ranges(below, policy.cuts)) {
         const words = contrast.words.flatMap((word, i) => {
           let worst: { contrast: number; frame: number } | undefined;
@@ -695,7 +1153,7 @@ export function analyzeTextLegibility(
           "text-contrast",
           [start, end],
           lowest.contrast,
-          `${layer.id} ${role} text falls to ${lowest.contrast.toFixed(2)}:1 against the rendered background (target ${target}:1) on frames ${start}-${end}; ${contrast.attribution === "word" ? `words below target: ${words.map((w) => `"${w.word}" ${w.contrast.toFixed(2)}:1`).join(", ")}` : `whole layer (${contrast.attributionReason})`}.`,
+          `${layer.id} ${display ? `${entry.sizeClass} (${entry.displaySize} px at ${reviewWidth} px)` : role} text falls to ${lowest.contrast.toFixed(2)}:1 ${method === "treated-edge" ? "at its letter edges, outline and halo included," : "against the rendered background"} (target ${target}:1) on frames ${start}-${end}; ${contrast.attribution === "word" ? `words below target: ${words.map((w) => `"${w.word}" ${w.contrast.toFixed(2)}:1`).join(", ")}` : `whole layer (${contrast.attributionReason})`}.`,
           { path: `${path}.text`, words },
         );
       }
@@ -712,22 +1170,12 @@ export function analyzeTextLegibility(
           .map((effect) => effect.effect),
       ),
     ];
-    if (backdrops.length)
+    if (backdrops.length && method === "glyph-interior")
       limitations.push(
         `text-contrast of ${layer.id} does not credit its ${backdrops.join(" and ")} effect: each glyph pixel is compared with the frame behind it, so an outline or shadow added for legibility is not counted and the layer can be reported below target while it reads well.`,
       );
 
     // x-height-floor
-    const node = textNode(comp, layer);
-    const fontAxes = declaredFontAxes(comp.assets);
-    const styles = [
-      resolvedTextStyle(node, comp.textStyles ?? {}),
-      ...(layer.spans ?? [])
-        .filter((span) => span.style)
-        .map((span) =>
-          resolvedTextStyle(node, comp.textStyles ?? {}, span.style, fontAxes),
-        ),
-    ];
     const measuredStyles = styles.flatMap((style) => {
       const perEm = style.fontAsset
         ? evidence.fontXHeights?.[style.fontAsset]
@@ -884,12 +1332,25 @@ export function analyzeTextLegibility(
       applied: TEXT_LEGIBILITY_CODES.filter((code) => applied.has(code)),
     };
   });
+  if (method === "treated-edge")
+    limitations.push(
+      `Treated-edge contrast compares each letter's fill with what is rendered within ${treatedEdgeRadius(comp.width, reviewWidth)} px of its edge (outline, halo, shadow or footage), and the outlined letter with the footage around it; the better edge counts. It credits outlines, halos and shadows only where they are drawn beside the letter.`,
+    );
   return {
     diagnostics,
     report: {
-      version: TEXT_LEGIBILITY_VERSION,
+      version:
+        method === "treated-edge"
+          ? TREATED_EDGE_VERSION
+          : TEXT_LEGIBILITY_VERSION,
       method: {
-        contrast: "wcag2-glyph-interior-percentile" as const,
+        contrast:
+          method === "treated-edge"
+            ? ("wcag2-treated-edge-percentile" as const)
+            : ("wcag2-glyph-interior-percentile" as const),
+        ...(method === "treated-edge"
+          ? { edgeRadius: treatedEdgeRadius(comp.width, reviewWidth) }
+          : {}),
         contrastPercentile: percentile,
         minimumWordPixels: MINIMUM_WORD_PIXELS,
         contrastMeasured: !!evidence.contrast,
@@ -897,6 +1358,7 @@ export function analyzeTextLegibility(
       },
       policy: {
         contrast: targets,
+        ...(display ? { display } : {}),
         reviewWidth,
         minimumXHeight,
         safeZones,

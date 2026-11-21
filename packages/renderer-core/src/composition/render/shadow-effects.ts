@@ -274,6 +274,19 @@ export function shadowGaussianKernel(sigma: number): GaussianKernel {
   }
 }
 type ShadowBlurControl = { value?: Uint8Array<ArrayBuffer> | undefined };
+/** Inclusive pixel rectangle; `right < left` or `bottom < top` is empty. */
+export type ShadowRegion = {
+  left: number;
+  top: number;
+  right: number;
+  bottom: number;
+};
+/**
+ * `region` limits the computed output pixels; every other output pixel is 0.
+ * Pass it only when the caller knows those pixels blur to 0 (padding 0 and an
+ * all-zero input within the kernel radius of them), so the result is the same
+ * as the full pass.
+ */
 export function blurShadowMask(
   input: Uint8Array,
   w: number,
@@ -282,6 +295,7 @@ export function blurShadowMask(
   direction: readonly [number, number],
   padding: number,
   control?: ShadowBlurControl,
+  region?: ShadowRegion,
 ): Uint8Array<ArrayBuffer> {
   if (!control) {
     const memory = renderMemory();
@@ -290,7 +304,16 @@ export function blurShadowMask(
       const value = allocateRenderMetadata<Uint8Array<ArrayBuffer>>(
         512,
         () =>
-          blurShadowMask(input, w, h, k, direction, padding, (partial = {})),
+          blurShadowMask(
+            input,
+            w,
+            h,
+            k,
+            direction,
+            padding,
+            (partial = {}),
+            region,
+          ),
         false,
         (view) => memory?.release(view.buffer),
       );
@@ -312,8 +335,12 @@ export function blurShadowMask(
     if (control) control.value = value;
     return value;
   });
-  for (let y = 0; y < h; y++)
-    for (let x = 0; x < w; x++) {
+  const top = region ? Math.max(0, region.top) : 0,
+    bottom = region ? Math.min(h - 1, region.bottom) : h - 1,
+    left = region ? Math.max(0, region.left) : 0,
+    right = region ? Math.min(w - 1, region.right) : w - 1;
+  for (let y = top; y <= bottom; y++)
+    for (let x = left; x <= right; x++) {
       let sum = 0;
       for (let j = 0; j < k.weights.length; j++) {
         const tx = x + (j - k.radius) * direction[0],
@@ -523,6 +550,14 @@ export function shadowEffectKernel(
             (v) => Math.round(v * 16) / 16,
           )),
           sample = (work.sample = [0, 0, 0, 0]);
+        const w = input.width,
+          h = input.height;
+        // Bounds of the layer's painted pixels: an outer shadow is sampled
+        // from them alone, so it can paint only near them (EC).
+        let paintedLeft = w,
+          paintedTop = h,
+          paintedRight = -1,
+          paintedBottom = -1;
         for (let i = 0; i < image.data.length; i += 4) {
           const alpha = image.data[i + 3]!;
           for (let c = 0; c < 3; c++)
@@ -530,13 +565,55 @@ export function shadowEffectKernel(
               (image.data[i + c]! * alpha) / 255,
             );
           premultiplied[i + 3] = alpha;
+          if (alpha) {
+            const pixel = i >> 2,
+              x = pixel % w,
+              y = (pixel - x) / w;
+            if (x < paintedLeft) paintedLeft = x;
+            if (x > paintedRight) paintedRight = x;
+            if (y < paintedTop) paintedTop = y;
+            if (y > paintedBottom) paintedBottom = y;
+          }
         }
         const mask = allocateRenderPixels(
           input.width * input.height * 1,
           () => (work.mask = new Uint8Array(input.width * input.height)),
         );
-        for (let y = 0; y < input.height; y++)
-          for (let x = 0; x < input.width; x++) {
+        const k = (work.kernel = shadowGaussianKernel(params.blur as number));
+        // An inner shadow covers every transparent pixel, so it keeps the
+        // full surface. An outer shadow's bilinear mask sample reads the
+        // painted pixels one step around the offset point, and each blur
+        // pass widens it by the kernel radius; outside that, every pass
+        // yields 0 and the composite returns the pixel unchanged.
+        const sampled: ShadowRegion = inner
+          ? { left: 0, top: 0, right: w - 1, bottom: h - 1 }
+          : {
+              left: Math.max(0, paintedLeft + Math.floor(offset[0]!) - 1),
+              top: Math.max(0, paintedTop + Math.floor(offset[1]!) - 1),
+              right: Math.min(w - 1, paintedRight + Math.ceil(offset[0]!) + 1),
+              bottom: Math.min(
+                h - 1,
+                paintedBottom + Math.ceil(offset[1]!) + 1,
+              ),
+            };
+        const across: ShadowRegion = inner
+          ? sampled
+          : {
+              left: sampled.left - k.radius,
+              top: sampled.top,
+              right: sampled.right + k.radius,
+              bottom: sampled.bottom,
+            };
+        const shadowed: ShadowRegion = inner
+          ? sampled
+          : {
+              left: across.left,
+              top: sampled.top - k.radius,
+              right: across.right,
+              bottom: sampled.bottom + k.radius,
+            };
+        for (let y = sampled.top; y <= sampled.bottom; y++)
+          for (let x = sampled.left; x <= sampled.right; x++) {
             samplePremultiplied(
               premultiplied,
               input.width,
@@ -548,8 +625,6 @@ export function shadowEffectKernel(
             );
             mask[y * input.width + x] = inner ? 255 - sample[3]! : sample[3]!;
           }
-        const k = (work.kernel = shadowGaussianKernel(params.blur as number));
-
         const horizontal = (work.horizontal = blurShadowMask(
             mask,
             input.width,
@@ -558,6 +633,7 @@ export function shadowEffectKernel(
             (work.directions = [[1, 0]])[0] as [number, number],
             inner ? 255 : 0,
             work.blurControls[0],
+            across,
           )),
           blurred = (work.blurred = blurShadowMask(
             horizontal,
@@ -567,8 +643,9 @@ export function shadowEffectKernel(
             (work.directions![1] = [0, 1]) as [number, number],
             inner ? 255 : 0,
             work.blurControls[1],
+            shadowed,
           ));
-        for (let i = 0; i < premultiplied.length; i += 4) {
+        const composite = (i: number) => {
           try {
             const out = shadowCompositePixel(
               inner,
@@ -586,7 +663,27 @@ export function shadowEffectKernel(
             clearCompositeWork(work.composite);
             work.view = undefined;
           }
-        }
+        };
+        const top = Math.max(0, shadowed.top),
+          bottom = Math.min(h - 1, shadowed.bottom),
+          left = Math.max(0, shadowed.left),
+          right = Math.min(w - 1, shadowed.right);
+        for (let y = 0; y < h; y++)
+          for (let x = 0; x < w; x++) {
+            const i = (y * w + x) * 4;
+            if (y >= top && y <= bottom && x >= left && x <= right) {
+              composite(i);
+              continue;
+            }
+            // No shadow reaches here (blurred mask 0): the composite is the
+            // premultiply round trip of the pixel itself.
+            const alpha = premultiplied[i + 3]!;
+            for (let c = 0; c < 3; c++)
+              image.data[i + c] = alpha
+                ? Math.round((premultiplied[i + c]! * 255) / alpha)
+                : 0;
+            image.data[i + 3] = alpha;
+          }
         const output = (work.output = context.createSurface(
           input.width,
           input.height,

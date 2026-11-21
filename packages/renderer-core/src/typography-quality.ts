@@ -15,6 +15,14 @@ import type { PreparedTypography } from "./typography-renderer.ts";
 import { evaluateTextPoses } from "./typography-animation.ts";
 import { resolvedTextStyle } from "./typography-style.ts";
 import { findNarrationPhrase } from "./narration-timing.ts";
+import { textEvidenceKey } from "./composition/quality-rules.ts";
+import {
+  advanceReadingMotion,
+  readingMotionFrame,
+  outlinedReading,
+  type OutlinedText,
+  type ReadingMotionRun,
+} from "./composition/reading-motion.ts";
 import { storyCameraTransform } from "./story-camera.ts";
 import { evaluatePreparedNode } from "./prepared-scene.ts";
 import { resolveTextEvents } from "./typography-events.ts";
@@ -800,10 +808,29 @@ export function analyzeCompositionSpeechCaptions(
   return { windows, diagnostics };
 }
 /** Composition text uses the same settled-window principle, with word budgets per semantic role. */
+/** ET6b: one undeclared reading window, reported under `readingMotion`. */
+export type CompositionReadingWindowReport = {
+  layer: string;
+  shot: string;
+  frames: [number, number];
+  requiredSeconds: number;
+  readableSeconds: number;
+  /** Whether every frame's glyph motion was measured from the renderer. */
+  glyphs?: boolean;
+  /** Fastest glyph motion on a reading frame, in letter-heights per second. */
+  peakSpeed?: number;
+  /** Farthest travel within one reading run, in letter-heights. */
+  peakTravel?: number;
+  /** How often a reading run ended while the glyphs were held, and why. */
+  runEnds?: Record<"speed" | "reversal" | "travel" | "blur", number>;
+};
 export function analyzeCompositionTypography(
   frames: readonly CompositionQualityFrame[],
   fps: number,
   policy: ResolvedCompositionQualityPolicy,
+  reports?: CompositionReadingWindowReport[],
+  /** ET6b: outline-only text layers, read by their outline (`readsOutlinedText`). */
+  outlined?: OutlinedText,
 ) {
   const declared = analyzeDeclaredCompositionReading(frames, fps, policy);
   const speech = analyzeCompositionSpeechCaptions(frames, fps, policy);
@@ -828,6 +855,14 @@ export function analyzeCompositionTypography(
         settled: number;
         longest: number;
         path: string;
+        /** ET6b: the current reading-motion run (profile only). */
+        run?: ReadingMotionRun;
+        motion?: {
+          glyphs: boolean;
+          speed: number;
+          travel: number;
+          ends: Record<"speed" | "reversal" | "travel" | "blur", number>;
+        };
       }
     >();
     const finish = (id: string) => {
@@ -853,14 +888,50 @@ export function analyzeCompositionTypography(
           shot: shot.id,
           frames: [window.start, window.end],
           measured: window.longest / fps,
-          message: `${window.role} text (${words} words) has ${(window.longest / fps).toFixed(2)} s of consecutive readable time; needs ${(required / fps).toFixed(2)} s.`,
+          message:
+            `${window.role} text (${words} words) has ${(window.longest / fps).toFixed(2)} s of consecutive readable time; needs ${(required / fps).toFixed(2)} s.` +
+            (window.motion
+              ? ` Reading runs ended ${
+                  Object.entries(window.motion.ends)
+                    .filter(([, count]) => count)
+                    .map(([why, count]) => `${count}× on ${why}`)
+                    .join(", ") || "never"
+                } (budgets ${policy.readingMotion!.velocity} letter-heights/s and ${policy.readingMotion!.displacement} letter-heights of travel; jitter, back-and-forth and spinning end a run).` +
+                (window.motion.glyphs
+                  ? ""
+                  : " Glyph motion was not measured (pixel lint measures pinned-font text), so any text-animator change ends a run.")
+              : ""),
         });
+      reports?.push({
+        layer: id,
+        shot: shot.id,
+        frames: [window.start, window.end],
+        requiredSeconds: required / fps,
+        readableSeconds: window.longest / fps,
+        ...(window.motion
+          ? {
+              glyphs: window.motion.glyphs,
+              peakSpeed: Math.round(window.motion.speed * 1000) / 1000,
+              peakTravel: Math.round(window.motion.travel * 1000) / 1000,
+              runEnds: window.motion.ends,
+            }
+          : {}),
+      });
       active.delete(id);
     };
     for (let frame = shot.start; frame < shot.end; frame++) {
       const current = frames[frame]!;
+      // ET6b: an outline-only layer is read by its outline.
+      const reading = (sample: CompositionQualitySample) =>
+        outlined
+          ? {
+              ...sample,
+              ...outlinedReading(sample, current, outlined),
+            }
+          : sample;
       for (const id of [...active.keys()]) {
-        const sample = current.layers.get(id);
+        const found = current.layers.get(id);
+        const sample = found && reading(found);
         if (
           policy.cuts.has(frame) ||
           !sample?.onScreen ||
@@ -868,7 +939,8 @@ export function analyzeCompositionTypography(
         )
           finish(id);
       }
-      for (const sample of current.layers.values()) {
+      for (const raw of current.layers.values()) {
+        const sample = reading(raw);
         if (
           !sample.onScreen ||
           !sample.text ||
@@ -909,12 +981,6 @@ export function analyzeCompositionTypography(
               ),
             ) * fps
           : 0;
-        const readable =
-          sample.opacity >= policy.readingOpacity &&
-          sample.reveal >= policy.readingReveal &&
-          (sample.state.stateMix ?? 1) >= 0.95 &&
-          speed <= policy.readingVelocity &&
-          (!before || before.textClock === sample.textClock);
         let window = active.get(sample.id);
         if (!window) {
           window = {
@@ -928,6 +994,69 @@ export function analyzeCompositionTypography(
           };
           active.set(sample.id, window);
         }
+        const shown =
+          sample.opacity >= policy.readingOpacity &&
+          sample.reveal >= policy.readingReveal &&
+          (sample.state.stateMix ?? 1) >= 0.95;
+        let readable: boolean;
+        if (policy.readingMotion) {
+          // ET6b (D-read): measured glyph motion replaces the transform
+          // speed and text-clock tests; without it, any text-animator change
+          // still ends the run.
+          const key = textEvidenceKey(current, sample);
+          const glyphs =
+            key && policy.textFramingEvidence?.glyphMotion
+              ? policy.textFramingEvidence.glyphMotion({
+                  key,
+                  state: sample.state.state ?? 0,
+                  reveal: sample.state.reveal ?? 1,
+                  time: sample.state.time,
+                })
+              : undefined;
+          const layer = sample.state.layer;
+          const motion = readingMotionFrame(
+            sample.matrix,
+            sample.scale[1],
+            glyphs,
+            layer.type === "text" ? layer.fontSize : 0,
+          );
+          // Glyphs still building or leaving are not yet being read.
+          const held =
+            shown && sample.opacity * motion.opacity >= policy.readingOpacity;
+          window.run ??= { reference: [] };
+          const step = held
+            ? advanceReadingMotion(
+                window.run,
+                motion,
+                fps,
+                policy.readingMotion,
+              )
+            : undefined;
+          if (!held) window.run = { reference: [] };
+          // Peaks are over the frames that count as reading.
+          const counted = step?.readable ? step : undefined;
+          const ends = window.motion?.ends ?? {
+            speed: 0,
+            reversal: 0,
+            travel: 0,
+            blur: 0,
+          };
+          if (step?.ended) ends[step.ended]++;
+          window.motion = {
+            glyphs: (window.motion?.glyphs ?? true) && motion.glyphs,
+            speed: Math.max(window.motion?.speed ?? 0, counted?.speed ?? 0),
+            travel: Math.max(window.motion?.travel ?? 0, counted?.travel ?? 0),
+            ends,
+          };
+          readable =
+            held &&
+            !!step?.readable &&
+            (motion.glyphs || !before || before.textClock === sample.textClock);
+        } else
+          readable =
+            shown &&
+            speed <= policy.readingVelocity &&
+            (!before || before.textClock === sample.textClock);
         window.end = frame;
         window.settled = readable ? window.settled + 1 : 0;
         window.longest = Math.max(window.longest, window.settled);

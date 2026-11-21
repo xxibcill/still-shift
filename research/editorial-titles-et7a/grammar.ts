@@ -215,6 +215,16 @@ export function sparkle(
     .at(x, y);
 }
 
+/**
+ * Saved lint policy for a candidate (ET6b): the `editorial-title` profile,
+ * which measures contrast at the letter edges (outline, shadow and halo
+ * credited), splits targets by size and counts gentle hold drift as reading
+ * time. It replaces `displayWaivers`.
+ */
+export function editorialProfile() {
+  return { readingPolicy: { profile: "editorial-title" as const } };
+}
+
 const TREATED_DISPLAY =
   "Display type legible by its outline, shadow or halo: the contrast mask " +
   "counts an outline ring as glyph pixels and compares it, like the fill, " +
@@ -224,7 +234,9 @@ const TREATED_DISPLAY =
 
 /**
  * Saved lint policy waiving `text-contrast` for treated display layers only.
- * Labels are never waived: they get a box instead.
+ * Labels are never waived: they get a box instead. Superseded by
+ * `editorialProfile` (ET6b); the 16 pilot candidates keep it so their pinned
+ * sources stay unchanged.
  */
 export function displayWaivers(layers: string[]) {
   return {

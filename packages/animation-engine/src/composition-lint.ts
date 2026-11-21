@@ -7,6 +7,7 @@ import {
 import { readFile } from "node:fs/promises";
 import {
   analyzeCompositionQuality,
+  declaresTextLegibility,
   PassageError,
   textLegibilityFontEvidence,
   type PassageDiagnostic,
@@ -172,12 +173,10 @@ async function lintOwnedComposition(
               comp,
               preview,
               policy,
-              policy.textLegibility ||
-                (
-                  comp.metadata?.readingPolicy as
-                    | { textLegibility?: unknown }
-                    | undefined
-                )?.textLegibility
+              renderer.declaresTextLegibility(
+                policy,
+                comp.metadata?.readingPolicy,
+              )
                 ? { legibilityResources: resources }
                 : {},
             );
@@ -248,10 +247,8 @@ async function withTextLegibilityFonts(
   assetPaths: Readonly<Record<string, string>>,
   policy: CompositionQualityPolicy,
 ): Promise<CompositionQualityPolicy> {
-  const saved = composition.metadata?.readingPolicy as
-    | { textLegibility?: unknown }
-    | undefined;
-  if (!policy.textLegibility && !saved?.textLegibility) return policy;
+  if (!declaresTextLegibility(policy, composition.metadata?.readingPolicy))
+    return policy;
   const fonts: { id: string; bytes: ArrayBuffer }[] = [];
   for (const asset of composition.assets) {
     const path = assetPaths[asset.id];
