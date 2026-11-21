@@ -12,6 +12,7 @@
 import { createHash } from "node:crypto";
 import {
   bakeCubeLut,
+  MAX_LUT_3D_SIZE,
   parseCdlXml,
   writeCdlXml,
   writeCubeLut,
@@ -86,6 +87,12 @@ export async function bakeCompositionGrade(
 ): Promise<{ cube: string; report: GradeBakeReport }> {
   const frame = options.frame ?? 0;
   const size = options.size ?? DEFAULT_BAKE_SIZE;
+  if (!Number.isInteger(size) || size < 2 || size > MAX_LUT_3D_SIZE)
+    passageError(
+      "comp-program-option",
+      `--size must be a whole number of grid points from 2 to ${MAX_LUT_3D_SIZE}`,
+      { path: "size" },
+    );
   const { source, index, effects } = await layerEffects(
     input,
     options.layer,

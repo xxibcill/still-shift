@@ -240,6 +240,36 @@ describe("comp grade bake", () => {
     expect(diagnostic!.code).toBe("comp-grade-not-pointwise");
     expect(diagnostic!.message).toMatch(/blur\.gaussian \("soft"\)/);
   });
+  it("names --size when the grid is out of range", async () => {
+    const input = await write("sized", STACK.slice(0, 1));
+    for (const size of ["1", "130"]) {
+      const output = join(root, `size-${size}.cube`);
+      const result = await run([
+        "grade",
+        "bake",
+        "--input",
+        input,
+        "--layer",
+        "chart",
+        "--output",
+        output,
+        "--size",
+        size,
+      ]);
+      expect(result.code).toBe(1);
+      expect(
+        JSON.parse(result.stderr.trim().split("\n").at(-1)!).diagnostics,
+      ).toEqual([
+        {
+          code: "comp-program-option",
+          severity: "error",
+          message: "--size must be a whole number of grid points from 2 to 129",
+          path: "size",
+        },
+      ]);
+      await expect(readFile(output)).rejects.toThrow();
+    }
+  });
   it("fails before rendering on a wrong-hash LUT", async () => {
     const input = await write(
       "wrong-hash",
