@@ -142,6 +142,16 @@ function isNeutral<T extends object>(
   });
 }
 
+/**
+ * A float offset in the run's LUT texture as its texel [row, column]. The
+ * offset itself can pass 2^24 (a float32 uniform holds every integer only up
+ * to there); the row and the column never do.
+ */
+export const lutTexel = (offset: number): [number, number] => [
+  Math.floor(offset / LUT_TEXTURE_WIDTH),
+  offset % LUT_TEXTURE_WIDTH,
+];
+
 const isIdentity = (m: Mat3) => m.every((v, i) => v === (i % 4 === 0 ? 1 : 0));
 
 /** Column-major (GLSL) from row-major. */
@@ -391,18 +401,23 @@ const OPERATORS: Readonly<
       },
       lutFloats: prepared.floats,
       glsl: (u, { lutBase }) => ({
-        declare: `uniform vec4 ${u("Lut")};uniform vec3 ${u("LutLo")};uniform vec3 ${u("LutHi")};uniform vec4 ${u("Shaper")};uniform vec3 ${u("ShaperLo")};uniform vec3 ${u("ShaperHi")};`,
-        call: `v=gLut(v,${u("Lut")},${u("LutLo")},${u("LutHi")},${u("Shaper")},${u("ShaperLo")},${u("ShaperHi")});`,
+        declare: `uniform vec4 ${u("Lut")};uniform vec4 ${u("LutAt")};uniform vec3 ${u("LutLo")};uniform vec3 ${u("LutHi")};uniform float ${u("ShaperSize")};uniform vec3 ${u("ShaperLo")};uniform vec3 ${u("ShaperHi")};`,
+        call: `v=gLut(v,${u("Lut")},${u("LutAt")},${u("LutLo")},${u("LutHi")},${u("ShaperSize")},${u("ShaperLo")},${u("ShaperHi")});`,
         uniforms: {
           [u("Lut")]: [
-            lutBase + prepared.base,
             lut.size,
             lut.kind === "3d" ? 1 : 0,
             trilinear ? 1 : 0,
+            intensity,
+          ],
+          // The main table's texel, then the shaper's (it comes first).
+          [u("LutAt")]: [
+            ...lutTexel(lutBase + prepared.base),
+            ...lutTexel(lutBase),
           ],
           [u("LutLo")]: [...lut.domainMin],
           [u("LutHi")]: [...lut.domainMax],
-          [u("Shaper")]: [lutBase, lut.shaper?.size ?? 0, intensity, 0],
+          [u("ShaperSize")]: lut.shaper?.size ?? 0,
           [u("ShaperLo")]: [...(lut.shaper?.domainMin ?? [0, 0, 0])],
           [u("ShaperHi")]: [...(lut.shaper?.domainMax ?? [1, 1, 1])],
         },
@@ -558,13 +573,16 @@ vec3 gLut3(vec3 v,int base,int size,vec3 lo,vec3 hi,bool tri){
   if(f.z>f.x)return c000+f.y*(c010-c000)+f.z*(c011-c010)+f.x*(c111-c011);
   return c000+f.y*(c010-c000)+f.x*(c110-c010)+f.z*(c111-c110);
 }
-vec3 gLut(vec3 v,vec4 lut,vec3 lo,vec3 hi,vec4 sh,vec3 slo,vec3 shi){
+// A table's float offset arrives as its texel (row, column): each is exact in
+// a float uniform, and the offset itself (up to 8192 rows) is rebuilt in ints.
+int gLutBase(vec2 at){return int(at.x)*LUT_W+int(at.y);}
+vec3 gLut(vec3 v,vec4 lut,vec4 at,vec3 lo,vec3 hi,float shaperSize,vec3 slo,vec3 shi){
   vec3 x=v;
-  int shSize=int(sh.y+0.5);
-  if(shSize>0)x=gLut1(x,int(sh.x+0.5),shSize,slo,shi);
-  int base=int(lut.x+0.5),size=int(lut.y+0.5);
-  vec3 o=lut.z>0.5?gLut3(x,base,size,lo,hi,lut.w>0.5):gLut1(x,base,size,lo,hi);
-  return gLimit3(v+sh.z*(o-v));
+  int shSize=int(shaperSize);
+  if(shSize>0)x=gLut1(x,gLutBase(at.zw),shSize,slo,shi);
+  int base=gLutBase(at.xy),size=int(lut.x);
+  vec3 o=lut.y>0.5?gLut3(x,base,size,lo,hi,lut.z>0.5):gLut1(x,base,size,lo,hi);
+  return gLimit3(v+lut.w*(o-v));
 }`;
 
 /** One fused shader for the run (cached by the device per text). */

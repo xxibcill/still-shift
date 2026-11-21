@@ -12,6 +12,16 @@ import {
   type Composition,
 } from "@still-shift/scene-contract";
 import { evaluateComp } from "../../packages/renderer-core/src/composition/evaluate/evaluate.ts";
+import {
+  floatGradeOp,
+  lutTexel,
+} from "../../packages/renderer-core/src/composition/render/float-grade.ts";
+import {
+  EFFECT_LUTS,
+  LUT_TEXTURE_WIDTH,
+  preparedLut,
+} from "../../packages/renderer-core/src/composition/render/luts.ts";
+import { bakeCubeLut, type Rgb } from "@still-shift/color-science";
 
 const SHA = `sha256:${"a".repeat(64)}`;
 const lutAsset = (extra: Record<string, unknown> = {}) => ({
@@ -162,5 +172,41 @@ describe("grade.lut contract", () => {
     const effect = frame.layers[0]!.effects[0]!;
     expect(effect.assets).toEqual({ lut: "look" });
     expect(effect.params).toEqual({ intensity: 0.5, interpolation: 0 });
+  });
+});
+
+describe("grade.lut texture offsets (GPU)", () => {
+  it("passes each table's offset as an exact texel row and column", () => {
+    const shaped = {
+      ...bakeCubeLut((v: Rgb) => v, 2),
+      shaper: {
+        kind: "1d" as const,
+        size: 2,
+        domainMin: [0, 0, 0] as [number, number, number],
+        domainMax: [1, 1, 1] as [number, number, number],
+        data: Float64Array.from([0, 0, 0, 1, 1, 1]),
+      },
+    };
+    const op = floatGradeOp(
+      "grade.lut",
+      { intensity: 0.5, interpolation: 1 },
+      { [EFFECT_LUTS]: { lut: preparedLut(SHA, shaped) } },
+    )!;
+    // Odd offsets above 2^23 and above 2^24: `x + 0.5` in float32 rounds the
+    // first to x + 1, and a float32 cannot hold the second at all.
+    for (const lutBase of [0, 4095, 4096, 12_892_425, 19_320_201]) {
+      const { uniforms } = op.glsl((name) => name, { rows: [], lutBase });
+      const at = uniforms.LutAt as number[];
+      for (const value of at) expect(Math.fround(value)).toBe(value);
+      const offset = (row: number, column: number) =>
+        Math.trunc(row) * LUT_TEXTURE_WIDTH + Math.trunc(column);
+      // The shaper's six floats come first, then the main table.
+      expect(offset(at[2]!, at[3]!)).toBe(lutBase);
+      expect(offset(at[0]!, at[1]!)).toBe(lutBase + 6);
+      expect(at[1]).toBeLessThan(LUT_TEXTURE_WIDTH);
+      expect(uniforms.Lut).toEqual([2, 1, 1, 0.5]);
+      expect(uniforms.ShaperSize).toBe(2);
+    }
+    expect(lutTexel(4096 * 8191 + 4095)).toEqual([8191, 4095]);
   });
 });
