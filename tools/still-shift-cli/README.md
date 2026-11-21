@@ -460,7 +460,8 @@ x,y,w,h`. The report (`still-shift-color-scopes-1`, validated by a schema)
   stack (the input, then after each effect) and reports the pixel at `--at` (a
   square of side 2·`--radius`+1) or a `--region`, in encoded, linear, HSL,
   CIELAB and OKLab coordinates, plus suggested HSL qualifier ranges for the
-  region. Other layers are disabled unless `--isolate false`; the layer's
+  region (at most 3840×2160 pixels; a larger one fails with
+  `comp-probe-region`). Other layers are disabled unless `--isolate false`; the layer's
   parents stay, and so does a group's content (the layers parented into it).
   Values are the renderer's 8-bit output (`--backend canvas2d` is the float64
   grade reference exactly).

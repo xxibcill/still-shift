@@ -333,6 +333,70 @@ describe("comp probe", () => {
       [0, 0, 0],
     ]);
   });
+  it("averages a whole region, and refuses one over the pixel limit", async () => {
+    const composition = (width: number, height: number) => ({
+      schemaVersion: "composition-1",
+      id: "cg3-probe-region",
+      width,
+      height,
+      fps: 24,
+      frameCount: 1,
+      background: "#000000",
+      assets: [],
+      layers: [
+        {
+          id: "paint",
+          type: "solid",
+          // The left half of the frame.
+          size: [width / 2, height],
+          color: "#c08040",
+          transform: { anchor: [0, 0], position: [0, 0] },
+          effects: [
+            { id: "cdl", effect: "grade.cdl", params: { slopeR: 0.5 } },
+          ],
+        },
+      ],
+    });
+    const small = join(root, "probe-region.json");
+    await writeFile(small, JSON.stringify(composition(64, 48)));
+    const result = await run([
+      "probe",
+      "--input",
+      small,
+      "--layer",
+      "paint",
+      "--region",
+      "0,0,64,48",
+    ]);
+    expect(result.code, result.stderr).toBe(0);
+    const report = JSON.parse(result.stdout);
+    expect(report.pixels).toBe(64 * 48);
+    // Half paint, half black background: the mean of every pixel.
+    expect(report.stages.map((s: { bytes: number[] }) => s.bytes)).toEqual([
+      [96, 64, 32],
+      [48, 64, 32],
+    ]);
+    // The qualifier reads the last stage's pixels: #608040 and black.
+    expect(report.qualifier.samples).toBe(64 * 48);
+    expect(report.qualifier.luminance.min).toBe(0);
+    expect(report.qualifier.hue.center).toBeCloseTo(90, 0);
+
+    const large = join(root, "probe-region-large.json");
+    await writeFile(large, JSON.stringify(composition(4096, 2304)));
+    const refused = await run([
+      "probe",
+      "--input",
+      large,
+      "--layer",
+      "paint",
+      "--region",
+      "0,0,4096,2304",
+    ]);
+    expect(refused.code).toBe(1);
+    expect(refused.stderr).toMatch(
+      /comp-probe-region.*9437184 pixels; the limit is 8294400/,
+    );
+  });
 });
 
 describe("comp grade diff", () => {

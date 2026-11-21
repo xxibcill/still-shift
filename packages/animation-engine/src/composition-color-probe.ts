@@ -9,7 +9,8 @@
  * background. Rendering is the export
  * renderer's, in the pinned browser (as `comp lint --pixels`); values are the
  * 8-bit output, reported in encoded, linear, HSL, CIELAB and OKLab
- * coordinates, with a qualifier suggestion for the sampled region.
+ * coordinates, with a qualifier suggestion for the sampled region (at most
+ * MAX_PROBE_REGION_PIXELS pixels).
  */
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import type * as Renderer from "@still-shift/renderer-core";
@@ -32,6 +33,8 @@ import { loadComposition } from "./composition-render.ts";
 import { roundTo } from "./composition-color-round.ts";
 
 export const COLOR_PROBE_VERSION = "still-shift-color-probe-1";
+/** The largest region one probe samples (a 3840x2160 frame). */
+export const MAX_PROBE_REGION_PIXELS = 3840 * 2160;
 
 export type ColorProbeRequest = {
   layer: string;
@@ -133,10 +136,13 @@ export async function probeCompositionFile(
                 __stillShiftLintRenderer: typeof Renderer;
               }
             ).__stillShiftLintRenderer;
-            const out: number[][] = [];
+            // Per stage only the channel sums leave the page; the last
+            // stage's region also leaves, as base64 bytes, for the qualifier.
+            const sums: number[][] = [];
+            let last = "";
             try {
-              for (const json of variants) {
-                const comp = JSON.parse(json) as Composition;
+              for (let k = 0; k < variants.length; k++) {
+                const comp = JSON.parse(variants[k]!) as Composition;
                 const resources = await renderer.loadCompositionResources(
                   comp,
                   (id: string) => `/_lint/assets/${encodeURIComponent(id)}`,
@@ -151,23 +157,32 @@ export async function probeCompositionFile(
                 try {
                   preview.renderFrame(frame);
                   const pixels = preview.readPixels();
-                  const values: number[] = [];
-                  for (let y = region.y; y < region.y + region.height; y++)
-                    for (let x = region.x; x < region.x + region.width; x++) {
-                      const i = (y * comp.width + x) * 4;
-                      values.push(
-                        pixels[i]!,
-                        pixels[i + 1]!,
-                        pixels[i + 2]!,
-                        pixels[i + 3]!,
+                  const row = region.width * 4;
+                  const bytes = new Uint8Array(row * region.height);
+                  for (let y = 0; y < region.height; y++) {
+                    const from = ((region.y + y) * comp.width + region.x) * 4;
+                    bytes.set(pixels.subarray(from, from + row), y * row);
+                  }
+                  const sum = [0, 0, 0];
+                  for (let i = 0; i < bytes.length; i += 4) {
+                    sum[0]! += bytes[i]!;
+                    sum[1]! += bytes[i + 1]!;
+                    sum[2]! += bytes[i + 2]!;
+                  }
+                  sums.push(sum);
+                  if (k === variants.length - 1) {
+                    let binary = "";
+                    for (let i = 0; i < bytes.length; i += 0x8000)
+                      binary += String.fromCharCode(
+                        ...bytes.subarray(i, i + 0x8000),
                       );
-                    }
-                  out.push(values);
+                    last = btoa(binary);
+                  }
                 } finally {
                   preview.dispose();
                 }
               }
-              return { ok: true as const, out };
+              return { ok: true as const, sums, last };
             } catch (error) {
               return {
                 ok: false as const,
@@ -186,14 +201,9 @@ export async function probeCompositionFile(
     );
     if (!result.ok)
       throw new PassageError(result.diagnostics as PassageDiagnostic[]);
-    const stages = result.out.map((values, k) => {
-      const rgba = Uint8Array.from(values);
-      const count = values.length / 4;
-      const mean = [0, 1, 2].map((c) => {
-        let sum = 0;
-        for (let i = 0; i < count; i++) sum += rgba[i * 4 + c]!;
-        return sum / count;
-      });
+    const count = region.width * region.height;
+    const stages = result.sums.map((sum, k) => {
+      const mean = sum.map((value) => value / count);
       const coordinates = pixelCoordinates(
         mean.map((v) => v / 255) as [number, number, number],
       );
@@ -208,14 +218,12 @@ export async function probeCompositionFile(
           lab: coordinates.lab.map(round),
           oklab: coordinates.oklab.map(round),
         },
-        rgba,
       };
     });
-    const last = stages.at(-1)!;
     const qualifier = suggestQualifier({
       width: region.width,
       height: region.height,
-      rgba: last.rgba,
+      rgba: Buffer.from(result.last, "base64"),
     });
     return {
       schema: COLOR_PROBE_VERSION,
@@ -225,8 +233,8 @@ export async function probeCompositionFile(
       backend,
       isolate: request.isolate !== false,
       region,
-      pixels: region.width * region.height,
-      stages: stages.map(({ rgba: _rgba, ...stage }) => stage),
+      pixels: count,
+      stages,
       qualifier: {
         ...qualifier,
         hue: qualifier.hue && {
@@ -280,6 +288,12 @@ function probeRegion(comp: Composition, request: ColorProbeRequest): Region {
     passageError(
       "comp-probe-region",
       `Probe region ${region!.x},${region!.y},${region!.width},${region!.height} must be whole pixels inside the ${comp.width}x${comp.height} frame`,
+      { path: "region" },
+    );
+  if (region!.width * region!.height > MAX_PROBE_REGION_PIXELS)
+    passageError(
+      "comp-probe-region",
+      `Probe region ${region!.width}x${region!.height} has ${region!.width * region!.height} pixels; the limit is ${MAX_PROBE_REGION_PIXELS} (3840x2160)`,
       { path: "region" },
     );
   return region!;
