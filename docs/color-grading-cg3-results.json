@@ -1,0 +1,73 @@
+{
+  "schema": "still-shift-milestone-results-1",
+  "milestone": "CG3",
+  "title": "Color grading engine: scopes, probes and machine-readable measurement",
+  "date": "2026-11-21",
+  "branch": "codex/color-grading-cg3",
+  "base": "codex/color-grading-cg0-cg2 77722bb0 (PR #77, CG0-CG2), later merged with its tip 0811876e (which merges main 51ffe62a, PR #76)",
+  "plan": "docs/color-grading-engine-plan.md#cg3--scopes-probes-and-machine-readable-measurement",
+  "environment": {
+    "node": "22.23.1",
+    "pnpm": "10.29.3",
+    "ffmpeg": "8.0.1",
+    "browser": "pinned Chromium 151.0.7922.34 / SwiftShader (chromium-software-2)",
+    "platform": "darwin-arm64"
+  },
+  "visualAcceptance": "none: measurement tooling only; the scope images were looked at by the agent as a sanity check, which is not acceptance",
+  "delivered": {
+    "colorScience": "packages/color-science/src/scopes.ts: luma waveform, RGB parade, BT.709 vectorscope, RGB/luma/hue/saturation histograms, CIE 1931 xy, SDR false color, exposure zones (ported from chroma-node scopeAnalysis.ts b804dc0); new: 123-degree skin-tone line, pixel coordinates (encoded, linear, HSL, CIELAB, OKLab), HSL qualifier suggestions",
+    "reuse": "comp color-stats' measureColorFrames is now a wrapper over colorStatisticsAccumulator (same summation order); comp scopes embeds its ColorStatistics unchanged and the CGA color integration tests (21) pass",
+    "commands": {
+      "comp scopes": "evenly sampled frames or --frame-range start:end, optional --region; report still-shift-color-scopes-1 validated by a zod schema; optional waveform/parade/vectorscope/CIE PNGs",
+      "comp probe": "one layer's effect stack rendered stage by stage in the pinned browser; point (with radius) or region; coordinates and qualifier suggestion; other layers disabled by default",
+      "comp grade diff": "two clips of one size: statistics, changes, split still, contact sheet"
+    },
+    "provenancePortChanges": [
+      "bins are floor(v * bins) clamped (chroma-node scaled by bins - 1, so the last bin held a single value)",
+      "the hue histogram skips achromatic pixels (chroma-node counted greys as hue 0, red)",
+      "regions and alpha-0 skipping",
+      "neutral luma is exact (the Rec.709 weights sum to 0.9999999999999999 in float64, which moved exact zone boundaries)"
+    ],
+    "deferred": "scope types beyond the measured set (YCbCr/YRGB parades, HDR waveform, CIE 1976) and probe coordinates at arbitrary graph nodes (CG9) are not built; the chroma-node HDR false-color ranges wait for CG7/CG8"
+  },
+  "checks": [
+    {
+      "check": "Statistics on CG0 synthetic fixtures match analytically known values",
+      "status": "met",
+      "test": "tests/unit/color-science-scopes.test.ts (12 tests)",
+      "evidence": "gray ramp waveform is the diagonal (32 per column) and its luma histogram flat; RGB ramp parades trace their own band; every hue-sweep pixel's hue is its column within 0.6 degrees; saturation-sweep saturation is x/255 within byte rounding; BT.709 primaries at their analytic Cb/Cr (red at Cr 0.5, 103 degrees); skin tones within 15 degrees of the skin line; the chart's neutrals at D65 xy within 1e-4; false-color and exposure-zone counts on the ramp equal the class bounds; pixel coordinates of white, 18% grey and red"
+    },
+    {
+      "check": "Scope JSON is byte-stable across reruns and validated by a schema",
+      "status": "met",
+      "evidence": "two runs of comp scopes on the CG0 moving clip (frames 10:14, with images) give byte-identical JSON and identical PNG hashes; every report is parsed by ColorScopesReportSchema before it is returned, and the test parses the CLI output with it"
+    },
+    {
+      "check": "Probe before/after values match the float64 reference for a graded pixel",
+      "status": "met",
+      "evidence": "CG0 chart with grade.primary then grade.cdl, probed on Canvas at a patch: the input stage equals the source bytes, the stage after grade.primary equals floatGradeBytes of that operator and the stage after grade.cdl equals the two-operator run, exactly"
+    },
+    {
+      "check": "Works on a native-video frame range within the existing media memory limits; over-budget requests fail with a clear diagnostic",
+      "status": "met",
+      "evidence": "frames decode in batches of floor(mediaLimits.decodedFrameBytes / frame bytes); with a three-frame budget an 8-frame range is measured in batches of 3 with a report identical to the unbatched one; a frame over the limit fails with comp-scope-limit before decoding; a range outside the clip fails with comp-scope-range; a region outside the frame fails"
+    },
+    {
+      "check": "Documented in the CLI README and generated reference",
+      "status": "met",
+      "evidence": "CLI README 'Color measurement: scopes, probe and grade diff' and command table row; the generated skill names the commands (the composition reference itself documents composition fields, not CLI commands)"
+    }
+  ],
+  "failedRunsAndReruns": [
+    "The scope module was written before its unit tests (not failing-first); the tests were written next and one failed on a real defect, fixed: neutral luma lost an ulp to the weights' float sum and put code 51 in exposure zone 1 instead of 2.",
+    "CLI integration tests were written before the commands and failed first with comp-program-command (unknown composition command scopes / probe / grade); the module-level batching test passed from the start because the module existed.",
+    "One integration test expected the background hue peak in the 80-90 degree bin; the background's hue is exactly 80 degrees, so noise and 4:2:0 chroma split it between bins 7 and 8. The test now checks the two bins together (> 0.6) and no skin pixels.",
+    "A single compound shell command for the accumulator refactor was refused by the worktree guard; the edit was redone with the editor.",
+    "pnpm install rewrote pnpm-lock.yaml's quoting again; Prettier restored it, leaving only the new dependency entry.",
+    "schema:check flagged the native appearance closure after the renderer's color-science import gained the scope module; regenerated (identity only)."
+  ],
+  "workspace": "CG3 runs in its own worktree (.claude/worktrees/color-grading-cg3) at the owner's choice, because the PR #77 review session was committing in the CG0-CG2 worktree.",
+  "verification": "filled after the run",
+  "notRun": "pnpm check, full pnpm test, runtime tier, release checks",
+  "next": "Report to the owner. Then CG4 (curves and tonal-range tools) and CG5 (LUT and CDL interchange), which can run in parallel after CG2."
+}

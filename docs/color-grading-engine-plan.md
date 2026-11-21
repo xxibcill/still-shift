@@ -2,7 +2,9 @@
 
 Date: 2026-11-16; re-checked against `main` 894c9d32 on 2026-11-20. Status:
 **CGA merged on `main` (PR #70); the owner asked to continue the whole upgrade
-(2026-11-20); CG0–CG2 done on `codex/color-grading-cg0-cg2` (stopping point after CG2).** The owner's stated
+(2026-11-20); CG0–CG2 done on `codex/color-grading-cg0-cg2` (PR #77); the owner
+said "Yes, continue to CG3"; CG3 done on `codex/color-grading-cg3` (stacked on
+PR #77).** The owner's stated
 minimum need was the [fast track (CGA)](#fast-track-the-minimum-need); CG0–CG15
 are the long-range upgrade, re-scoped in
 [re-check against `main`](#re-check-against-main-2026-11-20).
@@ -246,7 +248,7 @@ These are recommendations to confirm at CG1, each with a fallback.
 | CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)        | 2–3                    | Done (branch)   |
 | CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
 | CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
-| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Proposed        |
+| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Done (branch)   |
 | CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Proposed        |
 | CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed        |
 | CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed        |
@@ -626,14 +628,27 @@ grade from a picture alone. This is the engine's eyes, so it comes early.
   a contact sheet across the clip.
 - Output is deterministic and schema-validated so it can be diffed and tested.
 
-**Checks**
+**Checks** (2026-11-21, `codex/color-grading-cg3`; numbers in
+[CG3 results](./color-grading-cg3-results.json); commands in the
+[CLI README](../tools/still-shift-cli/README.md#color-measurement-scopes-probe-and-grade-diff))
 
-- [ ] Statistics on CG0 synthetic fixtures match analytically known values.
-- [ ] Scope JSON is byte-stable across reruns and validated by a schema.
-- [ ] Probe before/after values match the float64 reference for a graded pixel.
-- [ ] Works on a native-video frame range within the existing media memory
-      limits; over-budget requests fail with a clear diagnostic.
-- [ ] Documented in the CLI README and generated reference.
+- [x] Statistics on CG0 synthetic fixtures match analytically known values
+      (12 tests: ramps, sweeps, primaries, skin line, chart neutrals at D65,
+      false color, zones, pixel coordinates).
+- [x] Scope JSON is byte-stable across reruns and validated by a schema (JSON
+      and scope PNGs identical on rerun; `ColorScopesReportSchema`).
+- [x] Probe before/after values match the float64 reference for a graded pixel
+      (exact on Canvas, stage by stage).
+- [x] Works on a native-video frame range within the existing media memory
+      limits; over-budget requests fail with a clear diagnostic (batches of
+      `mediaLimits.decodedFrameBytes`, identical results; `comp-scope-limit`).
+- [x] Documented in the CLI README and generated reference (the generated
+      skill; the composition reference covers fields, not CLI commands).
+
+_As built:_ `comp scopes` embeds `comp color-stats`' statistics unchanged
+(the measurement is now an accumulator with the same summation order). YCbCr
+and YRGB parades, HDR scopes and CIE 1976 are not built; the probe reports the
+renderer's 8-bit output per effect stage, not values inside a fused grade run.
 
 ## CG4 — Curves and tonal-range tools
 

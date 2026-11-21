@@ -558,7 +558,12 @@ export async function diffColorGrade(
   const ordinals = colorSampleOrdinals(frameCount, options.frames ?? 12);
   const cellWidth = options.cellWidth ?? 320;
   const middle = ordinals[Math.floor(ordinals.length / 2)]!;
-  const results: { name: string; sha256: string; statistics: ColorStatistics; measurement: ColorScopesMeasurement }[] = [];
+  const results: {
+    name: string;
+    sha256: string;
+    statistics: ColorStatistics;
+    measurement: ColorScopesMeasurement;
+  }[] = [];
   /** Full-size middle frame (for the still) and downscaled cells (sheet). */
   const stills: ColorFrame[] = [];
   const cells: ColorFrame[][] = [[], []];
