@@ -310,6 +310,84 @@ byte-identical), animated intensity and 33³/65³ bakes. The CE6 cell
 `catalogue-lut-grade` (a generated 17³ LUT, `lut-grade.cube`) has its own
 baseline file (`darwin-arm64-lut-grade-1.json`).
 
+### Keys: qualifiers, windows and matte finesse (CG6)
+
+`grade.key` limits a grade to selected colors or regions
+([plan, CG6](./color-grading-engine-plan.md#cg6--keys-qualifiers-windows-and-matte-finesse);
+[contract decision](./color-grading-cg6-decisions.md)). It keys the `grade.*`
+operations after it in its grade run, up to the next `grade.key` or the end
+of the run. The key is computed from the value entering it, which is the
+input of the operations it scopes, never their output.
+
+```json
+[
+  {
+    "id": "sky",
+    "effect": "grade.key",
+    "params": {
+      "qualifier": 1,
+      "hueCenter": 210,
+      "hueWidth": 40,
+      "hueSoftness": 15,
+      "saturationMin": 0.2,
+      "saturationSoftness": 0.1,
+      "denoise": 1,
+      "blur": 2,
+      "window": 1,
+      "windowCenter": [640, 200],
+      "windowSize": [1100, 420],
+      "windowFeather": 40
+    }
+  },
+  { "id": "deepen", "effect": "grade.primary", "params": { "saturation": 1.3 } }
+]
+```
+
+- Key = clamp(`gain` · Q · W · G · M + `offset`, 0, 1). Each pixel mixes the
+  operations' input and output by the key (0 keeps the input, 1 takes the
+  result). A pixel no operation touched leaves the run as its source bytes.
+- Q, the qualifier (`qualifier` 0 none, 1 HSL, 2 RGB, 3 luma, 4 sampled), on
+  the input clamped to 0–1: HSL uses `hueCenter`/`hueWidth`/`hueSoftness`
+  (degrees), `saturation*` (HSL saturation) and `luminance*` (BT.709 luma);
+  RGB uses `red*`, `green*`, `blue*` and `rgbSoftness`; luma uses
+  `luminance*`; sampled uses `sampleCount` colors `sample1`…`sample8` and
+  `sampleRadius`/`sampleSoftness` as OKLab distances. Softness extends each
+  range outward (Hermite). A neutral pixel has no hue: a hue range selects it
+  only at full width (360).
+- Matte finesse refines Q, in order: `clipBlack`/`clipWhite` (levels),
+  `denoise` (passes of a 3×3 median), `cleanBlack` (opening),
+  `cleanWhite` (closing), `shrinkGrow` (erosion below 0, dilation above),
+  `blur` (σ in surface pixels, `blur.gaussian`'s three-box kernel) with
+  `inOutRatio` (−1 keeps the softness inside the edge, +1 outside), then
+  `invert`. Morphology radii are whole pixels with a square element; edges
+  clamp. Finesse and `invert` need a qualifier.
+- W, the shape window: `window` 1 ellipse or 2 rectangle (`windowRoundness`
+  corner radius), `windowCenter`, `windowSize`, `windowRotation` (degrees),
+  `windowFeather` and `windowExpansion` as layer masks, `windowInvert`; in the
+  key's layer space (its layer, or the layer named by the instance's `space`).
+  The renderer draws it as a layer mask, so its edges are the mask
+  rasterizer's.
+- G, the linear gradient: `gradient` 1 runs from 0 at `gradientStart` to 1
+  at `gradientEnd` (layer space).
+- M, the external matte: bind a layer with `inputs: {"matte": "<layer>"}`
+  (an optional slot). `matteMode` 0 reads its alpha (a layer's own masks and
+  shape paths become a window this way), 1 its luma over black (a depth
+  image, luma matte or matte sequence); then levels `matteLow`→`matteHigh`
+  (reversed when low > high) and `matteInvert`. A hidden (`enabled: false`)
+  layer works as a source.
+- `view` shows the key instead of the grade: 1 gray key, 2 highlight (the
+  result where keyed over mid gray), 3 high contrast (white wherever the key
+  is above 0). A view ends the run's processing.
+- Precision: the float64 reference in `@still-shift/color-science` is
+  authoritative; Canvas runs it, WebGL2 is within one code value. Finesse
+  runs as GPU passes on float32 bits in RGBA8 textures. One grade run reads
+  at most 12 key textures (`comp-grade-key-budget`).
+- `comp grade bake` refuses `grade.key`. `comp probe` reports its qualifier
+  suggestion as `gradeKey` (HSL) and `gradeKeySampled` (sampled OKLab)
+  parameters. `comp grade key --layer <id> --effect <key>` reports the key per
+  frame (mean, keyed fraction, frame-to-frame flicker) and writes a view with
+  `--view key|highlight|contrast --still <new.png>`.
+
 ## Native transitions
 
 `transition.linear-wipe`, `transition.radial-wipe`,

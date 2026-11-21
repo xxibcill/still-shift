@@ -137,15 +137,11 @@ export async function measureGradeKey(
                 __stillShiftLintRenderer: typeof Renderer;
               }
             ).__stillShiftLintRenderer;
-            const base64 = (bytes: Uint8Array) => {
-              let binary = "";
-              for (let i = 0; i < bytes.length; i += 0x8000)
-                binary += String.fromCharCode(...bytes.subarray(i, i + 0x8000));
-              return btoa(binary);
-            };
+            // No named functions in here: tsx would wrap them in __name.
+            const encoded: string[][] = [[], []];
             try {
-              const render = async (json: string, frames: number[]) => {
-                const comp = JSON.parse(json) as Composition;
+              for (let d = 0; d < docs.length; d++) {
+                const comp = JSON.parse(docs[d]!) as Composition;
                 const resources = await renderer.loadCompositionResources(
                   comp,
                   (id: string) => `/_lint/assets/${encodeURIComponent(id)}`,
@@ -158,30 +154,36 @@ export async function measureGradeKey(
                   { backend },
                 );
                 try {
-                  return frames.map((frame) => {
-                    preview.renderFrame(frame);
-                    return preview.readPixels().slice();
-                  });
+                  for (
+                    let frame = start;
+                    frame < (d ? start + 1 : end);
+                    frame++
+                  ) {
+                    // Native media must be decoded before the frame draws.
+                    await preview.prepareFrame(frame);
+                    await renderer.renderCompositionFrameAsync(preview, frame);
+                    const pixels = preview.readPixels();
+                    // Keys leave the page one byte per pixel (the gray key's
+                    // red); the view still leaves whole.
+                    const bytes = d
+                      ? new Uint8Array(pixels)
+                      : Uint8Array.from(
+                          { length: pixels.length / 4 },
+                          (_, i) => pixels[i * 4]!,
+                        );
+                    let binary = "";
+                    for (let i = 0; i < bytes.length; i += 0x8000)
+                      binary += String.fromCharCode(
+                        ...bytes.subarray(i, i + 0x8000),
+                      );
+                    encoded[d]!.push(btoa(binary));
+                  }
                 } finally {
                   preview.dispose();
                 }
-              };
-              const frames = Array.from(
-                { length: end - start },
-                (_, i) => start + i,
-              );
-              // Keys leave the page one byte per pixel (the gray key's red).
-              const keys = (await render(docs[0]!, frames)).map((pixels) =>
-                base64(
-                  Uint8Array.from(
-                    { length: pixels.length / 4 },
-                    (_, i) => pixels[i * 4]!,
-                  ),
-                ),
-              );
-              const still = docs[1]
-                ? base64(new Uint8Array((await render(docs[1], [start]))[0]!))
-                : "";
+              }
+              const keys = encoded[0]!,
+                still = encoded[1]![0] ?? "";
               return { ok: true as const, keys, still };
             } catch (error) {
               return {
