@@ -14,6 +14,7 @@
  */
 import { ColorScienceError } from "./errors.ts";
 import { BT709_CB_SCALE, BT709_CR_SCALE, BT709_LUMA } from "./grade.ts";
+import { linearToOklab } from "./keys.ts";
 import { transferFunction } from "./transfer.ts";
 
 export type RgbaFrame = {
@@ -393,16 +394,7 @@ export function pixelCoordinates(
     500 * (fx - fy),
     200 * (fy - fz),
   ];
-  const lms = [
-    0.4122214708 * rl + 0.5363325363 * gl + 0.0514459929 * bl,
-    0.2119034982 * rl + 0.6806995451 * gl + 0.1073969566 * bl,
-    0.0883024619 * rl + 0.2817188376 * gl + 0.6299787005 * bl,
-  ].map(Math.cbrt) as [number, number, number];
-  const oklab: [number, number, number] = [
-    0.2104542553 * lms[0] + 0.793617785 * lms[1] - 0.0040720468 * lms[2],
-    1.9779984951 * lms[0] - 2.428592205 * lms[1] + 0.4505937099 * lms[2],
-    0.0259040371 * lms[0] + 0.7827717662 * lms[1] - 0.808675766 * lms[2],
-  ];
+  const oklab = [...linearToOklab(linear)] as [number, number, number];
   return {
     encoded: [r, g, b],
     linear,
