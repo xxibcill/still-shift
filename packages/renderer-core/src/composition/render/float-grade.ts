@@ -1,5 +1,18 @@
 import {
   applyCdl,
+  applyGradeCurves,
+  applyGradeHueCurves,
+  applyGradeTonal,
+  CURVE_TABLE_SIZE,
+  gradeCurvesControls,
+  gradeHueCurvesControls,
+  HUE_CURVE_CHROMA_FADE,
+  HUE_CURVE_KEYS,
+  HUE_CURVE_LUMA_AMOUNT,
+  HUE_CURVE_SATURATION_SCALE,
+  NEUTRAL_GRADE_TONAL,
+  type CurvePoints,
+  type GradeTonal,
   applyGradePrimary,
   applyLinearMatrixEncoded,
   applyRgbMixer,
@@ -59,8 +72,16 @@ export type FloatGradeOp = {
   readonly id: FloatGradeEffectId;
   /** The float64 reference (the Canvas path and tests). */
   apply(v: Rgb): Rgb;
-  /** Uniform declarations, the call and uniform values; `uniform` names them. */
-  glsl(uniform: (name: string) => string): OpGlsl;
+  /**
+   * CG4: baked curve tables (CURVE_TABLE_SIZE float32 entries each) the
+   * kernel samples; the run uploads them as rows of one texture.
+   */
+  readonly tables?: readonly Float32Array[];
+  /**
+   * Uniform declarations, the call and uniform values; `uniform` names them
+   * and `rows[i]` is the texture row of `tables[i]`.
+   */
+  glsl(uniform: (name: string) => string, rows: readonly number[]): OpGlsl;
 };
 
 /** Every control of `value` equals `neutral`'s, except those in `ignore`. */
@@ -201,6 +222,113 @@ const OPERATORS: Readonly<
       }),
     };
   },
+  "grade.curves": (p) => {
+    const points = (name: string) => p[name] as unknown as CurvePoints;
+    const controls = gradeCurvesControls({
+      master: points("master"),
+      red: points("red"),
+      green: points("green"),
+      blue: points("blue"),
+      lumaMix: n(p, "lumaMix"),
+    });
+    if (!controls) return null;
+    const present = [
+      controls.red,
+      controls.green,
+      controls.blue,
+      controls.master,
+    ];
+    const tables = present.filter((t): t is Float32Array => t !== null);
+    return {
+      id: "grade.curves",
+      apply: (v) => applyGradeCurves(v, controls),
+      tables,
+      glsl: (u, rows) => {
+        let next = 0;
+        const row = present.map((t) => (t ? rows[next++]! : -1));
+        return {
+          declare: `uniform vec4 ${u("Rows")};uniform float ${u("LumaMix")};`,
+          call: `v=gCurves(v,${u("Rows")},${u("LumaMix")});`,
+          uniforms: { [u("Rows")]: row, [u("LumaMix")]: controls.lumaMix },
+        };
+      },
+    };
+  },
+  "grade.hue-curves": (p) => {
+    const controls = gradeHueCurvesControls(
+      Object.fromEntries(
+        HUE_CURVE_KEYS.map((key) => [key, p[key] as unknown as CurvePoints]),
+      ) as Parameters<typeof gradeHueCurvesControls>[0],
+    );
+    if (!controls) return null;
+    const present = HUE_CURVE_KEYS.map((key) => controls[key]);
+    const tables = present.filter((t): t is Float32Array => t !== null);
+    return {
+      id: "grade.hue-curves",
+      apply: (v) => applyGradeHueCurves(v, controls),
+      tables,
+      glsl: (u, rows) => {
+        let next = 0;
+        const row = present.map((t) => (t ? rows[next++]! : -1));
+        return {
+          declare: `uniform vec3 ${u("HueRows")};uniform vec3 ${u("SatRows")};`,
+          call: `v=gHueCurves(v,${u("HueRows")},${u("SatRows")});`,
+          uniforms: {
+            [u("HueRows")]: row.slice(0, 3),
+            [u("SatRows")]: row.slice(3, 6),
+          },
+        };
+      },
+    };
+  },
+  "grade.tonal": (p) => {
+    const settings: GradeTonal = {
+      shadowOffset: rgb(p, "shadow"),
+      midOffset: rgb(p, "mid"),
+      highlightOffset: rgb(p, "highlight"),
+      shadowExposure: n(p, "shadowExposure"),
+      midExposure: n(p, "midExposure"),
+      highlightExposure: n(p, "highlightExposure"),
+      shadowEnd: n(p, "shadowEnd"),
+      highlightStart: n(p, "highlightStart"),
+      falloff: n(p, "falloff"),
+      softClipHigh: n(p, "softClipHigh"),
+      softClipLow: n(p, "softClipLow"),
+    };
+    // The range boundaries only matter when a range changes something.
+    if (
+      isNeutral(settings, NEUTRAL_GRADE_TONAL, [
+        "shadowEnd",
+        "highlightStart",
+        "falloff",
+      ])
+    )
+      return null;
+    return {
+      id: "grade.tonal",
+      apply: (v) => applyGradeTonal(v, settings),
+      glsl: (u) => ({
+        declare: `uniform vec3 ${u("ShadowOffset")};uniform vec3 ${u("MidOffset")};uniform vec3 ${u("HighOffset")};uniform vec3 ${u("Exposure")};uniform vec3 ${u("Ranges")};uniform vec2 ${u("Clip")};`,
+        call: `v=gTonal(v,${u("ShadowOffset")},${u("MidOffset")},${u("HighOffset")},${u("Exposure")},${u("Ranges")},${u("Clip")});`,
+        uniforms: {
+          [u("ShadowOffset")]: [...settings.shadowOffset],
+          [u("MidOffset")]: [...settings.midOffset],
+          [u("HighOffset")]: [...settings.highlightOffset],
+          [u("Exposure")]: [
+            settings.shadowExposure,
+            settings.midExposure,
+            settings.highlightExposure,
+          ],
+          [u("Ranges")]: [
+            settings.shadowEnd,
+            settings.highlightStart,
+            settings.falloff,
+          ],
+          [u("Clip")]: [settings.softClipHigh, settings.softClipLow],
+        },
+      }),
+    };
+  },
 };
 
 /** The op for one effect's sampled parameters, or null when neutral. */
@@ -253,11 +381,78 @@ vec3 gCdl(vec3 v,vec3 slope,vec3 offs,vec3 power,vec2 sc){
   float y=dot(p,LUMA);
   vec3 o=y+sc.x*(p-y);
   return sc.y>0.5?clamp(o,0.0,1.0):gLimit3(o);
+}
+// CG4: curve tables are float32 bit patterns, one per RGBA8 texel of the
+// backdrop texture (row = curve), read back exactly.
+const float TABLE_N=${CURVE_TABLE_SIZE.toFixed(1)};
+float gTex(int i,int row){uvec4 b=uvec4(floor(texelFetch(backdrop,ivec2(i,row),0)*255.0+0.5));return uintBitsToFloat(b.r|(b.g<<8u)|(b.b<<16u)|(b.a<<24u));}
+float gCurve(int row,float x){
+  if(x<=0.0){float a=gTex(0,row);return a+x*(gTex(1,row)-a)*(TABLE_N-1.0);}
+  if(x>=1.0){float a=gTex(${CURVE_TABLE_SIZE - 1},row);return a+(x-1.0)*(a-gTex(${CURVE_TABLE_SIZE - 2},row))*(TABLE_N-1.0);}
+  float t=x*(TABLE_N-1.0);int i=min(int(floor(t)),${CURVE_TABLE_SIZE - 2});float a=gTex(i,row);return a+(gTex(i+1,row)-a)*(t-float(i));
+}
+float gCurveWrap(int row,float x){
+  float t=(x-floor(x))*TABLE_N;int i=int(floor(t))%${CURVE_TABLE_SIZE};float a=gTex(i,row);
+  return a+(gTex((i+1)%${CURVE_TABLE_SIZE},row)-a)*(t-floor(t));
+}
+float gLimit(float v){return clamp(v,-LIMIT,LIMIT);}
+vec3 gCurves(vec3 v,vec4 rows,float lumaMix){
+  vec3 c=vec3(rows.x>=0.0?gLimit(gCurve(int(rows.x),v.r)):v.r,rows.y>=0.0?gLimit(gCurve(int(rows.y),v.g)):v.g,rows.z>=0.0?gLimit(gCurve(int(rows.z),v.b)):v.b);
+  if(rows.w<0.0)return c;
+  int m=int(rows.w);
+  vec3 rgb=gLimit3(vec3(gCurve(m,c.r),gCurve(m,c.g),gCurve(m,c.b)));
+  if(lumaMix==0.0)return rgb;
+  float y=dot(c,LUMA);
+  float lift=gCurve(m,y)-y;
+  return gLimit3(rgb*(1.0-lumaMix)+(c+lift)*lumaMix);
+}
+vec3 gHueCurves(vec3 v,vec3 hueRows,vec3 satRows){
+  float y=dot(v,LUMA);
+  float cb=(v.b-y)/1.8556,cr=(v.r-y)/1.5748;
+  float radius=length(vec2(cb,cr));
+  float hue=radius>0.0?atan(cr,cb)/6.283185307179586:0.0;
+  float sat=min(1.0,radius/${HUE_CURVE_SATURATION_SCALE.toFixed(4)});
+  float t=min(1.0,radius/${HUE_CURVE_CHROMA_FADE.toFixed(4)});
+  float w=t*t*(3.0-2.0*t);
+  float gain=1.0,offs=0.0;
+  if(hueRows.y>=0.0)gain*=1.0+w*(2.0*gCurveWrap(int(hueRows.y),hue)-1.0);
+  if(satRows.x>=0.0)gain*=2.0*gCurve(int(satRows.x),clamp(y,0.0,1.0));
+  if(satRows.y>=0.0)gain*=2.0*gCurve(int(satRows.y),sat);
+  if(hueRows.z>=0.0)offs+=w*(gCurveWrap(int(hueRows.z),hue)-0.5)*${HUE_CURVE_LUMA_AMOUNT.toFixed(4)};
+  if(satRows.z>=0.0)offs+=(gCurve(int(satRows.z),sat)-0.5)*${HUE_CURVE_LUMA_AMOUNT.toFixed(4)};
+  float cb2=cb*gain,cr2=cr*gain;
+  if(hueRows.x>=0.0){
+    float turn=w*(gCurveWrap(int(hueRows.x),hue)-0.5)*6.283185307179586;
+    float c=cos(turn),s=sin(turn);
+    float nb=cb2*c-cr2*s;cr2=cb2*s+cr2*c;cb2=nb;
+  }
+  float y2=y+offs;
+  float r=y2+1.5748*cr2,b=y2+1.8556*cb2;
+  return gLimit3(vec3(r,(y2-LUMA.r*r-LUMA.b*b)/LUMA.g,b));
+}
+float gSoftClip(float x,vec2 clip){
+  float hk=clip.x,lk=clip.y;
+  if(hk<1.0&&x>hk)x=hk+(1.0-hk)*(1.0-exp(-(x-hk)/(1.0-hk)));
+  if(lk>0.0&&x<lk)x=lk*exp(-(lk-x)/lk);
+  return x;
+}
+vec3 gTonal(vec3 v,vec3 so,vec3 mo,vec3 ho,vec3 ex,vec3 rng,vec2 clip){
+  float y=dot(v,LUMA);
+  float ws=1.0-gSmooth(rng.x-rng.z,rng.x+rng.z,y);
+  float wh=gSmooth(rng.y-rng.z,rng.y+rng.z,y);
+  float wm=max(0.0,1.0-ws-wh);
+  vec3 x=v*exp2(ws*ex.x+wm*ex.y+wh*ex.z)+(ws*so+wm*mo+wh*ho);
+  return gLimit3(vec3(gSoftClip(x.r,clip),gSoftClip(x.g,clip),gSoftClip(x.b,clip)));
 }`;
 
 /** One fused shader for the run (cached by the device per text). */
 export function floatGradeShader(ops: readonly FloatGradeOp[]) {
-  const parts = ops.map((op, i) => op.glsl((name) => `g${i}${name}`));
+  // Every op's tables, in order, become consecutive texture rows.
+  const tables: Float32Array[] = [];
+  const parts = ops.map((op, i) => {
+    const rows = (op.tables ?? []).map((table) => tables.push(table) - 1);
+    return op.glsl((name) => `g${i}${name}`, rows);
+  });
   const fragment = `${GLSL_COMMON}
 ${parts.map((p) => p.declare).join("\n")}
 void main(){
@@ -272,7 +467,20 @@ void main(){
   return {
     fragment,
     uniforms: Object.assign({}, ...parts.map((p) => p.uniforms)) as Uniforms,
+    tables,
   };
+}
+
+/** Curve tables as texture bytes: each float32's bits, little-endian, per texel. */
+export function curveTableBytes(tables: readonly Float32Array[]) {
+  const bytes = new Uint8Array(CURVE_TABLE_SIZE * tables.length * 4);
+  tables.forEach((table, row) =>
+    bytes.set(
+      new Uint8Array(table.buffer, table.byteOffset, table.byteLength),
+      row * CURVE_TABLE_SIZE * 4,
+    ),
+  );
+  return bytes;
 }
 
 // --- Plugins and runs -----------------------------------------------------------
@@ -295,8 +503,14 @@ function runPlugin(
         context.pass(COPY_SHADER, output, [input]);
         return output;
       }
-      const { fragment, uniforms } = floatGradeShader(ops);
-      context.pass(fragment, output, [input], uniforms);
+      const { fragment, uniforms, tables } = floatGradeShader(ops);
+      if (!tables.length) {
+        context.pass(fragment, output, [input], uniforms);
+        return output;
+      }
+      const table = context.createSurface(CURVE_TABLE_SIZE, tables.length);
+      context.uploadBytes(table, curveTableBytes(tables));
+      context.pass(fragment, output, [input, table], uniforms);
       return output;
     },
     renderCanvas(context, input, params) {

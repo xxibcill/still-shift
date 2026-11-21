@@ -24,6 +24,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../../../color-science/src/cdl.ts", import.meta.url),
   },
   {
+    name: "color-science/src/curves.ts",
+    url: new URL("../../../color-science/src/curves.ts", import.meta.url),
+  },
+  {
     name: "color-science/src/errors.ts",
     url: new URL("../../../color-science/src/errors.ts", import.meta.url),
   },
