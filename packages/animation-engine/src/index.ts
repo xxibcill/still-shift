@@ -213,4 +213,5 @@ export * from "./composition-color-solve.ts";
 export * from "./composition-auto-color.ts";
 export * from "./composition-color-scopes.ts";
 export * from "./composition-color-probe.ts";
+export * from "./composition-grade-key.ts";
 export * from "./composition-grade-interchange.ts";

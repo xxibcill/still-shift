@@ -468,3 +468,56 @@ export function suggestQualifier(frame: RgbaFrame, region?: Region) {
     luminance: span(lumas),
   };
 }
+
+/**
+ * CG6: a sampled 3D key (`grade.key` qualifier 4) for a region: up to eight
+ * sample colors by farthest-point selection in OKLab, starting from the pixel
+ * nearest the region's OKLab mean and stopping when every pixel is within
+ * 0.02 of a sample; the radius covers 95% of the pixels, the softness is half
+ * of it (at least 0.02). Deterministic; at most 65,536 pixels are read (an
+ * even stride).
+ */
+export function suggestSampledKey(frame: RgbaFrame, region?: Region) {
+  const bytes: [number, number, number][] = [];
+  forEachPixel(frame, (r, g, b) => bytes.push([r, g, b]), region);
+  if (!bytes.length)
+    throw new ColorScienceError("The region has no visible pixels to sample");
+  const stride = Math.ceil(bytes.length / 65536);
+  const picked = bytes.filter((_, i) => i % stride === 0);
+  const labs = picked.map(([r, g, b]) =>
+    linearToOklab([
+      SRGB_LINEAR_TABLE[r]!,
+      SRGB_LINEAR_TABLE[g]!,
+      SRGB_LINEAR_TABLE[b]!,
+    ]),
+  );
+  const distance = (a: readonly number[], b: readonly number[]) =>
+    Math.hypot(a[0]! - b[0]!, a[1]! - b[1]!, a[2]! - b[2]!);
+  const mean = [0, 1, 2].map(
+    (c) => labs.reduce((sum, lab) => sum + lab[c]!, 0) / labs.length,
+  );
+  let first = 0;
+  labs.forEach((lab, i) => {
+    if (distance(lab, mean) < distance(labs[first]!, mean)) first = i;
+  });
+  const chosen = [first];
+  const nearest = labs.map((lab) => distance(lab, labs[first]!));
+  while (chosen.length < 8) {
+    let far = 0;
+    nearest.forEach((d, i) => {
+      if (d > nearest[far]!) far = i;
+    });
+    if (nearest[far]! < 0.02) break;
+    chosen.push(far);
+    labs.forEach((lab, i) => {
+      nearest[i] = Math.min(nearest[i]!, distance(lab, labs[far]!));
+    });
+  }
+  const radius = percentileOf(nearest, 0.95);
+  const hex = (v: number) => v.toString(16).padStart(2, "0");
+  return {
+    samples: chosen.map((i) => `#${picked[i]!.map(hex).join("")}`),
+    radius,
+    softness: Math.max(0.02, radius * 0.5),
+  };
+}

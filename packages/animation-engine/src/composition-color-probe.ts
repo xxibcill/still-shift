@@ -25,6 +25,7 @@ import {
 import {
   pixelCoordinates,
   suggestQualifier,
+  suggestSampledKey,
   type Region,
 } from "@still-shift/color-science";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
@@ -32,7 +33,8 @@ import { withRendererPage } from "./composition-browser-page.ts";
 import { loadComposition } from "./composition-render.ts";
 import { roundTo } from "./composition-color-round.ts";
 
-export const COLOR_PROBE_VERSION = "still-shift-color-probe-1";
+/** 2 (CG6): adds `gradeKey` and `gradeKeySampled`, ready `grade.key` params. */
+export const COLOR_PROBE_VERSION = "still-shift-color-probe-2";
 /** The largest region one probe samples (a 3840x2160 frame). */
 export const MAX_PROBE_REGION_PIXELS = 3840 * 2160;
 
@@ -94,23 +96,7 @@ export async function probeCompositionFile(
         { path: "frame" },
       );
     const region = probeRegion(comp, request);
-    // Layers kept when isolating: the probed layer, its parent chain and, for
-    // a group, its content (every layer with the group in its parent chain).
-    const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
-    const keep = new Set<string>([layer!.id]);
-    for (let parent = layer!.parent; parent; parent = parentOf.get(parent))
-      keep.add(parent);
-    if (layer!.type === "group")
-      for (const candidate of comp.layers)
-        for (
-          let parent = candidate.parent;
-          parent;
-          parent = parentOf.get(parent)
-        )
-          if (parent === layer!.id) {
-            keep.add(candidate.id);
-            break;
-          }
+    const keep = isolatedLayerIds(comp, layer!.id);
     const effects = layer!.effects ?? [];
     const variants: Composition[] = Array.from(
       { length: effects.length + 1 },
@@ -220,11 +206,13 @@ export async function probeCompositionFile(
         },
       };
     });
-    const qualifier = suggestQualifier({
+    const sampled = {
       width: region.width,
       height: region.height,
       rgba: Buffer.from(result.last, "base64"),
-    });
+    };
+    const qualifier = suggestQualifier(sampled);
+    const samples = suggestSampledKey(sampled);
     return {
       schema: COLOR_PROBE_VERSION,
       composition: comp.id,
@@ -245,10 +233,52 @@ export async function probeCompositionFile(
         saturation: mapRound(qualifier.saturation),
         luminance: mapRound(qualifier.luminance),
       },
+      // CG6: the suggestions as `grade.key` parameters (contract bounds).
+      gradeKey: {
+        qualifier: 1,
+        hueCenter: round(qualifier.hue?.center ?? 0),
+        hueWidth: round(Math.min(360, qualifier.hue?.width ?? 360)),
+        hueSoftness: round(Math.min(180, qualifier.hue?.softness ?? 0)),
+        saturationMin: round(qualifier.saturation.min),
+        saturationMax: round(qualifier.saturation.max),
+        saturationSoftness: round(Math.min(1, qualifier.saturation.softness)),
+        luminanceMin: round(qualifier.luminance.min),
+        luminanceMax: round(qualifier.luminance.max),
+        luminanceSoftness: round(Math.min(1, qualifier.luminance.softness)),
+      },
+      gradeKeySampled: {
+        qualifier: 4,
+        sampleCount: samples.samples.length,
+        ...Object.fromEntries(
+          samples.samples.map((hex, i) => [`sample${i + 1}`, hex]),
+        ),
+        sampleRadius: round(Math.min(1, samples.radius)),
+        sampleSoftness: round(Math.min(1, samples.softness)),
+      },
     };
   } finally {
     owner.dispose();
   }
+}
+
+/**
+ * Layers kept when isolating a layer: the layer, its parent chain and, for a
+ * group, its content (every layer with the group in its parent chain).
+ */
+export function isolatedLayerIds(comp: Composition, id: string) {
+  const layer = comp.layers.find((l) => l.id === id)!;
+  const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
+  const keep = new Set<string>([layer.id]);
+  for (let parent = layer.parent; parent; parent = parentOf.get(parent))
+    keep.add(parent);
+  if (layer.type === "group")
+    for (const candidate of comp.layers)
+      for (let parent = candidate.parent; parent; parent = parentOf.get(parent))
+        if (parent === layer.id) {
+          keep.add(candidate.id);
+          break;
+        }
+  return keep;
 }
 
 const mapRound = (value: { min: number; max: number; softness: number }) => ({

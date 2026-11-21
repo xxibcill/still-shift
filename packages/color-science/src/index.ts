@@ -98,6 +98,7 @@ export {
   SKIN_LINE_DEGREES,
   SRGB_LINEAR_TABLE,
   suggestQualifier,
+  suggestSampledKey,
   vectorscope,
   vectorscopeAngle,
   ycbcrParade,

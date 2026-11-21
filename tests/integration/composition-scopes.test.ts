@@ -17,6 +17,10 @@ import {
   floatGradeBytes,
   floatGradeOp,
 } from "../../packages/renderer-core/src/composition/render/float-grade.ts";
+import {
+  NEUTRAL_KEY_QUALIFIER,
+  qualify,
+} from "../../packages/color-science/src/index.ts";
 
 const fixtures = join(
   import.meta.dirname,
@@ -251,6 +255,17 @@ describe("comp probe", () => {
         "oklab",
       ]);
     expect(report.qualifier.hue).not.toBeNull();
+    // CG6: the suggestions are ready grade.key parameters that select the
+    // probed (uniform) patch.
+    expect(report.schema).toBe("still-shift-color-probe-2");
+    const key = compositionEffectDefinition("grade.key")!;
+    for (const suggestion of [report.gradeKey, report.gradeKeySampled])
+      expect(key.params.safeParse(suggestion).success).toBe(true);
+    expect(report.gradeKeySampled.sampleCount).toBe(1);
+    const graded = report.stages[2].bytes.map((v: number) => v / 255);
+    expect(
+      qualify(graded, { ...NEUTRAL_KEY_QUALIFIER, ...report.gradeKey }),
+    ).toBeGreaterThan(0.9999); // ranges are rounded to 6 decimals
   });
   it("keeps a group's content when isolating, and drops unrelated layers", async () => {
     const primary = { gainMaster: 1.2 };
@@ -427,5 +442,133 @@ describe("comp grade diff", () => {
       320 * 2 + 4,
       4 * (180 + 4) - 4,
     ]);
+  });
+});
+
+describe("comp grade key (CG6)", () => {
+  it("reports the key per frame with its flicker and writes a matte view", async () => {
+    const chart = join(root, "chart-24.png");
+    await copyFile(join(fixtures, "stills/chart-24.png"), chart).catch(
+      () => undefined,
+    );
+    const bytes = await readFile(chart);
+    const composition = {
+      schemaVersion: "composition-1",
+      id: "cg6-key",
+      width: 384,
+      height: 256,
+      fps: 24,
+      frameCount: 4,
+      background: "#000000",
+      assets: [
+        {
+          id: "chart",
+          type: "image",
+          path: "chart-24.png",
+          sha256: `sha256:${createHash("sha256").update(bytes).digest("hex")}`,
+          width: 384,
+          height: 256,
+        },
+      ],
+      layers: [
+        {
+          id: "chart",
+          type: "image",
+          sources: [{ asset: "chart" }],
+          size: [384, 256],
+          fit: "stretch",
+          transform: { anchor: [0, 0], position: [0, 0] },
+          effects: [
+            {
+              id: "key",
+              effect: "grade.key",
+              params: {
+                qualifier: 3,
+                luminanceMin: 0.4,
+                luminanceSoftness: 0.1,
+                window: 1,
+                windowSize: [200, 160],
+                windowCenter: {
+                  keys: [
+                    { frame: 0, value: [120, 128], easing: "linear" },
+                    { frame: 3, value: [180, 128], easing: "linear" },
+                  ],
+                },
+              },
+            },
+            { id: "warm", effect: "grade.primary", params: { gainR: 1.3 } },
+          ],
+        },
+      ],
+    };
+    const input = join(root, "key.json");
+    await writeFile(input, JSON.stringify(composition));
+    const still = join(root, "key-highlight.png");
+    const result = await run([
+      "grade",
+      "key",
+      "--input",
+      input,
+      "--layer",
+      "chart",
+      "--effect",
+      "key",
+      "--frame-range",
+      "0:4",
+      "--view",
+      "highlight",
+      "--still",
+      still,
+    ]);
+    expect(result.code, result.stderr).toBe(0);
+    const report = JSON.parse(result.stdout);
+    expect(report.schema).toBe("still-shift-grade-key-1");
+    expect(report.frames.map((f: { frame: number }) => f.frame)).toEqual([
+      0, 1, 2, 3,
+    ]);
+    expect(report.frames[0].flicker).toBeNull();
+    // The window moves, so the key changes every frame.
+    for (const frame of report.frames.slice(1))
+      expect(frame.flicker.meanChange).toBeGreaterThan(0);
+    expect(report.frames[0].keyedFraction).toBeGreaterThan(0);
+    expect(report.frames[0].keyedFraction).toBeLessThan(1);
+    expect(report.stability.meanChange).toBeGreaterThan(0);
+    const png = decodeCompositionRgbaPng(await readFile(still));
+    expect([png.width, png.height]).toEqual([384, 256]);
+
+    // A static key does not flicker; a missing or wrong effect is located.
+    const fixed = structuredClone(composition);
+    fixed.layers[0]!.effects[0]!.params.windowCenter = [150, 128] as never;
+    await writeFile(join(root, "key-fixed.json"), JSON.stringify(fixed));
+    const steady = await run([
+      "grade",
+      "key",
+      "--input",
+      join(root, "key-fixed.json"),
+      "--layer",
+      "chart",
+      "--effect",
+      "key",
+      "--frame-range",
+      "0:3",
+      "--backend",
+      "webgl2",
+    ]);
+    expect(steady.code, steady.stderr).toBe(0);
+    expect(JSON.parse(steady.stdout).stability.meanChange).toBe(0);
+    const wrong = await run([
+      "grade",
+      "key",
+      "--input",
+      input,
+      "--layer",
+      "chart",
+      "--effect",
+      "warm",
+    ]);
+    expect(wrong.code).not.toBe(0);
+    expect(failure(wrong.stderr).diagnostics[0]!.code).toBe(
+      "comp-grade-key-effect",
+    );
   });
 });
