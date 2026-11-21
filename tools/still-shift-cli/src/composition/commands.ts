@@ -32,6 +32,7 @@ import {
 import { parseNamedArguments, requireArgument } from "../named-options.ts";
 import { loadProgram } from "./program.ts";
 import { runColorCommand } from "./color.ts";
+import { runScopeCommand } from "./color-scopes.ts";
 import { CompositionProgramError, programError } from "./errors.ts";
 import { withProgramFile, writeComposition } from "./files.ts";
 import {
@@ -559,6 +560,8 @@ export async function runCompositionCommand(
       command === "auto-color"
     )
       return await runColorCommand(args, io);
+    if (command === "scopes" || command === "probe" || command === "grade")
+      return await runScopeCommand(args, io);
     programError(
       "comp-program-command",
       `Unknown composition command ${command ?? ""}`,
