@@ -107,10 +107,10 @@ export async function bakeCompositionGrade(
       skipped.push({ id: effect.id, reason: "disabled" });
       continue;
     }
-    if (!isFloatGradeEffect(effect.effect))
+    if (!isFloatGradeEffect(effect.effect) || effect.effect === "grade.key")
       passageError(
         "comp-grade-not-pointwise",
-        `Cannot bake ${effect.effect} ("${effect.id}"): only grade.* operators are pointwise; a LUT cannot hold blurs, keys, distortions or the legacy color.* byte kernels`,
+        `Cannot bake ${effect.effect} ("${effect.id}"): only grade.* operators are pointwise; a LUT cannot hold blurs, keys (grade.key), distortions or the legacy color.* byte kernels`,
         at,
       );
     const { luts: lutSlots } = bindEffectLuts(
