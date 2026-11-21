@@ -55,6 +55,10 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../../../color-science/src/primaries.ts", import.meta.url),
   },
   {
+    name: "color-science/src/scopes.ts",
+    url: new URL("../../../color-science/src/scopes.ts", import.meta.url),
+  },
+  {
     name: "color-science/src/transfer.ts",
     url: new URL("../../../color-science/src/transfer.ts", import.meta.url),
   },

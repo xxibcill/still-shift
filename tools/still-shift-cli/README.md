@@ -23,6 +23,7 @@ provides composition authoring instructions.
 | Prepared illustration/story/cinematic scene | `animate-scene`                                                                         | Verified scene, layers and assets                   |
 | Commerce                                    | `prepare-commerce`, `animate-scene`                                                     | Brief, product imagery, copy and sources            |
 | Color correction of flat SDR clips          | `comp color-stats`, `look fit`, `look apply`, `auto-color`                              | MP4/MOV clips or a folder; optional graded example  |
+| Color measurement                           | `comp scopes`, `probe`, `grade diff`                                                    | Clips, or a composition and one layer               |
 | Multiple independent images                 | `batch`                                                                                 | JSONL manifest                                      |
 | Passage timing and portrait checks          | `passage import-narration`, `passage lint`                                              | Passage plan and measured word/SRT timing           |
 | Saved audio project                         | `soundtrack validate`, `inspect`, `edit`, `render`, `retime`, `package`, `from-passage` | `soundtrack-project-1`, optional passage/narration  |
@@ -426,6 +427,45 @@ failures are recorded and the rest continue, and `auto-color-summary.json` lists
 the results (exit 1 when any clip failed). Outputs must not already exist. The
 source must have an integer frame rate up to 60 fps. Software checks are not
 visual acceptance: review the result yourself.
+
+## Color measurement: scopes, probe and grade diff
+
+These commands measure what a grade does, so a person or an AI can check a
+change by numbers
+([CG3 plan](../../docs/color-grading-engine-plan.md#cg3--scopes-probes-and-machine-readable-measurement)).
+Reports are deterministic JSON; outputs are never overwritten.
+
+```sh
+pnpm --silent still-shift comp scopes --input clip.mp4 --frames 12 --images scopes/
+pnpm --silent still-shift comp scopes --input clip.mp4 --frame-range 48:96 --region 400,300,200,200
+pnpm --silent still-shift comp probe --input graded.composition.json --layer clip --at 512,300 --radius 2 --frame 24
+pnpm --silent still-shift comp grade diff --before raw.mp4 --after graded.mp4 --still split.png --sheet sheet.png
+```
+
+- **`scopes`** reads a clip through the composition media path (the pixels the
+  renderer draws). Select evenly sampled `--frames` (default 12) or a
+  `--frame-range start:end` (end exclusive), and optionally a `--region
+x,y,w,h`. The report (`still-shift-color-scopes-1`, validated by a schema)
+  embeds the `color-stats` statistics unchanged and adds per-channel black and
+  white points (0.5% and 99.5%), a 10° hue histogram of chromatic pixels, the
+  skin-tone line (mean vectorscope angle of skin-like pixels and its deviation
+  from 123°), false-color shares and ten exposure zones. `--images` writes
+  `waveform.png`, `parade.png`, `vectorscope.png` (with the skin line) and
+  `cie1931.png` into a new folder. Frames are decoded in batches within the
+  media limit for live decoded pictures (`mediaLimits.decodedFrameBytes`, 128
+  MiB by default), so long ranges fit; a single frame over the limit fails
+  with `comp-scope-limit` before decoding.
+- **`probe`** renders a composition frame once per stage of one layer's effect
+  stack (the input, then after each effect) and reports the pixel at `--at` (a
+  square of side 2·`--radius`+1) or a `--region`, in encoded, linear, HSL,
+  CIELAB and OKLab coordinates, plus suggested HSL qualifier ranges for the
+  region. Other layers are disabled unless `--isolate false`. Values are the
+  renderer's 8-bit output (`--backend canvas2d` is the float64 grade
+  reference exactly).
+- **`grade diff`** compares two clips of one size: both statistics and their
+  changes (luma percentiles, saturation, neutral cast), a split still of the
+  middle sampled frame (before left, after right) and a contact sheet (one row
+  per sampled frame, before | after).
 
 ## Narration timing and passages
 
