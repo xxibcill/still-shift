@@ -467,6 +467,35 @@ x,y,w,h`. The report (`still-shift-color-scopes-1`, validated by a schema)
   middle sampled frame (before left, after right) and a contact sheet (one row
   per sampled frame, before | after).
 
+## Grade interchange: LUTs and ASC CDL
+
+```sh
+pnpm --silent still-shift comp grade bake --input graded.composition.json --layer clip --size 33 --output look.cube
+pnpm --silent still-shift comp grade cdl-export --input graded.composition.json --layer clip --output shot.cc
+pnpm --silent still-shift comp grade cdl-import --input shots.ccc --correction shot_010
+```
+
+- **`grade bake`** evaluates a root layer's effect stack at `--frame`
+  (default 0) and writes it as a 3D `.cube` (`--size` 2–129 grid points,
+  default 33; optional `--title`) over the 0–1 input range. Only `grade.*`
+  operators are pointwise; any other enabled effect fails with
+  `comp-grade-not-pointwise` naming it. Disabled and neutral effects are listed
+  as skipped. A 33³ bake reproduces the stack within 2 code values (65³ within
+  1); see [LUTs and CDL interchange](../../docs/composition-effect-plugins.md#luts-and-cdl-interchange-cg5).
+- **`grade cdl-export`** writes the layer's enabled `grade.cdl` effects (or
+  one, `--effect`) as `.cc` (exactly one correction), `.ccc` or `.cdl`, chosen
+  by the extension. Each correction's id is the effect id. Values are written
+  as the shortest decimal that reads back as the same number, so they survive
+  exactly; the report notes effects in the unclamped style (`clamp` 0), which
+  ASC readers apply with the Release 1.2 clamp.
+- **`grade cdl-import`** reads `.cc`, `.ccc` or `.cdl` and prints
+  `grade.cdl` effect instances (all corrections, or `--correction id`), with
+  `clamp` 1 (Release 1.2) unless `--clamp false`. Values outside `grade.cdl`'s
+  bounds fail with `comp-cdl-range`.
+
+Outputs are never overwritten. Pin a baked `.cube` as a `lut` asset to apply it
+with `grade.lut`.
+
 ## Narration timing and passages
 
 ```sh

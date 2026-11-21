@@ -1,0 +1,109 @@
+{
+  "schema": "still-shift-milestone-results-1",
+  "milestone": "CG5",
+  "title": "LUT and CDL interchange",
+  "date": "2026-11-21",
+  "branch": "codex/color-grading-cg5",
+  "base": "codex/color-grading-cg4 28175797 (CG4 verification), same worktree; started from the uncommitted CG5 work of the session that ran out of context (shaper parser, CG0 shaper vector, interchange unit tests), kept and finished; PR #77's tip (50e5d033) checked again on 2026-11-21: already merged, unchanged",
+  "plan": "docs/color-grading-engine-plan.md#cg5--lut-and-cdl-interchange",
+  "environment": {
+    "node": "22.23.1 (verification of record); the first sweep ran on the shell default 24.16.0 and was stopped and rerun",
+    "pnpm": "10.29.3",
+    "browser": "pinned Chromium 151.0.7922.34 / SwiftShader (chromium-software-2)",
+    "platform": "darwin-arm64",
+    "referenceGenerators": "colour-science 0.4.6 and OpenColorIO 2.4.2 via the CG0 vector generator (development only; rerun, deterministic)"
+  },
+  "visualAcceptance": "none: software measurements only",
+  "delivered": {
+    "asset": "composition asset type `lut`: path, sha256, format `cube`, inputSpace and outputSpace (`legacy-srgb`, the only working space until CG7). 1D up to 65,536 entries, 3D sizes 2-129, DOMAIN_MIN/MAX, Resolve 3D-behind-1D-shaper; files at most 128 MiB",
+    "contract": "effect instances gain `assets` slots (slot -> asset id), declared by a definition's `requiresAssets` and checked by comp-effect-asset; `grade.lut` 1.0.0 (intensity 0-1, interpolation 0 tetrahedral / 1 trilinear) binds a LUT in its `lut` slot",
+    "beforeRendering": "readCompositionSource reads, size-checks, SHA-256-checks and parses every LUT (comp-lut-unreadable, comp-lut-checksum, comp-lut-invalid with the .cube line); the page re-verifies the fetched bytes and prepares the table",
+    "kernels": "Canvas: float64 sampleLut (color-science); WebGL2: fused float-stage GLSL reading the float32 table bit-exactly from RGBA8 texels of one 4096-wide LUT texture per run (bound as `coverage`; curve tables stay on `backdrop`). Tables ride on render effects under a symbol, so visual keys serialize only the asset hashes. A lone grade.lut runs as a run of one",
+    "colorScience": "Resolve shaper parsing and sampling, writeCubeLut (deterministic, 10 decimals), bakeCubeLut, ASC CDL XML parseCdlXml / writeCdlXml (.cc, .ccc, .cdl; shortest exact decimals, no exponent), cdlFileKind",
+    "cli": "comp grade bake (pointwise grade.* stack at a frame -> .cube, default 33, refuses other effects with comp-grade-not-pointwise), comp grade cdl-export (.cc/.ccc/.cdl by extension), comp grade cdl-import (-> grade.cdl effects, clamp 1 by default, bounds checked with comp-cdl-range); outputs never overwritten",
+    "vectors": "benchmarks/fixtures/color/cg0/vectors/luts/cube-9-shaper.cube and its lut-interpolation.json entry (32-entry shaper over 0-4, 9-point cube): OpenColorIO vs numpy.interp + colour-science within 2e-6, both interpolations",
+    "docs": "docs/composition-effect-plugins.md#luts-and-cdl-interchange-cg5, tools/still-shift-cli/README.md#grade-interchange-luts-and-asc-cdl, composition reference and compose skill regenerated, color-science PROVENANCE",
+    "ce6": "CE6 cell catalogue-lut-grade (grade.lut with animated intensity on a generated, license-free 17³ LUT committed as benchmarks/fixtures/composition/ce6/lut-grade.cube, its text checked against the catalogue's generator and its pin) with its own baseline file tests/visual/composition-effect-catalogue/darwin-arm64-lut-grade-1.json (--write-lut-grade-baseline); the harness also exports it through renderComposition (the real asset pipeline) and checks preview and export MP4s byte-identical. Frozen CE6, CG2 and CG4 baseline files unchanged"
+  },
+  "checks": [
+    {
+      "check": "Identity LUTs of several sizes are identities within tolerance",
+      "status": "met",
+      "evidence": "float64 sampler, 4,096 samples, both interpolations: 3D sizes 2, 5, 17, 33, 65, 1D 1025 and a 1025-entry shaper in front of a 33³ identity return the input exactly (0); a 1D 4096 identity returns it within 5.0e-11, the rounding of its 10-decimal text (1/4095 steps). Rendered: each of the 8 identity LUTs on 5 stills x 2 backends x 2 interpolations (160 renders) is byte-identical to the render without the effect. Unit: CG0 identity sizes within 1e-12 (CG1 test, unchanged)",
+      "tolerance": "float64 <= 1e-10 for 10-decimal .cube text (exact where nodes are k/2^n); renders byte-identical"
+    },
+    {
+      "check": "GPU tetrahedral matches the CPU reference on random and edge samples",
+      "status": "met",
+      "evidence": "9 cases x 5 stills = 45 rows: CG0 cube-17 tetrahedral and trilinear, cube-5-domain (non-unit domain), cube-9-shaper, curve-1d-64, a generated 65³ look, the same at intensity 0.6, a run of grade.primary + shaper LUT + grade.curves + trilinear 65³ LUT, and intensity 0. Stills: chart-24, hue-sweep, skin-tones, noisy-gradient and a 64x32 edge/random still (every gray, values at the 17- and 65-point grid nodes and the ends, channel ties on the tetrahedral branch edges, seeded random). Canvas equals the float64 reference on every pixel (max 0); WebGL2 within one code value (max 1; 1,158 channels at 1 over all rows); repeated WebGL2 renders byte-identical; intensity 0 leaves pixels unchanged on both backends; animated intensity (frames 0, 4, 11) Canvas vs WebGL2 <= 1. CE6 cell catalogue-lut-grade: Canvas vs WebGL2 max 0 over 32 frames, reverse and 11 random seeks; repeated and raw/PNG MP4 exports byte-identical and the independent preview MP4 byte-identical to the export (the real asset pipeline: Node verification, page fetch)",
+      "tolerance": "owner decision 3: GPU within one 8-bit code value of the float64 reference"
+    },
+    {
+      "check": "Malformed, oversized or wrong-hash LUTs fail before rendering",
+      "status": "met",
+      "evidence": "tests/unit/composition-lut-source.test.ts (readCompositionSource, no browser): wrong hash -> comp-lut-checksum at assets.0.sha256; a bad row -> comp-lut-invalid naming '.cube line 3'; a short table -> 'expected 27 entries, found 1'; LUT_3D_SIZE 130 -> 'must be an integer from 2 to 129'; a missing file -> comp-lut-unreadable; files over 128 MiB are refused by size before reading (not exercised with a real 128 MiB file). Contract: missing, unknown, wrong-type or undeclared asset slots -> comp-effect-asset; wrong format or space -> schema error. Integration: `comp probe` on a wrong-hash LUT composition fails with comp-lut-checksum before any page work"
+    },
+    {
+      "check": "A baked .cube of a pointwise stack reproduces that stack within the stated tolerance; a non-pointwise stack (keys, blur) refuses to bake",
+      "status": "met",
+      "evidence": "Stated tolerance: 33³ within 2 code values, 65³ within 1. Browser: a five-operator stack (primary, white balance, curves, hue curves, tonal) baked and applied with grade.lut on 5 stills x 2 backends: 33³ max 2 (70 channels over 1, mean 0.05-0.15), 65³ max 1 (mean 0.009-0.14). Integration (real asset pipeline): `comp grade bake` of primary + curves + CDL, pinned as a lut asset, probed at 3 patches on both backends within 2 codes of the stack; the table holds the float64 stack within 4e-3 on 1,000 samples. Unit: a smooth CDL bake within 1e-3 (33³); a channel crossing zero into a CDL power (a kink) 4.2e-3 at 33³ and 2.3e-3 at 65³, one 8-bit code. Refusal: a stack with blur.gaussian fails with comp-grade-not-pointwise naming 'blur.gaussian (\"soft\")'; every effect that is not grade.* refuses. Keys do not exist until CG6; they are not grade.* so they will refuse too"
+    },
+    {
+      "check": "CDL round trip preserves values exactly as text",
+      "status": "met",
+      "evidence": "parse -> write -> parse is equal and write(parse(write(x))) is byte-identical for .cc, .ccc and .cdl; awkward binaries (0.1+0.2, 1/3, 2^-30, -1e-7) read back as the same float64; values are written as their shortest exact decimal without an exponent ('1.0234 0.9876 0.95', '1.0' becomes '1'). CLI: grade.cdl -> cdl-export (.cc) -> cdl-import -> composition -> cdl-export gives byte-identical files; .ccc carries every grade.cdl; .cc refuses two (comp-cdl-count); slope 9 is refused (comp-cdl-range)",
+      "note": "'Exactly as text' is met as exact values in canonical text: a source file's own spelling ('1.0', trailing zeros, exponents) is normalized on export, and elements other than id, Description, SOP and Sat are not carried"
+    }
+  ],
+  "parity": {
+    "test": "pnpm test:browser:color-grading-cg5",
+    "rows": 45,
+    "canvasVsReference": 0,
+    "webglVsReference": 1,
+    "repeat": "byte-identical",
+    "proof": "benchmarks/results/color-grading-cg5/luts.json (local, not committed)",
+    "ce6": "catalogue-lut-grade: backends max 0; preview and export MP4 byte-identical"
+  },
+  "deviations": [
+    "LUT spaces: the schema accepts only `legacy-srgb` for inputSpace and outputSpace. Declaring a scene-referred or camera space now would let a LUT be applied in the wrong space; CG7 extends the list together with working spaces.",
+    "Effect assets are a new `assets` field on effect instances (slot -> asset id), parallel to layer `inputs`, instead of a new parameter type: parameters stay animatable numbers and curves, and the eight-file property-union change the CG1 decisions avoided is not needed.",
+    "GPU upload: the run's LUT texture is uploaded each frame (a 65³ table is 3.3 MB, 129³ 25 MB); not cached across frames.",
+    "Bake domain: 0-1 input, which is everything the legacy working space feeds the grade stage (8-bit straight color); scene-referred bakes need CG7's ranges.",
+    "ASC CDL import sets clamp 1 (Release 1.2, what ASC files mean); `--clamp false` selects the unclamped style. Export of a clamp-0 grade.cdl writes the same values and notes that ASC readers clamp.",
+    "From the first CG5 session's design (handoff received mid-way, after this code was written): no comp-lut-space warning, because the space enum admits only legacy-srgb; at most 4 asset slots per effect (not 8); LUT hashes ride on render effects (`assetHashes`) instead of `{id, sha256}` on evaluated effects; prepared LUTs come from the resources through the graph options, not a sha-keyed global registry; one flat 4096-wide LUT texture instead of variable-width table rows, so 1D LUTs need no 8192 GPU cap; the refusal code is comp-grade-not-pointwise and the CDL commands are `cdl-export` / `cdl-import`."
+  ],
+  "failedRunsAndReruns": [
+    "Inherited: the previous session's interchange unit tests failed (7 of 89: parseCdlXml, writeCubeLut and bakeCubeLut not exported) before this session's code; the shaper vector tests already passed (82).",
+    "Unit run 2: the inherited '33-point bake within 1e-3' test failed at 4.15e-3. Measured: the test stack's blue offset -0.01 crosses zero where the no-clamp power starts, a kink in one grid cell (4.2e-3 at 33³, 2.3e-3 at 65³, both one 8-bit code). The test was split: a smooth stack within 1e-3 and the kink within one code.",
+    "boundaries run: tsc rejected a number[] to Rgb cast in cdl-xml.ts; fixed.",
+    "Contract unit test written first: all 6 failed before grade.lut and the lut asset existed.",
+    "The Node-side LUT source tests and the CLI integration test were written with their code, not before it; both passed on their first run.",
+    "Browser run 1: writeCubeLut overflowed the call stack on the 65³ look (one push of every row); fixed in its own commit with a 65³ unit test.",
+    "Browser run 2: the identity check failed for a 1D 4096 identity at 5e-11 (10-decimal text of 1/4095 steps) and a sqrt-shaper 'identity' that was not one (1e-3); the shaper identity was replaced by a linear one, a 1025-entry exact 1D identity added, and the bound stated as 1e-10 for 10-decimal text. Renders were byte-identical in both runs.",
+    "Browser run 3: passed.",
+    "First verification sweep ran on Node 24.16.0 (the shell default, not toolchain.json's 22.23.1): check:fast failed at schema:check with 'Stale native appearance source closure' (the float stage now imports the LUT modules); the closure was regenerated (identity only). On that sweep the CG2, CG4, CGA grade-effect and CG0 groups and the color integration tests passed. It was stopped and the whole sweep rerun on Node 22.23.1.",
+    "Node 22.23.1 check:fast run 1: check:boundaries rejected the CLI's direct import of @still-shift/color-science (cdlFileKind; the CLI package does not declare it). The engine now re-exports it (a9323ca5) and check:fast was rerun.",
+    "Node 22.23.1 composition-effects run 1: the CE6 curve-grade baseline check failed because CG4_CURVE_GRADE_EFFECTS was FLOAT_GRADE_EFFECT_IDS.slice(4), which now includes grade.lut, so the CG4 cell's recorded effect versions no longer matched. Fixed to the three CG4 effects (bfd6619c); no baseline file was rewritten. Rerun below.",
+    "Node 22.23.1 check:fast run 2: lint (no-irregular-whitespace) rejected the literal byte-order mark in cdl-xml.ts's regular expression (the earlier per-file eslint covered only files still uncommitted, and cdl-xml.ts was already committed). Escaped as \\uFEFF with a BOM test (44e64f90); composition-effects run 2 passed (frozen CE6, CG2 float-grade and CG4 curve-grade baselines unchanged).",
+    "Node 22.23.1 check:fast run 3: two coverage tests failed: CE6 fixtures must cover every registered builtin (grade.lut had no cell) and the every-field contract test found no fixture exercising the lut asset's fields. Built the CE6 cell catalogue-lut-grade (the first CG5 session's plan, dropped earlier) with a generated LUT and its own baseline file, and the contract test now reads that cell's lut asset.",
+    "composition-effects with --write-lut-grade-baseline, then a check run: the new baseline file was written and its hashes matched on the check run, but the hardware-preview pass (shapeHardwarePreview) re-rendered every fixture without resources and failed with comp-lut-not-ready. The helper now takes each fixture's LUT texts; other callers (shape, time-control acceptance) pass none and are unchanged.",
+    "composition-effects run 4 and check:fast run 4 (Node 22.23.1): passed."
+  ],
+  "verification": {
+    "toolchain": "pnpm toolchain:check passed (Node 22.23.1, pnpm 10.29.3, Python 3.12.11, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1)",
+    "checkFast": "passed on run 4: 479 test files, 4,935 tests (runs 1-3 failed as recorded above)",
+    "browser": {
+      "color-grading-cg5": "passed (45 parity rows, Canvas 0, WebGL2 <= 1; 8 identities; bakes 33³ 2, 65³ 1)",
+      "color-grading-cg4": "passed (unchanged: 81 layer-kind cases, max 1)",
+      "color-grading-cg2": "passed",
+      "color-grading-cg0": "unchanged (273 renders)",
+      "composition-grade-effects": "passed (CGA parity exact)",
+      "composition-effects": "passed on run 4; new baseline darwin-arm64-lut-grade-1.json written once with --write-lut-grade-baseline and checked; frozen CE6, CGA grade, CG2 float-grade, CG4 curve-grade and mesh baselines unchanged; hardware preview 66 comparisons within the perceptual policy",
+      "composition-baselines": "passed: 176 items, 36,061 frames, unchanged (the CG4 deferral)"
+    },
+    "integration": "composition-scopes, composition-color, composition-color-cli and composition-grade-interchange: 4 files, 37 tests passed",
+    "note": "The CG5, CG4, CG2, CG0, grade-effect and baseline groups and the integration tests ran before the last three fixes (CLI import, BOM escape, CE6 cell and harness); those fixes change no renderer code, and check:fast plus composition-effects ran after all of them."
+  },
+  "notRun": "pnpm check, full pnpm test, runtime tier, release checks; owner LUTs or footage (none committed or used)",
+  "next": "owner report after CG5 (CG4 and CG5 together); then CG6 (keys) on its own branch"
+}

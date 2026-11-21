@@ -246,6 +246,68 @@ hue wrap on both backends and the layer-kind/animation/seek matrix. The CE6 cell
 `catalogue-curve-grade` has its own baseline file
 (`darwin-arm64-curve-grade-1.json`).
 
+### LUTs and CDL interchange (CG5)
+
+`grade.lut` applies a pinned `.cube` LUT inside the float grade stage
+([plan, CG5](./color-grading-engine-plan.md#cg5--lut-and-cdl-interchange)).
+The LUT is a composition asset; the effect binds it through its `lut` asset
+slot:
+
+```json
+{
+  "id": "look",
+  "type": "lut",
+  "path": "looks/warm.cube",
+  "sha256": "sha256:…",
+  "format": "cube",
+  "inputSpace": "legacy-srgb",
+  "outputSpace": "legacy-srgb"
+}
+```
+
+```json
+{
+  "id": "warm",
+  "effect": "grade.lut",
+  "assets": { "lut": "look" },
+  "params": { "intensity": 0.8 }
+}
+```
+
+- Formats: `.cube` 1D (up to 65,536 entries), 3D (sizes 2–129, so 65³ and
+  larger) with `DOMAIN_MIN`/`DOMAIN_MAX`, and Resolve's 3D-behind-a-1D-shaper
+  form (`LUT_1D_INPUT_RANGE`, `LUT_3D_INPUT_RANGE`). Files are at most 128 MiB.
+- Spaces: `inputSpace` and `outputSpace` must be declared. `legacy-srgb` (the
+  display-referred working space, BT.709 footage display-equivalent) is the
+  only value until CG7 adds working spaces; a LUT made for camera log or ACES
+  input cannot be applied correctly before then.
+- Before rendering, every LUT asset is read, size-checked, SHA-256-checked and
+  parsed when the composition is loaded (`comp-lut-unreadable`,
+  `comp-lut-checksum`, `comp-lut-invalid` with the `.cube` line). The page
+  re-verifies the bytes it fetches.
+- Evaluation: inputs are clamped to the table's domain (and the shaper's);
+  3D tables interpolate tetrahedrally (`interpolation` 0, default) or
+  trilinearly (1); `intensity` mixes the result with the input, and 0 drops
+  the operator. Canvas samples the float64 table; WebGL2 reads the same table
+  as float32 bit-exactly from a texture, in the same fused shader as the
+  other `grade.*` operators. Preview and export use the same kernel.
+
+`comp grade bake` writes a layer's grade stack as a `.cube` for other tools,
+and `comp grade cdl-export` / `cdl-import` exchange `grade.cdl` values as ASC
+CDL (`.cc`, `.ccc`, `.cdl`); see the
+[CLI reference](../tools/still-shift-cli/README.md#grade-interchange-luts-and-asc-cdl).
+A bake holds only pointwise operators (`grade.*`); any other effect refuses
+to bake. Tolerance: a 33³ bake reproduces the stack within 2 code values
+(65³ within 1) on the CG0 stills; a channel that crosses zero into a CDL power
+puts a kink in one grid cell (up to 4.2·10⁻³ at 33³, still one code value).
+
+`pnpm test:browser:color-grading-cg5` checks identity LUTs (pixels unchanged
+on both backends), nine LUT cases on random, edge and graded stills (Canvas
+equals the float64 reference, WebGL2 within one code value, repeats
+byte-identical), animated intensity and 33³/65³ bakes. The CE6 cell
+`catalogue-lut-grade` (a generated 17³ LUT, `lut-grade.cube`) has its own
+baseline file (`darwin-arm64-lut-grade-1.json`).
+
 ## Native transitions
 
 `transition.linear-wipe`, `transition.radial-wipe`,

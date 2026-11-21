@@ -250,7 +250,7 @@ These are recommendations to confirm at CG1, each with a fallback.
 | CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
 | CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Done (branch)   |
 | CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Done (branch)   |
-| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Proposed        |
+| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Done (branch)   |
 | CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed        |
 | CG7  | Scene-referred input and working space             | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
 | CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed        |
@@ -695,14 +695,27 @@ GPU reads baked float32 curve tables bit-exactly through an RGBA8 texture.
 - Bake a grade stack to `.cube` for use elsewhere; import and export ASC CDL
   (`.cdl`, `.cc`, `.ccc`).
 
-**Checks**
+**Checks** (2026-11-21, `codex/color-grading-cg5`; numbers in
+[CG5 results](./color-grading-cg5-results.json); operators in
+[LUTs and CDL interchange](./composition-effect-plugins.md#luts-and-cdl-interchange-cg5))
 
-- [ ] Identity LUTs of several sizes are identities within tolerance.
-- [ ] GPU tetrahedral matches the CPU reference on random and edge samples.
-- [ ] Malformed, oversized or wrong-hash LUTs fail before rendering.
-- [ ] A baked `.cube` of a pointwise stack reproduces that stack within the
-      stated tolerance; a non-pointwise stack (keys, blur) refuses to bake.
-- [ ] CDL round trip preserves values exactly as text.
+- [x] Identity LUTs of several sizes are identities within tolerance: 3D
+      2–65, 1D and behind a shaper; float64 exact where nodes are k/2ⁿ, ≤ 5e-11
+      otherwise (10-decimal text); 160 renders byte-identical to no effect.
+- [x] GPU tetrahedral matches the CPU reference on random and edge samples
+      (and trilinear, 1D, shaper, domain, intensity, 65³): 45 rows, Canvas = the
+      float64 reference, WebGL2 ≤ 1 code value, repeats byte-identical.
+- [x] Malformed, oversized or wrong-hash LUTs fail before rendering, with
+      located diagnostics when the composition is read (no browser).
+- [x] A baked `.cube` of a pointwise stack reproduces that stack within the
+      stated tolerance (33³ ≤ 2 code values, 65³ ≤ 1); a non-pointwise stack
+      (any effect that is not `grade.*`, blur included) refuses to bake.
+- [x] CDL round trip preserves values exactly as text: exact float64 values
+      in canonical shortest decimals; re-export byte-identical.
+
+_As built:_ LUTs are `lut` assets bound through a new effect `assets` slot;
+spaces accept only `legacy-srgb` until CG7; CE6 cell `catalogue-lut-grade`
+(generated LUT) has its own baseline. Deviations are listed in the results.
 
 ## CG6 — Keys: qualifiers, windows and matte finesse
 
