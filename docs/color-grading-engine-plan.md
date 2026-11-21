@@ -4,7 +4,7 @@ Date: 2026-11-16; re-checked against `main` 894c9d32 on 2026-11-20. Status:
 **CGA merged on `main` (PR #70); the owner asked to continue the whole upgrade
 (2026-11-20); CG0–CG2 done on `codex/color-grading-cg0-cg2` (PR #77); the owner
 said "Yes, continue to CG3", then "Continue to CG4 and CG5"; CG3–CG5 done on
-`codex/color-grading-cg3-cg5`, in review as PR #78 (stacked on PR #77).** The
+`codex/color-grading-cg3-cg5`, in review as PR #78 (targets `main`; PR #77 is merged).** The
 owner's stated
 minimum need was the [fast track (CGA)](#fast-track-the-minimum-need); CG0–CG15
 are the long-range upgrade, re-scoped in

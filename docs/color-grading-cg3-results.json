@@ -64,7 +64,9 @@
     "One integration test expected the background hue peak in the 80-90 degree bin; the background's hue is exactly 80 degrees, so noise and 4:2:0 chroma split it between bins 7 and 8. The test now checks the two bins together (> 0.6) and no skin pixels.",
     "A single compound shell command for the accumulator refactor was refused by the worktree guard; the edit was redone with the editor.",
     "pnpm install rewrote pnpm-lock.yaml's quoting again; Prettier restored it, leaving only the new dependency entry.",
-    "schema:check flagged the native appearance closure after the renderer's color-science import gained the scope module; regenerated (identity only)."
+    "schema:check flagged the native appearance closure after the renderer's color-science import gained the scope module; regenerated (identity only).",
+    "PR #78 second review (S1): comp probe with the default --isolate true disabled a probed group's children, so the group read as the background at every stage (catalogue-curve-grade cell-0 at 10,60: 16,26,42 before and after; 240,186,88 then 250,209,85 with --isolate false). Fixed: a group's content stays enabled. The new group test failed on its first run for a reason in the test itself (a nested group without a transform put its content off the frame); corrected, then passed.",
+    "PR #78 second review (S2): a 1920x1080 probe region on a four-effect layer ran Node out of heap after 40 s (4.8 GB resident, no report), because every pixel of every stage left the page as a JSON number. Fixed: the page returns channel sums per stage and the last stage's region as base64 bytes; regions over 3840x2160 pixels fail with comp-probe-region. The same probe now takes 4 s with identical values. The new region test failed once on a wrong expected hue in the test (30 degrees for #608040; it is 90), corrected."
   ],
   "workspace": "CG3 runs in its own worktree (.claude/worktrees/color-grading-cg3) at the owner's choice, because the PR #77 review session was committing in the CG0-CG2 worktree.",
   "verification": {
