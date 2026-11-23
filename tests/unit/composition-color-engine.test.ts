@@ -30,10 +30,7 @@ const CUBE = (() => {
 const WIDTH = CUBE.length / 4;
 const both = (effect: ColorCorrectionEffect) => {
   const legacy = applyColorEffects([effect], CUBE);
-  const grade = applyColorEffects(
-    engineEffects("grade", [effect]) as ColorCorrectionEffect[],
-    CUBE,
-  );
+  const grade = applyColorEffects(engineEffects("grade", [effect]), CUBE);
   return colorDifference([legacy], [grade], WIDTH);
 };
 
@@ -137,10 +134,7 @@ describe("CGA2 grade-engine mappings", () => {
     // and a skin tone is boosted less than with no protection.
     const orange = new Uint8Array([255, 120, 0, 255]);
     const grade = (protect: number, rgba: Uint8Array) =>
-      applyColorEffects(
-        engineEffects("grade", [vibrance(protect)]) as ColorCorrectionEffect[],
-        rgba,
-      );
+      applyColorEffects(engineEffects("grade", [vibrance(protect)]), rgba);
     expect([...grade(0.7, orange)]).toEqual([...orange]);
     const skin = new Uint8Array([217, 172, 141, 255]);
     const sat = (rgba: Uint8Array) =>
@@ -239,7 +233,7 @@ describe("CGA2 prediction", () => {
         effect: "color.vibrance",
         params: { vibrance: 50, saturation: 0, protectSkin: 0 },
       },
-    ]) as ColorCorrectionEffect[];
+    ]);
     const ops = gradeRunOps(effects);
     const out = applyColorEffects(effects, CUBE);
     for (let i = 0; i < CUBE.length; i += 4 * 97) {

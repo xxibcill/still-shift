@@ -540,7 +540,7 @@ export function solveColorCorrection(
   const prefix = options.prefix ?? [];
   const engine = options.engine ?? DEFAULT_COLOR_ENGINE;
   const forEngine = (effects: readonly ColorCorrectionEffect[]) =>
-    engineEffects(engine, effects) as ColorCorrectionEffect[];
+    engineEffects(engine, effects);
   const measure = (effects: readonly ColorCorrectionEffect[]) =>
     measureColorFrames(
       {

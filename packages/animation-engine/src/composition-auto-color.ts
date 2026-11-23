@@ -399,13 +399,13 @@ export async function autoColorClip(
   const effects: ColorCorrectionEffect[] = [];
   if (request.look)
     effects.push(
-      ...(engineEffects(engine, [
+      ...engineEffects(engine, [
         {
           id: "look",
           effect: "color.matrix",
           params: colorLookEffectParams(request.look, lookStrength),
         },
-      ]) as ColorCorrectionEffect[]),
+      ]),
     );
   let decisions: ColorSolveDecision[] = [];
   if (adaptive) {

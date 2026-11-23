@@ -151,7 +151,7 @@ export function solverEquivalence(
     engine: "legacy",
     prefix,
   });
-  const gradePrefix = engineEffects("grade", prefix) as ColorCorrectionEffect[];
+  const gradePrefix = engineEffects("grade", prefix);
   const grade = solveColorCorrection(solve, {
     ...options,
     engine: "grade",

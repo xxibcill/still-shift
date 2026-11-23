@@ -49,18 +49,12 @@ import {
   whiteBalanceGains,
 } from "../../renderer-core/src/composition/render/grade-effects.ts";
 import { roundTo } from "./composition-color-round.ts";
+import type { ColorCorrectionEffect } from "./composition-color-solve.ts";
 
 export const COLOR_ENGINES = ["grade", "legacy"] as const;
 export type ColorEngine = (typeof COLOR_ENGINES)[number];
 /** The default for new runs until CGA2's A6 switch (owner decision 1). */
 export const DEFAULT_COLOR_ENGINE: ColorEngine = "legacy";
-
-/** An effect as the solver and the composition carry it. */
-export type EngineEffect = {
-  id: string;
-  effect: string;
-  params: Record<string, number | number[][]>;
-};
 
 const round = (value: number, digits = 6) => roundTo(value, digits);
 
@@ -157,7 +151,9 @@ export function skinProtectionKey(protect: number) {
 }
 
 /** One CGA correction (or look) as the grade engine's operators. */
-export function gradeEngineEffects(effect: EngineEffect): EngineEffect[] {
+export function gradeEngineEffects(
+  effect: ColorCorrectionEffect,
+): ColorCorrectionEffect[] {
   const p = effect.params as Record<string, number>;
   switch (effect.effect) {
     case "color.white-balance": {
@@ -211,10 +207,11 @@ export function gradeEngineEffects(effect: EngineEffect): EngineEffect[] {
         );
       const boost = round((p.vibrance ?? 0) / 100, 4);
       const key = boost !== 0 ? skinProtectionKey(p.protectSkin ?? 0.7) : null;
+      const skin: ColorCorrectionEffect[] = key
+        ? [{ id: `${effect.id}-skin`, effect: "grade.key", params: key }]
+        : [];
       return [
-        ...(key
-          ? [{ id: `${effect.id}-skin`, effect: "grade.key", params: key }]
-          : []),
+        ...skin,
         {
           id: effect.id,
           effect: "grade.primary",
@@ -241,12 +238,12 @@ export function gradeEngineEffects(effect: EngineEffect): EngineEffect[] {
 /** Effects for an engine: unchanged for legacy, translated for grade. */
 export const engineEffects = (
   engine: ColorEngine,
-  effects: readonly EngineEffect[],
-): EngineEffect[] =>
+  effects: readonly ColorCorrectionEffect[],
+): ColorCorrectionEffect[] =>
   engine === "grade" ? effects.flatMap(gradeEngineEffects) : [...effects];
 
 /** Parameters with the effect definition's defaults filled in. */
-export function effectDefaults(effect: EngineEffect) {
+export function effectDefaults(effect: ColorCorrectionEffect) {
   const definition = compositionEffectDefinition(effect.effect);
   if (!definition)
     throw Error(
@@ -262,7 +259,9 @@ export function effectDefaults(effect: EngineEffect) {
 }
 
 /** The float ops of a run of `grade.*` operators (neutral ones dropped). */
-export function gradeRunOps(effects: readonly EngineEffect[]): FloatGradeOp[] {
+export function gradeRunOps(
+  effects: readonly ColorCorrectionEffect[],
+): FloatGradeOp[] {
   return effects.flatMap((effect) => {
     const op = floatGradeOp(
       effect.effect as FloatGradeEffectId,
@@ -279,7 +278,7 @@ export function gradeRunOps(effects: readonly EngineEffect[]): FloatGradeOp[] {
  * finesse or view.
  */
 function gradeRunSegments(
-  effects: readonly EngineEffect[],
+  effects: readonly ColorCorrectionEffect[],
 ): FloatGradeSegment[] {
   const segments = floatGradeSegments(
     effects.map((effect) => ({
@@ -306,7 +305,7 @@ function gradeRunSegments(
  * value entering it), one quantization. Evaluated once per distinct color.
  */
 export function applyGradeRun(
-  effects: readonly EngineEffect[],
+  effects: readonly ColorCorrectionEffect[],
   rgba: Uint8Array,
 ) {
   const segments = gradeRunSegments(effects);
