@@ -10,9 +10,7 @@
  * For every clip: the adaptive correction (auto) and, with --look, the look
  * at the default 60% (look). Both engines solve the same sampled frames
  * (12 per clip, the media path's pixels); their exact Canvas predictions are
- * compared at full resolution against the bound stated in A0. The
- * `adaptation` row is the opt-in Bradford white balance (A4), reported only.
- * Writes <output>/equivalence.json. Software measurements only.
+ * compared at full resolution against the bound stated in A0. Writes <output>/equivalence.json. Software measurements only.
  */
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
@@ -49,7 +47,6 @@ const log = (message: string) =>
 type Row = {
   clip: string;
   mode: "auto" | "look" | "look+auto";
-  whiteBalance: "gains" | "adaptation";
   withinBound: boolean;
   difference: ReturnType<typeof solverEquivalence>["difference"];
   legacy: ColorCorrectionEffect[];
@@ -80,36 +77,32 @@ function compare(
         ["look+auto", true],
       ]
     : [["auto", true]];
-  for (const [mode, adaptive] of modes)
-    for (const whiteBalance of ["gains", "adaptation"] as const) {
-      if (!adaptive && whiteBalance === "adaptation") continue;
-      const result = solverEquivalence(solve, frames, {
-        prefix,
-        whiteBalanceModel: whiteBalance,
-        ...(adaptive
-          ? look?.targets
-            ? { targets: look.targets }
-            : {}
-          : {
-              exposure: false,
-              contrast: false,
-              saturation: false,
-              whiteBalance: false,
-            }),
-      });
-      rows.push({
-        clip,
-        mode,
-        whiteBalance,
-        withinBound: result.withinBound,
-        difference: result.difference,
-        legacy: result.legacy.effects,
-        grade: result.grade.effects,
-      });
-      log(
-        `${clip} ${mode} ${whiteBalance}: blockRms ${result.difference.blockRms} p99 ${result.difference.p99} max ${result.difference.max}${result.withinBound ? "" : " OUTSIDE"}`,
-      );
-    }
+  for (const [mode, adaptive] of modes) {
+    const result = solverEquivalence(solve, frames, {
+      prefix,
+      ...(adaptive
+        ? look?.targets
+          ? { targets: look.targets }
+          : {}
+        : {
+            exposure: false,
+            contrast: false,
+            saturation: false,
+            whiteBalance: false,
+          }),
+    });
+    rows.push({
+      clip,
+      mode,
+      withinBound: result.withinBound,
+      difference: result.difference,
+      legacy: result.legacy.effects,
+      grade: result.grade.effects,
+    });
+    log(
+      `${clip} ${mode}: blockRms ${result.difference.blockRms} p99 ${result.difference.p99} max ${result.difference.max}${result.withinBound ? "" : " OUTSIDE"}`,
+    );
+  }
 }
 
 // Synthetic fixtures: the reference, each known degradation and a combined one.
@@ -163,7 +156,6 @@ if (folder)
     if (look) compare(name, set, look);
   }
 
-const gated = rows.filter((row) => row.whiteBalance === "gains");
 await writeFile(
   join(output, "equivalence.json"),
   JSON.stringify(
@@ -171,10 +163,10 @@ await writeFile(
       schema: "still-shift.cga2-equivalence-1",
       bound: CGA2_EQUIVALENCE_BOUND,
       summary: {
-        rows: gated.length,
-        withinBound: gated.filter((row) => row.withinBound).length,
-        worstBlockRms: Math.max(...gated.map((row) => row.difference.blockRms)),
-        worstP99: Math.max(...gated.map((row) => row.difference.p99)),
+        rows: rows.length,
+        withinBound: rows.filter((row) => row.withinBound).length,
+        worstBlockRms: Math.max(...rows.map((row) => row.difference.blockRms)),
+        worstP99: Math.max(...rows.map((row) => row.difference.p99)),
       },
       rows,
     },
@@ -183,5 +175,5 @@ await writeFile(
   ) + "\n",
 );
 log(
-  `${gated.filter((row) => row.withinBound).length}/${gated.length} gated rows within the bound; wrote ${join(output, "equivalence.json")}`,
+  `${rows.filter((row) => row.withinBound).length}/${rows.length} rows within the bound; wrote ${join(output, "equivalence.json")}`,
 );

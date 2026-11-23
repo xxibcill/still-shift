@@ -119,9 +119,9 @@ the equivalence gate (decision 2):_
   clip knee), within one code of `color.white-balance` on every input.
   `grade.white-balance` (Bradford) keeps neutrals within one code but moves
   saturated colors by up to 28 codes on the synthetic green at the solver's
-  limit, which the gate does not allow before review. It is built as the
-  `adaptation` white-balance model (reported by the A0 script, not yet a CLI
-  option) and moves to A4.
+  limit, which the gate does not allow before review. It was prototyped as an
+  `adaptation` white-balance model at `2413125c` (its rows are in the results)
+  and removed from this PR, which ships A0–A1 only; it moves to A4.
 - **Skin protection is a `grade.key`, not a hue curve** (revisits decision 3).
   A hue-vs-saturation curve applies one chroma factor per hue, so it also
   desaturated fully saturated skin-hued colors that vibrance leaves alone
@@ -193,7 +193,8 @@ An exported `.cube` round-trips through `grade.lut` within the CG5 bound.
 - **Highlight protection:** use the `grade.tonal` high soft clip with a knee,
   instead of scaling every correction down until the clipping budget fits.
   Record how much correction this restores on the fixtures.
-- **Bradford white balance (moved from A1):** the `adaptation` model as a CLI
+- **Bradford white balance (moved from A1):** the `adaptation` model
+  (prototype and `temperatureTintForWhite` at `2413125c`) as a CLI
   option (`--white-balance-model adaptation`), with a tungsten-cast fixture
   that CGA's gains cannot reach, and the per-clip difference on the owner
   clips recorded for review. Skin protection moved to A1 (as a key).

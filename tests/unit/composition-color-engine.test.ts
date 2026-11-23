@@ -4,10 +4,6 @@
  */
 import { describe, expect, it } from "vitest";
 import {
-  temperatureTintForWhite,
-  temperatureTintWhite,
-} from "@still-shift/color-science";
-import {
   applyColorEffects,
   colorDifference,
   engineEffects,
@@ -40,26 +36,6 @@ const both = (effect: ColorCorrectionEffect) => {
   return colorDifference([legacy], [grade], WIDTH);
 };
 
-describe("temperatureTintForWhite", () => {
-  it("inverts temperatureTintWhite and flags whites outside the bounds", () => {
-    for (const [k, tint] of [
-      [6500, 0],
-      [3200, -16],
-      [2000, 40],
-      [9000, 20],
-      [24000, 90],
-    ] as const) {
-      const solved = temperatureTintForWhite(temperatureTintWhite(k, tint));
-      expect(solved.reached).toBe(true);
-      expect(solved.temperature).toBeCloseTo(k, 6);
-      expect(solved.tint).toBeCloseTo(tint, 6);
-    }
-    const outside = temperatureTintForWhite([0.2, 0.2]);
-    expect(outside.reached).toBe(false);
-    expect(outside.residualUv).toBeGreaterThan(0.01);
-  });
-});
-
 describe("CGA2 grade-engine mappings", () => {
   it("white balance gains: per-channel curves within one code of color.white-balance", () => {
     for (const temperature of [-100, -35, -10, 10, 35, 100])
@@ -90,19 +66,6 @@ describe("CGA2 grade-engine mappings", () => {
       ).toBeUndefined();
     for (const gain of [1 + 1e-9, 1 + 6e-7, 1 + 1e-6, 1.0001])
       expect(effectCurveIssue(gainCurve(gain))).toBeUndefined();
-  });
-  it("white balance adaptation: Bradford keeps neutrals within one code", () => {
-    const effect: ColorCorrectionEffect = {
-      id: "wb",
-      effect: "color.white-balance",
-      params: { temperature: -30, tint: 10 },
-    };
-    const [mapped] = gradeEngineEffects(effect, { whiteBalance: "adaptation" });
-    expect(mapped!.effect).toBe("grade.white-balance");
-    const ramp = CUBE.subarray(CUBE.length - 256 * 4);
-    const legacy = applyColorEffects([effect], ramp);
-    const grade = applyColorEffects([mapped as ColorCorrectionEffect], ramp);
-    expect(colorDifference([legacy], [grade], 256).max).toBeLessThanOrEqual(1);
   });
   it("levels: an unclamped CDL within one code inside 0–1", () => {
     for (const params of [

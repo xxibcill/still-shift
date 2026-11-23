@@ -26,7 +26,6 @@ import {
   effectDefaults,
   engineEffects,
   type ColorEngine,
-  type WhiteBalanceModel,
 } from "./composition-color-engine.ts";
 import { colorEffectPixel } from "../../renderer-core/src/composition/render/color-effects.ts";
 import {
@@ -83,8 +82,6 @@ export type ColorSolveOptions = ColorSolveSettings & {
   targets?: ColorSolveTargets | undefined;
   /** Effects to emit: CGA's 8-bit `color.*` (default) or `grade.*` (CGA2). */
   engine?: ColorEngine | undefined;
-  /** Grade engine only: white balance as CGA's gains (default) or Bradford. */
-  whiteBalanceModel?: WhiteBalanceModel | undefined;
 };
 type SolverTargets = {
   midtoneRange: readonly [number, number];
@@ -542,9 +539,7 @@ export function solveColorCorrection(
   const prefix = options.prefix ?? [];
   const engine = options.engine ?? "legacy";
   const forEngine = (effects: readonly ColorCorrectionEffect[]) =>
-    engineEffects(engine, effects, {
-      whiteBalance: options.whiteBalanceModel,
-    }) as ColorCorrectionEffect[];
+    engineEffects(engine, effects) as ColorCorrectionEffect[];
   const measure = (effects: readonly ColorCorrectionEffect[]) =>
     measureColorFrames(
       {

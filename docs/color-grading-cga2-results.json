@@ -19,7 +19,7 @@
       "solver1": "color.white-balance",
       "solver2": "grade.curves red/green/blue (gainCurve)",
       "difference": "max 1 code over a color cube and the neutral ramp for 18 temperature/tint settings; 71 of 27,648 table values off by 1 over 36 settings",
-      "note": "grade.white-balance (Bradford) is the opt-in adaptation model: neutrals within 1, saturated colors up to 28 codes on the synthetic green"
+      "note": "grade.white-balance (Bradford) was prototyped as an opt-in adaptation model at 2413125c: neutrals within 1, saturated colors up to 28 codes on the synthetic green. It was removed from this PR (review F3) and returns in A4 from that commit"
     },
     {
       "solver1": "color.levels",
@@ -276,13 +276,13 @@
     {
       "case": "adaptation rows (Bradford)",
       "difference": "synthetic casts p99 8 and 28; three owner look+auto rows block RMS 1.02–1.16",
-      "cause": "Bradford adaptation moves saturated colors differently from channel gains; reported only, not gated, and moved to A4"
+      "cause": "Bradford adaptation moves saturated colors differently from channel gains; reported only, not gated, and moved to A4. The (adaptation) rows were measured at 2413125c with the prototype that review F3 removed from this PR"
     }
   ],
   "rejected": [
     {
       "experiment": "grade.white-balance (Bradford) as solver 2's white balance",
-      "reason": "fails the equivalence gate on saturated colors (synthetic p99 8 and 28); kept as the opt-in adaptation model for A4"
+      "reason": "fails the equivalence gate on saturated colors (synthetic p99 8 and 28); prototyped as an opt-in adaptation model at 2413125c, removed from this PR (review F3), for A4"
     },
     {
       "experiment": "grade.hue-curves hueVsSat skin dip (decision 3's first recommendation)",

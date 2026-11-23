@@ -5,13 +5,11 @@
  * that does the same job, so the whole correction is one unclamped run,
  * quantized once on exit:
  *
- * - `color.white-balance` (linear-light channel gains) → by default
- *   `grade.curves` red/green/blue curves that apply the same gains (within one
- *   code value), because solver 2 must match CGA's renders before changes
- *   that move the look land (owner decision 2, 2026-11-23). The `adaptation`
- *   model maps it to `grade.white-balance` (Bradford) instead: the illuminant
- *   is the white the gains neutralize, so neutrals match and saturated colors
- *   differ (up to 28 codes on the synthetic green at the solver's limit).
+ * - `color.white-balance` (linear-light channel gains) → `grade.curves`
+ *   red/green/blue curves that apply the same gains (within one code value),
+ *   because solver 2 must match CGA's renders before changes that move the
+ *   look land (owner decision 2, 2026-11-23). Bradford adaptation
+ *   (`grade.white-balance`) moves saturated colors and is A4 work.
  * - `color.levels` (input black/white, gamma) → `grade.cdl` (unclamped): the
  *   same curve inside 0–1, without clipping outside it.
  * - `color.curves` (the S-curve) → `grade.curves` master, a smooth monotone
@@ -30,12 +28,7 @@
  * - `color.matrix` (a look) → `grade.rgb-mixer` (the same parameters and
  *   design formula in float).
  */
-import {
-  rgbToXyzMatrix,
-  applyMatrix,
-  temperatureTintForWhite,
-  type Rgb,
-} from "@still-shift/color-science";
+import type { Rgb } from "@still-shift/color-science";
 import {
   compositionEffectDefinition,
   isFloatGradeEffect,
@@ -72,35 +65,6 @@ export type EngineEffect = {
 };
 
 const round = (value: number, digits = 6) => roundTo(value, digits);
-
-/**
- * `color.white-balance` gains → `grade.white-balance`: a grey lit by the
- * illuminant whose linear RGB is 1/gains becomes neutral under the gains, so
- * that illuminant (as xy) is the one Bradford adapts to D65.
- */
-export function gradeWhiteBalance(temperature: number, tint: number) {
-  const gains = whiteBalanceGains(temperature, tint);
-  const xyz = applyMatrix(
-    rgbToXyzMatrix("bt709"),
-    gains.map((g) => 1 / g) as unknown as Rgb,
-  );
-  const sum = xyz[0] + xyz[1] + xyz[2];
-  const solved = temperatureTintForWhite([xyz[0] / sum, xyz[1] / sum]);
-  return {
-    temperature: round(solved.temperature, 2),
-    tint: round(solved.tint, 3),
-    reached: solved.reached,
-  };
-}
-
-/**
- * How the grade engine expresses a white balance: `gains` keeps CGA's
- * linear-light channel gains (per-channel curves), `adaptation` uses Bradford
- * adaptation (`grade.white-balance`).
- */
-export const WHITE_BALANCE_MODELS = ["gains", "adaptation"] as const;
-export type WhiteBalanceModel = (typeof WHITE_BALANCE_MODELS)[number];
-export type EngineOptions = { whiteBalance?: WhiteBalanceModel | undefined };
 
 /**
  * A `grade.curves` channel curve (at most 16 points, y in 0–1) that applies a
@@ -195,36 +159,20 @@ export function skinProtectionKey(protect: number) {
 }
 
 /** One CGA correction (or look) as the grade engine's operators. */
-export function gradeEngineEffects(
-  effect: EngineEffect,
-  options: EngineOptions = {},
-): EngineEffect[] {
+export function gradeEngineEffects(effect: EngineEffect): EngineEffect[] {
   const p = effect.params as Record<string, number>;
   switch (effect.effect) {
     case "color.white-balance": {
-      if ((options.whiteBalance ?? "gains") === "gains") {
-        const gains = whiteBalanceGains(p.temperature ?? 0, p.tint ?? 0);
-        return [
-          {
-            id: effect.id,
-            effect: "grade.curves",
-            params: {
-              red: gainCurve(gains[0]),
-              green: gainCurve(gains[1]),
-              blue: gainCurve(gains[2]),
-            },
-          },
-        ];
-      }
-      const { temperature, tint } = gradeWhiteBalance(
-        p.temperature ?? 0,
-        p.tint ?? 0,
-      );
+      const gains = whiteBalanceGains(p.temperature ?? 0, p.tint ?? 0);
       return [
         {
           id: effect.id,
-          effect: "grade.white-balance",
-          params: { temperature, tint },
+          effect: "grade.curves",
+          params: {
+            red: gainCurve(gains[0]),
+            green: gainCurve(gains[1]),
+            blue: gainCurve(gains[2]),
+          },
         },
       ];
     }
@@ -264,8 +212,7 @@ export function gradeEngineEffects(
           "comp-auto-color: the grade engine maps vibrance without a uniform saturation only",
         );
       const boost = round((p.vibrance ?? 0) / 100, 4);
-      const key =
-        boost !== 0 ? skinProtectionKey(p.protectSkin ?? 0.7) : null;
+      const key = boost !== 0 ? skinProtectionKey(p.protectSkin ?? 0.7) : null;
       return [
         ...(key
           ? [{ id: `${effect.id}-skin`, effect: "grade.key", params: key }]
@@ -297,11 +244,8 @@ export function gradeEngineEffects(
 export const engineEffects = (
   engine: ColorEngine,
   effects: readonly EngineEffect[],
-  options: EngineOptions = {},
 ): EngineEffect[] =>
-  engine === "grade"
-    ? effects.flatMap((effect) => gradeEngineEffects(effect, options))
-    : [...effects];
+  engine === "grade" ? effects.flatMap(gradeEngineEffects) : [...effects];
 
 /** Parameters with the effect definition's defaults filled in. */
 export function effectDefaults(effect: EngineEffect) {
