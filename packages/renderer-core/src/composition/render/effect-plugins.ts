@@ -146,6 +146,39 @@ function clearEffectControl<S extends { width: number; height: number }>(
       undefined;
   phase.input = phase.output = undefined;
 }
+/**
+ * Copies an effect's layer slots into `phase.inputs` with `copy`: every
+ * required slot (missing or wrongly sized fails) and, CG6, each optional slot
+ * that is bound (wrongly sized fails; unbound is skipped).
+ */
+function copyLayerSlots<S extends { width: number; height: number }>(
+  phase: EffectControl<S>,
+  definition: CompositionEffectDefinition,
+  layers: ReadonlyMap<string, S> | undefined,
+  target: S,
+  copy: (source: S) => S,
+) {
+  if (!definition.requiresLayers) phase.slots = [];
+  const slots = [
+    ...(definition.requiresLayers ?? []).map((slot) => [slot, true] as const),
+    ...(definition.optionalLayers ?? []).map((slot) => [slot, false] as const),
+  ];
+  for (const [slot, required] of slots) {
+    const source = layers?.get(slot);
+    if (!source && !required) continue;
+    if (
+      !source ||
+      source.width !== target.width ||
+      source.height !== target.height
+    )
+      throw Error(
+        `comp-effect-layer: ${required ? "missing or " : ""}incompatible input "${slot}"`,
+      );
+    // Copy first: the map's `set` is read after the copy is owned.
+    const owned = copy(source);
+    phase.inputs!.set(slot, owned);
+  }
+}
 function effectControl<S extends { width: number; height: number }>() {
   // Original callback limit is 32 surfaces: Set/snapshot slots, at most 31
   // copied-layer Map entries, and fixed controller/context/function/view refs.
@@ -332,30 +365,11 @@ export function renderGpuEffect(
     const input = (phase.input = surfaces.create(target.width, target.height));
     effectCopy(phase, device, input, target);
     const inputs = (phase.inputs = new Map<string, WebglSurface>());
-    for (const slot of plugin.definition.requiresLayers ?? (phase.slots = [])) {
-      const source = layers?.get(slot);
-      if (
-        !source ||
-        source.width !== target.width ||
-        source.height !== target.height
-      )
-        throw Error(
-          `comp-effect-layer: missing or incompatible input "${slot}"`,
-        );
+    copyLayerSlots(phase, plugin.definition, layers, target, (source) => {
       const copy = surfaces.create(source.width, source.height);
       effectCopy(phase, device, copy, source);
-      inputs.set(slot, copy);
-    }
-    // CG6: optional slots are copied only when bound.
-    for (const slot of plugin.definition.optionalLayers ?? []) {
-      const source = layers?.get(slot);
-      if (!source) continue;
-      if (source.width !== target.width || source.height !== target.height)
-        throw Error(`comp-effect-layer: incompatible input "${slot}"`);
-      const copy = surfaces.create(source.width, source.height);
-      effectCopy(phase, device, copy, source);
-      inputs.set(slot, copy);
-    }
+      return copy;
+    });
     const context: GpuEffectContext = (phase.context = {
       layers: inputs,
       placement: effect.placement,
@@ -449,29 +463,11 @@ export function renderCanvasEffect(
     const input = (phase.input = surfaces.create(target.width, target.height));
     input.ctx.drawImage(target.canvas, 0, 0);
     const inputs = (phase.inputs = new Map<string, CanvasSurface>());
-    for (const slot of plugin.definition.requiresLayers ?? (phase.slots = [])) {
-      const source = layers?.get(slot);
-      if (
-        !source ||
-        source.width !== target.width ||
-        source.height !== target.height
-      )
-        throw Error(
-          `comp-effect-layer: missing or incompatible input "${slot}"`,
-        );
+    copyLayerSlots(phase, plugin.definition, layers, target, (source) => {
       const copy = surfaces.create(source.width, source.height);
       copy.ctx.drawImage(source.canvas, 0, 0);
-      inputs.set(slot, copy);
-    }
-    for (const slot of plugin.definition.optionalLayers ?? []) {
-      const source = layers?.get(slot);
-      if (!source) continue;
-      if (source.width !== target.width || source.height !== target.height)
-        throw Error(`comp-effect-layer: incompatible input "${slot}"`);
-      const copy = surfaces.create(source.width, source.height);
-      copy.ctx.drawImage(source.canvas, 0, 0);
-      inputs.set(slot, copy);
-    }
+      return copy;
+    });
     const output = (phase.output = plugin.renderCanvas(
       (phase.context = {
         layers: inputs,
