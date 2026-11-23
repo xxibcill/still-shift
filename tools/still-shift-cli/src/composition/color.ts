@@ -6,6 +6,7 @@ import {
   access,
   readdir,
   readFile,
+  rm,
   stat,
   writeFile,
   mkdir,
@@ -409,9 +410,15 @@ export async function runColorCommand(
           ...(cubePath ? { lutPath: basename(cubePath) } : {}),
         },
       );
-      if (cubePath && cube !== undefined)
-        await writeNew(cubePath, cube, "output");
-      await writeNew(output, JSON.stringify(look, null, 2) + "\n", "output");
+      const table = cubePath && cube !== undefined ? cubePath : undefined;
+      if (table) await writeNew(table, cube!, "output");
+      try {
+        await writeNew(output, JSON.stringify(look, null, 2) + "\n", "output");
+      } catch (error) {
+        // A table without its look would only block the retry.
+        if (table) await rm(table, { force: true });
+        throw error;
+      }
       io.stdout(
         json({
           status: "fitted",

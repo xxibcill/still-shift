@@ -506,5 +506,40 @@ describe("CGA2 A3 CLI: look 2", () => {
     expect(composition.assets[1].path).toBe(
       join("..", "a3-lut", "graded.cube"),
     );
+    // A look path that appears during the fit fails the run, and the table
+    // written before it is removed so it does not block the retry.
+    const raced = join(folder, "raced.json");
+    let stderr = "";
+    const code = await runCli(
+      [
+        "comp",
+        "look",
+        "fit",
+        "--before",
+        before,
+        "--after",
+        after,
+        "--output",
+        raced,
+        "--engine",
+        "grade",
+        "--model",
+        "lut",
+      ],
+      {
+        stdout: () => undefined,
+        stderr: (value) => {
+          stderr += value;
+          if (value.includes('"progress"') && value.includes("fitting lut"))
+            void writeFile(raced, "taken\n", { flag: "wx" }).catch(
+              () => undefined,
+            );
+        },
+      },
+    );
+    expect(code).not.toBe(0);
+    expect(failure(stderr).diagnostics[0]!.code).toBe("comp-program-output");
+    expect(await readFile(raced, "utf8")).toBe("taken\n");
+    expect((await readdir(folder)).includes("raced.cube")).toBe(false);
   }, 180_000);
 });
