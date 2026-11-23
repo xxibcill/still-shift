@@ -2,8 +2,9 @@
 
 Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status: **A0 and A1 built on `codex/cga2-engine` (2026-11-23); approved (owner: "start implement", 2026-11-23);
 owner decided the default engine, the equivalence gate and skin protection;
-three decisions remain.** No package source changed and nothing was rendered for
-this plan.
+three decisions remain.** The plan itself (commit `7b4aefd5`) changed no package
+source and rendered nothing; the as-built notes under each slice record what
+A0 and A1 built, measured and rendered.
 
 Parent plan: [color grading engine](./color-grading-engine-plan.md). CGA results:
 [color-grading-cga-results.json](./color-grading-cga-results.json).
@@ -80,13 +81,16 @@ per clip, 4×4 block-mean RMS ≤ 1 and per-pixel 99th percentile ≤ 3, of 255
 the look bound stays open (decision 4, carried to A3). `scripts/color/cga2-equivalence.ts` compares the two
 solvers' exact predictions on the synthetic fixtures and a local folder of
 clips (auto, look at 60%, look plus auto) and writes `dist/cga2/equivalence.json`.
-Each mapping's difference over a color cube and the neutral ramp is a unit
-test (`tests/unit/composition-color-engine.test.ts`). Numbers are in the
+Each mapping's difference over a color cube, the neutral ramp and seven CG0
+stills (the 24-patch chart, ramps, hue and saturation sweeps, skin tones) is a
+unit test (`tests/unit/composition-color-engine.test.ts`). Numbers are in the
 [CGA2 results](./color-grading-cga2-results.json).
 
 ### A1: Solver 2 emits a `grade.*` run (2–3 days)
 
-Map each stage to the engine and keep the stage order and limits:
+Map each stage to the engine and keep the stage order and limits. The table is
+the plan as approved; the as-built notes below supersede its white-balance,
+contrast and saturation rows.
 
 | Stage         | Solver 1                         | Solver 2                                                                                                                                         |
 | ------------- | -------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -101,8 +105,8 @@ Map each stage to the engine and keep the stage order and limits:
   below). If
   `pnpm check:package-boundaries` rejects the import, move the op table into
   `@still-shift/color-science`.
-- Until A4, saturation uses `colorBoost` without skin protection, and the
-  difference is recorded.
+- ~~Until A4, saturation uses `colorBoost` without skin protection, and the
+  difference is recorded.~~ Skin protection moved into A1 as a key (below).
 
 **Checks:** on the synthetic fixtures, solver 2 meets every CGA bound that
 solver 1 met: exposure ≤ 3, contrast ≤ 2.5, white balance ≤ 1, near-identity
@@ -112,8 +116,9 @@ difference is listed with its cause. Prediction equals the Canvas render
 exactly, and WebGL2 is within the CG2 parity bound. ~~A tungsten-cast fixture
 that solver 1 cannot reach is corrected~~ (moved to A4 with Bradford, below).
 
-_As built (2026-11-23), two deviations from the table above, both forced by
-the equivalence gate (decision 2):_
+_As built (2026-11-23; review fixes 2026-11-23), four deviations from the
+plan above. The first three were forced by the equivalence gate
+(decision 2):_
 
 - **White balance stays CGA's linear-light gains**, as `grade.curves`
   red/green/blue curves (`gainCurve`: 16 points with a guard point below the
@@ -152,11 +157,11 @@ the equivalence gate (decision 2):_
   function, so a look in CGA form can precede a grade run. The browser group
   confirms Canvas and WebGL2 equal the prediction.
 - `--engine grade|legacy` on `comp auto-color` and `comp look apply`; the
-  default stays `legacy` until A6. The report adds `engine` and `solver` for
-  the grade engine only. The prediction mirrors the Canvas keyed run (segments
-  in float64, keys from the value entering them, one quantization), and
-  `test:browser:color-grading-cga2` confirms it on a lossless render: Canvas
-  and WebGL2 both 0 codes off on all 12 frames.
+  default stays `legacy` until A6. The report adds `engine` for the grade
+  engine, and `solver` when the solver ran (not for `look apply`).
+  `test:browser:color-grading-cga2` renders four fixtures losslessly (flat,
+  narrow range, a look alone, a look then the solver): Canvas and WebGL2 are
+  both 0 codes off the prediction on all 12 frames of each.
 
 ### A2: Reports and measurement on scopes (1 day)
 
@@ -171,8 +176,9 @@ the equivalence gate (decision 2):_
 Statistics fields that already existed are unchanged on the fixtures.
 
 **Stopping point after A0–A2:** auto-color grades on the engine, matches CGA's
-look within the A0 metric, reaches stronger white-balance corrections, and
-produces an editable, unclamped `grade.*` run.
+look within the A0 metric, and produces an editable, unclamped `grade.*` run
+with scopes in its report. Stronger white-balance corrections (Bradford)
+moved to A4.
 
 ### A3: Look 2 (3–5 days)
 
