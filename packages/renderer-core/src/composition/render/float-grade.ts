@@ -758,6 +758,7 @@ const stored = (value: number, alpha: number) =>
  * the run.
  */
 type Segment = { key: KeySpec | null; ops: FloatGradeOp[] };
+export type FloatGradeSegment = Segment;
 type RunMember = {
   effect: string;
   id: string;
@@ -766,7 +767,10 @@ type RunMember = {
   inputs?: Readonly<Record<string, string>> | undefined;
 } & OpSource;
 
-function segmentsOf(members: readonly RunMember[], convert = true): Segment[] {
+export function floatGradeSegments(
+  members: readonly RunMember[],
+  convert = true,
+): Segment[] {
   const all: Segment[] = [{ key: null, ops: [] }];
   for (const member of members) {
     if (member.effect === GRADE_KEY) {
@@ -845,7 +849,10 @@ export function sourceStagePixels(
 ): void {
   const input = sourceTransform(stage.encoding, stage.working);
   const display = conversionOp(workingEncoding(stage.working), "srgb");
-  const segments = segmentsOf(stage.effects as unknown as RunMember[], false);
+  const segments = floatGradeSegments(
+    stage.effects as unknown as RunMember[],
+    false,
+  );
   const count = width * height;
   const value = new Float64Array(count * 3);
   // Identical samples convert alike: memoize on the 48-bit code.
@@ -1276,7 +1283,9 @@ export function floatGradeKernel(
     single.set(
       id,
       (kernel = Object.freeze(
-        runPlugin(id, (params) => segmentsOf([{ effect: id, id, params }])),
+        runPlugin(id, (params) =>
+          floatGradeSegments([{ effect: id, id, params }]),
+        ),
       )),
     );
   return kernel;
@@ -1337,7 +1346,7 @@ export function floatGradeRun(
     plugin: Object.freeze(
       runPlugin(
         first.effect,
-        () => segmentsOf(members as unknown as RunMember[]),
+        () => floatGradeSegments(members as unknown as RunMember[]),
         slots,
       ),
     ),
