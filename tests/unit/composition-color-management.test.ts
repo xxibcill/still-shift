@@ -349,6 +349,57 @@ describe("source stage", () => {
     const qualifier = effect("q", "grade.key", { qualifier: 1 });
     expect(takeSourceStage([qualifier, after])).toEqual([qualifier, after]);
   });
+  it("gives the same bytes in strips as in one pass", () => {
+    const width = 37,
+      height = 23;
+    const samples = new Uint16Array(width * height * 4);
+    for (let i = 0; i < width * height; i++) {
+      samples[i * 4] = (i * 2654435761) % 65536;
+      samples[i * 4 + 1] = (i * 40503 + 9000) % 65536;
+      samples[i * 4 + 2] = ((i % width) * 1771 + 20000) % 65536;
+      samples[i * 4 + 3] = 65535;
+    }
+    const render = (effects: RenderEffect[], stripPixels: number) => {
+      const out = new Uint8ClampedArray(width * height * 4);
+      sourceStagePixels(
+        samples,
+        width,
+        height,
+        {
+          working: "acescct",
+          encoding: { kind: "camera", id: "sony-slog3-sgamut3" },
+          effects,
+        },
+        out,
+        stripPixels,
+      );
+      return out;
+    };
+    const graded = [
+      effect("p", "grade.primary", { gainMaster: 1.3, liftMaster: -0.02 }),
+      effect("q", "grade.key", {
+        qualifier: 1,
+        luminanceMin: 0.3,
+        luminanceMax: 0.7,
+        luminanceSoftness: 0.1,
+        clipBlack: 0.1,
+      }),
+      effect("c", "grade.primary", { saturation: 1.4 }),
+    ];
+    const viewed = [
+      ...graded
+        .slice(0, 2)
+        .map((e) =>
+          e.id === "q" ? { ...e, params: { ...e.params, view: 1 } } : e,
+        ),
+    ];
+    for (const effects of [[], graded, viewed] as RenderEffect[][]) {
+      const whole = render(effects, width * height);
+      // One row, a few rows with a short last strip, and under one row.
+      for (const strip of [width, width * 5, 1])
+        expect(render(effects, strip)).toEqual(whole);
+    }
+  });
   it("renders a stack with a disabled effect as the stack without it", () => {
     const off = effect("off", "grade.primary", { offsetMaster: 0.2 }, false);
     const on = effect("on", "grade.primary", {});

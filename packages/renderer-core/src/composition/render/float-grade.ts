@@ -839,10 +839,22 @@ export function takeSourceStage(effects: RenderEffect[]): RenderEffect[] {
 }
 
 /**
+ * Pixels per strip of the source stage: its float64 working set is about
+ * 32 B per pixel (value, alpha, key planes), so 64 Ki pixels is about 2 MiB
+ * whatever the frame size.
+ */
+export const SOURCE_STAGE_STRIP_PIXELS = 65536;
+
+/**
  * The source stage on one decoded frame, float64 on both backends: 16-bit
  * encoded samples → input transform → working space → the stage's grade
  * segments → display → straight RGBA8 (opaque). Byte-identical on Canvas and
  * WebGL by construction.
+ *
+ * Every stage operation is per pixel (`takeSourceStage`), so the frame is
+ * processed in strips of whole rows (`stripPixels`, at least one row) with
+ * a bounded working set instead of a float64 copy of the frame (about
+ * 190 MiB at 4K); strips give the same bytes as one pass.
  */
 export function sourceStagePixels(
   samples: Uint16Array,
@@ -850,6 +862,7 @@ export function sourceStagePixels(
   height: number,
   stage: SceneStage,
   out: Uint8ClampedArray,
+  stripPixels = SOURCE_STAGE_STRIP_PIXELS,
 ): void {
   const input = sourceTransform(stage.encoding, stage.working);
   const display = conversionOp(workingEncoding(stage.working), "srgb");
@@ -857,29 +870,13 @@ export function sourceStagePixels(
     stage.effects as unknown as RunMember[],
     false,
   );
-  const count = width * height;
-  const value = new Float64Array(count * 3);
-  // Identical samples convert alike: memoize on the 48-bit code.
-  let lastKey = -1,
-    last: Rgb = [0, 0, 0];
-  for (let i = 0; i < count; i++) {
-    const r = samples[i * 4]!,
-      g = samples[i * 4 + 1]!,
-      b = samples[i * 4 + 2]!;
-    const key = r * 4294967296 + g * 65536 + b;
-    if (key !== lastKey) {
-      last = input.toWorking([
-        compositionSceneSample(r),
-        compositionSceneSample(g),
-        compositionSceneSample(b),
-      ]);
-      lastKey = key;
-    }
-    value[i * 3] = last[0];
-    value[i * 3 + 1] = last[1];
-    value[i * 3 + 2] = last[2];
-  }
-  const alpha = new Uint8Array(count).fill(255);
+  const view = segments.find((segment) => segment.key?.view)?.key?.view;
+  const stripRows = Math.max(
+    1,
+    Math.min(height, Math.floor(stripPixels / width)),
+  );
+  const value = new Float64Array(width * stripRows * 3);
+  const alpha = new Uint8Array(width * stripRows).fill(255);
   const at = (i: number): Rgb => [
     value[i * 3]!,
     value[i * 3 + 1]!,
@@ -890,34 +887,59 @@ export function sourceStagePixels(
     for (const op of ops) o = op.apply(o);
     return o;
   };
-  let view: number | undefined;
-  for (const segment of segments) {
-    const k = segment.key;
-    const key = k
-      ? evaluateKey(k, width, height, value, alpha, new Map() as KeyPlanes)
-      : undefined;
+  for (let top = 0; top < height; top += stripRows) {
+    const rows = Math.min(stripRows, height - top);
+    const first = top * width,
+      count = rows * width;
+    // Identical samples convert alike: memoize on the 48-bit code.
+    let lastKey = -1,
+      last: Rgb = [0, 0, 0];
     for (let i = 0; i < count; i++) {
-      const a = at(i),
-        b = run(segment.ops, a);
-      const o = !k
-        ? b
-        : k.view
-          ? keyView(k.view, key![i]!, b)
-          : key![i]! > 0
-            ? mixKeyed(a, b, key![i]!)
-            : a;
-      value[i * 3] = o[0];
-      value[i * 3 + 1] = o[1];
-      value[i * 3 + 2] = o[2];
+      const at4 = (first + i) * 4;
+      const r = samples[at4]!,
+        g = samples[at4 + 1]!,
+        b = samples[at4 + 2]!;
+      const key = r * 4294967296 + g * 65536 + b;
+      if (key !== lastKey) {
+        last = input.toWorking([
+          compositionSceneSample(r),
+          compositionSceneSample(g),
+          compositionSceneSample(b),
+        ]);
+        lastKey = key;
+      }
+      value[i * 3] = last[0];
+      value[i * 3 + 1] = last[1];
+      value[i * 3 + 2] = last[2];
     }
-    if (k?.view) view = k.view;
-  }
-  for (let i = 0; i < count; i++) {
-    const v = view || !display ? at(i) : display.apply(at(i));
-    out[i * 4] = quantizeGrade(v[0]);
-    out[i * 4 + 1] = quantizeGrade(v[1]);
-    out[i * 4 + 2] = quantizeGrade(v[2]);
-    out[i * 4 + 3] = 255;
+    for (const segment of segments) {
+      const k = segment.key;
+      const key = k
+        ? evaluateKey(k, width, rows, value, alpha, new Map() as KeyPlanes)
+        : undefined;
+      for (let i = 0; i < count; i++) {
+        const a = at(i),
+          b = run(segment.ops, a);
+        const o = !k
+          ? b
+          : k.view
+            ? keyView(k.view, key![i]!, b)
+            : key![i]! > 0
+              ? mixKeyed(a, b, key![i]!)
+              : a;
+        value[i * 3] = o[0];
+        value[i * 3 + 1] = o[1];
+        value[i * 3 + 2] = o[2];
+      }
+    }
+    for (let i = 0; i < count; i++) {
+      const v = view || !display ? at(i) : display.apply(at(i));
+      const o = (first + i) * 4;
+      out[o] = quantizeGrade(v[0]);
+      out[o + 1] = quantizeGrade(v[1]);
+      out[o + 2] = quantizeGrade(v[2]);
+      out[o + 3] = 255;
+    }
   }
 }
 
