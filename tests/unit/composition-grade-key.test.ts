@@ -78,6 +78,23 @@ describe("grade.key contract", () => {
     expect(check({ matteLow: 0.5, matteHigh: 0.5 })).toThrow(/matteLow/);
     expect(check({ matteLow: 0.8, matteHigh: 0.2 })).not.toThrow();
   });
+  it("rejects finesse and invert without a qualifier (they would do nothing)", () => {
+    const definition = compositionEffectDefinition("grade.key")!;
+    const check = (params: Record<string, number>) => () =>
+      definition.validateParams!({
+        clipBlack: 0,
+        clipWhite: 1,
+        matteLow: 0,
+        matteHigh: 1,
+        qualifier: 0,
+        window: 1,
+        ...params,
+      });
+    expect(check({ blur: 2, invert: 1 })).toThrow(/blur, invert/);
+    expect(check({ clipWhite: 0.8 })).toThrow(/need a qualifier/);
+    expect(check({ blur: 0, invert: 0 })).not.toThrow();
+    expect(check({ qualifier: 3, blur: 2, invert: 1 })).not.toThrow();
+  });
   it("defaults select everything", () => {
     const definition = compositionEffectDefinition("grade.key")!;
     const d = Object.fromEntries(

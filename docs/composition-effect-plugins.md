@@ -360,7 +360,8 @@ input of the operations it scopes, never their output.
   `blur` (σ in surface pixels, `blur.gaussian`'s three-box kernel) with
   `inOutRatio` (−1 keeps the softness inside the edge, +1 outside), then
   `invert`. Morphology radii are whole pixels with a square element; edges
-  clamp. Finesse and `invert` need a qualifier.
+  clamp. Finesse and `invert` need a qualifier: with `qualifier` 0, setting
+  any of them away from its default is a parameter error.
 - W, the shape window: `window` 1 ellipse or 2 rectangle (`windowRoundness`
   corner radius), `windowCenter`, `windowSize`, `windowRotation` (degrees),
   `windowFeather` and `windowExpansion` as layer masks, `windowInvert`; in the

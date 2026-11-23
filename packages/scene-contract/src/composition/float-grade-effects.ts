@@ -48,6 +48,21 @@ const flag = (value = 0) => scalar(value, 0, 1, true);
 export const GRADE_KEY_SAMPLES = 8;
 /** CG6: `grade.key`'s optional external matte slot. */
 export const GRADE_KEY_MATTE_SLOT = "matte";
+/**
+ * `grade.key` finesse and `invert` at their neutral values. They refine the
+ * qualifier matte, so a key without a qualifier must leave them here.
+ */
+const KEY_FINESSE_NEUTRAL: Readonly<Record<string, number>> = {
+  clipBlack: 0,
+  clipWhite: 1,
+  denoise: 0,
+  cleanBlack: 0,
+  cleanWhite: 0,
+  shrinkGrow: 0,
+  blur: 0,
+  inOutRatio: 0,
+  invert: 0,
+};
 const curve = (
   defaultPoints: readonly (readonly [number, number])[],
 ): EffectProperty => ({ type: "curve", default: defaultPoints });
@@ -237,7 +252,8 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
    * entering the key (the operations' input, never their output). Key =
    * clamp(gain · Q · W · G · M + offset, 0, 1): Q the qualifier (`qualifier`
    * 0 none, 1 HSL, 2 RGB, 3 luma, 4 sampled OKLab) after matte finesse and
-   * `invert` (finesse and invert need a qualifier); W the ellipse (1) or
+   * `invert` (finesse and invert need a qualifier: without one, setting
+   * them is an error); W the ellipse (1) or
    * rectangle (2) window, a layer mask in layer space; G the linear gradient;
    * M the optional `matte` layer (alpha 0 or luma 1, levels, invert). Each
    * pixel mixes input and result by the key; `view` 1–3 shows the key (gray,
@@ -303,6 +319,15 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
     (params) => {
       if ((params.clipBlack as number) >= (params.clipWhite as number))
         throw Error("clipBlack must be below clipWhite");
+      if (!params.qualifier) {
+        const set = Object.entries(KEY_FINESSE_NEUTRAL).flatMap(([k, v]) =>
+          params[k] !== undefined && params[k] !== v ? [k] : [],
+        );
+        if (set.length)
+          throw Error(
+            `${set.join(", ")} refine the qualifier matte and need a qualifier (qualifier is 0)`,
+          );
+      }
       if (params.matteLow === params.matteHigh)
         throw Error("matteLow and matteHigh must differ");
     },
