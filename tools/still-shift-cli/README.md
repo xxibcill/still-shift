@@ -418,13 +418,15 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   float `grade.*` run instead of 8-bit `color.*` effects, with one
   quantization on exit: the white balance as `grade.curves` red/green/blue
   curves holding the same linear-light gains, levels as an unclamped
-  `grade.cdl`, the S-curve as a `grade.curves` master curve, vibrance as
-  `grade.primary` `colorBoost` with a `grade.hue-curves` hue-vs-saturation dip
-  that protects skin, and a look as `grade.rgb-mixer`. The solver stages and
+  `grade.cdl`, the S-curve as a `grade.curves` master curve that keeps its
+  straight segments, vibrance as `grade.primary` `colorBoost` behind a
+  pointwise `grade.key` (an HSL hue qualifier) that protects skin, and a look
+  as `grade.rgb-mixer`. The solver stages and
   defaults are the same (solver 2 re-measures each stage through the grade
   engine), and its renders stay within 1 of 255 (4×4 block-mean RMS) and 3
   (99th percentile per pixel) of `--engine legacy` on the CGA fixtures. The
-  report adds `engine` and `solver`. `--engine legacy` (the default for now)
+  report adds `engine`, and `solver` when the solver ran (not for
+  `look apply`). `--engine legacy` (the default for now)
   is CGA unchanged.
 
 `auto-color` and `look apply` keep the source audio as a native audio layer and
