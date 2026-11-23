@@ -66,14 +66,19 @@ function measureDifference(
     const x = a[f]!,
       y = b[f]!;
     const height = x.length / 4 / width;
-    for (let i = 0; i < x.length; i += 4)
+    for (let i = 0; i < x.length; i += 4) {
+      // A pixel differs by its largest channel difference (the p99 is per
+      // pixel); RMS stays over channel values.
+      let pixel = 0;
       for (let c = 0; c < 3; c++) {
         const d = Math.abs(x[i + c]! - y[i + c]!);
-        histogram[d]!++;
         squares += d * d;
         count++;
-        if (d > max) max = d;
+        if (d > pixel) pixel = d;
       }
+      histogram[pixel]!++;
+      if (pixel > max) max = pixel;
+    }
     for (let by = 0; by + BLOCK <= height; by += BLOCK)
       for (let bx = 0; bx + BLOCK <= width; bx += BLOCK)
         for (let c = 0; c < 3; c++) {
@@ -92,7 +97,7 @@ function measureDifference(
   return {
     pixels: count / 3,
     rms: Math.sqrt(squares / Math.max(1, count)),
-    p99: percentile(histogram, count, 0.99),
+    p99: percentile(histogram, count / 3, 0.99),
     max,
     blockRms: Math.sqrt(blockSquares / Math.max(1, blocks)),
     blockP99: percentile(blockHistogram, blocks, 0.99) / 100,
@@ -110,9 +115,9 @@ const rounded = ({
 });
 
 /**
- * Difference between two sets of straight RGBA8 frames of one width, over
- * RGB channel values: per pixel (RMS, 99th percentile, max) and over 4×4 block
- * means (RMS, 99th percentile in 1/100 code steps; 0 when the frames are smaller
+ * Difference between two sets of straight RGBA8 frames of one width: RMS
+ * over RGB channel values; the 99th percentile and max over pixels, each
+ * pixel taken at its largest channel difference; and over 4×4 block means (RMS, 99th percentile in 1/100 code steps; 0 when the frames are smaller
  * than one block). RMS values are rounded to 4 decimals for reports.
  */
 export const colorDifference = (

@@ -202,6 +202,16 @@ describe("CGA2 grade-engine mappings", () => {
 });
 
 describe("CGA2 equivalence metric", () => {
+  it("takes the p99 over pixels, each at its largest channel difference", () => {
+    // 2 of 100 pixels differ by 5 in red only: 2% of pixels, 0.67% of values.
+    const a = new Uint8Array(100 * 4).fill(128);
+    const b = Uint8Array.from(a);
+    b[0] = 133;
+    b[4] = 133;
+    const d = colorDifference([a], [b], 10);
+    expect(d.p99).toBe(5);
+    expect(d.max).toBe(5);
+  });
   it("refuses frames without a 4×4 block instead of passing them", () => {
     const tiny = {
       width: 3,
