@@ -455,11 +455,27 @@
     }
   ],
   "verification": {
-    "toolchain": "pnpm toolchain:check passed (Node 22.23.1)",
-    "unit": "tests/unit/composition-color-engine.test.ts 10/10",
-    "integration": "composition-color, composition-color-cli, color-science-grade, color-engine: 65/65",
-    "browser": "pnpm test:browser:color-grading-cga2 passed",
-    "checkFast": "passed on the final code (schema, boundaries, format, lint, build, package types, 483 files / 4,994 tests)",
-    "notRun": "pnpm check, the full pnpm test, other browser groups and the release checks"
+    "firstRun": {
+      "at": "2413125c",
+      "toolchain": "pnpm toolchain:check passed (Node 22.23.1)",
+      "unit": "tests/unit/composition-color-engine.test.ts 10/10",
+      "integration": "composition-color, composition-color-cli, color-science-grade, color-engine: 65/65",
+      "browser": "pnpm test:browser:color-grading-cga2 passed",
+      "checkFast": "passed on the final code (schema, boundaries, format, lint, build, package types, 483 files / 4,994 tests)",
+      "notRun": "pnpm check, the full pnpm test, other browser groups and the release checks"
+    },
+    "reviewFixes": {
+      "at": "1e1bde1a (review fixes F1–F18), Node 22.23.1, pnpm 10.29.3; logs kept locally in dist/cga2-review-checks/ (not committed)",
+      "tier": "CONTRIBUTING: exports changed (comp auto-color, comp look apply) → pnpm check:runtime and the relevant browser/render checks, plus pnpm check:fast for the TypeScript",
+      "checkFast": "passed: 483 files / 5,002 tests (on the tree before the F18 results commit; F18 changed only the A0 script and records)",
+      "checkRuntime": [
+        "run 1 failed: test:runtime, tests/runtime/mechanism-cue-authoring.test.ts timed out at 5 s in one test (unrelated to color; it passes alone in 2.2 s); integration, depth and smoke did not run",
+        "run 2 failed: runtime 376/376 passed; test:integration 39 of 399 failed in 5 files: 36 audio tests (soundtrack 31, soundtrack-api 2, passage-native-audio 2, passage-audio 1) because this worktree has no soundtrack Python runtime (\"run pnpm soundtrack:setup or set STILL_SHIFT_SOUNDTRACK_PYTHON\"), and 3 depth-worker protocol tests timed out at 5 s (they pass in run 3)",
+        "run 3 passed with STILL_SHIFT_SOUNDTRACK_PYTHON set to the existing local soundtrack runtime: toolchain:check, test:runtime 376/376, test:integration 66 files / 399 tests, test:depth, test:browser:smoke"
+      ],
+      "browser": "passed: color-grading-cg0, -cg2, -cg4, -cg5, -cg6, -cga2 (four fixtures, Canvas and WebGL2 0 channels off), composition-grade-effects, composition-effects, composition-colour-accuracy",
+      "a0Gate": "pnpm color:cga2-equivalence run twice on the fixtures and 12 owner clips: 42/44 within the bound, solver 1 baseline 44/44 identical (reviewRerun)",
+      "notRun": "pnpm check (full pnpm test including composition-baselines and the other browser groups) and the release checks"
+    }
   }
 }
