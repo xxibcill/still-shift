@@ -5,7 +5,7 @@
  * (never committed).
  *
  *   pnpm color:cga2-equivalence [--clips <folder>] [--look <look.json>] \
- *     [--output dist/cga2]
+ *     [--output dist/cga2] [--baseline <earlier equivalence.json>]
  *
  * For every clip: the adaptive correction (auto) and, with --look, the look
  * at the default 60% (look). Both engines solve the same sampled frames
@@ -13,6 +13,7 @@
  * compared at full resolution against the bound stated in A0; a row outside
  * the bound also records diagnostics of its cause. Writes <output>/equivalence.json. Software measurements only.
  */
+import { createHash } from "node:crypto";
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import {
@@ -24,6 +25,7 @@ import {
   colorLookEffect,
   colorSampleOrdinals,
   colorSolverFrames,
+  measureColorFrames,
   openColorClip,
   parseColorLook,
   readColorFrames,
@@ -57,6 +59,18 @@ type Row = {
   difference: ReturnType<typeof solverEquivalence>["difference"];
   legacy: ColorCorrectionEffect[];
   grade: ColorCorrectionEffect[];
+  /**
+   * Solver 1's baseline (A0): its solver, decisions, the statistics of its
+   * full-resolution prediction and each predicted frame's SHA-256.
+   * `--baseline <equivalence.json>` checks that a rerun reproduces it byte
+   * for byte.
+   */
+  baseline: {
+    solver: string;
+    decisions: unknown[];
+    statistics: ReturnType<typeof measureColorFrames>;
+    frameSha256: string[];
+  };
   /**
    * Rows outside the bound only: whether the mapping or the pipeline makes
    * the difference. `translatedSolver1` renders solver 1's own corrections
@@ -104,9 +118,23 @@ function compare(
     });
     const render = (effects: readonly ColorCorrectionEffect[]) =>
       frames.frames.map((frame) => applyColorEffects(effects, frame.rgba));
+    const legacyRender = render([...prefix, ...result.legacy.effects]);
+    const baseline: Row["baseline"] = {
+      solver: result.legacy.version,
+      decisions: result.legacy.decisions,
+      statistics: measureColorFrames({
+        width: frames.width,
+        frames: legacyRender.map((rgba, i) => ({
+          ordinal: frames.frames[i]!.ordinal,
+          rgba,
+        })),
+      }),
+      frameSha256: legacyRender.map((rgba) =>
+        createHash("sha256").update(rgba).digest("hex"),
+      ),
+    };
     let diagnostics: Row["diagnostics"];
     if (!result.withinBound) {
-      const legacyRender = render([...prefix, ...result.legacy.effects]);
       const against = (effects: readonly ColorCorrectionEffect[]) =>
         colorDifference(legacyRender, render(effects), frames.width);
       diagnostics = {
@@ -125,6 +153,7 @@ function compare(
       difference: result.difference,
       legacy: result.legacy.effects,
       grade: result.grade.effects,
+      baseline,
       ...(diagnostics ? { diagnostics } : {}),
     });
     log(
@@ -176,6 +205,30 @@ if (folder)
     if (look) compare(name, set, look);
   }
 
+// A rerun reproduces solver 1's baseline byte for byte (A0's check).
+const priorPath = args.get("baseline");
+const prior = priorPath
+  ? (JSON.parse(await readFile(priorPath, "utf8")) as { rows: Row[] }).rows
+  : undefined;
+const baselineCheck = prior && {
+  against: resolve(priorPath!),
+  rows: rows.length,
+  identical: rows.filter((row) => {
+    const before = prior.find(
+      (other) => other.clip === row.clip && other.mode === row.mode,
+    );
+    return (
+      before !== undefined &&
+      JSON.stringify([before.legacy, before.baseline]) ===
+        JSON.stringify([row.legacy, row.baseline])
+    );
+  }).length,
+};
+if (baselineCheck)
+  log(
+    `solver 1 baseline: ${baselineCheck.identical}/${baselineCheck.rows} rows identical to ${baselineCheck.against}`,
+  );
+
 await writeFile(
   join(output, "equivalence.json"),
   JSON.stringify(
@@ -187,6 +240,7 @@ await writeFile(
         withinBound: rows.filter((row) => row.withinBound).length,
         worstBlockRms: Math.max(...rows.map((row) => row.difference.blockRms)),
         worstP99: Math.max(...rows.map((row) => row.difference.p99)),
+        ...(baselineCheck ? { baselineRerun: baselineCheck } : {}),
       },
       rows,
     },

@@ -81,6 +81,10 @@ per clip, 4×4 block-mean RMS ≤ 1 and per-pixel 99th percentile ≤ 3, of 255
 the look bound stays open (decision 4, carried to A3). `scripts/color/cga2-equivalence.ts` compares the two
 solvers' exact predictions on the synthetic fixtures and a local folder of
 clips (auto, look at 60%, look plus auto) and writes `dist/cga2/equivalence.json`.
+Each row also records solver 1's baseline (effects, decisions, statistics of
+its full-resolution prediction, per-frame SHA-256), and `--baseline` checks
+that a rerun reproduces it byte for byte (44/44 rows on the review rerun); a
+row outside the bound records whether the mapping or the pipeline causes it.
 Each mapping's difference over a color cube, the neutral ramp and seven CG0
 stills (the 24-patch chart, ramps, hue and saturation sweeps, skin tones) is a
 unit test (`tests/unit/composition-color-engine.test.ts`). Numbers are in the
