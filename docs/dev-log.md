@@ -51,7 +51,7 @@ still hold before relying on them.
   causes; Canvas and WebGL2 equal the prediction. A2: report 2 (`engine`, `solver` when one ran, CG3 `scopes`
   before and predicted after); legacy reports stay report 1 byte for byte; `--diff <folder>` per clip.
   **A3 in review as [PR #83](https://github.com/xxibcill/still-shift/pull/83)** on `codex/cga2-a3`, now with
-  `main` (A2's review fixes) merged in: `comp look fit --engine grade` writes look 2 (`still-shift-look-2`, an
+  `main` (A2's review fixes) merged in and review F1–F5 fixed: `comp look fit --engine grade` writes look 2 (`still-shift-look-2`, an
   ordered `grade.*` list), choosing among matrix, CDL and matrix+curves in encoded and linear light by held-out
   residual plus 0.002 per parameter; on the owner's pair matrix+curves (encoded) is selected at **1.84 of 255
   held out** (look 1: 2.30), meeting ≤ 2. LUT looks are opt-in (`--model lut`; 1.56 but 94% of nodes filled
@@ -143,6 +143,19 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-24 — PR #83: review F1–F5 fixed
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a3`, after the `main` merge b16da504. The owner asked for one inline comment per finding, then one commit per fix and a single push.
+- **Review:** five findings posted inline on [PR #83](https://github.com/xxibcill/still-shift/pull/83#pullrequestreview-6028445924).
+- **Fixed (one commit each):**
+  - F1 (4d5bb3f1): look 2 accepted CG7 LUT spaces (e.g. `acescct`) that its prediction, fit and export ignore. It now accepts `legacy-srgb` and `srgb` only.
+  - F2 (6eac2f5b): a LUT look was recorded in model 3's space. Its table maps encoded sRGB, so it is now `encoded-srgb`.
+  - F3 (4e3e02a2): `look fit --model lut` left its `.cube` behind when the look write failed, which blocked the retry. The table is now removed; a new race test fails without the fix.
+  - F4 (7826f260): residuals allocated a 64 MB cache per call (about 160 calls per owner-pair fit). A Map of the colors present gives identical residuals (5.8 → 2.7 ms on 2,000 blocks, 97 → 89 ms on 100,000 random blocks).
+  - F5 (049b6e67): the A0 gate now builds the grade look with `colorLookApplyEffects`, as `look apply` does (`solverEquivalence` takes `gradePrefix`).
+- **Results (Node 22.23.1):** `check:fast` 486 files / 5,085 tests; color integration 55/55; `test:browser:color-grading-cga2` six fixtures, Canvas and WebGL2 0 channels off. A0 rerun (8 synthetic fixtures + 12 owner clips, owner look; local `dist/pr83-before`, `dist/pr83-after`): 42/44 within the bound before and after, every row byte-identical, solver 1 baseline 44/44 identical.
+- **Open / next:** owner review of PR #83 (it still targets the merged `codex/cga2-a2`; `main` has the same tree). Not run: `pnpm check`, full `pnpm test`, other browser groups, renders of owner clips with look 2. No visual acceptance.
 
 ### 2026-11-24 — PR #83: main merged in (A2 review fixes)
 
