@@ -312,6 +312,33 @@ describe("CGA2 equivalence metric", () => {
     };
     expect(() => solverEquivalence(tiny, tiny)).toThrow(/no 4×4 block/);
   });
+  it("applies a given grade prefix instead of the prefix's translation", () => {
+    // A mid-grey clip; the look's gains are 1.1 on red only.
+    const set = {
+      width: 8,
+      frames: [{ ordinal: 0, rgba: new Uint8Array(8 * 8 * 4).fill(128) }],
+    };
+    const look = {
+      id: "look",
+      effect: "color.matrix" as const,
+      params: { rr: 1.1, strength: 1 },
+    };
+    const off = {
+      exposure: false,
+      contrast: false,
+      saturation: false,
+      whiteBalance: false,
+    };
+    const translated = solverEquivalence(set, set, { prefix: [look], ...off });
+    expect(translated.difference.max).toBe(0);
+    // A grade prefix without the look differs by the look itself.
+    const given = solverEquivalence(set, set, {
+      prefix: [look],
+      gradePrefix: [],
+      ...off,
+    });
+    expect(given.difference.max).toBeGreaterThan(5);
+  });
 });
 
 describe("CGA2 prediction", () => {

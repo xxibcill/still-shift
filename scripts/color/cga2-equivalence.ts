@@ -22,6 +22,7 @@ import {
   applyColorEffects,
   colorDifference,
   engineEffects,
+  colorLookApplyEffects,
   colorLookEffect,
   colorSampleOrdinals,
   colorSolverFrames,
@@ -103,8 +104,15 @@ function compare(
       ]
     : [["auto", true]];
   for (const [mode, adaptive] of modes) {
+    // The grade engine applies the look as `look apply` and `auto-color` do.
+    const gradePrefix = look
+      ? (colorLookApplyEffects(look, AUTO_COLOR_LOOK_STRENGTH, undefined, {
+          closed: adaptive,
+        }) as ColorCorrectionEffect[])
+      : [];
     const result = solverEquivalence(solve, frames, {
       prefix,
+      gradePrefix,
       ...(adaptive
         ? look?.targets
           ? { targets: look.targets }
@@ -138,9 +146,10 @@ function compare(
       const against = (effects: readonly ColorCorrectionEffect[]) =>
         colorDifference(legacyRender, render(effects), frames.width);
       diagnostics = {
-        translatedSolver1: against(
-          engineEffects("grade", [...prefix, ...result.legacy.effects]),
-        ),
+        translatedSolver1: against([
+          ...gradePrefix,
+          ...engineEffects("grade", result.legacy.effects),
+        ]),
         ...(prefix.length
           ? { lookClippedFirst: against([...prefix, ...result.grade.effects]) }
           : {}),
