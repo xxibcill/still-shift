@@ -815,12 +815,14 @@ export function sourceEncodingOf(color: CompositionMediaColor): SourceEncoding {
 }
 
 /**
- * How many of a stack's first effects the source stage can run: enabled
- * `grade.*` effects without an effect window, up to the first `grade.key`
- * that reads neighbours or other layers (a window, a matte or matte
- * finesse). Disabled effects in between are skipped with the run.
+ * Take the run the source stage can run off the front of a stack (`effects`,
+ * edited in place): enabled `grade.*` effects without an effect window, up to
+ * the first `grade.key` that reads neighbours or other layers (a window, a
+ * matte or matte finesse). Disabled effects inside the run leave the stack
+ * with it but are not returned: the stage runs exactly what it gets, like
+ * `floatGradeRun`, which skips them too.
  */
-export function sourceStageLength(effects: readonly RenderEffect[]): number {
+export function takeSourceStage(effects: RenderEffect[]): RenderEffect[] {
   let length = 0;
   for (const [index, effect] of effects.entries()) {
     if (!effect.enabled) continue;
@@ -831,7 +833,7 @@ export function sourceStageLength(effects: readonly RenderEffect[]): number {
     }
     length = index + 1;
   }
-  return length;
+  return effects.splice(0, length).filter((effect) => effect.enabled);
 }
 
 /**

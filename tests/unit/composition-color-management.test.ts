@@ -33,6 +33,8 @@ import {
   floatGradeBytes,
   floatGradeOp,
   floatGradeRun,
+  sourceStagePixels,
+  takeSourceStage,
 } from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 import type { RenderEffect } from "../../packages/renderer-core/src/composition/render/graph.ts";
 import {
@@ -285,6 +287,62 @@ describe("grade runs in a working space", () => {
         .apply(v)
         .map((x) => Math.min(10_000, Math.max(-10_000, x))),
     );
+  });
+});
+
+describe("source stage", () => {
+  const effect = (
+    id: string,
+    name: string,
+    params: Record<string, number>,
+    enabled = true,
+  ): RenderEffect =>
+    ({
+      id,
+      effect: name,
+      enabled,
+      params: {
+        ...Object.fromEntries(
+          Object.entries(compositionEffectDefinition(name)!.properties).map(
+            ([k, p]) => [k, p.default],
+          ),
+        ),
+        ...params,
+      },
+      workingSpace: "acescct",
+    }) as RenderEffect;
+  const pixel = (effects: RenderEffect[]) => {
+    const out = new Uint8ClampedArray(4);
+    sourceStagePixels(
+      new Uint16Array([30000, 30000, 30000, 65535]),
+      1,
+      1,
+      {
+        working: "acescct",
+        encoding: { kind: "display", primaries: "bt709", transfer: "srgb" },
+        effects,
+      },
+      out,
+    );
+    return [...out];
+  };
+  it("takes the leading run off the stack and drops its disabled effects", () => {
+    const off = effect("off", "grade.primary", { offsetMaster: 0.2 }, false);
+    const on = effect("on", "grade.primary", { gainMaster: 1.1 });
+    const blur = effect("blur", "blur.gaussian", {});
+    const stack = [off, on, blur];
+    expect(takeSourceStage(stack)).toEqual([on]);
+    expect(stack).toEqual([blur]);
+    // A run that is all disabled stays on the stack.
+    const idle = [off, blur];
+    expect(takeSourceStage(idle)).toEqual([]);
+    expect(idle).toEqual([off, blur]);
+  });
+  it("renders a stack with a disabled effect as the stack without it", () => {
+    const off = effect("off", "grade.primary", { offsetMaster: 0.2 }, false);
+    const on = effect("on", "grade.primary", {});
+    expect(pixel(takeSourceStage([off, on]))).toEqual(pixel([]));
+    expect(pixel([])).toEqual([111, 111, 111, 255]);
   });
 });
 

@@ -20,7 +20,7 @@ import {
 } from "@still-shift/scene-contract";
 import type { SampledCompositionMedia } from "../evaluate/media.ts";
 import type { SourceEncoding } from "@still-shift/color-science";
-import { sourceEncodingOf, sourceStageLength } from "./float-grade.ts";
+import { sourceEncodingOf, takeSourceStage } from "./float-grade.ts";
 import {
   primitiveBlurEffect,
   effectBounds,
@@ -185,14 +185,14 @@ function sourceStaged(
   effects: RenderEffect[],
 ): LayerContent {
   const scene = content.type === "image" ? content.media?.scene : undefined;
-  const staged = scene ? sourceStageLength(effects) : 0;
-  if (!staged) return content;
+  const staged = scene ? takeSourceStage(effects) : [];
+  if (!staged.length) return content;
   const image = content as ImageContent;
   return {
     ...image,
     media: {
       ...image.media!,
-      scene: { ...scene!, effects: effects.splice(0, staged) },
+      scene: { ...scene!, effects: staged },
     },
   };
 }
