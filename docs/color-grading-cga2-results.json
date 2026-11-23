@@ -69,7 +69,7 @@
     {
       "check": "Prediction equals the Canvas render exactly; WebGL2 within the CG2 parity bound",
       "status": "met",
-      "test": "pnpm test:browser:color-grading-cga2: two synthetic fixtures (flat with skin key; narrow range with the S-curve), 12 frames each, png8 renders: Canvas 0 and WebGL2 0 channels off"
+      "test": "pnpm test:browser:color-grading-cga2: four synthetic fixtures (flat with skin key; narrow range with the S-curve; a look alone; a look then the solver), 12 frames each, png8 renders: Canvas 0 and WebGL2 0 channels off on all four"
     },
     {
       "check": "--engine legacy and the default are CGA unchanged",
