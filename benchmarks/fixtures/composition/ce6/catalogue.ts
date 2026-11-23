@@ -1,11 +1,9 @@
 import { bakeCubeLut, writeCubeLut } from "@still-shift/color-science";
-import {
-  FLOAT_GRADE_EFFECT_IDS,
-  GRADE_EFFECT_IDS,
-} from "@still-shift/scene-contract";
+import { GRADE_EFFECT_IDS } from "@still-shift/scene-contract";
 import type {
   Composition,
   CompositionLayer,
+  FloatGradeEffectId,
 } from "@still-shift/scene-contract";
 
 type Effect = NonNullable<CompositionLayer["effects"]>[number];
@@ -268,19 +266,60 @@ export const CE6_NATIVE_FIXTURES = [
   "catalogue-float-grade",
   "catalogue-curve-grade",
   "catalogue-lut-grade",
+  "catalogue-key-grade",
 ] as const;
 /** CGA grade effects, kept out of the frozen color catalogue cell layout. */
 const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
+/** Float grade cells name their effects (a new effect moves no other cell). */
+const gradeIds = (
+  ...ids: FloatGradeEffectId[]
+): readonly FloatGradeEffectId[] => ids;
 /** The CG2 float grade cell keeps its four effects (and its baseline). */
-export const CG2_FLOAT_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(0, 4);
+export const CG2_FLOAT_GRADE_EFFECTS = gradeIds(
+  "grade.primary",
+  "grade.white-balance",
+  "grade.cdl",
+  "grade.rgb-mixer",
+);
 /** CG4 curve and tonal grade effects: their own cell and baseline file. */
-export const CG4_CURVE_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(4, 7);
+export const CG4_CURVE_GRADE_EFFECTS = gradeIds(
+  "grade.curves",
+  "grade.hue-curves",
+  "grade.tonal",
+);
 /**
  * CG5: grade.lut, its own cell and baseline file. Its LUT asset is generated
  * here (license-free) and committed as `lut-grade.cube`; the unit test checks
  * the file against this text and its pinned hash.
  */
-export const CG5_LUT_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(7);
+export const CG5_LUT_GRADE_EFFECTS = gradeIds("grade.lut");
+/**
+ * CG6: grade.key, its own cell and baseline file. A key alone changes
+ * nothing, so the cell keys a grade.primary on the orange paint inside an
+ * animated ellipse window, with matte finesse.
+ */
+export const CG6_KEY_GRADE_EFFECTS = gradeIds("grade.key");
+const KEY_GRADE_PARAMS = {
+  qualifier: 1,
+  hueCenter: 38,
+  hueWidth: 30,
+  hueSoftness: 15,
+  saturationMin: 0.3,
+  saturationSoftness: 0.1,
+  blur: 1.5,
+  shrinkGrow: 1,
+  window: 1,
+  windowCenter: {
+    keys: [
+      { frame: 0, value: [30, 70], easing: "linear" as const },
+      { frame: 31, value: [50, 110], easing: "linear" as const },
+    ],
+  },
+  windowSize: [60, 90],
+  windowRotation: 20,
+  windowFeather: 6,
+};
+const KEYED_GRADE_PARAMS = { hue: 120, saturation: 1.4, gainMaster: 1.1 };
 export const CE6_LUT_FILE = "lut-grade.cube";
 export const CE6_LUT_SHA256 =
   "sha256:100e6cd1bbe34bea93153ff71dd5d2dd20b05a6a90a44a9a5edeb7f6d9ad703d";
@@ -335,6 +374,7 @@ export function ce6NativeFixtures(): [string, Composition][] {
       [...CG2_FLOAT_GRADE_EFFECTS],
       [...CG4_CURVE_GRADE_EFFECTS],
       [...CG5_LUT_GRADE_EFFECTS],
+      [...CG6_KEY_GRADE_EFFECTS],
     ];
   return families.map((effects, family) => {
     const doc: Composition = {
@@ -383,10 +423,24 @@ export function ce6NativeFixtures(): [string, Composition][] {
           {
             id: "treatment",
             effect: id,
-            params: id === "grade.lut" ? LUT_GRADE_PARAMS : cases[id]!,
+            params:
+              id === "grade.lut"
+                ? LUT_GRADE_PARAMS
+                : id === "grade.key"
+                  ? KEY_GRADE_PARAMS
+                  : cases[id]!,
             ...(source ? { inputs: { map: "map" } } : {}),
             ...(id === "grade.lut" ? { assets: { lut: "look" } } : {}),
           },
+          ...(id === "grade.key"
+            ? [
+                {
+                  id: "keyed",
+                  effect: "grade.primary",
+                  params: KEYED_GRADE_PARAMS,
+                },
+              ]
+            : []),
         ],
       });
       for (const [stripe, color] of ["#f0ba58", "#3baea0", "#b86884"].entries())

@@ -217,22 +217,24 @@ function checkLayer(
                 : `Asset "${id}" is not a ${type} asset`,
         );
     }
-    const slots = definition.requiresLayers ?? [];
+    const slots = definition.requiresLayers ?? [],
+      optional = definition.optionalLayers ?? [];
     for (const slot of new Set([
       ...slots,
       ...Object.keys(effect.inputs ?? {}),
     ])) {
       const id = effect.inputs?.[slot],
         source = scope.layers.find((candidate) => candidate.id === id);
+      const declared = slots.includes(slot) || optional.includes(slot);
       if (
-        !slots.includes(slot) ||
+        !declared ||
         !source ||
         ["null", "adjustment", "camera", "light", "audio"].includes(source.type)
       )
         fail(
           "comp-effect-layer",
           [...at, "inputs", slot],
-          !slots.includes(slot)
+          !declared
             ? `Undeclared effect input slot "${slot}"`
             : !source
               ? `No input layer "${id ?? ""}" in this scope`

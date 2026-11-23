@@ -28,6 +28,7 @@ import {
   CG2_FLOAT_GRADE_EFFECTS,
   CG4_CURVE_GRADE_EFFECTS,
   CG5_LUT_GRADE_EFFECTS,
+  CG6_KEY_GRADE_EFFECTS,
 } from "../../benchmarks/fixtures/composition/ce6/catalogue.ts";
 
 const digest = (bytes: Uint8Array | string) =>
@@ -58,6 +59,7 @@ export async function runEffectCatalogueAcceptance(
     writingCurveGrade = process.argv.includes("--write-curve-grade-baseline"),
     /** CG5 grade.lut (a pinned LUT asset): its own baseline file. */
     writingLutGrade = process.argv.includes("--write-lut-grade-baseline"),
+    writingKeyGrade = process.argv.includes("--write-key-grade-baseline"),
     directory = await mkdtemp(join(tmpdir(), "ce6-native-export-"));
   const fixtures: [string, Composition][] = [];
   const fixtureLuts = new Map<
@@ -284,7 +286,8 @@ export async function runEffectCatalogueAcceptance(
                   id !== "catalogue-grade" &&
                   id !== "catalogue-float-grade" &&
                   id !== "catalogue-curve-grade" &&
-                  id !== "catalogue-lut-grade",
+                  id !== "catalogue-lut-grade" &&
+                  id !== "catalogue-key-grade",
               ),
             ),
           }),
@@ -547,6 +550,43 @@ export async function runEffectCatalogueAcceptance(
       assert.deepEqual(Object.keys(lutGrade.items), ["catalogue-lut-grade"]);
       assert.deepEqual(lutGrade.effectVersions, lutGradeVersions);
       expected["catalogue-lut-grade"] = lutGrade.items["catalogue-lut-grade"];
+      // CG6: grade.key, its own cell and baseline file.
+      assert.equal(Object.hasOwn(expected, "catalogue-key-grade"), false);
+      const keyGradePath = join(
+        baselineDirectory,
+        `${environment.platform}-${environment.arch}-key-grade-1.json`,
+      );
+      const keyGradeVersions = Object.fromEntries(
+        [...CG6_KEY_GRADE_EFFECTS, "grade.primary"].map((id) => [
+          id,
+          compositionEffectDefinition(id)!.version,
+        ]),
+      );
+      if (writingKeyGrade)
+        await writeFile(
+          keyGradePath,
+          await format(
+            JSON.stringify({
+              version: "composition-key-grade-catalogue-baseline-1",
+              environment,
+              effectVersions: keyGradeVersions,
+              items: { "catalogue-key-grade": items["catalogue-key-grade"] },
+            }),
+            { parser: "json" },
+          ),
+        );
+      const keyGrade = JSON.parse(await readFile(keyGradePath, "utf8"));
+      assert.equal(
+        keyGrade.version,
+        "composition-key-grade-catalogue-baseline-1",
+      );
+      assert.equal(
+        keyGrade.environment.rasterFingerprint,
+        environment.rasterFingerprint,
+      );
+      assert.deepEqual(Object.keys(keyGrade.items), ["catalogue-key-grade"]);
+      assert.deepEqual(keyGrade.effectVersions, keyGradeVersions);
+      expected["catalogue-key-grade"] = keyGrade.items["catalogue-key-grade"];
       assert.deepEqual(items, expected, "CE6 full-frame hashes");
     }
     const hardware = await shapeHardwarePreview(root, fixtures, fixtureLuts);

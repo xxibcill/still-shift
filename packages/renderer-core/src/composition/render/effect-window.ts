@@ -3,7 +3,7 @@ import {
   releaseRenderMetadata,
 } from "../../managed-metadata.ts";
 import { renderMemory } from "../../managed-memory-context.ts";
-import type { Matrix } from "../../node-transform.ts";
+import { multiplyMatrix, type Matrix } from "../../node-transform.ts";
 import type { RenderBackend, Surface } from "./backend.ts";
 import type { RenderEffect } from "./graph.ts";
 const identity: Matrix = [1, 0, 0, 1, 0, 0];
@@ -14,7 +14,22 @@ export function applyWindowEffect<S extends Surface>(
   effect: RenderEffect,
   inputs: ReadonlyMap<string, S>,
 ) {
-  const { left, top, width, height } = effect.window!;
+  applyWindowEffects(backend, target, effect.window!, [effect], inputs);
+}
+/**
+ * Effects applied together inside `window` (CG6: a keyed `grade.*` run, whose
+ * `grade.key` members read run-scoped `inputs`). Each effect's placement is
+ * moved into the cropped region, so layer-space data (a key's gradient)
+ * stays where it is on the target.
+ */
+export function applyWindowEffects<S extends Surface>(
+  backend: RenderBackend<S>,
+  target: S,
+  window: NonNullable<RenderEffect["window"]>,
+  effects: readonly RenderEffect[],
+  inputs: ReadonlyMap<string, S>,
+) {
+  const { left, top, width, height } = window;
   const memory = renderMemory();
   const work = allocateRenderMetadata(
     8192 + inputs.size * 512,
@@ -44,9 +59,19 @@ export function applyWindowEffect<S extends Surface>(
     const region = crop(target),
       layers = work.layers;
     for (const [slot, source] of inputs) layers.set(slot, crop(source));
-    const local = { ...effect };
-    delete local.window;
-    backend.applyEffects(region, [local], layers);
+    const shift: Matrix = [1, 0, 0, 1, -left, -top];
+    const local = effects.map((effect) => {
+      const copy = { ...effect };
+      delete copy.window;
+      if (copy.placement)
+        copy.placement = {
+          ...copy.placement,
+          matrix: multiplyMatrix(shift, copy.placement.matrix),
+          transforms: [shift, ...copy.placement.transforms],
+        };
+      return copy;
+    });
+    backend.applyEffects(region, local, layers);
     if (backend.replaceRegion) backend.replaceRegion(region, target, left, top);
     else {
       // Backends without region replacement keep exact native surfaces; no byte readback.

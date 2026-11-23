@@ -1,0 +1,63 @@
+{
+  "chromaNode": "/Users/jjae/Documents/guthib/chroma-node",
+  "report": [
+    {
+      "case": "red 30±20 soft 20",
+      "samples": 2256,
+      "maxDifferenceFromAnalytic": 0.5,
+      "maxDifferenceOnChromaticPixels": 0,
+      "neutralPixelsDiffering": 6,
+      "worst": {
+        "h": 0,
+        "s": 0,
+        "v": 0.8,
+        "port": 0,
+        "chromaNode": 0.5
+      }
+    },
+    {
+      "case": "wrap 350±15 soft 15",
+      "samples": 2256,
+      "maxDifferenceFromAnalytic": 1,
+      "maxDifferenceOnChromaticPixels": 0,
+      "neutralPixelsDiffering": 6,
+      "worst": {
+        "h": 0,
+        "s": 0,
+        "v": 0.8,
+        "port": 0,
+        "chromaNode": 1
+      }
+    },
+    {
+      "case": "red 0±20 hard",
+      "samples": 2256,
+      "maxDifferenceFromAnalytic": 1,
+      "maxDifferenceOnChromaticPixels": 0,
+      "neutralPixelsDiffering": 6,
+      "worst": {
+        "h": 0,
+        "s": 0,
+        "v": 0.8,
+        "port": 0,
+        "chromaNode": 1
+      }
+    },
+    {
+      "case": "sat 0.3–0.6 soft 0.1",
+      "samples": 2256,
+      "maxDifferenceFromAnalytic": 0,
+      "maxDifferenceOnChromaticPixels": 0,
+      "neutralPixelsDiffering": 0,
+      "worst": null
+    },
+    {
+      "case": "luma 0.5–0.8 soft 0.05",
+      "samples": 2256,
+      "maxDifferenceFromAnalytic": 0,
+      "maxDifferenceOnChromaticPixels": 0,
+      "neutralPixelsDiffering": 0,
+      "worst": null
+    }
+  ]
+}

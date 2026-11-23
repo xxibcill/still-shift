@@ -3,6 +3,7 @@ import { stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
   AnimationEngineError,
+  type Composition,
   type CompositionDiagnostic,
 } from "@still-shift/scene-contract";
 import type { CompositionMediaPreparationOptions } from "./composition-media.ts";
@@ -10,7 +11,11 @@ import type {
   CompositionFontCoverageProfile,
   CompositionFontCoverageReport,
 } from "./composition-font-coverage.ts";
-import { COMPOSITION_EVALUATOR_VERSION } from "../../renderer-core/src/composition/evaluate/evaluate.ts";
+import {
+  COMPOSITION_EVALUATOR_VERSION,
+  evaluateComp,
+} from "../../renderer-core/src/composition/evaluate/evaluate.ts";
+import type { EvaluatedLayerTree } from "../../renderer-core/src/composition/evaluate/types.ts";
 import {
   compositionScene,
   type CompositionBackend,
@@ -113,6 +118,96 @@ export type CompositionRenderResult = {
   metrics: ExportMetrics;
 };
 
+/**
+ * CG6: paths of enabled `grade.key` effects whose authored `view` (gray key,
+ * highlight, high contrast) is a nonzero number. A view replaces the graded
+ * pixels with the matte, so export refuses one rather than deliver it. A
+ * keyframed or driven view is decided per frame by `keyMatteViewFrames`.
+ */
+export function keyMatteViews(composition: Composition) {
+  const paths: string[] = [];
+  for (const scope of keyScopes(composition))
+    scope.layers.forEach((layer, i) => {
+      if (layer.enabled === false) return;
+      (layer.effects ?? []).forEach((effect, k) => {
+        const view = effect.params?.view;
+        if (
+          effect.effect === "grade.key" &&
+          effect.enabled !== false &&
+          typeof view === "number" &&
+          view !== 0
+        )
+          paths.push(`${scope.path}layers.${i}.effects.${k}.params.view`);
+      });
+    });
+  return paths;
+}
+
+const keyScopes = (composition: Composition) => [
+  { path: "", layers: composition.layers },
+  ...(composition.precomps ?? []).map((p, i) => ({
+    path: `precomps.${i}.`,
+    layers: p.layers,
+  })),
+];
+
+/**
+ * CG6: every way an enabled `grade.key` view can reach exported frames. The
+ * authored nonzero views (`keyMatteViews`) first; then, when a view can
+ * change over time (it is keyframed, or the composition has drivers,
+ * periodic motion, expressions or behaviours, which can target
+ * `effects[<id>].view`), each frame is evaluated and the first frame whose
+ * visible layers hold an enabled key with a nonzero view is reported, as
+ * property paths (`<precomp layer>/<layer>.effects[<id>].view at frame n`).
+ */
+export function keyMatteViewFrames(composition: Composition): string[] {
+  const literal = keyMatteViews(composition);
+  if (literal.length) return literal;
+  const keys = keyScopes(composition).flatMap((scope) =>
+    scope.layers.flatMap((layer) =>
+      layer.enabled === false
+        ? []
+        : (layer.effects ?? []).filter(
+            (effect) =>
+              effect.effect === "grade.key" && effect.enabled !== false,
+          ),
+    ),
+  );
+  const varies =
+    keys.some(
+      (effect) =>
+        effect.params?.view !== undefined &&
+        typeof effect.params.view !== "number",
+    ) ||
+    Boolean(
+      composition.drivers?.length ||
+        composition.periodic?.length ||
+        Object.keys(composition.expressions ?? {}).length ||
+        composition.behaviours?.length,
+    );
+  if (!keys.length || !varies) return [];
+  const found: string[] = [];
+  const visit = (tree: EvaluatedLayerTree, scope: string) => {
+    for (const layer of tree.layers) {
+      if (!layer.visible) continue;
+      for (const effect of layer.effects)
+        if (
+          effect.enabled &&
+          effect.effect === "grade.key" &&
+          effect.params.view !== 0
+        )
+          found.push(`${scope}${layer.id}.effects[${effect.id}].view`);
+      if (layer.precomp) visit(layer.precomp, `${scope}${layer.id}/`);
+    }
+  };
+  for (let frame = 0; frame < composition.frameCount; frame++) {
+    visit(evaluateComp(composition, frame), "");
+    if (found.length)
+      return [...new Set(found)].map((path) => `${path} at frame ${frame}`);
+  }
+  return [];
+}
+
 /** Export through the pinned browser; explicit profiles support editor and social delivery. */
 export async function renderComposition(request: {
   compositionPath: string;
@@ -161,6 +256,12 @@ export async function renderComposition(request: {
         ...(request.fontCoverage ? { fontCoverage: request.fontCoverage } : {}),
       },
     );
+    const views = keyMatteViewFrames(loaded.composition);
+    if (views.length)
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `A grade.key matte view is for preview and comp grade key, not export: set view to 0 at ${views.join(", ")}`,
+      );
     const { width, height } = loaded.scene.canvas;
     const nativeObservation = await createNativeObservationRequestVersions(
       loaded,

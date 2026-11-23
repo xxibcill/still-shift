@@ -1,11 +1,14 @@
 /**
- * CG3 measurement commands: `comp scopes`, `comp probe` and `comp grade diff`.
+ * CG3 measurement commands: `comp scopes`, `comp probe` and `comp grade diff`;
+ * CG6 `comp grade key` (matte views and the matte-stability metric).
  * Reports are deterministic JSON; outputs (report, images, stills) are never
  * overwritten.
  */
 import {
   diffColorGrade,
+  GRADE_KEY_VIEWS,
   measureColorScopes,
+  measureGradeKey,
   probeCompositionFile,
 } from "@still-shift/animation-engine";
 import { parseNamedArguments, requireArgument } from "../named-options.ts";
@@ -130,6 +133,7 @@ export async function runScopeCommand(
       "frame",
       "backend",
       "isolate",
+      "for-key",
       "output",
     ]);
     const output = await optionalOutput(values, "output");
@@ -149,6 +153,7 @@ export async function runScopeCommand(
         frame,
         backend: backend(values),
         isolate: flag(values, "isolate"),
+        forKey: values.get("for-key"),
       },
     );
     await emit(io, report, output);
@@ -171,6 +176,53 @@ export async function runScopeCommand(
       requireArgument(values, "after"),
       { frames: count(values, "frames", 100_000), still, sheet },
     );
+    await emit(io, report, output);
+    return 0;
+  }
+  if (command === "grade" && args[1] === "key") {
+    const values = parseNamedArguments(args.slice(2), [
+      "input",
+      "layer",
+      "effect",
+      "frame",
+      "frame-range",
+      "backend",
+      "isolate",
+      "view",
+      "still",
+      "output",
+    ]);
+    if (values.has("frame") && values.has("frame-range"))
+      programError(
+        "comp-program-option",
+        "Give --frame or --frame-range, not both",
+        "frame",
+      );
+    const view = values.get("view");
+    if (view !== undefined && !Object.hasOwn(GRADE_KEY_VIEWS, view))
+      programError(
+        "comp-program-option",
+        "--view must be key, highlight or contrast",
+        "view",
+      );
+    if ((view === undefined) !== !values.has("still"))
+      programError(
+        "comp-program-option",
+        "--view and --still go together",
+        view === undefined ? "view" : "still",
+      );
+    const output = await optionalOutput(values, "output");
+    const still = await optionalOutput(values, "still");
+    const frame = wholeFrame(values);
+    const report = await measureGradeKey(requireArgument(values, "input"), {
+      layer: requireArgument(values, "layer"),
+      effect: requireArgument(values, "effect"),
+      range: frame === undefined ? frameRange(values) : [frame, frame + 1],
+      backend: backend(values),
+      isolate: flag(values, "isolate"),
+      view: view as keyof typeof GRADE_KEY_VIEWS | undefined,
+      still,
+    });
     await emit(io, report, output);
     return 0;
   }

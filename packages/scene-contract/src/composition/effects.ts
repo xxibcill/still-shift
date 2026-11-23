@@ -25,6 +25,8 @@ export {
 } from "./grade-effects.ts";
 export {
   FLOAT_GRADE_EFFECT_IDS,
+  GRADE_KEY_MATTE_SLOT,
+  GRADE_KEY_SAMPLES,
   isFloatGradeEffect,
   type FloatGradeEffectId,
 } from "./float-grade-effects.ts";

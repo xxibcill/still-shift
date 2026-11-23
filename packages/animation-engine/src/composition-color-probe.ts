@@ -10,7 +10,12 @@
  * renderer's, in the pinned browser (as `comp lint --pixels`); values are the
  * 8-bit output, reported in encoded, linear, HSL, CIELAB and OKLab
  * coordinates, with a qualifier suggestion for the sampled region (at most
- * MAX_PROBE_REGION_PIXELS pixels).
+ * MAX_PROBE_REGION_PIXELS pixels). The suggestion samples the stack's output
+ * (the input of a key added at its end) or, with `forKey`, the input of that
+ * `grade.key` (the stage at its position), since a key reads its own input.
+ * It is taken from the layer's straight value at that stage, as a key reads
+ * it: the layer and its parents at full opacity with the normal blend and no
+ * background, counting only pixels the layer covers.
  */
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
 import type * as Renderer from "@still-shift/renderer-core";
@@ -18,21 +23,28 @@ import {
   PassageError,
   type PassageDiagnostic,
 } from "@still-shift/renderer-core";
+import type { Composition } from "@still-shift/scene-contract";
 import {
-  AnimationEngineError,
-  type Composition,
-} from "@still-shift/scene-contract";
-import {
+  KEY_QUALIFIERS,
   pixelCoordinates,
   suggestQualifier,
+  suggestSampledKey,
   type Region,
 } from "@still-shift/color-science";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { withRendererPage } from "./composition-browser-page.ts";
-import { loadComposition } from "./composition-render.ts";
+import {
+  isolateLayer,
+  keyInputComposition,
+  loadMeasuredComposition,
+} from "./composition-color-isolate.ts";
 import { roundTo } from "./composition-color-round.ts";
 
-export const COLOR_PROBE_VERSION = "still-shift-color-probe-1";
+/**
+ * 2 (CG6): adds `gradeKey` and `gradeKeySampled`, ready `grade.key` params,
+ * and `suggestionStage`, the stage they were sampled from.
+ */
+export const COLOR_PROBE_VERSION = "still-shift-color-probe-2";
 /** The largest region one probe samples (a 3840x2160 frame). */
 export const MAX_PROBE_REGION_PIXELS = 3840 * 2160;
 
@@ -45,6 +57,8 @@ export type ColorProbeRequest = {
   frame?: number | undefined;
   backend?: "canvas2d" | "webgl2" | undefined;
   isolate?: boolean | undefined;
+  /** Suggest for this `grade.key` on the layer: sample its input. */
+  forKey?: string | undefined;
 };
 export type ColorProbeOptions = {
   cacheDirectory?: string | undefined;
@@ -62,21 +76,9 @@ export async function probeCompositionFile(
   const owner = new CompositionNodeMemory(options.nodeMemory);
   try {
     const backend = request.backend ?? "canvas2d";
-    const loaded = await loadComposition(input, backend, {
+    const loaded = await loadMeasuredComposition(input, backend, {
+      ...options,
       nodeMemory: owner,
-      ...(options.cacheDirectory
-        ? { cacheDirectory: options.cacheDirectory }
-        : {}),
-      ...(options.signal ? { signal: options.signal } : {}),
-    }).catch((error: unknown) => {
-      if (
-        error instanceof AnimationEngineError &&
-        typeof error.context?.diagnosticsJson === "string"
-      )
-        throw new PassageError(
-          JSON.parse(error.context.diagnosticsJson) as PassageDiagnostic[],
-        );
-      throw error;
     });
     const comp = loaded.composition;
     const layer = comp.layers.find((l) => l.id === request.layer);
@@ -94,37 +96,36 @@ export async function probeCompositionFile(
         { path: "frame" },
       );
     const region = probeRegion(comp, request);
-    // Layers kept when isolating: the probed layer, its parent chain and, for
-    // a group, its content (every layer with the group in its parent chain).
-    const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
-    const keep = new Set<string>([layer!.id]);
-    for (let parent = layer!.parent; parent; parent = parentOf.get(parent))
-      keep.add(parent);
-    if (layer!.type === "group")
-      for (const candidate of comp.layers)
-        for (
-          let parent = candidate.parent;
-          parent;
-          parent = parentOf.get(parent)
-        )
-          if (parent === layer!.id) {
-            keep.add(candidate.id);
-            break;
-          }
     const effects = layer!.effects ?? [];
-    const variants: Composition[] = Array.from(
-      { length: effects.length + 1 },
-      (_, k) => ({
-        ...comp,
-        layers: comp.layers.map((l) =>
+    let sampled = effects.length;
+    if (request.forKey !== undefined) {
+      sampled = effects.findIndex((e) => e.id === request.forKey);
+      if (sampled < 0 || effects[sampled]!.effect !== "grade.key")
+        passageError(
+          "comp-probe-key",
+          `Layer "${layer!.id}" has no grade.key effect "${request.forKey}"`,
+          { path: "for-key" },
+        );
+    }
+    // Stage k renders the first k effects (as composited, for the means);
+    // the last variant is the suggestion's: the layer's straight value
+    // entering the sampled stage, as a key reads it (no opacity, blend or
+    // background).
+    const variants: Composition[] = [
+      ...Array.from({ length: effects.length + 1 }, (_, k) =>
+        isolateLayer(comp, layer!.id, request.isolate, (l) =>
           l.id === layer!.id
             ? ({ ...l, effects: effects.slice(0, k) } as typeof l)
-            : request.isolate === false || keep.has(l.id)
-              ? l
-              : ({ ...l, enabled: false } as typeof l),
+            : l,
         ),
-      }),
-    );
+      ),
+      keyInputComposition(
+        comp,
+        layer!.id,
+        request.isolate,
+        effects.slice(0, sampled),
+      ),
+    ];
     const result = await withRendererPage(
       loaded.assetPaths,
       { ...options, cacheDirectoryPrefix: "composition-probe-vite-" },
@@ -137,7 +138,7 @@ export async function probeCompositionFile(
               }
             ).__stillShiftLintRenderer;
             // Per stage only the channel sums leave the page; the last
-            // stage's region also leaves, as base64 bytes, for the qualifier.
+            // variant's region leaves as base64 bytes, for the suggestions.
             const sums: number[][] = [];
             let last = "";
             try {
@@ -152,7 +153,11 @@ export async function probeCompositionFile(
                   document.createElement("canvas"),
                   comp,
                   resources,
-                  { backend },
+                  // The suggestion's variant keeps its transparent root, so
+                  // pixels outside the layer are not sampled.
+                  k === variants.length - 1
+                    ? { backend, preserveAlpha: true }
+                    : { backend },
                 );
                 try {
                   preview.renderFrame(frame);
@@ -163,13 +168,6 @@ export async function probeCompositionFile(
                     const from = ((region.y + y) * comp.width + region.x) * 4;
                     bytes.set(pixels.subarray(from, from + row), y * row);
                   }
-                  const sum = [0, 0, 0];
-                  for (let i = 0; i < bytes.length; i += 4) {
-                    sum[0]! += bytes[i]!;
-                    sum[1]! += bytes[i + 1]!;
-                    sum[2]! += bytes[i + 2]!;
-                  }
-                  sums.push(sum);
                   if (k === variants.length - 1) {
                     let binary = "";
                     for (let i = 0; i < bytes.length; i += 0x8000)
@@ -177,7 +175,15 @@ export async function probeCompositionFile(
                         ...bytes.subarray(i, i + 0x8000),
                       );
                     last = btoa(binary);
+                    continue;
                   }
+                  const sum = [0, 0, 0];
+                  for (let i = 0; i < bytes.length; i += 4) {
+                    sum[0]! += bytes[i]!;
+                    sum[1]! += bytes[i + 1]!;
+                    sum[2]! += bytes[i + 2]!;
+                  }
+                  sums.push(sum);
                 } finally {
                   preview.dispose();
                 }
@@ -202,13 +208,15 @@ export async function probeCompositionFile(
     if (!result.ok)
       throw new PassageError(result.diagnostics as PassageDiagnostic[]);
     const count = region.width * region.height;
+    const stageName = (k: number) =>
+      k === 0 ? "input" : `effects[${effects[k - 1]!.id}]`;
     const stages = result.sums.map((sum, k) => {
       const mean = sum.map((value) => value / count);
       const coordinates = pixelCoordinates(
         mean.map((v) => v / 255) as [number, number, number],
       );
       return {
-        stage: k === 0 ? "input" : `effects[${effects[k - 1]!.id}]`,
+        stage: stageName(k),
         ...(k === 0 ? {} : { effect: effects[k - 1]!.effect }),
         bytes: mean.map((v) => round(v)),
         coordinates: {
@@ -220,11 +228,16 @@ export async function probeCompositionFile(
         },
       };
     });
-    const qualifier = suggestQualifier({
+    const pixels = {
       width: region.width,
       height: region.height,
       rgba: Buffer.from(result.last, "base64"),
-    });
+    };
+    // No suggestions when the region holds none of the layer's pixels (a
+    // probe of the background still reports its stages).
+    const covered = pixels.rgba.some((value, i) => i % 4 === 3 && value > 0);
+    const qualifier = covered ? suggestQualifier(pixels) : null;
+    const samples = covered ? suggestSampledKey(pixels) : null;
     return {
       schema: COLOR_PROBE_VERSION,
       composition: comp.id,
@@ -235,7 +248,7 @@ export async function probeCompositionFile(
       region,
       pixels: count,
       stages,
-      qualifier: {
+      qualifier: qualifier && {
         ...qualifier,
         hue: qualifier.hue && {
           center: round(qualifier.hue.center),
@@ -244,6 +257,30 @@ export async function probeCompositionFile(
         },
         saturation: mapRound(qualifier.saturation),
         luminance: mapRound(qualifier.luminance),
+      },
+      // CG6: the suggestions as `grade.key` parameters (contract bounds),
+      // from the layer's straight value entering this stage.
+      suggestionStage: stageName(sampled),
+      gradeKey: qualifier && {
+        qualifier: KEY_QUALIFIERS.hsl,
+        hueCenter: round(qualifier.hue?.center ?? 0),
+        hueWidth: round(Math.min(360, qualifier.hue?.width ?? 360)),
+        hueSoftness: round(Math.min(180, qualifier.hue?.softness ?? 0)),
+        saturationMin: round(qualifier.saturation.min),
+        saturationMax: round(qualifier.saturation.max),
+        saturationSoftness: round(Math.min(1, qualifier.saturation.softness)),
+        luminanceMin: round(qualifier.luminance.min),
+        luminanceMax: round(qualifier.luminance.max),
+        luminanceSoftness: round(Math.min(1, qualifier.luminance.softness)),
+      },
+      gradeKeySampled: samples && {
+        qualifier: KEY_QUALIFIERS.sampled,
+        sampleCount: samples.samples.length,
+        ...Object.fromEntries(
+          samples.samples.map((hex, i) => [`sample${i + 1}`, hex]),
+        ),
+        sampleRadius: round(Math.min(1, samples.radius)),
+        sampleSoftness: round(Math.min(1, samples.softness)),
       },
     };
   } finally {

@@ -36,12 +36,15 @@ import {
   type Cdl,
   type GradePrimary,
   type Mat3,
+  keyView,
+  mixKeyed,
   type Rgb,
 } from "@still-shift/color-science";
 import {
   COLOR_MATRIX_COEFFICIENTS,
   COLOR_MATRIX_OFFSETS,
   compositionEffectDefinition,
+  GRADE_KEY_MATTE_SLOT,
   isFloatGradeEffect,
   type FloatGradeEffectId,
 } from "@still-shift/scene-contract";
@@ -49,6 +52,23 @@ import { readRenderImageData } from "../../managed-memory-context.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import { assertEffectVersion, COPY_SHADER } from "./effect-shared.ts";
 import type { RenderEffect } from "./graph.ts";
+import type { Matrix } from "../../node-transform.ts";
+import {
+  evaluateKey,
+  GRADE_KEY,
+  GRADE_KEY_WINDOW_SLOT,
+  KEY_GLSL,
+  keyLayerSlot,
+  keyGlsl,
+  keyIsNeutral,
+  keySlots,
+  keySpec,
+  MAX_RUN_KEY_TEXTURES,
+  refineMaskGpu,
+  type KeyPlanes,
+  type KeySpec,
+  type KeyTextures,
+} from "./float-grade-keys.ts";
 import {
   EFFECT_LUTS,
   LUT_TEXTURE_WIDTH,
@@ -88,7 +108,7 @@ type OpResources = {
 
 /** One operator of a run: its float64 reference and its fused-shader GLSL. */
 export type FloatGradeOp = {
-  readonly id: FloatGradeEffectId;
+  readonly id: OperatorId;
   /** The float64 reference (the Canvas path and tests). */
   apply(v: Rgb): Rgb;
   /**
@@ -162,11 +182,9 @@ const columns = (m: Mat3) =>
  * Each operator in one place: its sampled parameters → an op (float64
  * reference and GLSL), or null when the settings are neutral.
  */
+type OperatorId = Exclude<FloatGradeEffectId, typeof GRADE_KEY>;
 const OPERATORS: Readonly<
-  Record<
-    FloatGradeEffectId,
-    (p: Params, source?: OpSource) => FloatGradeOp | null
-  >
+  Record<OperatorId, (p: Params, source?: OpSource) => FloatGradeOp | null>
 > = {
   "grade.primary": (p) => {
     const master = (name: string) => n(p, `${name}Master`);
@@ -431,7 +449,13 @@ export const floatGradeOp = (
   id: FloatGradeEffectId,
   p: Params,
   source?: OpSource,
-): FloatGradeOp | null => OPERATORS[id](p, source);
+): FloatGradeOp | null => {
+  if (id === GRADE_KEY)
+    throw Error(
+      "grade.key is a key for the operations after it, not an operator",
+    );
+  return OPERATORS[id](p, source);
+};
 
 /** Straight float → straight byte, half up, clamped (the one quantization). */
 export const quantizeGrade = (v: number) =>
@@ -638,16 +662,310 @@ export function curveTableBytes(tables: readonly Float32Array[]) {
 const stored = (value: number, alpha: number) =>
   Math.round((value * alpha) / 255);
 
+/**
+ * CG6: a run split at its keys. The first segment is unkeyed; each later one
+ * is a `grade.key` and the operations it scopes (a neutral key's segment is
+ * unkeyed). Segments that change nothing are dropped and a key's view ends
+ * the run.
+ */
+type Segment = { key: KeySpec | null; ops: FloatGradeOp[] };
+type RunMember = {
+  effect: string;
+  id: string;
+  params: Params;
+  placement?: { matrix: Matrix } | undefined;
+  inputs?: Readonly<Record<string, string>> | undefined;
+} & OpSource;
+
+function segmentsOf(members: readonly RunMember[]): Segment[] {
+  const all: Segment[] = [{ key: null, ops: [] }];
+  for (const member of members) {
+    if (member.effect === GRADE_KEY) {
+      const spec = keySpec(member as never);
+      all.push({ key: keyIsNeutral(spec) ? null : spec, ops: [] });
+      continue;
+    }
+    const op = floatGradeOp(
+      member.effect as FloatGradeEffectId,
+      member.params,
+      member,
+    );
+    if (op) all.at(-1)!.ops.push(op);
+  }
+  const kept: Segment[] = [];
+  for (const segment of all) {
+    if (!segment.ops.length && !segment.key?.view) continue;
+    kept.push(segment);
+    if (segment.key?.view) break;
+  }
+  return kept;
+}
+
+/** Texture samplers of a keyed run: 0–2 as the unkeyed run, then each key's. */
+function keyTextures(segments: readonly Segment[]) {
+  let next = 3;
+  const textures = segments.map((segment): KeyTextures => {
+    const k = segment.key;
+    if (!k) return {};
+    return {
+      ...(k.window ? { window: next++ } : {}),
+      ...(k.matte ? { matte: next++ } : {}),
+      ...(k.spatial ? { mask: next++ } : {}),
+    };
+  });
+  if (next - 3 > MAX_RUN_KEY_TEXTURES)
+    throw Error(
+      "comp-grade-key-budget: one grade run reads at most 12 key textures (windows, mattes, finesse)",
+    );
+  return textures;
+}
+
+/**
+ * The keyed run's fragment shader; with `maskFor`, the pass that writes key
+ * `maskFor`'s clipped qualifier (float bits) from its input instead.
+ */
+function keyedShader(
+  segments: readonly Segment[],
+  parts: readonly OpGlsl[][],
+  keys: readonly ({ declare: string } | null)[],
+  maskFor?: number,
+) {
+  const body: string[] = [];
+  for (const [j, segment] of segments.entries()) {
+    if (j === maskFor) {
+      body.push(`pixel=kPack(k${j}Q(v));return;`);
+      break;
+    }
+    const calls = parts[j]!.map((p) => p.call).join("\n  ");
+    if (!segment.key) {
+      body.push(calls, "touched=true;");
+      continue;
+    }
+    body.push(`vec3 ka${j}=v;float kv${j}=k${j}(v);`, calls);
+    if (segment.key.view)
+      body.push(
+        `v=kView(${segment.key.view.toFixed(1)},kv${j},v);touched=true;`,
+      );
+    else
+      body.push(
+        `if(kv${j}<=0.0)v=ka${j};else{if(kv${j}<1.0)v=ka${j}+(v-ka${j})*kv${j};touched=true;}`,
+      );
+  }
+  return `${GLSL_COMMON}
+${KEY_GLSL}
+${parts
+  .flat()
+  .map((p) => p.declare)
+  .join("\n")}
+${keys.flatMap((k) => (k ? [k.declare] : [])).join("\n")}
+void main(){
+  vec4 sourcePixel=texelFetch(source,ivec2(gl_FragCoord.xy),0);
+  vec4 stored=floor(sourcePixel*255.0+0.5);
+  if(stored.a<=0.0){pixel=${maskFor === undefined ? "vec4(0.0)" : "kPack(0.0)"};return;}
+  vec3 v=stored.rgb/stored.a;
+  bool touched=false;
+  ${body.join("\n  ")}
+  if(!touched){pixel=sourcePixel;return;}
+  vec3 o=clamp(floor(v*255.0+0.5),0.0,255.0);
+  pixel=bytes(vec4(o/255.0*sourcePixel.a,sourcePixel.a));
+}`;
+}
+
+function renderKeyedGpu(
+  context: Parameters<CompositionEffectPlugin["renderGpu"]>[0],
+  input: Parameters<CompositionEffectPlugin["renderGpu"]>[1],
+  segments: readonly Segment[],
+) {
+  const output = context.createSurface(input.width, input.height);
+  // Tables and LUTs as the unkeyed run packs them, in op order.
+  const tables: Float32Array[] = [];
+  const lutFloats: Float32Array[] = [];
+  let lutLength = 0,
+    index = 0;
+  const parts = segments.map((segment) =>
+    segment.ops.map((op) => {
+      const rows = (op.tables ?? []).map((table) => tables.push(table) - 1);
+      const lutBase = lutLength;
+      if (op.lutFloats) {
+        lutFloats.push(op.lutFloats);
+        lutLength += op.lutFloats.length;
+      }
+      const i = index++;
+      return op.glsl((name) => `g${i}${name}`, { rows, lutBase });
+    }),
+  );
+  const textures = keyTextures(segments);
+  const keys = segments.map((s, j) =>
+    s.key ? keyGlsl(j, s.key, textures[j]!) : null,
+  );
+  const uniforms = Object.assign(
+    {},
+    ...parts.flat().map((p) => p.uniforms),
+    ...keys.map((k) => k?.uniforms ?? {}),
+  ) as Uniforms;
+  const owned: (typeof input)[] = [];
+  try {
+    const inputs = [input, input, input];
+    if (tables.length) {
+      const table = context.createSurface(CURVE_TABLE_SIZE, tables.length);
+      owned.push(table);
+      context.uploadBytes(table, curveTableBytes(tables));
+      inputs[1] = table;
+    }
+    if (lutFloats.length) {
+      const { bytes, width, height } = lutTextureBytes(lutFloats);
+      const luts = context.createSurface(width, height);
+      owned.push(luts);
+      context.uploadBytes(luts, bytes);
+      inputs[2] = luts;
+    }
+    for (const [j, segment] of segments.entries()) {
+      const k = segment.key,
+        at = textures[j]!;
+      if (!k) continue;
+      const layer = (slot: string) => {
+        const surface = context.layers.get(slot);
+        if (!surface)
+          throw Error(`comp-effect-layer: grade.key "${k.id}" lost its input`);
+        return surface;
+      };
+      const [windowSlot, matteSlot] = [
+        k.window ? keySlots(k)[0]! : undefined,
+        k.matte ? keySlots(k).at(-1)! : undefined,
+      ];
+      if (at.window !== undefined) inputs[at.window] = layer(windowSlot!);
+      if (at.matte !== undefined) inputs[at.matte] = layer(matteSlot!);
+      if (at.mask !== undefined) inputs[at.mask] = input;
+    }
+    // Spatial keys: write each one's qualifier from its input, refine it,
+    // then bind it (later keys' passes read the earlier keys' masks).
+    for (const [j, segment] of segments.entries()) {
+      const k = segment.key;
+      if (!k?.spatial) continue;
+      const raw = context.createSurface(input.width, input.height);
+      context.pass(
+        keyedShader(segments, parts, keys, j),
+        raw,
+        inputs,
+        uniforms,
+      );
+      const refined = refineMaskGpu(context, raw, k);
+      if (refined !== raw) context.releaseSurface(raw);
+      owned.push(refined);
+      inputs[textures[j]!.mask!] = refined;
+    }
+    context.pass(keyedShader(segments, parts, keys), output, inputs, uniforms);
+    return output;
+  } finally {
+    for (const surface of owned) context.releaseSurface(surface);
+  }
+}
+
+function renderKeyedCanvas(
+  context: Parameters<NonNullable<CompositionEffectPlugin["renderCanvas"]>>[0],
+  input: Parameters<NonNullable<CompositionEffectPlugin["renderCanvas"]>>[1],
+  segments: readonly Segment[],
+) {
+  const output = context.createSurface(input.width, input.height);
+  const { width, height } = input;
+  const image = readRenderImageData(input.ctx, 0, 0, width, height);
+  const data = image.data;
+  const count = width * height;
+  const alpha = new Uint8Array(count);
+  const value = new Float64Array(count * 3);
+  for (let i = 0; i < count; i++) {
+    const a = (alpha[i] = data[i * 4 + 3]!);
+    if (a)
+      for (let c = 0; c < 3; c++)
+        value[i * 3 + c] = stored(data[i * 4 + c]!, a) / a;
+  }
+  // Window and matte layers as premultiplied bytes (what the GPU reads).
+  const planes = new Map<string, Uint8ClampedArray>();
+  for (const segment of segments)
+    for (const slot of segment.key ? keySlots(segment.key) : []) {
+      const surface = context.layers?.get(slot);
+      if (!surface)
+        throw Error(
+          `comp-effect-layer: grade.key "${segment.key!.id}" lost its input`,
+        );
+      const plane = readRenderImageData(surface.ctx, 0, 0, width, height).data;
+      for (let i = 0; i < count; i++)
+        for (let c = 0; c < 3; c++)
+          plane[i * 4 + c] = stored(plane[i * 4 + c]!, plane[i * 4 + 3]!);
+      planes.set(slot, plane);
+    }
+  const touched = new Uint8Array(count);
+  const at = (i: number): Rgb => [
+    value[i * 3]!,
+    value[i * 3 + 1]!,
+    value[i * 3 + 2]!,
+  ];
+  const put = (i: number, v: Rgb) => {
+    value[i * 3] = v[0];
+    value[i * 3 + 1] = v[1];
+    value[i * 3 + 2] = v[2];
+  };
+  const run = (ops: readonly FloatGradeOp[], v: Rgb) => {
+    let out = v;
+    for (const op of ops) out = op.apply(out);
+    return out;
+  };
+  for (const segment of segments) {
+    const k = segment.key;
+    if (!k) {
+      for (let i = 0; i < count; i++)
+        if (alpha[i]) {
+          put(i, run(segment.ops, at(i)));
+          touched[i] = 1;
+        }
+      continue;
+    }
+    const key = evaluateKey(
+      k,
+      width,
+      height,
+      value,
+      alpha,
+      planes as KeyPlanes,
+    );
+    for (let i = 0; i < count; i++) {
+      if (!alpha[i]) continue;
+      const a = at(i),
+        b = run(segment.ops, a);
+      if (k.view) {
+        put(i, keyView(k.view, key[i]!, b));
+        touched[i] = 1;
+      } else if (key[i]! > 0) {
+        put(i, mixKeyed(a, b, key[i]!));
+        touched[i] = 1;
+      }
+    }
+  }
+  for (let i = 0; i < count; i++)
+    if (touched[i])
+      for (let c = 0; c < 3; c++)
+        data[i * 4 + c] = quantizeGrade(value[i * 3 + c]!);
+  output.ctx.putImageData(image, 0, 0);
+  return output;
+}
+
 function runPlugin(
   id: string,
-  opsFor: (params: Params) => FloatGradeOp[],
+  segmentsFor: (params: Params) => Segment[],
+  optionalLayers: readonly string[] = [],
 ): CompositionEffectPlugin {
+  const definition = compositionEffectDefinition(id)!;
   return {
     id,
-    definition: compositionEffectDefinition(id)!,
+    definition: optionalLayers.length
+      ? { ...definition, optionalLayers }
+      : definition,
     renderGpu(context, input, params) {
+      const segments = segmentsFor(params);
+      if (segments.some((s) => s.key))
+        return renderKeyedGpu(context, input, segments);
       const output = context.createSurface(input.width, input.height);
-      const ops = opsFor(params);
+      const ops = segments.flatMap((s) => s.ops);
       if (!ops.length) {
         context.pass(COPY_SHADER, output, [input]);
         return output;
@@ -673,8 +991,11 @@ function runPlugin(
       return output;
     },
     renderCanvas(context, input, params) {
+      const segments = segmentsFor(params);
+      if (segments.some((s) => s.key))
+        return renderKeyedCanvas(context, input, segments);
       const output = context.createSurface(input.width, input.height);
-      const ops = opsFor(params);
+      const ops = segments.flatMap((s) => s.ops);
       if (!ops.length) {
         output.ctx.drawImage(input.canvas, 0, 0);
         return output;
@@ -705,20 +1026,13 @@ function runPlugin(
   };
 }
 
-const opsOf = (
-  effects: readonly ({ effect: string; params: Params } & OpSource)[],
-) =>
-  effects.flatMap((e) => {
-    const op = floatGradeOp(e.effect as FloatGradeEffectId, e.params, e);
-    return op ? [op] : [];
-  });
-
 /**
  * Effects whose op needs data beyond its parameters: those whose contract
- * declares asset slots (CG5: grade.lut's LUT). Their prepared assets ride on
- * the render effect, so they always run as a run, never as the lone kernel.
+ * declares asset slots (CG5: grade.lut's LUT) and keys (CG6: their layers,
+ * placement and scope). They always run as a run, never as the lone kernel.
  */
 const needsSource = (id: string) =>
+  id === GRADE_KEY ||
   Object.keys(compositionEffectDefinition(id)?.requiresAssets ?? {}).length > 0;
 
 const single = new Map<string, Readonly<CompositionEffectPlugin>>();
@@ -732,7 +1046,7 @@ export function floatGradeKernel(
     single.set(
       id,
       (kernel = Object.freeze(
-        runPlugin(id, (params) => opsOf([{ effect: id, params }])),
+        runPlugin(id, (params) => segmentsOf([{ effect: id, id, params }])),
       )),
     );
   return kernel;
@@ -742,7 +1056,7 @@ export function floatGradeKernel(
  * The run starting at `start` (consecutive `grade.*` effects without a
  * window; disabled effects inside it are skipped), as one plugin, or
  * undefined when `start` does not begin a run of two or more (a lone
- * `grade.lut` is a run of one: its op needs the effect's prepared LUT).
+ * `grade.lut` or `grade.key` is a run of one: it needs its effect's data).
  */
 export function floatGradeRun(
   stack: readonly RenderEffect[],
@@ -767,11 +1081,30 @@ export function floatGradeRun(
     members.push(effect);
     end = i;
   }
-  // A lone grade.lut still runs as a run: its op needs the effect's LUT.
   if (members.length < 2 && !members.some((m) => needsSource(m.effect)))
     return undefined;
+  // Key layer slots from the members' parameters (the segments, with their
+  // ops, are built inside the stage so errors carry its location).
+  const slots = members.flatMap((m) =>
+    m.effect === GRADE_KEY
+      ? [
+          ...(m.params.window
+            ? [keyLayerSlot(m.id, GRADE_KEY_WINDOW_SLOT)]
+            : []),
+          ...(m.inputs?.[GRADE_KEY_MATTE_SLOT] !== undefined
+            ? [keyLayerSlot(m.id, GRADE_KEY_MATTE_SLOT)]
+            : []),
+        ]
+      : [],
+  );
   return {
-    plugin: Object.freeze(runPlugin(first.effect, () => opsOf(members))),
+    plugin: Object.freeze(
+      runPlugin(
+        first.effect,
+        () => segmentsOf(members as unknown as RunMember[]),
+        slots,
+      ),
+    ),
     end,
   };
 }

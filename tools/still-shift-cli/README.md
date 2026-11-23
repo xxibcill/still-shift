@@ -464,7 +464,10 @@ x,y,w,h`. The report (`still-shift-color-scopes-1`, validated by a schema)
   `comp-probe-region`). Other layers are disabled unless `--isolate false`; the layer's
   parents stay, and so does a group's content (the layers parented into it).
   Values are the renderer's 8-bit output (`--backend canvas2d` is the float64
-  grade reference exactly).
+  grade reference exactly). The qualifier suggestion (and CG6's `gradeKey` and
+  `gradeKeySampled`) reads what a `grade.key` reads: the layer's straight
+  value, at full opacity with the normal blend over no background, and only
+  the pixels the layer covers (null when it covers none of the region).
 - **`grade diff`** compares two clips of one size: both statistics and their
   changes (luma percentiles, saturation, neutral cast), a split still of the
   middle sampled frame (before left, after right) and a contact sheet (one row

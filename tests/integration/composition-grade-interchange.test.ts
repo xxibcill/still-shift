@@ -240,6 +240,26 @@ describe("comp grade bake", () => {
     expect(diagnostic!.code).toBe("comp-grade-not-pointwise");
     expect(diagnostic!.message).toMatch(/blur\.gaussian \("soft"\)/);
   });
+  it("refuses a stack with a grade.key (CG6: keys are not pointwise)", async () => {
+    const input = await write("keyed", [
+      { id: "sky", effect: "grade.key", params: { qualifier: 3 } },
+      ...STACK.slice(0, 1),
+    ]);
+    const result = await run([
+      "grade",
+      "bake",
+      "--input",
+      input,
+      "--layer",
+      "chart",
+      "--output",
+      join(root, "keyed.cube"),
+    ]);
+    expect(result.code).not.toBe(0);
+    const [diagnostic] = failure(result.stderr).diagnostics;
+    expect(diagnostic!.code).toBe("comp-grade-not-pointwise");
+    expect(diagnostic!.message).toMatch(/grade\.key \("sky"\)/);
+  });
   it("names --size when the grid is out of range", async () => {
     const input = await write("sized", STACK.slice(0, 1));
     for (const size of ["1", "130"]) {

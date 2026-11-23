@@ -252,7 +252,7 @@ These are recommendations to confirm at CG1, each with a fallback.
 | CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Done (branch)   |
 | CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Done (branch)   |
 | CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Done (branch)   |
-| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Proposed        |
+| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Done (branch)   |
 | CG7  | Scene-referred input and working space             | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
 | CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed        |
 | CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed        |
@@ -748,15 +748,56 @@ most of what separates grading from filtering.
   blur, shrink and grow, in/out ratio, invert, output gain and offset.
 - Matte views (grayscale key, highlight, high contrast) in preview and CLI.
 
-**Checks**
+**Checks** (2026-11-21, `codex/color-grading-cg6`; numbers in
+[CG6 results](./color-grading-cg6-results.json); contract in
+[CG6 decisions](./color-grading-cg6-decisions.md); operators in
+[Keys](./composition-effect-plugins.md#keys-qualifiers-windows-and-matte-finesse-cg6))
 
-- [ ] Qualifier keys on the hue and saturation sweeps match analytic masks.
-- [ ] The key is taken from the operation's input, not its output (stated and
-      tested).
-- [ ] Window edges match the existing mask rasterizer on shared fixtures.
-- [ ] A matte-stability metric on the moving CG0 clip is reported per frame;
-      finesse controls measurably reduce chatter on the noisy fixture.
-- [ ] A keyed correction leaves pixels outside the key byte-identical.
+- [x] Qualifier keys on the hue and saturation sweeps match analytic masks:
+      the float64 port equals masks written from the definition to 1e-12 on
+      the sweep design values; rendered gray-key views on the 8-bit sweeps
+      equal the analytic mask of each pixel's own HSV (12 cases: Canvas 0,
+      WebGL2 ≤ 1 code). chroma-node's own qualifier matched on every
+      chromatic pixel but selected every neutral pixel for a hue range
+      containing red; fixed in the port.
+- [x] The key is taken from the operation's input, not its output. As built,
+      that input is the keyed segment's: the value entering the `grade.key`,
+      evaluated once, selects every operation the key scopes, including a
+      second or later one whose own input is the previous operation's output
+      (stated in the decisions and the contract; tested: a key on orange scoping a 180°
+      hue rotation grades the 3,776 orange pixels, and a key on the output
+      would differ on 7,552 pixels).
+- [x] Window edges match the existing mask rasterizer on shared fixtures:
+      ellipse and rectangle windows (rotation, roundness, feather, expansion,
+      fractional geometry) equal a solid layer carrying the same mask path,
+      byte for byte on both backends (by construction: the renderer draws the
+      window as that layer mask), on an untransformed layer and on a layer
+      offset, rotated 20° and scaled 0.8 × 0.9 (window placement in layer
+      space; added in review).
+- [x] A matte-stability metric on the moving CG0 clip is reported per frame
+      (`comp grade key`, and the CG6 browser group); finesse (denoise 2,
+      clean black/white 1, blur 1.5) lowers the background key's
+      frame-to-frame change away from the disc's edge by 25% (0.0043 →
+      0.0032 mean) on both backends; over every pixel, true motion at the
+      edge included, the drop is 11.6% (0.0093 → 0.0082). The fraction of
+      changed pixels does not fall (0.120 → 0.121): blur spreads small
+      changes.
+- [x] A keyed correction leaves pixels outside the key byte-identical:
+      1,647,554 key-0 pixels over 66 configuration × still × backend rows,
+      opaque and translucent, 0 changed.
+
+_As built:_ one `grade.key` effect scopes the grade operations after it in
+its run (a CG9 serial node lowers to it); the matte is an optional layer
+slot (`optionalLayers`). A key has no path window of its own: windows from
+layer masks and shape paths come from a masked layer or a shape layer bound
+to the `matte` slot and read by alpha (both tested against the matte as
+rendered: Canvas exact, WebGL2 ≤ 1 code). The external matte has two
+sources, alpha (`matteMode` 0) and luma (1): a depth image or a supplied
+matte sequence is an image, video or sequence layer bound to the slot and
+read by luma (or alpha), not a mode of its own; the linear gradient is computed, not rasterized
+(deviation); CE6 cell `catalogue-key-grade` has its own baseline. Matte views
+reach preview through the `view` parameter and the CLI through
+`comp grade key --view`; the lab key editor is CG14.
 
 ## CG7 — Scene-referred input and working space
 
