@@ -29,7 +29,7 @@
  * - `color.matrix` (a look) → `grade.rgb-mixer` (the same parameters and
  *   design formula in float).
  */
-import type { Rgb } from "@still-shift/color-science";
+import { mixKeyed, type Rgb } from "@still-shift/color-science";
 import {
   compositionEffectDefinition,
   isFloatGradeEffect,
@@ -37,15 +37,12 @@ import {
 } from "@still-shift/scene-contract";
 import {
   floatGradeOp,
+  floatGradeSegments,
   quantizeGrade,
   type FloatGradeOp,
+  type FloatGradeSegment,
 } from "../../renderer-core/src/composition/render/float-grade.ts";
-import {
-  evaluateKey,
-  keyIsNeutral,
-  keySpec,
-  type KeySpec,
-} from "../../renderer-core/src/composition/render/float-grade-keys.ts";
+import { evaluateKey } from "../../renderer-core/src/composition/render/float-grade-keys.ts";
 import {
   linearToSrgb,
   srgbToLinear,
@@ -275,32 +272,31 @@ export function gradeRunOps(effects: readonly EngineEffect[]): FloatGradeOp[] {
   });
 }
 
-type Segment = { key: KeySpec | null; ops: FloatGradeOp[] };
-/** A run's keyed segments, as the renderer builds them (`segmentsOf`). */
-function gradeRunSegments(effects: readonly EngineEffect[]): Segment[] {
-  const all: Segment[] = [{ key: null, ops: [] }];
-  for (const effect of effects) {
-    if (effect.effect === "grade.key") {
-      const spec = keySpec({
-        id: effect.id,
-        params: effectDefaults(effect),
-      } as never);
-      if (
-        spec.spatial ||
-        spec.window ||
-        spec.gradient ||
-        spec.matte ||
-        spec.view
-      )
-        throw Error(
-          `comp-auto-color: grade.key "${effect.id}" is not pointwise; the prediction reads qualifiers only`,
-        );
-      all.push({ key: keyIsNeutral(spec) ? null : spec, ops: [] });
-      continue;
-    }
-    all.at(-1)!.ops.push(...gradeRunOps([effect]));
-  }
-  return all.filter((segment) => segment.ops.length);
+/**
+ * A run's keyed segments, built by the renderer itself
+ * (`floatGradeSegments`). The prediction evaluates keys per color, so every
+ * key must be pointwise: a qualifier only, no window, gradient, matte,
+ * finesse or view.
+ */
+function gradeRunSegments(
+  effects: readonly EngineEffect[],
+): FloatGradeSegment[] {
+  const segments = floatGradeSegments(
+    effects.map((effect) => ({
+      effect: effect.effect,
+      id: effect.id,
+      params: effectDefaults(effect),
+    })),
+  );
+  for (const { key } of segments)
+    if (
+      key &&
+      (key.spatial || key.window || key.gradient || key.matte || key.view)
+    )
+      throw Error(
+        `comp-auto-color: grade.key "${key.id}" is not pointwise; the prediction reads qualifiers only`,
+      );
+  return segments;
 }
 
 /**
@@ -342,8 +338,7 @@ export function applyGradeRun(
       const a: Rgb = [value[i * 3]!, value[i * 3 + 1]!, value[i * 3 + 2]!];
       let b = a;
       for (const op of segment.ops) b = op.apply(b);
-      for (let c = 0; c < 3; c++)
-        value[i * 3 + c] = k >= 1 ? b[c]! : a[c]! + (b[c]! - a[c]!) * k;
+      value.set(mixKeyed(a, b, k), i * 3);
     }
   }
   const packed = colors.map(
