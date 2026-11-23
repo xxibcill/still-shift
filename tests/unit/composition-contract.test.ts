@@ -709,12 +709,29 @@ describe("composition-1 fixtures", () => {
       ),
     ) as Composition;
     expect(validateComposition(lutGrade).ok).toBe(true);
+    // CG7: the CE6 managed-grade cell carries colorManagement.
+    const managedGrade = JSON.parse(
+      readFileSync(
+        resolve(
+          root,
+          "benchmarks/fixtures/composition/ce6/catalogue-managed-grade.json",
+        ),
+        "utf8",
+      ),
+    ) as Composition;
+    expect(validateComposition(managedGrade).ok).toBe(true);
     expect(validateComposition(nativeContract)).toMatchObject({
       ok: true,
       diagnostics: [],
     });
     expect(
-      missing(CompositionSchema, [doc, nativeMedia, nativeContract, nativePbr]),
+      missing(CompositionSchema, [
+        doc,
+        nativeMedia,
+        nativeContract,
+        nativePbr,
+        managedGrade,
+      ]),
     ).toEqual([]);
     expect(missing(PrecompSchema, doc.precomps!)).toEqual([]);
     expect(

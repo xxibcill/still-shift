@@ -1,0 +1,498 @@
+{
+  "schema": "color-grading-milestone-results-1",
+  "milestone": "CG7",
+  "title": "Scene-referred input and working space",
+  "date": "2026-11-23",
+  "branch": "codex/color-grading-cg7",
+  "base": "main a47fa6d0 (CG0-CG6 merged: PRs #77, #78, #79)",
+  "plan": "docs/color-grading-engine-plan.md#cg7--scene-referred-input-and-working-space",
+  "decisions": "docs/color-grading-cg7-decisions.md",
+  "ownerDecisions": {
+    "workingSpace": "2026-11-23: ACEScct is the default working space for color-managed compositions (ACEScg its linear companion); color management stays opt-in per composition; a composition without it renders as before (legacy-srgb).",
+    "cameraPriority": "2026-11-23: no preference. The nine validated transforms are supported; the seven unavailable ones keep refusing with their reasons."
+  },
+  "environment": {
+    "platform": "darwin-arm64",
+    "node": "22.23.1 (pinned; the shell default is 24.16.0)",
+    "pnpm": "10.29.3",
+    "ffmpeg": "8.0.1"
+  },
+  "visualAcceptance": "none. Software checks only; no human viewing of any CG7 render.",
+  "delivered": {
+    "colorScience": "packages/color-science/src/working-space.ts: working spaces (legacy-srgb, acescct, acescg, linear-bt709), seven conversion spaces (Bradford for a white change), media input transforms with inverses (nine validated camera encodings, D-colour display transfers, BT.2100 PQ with 1.0 = 100 cd/m2, HLG with the reference OOTF at 1000 cd/m2).",
+    "contract": "composition colorManagement {workingSpace?} (absent: legacy-srgb; present: ACEScct default); media color adds bt2020/smpte432 primaries, bt2020-10/12, smpte2084, arib-std-b67 transfers, bt2020nc matrix, unspecified tags and an author-declared camera encoding, accepted only with colorManagement; unavailable encodings refused with their reason; warning comp-media-color-declared when a declared encoding contradicts stream tags; grade.color-space-transform 1.0.0 (from/to codes over the seven spaces); LUT inputSpace/outputSpace accept the seven spaces besides legacy-srgb; prepared-media decoder composition-media-decoder-scene-1.",
+    "decode": "Video in a color-managed composition: FFmpeg writes 4:4:4 planes at the source depth; Y'CbCr -> RGB and range in float64 from the published equations (camera encodings with full-range equations, the CG0 convention); canonical RGBA16 PNG over [-0.25, 1.25]. Sequences stay RGBA8. Legacy decoder, version and cache keys unchanged.",
+    "render": "Every grade run in a color-managed composition converts display -> working on entry and working -> display before its one quantization (neutral runs stay exact copies; lone effects become runs); grade.lut converts to and from its declared spaces; comp grade bake reports the working space its table maps. Video layers draw through a CPU float64 source stage (input transform -> working -> the layer's leading pointwise grade run -> display), identical on Canvas and WebGL2. Page decode of scene frames via DecompressionStream; 8 bytes per live pixel in decodedFrameBytes.",
+    "ce6": "Cell catalogue-managed-grade (ACEScct composition: grade.color-space-transform, grade.primary, grade.lut with sRGB-declared spaces) with its own baseline darwin-arm64-managed-grade-1.json.",
+    "tests": [
+      "tests/unit/color-science-working-space.test.ts (41)",
+      "tests/unit/composition-color-management.test.ts (17)",
+      "tests/integration/composition-media-scene.test.ts (13)",
+      "tests/browser/color-grading-cg7.ts (pnpm test:browser:color-grading-cg7)",
+      "tests/browser/color-grading-cg7-memory.ts (pnpm test:browser:color-grading-cg7-memory)"
+    ],
+    "docs": [
+      "docs/color-grading-cg7-decisions.md",
+      "docs/composition-media.md (color-managed compositions)",
+      "docs/composition-reference.md and skills (regenerated)"
+    ]
+  },
+  "checks": {
+    "transforms": {
+      "met": true,
+      "evidence": "All nine validated camera encodings into ACEScg match the CG0 OpenColorIO end-to-end vectors (AP0 -> AP1) within 2e-5 and round-trip through every working space within 1e-10; every pair of the seven conversion spaces round-trips within 1e-12 and ACEScg -> linear BT.709 equals the CG0 Bradford utility matrix within 1e-12; PQ 58% and HLG 75% decode to 2.03 (203 cd/m2, BT.2408 reference white) within 1%, 38% to 0.26 within 5%; display (encoded sRGB) <-> each managed working space round-trips every tested 8-bit code exactly. The seven unavailable encodings throw in color-science and are refused by validation with their reason. Provenance: packages/color-science/PROVENANCE.md (working-space.ts row)."
+    },
+    "tenBitLossless": {
+      "met": true,
+      "bound": "0 code values",
+      "evidence": "tests/integration/composition-media-scene.test.ts: all 128 samples of 11 CG0 ramps (8 validated camera curves, PQ, HLG, BT.709; FFV1 10-bit 4:2:2) prepared into the 16-bit scene cache, read back, through the input transform into ACEScct, a neutral grade and back, re-encoded to 10-bit Y' codes by the published equation: every code recovered. Largest cache error 1.144e-5 (bound 1.2e-5). Reference level: the same for all 1024 codes of 12 encodings. Not a file re-encode: 10-bit delivery is CG8, and the existing 10-bit profiles still carry 8-bit pixels."
+    },
+    "legacyByteIdentical": {
+      "met": true,
+      "evidence": "composition baselines (--check) pass; CG0, CG2, CG4, CG5, CG6, composition-grade-effects, composition-media groups pass unchanged; composition-effects: every earlier CE6 baseline (frozen catalogue, CGA grade, CG2, CG4, CG5, CG6) matched before the new cell's baseline was written. Legacy decoder version, cache identity and prepared-frame format unchanged."
+    },
+    "memory4k": {
+      "met": true,
+      "evidence": "tests/browser/color-grading-cg7-memory.ts on a generated 3840x2160 10-bit FFV1 clip declared S-Log3 in an ACEScct composition through the real loader (fetch, page decode, source stage): a blended pair is 132,710,400 bytes live (126.6 MiB) within the 128 MiB decodedFrameBytes default on both backends; a 100 MiB budget refuses with comp-media-limit before any frame is fetched (0 fetched); Node preparation checks the RGBA16 budget before FFmpeg runs (integration test). Disk: 2.69 MB per 4K frame for this synthetic source. GPU: the drawn RGBA8 raster is 31.6 MiB, within decodedTextureBytes (128 MiB) by the existing per-texture check; not separately measured. Canvas and WebGL2 output SHA-256 identical. Time: about 2.1 s per 4K frame for the CPU source stage. The source stage's own float64 working set is outside decodedFrameBytes; since the PR #81 review (F2) it runs in row strips of at most 64 Ki pixels (about 2 MiB at any frame size) instead of a whole-frame copy (about 190 MiB at 4K), with identical bytes. Rerun 2026-11-24 (Node 22.23.1): output SHA-256 888d9e1a… on both backends, the same on the pre-merge commit 1c2d7e46, so the earlier recorded f2f81758… was already stale before the merge and the fixes.",
+      "numbers": {
+        "fixture": {
+          "generator": "ffmpeg lavfi testsrc2=size=3840x2160:rate=24, 3 frames, yuv422p10le, FFV1, tagged bt709 matrix / tv range, no transfer; declared sony-slog3-sgamut3",
+          "width": 3840,
+          "height": 2160
+        },
+        "node": {
+          "prepareMs": 1434,
+          "cacheFrameBytes": [2688644, 2692408],
+          "cacheBytes": 5382578
+        },
+        "canvas2d": {
+          "ok": true,
+          "stats": {
+            "decodedBytes": 132710400,
+            "encodedBytes": 0,
+            "peakDecodedBytes": 132710400,
+            "peakEncodedBytes": 2692408,
+            "decodedFrames": 2,
+            "hits": 0,
+            "evictions": 0
+          },
+          "prepareMs": 147,
+          "renderMs": 2097,
+          "sha256": "f2f817585598429a8f321f182aee1131081a4a7948954465c6e090e0bd4c7104"
+        },
+        "webgl2": {
+          "ok": true,
+          "stats": {
+            "decodedBytes": 132710400,
+            "encodedBytes": 0,
+            "peakDecodedBytes": 132710400,
+            "peakEncodedBytes": 2692408,
+            "decodedFrames": 2,
+            "hits": 0,
+            "evictions": 0
+          },
+          "prepareMs": 153,
+          "renderMs": 2129,
+          "sha256": "f2f817585598429a8f321f182aee1131081a4a7948954465c6e090e0bd4c7104"
+        },
+        "overBudget": {
+          "ok": false,
+          "error": "comp-media-limit",
+          "framesFetched": 0
+        },
+        "limits": {
+          "decodedFrameBytes": 134217728,
+          "livePairBytes": 132710400,
+          "decodedTextureBytes": 134217728,
+          "rasterBytes": 33177600
+        }
+      }
+    },
+    "contradictionDiagnostic": {
+      "met": true,
+      "evidence": "warning comp-media-color-declared at assets.N.color.encoding naming each contradicting tag (e.g. sony-slog3-sgamut3 declared on a stream tagged transfer bt709 and primaries bt709); none for apple-log-bt2020 on bt2020 primaries with no transfer tag (tests/unit/composition-color-management.test.ts). Without a declared encoding the descriptor must equal the stream, as before (comp-media-color error)."
+    }
+  },
+  "failedRunsAndReruns": [
+    {
+      "what": "tests/unit/color-science-working-space.test.ts, first run",
+      "result": "12 of 41 failed",
+      "cause": "test defects: `apply` is exported as `applyMatrix` (9 camera cases), and the PQ round trip used a 1e-9 bound although PQ code 0 decodes to 0 cd/m2, which encodes back to 7.3e-7 (ST 2084 c1^m2; 3 cases)",
+      "rerun": "41 of 41 pass after importing applyMatrix and stating a 1e-6 bound for PQ"
+    },
+    {
+      "what": "tests/integration composition-scopes and composition-grade-interchange, first run",
+      "result": "5 failed (page.waitForFunction timeout, 5 s test timeouts)",
+      "cause": "fresh worktree without pnpm build (and run alongside test:unit)",
+      "rerun": "pass after pnpm build"
+    },
+    {
+      "what": "tests/unit composition-ce6-fixtures and composition-contract (every-field), first test:unit",
+      "result": "2 failed",
+      "cause": "expected coverage gaps: no CE6 cell for grade.color-space-transform and no fixture using colorManagement",
+      "rerun": "pass after adding catalogue-managed-grade"
+    },
+    {
+      "what": "tests/unit/composition-grade-lut 'needs the declared format and spaces'",
+      "result": "failed",
+      "cause": "intended change: CG5 refused inputSpace acescct until CG7",
+      "rerun": "test updated: acescct accepted, an unknown space refused"
+    },
+    {
+      "what": "tests/integration/composition-media-scene.test.ts first run",
+      "result": "2 of 13 failed",
+      "cause": "assertion shape (PassageError carries diagnostics[].code); the 11 ramp cases passed",
+      "rerun": "13 of 13"
+    },
+    {
+      "what": "ffmpeg RGB64 spike (before the scene decoder was written)",
+      "result": "S-Log3 ramp 53/128 samples off by one code; PQ ramp 72/128",
+      "cause": "swscale shift widening",
+      "rerun": "float64 matrix in Node: 0 lost on all 11 ramps"
+    },
+    {
+      "what": "tests/browser/color-grading-cg7.ts runs 1-3",
+      "result": "failed",
+      "cause": "run 1: fixture used opacity outside transform; runs 2-3: the graded source stage differed from the reference by up to 3 because the graph's general layer path (layerOps) did not move the leading grade into the source stage (only the projected-plane path did)",
+      "rerun": "run 4 passes after the split was applied in both places"
+    },
+    {
+      "what": "pnpm test:browser:composition-effects, first run",
+      "result": "failed: missing darwin-arm64-managed-grade-1.json (every earlier baseline matched)",
+      "rerun": "see verification"
+    },
+    {
+      "what": "pnpm check:fast run 1",
+      "result": "failed at schema:check",
+      "cause": "stale schema after adding the BT.2020 SDR transfer tags",
+      "rerun": "schema:generate"
+    },
+    {
+      "what": "pnpm check:fast run 2",
+      "result": "failed at native3d:identity:check",
+      "cause": "the native appearance source closure lists renderer and color-science modules; CG7 added working-space.ts and scene-frames.ts (as CG5 and CG6 did)",
+      "rerun": "pnpm native3d:identity:generate"
+    },
+    {
+      "what": "pnpm check:fast run 3",
+      "result": "failed: format check (3 files), then 2 of 5,042 unit tests (composition-media-resources: ImageBitmap is not defined)",
+      "cause": "the scene-frame eviction used `instanceof ImageBitmap`, absent in the Node unit environment: a real defect for any non-browser caller",
+      "rerun": "structural check (`samples` in frame); run 4 passes"
+    }
+  ],
+  "verification": [
+    "pnpm test:unit: pass after fixes (see failedRunsAndReruns)",
+    "integration: composition-media-scene 13/13, composition-media-probe, composition-scopes, composition-grade-interchange pass",
+    "browser groups pass: color-grading-cg0, cg2, cg4, cg5, cg6, cg7, cg7-memory, composition-grade-effects, composition-media, composition-baselines (--check), composition-effects (after writing darwin-arm64-managed-grade-1.json once with --write-managed-grade-baseline, then checked without it)",
+    "pnpm check:fast run 4 on Node 22.23.1: pass (484 files, 5,042 tests).",
+    "after the eviction fix: color-grading-cg7, color-grading-cg7-memory and composition-media groups rerun: all pass."
+  ],
+  "notRun": [
+    "pnpm check (full), full pnpm test, runtime/depth tiers, release checks",
+    "owner footage (none supplied); camera chroma scale of real files not verified",
+    "human visual review of any CG7 render"
+  ],
+  "next": [
+    "CG8 output transforms (tone mapping, gamut compression) and 10-bit delivery of high-bit pixels",
+    "GPU source stage for speed",
+    "owner: log/10-bit footage for CG15 (also verifies the camera chroma convention)"
+  ],
+  "parity": {
+    "browser": {
+      "sony-slog3": {
+        "decodeEqual": true,
+        "neutral": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        },
+        "graded": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        }
+      },
+      "arri-logc4": {
+        "decodeEqual": true,
+        "neutral": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        },
+        "graded": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        }
+      },
+      "apple-log": {
+        "decodeEqual": true,
+        "neutral": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        },
+        "graded": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        }
+      },
+      "pq": {
+        "decodeEqual": true,
+        "neutral": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        },
+        "graded": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        }
+      },
+      "hlg": {
+        "decodeEqual": true,
+        "neutral": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        },
+        "graded": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        }
+      },
+      "bt709": {
+        "decodeEqual": true,
+        "neutral": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        },
+        "graded": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsCanvas": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          }
+        }
+      },
+      "display": {
+        "chart-24": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          },
+          "neutralVsLegacy": {
+            "canvas2d": {
+              "max": 0,
+              "count": 0
+            },
+            "webgl2": {
+              "max": 0,
+              "count": 0
+            }
+          },
+          "plainVsLegacy": {
+            "max": 0,
+            "count": 0
+          }
+        },
+        "hue-sweep": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          },
+          "neutralVsLegacy": {
+            "canvas2d": {
+              "max": 0,
+              "count": 0
+            },
+            "webgl2": {
+              "max": 0,
+              "count": 0
+            }
+          },
+          "plainVsLegacy": {
+            "max": 0,
+            "count": 0
+          }
+        },
+        "gray-ramp-256": {
+          "canvasVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "webglVsReference": {
+            "max": 0,
+            "count": 0
+          },
+          "repeat": {
+            "max": 0,
+            "count": 0
+          },
+          "neutralVsLegacy": {
+            "canvas2d": {
+              "max": 0,
+              "count": 0
+            },
+            "webgl2": {
+              "max": 0,
+              "count": 0
+            }
+          },
+          "plainVsLegacy": {
+            "max": 0,
+            "count": 0
+          }
+        }
+      },
+      "compositing": {
+        "max": 0,
+        "count": 0
+      },
+      "export": {
+        "canvas2d": {
+          "max": 0,
+          "count": 0
+        },
+        "webgl2": {
+          "max": 0,
+          "count": 0
+        }
+      }
+    },
+    "summary": "Source stage (CPU float64 on both backends): Canvas and WebGL2 equal the float64 reference byte for byte on six ramps, neutral and graded, repeats identical. Display-referred stills graded in ACEScct: Canvas 0, WebGL2 0 from the reference on chart-24, hue-sweep, gray-ramp-256; neutral grade and no grade equal the legacy render. Compositing rule: a translucent solid over a managed video equals the legacy composite of the same display pixels (0). Export via renderComposition png8: 0 on both backends."
+  },
+  "compositingRule": "Every layer leaves the working space at its boundary through the CG7 display transform (AP1 -> BT.709 Bradford, clip 0-1, sRGB encode); compositing is unchanged. See the decisions, section 4.",
+  "deviations": [
+    "Source stage for video only: sequences are sRGB PNGs by contract and stay display-referred RGBA8 (design note first said every video and sequence).",
+    "FFmpeg's RGB64 output was rejected for the scene cache: it widens 10-bit codes by a shift (95 -> 6080 = 95<<6, 1023 -> 65472), so codes above 512 read back one low (53 of 128 S-Log3 ramp samples). The matrix and range now run in float64 in Node.",
+    "The source stage runs on the CPU in float64 on both backends (exact, not fast); a GPU source stage is later work.",
+    "No tone mapping or gamut compression: the CG7 display transform clips scene values above display white and out-of-gamut colors (CG8 output transforms replace it). Log footage will look clipped in highlights until CG8."
+  ]
+}

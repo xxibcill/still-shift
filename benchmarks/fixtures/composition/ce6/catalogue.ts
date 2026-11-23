@@ -123,6 +123,9 @@ export function ce6EffectCases(
       highlightExposure: -0.4,
       softClipHigh: 0.85,
     },
+    // CG7: working values read as linear BT.709, written as ACEScg (a mild
+    // gamut change on the working space's log values).
+    "grade.color-space-transform": { from: 3, to: 1 },
     "transition.linear-wipe": {
       progress: animated(0.1, 0.85),
       softness: 0.15,
@@ -267,6 +270,7 @@ export const CE6_NATIVE_FIXTURES = [
   "catalogue-curve-grade",
   "catalogue-lut-grade",
   "catalogue-key-grade",
+  "catalogue-managed-grade",
 ] as const;
 /** CGA grade effects, kept out of the frozen color catalogue cell layout. */
 const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
@@ -299,6 +303,16 @@ export const CG5_LUT_GRADE_EFFECTS = gradeIds("grade.lut");
  * animated ellipse window, with matte finesse.
  */
 export const CG6_KEY_GRADE_EFFECTS = gradeIds("grade.key");
+/**
+ * CG7: a color-managed composition (ACEScct working space): the explicit
+ * conversion, a primary grade and a LUT declared in sRGB, each converted
+ * into and out of the working space. Its own cell and baseline file.
+ */
+export const CG7_MANAGED_GRADE_EFFECTS = gradeIds(
+  "grade.color-space-transform",
+  "grade.primary",
+  "grade.lut",
+);
 const KEY_GRADE_PARAMS = {
   qualifier: 1,
   hueCenter: 38,
@@ -375,6 +389,7 @@ export function ce6NativeFixtures(): [string, Composition][] {
       [...CG4_CURVE_GRADE_EFFECTS],
       [...CG5_LUT_GRADE_EFFECTS],
       [...CG6_KEY_GRADE_EFFECTS],
+      [...CG7_MANAGED_GRADE_EFFECTS],
     ];
   return families.map((effects, family) => {
     const doc: Composition = {
@@ -389,6 +404,8 @@ export function ce6NativeFixtures(): [string, Composition][] {
       layers: [],
     };
     if (family === 5) doc.colorSpace = "linear-srgb";
+    const managed = effects.includes("grade.color-space-transform");
+    if (managed) doc.colorManagement = { workingSpace: "acescct" };
     if (effects.includes("grade.lut"))
       doc.assets.push({
         id: "look",
@@ -396,8 +413,8 @@ export function ce6NativeFixtures(): [string, Composition][] {
         path: CE6_LUT_FILE,
         sha256: CE6_LUT_SHA256,
         format: "cube",
-        inputSpace: "legacy-srgb",
-        outputSpace: "legacy-srgb",
+        inputSpace: managed ? "srgb" : "legacy-srgb",
+        outputSpace: managed ? "srgb" : "legacy-srgb",
       });
     const columns = 4,
       rows = Math.ceil(effects.length / columns),

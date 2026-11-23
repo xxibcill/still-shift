@@ -9,7 +9,9 @@ import {
   createRenderBlob,
   releaseRenderBlob,
 } from "../../managed-resources.ts";
+import { decodeSceneFrame, type SceneFrame } from "./scene-frames.ts";
 import {
+  COMPOSITION_MEDIA_SCENE_DECODER_VERSION,
   CompositionPreparedMediaSchema,
   compositionMediaFrameId,
   resolveCompositionMediaLimits,
@@ -51,9 +53,14 @@ export function validateCompositionPreparedMedia(
         "Prepared frame identity differs from its authored source",
         { path: frame.id },
       );
+    const pixelBytes =
+      parsed.data.decoderVersion === COMPOSITION_MEDIA_SCENE_DECODER_VERSION &&
+      asset.type === "video"
+        ? 8
+        : 4;
     if (
       frame.byteLength >
-      frame.width * frame.height * 4 + frame.height + 1024 * 1024
+      frame.width * frame.height * pixelBytes + frame.height + 1024 * 1024
     )
       passageError(
         "comp-media-limit",
@@ -86,12 +93,29 @@ export function createCompositionMediaResources(
   assetUrl: (id: string) => string,
   images: Map<string, CanvasImageSource>,
   pngImages?: Set<string>,
+  /** CG7: where 16-bit frames of a color-managed composition go. */
+  sceneFrames?: Map<string, SceneFrame>,
 ): CompositionMediaResources {
   const entries = validateCompositionPreparedMedia(comp, prepared);
   const budget = resolveCompositionMediaLimits(
     comp.mediaLimits,
   ).decodedFrameBytes;
-  const resident = new Map<string, ImageBitmap>();
+  const scene =
+    prepared.decoderVersion === COMPOSITION_MEDIA_SCENE_DECODER_VERSION;
+  if (scene && !sceneFrames)
+    passageError(
+      "comp-media-provenance",
+      "Scene frames need a color-managed composition's resources",
+      { path: "preparedMedia" },
+    );
+  /** Scene frames are a color-managed composition's videos (CG7). */
+  const isScene = (id: string) =>
+    scene &&
+    comp.assets.find((asset) => asset.id === entries.get(id)!.asset)?.type ===
+      "video";
+  /** Live bytes per decoded pixel: RGBA8 bitmaps, or RGBA16 scene samples. */
+  const pixelBytes = (id: string) => (isScene(id) ? 8 : 4);
+  const resident = new Map<string, ImageBitmap | SceneFrame>();
   const stats: CompositionMediaResourceStats = {
     decodedBytes: 0,
     encodedBytes: 0,
@@ -113,11 +137,13 @@ export function createCompositionMediaResources(
   };
   const forget = (id: string) => {
     const bitmap = resident.get(id)!;
-    releaseRenderStorage(bitmap, (value) => value.close());
+    if ("samples" in bitmap) releaseRenderStorage(bitmap, () => {});
+    else releaseRenderStorage(bitmap, (value) => value.close());
     resident.delete(id);
     images.delete(id);
+    sceneFrames?.delete(id);
     const entry = entries.get(id)!;
-    stats.decodedBytes -= entry.width * entry.height * 4;
+    stats.decodedBytes -= entry.width * entry.height * pixelBytes(id);
     stats.evictions++;
   };
   async function load(
@@ -207,12 +233,14 @@ export function createCompositionMediaResources(
         ![137, 80, 78, 71, 13, 10, 26, 10].every(
           (value, index) => pixels[index] === value,
         ) ||
-        pixels[24] !== 8 ||
+        pixels[24] !== (isScene(entry.id) ? 16 : 8) ||
         pixels[25] !== 6
       )
         passageError(
           "comp-media-format",
-          "Prepared frame must be canonical RGBA8 PNG",
+          isScene(entry.id)
+            ? "Prepared frame must be canonical RGBA16 PNG"
+            : "Prepared frame must be canonical RGBA8 PNG",
           { path: entry.id },
         );
       // Canonical captured PNG dimensions must fit the admitted bitmap before native decode.
@@ -227,6 +255,29 @@ export function createCompositionMediaResources(
             "Decoded frame dimensions differ",
             { path: entry.id },
           );
+      }
+      if (isScene(entry.id)) {
+        const frame = await allocateRenderStorageAsync(
+          entry.width * entry.height * 8,
+          () => decodeSceneFrame(pixels, entry.width, entry.height, entry.id),
+          () => {},
+          true,
+        );
+        try {
+          stale(run, signal);
+        } catch (error) {
+          releaseRenderStorage(frame, () => {});
+          throw error;
+        }
+        resident.set(entry.id, frame);
+        sceneFrames!.set(entry.id, frame);
+        stats.decodedBytes += entry.width * entry.height * 8;
+        stats.decodedFrames++;
+        stats.peakDecodedBytes = Math.max(
+          stats.peakDecodedBytes,
+          stats.decodedBytes,
+        );
+        return;
       }
       const blob = createRenderBlob(pixels, "image/png");
       let bitmap: ImageBitmap;
@@ -316,7 +367,7 @@ export function createCompositionMediaResources(
                 );
               if (!required.has(id)) {
                 required.add(id);
-                requiredBytes += entry.width * entry.height * 4;
+                requiredBytes += entry.width * entry.height * pixelBytes(id);
               }
             }
           if (requiredBytes > budget)
@@ -335,7 +386,7 @@ export function createCompositionMediaResources(
               continue;
             }
             const entry = entries.get(id)!,
-              bytes = entry.width * entry.height * 4;
+              bytes = entry.width * entry.height * pixelBytes(id);
             for (const candidate of resident.keys()) {
               if (stats.decodedBytes + bytes <= budget) break;
               if (!required.has(candidate)) forget(candidate);

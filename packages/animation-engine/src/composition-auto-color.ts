@@ -43,7 +43,7 @@ import {
   type ColorScopesMeasurement,
 } from "./composition-color-scopes.ts";
 import {
-  colorLookEffectParams,
+  colorLookEffect,
   readColorCodeValueFrames,
   type ColorLook,
 } from "./composition-color-look.ts";
@@ -239,7 +239,8 @@ export const AutoColorReportSchema = z.discriminatedUnion("schemaVersion", [
       schemaVersion: z.literal(AUTO_COLOR_REPORT_2_VERSION),
       ...reportFields,
       engine: z.enum(COLOR_ENGINES),
-      solver: z.string(),
+      /** The solver, when one ran (`look apply` runs none). */
+      solver: z.string().optional(),
       scopes: AutoColorScopesSchema,
     })
     .strict(),
@@ -295,7 +296,7 @@ export type AutoColorReport =
   | ({
       schemaVersion: typeof AUTO_COLOR_REPORT_2_VERSION;
       engine: ColorEngine;
-      solver: string;
+      solver?: string | undefined;
       scopes: AutoColorScopes;
     } & AutoColorReportFields);
 
@@ -455,6 +456,8 @@ export function autoColorComposition(
     assets.push(sound);
     layers.push(track);
   }
+  // No colorManagement: the effects were predicted for a legacy-srgb
+  // composition (gradeRunSegments), which is what renders them.
   return {
     schemaVersion: "composition-1",
     id: "auto-color",
@@ -614,13 +617,7 @@ export async function autoColorClip(
   const effects: ColorCorrectionEffect[] = [];
   if (request.look)
     effects.push(
-      ...(engineEffects(engine, [
-        {
-          id: "look",
-          effect: "color.matrix",
-          params: colorLookEffectParams(request.look, lookStrength),
-        },
-      ]) as ColorCorrectionEffect[]),
+      ...engineEffects(engine, [colorLookEffect(request.look, lookStrength)]),
     );
   let decisions: ColorSolveDecision[] = [];
   if (adaptive) {
@@ -712,7 +709,8 @@ export async function autoColorClip(
       schemaVersion: AUTO_COLOR_REPORT_2_VERSION,
       ...head,
       engine,
-      solver: colorSolverVersion(engine),
+      // The solver is named only when one ran (`look apply` runs none).
+      ...(adaptive ? { solver: colorSolverVersion(engine) } : {}),
       ...body,
       scopes: {
         schema: COLOR_SCOPES_VERSION,

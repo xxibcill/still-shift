@@ -302,68 +302,6 @@ export function whiteBalanceMatrix(cct: number, tint: number): Mat3 | null {
   return multiply(invert(npm), multiply(cat, npm));
 }
 
-/** `grade.white-balance`'s temperature and tint bounds (the effect contract). */
-export const WHITE_BALANCE_TEMPERATURE_RANGE = [1667, 25000] as const;
-export const WHITE_BALANCE_TINT_RANGE = [-100, 100] as const;
-
-/**
- * The inverse of `temperatureTintWhite`: the temperature (kelvin) and tint
- * whose illuminant white is `white` (xy), so `whiteBalanceMatrix` of the
- * result maps a grey lit by `white` to D65. Solved by Newton's method in
- * mired and tint against the CIE 1960 uv error. `reached` is false when the
- * white lies outside the effect's bounds; the result is then clamped to them
- * and `residualUv` says how far it stays from `white`.
- */
-export function temperatureTintForWhite(white: readonly [number, number]): {
-  temperature: number;
-  tint: number;
-  reached: boolean;
-  residualUv: number;
-} {
-  const [minK, maxK] = WHITE_BALANCE_TEMPERATURE_RANGE;
-  const [minTint, maxTint] = WHITE_BALANCE_TINT_RANGE;
-  const goal = xyToUv(white);
-  const uvAt = (mired: number, tint: number) =>
-    xyToUv(temperatureTintWhite(1e6 / mired, tint));
-  const clampMired = (m: number) =>
-    Math.min(1e6 / minK, Math.max(1e6 / maxK, m));
-  const clampTint = (t: number) => Math.min(maxTint, Math.max(minTint, t));
-  let mired = 1e6 / REFERENCE_CCT,
-    tint = 0;
-  for (let i = 0; i < 50; i++) {
-    const at = uvAt(mired, tint);
-    const eu = goal[0] - at[0],
-      ev = goal[1] - at[1];
-    if (Math.hypot(eu, ev) < 1e-12) break;
-    const h = 1e-3;
-    const dm = uvAt(
-      clampMired(mired + h) === mired ? mired - h : mired + h,
-      tint,
-    );
-    const sm = clampMired(mired + h) === mired ? -h : h;
-    const dt = uvAt(mired, tint + h);
-    const a = (dm[0] - at[0]) / sm,
-      b = (dt[0] - at[0]) / h,
-      c = (dm[1] - at[1]) / sm,
-      d = (dt[1] - at[1]) / h;
-    const det = a * d - b * c;
-    if (det === 0) break;
-    const nextMired = clampMired(mired + (d * eu - b * ev) / det),
-      nextTint = clampTint(tint + (a * ev - c * eu) / det);
-    if (nextMired === mired && nextTint === tint) break;
-    mired = nextMired;
-    tint = nextTint;
-  }
-  const at = uvAt(mired, tint);
-  const residualUv = Math.hypot(goal[0] - at[0], goal[1] - at[1]);
-  return {
-    temperature: 1e6 / mired,
-    tint,
-    reached: residualUv < 1e-9,
-    residualUv,
-  };
-}
-
 const srgb = transferFunction("srgb");
 /** Sign-mirrored sRGB, so values below 0 survive a linear-light step. */
 export const srgbDecodeMirrored = (v: number) =>
