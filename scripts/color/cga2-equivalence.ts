@@ -10,13 +10,17 @@
  * For every clip: the adaptive correction (auto) and, with --look, the look
  * at the default 60% (look). Both engines solve the same sampled frames
  * (12 per clip, the media path's pixels); their exact Canvas predictions are
- * compared at full resolution against the bound stated in A0. Writes <output>/equivalence.json. Software measurements only.
+ * compared at full resolution against the bound stated in A0; a row outside
+ * the bound also records diagnostics of its cause. Writes <output>/equivalence.json. Software measurements only.
  */
 import { mkdir, readdir, readFile, writeFile } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import {
   AUTO_COLOR_LOOK_STRENGTH,
   CGA2_EQUIVALENCE_BOUND,
+  applyColorEffects,
+  colorDifference,
+  engineEffects,
   colorLookEffect,
   colorSampleOrdinals,
   colorSolverFrames,
@@ -25,6 +29,7 @@ import {
   readColorFrames,
   solverEquivalence,
   type ColorCorrectionEffect,
+  type ColorDifference,
   type ColorFrameSet,
   type ColorLook,
 } from "@still-shift/animation-engine";
@@ -52,6 +57,17 @@ type Row = {
   difference: ReturnType<typeof solverEquivalence>["difference"];
   legacy: ColorCorrectionEffect[];
   grade: ColorCorrectionEffect[];
+  /**
+   * Rows outside the bound only: whether the mapping or the pipeline makes
+   * the difference. `translatedSolver1` renders solver 1's own corrections
+   * through the grade engine (same parameters, so any difference is the
+   * mapping or headroom); `lookClippedFirst` applies the look in 8 bits, as
+   * CGA does, before solver 2's grade run (the look's headroom removed).
+   */
+  diagnostics?: {
+    translatedSolver1: ColorDifference;
+    lookClippedFirst?: ColorDifference;
+  };
 };
 const rows: Row[] = [];
 
@@ -86,6 +102,22 @@ function compare(
             whiteBalance: false,
           }),
     });
+    const render = (effects: readonly ColorCorrectionEffect[]) =>
+      frames.frames.map((frame) => applyColorEffects(effects, frame.rgba));
+    let diagnostics: Row["diagnostics"];
+    if (!result.withinBound) {
+      const legacyRender = render([...prefix, ...result.legacy.effects]);
+      const against = (effects: readonly ColorCorrectionEffect[]) =>
+        colorDifference(legacyRender, render(effects), frames.width);
+      diagnostics = {
+        translatedSolver1: against(
+          engineEffects("grade", [...prefix, ...result.legacy.effects]),
+        ),
+        ...(prefix.length
+          ? { lookClippedFirst: against([...prefix, ...result.grade.effects]) }
+          : {}),
+      };
+    }
     rows.push({
       clip,
       mode,
@@ -93,9 +125,10 @@ function compare(
       difference: result.difference,
       legacy: result.legacy.effects,
       grade: result.grade.effects,
+      ...(diagnostics ? { diagnostics } : {}),
     });
     log(
-      `${clip} ${mode}: blockRms ${result.difference.blockRms} p99 ${result.difference.p99} max ${result.difference.max}${result.withinBound ? "" : " OUTSIDE"}`,
+      `${clip} ${mode}: blockRms ${result.difference.blockRms} p99 ${result.difference.p99} max ${result.difference.max}${result.withinBound ? "" : ` OUTSIDE; translated solver 1 p99 ${diagnostics!.translatedSolver1.p99}${diagnostics!.lookClippedFirst ? `, look clipped first p99 ${diagnostics!.lookClippedFirst.p99}` : ""}`}`,
     );
   }
 }
