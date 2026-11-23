@@ -5,7 +5,8 @@
  * `auto-color --engine grade --write-composition`, rendered losslessly
  * (`comp render --format png8`) with Canvas and WebGL2, and every frame is
  * compared with `applyColorEffects` on the media path's frames:
- * Canvas exactly, WebGL2 within one code value (owner decision 3).
+ * Canvas exactly, WebGL2 within one code value (A1's check: the CG2 parity
+ * bound).
  *
  *   pnpm test:browser:color-grading-cga2
  */
