@@ -781,7 +781,10 @@ most of what separates grading from filtering.
 
 _As built:_ one `grade.key` effect scopes the grade operations after it in
 its run (a CG9 serial node lowers to it); the matte is an optional layer
-slot (`optionalLayers`); the linear gradient is computed, not rasterized
+slot (`optionalLayers`). A key has no path window of its own: windows from
+layer masks and shape paths come from a masked layer or a shape layer bound
+to the `matte` slot and read by alpha (both tested against the matte as
+rendered: Canvas exact, WebGL2 ≤ 1 code); the linear gradient is computed, not rasterized
 (deviation); CE6 cell `catalogue-key-grade` has its own baseline. Matte views
 reach preview through the `view` parameter and the CLI through
 `comp grade key --view`; the lab key editor is CG14.

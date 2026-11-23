@@ -756,7 +756,8 @@ try {
       report.outside = outside;
 
       // External matte: a hidden layer bound to `matte` (alpha of a masked
-      // solid: a layer window; luma of an image: a luma matte).
+      // solid: a layer-mask window; alpha of a shape layer: a shape-path
+      // window; luma of an image: a luma matte).
       {
         const still = byId.get("chart-24")!;
         const lumaStill = byId.get("skin-tones")!;
@@ -782,6 +783,31 @@ try {
                   mode: "add",
                   feather: 8,
                 },
+              ],
+            },
+            [],
+          ],
+          [
+            // A window from a shape path: a shape layer bound as the matte.
+            "shape-path",
+            { matteMode: 0 },
+            {
+              id: "matte",
+              type: "shape",
+              enabled: false,
+              transform: { anchor: [0, 0], position: [0, 0] },
+              contents: [
+                {
+                  id: "star",
+                  type: "polystar",
+                  kind: "star",
+                  position: [190, 125],
+                  rotation: 12,
+                  points: 5,
+                  outerRadius: 90,
+                  innerRadius: 40,
+                },
+                { id: "fill", type: "fill", color: "#ffffff" },
               ],
             },
             [],
@@ -1031,6 +1057,7 @@ try {
       {
         sweeps: (r.sweeps as unknown[]).length,
         windows: r.windows,
+        externalMatte: r.externalMatte,
         stability: Object.fromEntries(
           Object.entries(st).map(([k, v]) => [
             k,
