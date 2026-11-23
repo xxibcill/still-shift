@@ -253,7 +253,7 @@ These are recommendations to confirm at CG1, each with a fallback.
 | CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Done (branch)   |
 | CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Done (branch)   |
 | CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Done (branch)   |
-| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
+| CG7  | Scene-referred input and working space             | CG2, owner: decided 2026-11-23 | 6–10 (BT.601 done)     | Done (branch)   |
 | CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed        |
 | CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed        |
 | CG10 | Grade lint and solvers                             | CG3, CG6                       | 4–6 (solvers seeded)   | Proposed        |
@@ -823,16 +823,26 @@ display-referred pipeline. This is the largest and riskiest milestone.
 
 **Checks**
 
-- [ ] Each transform round-trips and matches its published reference points;
+- [x] Each transform round-trips and matches its published reference points;
       each has a provenance entry. Unvalidated transforms are rejected, not
-      approximated.
-- [ ] A 10-bit ramp decoded, passed through neutral grading and re-encoded at
-      10 bits is lossless to the stated bound.
-- [ ] A composition without color management renders byte-identically to
-      before.
-- [ ] Decode cache, live-frame and GPU memory stay within documented limits on
+      approximated. (Nine camera transforms into ACEScg within 2e-5 of
+      OpenColorIO; round trips within 1e-10; PQ and HLG at the BT.2408
+      reference white within 1%; the seven unavailable ones refuse.)
+- [x] A 10-bit ramp decoded, passed through neutral grading and re-encoded at
+      10 bits is lossless to the stated bound. (Bound: 0 code values. All 128
+      samples of 11 CG0 ramps through the 16-bit cache and ACEScct; the
+      re-encode is the published Y′ equation, since 10-bit delivery is CG8.)
+- [x] A composition without color management renders byte-identically to
+      before. (Composition baselines, CG0–CG6 and effect groups unchanged.)
+- [x] Decode cache, live-frame and GPU memory stay within documented limits on
       the 4K fixture; over-budget cases fail before allocation.
-- [ ] A declared space that contradicts stream metadata produces a diagnostic.
+- [x] A declared space that contradicts stream metadata produces a diagnostic
+      (warning `comp-media-color-declared`).
+
+Owner decisions (2026-11-23): ACEScct default working space, opt-in per
+composition; no camera priority. Decisions, compositing rule and budgets:
+[CG7 decisions](./color-grading-cg7-decisions.md); numbers:
+[CG7 results](./color-grading-cg7-results.json).
 
 ## CG8 — Output transforms and 10-bit delivery
 
@@ -1023,7 +1033,11 @@ grade by a person and one by an AI, reviewed by the owner.
    on one machine are byte-identical; existing effects keep their current
    parity (exact for the CGA three, within one code for the original ten).
 4. Choose the default working space for color-managed projects (CG7).
-5. Priority order of camera input transforms (CG7).
+   **Decided 2026-11-23: ACEScct** (ACEScg its linear companion), opt-in per
+   composition.
+5. Priority order of camera input transforms (CG7). **Decided 2026-11-23: no
+   preference**; the nine validated transforms ship, the seven unavailable
+   ones keep refusing.
 6. Whether the lab grading workspace (CG14) is in scope.
 7. Supply authorized log and 10-bit footage, and say whether reference renders
    from another grading application are available for CG15.
