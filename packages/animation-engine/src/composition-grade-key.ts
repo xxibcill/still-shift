@@ -18,17 +18,16 @@ import {
   PassageError,
   type PassageDiagnostic,
 } from "@still-shift/renderer-core";
-import {
-  AnimationEngineError,
-  type Composition,
-} from "@still-shift/scene-contract";
+import type { Composition } from "@still-shift/scene-contract";
 import { matteFlicker } from "@still-shift/color-science";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { withRendererPage } from "./composition-browser-page.ts";
-import { loadComposition } from "./composition-render.ts";
 import { roundTo } from "./composition-color-round.ts";
 import { encodeColorPng } from "./composition-color-png.ts";
-import { isolatedLayerIds } from "./composition-color-probe.ts";
+import {
+  isolateLayer,
+  loadMeasuredComposition,
+} from "./composition-color-isolate.ts";
 
 export const GRADE_KEY_REPORT_VERSION = "still-shift-grade-key-1";
 /** `grade.key` `view` values by name. */
@@ -64,21 +63,9 @@ export async function measureGradeKey(
   const owner = new CompositionNodeMemory(options.nodeMemory);
   try {
     const backend = request.backend ?? "canvas2d";
-    const loaded = await loadComposition(input, backend, {
+    const loaded = await loadMeasuredComposition(input, backend, {
+      ...options,
       nodeMemory: owner,
-      ...(options.cacheDirectory
-        ? { cacheDirectory: options.cacheDirectory }
-        : {}),
-      ...(options.signal ? { signal: options.signal } : {}),
-    }).catch((error: unknown) => {
-      if (
-        error instanceof AnimationEngineError &&
-        typeof error.context?.diagnosticsJson === "string"
-      )
-        throw new PassageError(
-          JSON.parse(error.context.diagnosticsJson) as PassageDiagnostic[],
-        );
-      throw error;
     });
     const comp = loaded.composition;
     const index = comp.layers.findIndex((l) => l.id === request.layer);
@@ -112,7 +99,6 @@ export async function measureGradeKey(
         `Frames ${start}:${end} are not a non-empty range within 0:${comp.frameCount} (at most ${MAX_GRADE_KEY_FRAMES})`,
         { path: "frame-range" },
       );
-    const keep = isolatedLayerIds(comp, layer.id);
     const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
     const opaque = new Set<string>();
     for (let id: string | undefined = layer.id; id; id = parentOf.get(id))
@@ -120,9 +106,7 @@ export async function measureGradeKey(
     // The matte alone: no effects after the key (a view ends its run), the
     // layer and its parents fully opaque with the normal blend, no background.
     const variant = (view: number): Composition => ({
-      ...comp,
-      background: null,
-      layers: comp.layers.map((l, i) => {
+      ...isolateLayer(comp, layer.id, request.isolate, (l) => {
         const shown = opaque.has(l.id)
           ? ({
               ...l,
@@ -130,19 +114,18 @@ export async function measureGradeKey(
               blendMode: undefined,
             } as typeof l)
           : l;
-        if (i === index)
-          return {
-            ...shown,
-            effects: l
-              .effects!.slice(0, slot + 1)
-              .map((e, k) =>
-                k === slot ? { ...e, params: { ...e.params, view } } : e,
-              ),
-          } as typeof l;
-        return request.isolate === false || keep.has(l.id)
-          ? shown
-          : ({ ...l, enabled: false } as typeof l);
+        return l.id === layer.id
+          ? ({
+              ...shown,
+              effects: l
+                .effects!.slice(0, slot + 1)
+                .map((e, k) =>
+                  k === slot ? { ...e, params: { ...e.params, view } } : e,
+                ),
+            } as typeof l)
+          : shown;
       }),
+      background: null,
     });
     const stillView =
       request.still && request.view ? GRADE_KEY_VIEWS[request.view] : 0;

@@ -20,10 +20,7 @@ import {
   PassageError,
   type PassageDiagnostic,
 } from "@still-shift/renderer-core";
-import {
-  AnimationEngineError,
-  type Composition,
-} from "@still-shift/scene-contract";
+import type { Composition } from "@still-shift/scene-contract";
 import {
   pixelCoordinates,
   suggestQualifier,
@@ -32,7 +29,10 @@ import {
 } from "@still-shift/color-science";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { withRendererPage } from "./composition-browser-page.ts";
-import { loadComposition } from "./composition-render.ts";
+import {
+  isolateLayer,
+  loadMeasuredComposition,
+} from "./composition-color-isolate.ts";
 import { roundTo } from "./composition-color-round.ts";
 
 /**
@@ -71,21 +71,9 @@ export async function probeCompositionFile(
   const owner = new CompositionNodeMemory(options.nodeMemory);
   try {
     const backend = request.backend ?? "canvas2d";
-    const loaded = await loadComposition(input, backend, {
+    const loaded = await loadMeasuredComposition(input, backend, {
+      ...options,
       nodeMemory: owner,
-      ...(options.cacheDirectory
-        ? { cacheDirectory: options.cacheDirectory }
-        : {}),
-      ...(options.signal ? { signal: options.signal } : {}),
-    }).catch((error: unknown) => {
-      if (
-        error instanceof AnimationEngineError &&
-        typeof error.context?.diagnosticsJson === "string"
-      )
-        throw new PassageError(
-          JSON.parse(error.context.diagnosticsJson) as PassageDiagnostic[],
-        );
-      throw error;
     });
     const comp = loaded.composition;
     const layer = comp.layers.find((l) => l.id === request.layer);
@@ -103,7 +91,6 @@ export async function probeCompositionFile(
         { path: "frame" },
       );
     const region = probeRegion(comp, request);
-    const keep = isolatedLayerIds(comp, layer!.id);
     const effects = layer!.effects ?? [];
     let sampled = effects.length;
     if (request.forKey !== undefined) {
@@ -117,16 +104,12 @@ export async function probeCompositionFile(
     }
     const variants: Composition[] = Array.from(
       { length: effects.length + 1 },
-      (_, k) => ({
-        ...comp,
-        layers: comp.layers.map((l) =>
+      (_, k) =>
+        isolateLayer(comp, layer!.id, request.isolate, (l) =>
           l.id === layer!.id
             ? ({ ...l, effects: effects.slice(0, k) } as typeof l)
-            : request.isolate === false || keep.has(l.id)
-              ? l
-              : ({ ...l, enabled: false } as typeof l),
+            : l,
         ),
-      }),
     );
     const result = await withRendererPage(
       loaded.assetPaths,
@@ -288,26 +271,6 @@ export async function probeCompositionFile(
   } finally {
     owner.dispose();
   }
-}
-
-/**
- * Layers kept when isolating a layer: the layer, its parent chain and, for a
- * group, its content (every layer with the group in its parent chain).
- */
-export function isolatedLayerIds(comp: Composition, id: string) {
-  const layer = comp.layers.find((l) => l.id === id)!;
-  const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
-  const keep = new Set<string>([layer.id]);
-  for (let parent = layer.parent; parent; parent = parentOf.get(parent))
-    keep.add(parent);
-  if (layer.type === "group")
-    for (const candidate of comp.layers)
-      for (let parent = candidate.parent; parent; parent = parentOf.get(parent))
-        if (parent === layer.id) {
-          keep.add(candidate.id);
-          break;
-        }
-  return keep;
 }
 
 const mapRound = (value: { min: number; max: number; softness: number }) => ({
