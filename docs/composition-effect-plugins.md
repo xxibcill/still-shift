@@ -537,7 +537,13 @@ can supply content without changing ordinary composition visibility.
 Captured echo history uses the same visibility override as the current source;
 source in/out points and descendant visibility still apply to each historical sample.
 
-Missing or undeclared slots and cycles through inputs/mattes/groups fail with
+`optionalLayers: ["matte"]` (CG6) declares slots an instance may leave
+unbound. A bound optional slot is copied and validated like a required one; an
+unbound one is simply absent from `layers`, so the callback checks
+`layers.get(slot)`. Required and optional slots share the eight-slot bound and
+must not repeat a name.
+
+Missing required slots, undeclared slots and cycles through inputs/mattes/groups fail with
 `comp-effect-layer` or `comp-effect-cycle`. Null and adjustment layers are not
 isolated source images. Graph construction permits at most 10,000 source visits
 and 64 dependency levels, with `comp-effect-budget` on overflow. Staged source
