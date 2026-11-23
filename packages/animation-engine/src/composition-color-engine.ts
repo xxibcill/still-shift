@@ -243,7 +243,7 @@ export const engineEffects = (
   engine === "grade" ? effects.flatMap(gradeEngineEffects) : [...effects];
 
 /** Parameters with the effect definition's defaults filled in. */
-export function effectDefaults(effect: ColorCorrectionEffect) {
+export function paramsWithDefaults(effect: ColorCorrectionEffect) {
   const definition = compositionEffectDefinition(effect.effect);
   if (!definition)
     throw Error(
@@ -265,7 +265,7 @@ export function gradeRunOps(
   return effects.flatMap((effect) => {
     const op = floatGradeOp(
       effect.effect as FloatGradeEffectId,
-      effectDefaults(effect),
+      paramsWithDefaults(effect),
     );
     return op ? [op] : [];
   });
@@ -284,7 +284,7 @@ function gradeRunSegments(
     effects.map((effect) => ({
       effect: effect.effect,
       id: effect.id,
-      params: effectDefaults(effect),
+      params: paramsWithDefaults(effect),
     })),
   );
   for (const { key } of segments)

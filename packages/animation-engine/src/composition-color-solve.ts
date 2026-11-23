@@ -24,7 +24,7 @@ import {
 import {
   DEFAULT_COLOR_ENGINE,
   applyGradeRun,
-  effectDefaults,
+  paramsWithDefaults,
   engineEffects,
   type ColorEngine,
 } from "./composition-color-engine.ts";
@@ -639,7 +639,7 @@ export function applyColorEffects(
       continue;
     }
     flush();
-    const params = effectDefaults(effect);
+    const params = paramsWithDefaults(effect);
     if (isGradeEffect(effect.effect)) {
       applyGradeToRgba(gradeControls(effect.effect, params), out);
       continue;
