@@ -25,7 +25,7 @@ import { withRendererPage } from "./composition-browser-page.ts";
 import { roundTo } from "./composition-color-round.ts";
 import { encodeColorPng } from "./composition-color-png.ts";
 import {
-  isolateLayer,
+  keyInputComposition,
   loadMeasuredComposition,
 } from "./composition-color-isolate.ts";
 
@@ -99,34 +99,19 @@ export async function measureGradeKey(
         `Frames ${start}:${end} are not a non-empty range within 0:${comp.frameCount} (at most ${MAX_GRADE_KEY_FRAMES})`,
         { path: "frame-range" },
       );
-    const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
-    const opaque = new Set<string>();
-    for (let id: string | undefined = layer.id; id; id = parentOf.get(id))
-      opaque.add(id);
     // The matte alone: no effects after the key (a view ends its run), the
     // layer and its parents fully opaque with the normal blend, no background.
-    const variant = (view: number): Composition => ({
-      ...isolateLayer(comp, layer.id, request.isolate, (l) => {
-        const shown = opaque.has(l.id)
-          ? ({
-              ...l,
-              transform: { ...l.transform, opacity: 1 },
-              blendMode: undefined,
-            } as typeof l)
-          : l;
-        return l.id === layer.id
-          ? ({
-              ...shown,
-              effects: l
-                .effects!.slice(0, slot + 1)
-                .map((e, k) =>
-                  k === slot ? { ...e, params: { ...e.params, view } } : e,
-                ),
-            } as typeof l)
-          : shown;
-      }),
-      background: null,
-    });
+    const variant = (view: number): Composition =>
+      keyInputComposition(
+        comp,
+        layer.id,
+        request.isolate,
+        layer
+          .effects!.slice(0, slot + 1)
+          .map((e, k) =>
+            k === slot ? { ...e, params: { ...e.params, view } } : e,
+          ),
+      );
     const stillView =
       request.still && request.view ? GRADE_KEY_VIEWS[request.view] : 0;
     const result = await withRendererPage(
@@ -154,7 +139,9 @@ export async function measureGradeKey(
                   document.createElement("canvas"),
                   comp,
                   resources,
-                  { backend },
+                  // A transparent root: pixels outside the layer stay alpha 0
+                  // (an opaque preview would count them as key 0).
+                  { backend, preserveAlpha: true },
                 );
                 try {
                   for (

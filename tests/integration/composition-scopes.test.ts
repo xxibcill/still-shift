@@ -299,6 +299,53 @@ describe("comp probe", () => {
     const notKey = await probeKey("cdl");
     expect(notKey.code).not.toBe(0);
     expect(failure(notKey.stderr).diagnostics[0]!.code).toBe("comp-probe-key");
+
+    // R19: key suggestions come from the layer's straight value, as the key
+    // reads it: opacity, a screen blend and a coloured background change the
+    // composited stages but not the suggestion.
+    const composited = structuredClone(composition);
+    composited.background = "#336699";
+    Object.assign(composited.layers[0]!, {
+      blendMode: "screen",
+      transform: { anchor: [0, 0], opacity: 0.5 },
+    });
+    await writeFile(join(root, "probe-mixed.json"), JSON.stringify(composited));
+    const probe = (file: string, at: string) =>
+      run([
+        "probe",
+        "--input",
+        join(root, file),
+        "--layer",
+        "chart",
+        "--at",
+        at,
+        "--radius",
+        "4",
+      ]);
+    const [plain, mixed] = await Promise.all([
+      probe("probe.json", "32,96"),
+      probe("probe-mixed.json", "32,96"),
+    ]);
+    expect(mixed.code, mixed.stderr).toBe(0);
+    const plainReport = JSON.parse(plain.stdout),
+      mixedReport = JSON.parse(mixed.stdout);
+    expect(mixedReport.stages[2].bytes).not.toEqual(
+      plainReport.stages[2].bytes,
+    );
+    expect(mixedReport.gradeKey).toEqual(plainReport.gradeKey);
+    expect(mixedReport.gradeKeySampled).toEqual(plainReport.gradeKeySampled);
+
+    // A region the layer does not cover reports its stages and no suggestion.
+    const smaller = structuredClone(composition);
+    smaller.layers[0]!.size = [100, 100];
+    await writeFile(join(root, "probe-small.json"), JSON.stringify(smaller));
+    const outside = await probe("probe-small.json", "300,200");
+    expect(outside.code, outside.stderr).toBe(0);
+    const outsideReport = JSON.parse(outside.stdout);
+    expect(outsideReport.stages[0].bytes).toEqual([0, 0, 0]);
+    expect(outsideReport.qualifier).toBeNull();
+    expect(outsideReport.gradeKey).toBeNull();
+    expect(outsideReport.gradeKeySampled).toBeNull();
   });
   it("keeps a group's content when isolating, and drops unrelated layers", async () => {
     const primary = { gainMaster: 1.2 };
@@ -424,9 +471,10 @@ describe("comp probe", () => {
       [96, 64, 32],
       [48, 64, 32],
     ]);
-    // The qualifier reads the last stage's pixels: #608040 and black.
-    expect(report.qualifier.samples).toBe(64 * 48);
-    expect(report.qualifier.luminance.min).toBe(0);
+    // The suggestion reads the layer's own pixels at the last stage
+    // (#608040), not the black background beside them.
+    expect(report.qualifier.samples).toBe(32 * 48);
+    expect(report.qualifier.luminance.min).toBeGreaterThan(0.4);
     expect(report.qualifier.hue.center).toBeCloseTo(90, 0);
 
     const large = join(root, "probe-region-large.json");
@@ -608,6 +656,24 @@ describe("comp grade key (CG6)", () => {
     expect(JSON.parse(same.stdout).frames).toEqual(
       JSON.parse(plain.stdout).frames,
     );
+
+    // Only the layer's pixels are measured: a layer covering part of the
+    // frame reports its own area, not the frame's (R19).
+    const partial = structuredClone(composition);
+    partial.layers[0]!.size = [192, 128];
+    await writeFile(join(root, "key-partial.json"), JSON.stringify(partial));
+    const part = await run([
+      "grade",
+      "key",
+      "--input",
+      join(root, "key-partial.json"),
+      "--layer",
+      "chart",
+      "--effect",
+      "key",
+    ]);
+    expect(part.code, part.stderr).toBe(0);
+    expect(JSON.parse(part.stdout).frames[0].layerPixels).toBe(192 * 128);
 
     // A static key does not flicker; a missing or wrong effect is located.
     const fixed = structuredClone(composition);

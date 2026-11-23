@@ -85,3 +85,36 @@ export function isolateLayer(
     ),
   };
 }
+
+/**
+ * CG6: the composition that shows what a `grade.key` on `id` reads, the
+ * layer's own straight value: `id` isolated (as `isolateLayer`) with
+ * `effects` as its stack, the layer and its parents fully opaque with the
+ * normal blend, and no background, so pixels outside the layer stay
+ * transparent. Used by `comp grade key` (the matte) and `comp probe` (key
+ * suggestions).
+ */
+export function keyInputComposition(
+  comp: Composition,
+  id: string,
+  isolate: boolean | undefined,
+  effects: NonNullable<Layer["effects"]>,
+): Composition {
+  const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
+  const opaque = new Set<string>();
+  for (let at: string | undefined = id; at; at = parentOf.get(at))
+    opaque.add(at);
+  return {
+    ...isolateLayer(comp, id, isolate, (l) => {
+      const shown = opaque.has(l.id)
+        ? ({
+            ...l,
+            transform: { ...l.transform, opacity: 1 },
+            blendMode: undefined,
+          } as Layer)
+        : l;
+      return l.id === id ? ({ ...shown, effects } as Layer) : shown;
+    }),
+    background: null,
+  };
+}

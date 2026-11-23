@@ -389,7 +389,11 @@ input of the operations it scopes, never their output.
   suggestion as `gradeKey` (HSL) and `gradeKeySampled` (sampled OKLab)
   parameters, sampled from the stack's output (for a key added at its end)
   or, with `--for-key <id>`, from that key's input; `suggestionStage` names
-  the stage. `comp grade key --layer <id> --effect <key>` reports the key per
+  the stage. Like a key, the suggestion reads the layer's straight value
+  (the layer and its parents at full opacity with the normal blend, no
+  background) and only the pixels the layer covers; a region the layer does
+  not cover reports `qualifier`, `gradeKey` and `gradeKeySampled` as null.
+  `comp grade key --layer <id> --effect <key>` reports the key per
   frame (mean, keyed fraction, frame-to-frame flicker) over the pixels the
   layer covers, measured on the matte itself (effects after the key dropped,
   the layer and its parents at full opacity with the normal blend, no
