@@ -574,6 +574,19 @@ export async function autoColorClip(
         `${resolve(path)} already exists; choose a new path`,
         { path: option },
       );
+  // The `--diff` folder is made now, so a path that cannot be a folder (an
+  // existing file, or one under a file) fails before any work, never after
+  // the output is published.
+  if (diffPaths) {
+    const folder = dirname(diffPaths.still);
+    await mkdir(folder, { recursive: true }).catch(() =>
+      passageError(
+        "comp-auto-color-output",
+        `${folder} is not a folder that can be written; choose another --diff`,
+        { path: "diff" },
+      ),
+    );
+  }
   const clip = await openColorClip(request.input, request);
   const ordinals = colorSampleOrdinals(
     clip.probe.frameCount,
@@ -688,6 +701,7 @@ export async function autoColorClip(
   // run leaves nothing behind that would block its retry.
   let publish: (() => Promise<void>) | undefined;
   let staged: string | undefined;
+  let diffImages: { still: Buffer; sheet: Buffer } | undefined;
   try {
     if (request.output) {
       const output = resolve(request.output);
@@ -754,8 +768,10 @@ export async function autoColorClip(
       publish = () => link(verified, output);
     }
     request.signal?.throwIfAborted();
-    // Check the report's shape before anything is published.
+    // Check the report's shape and build the `--diff` images before anything
+    // is published, so neither can fail a run whose output already exists.
     AutoColorReportSchema.parse(report);
+    if (diffPaths) diffImages = colorGradeDiffImages(frames, diffAfter);
     await publish?.();
   } finally {
     // The staged render and the renderer's sidecars never stay behind.
@@ -784,11 +800,9 @@ export async function autoColorClip(
   }
   // Validate first: a report that does not match its schema is never written.
   AutoColorReportSchema.parse(report);
-  if (diffPaths) {
-    const images = colorGradeDiffImages(frames, diffAfter);
-    await mkdir(dirname(diffPaths.still), { recursive: true });
-    await writeFile(diffPaths.still, images.still, { flag: "wx" });
-    await writeFile(diffPaths.sheet, images.sheet, { flag: "wx" });
+  if (diffPaths && diffImages) {
+    await writeFile(diffPaths.still, diffImages.still, { flag: "wx" });
+    await writeFile(diffPaths.sheet, diffImages.sheet, { flag: "wx" });
   }
   await mkdir(dirname(reportTarget), { recursive: true });
   await writeFile(reportTarget, JSON.stringify(report, null, 2) + "\n", {

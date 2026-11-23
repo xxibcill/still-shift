@@ -1010,6 +1010,30 @@ describe("CGA2 A2 reports on scopes and --diff", () => {
     await expect(readdir(join(root, "a2-taken"))).rejects.toThrow();
   });
 
+  it("--diff naming a file is refused before any work, so nothing is published", async () => {
+    // Before the fix the existence check read ENOTDIR as "absent", the render
+    // was published, and only then did the diff folder fail: no report, and
+    // a retry refused because the output existed.
+    const diff = join(root, "a2-diff-file");
+    await writeFile(diff, "keep\n");
+    const output = join(root, "a2-diff-file-out", "clip.mp4");
+    try {
+      await autoColorClip({
+        input,
+        output,
+        diff,
+        cacheDirectory: cache(),
+      });
+      expect.fail("must reject");
+    } catch (error) {
+      const [diagnostic] = passageDiagnostics(error);
+      expect(diagnostic!.code).toBe("comp-auto-color-output");
+      expect(diagnostic!.path).toBe("diff");
+    }
+    expect(await readFile(diff, "utf8")).toBe("keep\n");
+    await expect(readdir(join(root, "a2-diff-file-out"))).rejects.toThrow();
+  });
+
   it("with a render, --diff shows the output: the same images as comp grade diff", async () => {
     const diff = join(root, "a2-diff-render");
     const output = join(root, "a2-render.mp4");
