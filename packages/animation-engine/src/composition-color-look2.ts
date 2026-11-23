@@ -141,6 +141,12 @@ const CandidateSchema = z
   })
   .strict();
 
+/**
+ * LUT spaces a look accepts: the legacy working space, in which CGA2's
+ * compositions render, so neither converts anything there.
+ */
+const LOOK_LUT_SPACES: readonly string[] = ["legacy-srgb", "srgb"];
+
 export const ColorLook2Schema = z
   .object({
     schemaVersion: z.literal(COLOR_LOOK_2_VERSION),
@@ -148,7 +154,11 @@ export const ColorLook2Schema = z
     space: z.enum(COLOR_LOOK_SPACES),
     /** Ordered `grade.*` operators at strength 1: a serial node list. */
     effects: z.array(LookEffectSchema).min(1).max(8),
-    /** LUT assets the effects bind; paths are relative to the look file. */
+    /**
+     * LUT assets the effects bind; paths are relative to the look file. Their
+     * tables map encoded sRGB (`LOOK_LUT_SPACES`): a look is predicted, fitted
+     * and exported without CG7's LUT space conversions.
+     */
     assets: z.array(CompositionLutAssetSchema).max(1),
     summary: z
       .object({
@@ -218,6 +228,15 @@ export const ColorLook2Schema = z
   })
   .strict()
   .superRefine((look, ctx) => {
+    look.assets.forEach((asset, index) => {
+      for (const key of ["inputSpace", "outputSpace"] as const)
+        if (!LOOK_LUT_SPACES.includes(asset[key]))
+          ctx.addIssue({
+            code: "custom",
+            path: ["assets", index, key],
+            message: `A look's LUT maps encoded sRGB (${LOOK_LUT_SPACES.join(" or ")}), not ${asset[key]}`,
+          });
+    });
     const ids = new Set<string>();
     look.effects.forEach((effect, index) => {
       if (ids.has(effect.id))

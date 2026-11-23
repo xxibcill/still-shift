@@ -375,6 +375,28 @@ describe("look 2 documents", () => {
         effects: [{ id: "x", effect: "grade.key", params: {} }],
       }),
     ).toBe("comp-look-format");
+    // A LUT in another space would render through CG7's conversions, which
+    // the look's prediction, fit and export do not model.
+    const lutLook = (inputSpace: string) => ({
+      ...valid,
+      effects: [
+        { id: "x", effect: "grade.lut", params: {}, assets: { lut: "l" } },
+      ],
+      assets: [
+        {
+          id: "l",
+          type: "lut",
+          path: "look.cube",
+          sha256: `sha256:${"0".repeat(64)}`,
+          format: "cube",
+          inputSpace,
+          outputSpace: "legacy-srgb",
+        },
+      ],
+    });
+    expect(code(lutLook("legacy-srgb"))).toBe("ok");
+    expect(code(lutLook("srgb"))).toBe("ok");
+    expect(code(lutLook("acescct"))).toBe("comp-look-format");
   });
 
   it("the legacy engine applies look 1 only", () => {
