@@ -243,25 +243,26 @@ These are recommendations to confirm at CG1, each with a fallback.
 
 ## Milestone tracker
 
-| ID   | Milestone                                          | Depends on                     | Estimate (active days) | Status          |
-| ---- | -------------------------------------------------- | ------------------------------ | ---------------------- | --------------- |
-| CGA  | Auto exposure, contrast, saturation, white balance | owner: review                  | 5–8                    | Merged (PR #70) |
-| CG0  | Fixtures, reference vectors and baseline           | owner: approval (given)        | 2–3                    | Done (branch)   |
-| CG1  | Color-science core and contract design             | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
-| CG2  | Float grade stage and primary corrections          | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
-| CG3  | Scopes, probes and machine-readable measurement    | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Done (branch)   |
-| CG4  | Curves and tonal-range tools                       | CG2                            | 4–6                    | Done (branch)   |
-| CG5  | LUT and CDL interchange                            | CG2                            | 3–5                    | Done (branch)   |
-| CG6  | Keys: qualifiers, windows and matte finesse        | CG2, CG3                       | 6–9                    | Done (branch)   |
-| CG7  | Scene-referred input and working space             | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
-| CG8  | Output transforms and 10-bit delivery              | CG7                            | 5–8                    | Proposed        |
-| CG9  | Node graph and reusable looks                      | CG4–CG6                        | 6–10                   | Proposed        |
-| CG10 | Grade lint and solvers                             | CG3, CG6                       | 4–6 (solvers seeded)   | Proposed        |
-| CG11 | AI and code authoring surface                      | CG9, CG10                      | 4–7                    | Proposed        |
-| CG12 | Tracking and object mattes                         | CG6                            | 5–8                    | Proposed        |
-| CG13 | Texture and finishing operations                   | CG6                            | 4–7                    | Proposed        |
-| CG14 | Lab grading workspace                              | CG3, CG9, owner: scope         | 8–15                   | Proposed        |
-| CG15 | Parity proof and acceptance on authorized footage  | CG8, CG9, owner: footage       | 3–5                    | Proposed        |
+| ID   | Milestone                                               | Depends on                     | Estimate (active days) | Status          |
+| ---- | ------------------------------------------------------- | ------------------------------ | ---------------------- | --------------- |
+| CGA  | Auto exposure, contrast, saturation, white balance      | owner: review                  | 5–8                    | Merged (PR #70) |
+| CGA2 | [CGA on the grade engine](./color-grading-cga2-plan.md) | CG2–CG6, owner: approval       | 10–16 (12–19 with A5)  | Approved        |
+| CG0  | Fixtures, reference vectors and baseline                | owner: approval (given)        | 2–3                    | Done (branch)   |
+| CG1  | Color-science core and contract design                  | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
+| CG2  | Float grade stage and primary corrections               | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
+| CG3  | Scopes, probes and machine-readable measurement         | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Done (branch)   |
+| CG4  | Curves and tonal-range tools                            | CG2                            | 4–6                    | Done (branch)   |
+| CG5  | LUT and CDL interchange                                 | CG2                            | 3–5                    | Done (branch)   |
+| CG6  | Keys: qualifiers, windows and matte finesse             | CG2, CG3                       | 6–9                    | Done (branch)   |
+| CG7  | Scene-referred input and working space                  | CG2, owner: working space      | 6–10 (BT.601 done)     | Proposed        |
+| CG8  | Output transforms and 10-bit delivery                   | CG7                            | 5–8                    | Proposed        |
+| CG9  | Node graph and reusable looks                           | CG4–CG6                        | 6–10                   | Proposed        |
+| CG10 | Grade lint and solvers                                  | CG3, CG6                       | 4–6 (solvers seeded)   | Proposed        |
+| CG11 | AI and code authoring surface                           | CG9, CG10                      | 4–7                    | Proposed        |
+| CG12 | Tracking and object mattes                              | CG6                            | 5–8                    | Proposed        |
+| CG13 | Texture and finishing operations                        | CG6                            | 4–7                    | Proposed        |
+| CG14 | Lab grading workspace                                   | CG3, CG9, owner: scope         | 8–15                   | Proposed        |
+| CG15 | Parity proof and acceptance on authorized footage       | CG8, CG9, owner: footage       | 3–5                    | Proposed        |
 
 CGA stands alone at about 5–8 active days. CG0–CG15 total about 75–122 active days. Estimates are planning ranges, not deadlines;
 re-estimate at entry against the then-current code.

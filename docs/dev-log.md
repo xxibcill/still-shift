@@ -43,6 +43,16 @@ still hold before relying on them.
 
 ## Current state
 
+- **CGA2 plan proposed (2026-11-23):** CGA still solves and applies with 8-bit `color.*` effects and
+  8-bit prediction tables, while CG0–CG6 are on `main`. [Plan](./color-grading-cga2-plan.md) moves
+  `comp auto-color` and `comp look fit|apply` onto the float `grade.*` run (white balance →
+  `grade.white-balance`, levels → `grade.cdl`, S-curve → `grade.curves`, vibrance → `colorBoost`;
+  prediction through `floatGradeOp`), behind solver 2 / look 2 with `--engine legacy` byte-identical.
+  Slices A0–A6, about 10–16 active days; stopping point after A2. Owner decided (2026-11-23): solver 2
+  becomes the default, and it must match the CGA renders before improvements land. Skin protection:
+  hue curve (owner deferred to the recommendation).
+  Open: look bound (needed at A0), LUT looks (A3), CGA visual review. Docs only.
+
 - **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32, merged as [PR #76](https://github.com/xxibcill/still-shift/pull/76) (`main` 51ffe62a).
   - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
   - **Owner gate D-level (done 2026-11-20):** after the local-only variant sheets, the owner answered "Confirm 1.5:1": display text needs 1.5:1 at the median edge (lowest accepted candidate 1.63; untreated or hairline-outlined display text 1.23).
@@ -127,6 +137,18 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-23 — CGA2 plan: CGA on the grade engine
+
+- **Agent / branch:** Claude Code on `codex/cga-engine-upgrade-plan` (from `main` a47fa6d0)
+- **Scope:** plan to upgrade CGA (auto-color, looks, color-stats) to the CG0–CG6 engine.
+- **Done:** audited CGA source against the engine; wrote [CGA2 plan](./color-grading-cga2-plan.md);
+  added a CGA2 row to the [engine plan tracker](./color-grading-engine-plan.md#milestone-tracker).
+- **Results:** none measured; no source changed, nothing rendered. Mapping facts reused from CG2
+  (`grade.rgb-mixer` = `color.matrix` within 1 code; white-balance chart comparison).
+- **Owner decisions (same day):** default engine "yes" (solver 2), equivalence gate "yes";
+  skin protection: hue curve (owner deferred to the recommendation).
+- **Open / next:** look bound (before A0), LUT looks (A3), CGA visual review; then A0.
 
 ### 2026-11-23 — Color grading PR #79 second review and fixes (R18–R20)
 
