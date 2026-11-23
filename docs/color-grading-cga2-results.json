@@ -6,7 +6,7 @@
   "branch": "codex/cga2-engine",
   "base": "main a47fa6d0 (plan commit 7b4aefd5)",
   "plan": "docs/color-grading-cga2-plan.md",
-  "environment": "darwin-arm64; Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed). The first exploratory runs used Node 24.16.0 by mistake; every recorded check was rerun on 22.23.1.",
+  "environment": "darwin-arm64; Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed). The first exploratory runs used Node 24.16.0 by mistake; their output was not retained, so nothing from them is recorded here, and every recorded check was rerun on 22.23.1. Retained local logs (not committed): dist/cga2/check-fast.log and check-fast-2.log (two passing check:fast runs, the second on the final 2413125c code) and dist/cga2/run.log (the A0 gate).",
   "visualAcceptance": "none; software measurements only. The owner's CGA visual review is still pending and is planned on the A6 sheets.",
   "equivalenceBound": {
     "blockRms": 1,
