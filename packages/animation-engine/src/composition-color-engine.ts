@@ -69,6 +69,8 @@ export type EngineEffect = {
   id: string;
   effect: string;
   params: Record<string, number | number[][]>;
+  /** A `grade.lut`'s asset slot; its prepared table rides under EFFECT_LUTS. */
+  assets?: Record<string, string>;
 };
 
 const round = (value: number, digits = 6) => roundTo(value, digits);
@@ -319,9 +321,11 @@ export function effectDefaults(effect: EngineEffect) {
 /** The float ops of a run of `grade.*` operators (neutral ones dropped). */
 export function gradeRunOps(effects: readonly EngineEffect[]): FloatGradeOp[] {
   return effects.flatMap((effect) => {
+    // A look's grade.lut carries its prepared table (EFFECT_LUTS).
     const op = floatGradeOp(
       effect.effect as FloatGradeEffectId,
       effectDefaults(effect),
+      effect as never,
     );
     return op ? [op] : [];
   });

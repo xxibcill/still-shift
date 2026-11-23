@@ -18,7 +18,7 @@ export type CompositionLutPreparation = {
  * fails with a located diagnostic instead of mid-render.
  */
 export async function prepareCompositionLuts(
-  composition: Composition,
+  composition: Pick<Composition, "assets">,
   baseDirectory: string,
 ): Promise<CompositionLutPreparation> {
   const assetPaths: Record<string, string> = {};
