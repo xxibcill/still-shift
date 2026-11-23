@@ -5,7 +5,7 @@
     "height": 2160
   },
   "node": {
-    "prepareMs": 1429,
+    "prepareMs": 1493,
     "cacheFrameBytes": [2688644, 2692408],
     "cacheBytes": 5382578
   },
@@ -20,9 +20,9 @@
       "hits": 0,
       "evictions": 0
     },
-    "prepareMs": 138,
-    "renderMs": 2476,
-    "sha256": "f2f817585598429a8f321f182aee1131081a4a7948954465c6e090e0bd4c7104"
+    "prepareMs": 139,
+    "renderMs": 2113,
+    "sha256": "888d9e1ade33a4b0fae52c837775013996172a3dcb4a47dda9471a0114f0f866"
   },
   "webgl2": {
     "ok": true,
@@ -35,9 +35,9 @@
       "hits": 0,
       "evictions": 0
     },
-    "prepareMs": 153,
-    "renderMs": 2087,
-    "sha256": "f2f817585598429a8f321f182aee1131081a4a7948954465c6e090e0bd4c7104"
+    "prepareMs": 140,
+    "renderMs": 2142,
+    "sha256": "888d9e1ade33a4b0fae52c837775013996172a3dcb4a47dda9471a0114f0f866"
   },
   "overBudget": {
     "ok": false,
