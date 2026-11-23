@@ -1,11 +1,9 @@
 import { bakeCubeLut, writeCubeLut } from "@still-shift/color-science";
-import {
-  FLOAT_GRADE_EFFECT_IDS,
-  GRADE_EFFECT_IDS,
-} from "@still-shift/scene-contract";
+import { GRADE_EFFECT_IDS } from "@still-shift/scene-contract";
 import type {
   Composition,
   CompositionLayer,
+  FloatGradeEffectId,
 } from "@still-shift/scene-contract";
 
 type Effect = NonNullable<CompositionLayer["effects"]>[number];
@@ -272,22 +270,35 @@ export const CE6_NATIVE_FIXTURES = [
 ] as const;
 /** CGA grade effects, kept out of the frozen color catalogue cell layout. */
 const GRADE_EFFECTS: readonly string[] = GRADE_EFFECT_IDS;
+/** Float grade cells name their effects (a new effect moves no other cell). */
+const gradeIds = (
+  ...ids: FloatGradeEffectId[]
+): readonly FloatGradeEffectId[] => ids;
 /** The CG2 float grade cell keeps its four effects (and its baseline). */
-export const CG2_FLOAT_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(0, 4);
+export const CG2_FLOAT_GRADE_EFFECTS = gradeIds(
+  "grade.primary",
+  "grade.white-balance",
+  "grade.cdl",
+  "grade.rgb-mixer",
+);
 /** CG4 curve and tonal grade effects: their own cell and baseline file. */
-export const CG4_CURVE_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(4, 7);
+export const CG4_CURVE_GRADE_EFFECTS = gradeIds(
+  "grade.curves",
+  "grade.hue-curves",
+  "grade.tonal",
+);
 /**
  * CG5: grade.lut, its own cell and baseline file. Its LUT asset is generated
  * here (license-free) and committed as `lut-grade.cube`; the unit test checks
  * the file against this text and its pinned hash.
  */
-export const CG5_LUT_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(7, 8);
+export const CG5_LUT_GRADE_EFFECTS = gradeIds("grade.lut");
 /**
  * CG6: grade.key, its own cell and baseline file. A key alone changes
  * nothing, so the cell keys a grade.primary on the orange paint inside an
  * animated ellipse window, with matte finesse.
  */
-export const CG6_KEY_GRADE_EFFECTS = FLOAT_GRADE_EFFECT_IDS.slice(8, 9);
+export const CG6_KEY_GRADE_EFFECTS = gradeIds("grade.key");
 const KEY_GRADE_PARAMS = {
   qualifier: 1,
   hueCenter: 38,
