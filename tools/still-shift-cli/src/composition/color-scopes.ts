@@ -133,6 +133,7 @@ export async function runScopeCommand(
       "frame",
       "backend",
       "isolate",
+      "for-key",
       "output",
     ]);
     const output = await optionalOutput(values, "output");
@@ -152,6 +153,7 @@ export async function runScopeCommand(
         frame,
         backend: backend(values),
         isolate: flag(values, "isolate"),
+        forKey: values.get("for-key"),
       },
     );
     await emit(io, report, output);

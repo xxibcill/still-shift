@@ -266,6 +266,39 @@ describe("comp probe", () => {
     expect(
       qualify(graded, { ...NEUTRAL_KEY_QUALIFIER, ...report.gradeKey }),
     ).toBeGreaterThan(0.9999); // ranges are rounded to 6 decimals
+    expect(report.suggestionStage).toBe("effects[cdl]");
+
+    // For an existing key, the suggestion samples that key's input.
+    const keyed = structuredClone(composition);
+    keyed.layers[0]!.effects.splice(1, 0, {
+      id: "key",
+      effect: "grade.key",
+      params: {},
+    } as never);
+    await writeFile(join(root, "probe-key.json"), JSON.stringify(keyed));
+    const probeKey = (key: string) =>
+      run([
+        "probe",
+        "--input",
+        join(root, "probe-key.json"),
+        "--layer",
+        "chart",
+        "--at",
+        "32,96",
+        "--for-key",
+        key,
+      ]);
+    const forKey = await probeKey("key");
+    expect(forKey.code, forKey.stderr).toBe(0);
+    const keyReport = JSON.parse(forKey.stdout);
+    expect(keyReport.suggestionStage).toBe("effects[primary]");
+    const keyInput = keyReport.stages[1].bytes.map((v: number) => v / 255);
+    expect(
+      qualify(keyInput, { ...NEUTRAL_KEY_QUALIFIER, ...keyReport.gradeKey }),
+    ).toBeGreaterThan(0.9999);
+    const notKey = await probeKey("cdl");
+    expect(notKey.code).not.toBe(0);
+    expect(failure(notKey.stderr).diagnostics[0]!.code).toBe("comp-probe-key");
   });
   it("keeps a group's content when isolating, and drops unrelated layers", async () => {
     const primary = { gainMaster: 1.2 };

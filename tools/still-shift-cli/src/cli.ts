@@ -99,7 +99,7 @@ Usage:
   pnpm --silent still-shift comp lint --input <composition.json|program.ts> [--policy <policy.json>] [--pixels true|false] [--backend canvas2d|webgl2] [--font-coverage legacy|strict]
   pnpm --silent still-shift comp color-stats --input <clip.mp4> [--frames 12] [--output <stats.json>]
   pnpm --silent still-shift comp scopes --input <clip.mp4> [--frames 12 | --frame-range start:end] [--region x,y,w,h] [--images <new-dir>] [--output <scopes.json>]
-  pnpm --silent still-shift comp probe --input <composition.json|program.ts> --layer <id> (--at x,y [--radius r] | --region x,y,w,h) [--frame 0] [--backend canvas2d|webgl2] [--isolate true|false] [--output <probe.json>]
+  pnpm --silent still-shift comp probe --input <composition.json|program.ts> --layer <id> (--at x,y [--radius r] | --region x,y,w,h) [--frame 0] [--backend canvas2d|webgl2] [--isolate true|false] [--for-key <grade.key id>] [--output <probe.json>]
   pnpm --silent still-shift comp grade diff --before <clip.mp4> --after <clip.mp4> [--frames 12] [--still <split.png>] [--sheet <sheet.png>] [--output <diff.json>]
   pnpm --silent still-shift comp grade key --input <composition.json|program.ts> --layer <id> --effect <grade.key id> [--frame 0 | --frame-range start:end] [--backend canvas2d|webgl2] [--isolate true|false] [--view key|highlight|contrast --still <new.png>] [--output <key.json>]
   pnpm --silent still-shift comp grade bake --input <composition.json> --layer <id> --output <new.cube> [--frame 0] [--size 33] [--title <text>]
