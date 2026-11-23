@@ -141,6 +141,14 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-24 — PR #82: post-merge review F1–F2 fixed
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a2`, after the `main` merge d181a653. The owner asked for one inline comment per finding, then one commit per fix and a push at the end.
+- **Review:** two findings posted inline on [PR #82](https://github.com/xxibcill/still-shift/pull/82#pullrequestreview-6027884774).
+- **Fixed (one commit each):** F1 (563aa897): `--diff` images were written after the output was published, so a diff file that appeared after the start-up check (or a failed write) left a published output with no report and a refused retry. The images are now staged and hard-linked into place before publish. EEXIST is reported as `comp-auto-color-output` on `diff`, and a run that fails afterwards removes the images it linked. The new test fails without the fix (raw EEXIST, output published). F2 (7fd2479c): the A2 test and `cga2-reports.ts` use `CGA_FLAT_COMBINED` instead of copies (same values).
+- **Results (Node 22.23.1):** `toolchain:check`; `check:fast` 485 files / 5,069 tests. Color suites run one file at a time: composition-color 37/37, -color-cli 6/6, -scopes 10/10, -grade-interchange 8/8, unit color-engine 20/20. `test:browser:color-grading-cga2`: four fixtures, 0 channels off. Logs `dist/pr82-fix-checks/` (not committed). Not run: `pnpm check`, full `pnpm test`, runtime tier, other browser groups.
+- **Open / next:** owner review of PR #82; rebase `codex/cga2-a3` onto the new A2 head.
+
 ### 2026-11-24 — PR #82: main merged in, retargeted to main
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a2`, merging `main` 3fd7b207 (PR #80 CGA2 A0–A1 and PR #81 CG7). PR #82 was stacked on `codex/cga2-engine`, which landed in `main` through PR #80.
