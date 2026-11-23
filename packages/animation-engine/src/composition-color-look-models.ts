@@ -154,7 +154,8 @@ export function colorLookOpsResidual(
   ops: readonly FloatGradeOp[],
   sets: readonly ColorBlockSet[],
 ): ColorLookResidual {
-  const cache = new Int32Array(1 << 24).fill(-1);
+  // Only the colors the sets hold: a full 2²⁴ table per call cost 64 MB.
+  const cache = new Map<number, number>();
   const histogram = new Float64Array(256);
   const blockErrors: number[] = [];
   let squares = 0,
@@ -162,15 +163,15 @@ export function colorLookOpsResidual(
     pixels = 0;
   const outputOf = (r: number, g: number, b: number) => {
     const key = (r << 16) | (g << 8) | b;
-    let out = cache[key]!;
-    if (out < 0) {
+    let out = cache.get(key);
+    if (out === undefined) {
       let v: Rgb = [r / 255, g / 255, b / 255];
       for (const op of ops) v = op.apply(v);
       out =
         (quantizeGrade(v[0]) << 16) |
         (quantizeGrade(v[1]) << 8) |
         quantizeGrade(v[2]);
-      cache[key] = out;
+      cache.set(key, out);
     }
     return out;
   };
