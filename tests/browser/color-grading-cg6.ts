@@ -555,6 +555,7 @@ try {
         still: Still,
         w: Record<string, unknown>,
         backend: Backend,
+        transform: object = { anchor: [0, 0], position: [0, 0] },
       ) => {
         const centre = w.windowCenter as [number, number],
           size = w.windowSize as [number, number];
@@ -575,7 +576,7 @@ try {
               type: "solid",
               size: [still.width, still.height],
               color: "#ffffff",
-              transform: { anchor: [0, 0], position: [0, 0] },
+              transform,
               masks: [
                 {
                   id: "w",
@@ -611,6 +612,48 @@ try {
             (_, i) => masked[i * 4]!,
           );
           row[backend] = diff(gray, alpha);
+        }
+        windows.push(row);
+      }
+      // Window placement in a transformed layer's space: the keyed layer and
+      // the masked solid share an offset, rotated, scaled transform.
+      const moved = {
+        anchor: [192, 128],
+        position: [204, 134],
+        rotation: 20,
+        scale: [0.8, 0.9],
+      };
+      for (const w of windowCases.slice(1, 3)) {
+        const row: Record<string, unknown> = { window: w, transform: moved };
+        for (const backend of ["canvas2d", "webgl2"] as const) {
+          const masked = windowCoverage(chart, w, backend, moved);
+          const got = renderComp(
+            chart,
+            [
+              image("image", chart, {
+                transform: moved,
+                effects: [
+                  {
+                    id: "g0",
+                    effect: "grade.key",
+                    params: { ...w, view: 1 },
+                  },
+                ],
+              }),
+            ],
+            [chart],
+            backend,
+          );
+          row[backend] = diff(
+            Array.from(
+              { length: chart.width * chart.height },
+              (_, i) => got[i * 4]!,
+            ),
+            Array.from(
+              { length: chart.width * chart.height },
+              (_, i) => masked[i * 4]!,
+            ),
+          );
         }
         windows.push(row);
       }

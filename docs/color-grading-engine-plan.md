@@ -771,13 +771,17 @@ most of what separates grading from filtering.
       ellipse and rectangle windows (rotation, roundness, feather, expansion,
       fractional geometry) equal a solid layer carrying the same mask path,
       byte for byte on both backends (by construction: the renderer draws the
-      window as that layer mask).
+      window as that layer mask), on an untransformed layer and on a layer
+      offset, rotated 20° and scaled 0.8 × 0.9 (window placement in layer
+      space; added in review).
 - [x] A matte-stability metric on the moving CG0 clip is reported per frame
       (`comp grade key`, and the CG6 browser group); finesse (denoise 2,
       clean black/white 1, blur 1.5) lowers the background key's
       frame-to-frame change away from the disc's edge by 25% (0.0043 →
-      0.0032 mean) on both backends. The fraction of changed pixels does not
-      fall (0.120 → 0.121): blur spreads small changes.
+      0.0032 mean) on both backends; over every pixel, true motion at the
+      edge included, the drop is 11.6% (0.0093 → 0.0082). The fraction of
+      changed pixels does not fall (0.120 → 0.121): blur spreads small
+      changes.
 - [x] A keyed correction leaves pixels outside the key byte-identical:
       1,647,554 key-0 pixels over 66 configuration × still × backend rows,
       opaque and translucent, 0 changed.
