@@ -14,8 +14,9 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
+import { existsSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import {
   applyColorEffects,
   autoColorClip,
@@ -1049,6 +1050,37 @@ describe("CGA2 A2 reports on scopes and --diff", () => {
     expect(await readFile(diff, "utf8")).toBe("keep\n");
     await expect(readdir(join(root, "a2-diff-file-out"))).rejects.toThrow();
   });
+
+  it("a --diff file that appears during the run is refused and nothing is published", async () => {
+    // Before the fix the images were written after the output was linked: the
+    // run failed with the output published and no report, and a retry was
+    // refused because the output existed.
+    const diff = join(root, "a2-diff-late");
+    const output = join(root, "a2-diff-late-out", "clip.mp4");
+    const { still, sheet } = autoColorDiffPaths(diff, input);
+    try {
+      await autoColorClip({
+        input,
+        output,
+        diff,
+        cacheDirectory: cache(),
+        // After the existence check at the start: another run's sheet lands.
+        progress: (message) => {
+          if (message.startsWith("rendering"))
+            writeFileSync(sheet, "keep\n", { flag: "wx" });
+        },
+      });
+      expect.fail("must reject");
+    } catch (error) {
+      const [diagnostic] = passageDiagnostics(error);
+      expect(diagnostic!.code).toBe("comp-auto-color-output");
+      expect(diagnostic!.path).toBe("diff");
+    }
+    expect(await readFile(sheet, "utf8")).toBe("keep\n");
+    expect(await readdir(diff)).toEqual([basename(sheet)]);
+    expect(existsSync(still)).toBe(false);
+    expect(await readdir(dirname(output))).toEqual([]);
+  }, 120_000);
 
   it("with a render, --diff shows the output: the same images as comp grade diff", async () => {
     const diff = join(root, "a2-diff-render");

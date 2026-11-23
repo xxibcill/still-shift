@@ -728,7 +728,15 @@ export async function autoColorClip(
   // run leaves nothing behind that would block its retry.
   let publish: (() => Promise<void>) | undefined;
   let staged: string | undefined;
-  let diffImages: { still: Buffer; sheet: Buffer } | undefined;
+  // `--diff` images staged beside their targets and linked into place before
+  // the output is published; a run that fails removes the ones it linked, so
+  // they never block its retry.
+  const stagedDiff: string[] = [];
+  const linkedDiff: string[] = [];
+  const unlinkDiff = async () => {
+    for (const path of linkedDiff.splice(0)) await rm(path, { force: true });
+  };
+  let published = false;
   try {
     if (request.output) {
       const output = resolve(request.output);
@@ -800,9 +808,42 @@ export async function autoColorClip(
     AutoColorReportSchema.parse(
       report satisfies z.input<typeof AutoColorReportSchema>,
     );
-    if (diffPaths) diffImages = colorGradeDiffImages(frames, diffAfter);
+    if (diffPaths) {
+      const images = colorGradeDiffImages(frames, diffAfter);
+      const files = [
+        [diffPaths.still, images.still],
+        [diffPaths.sheet, images.sheet],
+      ] as const;
+      for (const [target, bytes] of files) {
+        const temp = join(
+          dirname(target),
+          `.${basename(target)}.${randomUUID()}`,
+        );
+        stagedDiff.push(temp);
+        await writeFile(temp, bytes, { flag: "wx" });
+      }
+      // Like the output, a hard link never replaces a file that appeared
+      // since the check at the start.
+      for (const [index, [target]] of files.entries()) {
+        try {
+          await link(stagedDiff[index]!, target);
+        } catch (error) {
+          if ((error as NodeJS.ErrnoException).code === "EEXIST")
+            passageError(
+              "comp-auto-color-output",
+              `${target} already exists; choose a new path`,
+              { path: "diff" },
+            );
+          throw error;
+        }
+        linkedDiff.push(target);
+      }
+    }
     await publish?.();
+    published = true;
   } finally {
+    for (const path of stagedDiff) await rm(path, { force: true });
+    if (!published) await unlinkDiff();
     // The staged render and the renderer's sidecars never stay behind.
     if (staged)
       for (const path of [
@@ -812,30 +853,31 @@ export async function autoColorClip(
       ])
         await rm(path, { force: true });
   }
-  if (compositionPath) {
-    await mkdir(dirname(compositionPath), { recursive: true });
-    const composition = autoColorComposition(
-      clip,
-      audio,
-      effects,
-      dirname(compositionPath),
-    );
-    await writeFile(
-      compositionPath,
-      JSON.stringify(composition, null, 2) + "\n",
-      { flag: "wx" },
-    );
-    report.composition = compositionPath;
+  try {
+    if (compositionPath) {
+      await mkdir(dirname(compositionPath), { recursive: true });
+      const composition = autoColorComposition(
+        clip,
+        audio,
+        effects,
+        dirname(compositionPath),
+      );
+      await writeFile(
+        compositionPath,
+        JSON.stringify(composition, null, 2) + "\n",
+        { flag: "wx" },
+      );
+      report.composition = compositionPath;
+    }
+    // Validate first: a report that does not match its schema is never written.
+    AutoColorReportSchema.parse(report);
+    await mkdir(dirname(reportTarget), { recursive: true });
+    await writeFile(reportTarget, JSON.stringify(report, null, 2) + "\n", {
+      flag: "wx",
+    });
+  } catch (error) {
+    await unlinkDiff();
+    throw error;
   }
-  // Validate first: a report that does not match its schema is never written.
-  AutoColorReportSchema.parse(report);
-  if (diffPaths && diffImages) {
-    await writeFile(diffPaths.still, diffImages.still, { flag: "wx" });
-    await writeFile(diffPaths.sheet, diffImages.sheet, { flag: "wx" });
-  }
-  await mkdir(dirname(reportTarget), { recursive: true });
-  await writeFile(reportTarget, JSON.stringify(report, null, 2) + "\n", {
-    flag: "wx",
-  });
   return report;
 }
