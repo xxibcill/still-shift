@@ -817,8 +817,10 @@ export function sourceEncodingOf(color: CompositionMediaColor): SourceEncoding {
 /**
  * Take the run the source stage can run off the front of a stack (`effects`,
  * edited in place): enabled `grade.*` effects without an effect window, up to
- * the first `grade.key` that reads neighbours or other layers (a window, a
- * matte or matte finesse). Disabled effects inside the run leave the stack
+ * the first `grade.key` that is not pointwise: one that reads neighbours or
+ * other layers (a window, a matte or matte finesse) or position (a gradient,
+ * whose placement maps composition pixels, not source-frame pixels). The
+ * stage is therefore strictly per pixel. Disabled effects inside the run leave the stack
  * with it but are not returned: the stage runs exactly what it gets, like
  * `floatGradeRun`, which skips them too.
  */
@@ -829,7 +831,7 @@ export function takeSourceStage(effects: RenderEffect[]): RenderEffect[] {
     if (!isFloatGradeEffect(effect.effect) || effect.window) break;
     if (effect.effect === GRADE_KEY) {
       const spec = keySpec(effect as never);
-      if (spec.window || spec.matte || spec.spatial) break;
+      if (spec.window || spec.matte || spec.spatial || spec.gradient) break;
     }
     length = index + 1;
   }

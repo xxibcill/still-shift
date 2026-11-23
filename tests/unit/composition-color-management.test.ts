@@ -338,6 +338,17 @@ describe("source stage", () => {
     expect(takeSourceStage(idle)).toEqual([]);
     expect(idle).toEqual([off, blur]);
   });
+  it("ends the run at a gradient key, which needs composition positions", () => {
+    const before = effect("before", "grade.primary", { gainMaster: 1.1 });
+    const gradient = effect("key", "grade.key", { gradient: 1 });
+    const after = effect("after", "grade.primary", { gainMaster: 0.9 });
+    const stack = [before, gradient, after];
+    expect(takeSourceStage(stack)).toEqual([before]);
+    expect(stack).toEqual([gradient, after]);
+    // A pointwise qualifier key stays in the stage.
+    const qualifier = effect("q", "grade.key", { qualifier: 1 });
+    expect(takeSourceStage([qualifier, after])).toEqual([qualifier, after]);
+  });
   it("renders a stack with a disabled effect as the stack without it", () => {
     const off = effect("off", "grade.primary", { offsetMaster: 0.2 }, false);
     const on = effect("on", "grade.primary", {});

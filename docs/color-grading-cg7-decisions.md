@@ -100,9 +100,11 @@ In a color-managed composition:
   color-managed composition, whatever its metadata (an 8-bit SDR clip
   round-trips exactly). 16-bit decoded frame → input transform → working → the
   layer's **leading pointwise grade run** → working → display → RGBA8 frame,
-  which the layer then draws normally. Pointwise means every `grade.*` except
-  a `grade.key` with a window, a matte or matte finesse (neighbourhood); the
-  stage stops before the first such key, and that key, the rest of the run and
+  which the layer then draws normally. Pointwise means every enabled
+  `grade.*` except a `grade.key` with a window, a matte or matte finesse
+  (neighbourhood) or a gradient (position: its placement maps composition
+  pixels, not source-frame pixels); disabled effects in the run are skipped.
+  The stage stops before the first such key, and that key, the rest of the run and
   every later effect run after the draw on display-referred values. Sequences
   are sRGB PNGs by contract and stay display-referred (8-bit, as today).
 - **Input transforms** (all to linear AP1): camera encodings by their validated
