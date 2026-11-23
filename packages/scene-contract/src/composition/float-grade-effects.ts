@@ -255,7 +255,8 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
    * `invert` (finesse and invert need a qualifier: without one, setting
    * them is an error); W the ellipse (1) or
    * rectangle (2) window, a layer mask in layer space; G the linear gradient;
-   * M the optional `matte` layer (alpha 0 or luma 1, levels, invert). Each
+   * M the optional `matte` layer (alpha 0 or luma 1, levels, invert; a depth
+   * image or matte sequence is such a layer, read by luma). Each
    * pixel mixes input and result by the key; `view` 1–3 shows the key (gray,
    * highlight, high contrast) for preview, and export refuses a set view.
    * Every default selects everything (key 1).

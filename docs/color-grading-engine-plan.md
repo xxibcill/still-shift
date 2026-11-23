@@ -784,7 +784,10 @@ its run (a CG9 serial node lowers to it); the matte is an optional layer
 slot (`optionalLayers`). A key has no path window of its own: windows from
 layer masks and shape paths come from a masked layer or a shape layer bound
 to the `matte` slot and read by alpha (both tested against the matte as
-rendered: Canvas exact, WebGL2 ≤ 1 code); the linear gradient is computed, not rasterized
+rendered: Canvas exact, WebGL2 ≤ 1 code). The external matte has two
+sources, alpha (`matteMode` 0) and luma (1): a depth image or a supplied
+matte sequence is an image, video or sequence layer bound to the slot and
+read by luma (or alpha), not a mode of its own; the linear gradient is computed, not rasterized
 (deviation); CE6 cell `catalogue-key-grade` has its own baseline. Matte views
 reach preview through the `view` parameter and the CLI through
 `comp grade key --view`; the lab key editor is CG14.
