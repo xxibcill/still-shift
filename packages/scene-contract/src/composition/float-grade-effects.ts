@@ -3,6 +3,7 @@ import {
   type CompositionEffectDefinition,
   type EffectProperty,
 } from "./effect-definition.ts";
+import { COMPOSITION_CONVERSION_SPACES } from "./color-management.ts";
 import {
   COLOR_MATRIX_COEFFICIENTS,
   COLOR_MATRIX_OFFSETS,
@@ -107,6 +108,7 @@ export const FLOAT_GRADE_EFFECT_IDS = [
   "grade.tonal",
   "grade.lut",
   "grade.key",
+  "grade.color-space-transform",
 ] as const;
 export type FloatGradeEffectId = (typeof FLOAT_GRADE_EFFECT_IDS)[number];
 export const isFloatGradeEffect = (id: string): id is FloatGradeEffectId =>
@@ -334,4 +336,16 @@ export const FLOAT_GRADE_EFFECT_DEFINITIONS: Readonly<
     },
     { usesLayerSpace: true, optionalLayers: [GRADE_KEY_MATTE_SLOT] },
   ),
+  /**
+   * CG7: an explicit conversion inside a grade run: values are read as
+   * `from` and written as `to` (codes index COMPOSITION_CONVERSION_SPACES: 0
+   * ACEScct, 1 ACEScg, 2 ACES2065-1, 3 linear BT.709, 4 sRGB-encoded BT.709,
+   * 5 linear BT.2020, 6 linear P3-D65): decode `from`'s curve, one 3×3
+   * (Bradford when the whites differ), encode `to`'s curve. `from == to` is
+   * neutral. Pointwise; allowed with or without color management.
+   */
+  "grade.color-space-transform": effect({
+    from: scalar(0, 0, COMPOSITION_CONVERSION_SPACES.length - 1, true),
+    to: scalar(0, 0, COMPOSITION_CONVERSION_SPACES.length - 1, true),
+  }),
 };

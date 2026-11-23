@@ -169,3 +169,27 @@ export type {
   RgbRanges,
   SampledRange,
 } from "./keys.ts";
+export {
+  COLOR_SPACE_TRANSFORM_SPACES,
+  conversionMatrix,
+  DEFAULT_MANAGED_WORKING_SPACE,
+  DISPLAY_SPACE,
+  displayToWorking,
+  HLG_NOMINAL_PEAK,
+  HLG_SYSTEM_GAMMA,
+  PQ_UNIT_LUMINANCE,
+  sourceTransform,
+  spaceConversion,
+  spaceEncoding,
+  WORKING_SPACES,
+  workingEncoding,
+  workingToDisplay,
+} from "./working-space.ts";
+export type {
+  ConversionSpace,
+  SourceEncoding,
+  SourceTransform,
+  SpaceConversion,
+  SpaceEncoding,
+  WorkingSpace,
+} from "./working-space.ts";

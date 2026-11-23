@@ -38,20 +38,28 @@ import {
   type Mat3,
   keyView,
   mixKeyed,
+  sourceTransform,
+  spaceConversion,
+  workingEncoding,
+  type SourceEncoding,
+  COLOR_SPACE_TRANSFORM_SPACES,
   type Rgb,
+  type WorkingSpace,
 } from "@still-shift/color-science";
 import {
   COLOR_MATRIX_COEFFICIENTS,
   COLOR_MATRIX_OFFSETS,
   compositionEffectDefinition,
+  compositionSceneSample,
   GRADE_KEY_MATTE_SLOT,
+  type CompositionMediaColor,
   isFloatGradeEffect,
   type FloatGradeEffectId,
 } from "@still-shift/scene-contract";
 import { readRenderImageData } from "../../managed-memory-context.ts";
 import type { CompositionEffectPlugin } from "./effect-plugins.ts";
 import { assertEffectVersion, COPY_SHADER } from "./effect-shared.ts";
-import type { RenderEffect } from "./graph.ts";
+import type { RenderEffect, SceneStage } from "./graph.ts";
 import type { Matrix } from "../../node-transform.ts";
 import {
   evaluateKey,
@@ -129,7 +137,51 @@ export type FloatGradeOp = {
 };
 
 /** The effect a run member came from (its prepared LUTs ride under a symbol). */
-type OpSource = { [EFFECT_LUTS]?: Readonly<Record<string, PreparedLut>> };
+type OpSource = {
+  [EFFECT_LUTS]?: Readonly<Record<string, PreparedLut>>;
+  /** CG7: the composition's working space (absent: legacy-srgb). */
+  workingSpace?: WorkingSpace | undefined;
+  /** CG7: declared spaces of LUT assets by slot (absent: legacy-srgb). */
+  lutSpaces?: Readonly<Record<string, { input: string; output: string }>>;
+};
+
+/** A LUT or working space as a conversion space (`legacy-srgb` is sRGB). */
+const conversionSpace = (space: string) =>
+  space === "legacy-srgb" ? "srgb" : space;
+
+/**
+ * CG7: the largest ACEScct value a conversion decodes (linear ≈ 4.2e7, far
+ * above GRADE_LIMIT); larger inputs decode as this. Without it, values up to
+ * GRADE_LIMIT overflow to Infinity and the next 3×3 can compute Inf − Inf.
+ * The CPU op and `gCctDec` share it, so both backends agree.
+ */
+export const ACESCCT_DECODE_CEILING = 2;
+
+/**
+ * CG7: one conversion between spaces as an op (decode `from`'s curve, one
+ * 3×3, encode `to`'s curve, limited to ±GRADE_LIMIT), or null for the same
+ * space. Run entry/exit conversions, `grade.color-space-transform` and LUT
+ * spaces all use it.
+ */
+export function conversionOp(from: string, to: string): FloatGradeOp | null {
+  const c = spaceConversion(conversionSpace(from), conversionSpace(to));
+  if (c.identity) return null;
+  const curve = (id: string | null, end: "Dec" | "Enc") =>
+    id === null ? "" : id === "srgb" ? `gSrgb${end}` : `gCct${end}`;
+  const ceiling = c.decode === "acescct" ? ACESCCT_DECODE_CEILING : Infinity;
+  return {
+    id: "grade.color-space-transform",
+    apply(v) {
+      const o = c.apply(perChannel((i) => Math.min(v[i], ceiling)));
+      return perChannel((i) => limitGrade(o[i]));
+    },
+    glsl: (u) => ({
+      declare: `uniform mat3 ${u("Space")};`,
+      call: `v=gLimit3(${curve(c.encode, "Enc")}(${u("Space")}*${curve(c.decode, "Dec")}(v)));`,
+      uniforms: { [u("Space")]: columns(c.matrix) },
+    }),
+  };
+}
 
 /**
  * The baked tables of the curves that are present (null: identity or flat),
@@ -400,6 +452,11 @@ const OPERATORS: Readonly<
       }),
     };
   },
+  "grade.color-space-transform": (p) =>
+    conversionOp(
+      COLOR_SPACE_TRANSFORM_SPACES[n(p, "from")]!,
+      COLOR_SPACE_TRANSFORM_SPACES[n(p, "to")]!,
+    ),
   "grade.lut": (p, source) => {
     const intensity = n(p, "intensity");
     if (intensity === 0) return null;
@@ -411,35 +468,61 @@ const OPERATORS: Readonly<
     const { lut } = prepared;
     const trilinear = n(p, "interpolation") >= 0.5;
     const interpolation = trilinear ? "trilinear" : "tetrahedral";
+    // CG7: working → the LUT's input space, the table, its output space →
+    // working; the mix with `intensity` stays in the working space. An asset
+    // without declared spaces is `legacy-srgb` (encoded sRGB): it converts
+    // nothing in a legacy composition (CG5 unchanged) and is wrapped
+    // working → sRGB → table → working in a color-managed one.
+    const working = source?.workingSpace ?? "legacy-srgb";
+    const spaces = source?.lutSpaces?.lut ?? {
+      input: "legacy-srgb",
+      output: "legacy-srgb",
+    };
+    const into = conversionOp(working, spaces.input);
+    const back = conversionOp(spaces.output, working);
+    const converted = into !== null || back !== null;
     return {
       id: "grade.lut",
       apply: (v) => {
-        const o = sampleLut(lut, v, interpolation);
+        const x = into ? into.apply(v) : v;
+        const t = sampleLut(lut, x, interpolation);
+        const o = back ? back.apply(t) : t;
         return perChannel((c) => limitGrade(v[c] + intensity * (o[c] - v[c])));
       },
       lutFloats: prepared.floats,
-      glsl: (u, { lutBase }) => ({
-        declare: `uniform vec4 ${u("Lut")};uniform vec4 ${u("LutAt")};uniform vec3 ${u("LutLo")};uniform vec3 ${u("LutHi")};uniform float ${u("ShaperSize")};uniform vec3 ${u("ShaperLo")};uniform vec3 ${u("ShaperHi")};`,
-        call: `v=gLut(v,${u("Lut")},${u("LutAt")},${u("LutLo")},${u("LutHi")},${u("ShaperSize")},${u("ShaperLo")},${u("ShaperHi")});`,
-        uniforms: {
-          [u("Lut")]: [
-            lut.size,
-            lut.kind === "3d" ? 1 : 0,
-            trilinear ? 1 : 0,
-            intensity,
-          ],
-          // The main table's texel, then the shaper's (it comes first).
-          [u("LutAt")]: [
-            ...lutTexel(lutBase + prepared.base),
-            ...lutTexel(lutBase),
-          ],
-          [u("LutLo")]: [...lut.domainMin],
-          [u("LutHi")]: [...lut.domainMax],
-          [u("ShaperSize")]: lut.shaper?.size ?? 0,
-          [u("ShaperLo")]: [...(lut.shaper?.domainMin ?? [0, 0, 0])],
-          [u("ShaperHi")]: [...(lut.shaper?.domainMax ?? [1, 1, 1])],
-        },
-      }),
+      glsl: (u, resources) => {
+        const lutBase = resources.lutBase;
+        const parts = [into, back].map((op, i) =>
+          op?.glsl((name) => u(`${i ? "Out" : "In"}${name}`), resources),
+        );
+        const table = `gLut(${converted ? "gx" : "v"},${u("Lut")},${u("LutAt")},${u("LutLo")},${u("LutHi")},${u("ShaperSize")},${u("ShaperLo")},${u("ShaperHi")})`;
+        return {
+          declare: `uniform vec4 ${u("Lut")};uniform vec4 ${u("LutAt")};uniform vec3 ${u("LutLo")};uniform vec3 ${u("LutHi")};uniform float ${u("ShaperSize")};uniform vec3 ${u("ShaperLo")};uniform vec3 ${u("ShaperHi")};${converted ? `uniform float ${u("Mix")};` : ""}${parts.map((part) => part?.declare ?? "").join("")}`,
+          call: converted
+            ? `{vec3 vIn=v;${parts[0]?.call ?? ""}vec3 gx=v;v=${table};${parts[1]?.call ?? ""}v=gLimit3(vIn+${u("Mix")}*(v-vIn));}`
+            : `v=${table};`,
+          uniforms: {
+            ...Object.assign({}, ...parts.map((part) => part?.uniforms ?? {})),
+            ...(converted ? { [u("Mix")]: intensity } : {}),
+            [u("Lut")]: [
+              lut.size,
+              lut.kind === "3d" ? 1 : 0,
+              trilinear ? 1 : 0,
+              converted ? 1 : intensity,
+            ],
+            // The main table's texel, then the shaper's (it comes first).
+            [u("LutAt")]: [
+              ...lutTexel(lutBase + prepared.base),
+              ...lutTexel(lutBase),
+            ],
+            [u("LutLo")]: [...lut.domainMin],
+            [u("LutHi")]: [...lut.domainMax],
+            [u("ShaperSize")]: lut.shaper?.size ?? 0,
+            [u("ShaperLo")]: [...(lut.shaper?.domainMin ?? [0, 0, 0])],
+            [u("ShaperHi")]: [...(lut.shaper?.domainMax ?? [1, 1, 1])],
+          },
+        };
+      },
     };
   },
 };
@@ -478,6 +561,12 @@ vec3 gLimit3(vec3 v){return clamp(v,-LIMIT,LIMIT);}
 float gPow(float x,float p){return (x<0.0||p==1.0)?x:(x>1.0&&log2(x)*p>=${LOG2_GRADE_LIMIT})?LIMIT:pow(x,p);}
 vec3 gPow3(vec3 x,vec3 p){return vec3(gPow(x.r,p.r),gPow(x.g,p.g),gPow(x.b,p.b));}
 float gDec(float v){float a=abs(v);float l=a<=0.04045?a/12.92:pow((a+0.055)/1.055,2.4);return v<0.0?-l:l;}
+// CG7: conversion curves exactly as @still-shift/color-science (negatives
+// follow the linear segment; nothing is mirrored).
+vec3 gSrgbDec(vec3 v){return mix(v/12.92,pow((max(v,0.04045)+0.055)/1.055,vec3(2.4)),greaterThan(v,vec3(0.04045)));}
+vec3 gSrgbEnc(vec3 l){return mix(l*12.92,1.055*pow(max(l,0.0031308),vec3(1.0/2.4))-0.055,greaterThan(l,vec3(0.0031308)));}
+vec3 gCctDec(vec3 v){return mix((v-0.0729055341958355)/10.5402377416545,exp2(min(v,${ACESCCT_DECODE_CEILING.toFixed(1)})*17.52-9.72),greaterThan(v,vec3(0.155251141552511)));}
+vec3 gCctEnc(vec3 x){return mix(10.5402377416545*x+0.0729055341958355,(log2(max(x,0.0078125))+9.72)/17.52,greaterThan(x,vec3(0.0078125)));}
 float gEnc(float l){float a=abs(l);float v=a<=0.0031308?a*12.92:1.055*pow(a,1.0/2.4)-0.055;return l<0.0?-v:v;}
 vec3 gPrimary(vec3 v,vec3 lift,vec3 gammaInv,vec3 gain,vec3 offs,vec4 tone,vec2 sh,float hueOn,mat3 hue){
   vec3 l=v+lift*(1.0-v);
@@ -678,7 +767,10 @@ type RunMember = {
   inputs?: Readonly<Record<string, string>> | undefined;
 } & OpSource;
 
-export function floatGradeSegments(members: readonly RunMember[]): Segment[] {
+export function floatGradeSegments(
+  members: readonly RunMember[],
+  convert = true,
+): Segment[] {
   const all: Segment[] = [{ key: null, ops: [] }];
   for (const member of members) {
     if (member.effect === GRADE_KEY) {
@@ -699,7 +791,177 @@ export function floatGradeSegments(members: readonly RunMember[]): Segment[] {
     kept.push(segment);
     if (segment.key?.view) break;
   }
-  return kept;
+  return convert ? inWorkingSpace(kept, members[0]?.workingSpace) : kept;
+}
+
+// --- CG7 source stage -------------------------------------------------------
+
+/** A video asset's color descriptor as its source encoding (CG7). */
+export function sourceEncodingOf(color: CompositionMediaColor): SourceEncoding {
+  if (color.encoding) return { kind: "camera", id: color.encoding };
+  const primaries =
+    color.primaries === "bt2020"
+      ? "bt2020"
+      : color.primaries === "smpte432"
+        ? "p3-d65"
+        : "bt709";
+  const transfer =
+    color.transfer === "smpte2084"
+      ? "pq"
+      : color.transfer === "arib-std-b67"
+        ? "hlg"
+        : "srgb";
+  return { kind: "display", primaries, transfer };
+}
+
+/**
+ * Take the run the source stage can run off the front of a stack (`effects`,
+ * edited in place): enabled `grade.*` effects without an effect window, up to
+ * the first `grade.key` that is not pointwise: one that reads neighbours or
+ * other layers (a window, a matte or matte finesse) or position (a gradient,
+ * whose placement maps composition pixels, not source-frame pixels). The
+ * stage is therefore strictly per pixel. Disabled effects inside the run leave the stack
+ * with it but are not returned: the stage runs exactly what it gets, like
+ * `floatGradeRun`, which skips them too.
+ */
+export function takeSourceStage(effects: RenderEffect[]): RenderEffect[] {
+  let length = 0;
+  for (const [index, effect] of effects.entries()) {
+    if (!effect.enabled) continue;
+    if (!isFloatGradeEffect(effect.effect) || effect.window) break;
+    if (effect.effect === GRADE_KEY) {
+      const spec = keySpec(effect as never);
+      if (spec.window || spec.matte || spec.spatial || spec.gradient) break;
+    }
+    length = index + 1;
+  }
+  return effects.splice(0, length).filter((effect) => effect.enabled);
+}
+
+/**
+ * Pixels per strip of the source stage: its float64 working set is about
+ * 32 B per pixel (value, alpha, key planes), so 64 Ki pixels is about 2 MiB
+ * whatever the frame size.
+ */
+export const SOURCE_STAGE_STRIP_PIXELS = 65536;
+
+/**
+ * The source stage on one decoded frame, float64 on both backends: 16-bit
+ * encoded samples → input transform → working space → the stage's grade
+ * segments → display → straight RGBA8 (opaque). Byte-identical on Canvas and
+ * WebGL by construction.
+ *
+ * Every stage operation is per pixel (`takeSourceStage`), so the frame is
+ * processed in strips of whole rows (`stripPixels`, at least one row) with
+ * a bounded working set instead of a float64 copy of the frame (about
+ * 190 MiB at 4K); strips give the same bytes as one pass.
+ */
+export function sourceStagePixels(
+  samples: Uint16Array,
+  width: number,
+  height: number,
+  stage: SceneStage,
+  out: Uint8ClampedArray,
+  stripPixels = SOURCE_STAGE_STRIP_PIXELS,
+): void {
+  const input = sourceTransform(stage.encoding, stage.working);
+  const display = conversionOp(workingEncoding(stage.working), "srgb");
+  const segments = floatGradeSegments(
+    stage.effects as unknown as RunMember[],
+    false,
+  );
+  const view = segments.find((segment) => segment.key?.view)?.key?.view;
+  const stripRows = Math.max(
+    1,
+    Math.min(height, Math.floor(stripPixels / width)),
+  );
+  const value = new Float64Array(width * stripRows * 3);
+  const alpha = new Uint8Array(width * stripRows).fill(255);
+  const at = (i: number): Rgb => [
+    value[i * 3]!,
+    value[i * 3 + 1]!,
+    value[i * 3 + 2]!,
+  ];
+  const run = (ops: readonly FloatGradeOp[], v: Rgb) => {
+    let o = v;
+    for (const op of ops) o = op.apply(o);
+    return o;
+  };
+  for (let top = 0; top < height; top += stripRows) {
+    const rows = Math.min(stripRows, height - top);
+    const first = top * width,
+      count = rows * width;
+    // Identical samples convert alike: memoize on the 48-bit code.
+    let lastKey = -1,
+      last: Rgb = [0, 0, 0];
+    for (let i = 0; i < count; i++) {
+      const at4 = (first + i) * 4;
+      const r = samples[at4]!,
+        g = samples[at4 + 1]!,
+        b = samples[at4 + 2]!;
+      const key = r * 4294967296 + g * 65536 + b;
+      if (key !== lastKey) {
+        last = input.toWorking([
+          compositionSceneSample(r),
+          compositionSceneSample(g),
+          compositionSceneSample(b),
+        ]);
+        lastKey = key;
+      }
+      value[i * 3] = last[0];
+      value[i * 3 + 1] = last[1];
+      value[i * 3 + 2] = last[2];
+    }
+    for (const segment of segments) {
+      const k = segment.key;
+      const key = k
+        ? evaluateKey(k, width, rows, value, alpha, new Map() as KeyPlanes)
+        : undefined;
+      for (let i = 0; i < count; i++) {
+        const a = at(i),
+          b = run(segment.ops, a);
+        const o = !k
+          ? b
+          : k.view
+            ? keyView(k.view, key![i]!, b)
+            : key![i]! > 0
+              ? mixKeyed(a, b, key![i]!)
+              : a;
+        value[i * 3] = o[0];
+        value[i * 3 + 1] = o[1];
+        value[i * 3 + 2] = o[2];
+      }
+    }
+    for (let i = 0; i < count; i++) {
+      const v = view || !display ? at(i) : display.apply(at(i));
+      const o = (first + i) * 4;
+      out[o] = quantizeGrade(v[0]);
+      out[o + 1] = quantizeGrade(v[1]);
+      out[o + 2] = quantizeGrade(v[2]);
+      out[o + 3] = 255;
+    }
+  }
+}
+
+/**
+ * CG7: a run that changes something, in a color-managed composition, enters
+ * its working space from display (encoded sRGB) and leaves it again before
+ * the one quantization, so its keys and operators see working values. A
+ * key view ends the run with the key itself, which needs no conversion.
+ */
+function inWorkingSpace(
+  segments: Segment[],
+  space: WorkingSpace | undefined,
+): Segment[] {
+  if (!segments.length || !space || space === "legacy-srgb") return segments;
+  const into = conversionOp("srgb", workingEncoding(space))!;
+  const out = conversionOp(workingEncoding(space), "srgb")!;
+  const first = segments[0]!;
+  const result = first.key
+    ? [{ key: null, ops: [into] }, ...segments]
+    : [{ key: null, ops: [into, ...first.ops] }, ...segments.slice(1)];
+  if (!result.at(-1)!.key?.view) result.push({ key: null, ops: [out] });
+  return result;
 }
 
 /** Texture samplers of a keyed run: 0–2 as the unkeyed run, then each key's. */
@@ -1084,7 +1346,13 @@ export function floatGradeRun(
     members.push(effect);
     end = i;
   }
-  if (members.length < 2 && !members.some((m) => needsSource(m.effect)))
+  // A lone effect is a run in a color-managed composition: it needs the
+  // working space conversions (CG7).
+  if (
+    members.length < 2 &&
+    !members.some((m) => needsSource(m.effect)) &&
+    !(first as OpSource).workingSpace
+  )
     return undefined;
   // Key layer slots from the members' parameters (the segments, with their
   // ops, are built inside the stage so errors carry its location).

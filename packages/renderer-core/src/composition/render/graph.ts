@@ -14,8 +14,13 @@ import type {
 import {
   compositionEffectDefinition,
   compositionMediaFrameId,
+  compositionWorkingSpace,
+  isFloatGradeEffect,
+  type CompositionWorkingSpace,
 } from "@still-shift/scene-contract";
 import type { SampledCompositionMedia } from "../evaluate/media.ts";
+import type { SourceEncoding } from "@still-shift/color-science";
+import { sourceEncodingOf, takeSourceStage } from "./float-grade.ts";
 import {
   primitiveBlurEffect,
   effectBounds,
@@ -91,6 +96,10 @@ export type RenderEffect = EvaluatedEffect & {
   assetHashes?: Readonly<Record<string, string>>;
   /** CG5: prepared LUTs by asset slot (a symbol: never serialized). */
   [EFFECT_LUTS]?: Readonly<Record<string, PreparedLut>>;
+  /** CG7: a `grade.*` effect's working space in a color-managed composition. */
+  workingSpace?: Exclude<CompositionWorkingSpace, "legacy-srgb">;
+  /** CG7: declared spaces of bound LUT assets that are not legacy-srgb. */
+  lutSpaces?: Readonly<Record<string, { input: string; output: string }>>;
 };
 
 type TextLayer = Extract<CompositionLayer, { type: "text" }>;
@@ -148,7 +157,15 @@ export type ImageContent = {
   state: number;
   stateFrom?: number;
   stateMix?: number;
-  media?: Pick<SampledCompositionMedia, "asset" | "sourceHash" | "pair">;
+  media?: Pick<SampledCompositionMedia, "asset" | "sourceHash" | "pair"> & {
+    /**
+     * CG7: a video layer in a color-managed composition draws its 16-bit
+     * frames through the source stage: input transform → working space →
+     * `effects` (the layer's leading pointwise grade run, moved here from
+     * its effect stack) → display.
+     */
+    scene?: SceneStage;
+  };
   plane?: {
     shaderVersion: string;
     owner: string;
@@ -158,6 +175,32 @@ export type ImageContent = {
     controls: ImageLayer["plane"];
     motion: SampledImagePlane;
   };
+};
+/**
+ * CG7: move a video layer's leading pointwise grade run from its effect stack
+ * (`effects`, edited in place) into its draw's source stage.
+ */
+function sourceStaged(
+  content: LayerContent,
+  effects: RenderEffect[],
+): LayerContent {
+  const scene = content.type === "image" ? content.media?.scene : undefined;
+  const staged = scene ? takeSourceStage(effects) : [];
+  if (!staged.length) return content;
+  const image = content as ImageContent;
+  return {
+    ...image,
+    media: {
+      ...image.media!,
+      scene: { ...scene!, effects: staged },
+    },
+  };
+}
+/** CG7: what the source stage runs on a video layer's decoded frames. */
+export type SceneStage = {
+  working: Exclude<CompositionWorkingSpace, "legacy-srgb">;
+  encoding: SourceEncoding;
+  effects: RenderEffect[];
 };
 export type DepthImageContent = {
   shaderVersion: string;
@@ -695,7 +738,25 @@ class GraphBuilder {
       original.assets!,
       (asset) => this.options.luts?.get(asset.id),
     );
-    return { ...original, assetHashes: hashes, [EFFECT_LUTS]: luts };
+    const lutSpaces: Record<string, { input: string; output: string }> = {};
+    for (const [slot, id] of Object.entries(original.assets!)) {
+      const asset = this.comp.assets.find((a) => a.id === id);
+      if (
+        asset?.type === "lut" &&
+        (asset.inputSpace !== "legacy-srgb" ||
+          asset.outputSpace !== "legacy-srgb")
+      )
+        lutSpaces[slot] = {
+          input: asset.inputSpace,
+          output: asset.outputSpace,
+        };
+    }
+    return {
+      ...original,
+      assetHashes: hashes,
+      [EFFECT_LUTS]: luts,
+      ...(Object.keys(lutSpaces).length ? { lutSpaces } : {}),
+    };
   }
   private effectInputs(
     scope: Scope,
@@ -705,7 +766,7 @@ class GraphBuilder {
     state: EvaluatedLayer,
   ): RenderEffect {
     if (original.assets) original = this.effectAssets(original);
-    const effect: RenderEffect = isMeshEffect(original)
+    let effect: RenderEffect = isMeshEffect(original)
       ? {
           ...original,
           [MESH_DIAGNOSTIC_LOCATION]: this.meshDiagnosticLocation(
@@ -716,6 +777,9 @@ class GraphBuilder {
           ),
         }
       : original;
+    const space = compositionWorkingSpace(this.comp);
+    if (space !== "legacy-srgb" && isFloatGradeEffect(effect.effect))
+      effect = { ...effect, workingSpace: space };
     if (!effect.inputs || !Object.keys(effect.inputs).length) return effect;
     const layerInputs: Record<string, RenderOp[]> = {};
     for (const [slot, id] of Object.entries(effect.inputs)) {
@@ -1295,7 +1359,24 @@ class GraphBuilder {
           state: pair.first === pair.second ? 0 : 1,
           stateFrom: 0,
           stateMix: pair.mix,
-          media: { asset: asset.id, sourceHash: asset.sha256, pair },
+          media: {
+            asset: asset.id,
+            sourceHash: asset.sha256,
+            pair,
+            ...(asset.type === "video" &&
+            compositionWorkingSpace(this.comp) !== "legacy-srgb"
+              ? {
+                  scene: {
+                    working: compositionWorkingSpace(this.comp) as Exclude<
+                      CompositionWorkingSpace,
+                      "legacy-srgb"
+                    >,
+                    encoding: sourceEncodingOf(asset.color),
+                    effects: [],
+                  },
+                }
+              : {}),
+          },
         };
       }
       case "depth-image":
@@ -1729,10 +1810,11 @@ class GraphBuilder {
         enabled: true,
         params: { radius: paintBlur },
       });
+    const drawn = lighting ? content : sourceStaged(content, effects);
     const draw: DrawOp = {
       kind: "draw",
       layer: key,
-      content,
+      content: drawn,
       matrix,
       transforms,
       opacity: 1,
@@ -2241,8 +2323,9 @@ class GraphBuilder {
         : [];
       if (!isolated) return ops;
     } else {
-      const content = this.content(scope, state, frame);
-      if (!content) return [];
+      const unstaged = this.content(scope, state, frame);
+      if (!unstaged) return [];
+      const content = sourceStaged(unstaged, effects);
       ops = [
         {
           kind: "draw",

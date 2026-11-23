@@ -10,18 +10,92 @@ export const CompositionMediaRateSchema = z
   .strict();
 
 /**
- * Supported SDR source metadata, using ffprobe's names and values. `smpte170m`
- * is the BT.601 YUV matrix (Kr 0.299, Kb 0.114), used by some generators with
- * BT.709 primaries and an sRGB transfer.
+ * CG7: camera encodings an author can declare (`color.encoding`), as
+ * `@still-shift/color-science` input transform ids. Metadata rarely names a
+ * log curve, so the author states it. Only `validated` transforms run; the
+ * others are listed so a declaration of one is refused with its reason, not
+ * read as an unknown value. A unit test holds both lists equal to the
+ * color-science registry.
+ */
+export const COMPOSITION_CAMERA_ENCODINGS = [
+  "arri-logc3-awg3",
+  "arri-logc4-awg4",
+  "sony-slog3-sgamut3",
+  "sony-slog3-sgamut3-cine",
+  "panasonic-vlog-vgamut",
+  "red-log3g10-rwg",
+  "canon-log2-cinema-gamut",
+  "canon-log3-cinema-gamut",
+  "apple-log-bt2020",
+] as const;
+export const COMPOSITION_UNAVAILABLE_CAMERA_ENCODINGS = {
+  "arri-logc3-other-ei":
+    "Only EI 800 has CG0 vectors; other EIs use different curve constants.",
+  "bmd-film-gen5-wide-gamut":
+    "No independent end-to-end reference, and the gamut's white is not D65.",
+  "dji-dlog-dgamut": "No independent end-to-end reference.",
+  "fujifilm-flog-fgamut": "No independent end-to-end reference.",
+  "nikon-nlog-ngamut": "No independent end-to-end reference.",
+  "sony-slog2": "No reference vectors.",
+  "canon-log": "No reference vectors.",
+} as const;
+export type CompositionCameraEncoding =
+  (typeof COMPOSITION_CAMERA_ENCODINGS)[number];
+
+/**
+ * Source color metadata, using ffprobe's names and values. A legacy
+ * composition accepts the SDR set only (`COMPOSITION_LEGACY_MEDIA_COLOR`):
+ * BT.709 primaries, BT.709 or sRGB transfer, BT.709 YUV, `smpte170m` (the
+ * BT.601 YUV matrix, Kr 0.299, Kb 0.114, used by some generators with BT.709
+ * primaries and an sRGB transfer) or RGB. A color-managed composition (CG7)
+ * also accepts BT.2020 and P3-D65 (`smpte432`) primaries, the BT.2020 SDR
+ * transfer (`bt2020-10`, `bt2020-12`: the BT.709 curve), PQ (`smpte2084`)
+ * and HLG (`arib-std-b67`), the BT.2020 matrix, untagged (`unspecified`)
+ * primaries and transfer, and an author-declared camera `encoding`.
  */
 export const CompositionMediaColorSchema = z
   .object({
-    primaries: z.literal("bt709"),
-    transfer: z.enum(["bt709", "iec61966-2-1"]),
-    matrix: z.enum(["bt709", "smpte170m", "gbr"]),
+    primaries: z.enum(["bt709", "bt2020", "smpte432", "unspecified"]),
+    transfer: z.enum([
+      "bt709",
+      "iec61966-2-1",
+      "bt2020-10",
+      "bt2020-12",
+      "smpte2084",
+      "arib-std-b67",
+      "unspecified",
+    ]),
+    matrix: z.enum(["bt709", "smpte170m", "bt2020nc", "gbr"]),
     range: z.enum(["tv", "pc"]),
+    encoding: z
+      .enum([
+        ...COMPOSITION_CAMERA_ENCODINGS,
+        ...(Object.keys(COMPOSITION_UNAVAILABLE_CAMERA_ENCODINGS) as [
+          keyof typeof COMPOSITION_UNAVAILABLE_CAMERA_ENCODINGS,
+        ]),
+      ])
+      .optional(),
   })
   .strict();
+
+/** The SDR color metadata a composition without color management accepts. */
+export const COMPOSITION_LEGACY_MEDIA_COLOR = {
+  primaries: ["bt709"],
+  transfer: ["bt709", "iec61966-2-1"],
+  matrix: ["bt709", "smpte170m", "gbr"],
+} as const;
+/** Whether a descriptor is in the legacy SDR set (no CG7 value, no encoding). */
+export const isLegacyMediaColor = (color: CompositionMediaColor) =>
+  color.encoding === undefined &&
+  (COMPOSITION_LEGACY_MEDIA_COLOR.primaries as readonly string[]).includes(
+    color.primaries,
+  ) &&
+  (COMPOSITION_LEGACY_MEDIA_COLOR.transfer as readonly string[]).includes(
+    color.transfer,
+  ) &&
+  (COMPOSITION_LEGACY_MEDIA_COLOR.matrix as readonly string[]).includes(
+    color.matrix,
+  );
 
 const identity = {
   id: compositionId,
@@ -152,6 +226,28 @@ export const compositionMediaFrameId = (asset: string, frame: number) =>
  */
 export const COMPOSITION_MEDIA_DECODER_VERSION =
   "composition-media-decoder-3" as const;
+/**
+ * CG7: prepared frames of video layers in a color-managed composition:
+ * canonical 16-bit RGBA PNGs (every row filter 0, no color chunks) of
+ * **encoded** source RGB: range and matrix applied in float64 from the
+ * published equations (FFmpeg only upsamples chroma at the native depth),
+ * transfer and gamut not. A camera encoding reads Y′CbCr with full-range
+ * equations (the CG0 camera convention). Legacy frames keep
+ * COMPOSITION_MEDIA_DECODER_VERSION.
+ */
+export const COMPOSITION_MEDIA_SCENE_DECODER_VERSION =
+  "composition-media-decoder-scene-1";
+/**
+ * CG7 scene frames store encoded RGB v as 16-bit w = round((v − low) /
+ * (high − low) · 65535) over [−0.25, 1.25], so values a Y′CbCr matrix puts
+ * outside 0–1 survive, and 10- and 12-bit codes round-trip exactly (step
+ * 2.3e-5, under half a 12-bit code). Alpha is 65535.
+ */
+export const COMPOSITION_SCENE_SAMPLE_RANGE = [-0.25, 1.25] as const;
+export const compositionSceneSample = (w: number) =>
+  COMPOSITION_SCENE_SAMPLE_RANGE[0] +
+  (w / 65535) *
+    (COMPOSITION_SCENE_SAMPLE_RANGE[1] - COMPOSITION_SCENE_SAMPLE_RANGE[0]);
 export const CompositionPreparedMediaFrameSchema = z
   .object({
     id: z.string().min(1).max(256),
@@ -170,7 +266,10 @@ export const CompositionPreparedMediaFrameSchema = z
 export const CompositionPreparedMediaSchema = z
   .object({
     schemaVersion: z.literal("composition-prepared-media-1"),
-    decoderVersion: z.literal(COMPOSITION_MEDIA_DECODER_VERSION),
+    decoderVersion: z.enum([
+      COMPOSITION_MEDIA_DECODER_VERSION,
+      COMPOSITION_MEDIA_SCENE_DECODER_VERSION,
+    ]),
     ffmpegIdentities: z.array(sha256).max(1024),
     frames: z.array(CompositionPreparedMediaFrameSchema).max(131072),
   })

@@ -23,6 +23,7 @@ import {
 } from "@still-shift/color-science";
 import {
   compositionEffectDefinition,
+  compositionWorkingSpace,
   isFloatGradeEffect,
   type FloatGradeEffectId,
 } from "@still-shift/scene-contract";
@@ -46,6 +47,11 @@ export type GradeBakeReport = {
   layer: string;
   frame: number;
   size: number;
+  /**
+   * CG7: in a color-managed composition, the working space the table maps
+   * from and to (declare it as the LUT asset's inputSpace and outputSpace).
+   */
+  space?: string;
   /** Baked effects in stack order; disabled or neutral ones are listed apart. */
   effects: string[];
   skipped: { id: string; reason: "disabled" | "neutral" }[];
@@ -121,10 +127,26 @@ export async function bakeCompositionGrade(
         return lut && preparedLut(asset.sha256, lut);
       },
     );
+    // CG7: in a color-managed composition the operators work in its working
+    // space, so the baked table maps working → working (see the report).
+    const lutSpaces = Object.fromEntries(
+      Object.entries(effect.assets ?? {}).flatMap(([slot, id]) => {
+        const asset = source.composition.assets.find((a) => a.id === id);
+        return asset?.type === "lut" &&
+          (asset.inputSpace !== "legacy-srgb" ||
+            asset.outputSpace !== "legacy-srgb")
+          ? [[slot, { input: asset.inputSpace, output: asset.outputSpace }]]
+          : [];
+      }),
+    );
     const op = floatGradeOp(
       effect.effect as FloatGradeEffectId,
       effect.params as never,
-      { [EFFECT_LUTS]: lutSlots },
+      {
+        [EFFECT_LUTS]: lutSlots,
+        workingSpace: compositionWorkingSpace(source.composition),
+        ...(Object.keys(lutSpaces).length ? { lutSpaces } : {}),
+      },
     );
     if (!op) {
       skipped.push({ id: effect.id, reason: "neutral" });
@@ -157,6 +179,9 @@ export async function bakeCompositionGrade(
       layer: options.layer,
       frame,
       size,
+      ...(compositionWorkingSpace(source.composition) === "legacy-srgb"
+        ? {}
+        : { space: compositionWorkingSpace(source.composition) }),
       effects: baked,
       skipped,
       domain: [0, 1],

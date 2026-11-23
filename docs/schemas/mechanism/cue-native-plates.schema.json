@@ -93,13 +93,48 @@
         "color": {
           "type": "object",
           "properties": {
-            "primaries": { "type": "string", "const": "bt709" },
-            "transfer": { "type": "string", "enum": ["bt709", "iec61966-2-1"] },
+            "primaries": {
+              "type": "string",
+              "enum": ["bt709", "bt2020", "smpte432", "unspecified"]
+            },
+            "transfer": {
+              "type": "string",
+              "enum": [
+                "bt709",
+                "iec61966-2-1",
+                "bt2020-10",
+                "bt2020-12",
+                "smpte2084",
+                "arib-std-b67",
+                "unspecified"
+              ]
+            },
             "matrix": {
               "type": "string",
-              "enum": ["bt709", "smpte170m", "gbr"]
+              "enum": ["bt709", "smpte170m", "bt2020nc", "gbr"]
             },
-            "range": { "type": "string", "enum": ["tv", "pc"] }
+            "range": { "type": "string", "enum": ["tv", "pc"] },
+            "encoding": {
+              "type": "string",
+              "enum": [
+                "arri-logc3-awg3",
+                "arri-logc4-awg4",
+                "sony-slog3-sgamut3",
+                "sony-slog3-sgamut3-cine",
+                "panasonic-vlog-vgamut",
+                "red-log3g10-rwg",
+                "canon-log2-cinema-gamut",
+                "canon-log3-cinema-gamut",
+                "apple-log-bt2020",
+                "arri-logc3-other-ei",
+                "bmd-film-gen5-wide-gamut",
+                "dji-dlog-dgamut",
+                "fujifilm-flog-fgamut",
+                "nikon-nlog-ngamut",
+                "sony-slog2",
+                "canon-log"
+              ]
+            }
           },
           "required": ["primaries", "transfer", "matrix", "range"],
           "additionalProperties": false

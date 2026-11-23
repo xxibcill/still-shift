@@ -102,8 +102,12 @@ const hlg: TransferFunction = {
     e <= 1 / 12
       ? Math.sqrt(3) * spow(e, 0.5)
       : HLG.a * Math.log(12 * e - HLG.b) + HLG.c,
+  // Below 0 the square-root segment is mirrored, as `encode` does (spow):
+  // sub-black codes keep their sign.
   decode: (v) =>
-    v <= 0.5 ? (v * v) / 3 : (Math.exp((v - HLG.c) / HLG.a) + HLG.b) / 12,
+    v <= 0.5
+      ? (v * Math.abs(v)) / 3
+      : (Math.exp((v - HLG.c) / HLG.a) + HLG.b) / 12,
 };
 
 // --- Working log ------------------------------------------------------------

@@ -75,6 +75,13 @@ export const native3DAppearanceModules: readonly {
     url: new URL("../../../color-science/src/transfer.ts", import.meta.url),
   },
   {
+    name: "color-science/src/working-space.ts",
+    url: new URL(
+      "../../../color-science/src/working-space.ts",
+      import.meta.url,
+    ),
+  },
+  {
     name: "renderer-core/src/alpha-coverage.ts",
     url: new URL("../alpha-coverage.ts", import.meta.url),
   },
@@ -524,6 +531,10 @@ export const native3DAppearanceModules: readonly {
   {
     name: "renderer-core/src/composition/render/sampled-blur.ts",
     url: new URL("../composition/render/sampled-blur.ts", import.meta.url),
+  },
+  {
+    name: "renderer-core/src/composition/render/scene-frames.ts",
+    url: new URL("../composition/render/scene-frames.ts", import.meta.url),
   },
   {
     name: "renderer-core/src/composition/render/shadow-effects.ts",
@@ -1421,6 +1432,13 @@ export const native3DAppearanceModules: readonly {
     name: "scene-contract/src/composition/color-effects.ts",
     url: new URL(
       "../../../scene-contract/src/composition/color-effects.ts",
+      import.meta.url,
+    ),
+  },
+  {
+    name: "scene-contract/src/composition/color-management.ts",
+    url: new URL(
+      "../../../scene-contract/src/composition/color-management.ts",
       import.meta.url,
     ),
   },

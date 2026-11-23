@@ -1231,6 +1231,27 @@ export type CompositionWarning = {
 /** Advisory findings for a composition that already passed validation. */
 export function compositionWarnings(comp: Composition): CompositionWarning[] {
   const warnings: CompositionWarning[] = [];
+  comp.assets.forEach((asset, index) => {
+    if (asset.type !== "video" || asset.color.encoding === undefined) return;
+    // CG7: the declared camera encoding wins; say which stream tags disagree.
+    const declared = asset.color.encoding;
+    const gamut = declared === "apple-log-bt2020" ? "bt2020" : undefined;
+    const contradicted = [
+      ...(asset.color.transfer !== "unspecified"
+        ? [`transfer ${asset.color.transfer}`]
+        : []),
+      ...(asset.color.primaries !== "unspecified" &&
+      asset.color.primaries !== gamut
+        ? [`primaries ${asset.color.primaries}`]
+        : []),
+    ];
+    if (contradicted.length)
+      warnings.push({
+        code: "comp-media-color-declared",
+        path: ["assets", index, "color", "encoding"],
+        message: `"${asset.id}" declares ${declared}, but the stream metadata says ${contradicted.join(" and ")}; the declared encoding is used`,
+      });
+  });
   const used = new Set<string>();
   for (const scope of [comp, ...(comp.precomps ?? [])]) {
     const base = scopeBase(comp, scope);

@@ -267,6 +267,8 @@ export function autoColorComposition(
     assets.push(sound);
     layers.push(track);
   }
+  // No colorManagement: the effects were predicted for a legacy-srgb
+  // composition (gradeRunSegments), which is what renders them.
   return {
     schemaVersion: "composition-1",
     id: "auto-color",

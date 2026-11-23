@@ -353,3 +353,26 @@ describe("CGA2 prediction", () => {
     expect(engineEffects("legacy", [effect])).toEqual([effect]);
   });
 });
+
+describe("CGA2 prediction and color management", () => {
+  const primary = (extra: object = {}) =>
+    ({
+      id: "p",
+      effect: "grade.primary",
+      params: { gainMaster: 1.2 },
+      ...extra,
+    }) as ColorCorrectionEffect;
+  const rgba = () => new Uint8Array([64, 128, 192, 255]);
+  it("predicts effects of a legacy composition", () => {
+    const plain = applyColorEffects([primary()], rgba());
+    expect(
+      applyColorEffects([primary({ workingSpace: "legacy-srgb" })], rgba()),
+    ).toEqual(plain);
+    expect(plain).not.toEqual(rgba());
+  });
+  it("refuses effects graded in a working space", () => {
+    expect(() =>
+      applyColorEffects([primary({ workingSpace: "acescct" })], rgba()),
+    ).toThrow(/graded in acescct; the prediction models legacy-srgb/);
+  });
+});

@@ -4,6 +4,7 @@ import { lstat } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
   CompositionMediaColorSchema,
+  isLegacyMediaColor,
   CompositionMediaRateSchema,
   resolveCompositionMediaLimits,
   type CompositionAsset,
@@ -230,6 +231,12 @@ export async function probeCompositionVideo(
     expected?: VideoAsset;
     limits?: CompositionMediaLimits;
     signal?: AbortSignal | undefined;
+    /**
+     * CG7: the source is read for a color-managed composition, which also
+     * accepts wide-gamut, HDR and untagged metadata. Without it, only the
+     * legacy SDR set passes, as before.
+     */
+    colorManaged?: boolean;
   } = {},
 ): Promise<CompositionVideoProbe> {
   options.signal?.throwIfAborted();
@@ -302,14 +309,21 @@ export async function probeCompositionVideo(
     );
   const frameRate = rate.data;
   const timeBase = parseMediaRational(stream.time_base ?? "");
+  // Untagged primaries and transfer are `unspecified` (CG7: a color-managed
+  // composition declares the encoding); a legacy read still rejects them.
+  const tagged = (value: string | undefined) =>
+    value === undefined || value === "unknown" || value === "unspecified"
+      ? "unspecified"
+      : value;
   const parsedColor = CompositionMediaColorSchema.safeParse({
-    primaries: stream.color_primaries,
-    transfer: stream.color_transfer,
+    primaries: tagged(stream.color_primaries),
+    transfer: tagged(stream.color_transfer),
     matrix: stream.color_space,
     range: stream.color_range,
   });
   if (
     !parsedColor.success ||
+    (!options.colorManaged && !isLegacyMediaColor(parsedColor.data)) ||
     (parsedColor.data.matrix === "gbr" && parsedColor.data.range !== "pc")
   )
     passageError(

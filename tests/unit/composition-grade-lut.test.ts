@@ -159,8 +159,13 @@ describe("grade.lut contract", () => {
     expect(diagnostics(comp(lut, [lutAsset({ format: "3dl" })])).length).toBe(
       1,
     );
+    // CG7 lifted CG5's legacy-srgb-only list: working and conversion
+    // spaces are declared; an unknown space is still refused.
     expect(
       diagnostics(comp(lut, [lutAsset({ inputSpace: "acescct" })])).length,
+    ).toBe(0);
+    expect(
+      diagnostics(comp(lut, [lutAsset({ inputSpace: "camera-log" })])).length,
     ).toBe(1);
     const noOutput: Record<string, unknown> = lutAsset();
     delete noOutput.outputSpace;

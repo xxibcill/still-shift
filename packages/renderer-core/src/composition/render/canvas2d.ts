@@ -1,3 +1,4 @@
+import { SceneImages, type SceneFrame } from "./scene-frames.ts";
 import {
   createRenderCanvas,
   readRenderImageData,
@@ -23,6 +24,7 @@ import type { RenderBackend } from "./backend.ts";
 import type {
   ClipRect,
   ImageContent,
+  SceneStage,
   TextContent,
   ProviderContent,
 } from "./graph.ts";
@@ -44,6 +46,8 @@ export type CanvasImageResources = {
   sizes: ReadonlyMap<string, readonly [number, number]>;
   /** Immutable decoded PNG assets verified by the resource loader. */
   pngImages?: ReadonlySet<string>;
+  /** CG7: decoded 16-bit video frames of a color-managed composition. */
+  sceneFrames?: ReadonlyMap<string, SceneFrame>;
 };
 
 /** Native camera references, cubic/nib paints and Canvas filters use pinned CPU raster preparation. */
@@ -176,6 +180,7 @@ export function createCanvas2dBackend(
     releaseRenderCanvas(canvas);
     owned.delete(canvas);
   };
+  const sceneImages = new SceneImages(make, discard);
   const limit = options.poolLimit ?? 16;
   const pool = new Map<string, CanvasSurface[]>();
   let pooledBytes = 0;
@@ -850,7 +855,14 @@ export function createCanvas2dBackend(
     asset: string,
     rasterize: ImageContent["rasterize"],
     rasterMode?: "software",
+    scene?: SceneStage,
   ) {
+    if (scene) {
+      const frame = options.images.sceneFrames?.get(asset);
+      if (!frame)
+        throw new Error(`comp-asset-missing: image ${asset} was not loaded`);
+      return sceneImages.image(asset, frame, scene);
+    }
     const image = options.images.images.get(asset);
     if (!image)
       throw new Error(`comp-asset-missing: image ${asset} was not loaded`);
@@ -880,7 +892,12 @@ export function createCanvas2dBackend(
       throw new Error(
         `comp-image-state: no source ${index} on this image layer`,
       );
-    const size = options.images.sizes.get(variant.asset)!;
+    const scene = content.media?.scene
+      ? options.images.sceneFrames?.get(variant.asset)
+      : undefined;
+    const size = scene
+      ? ([scene.width, scene.height] as const)
+      : options.images.sizes.get(variant.asset)!;
     const crop = variant.crop ?? [0, 0, size[0], size[1]];
     const p = imagePlacement(content, crop, variant.registration?.anchor);
     ctx.save();
@@ -890,7 +907,12 @@ export function createCanvas2dBackend(
       ctx.clip();
     }
     ctx.drawImage(
-      source(variant.asset, content.rasterize, rasterMode),
+      source(
+        variant.asset,
+        content.rasterize,
+        rasterMode,
+        content.media?.scene,
+      ),
       p.sx,
       p.sy,
       p.sw,
