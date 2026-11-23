@@ -760,8 +760,11 @@ most of what separates grading from filtering.
       WebGL2 ≤ 1 code). chroma-node's own qualifier matched on every
       chromatic pixel but selected every neutral pixel for a hue range
       containing red; fixed in the port.
-- [x] The key is taken from the operation's input, not its output (stated in
-      the decisions and the contract; tested: a key on orange scoping a 180°
+- [x] The key is taken from the operation's input, not its output. As built,
+      that input is the keyed segment's: the value entering the `grade.key`,
+      evaluated once, selects every operation the key scopes, including a
+      second or later one whose own input is the previous operation's output
+      (stated in the decisions and the contract; tested: a key on orange scoping a 180°
       hue rotation grades the 3,776 orange pixels, and a key on the output
       would differ on 7,552 pixels).
 - [x] Window edges match the existing mask rasterizer on shared fixtures:
