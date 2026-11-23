@@ -23,12 +23,19 @@ import {
   type CgaDegradation,
 } from "../../benchmarks/fixtures/color/cga-synthetic.ts";
 
-const at = process.argv.indexOf("--output");
-if (at < 0 || !process.argv[at + 1])
-  throw new Error("usage: cga2-reports.ts --output <new folder>");
-const output = resolve(process.argv[at + 1]!);
-const inputsAt = process.argv.indexOf("--inputs");
-const inputs = inputsAt < 0 ? undefined : resolve(process.argv[inputsAt + 1]!);
+const usage =
+  "usage: cga2-reports.ts --output <new folder> [--inputs <folder>]";
+/** An option's value; a flag given without one is a usage error. */
+function option(name: string): string | undefined {
+  const at = process.argv.indexOf(name);
+  if (at < 0) return undefined;
+  const value = process.argv[at + 1];
+  if (!value || value.startsWith("--")) throw new Error(usage);
+  return resolve(value);
+}
+const output = option("--output");
+if (!output) throw new Error(usage);
+const inputs = option("--inputs");
 await mkdir(output, { recursive: false });
 const work = join(output, "work");
 const reference = cgaReferenceFrames();
