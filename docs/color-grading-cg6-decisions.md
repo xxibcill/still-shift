@@ -92,8 +92,9 @@ sampleSoftness`, measured as Euclidean distance in OKLab (perceptual).
 - **External matte**: the optional `matte` layer slot (a new
   `optionalLayers` field on effect definitions; required slots keep
   `requiresLayers`). `matteMode` 0 reads alpha, 1 reads BT.709 luma of the
-  layer's straight color (a depth image, a luma matte or a matte sequence),
-  then a range with softness (`matteLow`, `matteHigh`, `matteSoftness`) and
+  layer over black, that is of its premultiplied color, so a translucent
+  pixel counts in proportion to its alpha (a depth image, a luma matte or a
+  matte sequence; opaque sources read their own luma), then a range with softness (`matteLow`, `matteHigh`, `matteSoftness`) and
   `matteInvert`.
 
 ## Matte finesse
