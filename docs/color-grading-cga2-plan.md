@@ -97,7 +97,8 @@ Map each stage to the engine and keep the stage order and limits:
 
 - Predict through the renderer's own op list (`floatGradeOp` →
   `floatGradeBytes`), which makes the prediction equal the Canvas render.
-  Retire `applyColorEffects` for solver 2. If
+  Retire `applyColorEffects` for solver 2 (as built: extended instead, see
+  below). If
   `pnpm check:package-boundaries` rejects the import, move the op table into
   `@still-shift/color-science`.
 - Until A4, saturation uses `colorBoost` without skin protection, and the
@@ -139,6 +140,17 @@ the equivalence gate (decision 2):_
   kink, so the spline follows the segments within one code (0 on that clip).
   It uses `lumaMix` 0 (each channel, as `color.curves`); a smooth curve and
   `lumaMix` 1 are A4 candidates.
+- **The prediction extends `applyColorEffects` instead of retiring it.**
+  `floatGradeBytes` evaluates one op list per pixel, but the skin key splits
+  a run into keyed segments, each mixed with its input by a key computed
+  from the value entering it. `applyColorEffects` therefore hands each run
+  of consecutive `grade.*` effects to `applyGradeRun`, which takes its
+  segments from the renderer's own `floatGradeSegments` and its ops from
+  `floatGradeOp`, evaluates them in float64 per distinct color with
+  `mixKeyed`, and quantizes once with `quantizeGrade`, as the Canvas keyed
+  run does. Solver 1's 8-bit effects keep their integer tables in the same
+  function, so a look in CGA form can precede a grade run. The browser group
+  confirms Canvas and WebGL2 equal the prediction.
 - `--engine grade|legacy` on `comp auto-color` and `comp look apply`; the
   default stays `legacy` until A6. The report adds `engine` and `solver` for
   the grade engine only. The prediction mirrors the Canvas keyed run (segments
