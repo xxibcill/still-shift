@@ -139,6 +139,14 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-24 — PR #81: main merged in, review
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg7`, merge commit 5eb89aad (`main` 1d52bc5e, CGA2 A0–A1).
+- **Done:** conflicts resolved in `float-grade.ts` (main's exported `floatGradeSegments` keeps CG7's `convert` flag), `package.json` (`test` runs the CGA2 and CG7 groups), the engine-plan tracker and this log.
+- **Results:** Node 22.23.1: `check:fast` 485 files / 5,063 tests (the first run failed on Prettier for the resolved line, fixed); `test:browser:color-grading-cga2`, `-cg7` and `composition-grade-effects` pass. Not run: `pnpm check`, full `pnpm test`, `-cg7-memory`.
+- **Review findings (not fixed):** (1) a disabled `grade.*` effect inside a video layer's leading run is applied by the source stage (`sourceStaged` splices it in; `floatGradeSegments` does not check `enabled`); reproduced. (2) `sourceStagePixels` allocates a float64 frame (about 190 MiB at 4K) outside managed storage and every budget, so the 4K memory check understates the peak. (3) CGA2's prediction assumes `legacy-srgb`; correct today because `auto-color` writes legacy compositions only.
+- **Open / next:** owner decides whether to fix (1)–(2) on the branch before merge.
+
 ### 2026-11-23 — Color grading CG7: scene-referred input and working space
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg7` (worktree `.claude/worktrees/color-grading-cg7-d8ea29`), from `main` a47fa6d0 (CG0–CG6 merged). Started by the grading session after the owner approved CG7. [PR #81](https://github.com/xxibcill/still-shift/pull/81).
