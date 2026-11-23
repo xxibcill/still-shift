@@ -535,6 +535,46 @@ describe("comp grade key (CG6)", () => {
     expect(report.stability.meanChange).toBeGreaterThan(0);
     const png = decodeCompositionRgbaPng(await readFile(still));
     expect([png.width, png.height]).toEqual([384, 256]);
+    expect(report.frames[0].layerPixels).toBe(384 * 256);
+
+    // The matte, not the composited frame: layer opacity, its blend, effects
+    // after the key and the background leave the report unchanged.
+    const dressed = structuredClone(composition);
+    Object.assign(dressed, { background: "#336699" });
+    Object.assign(dressed.layers[0]!, {
+      blendMode: "screen",
+      transform: { anchor: [0, 0], position: [0, 0], opacity: 0.5 },
+    });
+    dressed.layers[0]!.effects.push({
+      id: "inv",
+      effect: "color.invert",
+      params: {},
+    } as never);
+    await writeFile(join(root, "key-dressed.json"), JSON.stringify(dressed));
+    const plain = await run([
+      "grade",
+      "key",
+      "--input",
+      input,
+      "--layer",
+      "chart",
+      "--effect",
+      "key",
+    ]);
+    const same = await run([
+      "grade",
+      "key",
+      "--input",
+      join(root, "key-dressed.json"),
+      "--layer",
+      "chart",
+      "--effect",
+      "key",
+    ]);
+    expect(same.code, same.stderr).toBe(0);
+    expect(JSON.parse(same.stdout).frames).toEqual(
+      JSON.parse(plain.stdout).frames,
+    );
 
     // A static key does not flicker; a missing or wrong effect is located.
     const fixed = structuredClone(composition);

@@ -387,7 +387,10 @@ input of the operations it scopes, never their output.
 - `comp grade bake` refuses `grade.key`. `comp probe` reports its qualifier
   suggestion as `gradeKey` (HSL) and `gradeKeySampled` (sampled OKLab)
   parameters. `comp grade key --layer <id> --effect <key>` reports the key per
-  frame (mean, keyed fraction, frame-to-frame flicker) and writes a view with
+  frame (mean, keyed fraction, frame-to-frame flicker) over the pixels the
+  layer covers, measured on the matte itself (effects after the key dropped,
+  the layer and its parents at full opacity with the normal blend, no
+  background), and writes a view with
   `--view key|highlight|contrast --still <new.png>`.
 
 `pnpm test:browser:color-grading-cg6` checks qualifier keys against analytic

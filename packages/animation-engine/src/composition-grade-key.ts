@@ -2,10 +2,14 @@
  * CG6 `comp grade key`: one `grade.key`'s matte over a frame range, rendered
  * by the export renderer in the pinned browser (as `comp probe`) with the
  * key's view set to the gray key, and the layer isolated (its parents and,
- * for a group, its content kept). Per frame: the mean key, the keyed
- * fraction and, from the second frame, the matte flicker (frame-to-frame
- * change, the matte-stability metric). Optionally one frame of a matte view
- * (gray key, highlight or high contrast) is written as a PNG.
+ * for a group, its content kept). So the frame holds the matte itself, the
+ * render drops the layer's effects after the key, draws the layer and its
+ * parents at full opacity with the normal blend, and clears the background;
+ * only pixels the layer covers (alpha > 0) are measured. Per frame: the mean
+ * key, the keyed fraction and, from the second frame, the matte flicker
+ * (frame-to-frame change over pixels covered in both frames, the
+ * matte-stability metric). Optionally one frame of a matte view (gray key,
+ * highlight or high contrast) is written as a PNG.
  */
 import { writeFile } from "node:fs/promises";
 import { CompositionNodeMemory } from "@still-shift/execution-runtime/export";
@@ -109,18 +113,34 @@ export async function measureGradeKey(
         { path: "frame-range" },
       );
     const keep = isolatedLayerIds(comp, layer.id);
+    const parentOf = new Map(comp.layers.map((l) => [l.id, l.parent]));
+    const opaque = new Set<string>();
+    for (let id: string | undefined = layer.id; id; id = parentOf.get(id))
+      opaque.add(id);
+    // The matte alone: no effects after the key (a view ends its run), the
+    // layer and its parents fully opaque with the normal blend, no background.
     const variant = (view: number): Composition => ({
       ...comp,
+      background: null,
       layers: comp.layers.map((l, i) => {
+        const shown = opaque.has(l.id)
+          ? ({
+              ...l,
+              transform: { ...l.transform, opacity: 1 },
+              blendMode: undefined,
+            } as typeof l)
+          : l;
         if (i === index)
           return {
-            ...l,
-            effects: l.effects!.map((e, k) =>
-              k === slot ? { ...e, params: { ...e.params, view } } : e,
-            ),
+            ...shown,
+            effects: l
+              .effects!.slice(0, slot + 1)
+              .map((e, k) =>
+                k === slot ? { ...e, params: { ...e.params, view } } : e,
+              ),
           } as typeof l;
         return request.isolate === false || keep.has(l.id)
-          ? l
+          ? shown
           : ({ ...l, enabled: false } as typeof l);
       }),
     });
@@ -163,13 +183,14 @@ export async function measureGradeKey(
                     await preview.prepareFrame(frame);
                     await renderer.renderCompositionFrameAsync(preview, frame);
                     const pixels = preview.readPixels();
-                    // Keys leave the page one byte per pixel (the gray key's
-                    // red); the view still leaves whole.
+                    // Keys leave the page two bytes per pixel (the gray key's
+                    // red, straight, and the layer's alpha); the view still
+                    // leaves whole.
                     const bytes = d
                       ? new Uint8Array(pixels)
                       : Uint8Array.from(
-                          { length: pixels.length / 4 },
-                          (_, i) => pixels[i * 4]!,
+                          { length: pixels.length / 2 },
+                          (_, i) => pixels[(i >> 1) * 4 + (i & 1 ? 3 : 0)]!,
                         );
                     let binary = "";
                     for (let i = 0; i < bytes.length; i += 0x8000)
@@ -216,21 +237,41 @@ export async function measureGradeKey(
         ),
         { flag: "wx" },
       );
-    const keys = result.keys.map((k) => Buffer.from(k, "base64"));
-    const frames = keys.map((key, i) => {
-      let sum = 0,
-        keyed = 0;
-      for (const v of key) {
-        sum += v;
-        if (v) keyed++;
+    const pixels = comp.width * comp.height;
+    const split = result.keys.map((k) => {
+      const bytes = Buffer.from(k, "base64");
+      const key = new Uint8Array(pixels),
+        alpha = new Uint8Array(pixels);
+      for (let i = 0; i < pixels; i++) {
+        key[i] = bytes[i * 2]!;
+        alpha[i] = bytes[i * 2 + 1]!;
       }
-      const flicker = i
-        ? matteFlicker(keys[i - 1]!, key, undefined, 255)
+      return { key, alpha };
+    });
+    const frames = split.map(({ key, alpha }, i) => {
+      let sum = 0,
+        keyed = 0,
+        covered = 0;
+      for (let p = 0; p < pixels; p++) {
+        if (!alpha[p]) continue;
+        covered++;
+        sum += key[p]!;
+        if (key[p]) keyed++;
+      }
+      const previous = i ? split[i - 1]! : undefined;
+      const flicker = previous
+        ? matteFlicker(
+            previous.key,
+            key,
+            (p) => previous.alpha[p]! > 0 && alpha[p]! > 0,
+            255,
+          )
         : null;
       return {
         frame: start + i,
-        meanKey: round(sum / key.length / 255),
-        keyedFraction: round(keyed / key.length),
+        layerPixels: covered,
+        meanKey: covered ? round(sum / covered / 255) : 0,
+        keyedFraction: covered ? round(keyed / covered) : 0,
         flicker: flicker && {
           meanChange: round(flicker.meanChange),
           changedFraction: round(flicker.changedFraction),
@@ -251,7 +292,7 @@ export async function measureGradeKey(
       backend,
       isolate: request.isolate !== false,
       range: [start, end],
-      pixels: comp.width * comp.height,
+      pixels,
       frames,
       stability: {
         meanChange: mean("meanChange"),
