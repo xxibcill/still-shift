@@ -28,6 +28,7 @@ import {
   type CompositionAsset,
 } from "@still-shift/scene-contract";
 import {
+  ACESCCT_DECODE_CEILING,
   conversionOp,
   floatGradeBytes,
   floatGradeOp,
@@ -265,6 +266,25 @@ describe("grade runs in a working space", () => {
   it("legacy and same-space conversions are absent", () => {
     expect(conversionOp("legacy-srgb", "srgb")).toBeNull();
     expect(conversionOp("acescct", "acescct")).toBeNull();
+  });
+  it("decodes ACEScct above the shared ceiling as the ceiling, like gCctDec", () => {
+    for (const to of ["srgb", "acescg", "linear-bt709"]) {
+      const op = conversionOp("acescct", to)!;
+      // Up to GRADE_LIMIT; two overflowing channels used to give Inf − Inf.
+      const got = op.apply([60, 60, 0.4]);
+      expect(got.every(Number.isFinite)).toBe(true);
+      expect(got).toEqual(
+        op.apply([ACESCCT_DECODE_CEILING, ACESCCT_DECODE_CEILING, 0.4]),
+      );
+      expect(op.apply([10_000, 0.4, 10_000]).every(Number.isFinite)).toBe(true);
+    }
+    // In-range values are untouched by the ceiling.
+    const v: Rgb = [1.2, 0.41, -0.05];
+    expect(conversionOp("acescct", "srgb")!.apply(v)).toEqual(
+      spaceConversion("acescct", "srgb")
+        .apply(v)
+        .map((x) => Math.min(10_000, Math.max(-10_000, x))),
+    );
   });
 });
 

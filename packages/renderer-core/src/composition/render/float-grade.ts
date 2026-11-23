@@ -150,6 +150,14 @@ const conversionSpace = (space: string) =>
   space === "legacy-srgb" ? "srgb" : space;
 
 /**
+ * CG7: the largest ACEScct value a conversion decodes (linear ≈ 4.2e7, far
+ * above GRADE_LIMIT); larger inputs decode as this. Without it, values up to
+ * GRADE_LIMIT overflow to Infinity and the next 3×3 can compute Inf − Inf.
+ * The CPU op and `gCctDec` share it, so both backends agree.
+ */
+export const ACESCCT_DECODE_CEILING = 2;
+
+/**
  * CG7: one conversion between spaces as an op (decode `from`'s curve, one
  * 3×3, encode `to`'s curve, limited to ±GRADE_LIMIT), or null for the same
  * space. Run entry/exit conversions, `grade.color-space-transform` and LUT
@@ -160,10 +168,11 @@ export function conversionOp(from: string, to: string): FloatGradeOp | null {
   if (c.identity) return null;
   const curve = (id: string | null, end: "Dec" | "Enc") =>
     id === null ? "" : id === "srgb" ? `gSrgb${end}` : `gCct${end}`;
+  const ceiling = c.decode === "acescct" ? ACESCCT_DECODE_CEILING : Infinity;
   return {
     id: "grade.color-space-transform",
     apply(v) {
-      const o = c.apply(v);
+      const o = c.apply(perChannel((i) => Math.min(v[i], ceiling)));
       return perChannel((i) => limitGrade(o[i]));
     },
     glsl: (u) => ({
@@ -556,7 +565,7 @@ float gDec(float v){float a=abs(v);float l=a<=0.04045?a/12.92:pow((a+0.055)/1.05
 // follow the linear segment; nothing is mirrored).
 vec3 gSrgbDec(vec3 v){return mix(v/12.92,pow((max(v,0.04045)+0.055)/1.055,vec3(2.4)),greaterThan(v,vec3(0.04045)));}
 vec3 gSrgbEnc(vec3 l){return mix(l*12.92,1.055*pow(max(l,0.0031308),vec3(1.0/2.4))-0.055,greaterThan(l,vec3(0.0031308)));}
-vec3 gCctDec(vec3 v){return mix((v-0.0729055341958355)/10.5402377416545,exp2(min(v,2.0)*17.52-9.72),greaterThan(v,vec3(0.155251141552511)));}
+vec3 gCctDec(vec3 v){return mix((v-0.0729055341958355)/10.5402377416545,exp2(min(v,${ACESCCT_DECODE_CEILING.toFixed(1)})*17.52-9.72),greaterThan(v,vec3(0.155251141552511)));}
 vec3 gCctEnc(vec3 x){return mix(10.5402377416545*x+0.0729055341958355,(log2(max(x,0.0078125))+9.72)/17.52,greaterThan(x,vec3(0.0078125)));}
 float gEnc(float l){float a=abs(l);float v=a<=0.0031308?a*12.92:1.055*pow(a,1.0/2.4)-0.055;return l<0.0?-v:v;}
 vec3 gPrimary(vec3 v,vec3 lift,vec3 gammaInv,vec3 gain,vec3 offs,vec4 tone,vec2 sh,float hueOn,mat3 hue){
