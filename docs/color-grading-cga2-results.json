@@ -477,5 +477,95 @@
       "a0Gate": "pnpm color:cga2-equivalence run twice on the fixtures and 12 owner clips: 42/44 within the bound, solver 1 baseline 44/44 identical (reviewRerun)",
       "notRun": "pnpm check (full pnpm test including composition-baselines and the other browser groups) and the release checks"
     }
+  },
+  "a2": {
+    "milestone": "CGA2 A2",
+    "title": "Reports and measurement on scopes",
+    "date": "2026-11-23",
+    "branch": "codex/cga2-a2",
+    "base": "codex/cga2-engine 2413125c (A0–A1, PR #80, not merged)",
+    "environment": "darwin-arm64; Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
+    "visualAcceptance": "none; software measurements only. The --diff stills and sheets were checked byte for byte against comp grade diff, not looked at by a person.",
+    "legacyReports": {
+      "decision": "versioned: report 1 unchanged for --engine legacy without --scopes; report 2 (engine, solver, scopes) for every --engine grade run and for legacy with --scopes true",
+      "evidence": "scripts/color/cga2-reports.ts on 2413125c (A1) and on this branch, the same input clips: 6/6 legacy reports byte-identical (one with a render and audio); 6/6 grade reports equal A1's except schemaVersion (report-1 → report-2) and the added scopes block"
+    },
+    "checks": [
+      {
+        "check": "Reports validate against a schema",
+        "status": "met",
+        "test": "tests/integration/composition-color.test.ts (CGA2 A2): AutoColorReportSchema accepts report 1 and report 2 and rejects report 1 with scopes or report 2 without; autoColorClip validates before publishing"
+      },
+      {
+        "check": "Reports rerun byte-identically",
+        "status": "met",
+        "test": "integration: two grade runs give identical reports apart from the composition path"
+      },
+      {
+        "check": "Statistics fields that already existed are unchanged on the fixtures",
+        "status": "met",
+        "evidence": "legacy reports byte-identical to A1 (above); report 2 carries every report-1 field with the same values (integration); before equals comp scopes' statistics and predicted equals the statistics of the exact prediction"
+      },
+      {
+        "check": "Embedded scopes are comp scopes' numbers",
+        "status": "met",
+        "test": "integration: scopes.before equals measureColorScopes(input, 12 frames).measurement; scopes.predicted equals measureColorScopeFrames of the prediction"
+      },
+      {
+        "check": "--diff writes the expected files and refuses existing ones",
+        "status": "met",
+        "test": "integration: prediction images equal colorGradeDiffImages; with a render, byte-identical to diffColorGrade(input, output); an existing sheet is refused before any work and nothing is written. CLI: folder look apply writes <stem>.still.png and <stem>.sheet.png per clip; a rerun is refused (comp-auto-color-output, path diff)"
+      },
+      {
+        "check": "Canvas and WebGL2 equal the prediction (A1, rerun)",
+        "status": "met",
+        "test": "pnpm test:browser:color-grading-cga2: both fixtures 0 channels off"
+      }
+    ],
+    "synthetic": {
+      "note": "skin-line deviation of the sampled frames, before → predicted (grade engine), degrees; the reference itself sits 12.97° off the 123° line",
+      "balanced": {
+        "before": 12.968,
+        "predicted": 12.968,
+        "absoluteSkinDeviation": 0
+      },
+      "exposure": {
+        "before": 12.81,
+        "predicted": 13.159,
+        "absoluteSkinDeviation": 0.349
+      },
+      "contrast": {
+        "before": 6.156,
+        "predicted": 12.236,
+        "absoluteSkinDeviation": 6.08
+      },
+      "white-balance": {
+        "before": 11.599,
+        "predicted": 13.416,
+        "absoluteSkinDeviation": 1.817
+      },
+      "desaturation": {
+        "before": 6.61,
+        "predicted": 7.405,
+        "absoluteSkinDeviation": 0.795
+      },
+      "flat": {
+        "before": 8.79,
+        "predicted": 13.061,
+        "absoluteSkinDeviation": 4.271
+      },
+      "finding": "corrections that restore the synthetic reference move skin back to the reference's own angle, which is off the skin line, so the absolute deviation grows; A4's 'does not grow' check needs a reference-relative reading on such sources"
+    },
+    "verification": {
+      "toolchain": "pnpm toolchain:check passed (Node 22.23.1)",
+      "integration": "composition-color, composition-color-cli, composition-scopes, composition-grade-interchange and unit composition-color-engine: 69/69 on the final code",
+      "browser": "pnpm test:browser:color-grading-cga2 passed (Canvas and WebGL2 0 channels off on both fixtures)",
+      "checkFast": "passed on the final code (483 files / 4,994 tests); the first run failed on lint (unused destructured names in the new test), fixed and rerun"
+    },
+    "notRun": [
+      "owner clips (A2 changes reports only; the grade and legacy effects and predictions are unchanged, as the report comparison shows)",
+      "pnpm check, the full pnpm test, other browser groups and the release checks",
+      "visual review of the --diff images"
+    ]
   }
 }

@@ -371,6 +371,7 @@ pnpm --silent still-shift comp look fit --before raw-clips/ --after graded-edit.
 pnpm --silent still-shift comp look apply --look my.look.json --input raw-clips/ --output fixed/ --strength 0.8
 pnpm --silent still-shift comp auto-color --input clip.mp4 --output fixed.mp4
 pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition clip.composition.json --white-balance false
+pnpm --silent still-shift comp auto-color --input raw-clips/ --output fixed/ --engine grade --diff review/
 ```
 
 - **`color-stats`** prints deterministic statistics of evenly sampled frames:
@@ -421,17 +422,33 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   `grade.cdl`, the S-curve as a `grade.curves` master curve that keeps its
   straight segments, vibrance as `grade.primary` `colorBoost` behind a
   pointwise `grade.key` (an HSL hue qualifier) that protects skin, and a look
-  as `grade.rgb-mixer`. The solver stages and
-  defaults are the same (solver 2 re-measures each stage through the grade
-  engine), and its renders stay within 1 of 255 (4×4 block-mean RMS) and 3
-  (99th percentile per pixel) of `--engine legacy` on the CGA fixtures. The
-  report adds `engine`, and `solver` when the solver ran (not for
-  `look apply`). `--engine legacy` (the default for now)
-  is CGA unchanged.
+  as `grade.rgb-mixer`. The solver stages and defaults are the same (solver 2
+  re-measures each stage through the grade engine), and its renders stay
+  within 1 of 255 (4×4 block-mean RMS) and 3 (99th percentile per pixel) of
+  `--engine legacy` on the CGA fixtures. Its report is report 2 (below).
+  `--engine legacy` (the default for now) is CGA unchanged.
+- **`--scopes`** and **`--diff <folder>`** (CGA2, both commands) measure the
+  correction on scopes. Report 2 (`still-shift-auto-color-report-2`) adds
+  `engine`, `solver` (when the solver ran; not for `look apply`) and a
+  `scopes` block: the `comp scopes` measurement
+  (`still-shift-color-scopes-1`: channel black/white points, the 10° hue
+  histogram, the skin line and its deviation from 123°, false-color shares
+  and exposure zones) of the sampled frames before and predicted after, and
+  `change.absoluteSkinDeviation` (|after| − |before| deviation, degrees;
+  negative moves skin toward the line). Every `--engine grade` report is
+  report 2; a legacy report is report 1, byte for byte as before, unless
+  `--scopes true` asks for report 2. `--diff` writes `comp grade diff`'s split
+  still and contact sheet for each clip as `<stem>.still.png` and
+  `<stem>.sheet.png` in the folder; after is the rendered output (exactly the
+  images `comp grade diff` gives for input and output), or the exact
+  prediction when only `--write-composition` is given. Existing files are
+  refused before any work. The CGA owner-sheet script
+  (`scripts/color/cga-owner-evaluation.ts`) stays for legacy runs.
 
 `auto-color` and `look apply` keep the source audio as a native audio layer and
 render H.264 with the Canvas backend by default (`--backend webgl2` gives the same
-bytes for these effects). They write `<output>.auto-color.json`: the effects,
+bytes for these effects). They write `<output>.auto-color.json` (validated by
+`AutoColorReportSchema` before it is written): the effects,
 solver decisions, statistics before and predicted after, the rendered output's
 frame count, duration and measured statistics, the prediction-to-output RMS and
 an audio comparison. `--write-composition` saves the editable composition (asset

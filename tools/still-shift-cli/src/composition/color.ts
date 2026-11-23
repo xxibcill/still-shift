@@ -14,6 +14,7 @@ import { basename, dirname, extname, join, resolve } from "node:path";
 import {
   COLOR_ENGINES,
   autoColorClip,
+  autoColorDiffPaths,
   colorSampleOrdinals,
   fitColorLook,
   measureColorFrames,
@@ -116,6 +117,18 @@ const engine = (values: Map<string, string>) => {
     );
   return { engine: value as ColorEngine };
 };
+/**
+ * CGA2 A2: `--scopes true|false` (report 2 for legacy runs) and `--diff
+ * <folder>` (split still and contact sheet per clip).
+ */
+const reportOptions = (values: Map<string, string>) => {
+  const scopes = flag(values, "scopes");
+  const diff = values.get("diff");
+  return {
+    ...(scopes === undefined ? {} : { scopes }),
+    ...(diff === undefined ? {} : { diff }),
+  };
+};
 async function loadLook(
   path: string | undefined,
 ): Promise<ColorLook | undefined> {
@@ -173,6 +186,16 @@ async function runClips(
   const folder = await isDirectory(input);
   if (!inputs.length)
     programError("comp-program-option", "No video files found", "input");
+  /** `--diff` files of one clip, and whether after is the render or the prediction. */
+  const diffOf = (path: string) =>
+    base.diff === undefined
+      ? {}
+      : {
+          diff: {
+            ...autoColorDiffPaths(base.diff, path),
+            after: output ? "output" : "prediction",
+          },
+        };
   if (!folder) {
     const report = await autoColorClip({
       ...base,
@@ -187,6 +210,8 @@ async function runClips(
         input: report.input.name,
         effects: report.effects,
         change: report.change,
+        ...(report.scopes ? { scopesChange: report.scopes.change } : {}),
+        ...diffOf(inputs[0]!),
         ...(report.output
           ? {
               output: {
@@ -230,6 +255,8 @@ async function runClips(
         status: "ok",
         effects: report.effects.map((effect) => effect.effect),
         change: report.change,
+        ...(report.scopes ? { scopesChange: report.scopes.change } : {}),
+        ...diffOf(path),
         ...(report.output
           ? {
               frameCount: report.output.frameCount,
@@ -351,6 +378,8 @@ export async function runColorCommand(
       "report",
       "backend",
       "engine",
+      "scopes",
+      "diff",
     ]);
     const look = await loadLook(requireArgument(values, "look"));
     return runClips(
@@ -365,6 +394,7 @@ export async function runColorCommand(
         report: values.get("report"),
         backend: backend(values),
         ...engine(values),
+        ...reportOptions(values),
       },
     );
   }
@@ -385,6 +415,8 @@ export async function runColorCommand(
       "frames",
       "backend",
       "engine",
+      "scopes",
+      "diff",
     ]);
     const look = await loadLook(values.get("look"));
     const toggles = {
@@ -424,6 +456,7 @@ export async function runColorCommand(
         sampleFrames: count(values, "frames", 10_000),
         backend: backend(values),
         ...engine(values),
+        ...reportOptions(values),
       },
     );
   }

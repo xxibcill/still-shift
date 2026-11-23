@@ -43,15 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
-- **CGA2 A0–A1 in review: [PR #80](https://github.com/xxibcill/still-shift/pull/80) on `codex/cga2-engine` (2026-11-23):**
-  [plan](./color-grading-cga2-plan.md), [results](./color-grading-cga2-results.json). `comp auto-color` and
+- **CGA2 (2026-11-24):** [plan](./color-grading-cga2-plan.md), [results](./color-grading-cga2-results.json).
+  A0–A1 merged to `main` as [PR #80](https://github.com/xxibcill/still-shift/pull/80) (1d52bc5e): `comp auto-color` and
   `comp look apply` take `--engine grade` (solver 2: one float `grade.*` run); the default stays `legacy`
-  (CGA unchanged) until A6. Review findings F1–F25 fixed one commit each and pushed. The Bradford
-  `adaptation` prototype was removed (A4 restores it from `2413125c`). A0 rerun with a per-pixel p99:
-  42/44 rows within the bound (block RMS ≤ 1, p99 ≤ 3 of 255); two look+auto rows outside, listed with
-  measured causes (clip 3: headroom; clip 9: a fourth clipping scale-back). Solver 1's baseline reruns
-  44/44 byte-identical. Canvas and WebGL2 equal the prediction on four fixtures, look+auto included.
-  **Next:** owner review of PR #80, then A2. Open owner decisions: look bound (needed by A3), LUT looks
+  (CGA unchanged) until A6. A0: 42/44 rows within the bound (block RMS ≤ 1, p99 ≤ 3 of 255), two look+auto
+  rows outside with measured causes; Canvas and WebGL2 equal the prediction. **A2 in review as
+  [PR #82](https://github.com/xxibcill/still-shift/pull/82)** on `codex/cga2-a2`, now with `main` merged in and
+  retargeted to `main`: report 2 (`engine`, `solver` when one ran, CG3 `scopes` before and predicted after) for
+  every grade report and for legacy with `--scopes true`; legacy reports stay report 1 byte for byte;
+  `AutoColorReportSchema` validates both; `--diff <folder>` writes `comp grade diff`'s still and sheet per clip.
+  `codex/cga2-a3` was cut before the A2 review fixes and needs a rebase onto the new A2 head.
+  **Next:** owner review of PR #82, then A3 (look 2). Open owner decisions: look bound (needed by A3), LUT looks
   (A3), CGA visual review (A6 sheets).
 
 - **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32, merged as [PR #76](https://github.com/xxibcill/still-shift/pull/76) (`main` 51ffe62a).
@@ -139,6 +141,21 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-24 — PR #82: post-merge review F1–F2 fixed
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a2`, after the `main` merge d181a653. The owner asked for one inline comment per finding, then one commit per fix and a push at the end.
+- **Review:** two findings posted inline on [PR #82](https://github.com/xxibcill/still-shift/pull/82#pullrequestreview-6027884774).
+- **Fixed (one commit each):** F1 (563aa897): `--diff` images were written after the output was published, so a diff file that appeared after the start-up check (or a failed write) left a published output with no report and a refused retry. The images are now staged and hard-linked into place before publish. EEXIST is reported as `comp-auto-color-output` on `diff`, and a run that fails afterwards removes the images it linked. The new test fails without the fix (raw EEXIST, output published). F2 (7fd2479c): the A2 test and `cga2-reports.ts` use `CGA_FLAT_COMBINED` instead of copies (same values).
+- **Results (Node 22.23.1):** `toolchain:check`; `check:fast` 485 files / 5,069 tests. Color suites run one file at a time: composition-color 37/37, -color-cli 6/6, -scopes 10/10, -grade-interchange 8/8, unit color-engine 20/20. `test:browser:color-grading-cga2`: four fixtures, 0 channels off. Logs `dist/pr82-fix-checks/` (not committed). Not run: `pnpm check`, full `pnpm test`, runtime tier, other browser groups.
+- **Open / next:** owner review of PR #82; rebase `codex/cga2-a3` onto the new A2 head.
+
+### 2026-11-24 — PR #82: main merged in, retargeted to main
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a2`, merging `main` 3fd7b207 (PR #80 CGA2 A0–A1 and PR #81 CG7). PR #82 was stacked on `codex/cga2-engine`, which landed in `main` through PR #80.
+- **Merge:** conflicts in `composition-auto-color.ts`, the CLI README, the CGA2 results and this log. The code keeps A2's report 1/report 2 split and takes main's `colorLookEffect` and PR #80 F12: report 2 names `solver` only when the solver ran (`look apply` runs none), so `solver` is now optional in `AutoColorReportSchema`'s report 2. README and plan A2 say so; the CLI test checks that a legacy `look apply --scopes true` report has no `solver`. The results keep main's `verification.firstRun`/`reviewFixes` and A2's `a2` block.
+- **Results (Node 22.23.1):** `toolchain:check`, `check:fast` (485 files / 5,069 tests) and `test:browser:color-grading-cga2` (four fixtures, Canvas and WebGL2 0 channels off) pass. Color suites (composition-color, -color-cli, -scopes, -grade-interchange, unit color-engine): the first run had 3 composition-scopes tests time out at 5 s (comp probe ×2, grade key, not touched by A2) with five files in parallel. Run alone, that file passes 10/10, and the other four files passed (70 tests). Logs: `dist/pr82-merge-checks/` (not committed). Not run: `pnpm check`, full `pnpm test`, runtime tier, other browser groups.
+- **Open / next:** owner review of PR #82; rebase `codex/cga2-a3` onto the new A2 head.
+
 ### 2026-11-24 — PR #81: main merged in, review F1–F4 fixed
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/color-grading-cg7`, merge commit 5eb89aad (`main` 1d52bc5e, CGA2 A0–A1), then one fix commit per finding.
@@ -146,6 +163,37 @@ still hold before relying on them.
 - **Review ([F1–F3](https://github.com/xxibcill/still-shift/pull/81#pullrequestreview-6026744395), [F4](https://github.com/xxibcill/still-shift/pull/81#pullrequestreview-6026766246)), all fixed:** F1 the source stage rendered disabled `grade.*` effects (a disabled offset turned mid-grey 111 into 255); `takeSourceStage` now returns only enabled effects. F4 gradient keys ran in the source stage on source-frame pixels while their placement maps composition pixels; the stage now ends before a gradient key, so it is strictly per pixel. F2 the source stage held a whole-frame float64 copy (about 190 MiB at 4K) outside every budget; it now runs in row strips of at most 64 Ki pixels, with the same bytes. F3 CGA2's prediction silently modeled `legacy-srgb`; it now refuses effects that carry another working space.
 - **Results:** Node 22.23.1: `check:fast` 485 files / 5,069 tests (after the merge, a first run failed on Prettier for the resolved line, fixed); `test:browser:color-grading-cg7`, `-cg7-memory`, `-cga2` and `composition-grade-effects` pass. The memory group's output SHA-256 is 888d9e1a… with and without the fixes and on the pre-merge commit 1c2d7e46; the recorded f2f81758… was already stale, so [memory results](../research/color-grading-cg7/memory-results.json) are refreshed. Not run: `pnpm check`, full `pnpm test`, runtime/depth tiers.
 - **Open / next:** owner review of PR #81.
+
+### 2026-11-23 — CGA2 A2 PR #82 review and fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a2` (worktree `.claude/worktrees/cga2-a2-619a77`). The owner asked for one inline comment per finding, then one commit per fix and a push at the end.
+- **Review:** three findings posted inline on [PR #82](https://github.com/xxibcill/still-shift/pull/82#pullrequestreview-6024752038).
+- **Fixed (one commit each):** a `--diff` path that cannot be a folder (an existing file) is refused before any work; before, the render was published first and the run then failed with no report, and a retry was refused because the output existed. The diff images are now built before publish. `AutoColorReport` is now a union that follows `AutoColorReportSchema` (report 1 cannot carry `engine`, `solver` or `scopes`), checked against the schema with `satisfies`. `cga2-reports.ts` gives its usage message for an option without a value.
+- **Results:** on Node 22.23.1, `pnpm toolchain:check` and `pnpm check:fast` pass (483 files, 4,994 tests). The color integration and unit suites pass (70/70, one new test), and so does `test:browser:color-grading-cga2` (Canvas and WebGL2: 0 channels off). `cga2-reports.ts` writes all 12 fixture reports byte-identical before and after the type refactor. The new `--diff` test fails without the fix.
+- **Open / next:** rebase `codex/cga2-a3` onto the new A2 head. Not run: `pnpm check`, full `pnpm test`, other browser groups, owner clips. No person has looked at the `--diff` images.
+
+### 2026-11-23 — CGA2 A2: auto-color reports and measurement on scopes
+
+- **Agent / branch:** Claude Code on `codex/cga2-a2` (from `codex/cga2-engine` 2413125c, PR #80, not merged)
+- **Scope:** CGA2 A2: the CG3 scope measurement in the auto-color report, and `--diff`.
+- **Done:** report 2 (`still-shift-auto-color-report-2`) = report 1 + `engine`, `solver`, `scopes`
+  (`ColorScopesMeasurement` of the sampled frames before and predicted after, plus
+  `absoluteSkinDeviation`); every `--engine grade` report is report 2, legacy only with
+  `--scopes true`. `AutoColorReportSchema` (strict, both versions) on a new `ColorStatisticsSchema`.
+  `--diff <folder>` on `comp auto-color` and `comp look apply` (`<stem>.still.png`,
+  `<stem>.sheet.png`, after = render or exact prediction), through `colorGradeDiffImages`, which
+  `comp grade diff` now shares. `scripts/color/cga2-reports.ts` writes fixture reports to compare commits.
+- **Results:** 6/6 legacy reports byte-identical to A1 (same input clips; one rendered with audio);
+  grade reports equal A1's except the version and the new block. `--diff` on a render is
+  byte-identical to `comp grade diff`. The synthetic reference's skin sits 13.0° off the skin line,
+  so restoring corrections grow the absolute deviation (up to 6.1°): A4's "does not grow" check
+  must allow for that. Toolchain, `check:fast`, color integration (incl. scopes, interchange) and
+  `test:browser:color-grading-cga2` pass. Not run: owner clips, `pnpm check`, full `pnpm test`,
+  other browser groups, release checks, and no person looked at the `--diff` images.
+- **Rejected / do not repeat:** none.
+- **Open / next:** A3 after review. Owner decisions unchanged (look bound, LUT looks, CGA visual review).
+- **Records:** [plan A2](./color-grading-cga2-plan.md#a2-reports-and-measurement-on-scopes-1-day),
+  [results `a2`](./color-grading-cga2-results.json).
 
 ### 2026-11-23 — Color grading CG7: scene-referred input and working space
 

@@ -263,6 +263,19 @@ function measurementAccumulator(region: Region | undefined) {
   return { add, finish };
 }
 
+/**
+ * The CG3 measurement of frames already in memory (every pixel, no region):
+ * the numbers `comp scopes` reports for the same frames. CGA2 embeds it in
+ * the auto-color report for the source and the predicted result.
+ */
+export function measureColorScopeFrames(
+  frames: readonly RgbaFrame[],
+): ColorScopesMeasurement {
+  const measurement = measurementAccumulator(undefined);
+  for (const frame of frames) measurement.add(frame);
+  return measurement.finish();
+}
+
 const crop = (frame: ColorFrame, region: Region | undefined): ColorFrame => {
   if (!region) return frame;
   const rgba = new Uint8Array(region.width * region.height * 4);
@@ -548,6 +561,85 @@ function downscale(frame: ColorFrame, width: number) {
   return { width, height, rgba: out };
 }
 
+/** PNG: before on the left half, after on the right, a white seam between. */
+function splitStill(b: ColorFrame, a: ColorFrame) {
+  const rgba = new Uint8Array(b.rgba);
+  const half = Math.floor(b.width / 2);
+  for (let y = 0; y < b.height; y++)
+    for (let x = 0; x < b.width; x++) {
+      const at = (y * b.width + x) * 4;
+      if (x >= half) rgba.set(a.rgba.subarray(at, at + 4), at);
+      if (x === half - 1 || x === half) rgba.set([255, 255, 255, 255], at);
+    }
+  return encodeColorPng(b.width, b.height, rgba);
+}
+
+/** PNG: one row per cell pair, before | after, 4 px black gaps. */
+function contactSheet(
+  before: readonly ColorFrame[],
+  after: readonly ColorFrame[],
+) {
+  const cell = before[0]!;
+  const gap = 4;
+  const width = cell.width * 2 + gap,
+    height = before.length * (cell.height + gap) - gap;
+  const rgba = new Uint8Array(width * height * 4);
+  for (let p = 3; p < rgba.length; p += 4) rgba[p] = 255;
+  [before, after].forEach((column, side) =>
+    column.forEach((f, row) => {
+      for (let y = 0; y < f.height; y++)
+        rgba.set(
+          f.rgba.subarray(y * f.width * 4, (y + 1) * f.width * 4),
+          ((row * (cell.height + gap) + y) * width +
+            side * (cell.width + gap)) *
+            4,
+        );
+    }),
+  );
+  return encodeColorPng(width, height, rgba);
+}
+
+const diffCell = (frame: ColorFrame, cellWidth: number): ColorFrame => ({
+  ordinal: frame.ordinal,
+  ...downscale(frame, Math.min(cellWidth, frame.width)),
+});
+
+/**
+ * `comp grade diff`'s split still and contact sheet from frames already in
+ * memory (CGA2 `--diff`): the same images `diffColorGrade` writes for the
+ * same before and after frames. Frames pair by position and share one size;
+ * the still shows the middle pair. Returns the PNG bytes; the caller writes
+ * them (never over an existing file).
+ */
+export function colorGradeDiffImages(
+  before: readonly ColorFrame[],
+  after: readonly ColorFrame[],
+  options: { cellWidth?: number | undefined } = {},
+): { still: Buffer; sheet: Buffer } {
+  if (
+    !before.length ||
+    before.length !== after.length ||
+    before.some(
+      (frame, i) =>
+        frame.width !== after[i]!.width || frame.height !== after[i]!.height,
+    )
+  )
+    passageError(
+      "comp-grade-diff-size",
+      "Before and after need the same number of frames of one size",
+      { path: "after" },
+    );
+  const cellWidth = options.cellWidth ?? 320;
+  const middle = Math.floor(before.length / 2);
+  return {
+    still: splitStill(before[middle]!, after[middle]!),
+    sheet: contactSheet(
+      before.map((frame) => diffCell(frame, cellWidth)),
+      after.map((frame) => diffCell(frame, cellWidth)),
+    ),
+  };
+}
+
 const DIFF_FIELDS = [
   ["luma", "p05"],
   ["luma", "p50"],
@@ -601,11 +693,7 @@ export async function diffColorGrade(
         statistics.add(frame);
         measurement.add(frame);
         if (options.still && frame.ordinal === middle) stills[side] = frame;
-        if (options.sheet)
-          cells[side]!.push({
-            ordinal: frame.ordinal,
-            ...downscale(frame, Math.min(cellWidth, frame.width)),
-          });
+        if (options.sheet) cells[side]!.push(diffCell(frame, cellWidth));
       }
     });
     results.push({
@@ -629,39 +717,13 @@ export async function diffColorGrade(
   );
   const outputs: Record<string, string> = {};
   if (options.still) {
-    const [b, a] = [stills[0]!, stills[1]!];
-    const rgba = new Uint8Array(b.rgba);
-    const half = Math.floor(b.width / 2);
-    for (let y = 0; y < b.height; y++)
-      for (let x = 0; x < b.width; x++) {
-        const at = (y * b.width + x) * 4;
-        if (x >= half) rgba.set(a.rgba.subarray(at, at + 4), at);
-        if (x === half - 1 || x === half) rgba.set([255, 255, 255, 255], at);
-      }
-    await writeFile(options.still, encodeColorPng(b.width, b.height, rgba), {
+    await writeFile(options.still, splitStill(stills[0]!, stills[1]!), {
       flag: "wx",
     });
     outputs.still = options.still;
   }
   if (options.sheet) {
-    const cell = cells[0]![0]!;
-    const gap = 4;
-    const width = cell.width * 2 + gap,
-      height = cells[0]!.length * (cell.height + gap) - gap;
-    const rgba = new Uint8Array(width * height * 4);
-    for (let p = 3; p < rgba.length; p += 4) rgba[p] = 255;
-    cells.forEach((column, side) =>
-      column.forEach((f, row) => {
-        for (let y = 0; y < f.height; y++)
-          rgba.set(
-            f.rgba.subarray(y * f.width * 4, (y + 1) * f.width * 4),
-            ((row * (cell.height + gap) + y) * width +
-              side * (cell.width + gap)) *
-              4,
-          );
-      }),
-    );
-    await writeFile(options.sheet, encodeColorPng(width, height, rgba), {
+    await writeFile(options.sheet, contactSheet(cells[0]!, cells[1]!), {
       flag: "wx",
     });
     outputs.sheet = options.sheet;

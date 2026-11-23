@@ -14,12 +14,19 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
+import { existsSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import {
   applyColorEffects,
   autoColorClip,
+  autoColorDiffPaths,
+  AutoColorReportSchema,
   CGA2_EQUIVALENCE_BOUND,
+  colorGradeDiffImages,
+  diffColorGrade,
+  measureColorScopeFrames,
+  measureColorScopes,
   colorSampleOrdinals,
   compareClipAudio,
   COLOR_SOLVER_LIMITS,
@@ -31,6 +38,7 @@ import {
   readColorFrames,
   solveColorCorrection,
   solverEquivalence,
+  type AutoColorReport,
   type ColorFrame,
 } from "@still-shift/animation-engine";
 import { validateComposition } from "@still-shift/scene-contract";
@@ -843,5 +851,252 @@ describe("CGA2 solver 2 (grade engine)", () => {
     expect(report.output!.frameCount).toBe(CGA_SYNTHETIC.frameCount);
     // H.264 loss only; the same bound the CGA effects' renders meet.
     expect(report.output!.predictedRms).toBeLessThan(3);
+  }, 120_000);
+});
+
+describe("CGA2 A2 reports on scopes and --diff", () => {
+  const flat = CGA_FLAT_COMBINED;
+  let input: string;
+  beforeAll(async () => {
+    let frames = reference;
+    for (const change of flat) frames = cgaDegrade(frames, change);
+    input = join(root, "a2-flat.mkv");
+    await writeCgaClip(input, frames);
+  });
+  const run = (name: string, extra: Parameters<typeof autoColorClip>[0]) =>
+    autoColorClip({
+      writeComposition: join(root, "a2", `${name}.composition.json`),
+      cacheDirectory: cache(),
+      ...extra,
+    });
+  /** A copy without the named keys (order kept). */
+  const omit = (value: object, ...keys: string[]) =>
+    Object.fromEntries(
+      Object.entries(value).filter(([key]) => !keys.includes(key)),
+    );
+  const withoutPaths = (text: string) =>
+    JSON.stringify(omit(JSON.parse(text), "composition"));
+
+  it("grade reports are report 2: validated, comp scopes' numbers before and predicted after, rerun byte-identical", async () => {
+    const report = await run("grade", { input, engine: "grade" });
+    expect(report.schemaVersion).toBe("still-shift-auto-color-report-2");
+    expect(report.engine).toBe("grade");
+    expect(report.solver).toBe("still-shift-color-solver-2");
+    const written = await readFile(
+      join(root, "a2", "grade.composition.auto-color.json"),
+      "utf8",
+    );
+    expect(AutoColorReportSchema.safeParse(JSON.parse(written)).success).toBe(
+      true,
+    );
+    // The embedded scope measurement is `comp scopes`' for the same frames,
+    // and the statistics stay `color-stats`' (unchanged fields).
+    const scopes = await measureColorScopes(
+      input,
+      { frames: 12 },
+      { cacheDirectory: cache() },
+    );
+    expect(report.scopes!.schema).toBe("still-shift-color-scopes-1");
+    expect(report.scopes!.before).toEqual(scopes.measurement);
+    expect(report.before).toEqual(scopes.statistics);
+    expect(report.sampledOrdinals).toEqual(scopes.selection.ordinals);
+    // Predicted: the measurement of the exact prediction.
+    const clip = await openColorClip(input, { cacheDirectory: cache() });
+    const frames = await readColorFrames(clip, report.sampledOrdinals, {
+      cacheDirectory: cache(),
+    });
+    const predicted = frames.map((frame) => ({
+      ...frame,
+      rgba: applyColorEffects(report.effects, frame.rgba),
+    }));
+    expect(report.scopes!.predicted).toEqual(
+      measureColorScopeFrames(predicted),
+    );
+    expect(report.predicted).toEqual(
+      measureColorFrames({ frames: predicted, width: W }),
+    );
+    // Skin-line deviation and the hue histogram are present on both sides.
+    for (const side of [report.scopes!.before, report.scopes!.predicted]) {
+      expect(side.skin.deviation).not.toBeNull();
+      expect(side.hue.shares).toHaveLength(36);
+    }
+    const { before, predicted: after } = report.scopes!;
+    expect(report.scopes!.change.absoluteSkinDeviation).toBeCloseTo(
+      Math.abs(after.skin.deviation!) - Math.abs(before.skin.deviation!),
+      3,
+    );
+    const again = await run("grade-again", { input, engine: "grade" });
+    expect(JSON.stringify(again)).not.toBe(JSON.stringify(report));
+    expect(withoutPaths(JSON.stringify(again))).toBe(
+      withoutPaths(JSON.stringify(report)),
+    );
+  });
+
+  it("legacy reports stay report 1 unless --scopes asks for report 2", async () => {
+    const legacy = await run("legacy", { input });
+    expect(legacy.schemaVersion).toBe("still-shift-auto-color-report-1");
+    for (const key of ["engine", "solver", "scopes"])
+      expect(key in legacy).toBe(false);
+    expect(AutoColorReportSchema.safeParse(legacy).success).toBe(true);
+    const scoped = await run("legacy-scoped", { input, scopes: true });
+    expect(scoped.schemaVersion).toBe("still-shift-auto-color-report-2");
+    expect(scoped.engine).toBe("legacy");
+    expect(scoped.solver).toBe("still-shift-color-solver-1");
+    expect(AutoColorReportSchema.safeParse(scoped).success).toBe(true);
+    // Report 2 only adds fields: every report-1 field is the same.
+    const rest = omit(
+      scoped,
+      "schemaVersion",
+      "engine",
+      "solver",
+      "scopes",
+      "composition",
+    );
+    const base = omit(legacy, "schemaVersion", "composition");
+    expect(rest).toEqual(base);
+    // A report 1 with a scopes block (or report 2 without) is rejected.
+    expect(
+      AutoColorReportSchema.safeParse({ ...legacy, scopes: scoped.scopes })
+        .success,
+    ).toBe(false);
+    expect(
+      AutoColorReportSchema.safeParse(omit(scoped, "scopes")).success,
+    ).toBe(false);
+    // The exported type agrees with the schema: report 1 has no scopes.
+    // @ts-expect-error report 1 cannot carry a scopes block
+    const mixed: AutoColorReport = {
+      ...legacy,
+      schemaVersion: "still-shift-auto-color-report-1",
+      scopes: scoped.scopes,
+    };
+    expect(AutoColorReportSchema.safeParse(mixed).success).toBe(false);
+    try {
+      await run("grade-unscoped", { input, engine: "grade", scopes: false });
+      expect.fail("must reject");
+    } catch (error) {
+      expect(passageDiagnostics(error)[0]!.code).toBe("comp-auto-color-scopes");
+    }
+  });
+
+  it("--diff writes the split still and contact sheet of the prediction without a render", async () => {
+    const diff = join(root, "a2-diff");
+    const report = await run("diff", { input, engine: "grade", diff });
+    const paths = autoColorDiffPaths(diff, input);
+    expect(paths.still).toBe(join(diff, "a2-flat.still.png"));
+    expect(paths.sheet).toBe(join(diff, "a2-flat.sheet.png"));
+    const clip = await openColorClip(input, { cacheDirectory: cache() });
+    const frames = await readColorFrames(clip, report.sampledOrdinals, {
+      cacheDirectory: cache(),
+    });
+    const expected = colorGradeDiffImages(
+      frames,
+      frames.map((frame) => ({
+        ...frame,
+        rgba: applyColorEffects(report.effects, frame.rgba),
+      })),
+    );
+    expect(await readFile(paths.still)).toEqual(expected.still);
+    expect(await readFile(paths.sheet)).toEqual(expected.sheet);
+  });
+
+  it("--diff refuses existing files before any work and writes nothing", async () => {
+    const diff = join(root, "a2-diff-taken");
+    await mkdir(diff, { recursive: true });
+    const { sheet } = autoColorDiffPaths(diff, input);
+    await writeFile(sheet, "keep\n");
+    const composition = join(root, "a2-taken", "clip.composition.json");
+    try {
+      await autoColorClip({
+        input,
+        writeComposition: composition,
+        diff,
+        cacheDirectory: cache(),
+      });
+      expect.fail("must reject");
+    } catch (error) {
+      const [diagnostic] = passageDiagnostics(error);
+      expect(diagnostic!.code).toBe("comp-auto-color-output");
+      expect(diagnostic!.path).toBe("diff");
+    }
+    expect(await readFile(sheet, "utf8")).toBe("keep\n");
+    expect(await readdir(diff)).toEqual(["a2-flat.sheet.png"]);
+    await expect(readdir(join(root, "a2-taken"))).rejects.toThrow();
+  });
+
+  it("--diff naming a file is refused before any work, so nothing is published", async () => {
+    // Before the fix the existence check read ENOTDIR as "absent", the render
+    // was published, and only then did the diff folder fail: no report, and
+    // a retry refused because the output existed.
+    const diff = join(root, "a2-diff-file");
+    await writeFile(diff, "keep\n");
+    const output = join(root, "a2-diff-file-out", "clip.mp4");
+    try {
+      await autoColorClip({
+        input,
+        output,
+        diff,
+        cacheDirectory: cache(),
+      });
+      expect.fail("must reject");
+    } catch (error) {
+      const [diagnostic] = passageDiagnostics(error);
+      expect(diagnostic!.code).toBe("comp-auto-color-output");
+      expect(diagnostic!.path).toBe("diff");
+    }
+    expect(await readFile(diff, "utf8")).toBe("keep\n");
+    await expect(readdir(join(root, "a2-diff-file-out"))).rejects.toThrow();
+  });
+
+  it("a --diff file that appears during the run is refused and nothing is published", async () => {
+    // Before the fix the images were written after the output was linked: the
+    // run failed with the output published and no report, and a retry was
+    // refused because the output existed.
+    const diff = join(root, "a2-diff-late");
+    const output = join(root, "a2-diff-late-out", "clip.mp4");
+    const { still, sheet } = autoColorDiffPaths(diff, input);
+    try {
+      await autoColorClip({
+        input,
+        output,
+        diff,
+        cacheDirectory: cache(),
+        // After the existence check at the start: another run's sheet lands.
+        progress: (message) => {
+          if (message.startsWith("rendering"))
+            writeFileSync(sheet, "keep\n", { flag: "wx" });
+        },
+      });
+      expect.fail("must reject");
+    } catch (error) {
+      const [diagnostic] = passageDiagnostics(error);
+      expect(diagnostic!.code).toBe("comp-auto-color-output");
+      expect(diagnostic!.path).toBe("diff");
+    }
+    expect(await readFile(sheet, "utf8")).toBe("keep\n");
+    expect(await readdir(diff)).toEqual([basename(sheet)]);
+    expect(existsSync(still)).toBe(false);
+    expect(await readdir(dirname(output))).toEqual([]);
+  }, 120_000);
+
+  it("with a render, --diff shows the output: the same images as comp grade diff", async () => {
+    const diff = join(root, "a2-diff-render");
+    const output = join(root, "a2-render.mp4");
+    await autoColorClip({
+      input,
+      output,
+      engine: "grade",
+      diff,
+      cacheDirectory: cache(),
+    });
+    const paths = autoColorDiffPaths(diff, input);
+    const still = join(root, "a2-grade-diff-still.png"),
+      sheet = join(root, "a2-grade-diff-sheet.png");
+    await diffColorGrade(input, output, {
+      still,
+      sheet,
+      cacheDirectory: cache(),
+    });
+    expect(await readFile(paths.still)).toEqual(await readFile(still));
+    expect(await readFile(paths.sheet)).toEqual(await readFile(sheet));
   }, 120_000);
 });
