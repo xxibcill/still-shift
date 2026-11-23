@@ -104,5 +104,133 @@
     "Owner footage (Hana sweater) was not used.",
     "No human visual or matte-quality review."
   ],
-  "next": "Stopping point after CG6: report to the owner. Follow-ups: comp probe on video layers (prepare native frames); CG7 working space; CG9 lowers serial nodes to grade.key."
+  "next": "Stopping point after CG6: report to the owner. Follow-ups: comp probe on video layers (prepare native frames); CG7 working space; CG9 lowers serial nodes to grade.key.",
+  "review": {
+    "date": "2026-11-23",
+    "review": "https://github.com/xxibcill/still-shift/pull/79#pullrequestreview-6018494363",
+    "summary": "Two-axis review (repo standards; CG6 spec on main). 17 findings posted inline as R1-R17 and fixed on the branch, one commit each.",
+    "fixes": [
+      {
+        "id": "R1",
+        "finding": "matte views reached exports",
+        "fix": "renderComposition refuses an enabled grade.key whose view is not 0 (root and precomps); unit test",
+        "commit": "f9cb2391"
+      },
+      {
+        "id": "R2",
+        "finding": "comp grade key measured the composited frame",
+        "fix": "measures the matte: effects after the key dropped, layer and parents opaque with normal blend, no background, straight red over covered pixels; layerPixels per frame; integration test (opacity 0.5, screen blend, trailing color.invert and a background leave frames identical)",
+        "commit": "ed6b6f20"
+      },
+      {
+        "id": "R3",
+        "finding": "comp probe suggested keys from the stack output",
+        "fix": "--for-key <id> samples that key's input; suggestionStage names the stage; comp-probe-key for a non-key; integration test",
+        "commit": "7ad4e9a1"
+      },
+      {
+        "id": "R4",
+        "finding": "luma matte: decisions said straight color, both backends read premultiplied (luma over black)",
+        "fix": "decisions aligned with the implementation and the plugin reference; no pixel change",
+        "commit": "4658a5bf"
+      },
+      {
+        "id": "R5",
+        "finding": "decisions named a nonexistent matteSoftness",
+        "fix": "removed",
+        "commit": "3352f572"
+      },
+      {
+        "id": "R6",
+        "finding": "finesse and invert silently ignored without a qualifier",
+        "fix": "parameter check rejects them away from neutral when qualifier is 0; unit test",
+        "commit": "38cf0c30"
+      },
+      {
+        "id": "R7",
+        "finding": "windows from shape paths only reachable via the matte slot, untested",
+        "fix": "route stated in plan and decisions; CG6 group binds a shape layer (star) as the matte: Canvas exact, WebGL2 within 1",
+        "commit": "7ec3d3a7"
+      },
+      {
+        "id": "R8",
+        "finding": "plan implied dedicated depth and matte-sequence modes",
+        "fix": "plan and contract comment: they are layers read by luma or alpha",
+        "commit": "8cd729da"
+      },
+      {
+        "id": "R9",
+        "finding": "key read once per keyed segment, plan said per operation",
+        "fix": "plan check reworded to the segment-input reading",
+        "commit": "daf93f9a"
+      },
+      {
+        "id": "R10",
+        "finding": "two ticked checks read stronger than their evidence",
+        "fix": "windows also checked on an offset, rotated 20 degree, 0.8 x 0.9 scaled layer (byte for byte on both backends); plan gives the whole-frame chatter drop (-11.6%)",
+        "commit": "f1489629"
+      },
+      {
+        "id": "R11",
+        "finding": "dev log said not pushed, no PR",
+        "fix": "dev log entry and Current state updated"
+      },
+      {
+        "id": "R12",
+        "finding": "optionalLayers missing from the plugin API section",
+        "fix": "documented under Scoped layer inputs",
+        "commit": "efa335ba"
+      },
+      {
+        "id": "R13",
+        "finding": "optional and required slot loops duplicated per backend",
+        "fix": "copyLayerSlots helper",
+        "commit": "b39b81ae"
+      },
+      {
+        "id": "R14",
+        "finding": "comp grade key copied comp probe's load and isolation",
+        "fix": "composition-color-isolate.ts shared by both",
+        "commit": "4df46ce9"
+      },
+      {
+        "id": "R15",
+        "finding": "unused KEY_QUALIFIER_MODES; qualifier and view numbers repeated",
+        "fix": "KEY_QUALIFIERS and KEY_VIEWS used by every site; GLSL text unchanged",
+        "commit": "f9b34d21"
+      },
+      {
+        "id": "R16",
+        "finding": "keySpec listed finesse fields by hand",
+        "fix": "built from NEUTRAL_MATTE_FINESSE",
+        "commit": "029769eb"
+      },
+      {
+        "id": "R17",
+        "finding": "positional slices for catalogue cells",
+        "fix": "cells list their effect ids",
+        "commit": "1749e99d"
+      }
+    ],
+    "verification": {
+      "checkFast": "passed: 482 test files, 4,983 tests (Node 22.23.1)",
+      "integration": "composition-scopes: 10 passed (comp probe --for-key, comp grade key matte measurement)",
+      "browser": {
+        "color-grading-cg6": "passed (shape-path matte row; transformed-layer windows max 0 on both backends)",
+        "color-grading-cg5": "passed",
+        "composition-grade-effects": "passed (CGA parity max delta 0)",
+        "composition-effects": "passed (includes the effect catalogue acceptance and every CE6 baseline)",
+        "composition-baselines": "passed: 176 of 176 items, 36,061 frames"
+      }
+    },
+    "failedRunsAndReruns": [
+      "R6: the first unit run failed one assertion that expected validateComposition to report the parameter error; static validation does not run validateParams (it runs at evaluation). The assertion was removed; the validateParams assertions stand.",
+      "R13: the first run of the effect-controls unit test failed (an extra surface released): setting the map with copy(source) as the argument read the map's set before the copy installed the test's spy. The copy now happens first; 21/21 pass."
+    ],
+    "notRun": [
+      "pnpm check, the full pnpm test, the runtime and depth tiers and the release checks.",
+      "No human visual or matte review."
+    ],
+    "ownerDecision": "R4 was resolved by documenting the implemented luma-over-black (premultiplied) matte. Reading straight color instead would change translucent mattes and needs the owner's choice."
+  }
 }
