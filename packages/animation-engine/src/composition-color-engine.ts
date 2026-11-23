@@ -12,8 +12,9 @@
  *   (`grade.white-balance`) moves saturated colors and is A4 work.
  * - `color.levels` (input black/white, gamma) → `grade.cdl` (unclamped): the
  *   same curve inside 0–1, without clipping outside it.
- * - `color.curves` (the S-curve) → `grade.curves` master, a smooth monotone
- *   (PCHIP) curve through the same points instead of straight segments.
+ * - `color.curves` (the S-curve) → `grade.curves` master through the same
+ *   points plus guard points around each kink (`piecewiseCurve`), so the
+ *   monotone spline (PCHIP) keeps CGA's straight segments within one code.
  * - `color.vibrance` → `grade.primary` `colorBoost` (the same low-saturation
  *   weighting) behind a `grade.key` that holds skin hues back. Vibrance's
  *   factor 1 + v·(1 − sat)·(1 − protect·skin) is exactly a mix of the boosted
