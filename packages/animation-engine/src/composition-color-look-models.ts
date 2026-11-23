@@ -33,7 +33,7 @@ import {
   EFFECT_LUTS,
   preparedLut,
 } from "../../renderer-core/src/composition/render/luts.ts";
-import { effectDefaults } from "./composition-color-engine.ts";
+import { paramsWithDefaults } from "./composition-color-engine.ts";
 import {
   COLOR_BLOCK,
   COLOR_BLOCK_BYTES,
@@ -139,7 +139,7 @@ export function colorLookOps(
       throw Error(`comp-look: LUT asset "${lutId}" is not loaded`);
     const op = floatGradeOp(
       effect.effect,
-      effectDefaults(effect),
+      paramsWithDefaults(effect),
       lut ? { [EFFECT_LUTS]: { lut: preparedLut("look", lut) } } : undefined,
     );
     return op ? [op] : [];

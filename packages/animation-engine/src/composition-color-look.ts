@@ -574,6 +574,16 @@ export async function fitColorLook(
   });
 }
 
+/** A look as the `color.matrix` effect CGA applies first (id `look`). */
+export const colorLookEffect = (
+  look: Pick<ColorLook, "params">,
+  strength = 1,
+) => ({
+  id: "look",
+  effect: "color.matrix" as const,
+  params: colorLookEffectParams(look, strength),
+});
+
 /** `color.matrix` effect parameters for a look at a 0–1 strength. */
 export function colorLookEffectParams(
   look: Pick<ColorLook, "params">,

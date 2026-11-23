@@ -1,3 +1,4 @@
+import { CompositionColorManagementSchema } from "./color-management.ts";
 import { z } from "zod";
 import { NumericMotionPropertySchema } from "../motion-craft.ts";
 import { OutputFormatSchema } from "../output-format.ts";
@@ -220,6 +221,8 @@ const compositionFields = {
   fps: CompositionFpsSchema,
   format: OutputFormatSchema.optional(),
   colorSpace: z.enum(["srgb", "linear-srgb"]).optional(),
+  /** CG7: opt-in color management (absent: legacy-srgb, unchanged). */
+  colorManagement: CompositionColorManagementSchema.optional(),
   mediaLimits: CompositionMediaLimitsSchema.optional(),
   motionBlur: z
     .object({

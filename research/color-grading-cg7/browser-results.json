@@ -1,0 +1,288 @@
+{
+  "sony-slog3": {
+    "decodeEqual": true,
+    "neutral": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    },
+    "graded": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    }
+  },
+  "arri-logc4": {
+    "decodeEqual": true,
+    "neutral": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    },
+    "graded": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    }
+  },
+  "apple-log": {
+    "decodeEqual": true,
+    "neutral": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    },
+    "graded": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    }
+  },
+  "pq": {
+    "decodeEqual": true,
+    "neutral": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    },
+    "graded": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    }
+  },
+  "hlg": {
+    "decodeEqual": true,
+    "neutral": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    },
+    "graded": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    }
+  },
+  "bt709": {
+    "decodeEqual": true,
+    "neutral": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    },
+    "graded": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsCanvas": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      }
+    }
+  },
+  "display": {
+    "chart-24": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      },
+      "neutralVsLegacy": {
+        "canvas2d": {
+          "max": 0,
+          "count": 0
+        },
+        "webgl2": {
+          "max": 0,
+          "count": 0
+        }
+      },
+      "plainVsLegacy": {
+        "max": 0,
+        "count": 0
+      }
+    },
+    "hue-sweep": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      },
+      "neutralVsLegacy": {
+        "canvas2d": {
+          "max": 0,
+          "count": 0
+        },
+        "webgl2": {
+          "max": 0,
+          "count": 0
+        }
+      },
+      "plainVsLegacy": {
+        "max": 0,
+        "count": 0
+      }
+    },
+    "gray-ramp-256": {
+      "canvasVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "webglVsReference": {
+        "max": 0,
+        "count": 0
+      },
+      "repeat": {
+        "max": 0,
+        "count": 0
+      },
+      "neutralVsLegacy": {
+        "canvas2d": {
+          "max": 0,
+          "count": 0
+        },
+        "webgl2": {
+          "max": 0,
+          "count": 0
+        }
+      },
+      "plainVsLegacy": {
+        "max": 0,
+        "count": 0
+      }
+    }
+  },
+  "compositing": {
+    "max": 0,
+    "count": 0
+  },
+  "export": {
+    "canvas2d": {
+      "max": 0,
+      "count": 0
+    },
+    "webgl2": {
+      "max": 0,
+      "count": 0
+    }
+  }
+}

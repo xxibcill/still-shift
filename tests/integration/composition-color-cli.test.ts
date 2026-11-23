@@ -225,6 +225,8 @@ describe("CGA2 A2 CLI: --scopes and --diff", () => {
     );
     expect(report.schemaVersion).toBe("still-shift-auto-color-report-2");
     expect(report.engine).toBe("legacy");
+    // look apply runs no solver, so report 2 names none (PR #80 F12).
+    expect("solver" in report).toBe(false);
     expect(report.scopes.predicted.skin.lineDegrees).toBe(123);
     // A rerun refuses the existing diff files (the clip fails, nothing else
     // is overwritten).

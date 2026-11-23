@@ -152,6 +152,34 @@ source does not change its samples, only its range and matrix do. The same
 holds for `smpte170m` (BT.601) sources: they decode with the BT.601 matrix and
 range, with no transfer conversion.
 
+### Color-managed compositions (CG7)
+
+A composition with `colorManagement` (working space ACEScct by default, or
+ACEScg, or linear BT.709) also accepts BT.2020 and P3-D65 (`smpte432`)
+primaries, the BT.2020 SDR transfer (`bt2020-10`, `bt2020-12`), PQ
+(`smpte2084`), HLG (`arib-std-b67`), the BT.2020 matrix (`bt2020nc`), untagged
+(`unspecified`) primaries and transfer, and an author-declared camera
+`encoding` (one of the nine validated input transforms; the seven unavailable
+ones are refused with their reason). Without `colorManagement`, only the SDR
+set above validates and every path below is unused. A declared `encoding` wins
+over the stream's tags; each tag that disagrees is reported as the warning
+`comp-media-color-declared`. A camera encoding reads Y′CbCr with full-range
+equations: the curve's input is the recorded code value / 1023, whatever the
+range tag says (the CG0 convention).
+
+Video in a color-managed composition is prepared as canonical 16-bit RGBA PNGs
+(`composition-media-decoder-scene-1`; row filter 0, no color chunks): FFmpeg
+lays the source out as 4:4:4 planes at its own bit depth, and the Y′CbCr → RGB
+matrix and range run in float64 from the published equations (FFmpeg's own
+RGB64 output widens 10-bit codes by a shift and is not lossless). Samples
+store encoded RGB over [−0.25, 1.25]. A live 16-bit frame costs 8 bytes per
+pixel in `decodedFrameBytes` (a 4K UHD pair is 126.6 MiB, within the 128 MiB
+default); the required set is checked before any decode or fetch. Sequences
+stay sRGB RGBA8. In the page, each frame passes through the source stage
+(input transform → working space → the layer's leading pointwise grade run →
+display) before the layer draws it. Design and compositing rule:
+[CG7 decisions](./color-grading-cg7-decisions.md).
+
 Sequence PNGs follow [PNG Third Edition color priority](https://www.w3.org/TR/png-3/):
 cICP, ICC, sRGB, then legacy gamma/chromaticities. Supported authoritative cICP is
 `[1, 13, 0, 1]` (or `[1, 1, 0, 1]` for a sequence described with BT.709

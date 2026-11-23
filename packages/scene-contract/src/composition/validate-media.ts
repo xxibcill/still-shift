@@ -4,7 +4,11 @@ import type {
   CompositionScope,
 } from "./composition.ts";
 import type { CompositionLayer } from "./layers.ts";
-import { resolveCompositionMediaLimits } from "./media.ts";
+import {
+  COMPOSITION_UNAVAILABLE_CAMERA_ENCODINGS,
+  isLegacyMediaColor,
+  resolveCompositionMediaLimits,
+} from "./media.ts";
 import { CompositionPcmClock } from "./audio-clock.ts";
 import { isResolvedProperty, resolvePropertyPath } from "./resolve.ts";
 import type { IssueReporter } from "./primitives.ts";
@@ -53,6 +57,43 @@ export function checkMediaAssets(comp: Composition, fail: IssueReporter) {
         path,
         "Source exceeds the configured duration or resolution",
       );
+    const color = asset.color;
+    if (!isLegacyMediaColor(color)) {
+      // CG7: anything beyond the SDR set needs a color-managed composition;
+      // a legacy composition validates exactly as before.
+      if (!comp.colorManagement)
+        fail(
+          "comp-media-color",
+          [...path, "color"],
+          "Wide-gamut, HDR, untagged or camera-encoded sources need colorManagement on the composition",
+        );
+      else if (asset.type === "sequence")
+        fail(
+          "comp-media-sequence",
+          [...path, "color"],
+          "Sequences are sRGB PNGs with BT.709 primaries and no declared encoding",
+        );
+      else if (color.encoding !== undefined) {
+        const reason =
+          COMPOSITION_UNAVAILABLE_CAMERA_ENCODINGS[
+            color.encoding as keyof typeof COMPOSITION_UNAVAILABLE_CAMERA_ENCODINGS
+          ];
+        if (reason)
+          fail(
+            "comp-media-color",
+            [...path, "color", "encoding"],
+            `Camera encoding "${color.encoding}" is unavailable: ${reason}`,
+          );
+      } else if (
+        color.primaries === "unspecified" ||
+        color.transfer === "unspecified"
+      )
+        fail(
+          "comp-media-color",
+          [...path, "color"],
+          "The stream names no primaries or transfer; declare color.encoding (a camera encoding)",
+        );
+    }
     if (asset.color.matrix === "gbr" && asset.color.range !== "pc")
       fail(
         "comp-media-color",

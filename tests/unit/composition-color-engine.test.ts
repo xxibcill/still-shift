@@ -2,11 +2,9 @@
  * CGA2: CGA's corrections translated to the grade engine (solver 2) match
  * their 8-bit counterparts, and their predictions equal the float64 run.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import {
-  temperatureTintForWhite,
-  temperatureTintWhite,
-} from "@still-shift/color-science";
 import {
   applyColorEffects,
   colorDifference,
@@ -15,8 +13,12 @@ import {
   gradeEngineEffects,
   gradeRunOps,
   skinProtectionKey,
+  solverEquivalence,
   type ColorCorrectionEffect,
 } from "@still-shift/animation-engine";
+import { effectCurveIssue } from "@still-shift/scene-contract";
+import { CGA_LOOK_MATRIX } from "../../benchmarks/fixtures/color/cga-synthetic.ts";
+import { decodeCompositionRgbaPng } from "../../packages/animation-engine/src/composition-media-color.ts";
 import { whiteBalanceGains } from "../../packages/renderer-core/src/composition/render/grade-effects.ts";
 import { floatGradeBytes } from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 
@@ -32,32 +34,9 @@ const CUBE = (() => {
 const WIDTH = CUBE.length / 4;
 const both = (effect: ColorCorrectionEffect) => {
   const legacy = applyColorEffects([effect], CUBE);
-  const grade = applyColorEffects(
-    engineEffects("grade", [effect]) as ColorCorrectionEffect[],
-    CUBE,
-  );
+  const grade = applyColorEffects(engineEffects("grade", [effect]), CUBE);
   return colorDifference([legacy], [grade], WIDTH);
 };
-
-describe("temperatureTintForWhite", () => {
-  it("inverts temperatureTintWhite and flags whites outside the bounds", () => {
-    for (const [k, tint] of [
-      [6500, 0],
-      [3200, -16],
-      [2000, 40],
-      [9000, 20],
-      [24000, 90],
-    ] as const) {
-      const solved = temperatureTintForWhite(temperatureTintWhite(k, tint));
-      expect(solved.reached).toBe(true);
-      expect(solved.temperature).toBeCloseTo(k, 6);
-      expect(solved.tint).toBeCloseTo(tint, 6);
-    }
-    const outside = temperatureTintForWhite([0.2, 0.2]);
-    expect(outside.reached).toBe(false);
-    expect(outside.residualUv).toBeGreaterThan(0.01);
-  });
-});
 
 describe("CGA2 grade-engine mappings", () => {
   it("white balance gains: per-channel curves within one code of color.white-balance", () => {
@@ -76,18 +55,19 @@ describe("CGA2 grade-engine mappings", () => {
       expect(points.at(-1)).toEqual([1, gain > 1 ? 1 : points.at(-1)![1]]);
     }
   });
-  it("white balance adaptation: Bradford keeps neutrals within one code", () => {
-    const effect: ColorCorrectionEffect = {
+  it("white balance gains: a gain just above 1 never repeats the end point", () => {
+    // Green's gain here is 1 + 6e-7: its clip knee rounds to x = 1.
+    const [mapped] = gradeEngineEffects({
       id: "wb",
       effect: "color.white-balance",
-      params: { temperature: -30, tint: 10 },
-    };
-    const [mapped] = gradeEngineEffects(effect, { whiteBalance: "adaptation" });
-    expect(mapped!.effect).toBe("grade.white-balance");
-    const ramp = CUBE.subarray(CUBE.length - 256 * 4);
-    const legacy = applyColorEffects([effect], ramp);
-    const grade = applyColorEffects([mapped as ColorCorrectionEffect], ramp);
-    expect(colorDifference([legacy], [grade], 256).max).toBeLessThanOrEqual(1);
+      params: { temperature: -34.99, tint: 15.58 },
+    });
+    for (const channel of ["red", "green", "blue"])
+      expect(
+        effectCurveIssue(mapped!.params[channel] as number[][]),
+      ).toBeUndefined();
+    for (const gain of [1 + 1e-9, 1 + 6e-7, 1 + 1e-6, 1.0001])
+      expect(effectCurveIssue(gainCurve(gain))).toBeUndefined();
   });
   it("levels: an unclamped CDL within one code inside 0–1", () => {
     for (const params of [
@@ -158,10 +138,7 @@ describe("CGA2 grade-engine mappings", () => {
     // and a skin tone is boosted less than with no protection.
     const orange = new Uint8Array([255, 120, 0, 255]);
     const grade = (protect: number, rgba: Uint8Array) =>
-      applyColorEffects(
-        engineEffects("grade", [vibrance(protect)]) as ColorCorrectionEffect[],
-        rgba,
-      );
+      applyColorEffects(engineEffects("grade", [vibrance(protect)]), rgba);
     expect([...grade(0.7, orange)]).toEqual([...orange]);
     const skin = new Uint8Array([217, 172, 141, 255]);
     const sat = (rgba: Uint8Array) =>
@@ -170,6 +147,22 @@ describe("CGA2 grade-engine mappings", () => {
       Math.max(rgba[0]!, rgba[1]!, rgba[2]!);
     expect(sat(grade(0.7, skin))).toBeLessThan(sat(grade(0, skin)));
     expect(skinProtectionKey(0)).toBeNull();
+  });
+  it("vibrance: a negative boost keeps its skin protection", () => {
+    for (const amount of [-40, -80]) {
+      const effect: ColorCorrectionEffect = {
+        id: "vivid",
+        effect: "color.vibrance",
+        params: { vibrance: amount, saturation: 0, protectSkin: 0.7 },
+      };
+      expect(gradeEngineEffects(effect).map((e) => e.effect)).toEqual([
+        "grade.key",
+        "grade.primary",
+      ]);
+      const d = both(effect);
+      expect(d.max).toBeLessThanOrEqual(3);
+      expect(d.p99).toBeLessThanOrEqual(1);
+    }
   });
   it("mapped curves stay within the curve contract (≤ 16 points, 0–1, increasing x)", () => {
     const effects = engineEffects("grade", [
@@ -206,6 +199,121 @@ describe("CGA2 grade-engine mappings", () => {
   });
 });
 
+/** The CG0 stills A0 measures each mapping on (all opaque). */
+const CG0 = join(import.meta.dirname, "../../benchmarks/fixtures/color/cg0");
+const CG0_STILLS = [
+  "chart-24",
+  "gray-ramp-256",
+  "gray-steps-16",
+  "rgb-ramps",
+  "hue-sweep",
+  "saturation-sweep",
+  "skin-tones",
+].map((id) => ({
+  id,
+  ...decodeCompositionRgbaPng(readFileSync(join(CG0, `stills/${id}.png`))),
+}));
+/** Each solver effect at settings the solver reaches, and its bound. */
+const SOLVER_EFFECTS: [ColorCorrectionEffect, number][] = [
+  [
+    {
+      id: "wb",
+      effect: "color.white-balance",
+      params: { temperature: -35, tint: 12 },
+    },
+    1,
+  ],
+  [
+    {
+      id: "wb",
+      effect: "color.white-balance",
+      params: { temperature: 20, tint: -25 },
+    },
+    1,
+  ],
+  [
+    {
+      id: "levels",
+      effect: "color.levels",
+      params: { inputBlack: 0.06, inputWhite: 0.86, gamma: 0.9 },
+    },
+    1,
+  ],
+  [
+    {
+      id: "curve",
+      effect: "color.curves",
+      params: {
+        curve: [
+          [0, 0],
+          [0.24, 0.2088],
+          [0.48, 0.48],
+          [0.74, 0.7738],
+          [1, 1],
+        ],
+      },
+    },
+    1,
+  ],
+  [
+    {
+      id: "vivid",
+      effect: "color.vibrance",
+      params: { vibrance: 80, saturation: 0, protectSkin: 0.7 },
+    },
+    3,
+  ],
+  [
+    {
+      id: "look",
+      effect: "color.matrix",
+      params: { ...CGA_LOOK_MATRIX, strength: 0.6 },
+    },
+    1,
+  ],
+];
+
+describe("CGA2 mappings on the CG0 chart and ramps (A0)", () => {
+  it.each(SOLVER_EFFECTS.map(([e, bound]) => [e.effect, e, bound] as const))(
+    "%s: every CG0 still within its bound",
+    (_, effect, bound) => {
+      for (const still of CG0_STILLS) {
+        expect(still.rgba.every((v, i) => i % 4 !== 3 || v === 255)).toBe(true);
+        const legacy = applyColorEffects([effect], still.rgba);
+        const grade = applyColorEffects(
+          engineEffects("grade", [effect]),
+          still.rgba,
+        );
+        const d = colorDifference([legacy], [grade], still.width);
+        expect(d.max, `${effect.effect} on ${still.id}`).toBeLessThanOrEqual(
+          bound,
+        );
+        expect(d.blockRms).toBeLessThanOrEqual(1);
+      }
+    },
+  );
+});
+
+describe("CGA2 equivalence metric", () => {
+  it("takes the p99 over pixels, each at its largest channel difference", () => {
+    // 2 of 100 pixels differ by 5 in red only: 2% of pixels, 0.67% of values.
+    const a = new Uint8Array(100 * 4).fill(128);
+    const b = Uint8Array.from(a);
+    b[0] = 133;
+    b[4] = 133;
+    const d = colorDifference([a], [b], 10);
+    expect(d.p99).toBe(5);
+    expect(d.max).toBe(5);
+  });
+  it("refuses frames without a 4×4 block instead of passing them", () => {
+    const tiny = {
+      width: 3,
+      frames: [{ ordinal: 0, rgba: new Uint8Array(3 * 3 * 4).fill(200) }],
+    };
+    expect(() => solverEquivalence(tiny, tiny)).toThrow(/no 4×4 block/);
+  });
+});
+
 describe("CGA2 prediction", () => {
   it("evaluates a run of grade.* effects in float64 with one quantization", () => {
     const effects = engineEffects("grade", [
@@ -224,7 +332,7 @@ describe("CGA2 prediction", () => {
         effect: "color.vibrance",
         params: { vibrance: 50, saturation: 0, protectSkin: 0 },
       },
-    ]) as ColorCorrectionEffect[];
+    ]);
     const ops = gradeRunOps(effects);
     const out = applyColorEffects(effects, CUBE);
     for (let i = 0; i < CUBE.length; i += 4 * 97) {
@@ -243,5 +351,28 @@ describe("CGA2 prediction", () => {
       params: { inputBlack: 0.1 },
     };
     expect(engineEffects("legacy", [effect])).toEqual([effect]);
+  });
+});
+
+describe("CGA2 prediction and color management", () => {
+  const primary = (extra: object = {}) =>
+    ({
+      id: "p",
+      effect: "grade.primary",
+      params: { gainMaster: 1.2 },
+      ...extra,
+    }) as ColorCorrectionEffect;
+  const rgba = () => new Uint8Array([64, 128, 192, 255]);
+  it("predicts effects of a legacy composition", () => {
+    const plain = applyColorEffects([primary()], rgba());
+    expect(
+      applyColorEffects([primary({ workingSpace: "legacy-srgb" })], rgba()),
+    ).toEqual(plain);
+    expect(plain).not.toEqual(rgba());
+  });
+  it("refuses effects graded in a working space", () => {
+    expect(() =>
+      applyColorEffects([primary({ workingSpace: "acescct" })], rgba()),
+    ).toThrow(/graded in acescct; the prediction models legacy-srgb/);
   });
 });

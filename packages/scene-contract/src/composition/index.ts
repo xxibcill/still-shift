@@ -17,6 +17,7 @@ export * from "./layers.ts";
 export * from "./depth-image.ts";
 export * from "./media.ts";
 export * from "./luts.ts";
+export * from "./color-management.ts";
 export * from "./audio.ts";
 export * from "./audio-clock.ts";
 export * from "./audio-pcm.ts";

@@ -14,8 +14,9 @@ import {
   writeFile,
 } from "node:fs/promises";
 import { execFileSync } from "node:child_process";
+import { existsSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { basename, dirname, join } from "node:path";
 import {
   applyColorEffects,
   autoColorClip,
@@ -48,7 +49,10 @@ import { pchip } from "@still-shift/color-science";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import {
   CGA_SYNTHETIC,
+  CGA_FLAT_COMBINED,
   cgaDegrade,
+  cgaDegradeAll,
+  cgaLookDocument,
   cgaReferenceFrames,
   writeCgaClip,
   type CgaDegradation,
@@ -727,12 +731,8 @@ describe("CGA one-command correction", () => {
 describe("CGA2 solver 2 (grade engine)", () => {
   const solve2 = (frames: ColorFrame[]) =>
     solveColorCorrection(colorSolverFrames(frames), { engine: "grade" });
-  const flat: CgaDegradation[] = [
-    { kind: "contrast", black: 0.12, white: 0.8 },
-    { kind: "saturation", scale: 0.5 },
-    { kind: "white-balance", temperature: 20, tint: 6 },
-  ];
-  const cases: [string, CgaDegradation[], number][] = [
+  const flat = CGA_FLAT_COMBINED;
+  const cases: [string, readonly CgaDegradation[], number][] = [
     ["balanced", [], 1e-9],
     ["exposure", [{ kind: "exposure", stops: -0.6 }], 3],
     ["contrast", [{ kind: "contrast", black: 0.1, white: 0.88 }], 2.5],
@@ -747,8 +747,7 @@ describe("CGA2 solver 2 (grade engine)", () => {
   it.each(cases)(
     "%s: matches solver 1 within the A0 bound and keeps CGA's residuals",
     async (name, changes, residual) => {
-      let frames = reference;
-      for (const change of changes) frames = cgaDegrade(frames, change);
+      const frames = cgaDegradeAll(reference, changes);
       const { read } = await clipFrames(
         `cga2-${name.replace(" ", "-")}`,
         frames,
@@ -798,8 +797,7 @@ describe("CGA2 solver 2 (grade engine)", () => {
     ]);
   });
   it("auto-color --engine grade writes a valid grade.* composition and says so", async () => {
-    let frames = reference;
-    for (const change of flat) frames = cgaDegrade(frames, change);
+    const frames = cgaDegradeAll(reference, flat);
     const input = join(root, "cga2-compose-input.mkv");
     await writeCgaClip(input, frames);
     const path = join(root, "cga2-compose", "clip.composition.json");
@@ -811,6 +809,17 @@ describe("CGA2 solver 2 (grade engine)", () => {
     });
     expect(report.engine).toBe("grade");
     expect(report.solver).toBe("still-shift-color-solver-2");
+    // look apply runs no solver, so the report names none.
+    const applied = await autoColorClip({
+      input,
+      look: parseColorLook(cgaLookDocument()),
+      writeComposition: join(root, "cga2-look", "clip.composition.json"),
+      engine: "grade",
+      cacheDirectory: cache(),
+    });
+    expect(applied.adaptive).toBe(false);
+    expect(applied.engine).toBe("grade");
+    expect(applied.solver).toBeUndefined();
     const composition = JSON.parse(await readFile(path, "utf8"));
     const effects = composition.layers[0].effects.map(
       (effect: { effect: string }) => effect.effect,
@@ -834,8 +843,7 @@ describe("CGA2 solver 2 (grade engine)", () => {
     );
   });
   it("renders the grade engine's correction close to its prediction", async () => {
-    let frames = reference;
-    for (const change of flat) frames = cgaDegrade(frames, change);
+    const frames = cgaDegradeAll(reference, flat);
     const input = join(root, "cga2-render-input.mkv");
     await writeCgaClip(input, frames);
     const report = await autoColorClip({
@@ -851,11 +859,7 @@ describe("CGA2 solver 2 (grade engine)", () => {
 });
 
 describe("CGA2 A2 reports on scopes and --diff", () => {
-  const flat: CgaDegradation[] = [
-    { kind: "contrast", black: 0.12, white: 0.8 },
-    { kind: "saturation", scale: 0.5 },
-    { kind: "white-balance", temperature: 20, tint: 6 },
-  ];
+  const flat = CGA_FLAT_COMBINED;
   let input: string;
   beforeAll(async () => {
     let frames = reference;
@@ -1046,6 +1050,37 @@ describe("CGA2 A2 reports on scopes and --diff", () => {
     expect(await readFile(diff, "utf8")).toBe("keep\n");
     await expect(readdir(join(root, "a2-diff-file-out"))).rejects.toThrow();
   });
+
+  it("a --diff file that appears during the run is refused and nothing is published", async () => {
+    // Before the fix the images were written after the output was linked: the
+    // run failed with the output published and no report, and a retry was
+    // refused because the output existed.
+    const diff = join(root, "a2-diff-late");
+    const output = join(root, "a2-diff-late-out", "clip.mp4");
+    const { still, sheet } = autoColorDiffPaths(diff, input);
+    try {
+      await autoColorClip({
+        input,
+        output,
+        diff,
+        cacheDirectory: cache(),
+        // After the existence check at the start: another run's sheet lands.
+        progress: (message) => {
+          if (message.startsWith("rendering"))
+            writeFileSync(sheet, "keep\n", { flag: "wx" });
+        },
+      });
+      expect.fail("must reject");
+    } catch (error) {
+      const [diagnostic] = passageDiagnostics(error);
+      expect(diagnostic!.code).toBe("comp-auto-color-output");
+      expect(diagnostic!.path).toBe("diff");
+    }
+    expect(await readFile(sheet, "utf8")).toBe("keep\n");
+    expect(await readdir(diff)).toEqual([basename(sheet)]);
+    expect(existsSync(still)).toBe(false);
+    expect(await readdir(dirname(output))).toEqual([]);
+  }, 120_000);
 
   it("with a render, --diff shows the output: the same images as comp grade diff", async () => {
     const diff = join(root, "a2-diff-render");

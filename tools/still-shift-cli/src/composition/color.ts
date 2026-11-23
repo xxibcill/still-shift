@@ -12,6 +12,7 @@ import {
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import {
+  COLOR_ENGINES,
   autoColorClip,
   autoColorDiffPaths,
   cdlFileKind,
@@ -27,6 +28,7 @@ import {
   readColorFrames,
   type AnyColorLook,
   type AutoColorRequest,
+  type ColorEngine,
   type ColorLookLut,
   type ColorLookModel,
 } from "@still-shift/animation-engine";
@@ -114,13 +116,13 @@ export const backend = (values: Map<string, string>) => {
 const engine = (values: Map<string, string>) => {
   const value = values.get("engine");
   if (value === undefined) return {};
-  if (value !== "grade" && value !== "legacy")
+  if (!(COLOR_ENGINES as readonly string[]).includes(value))
     programError(
       "comp-program-option",
-      "--engine must be grade or legacy",
+      `--engine must be ${COLOR_ENGINES.join(" or ")}`,
       "engine",
     );
-  return { engine: value as "grade" | "legacy" };
+  return { engine: value as ColorEngine };
 };
 /**
  * CGA2 A2: `--scopes true|false` (report 2 for legacy runs) and `--diff

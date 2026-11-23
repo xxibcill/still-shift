@@ -1,3 +1,4 @@
+import type { SceneFrame } from "./scene-frames.ts";
 import type { PreparedNativePbrResources } from "../../native3d/pbr-resources.ts";
 import { loadCompositionPbrResources } from "./native-pbr-resources.ts";
 import {
@@ -227,6 +228,8 @@ export type CompositionResources = {
   nativeAppearanceCodeSha256?: string;
   /** PNG signatures verified from asset bytes, independent of filenames and URLs. */
   pngImages?: ReadonlySet<string>;
+  /** CG7: decoded 16-bit video frames of a color-managed composition. */
+  sceneFrames?: ReadonlyMap<string, SceneFrame>;
   fonts: Map<string, LoadedFont>;
   /** CG5: `.cube` LUT assets, verified and parsed, by asset ID. */
   luts?: ReadonlyMap<string, PreparedLut>;
@@ -296,6 +299,7 @@ export async function loadCompositionResources(
     options.signal?.throwIfAborted();
     const images = new Map<string, CanvasImageSource>();
     const pngImages = new Set<string>();
+    const sceneFrames = new Map<string, SceneFrame>();
     await mapRenderResources(composition.assets, async (asset) => {
       if (asset.type !== "image") return;
       const response = await fetch(assetUrl(asset.id), {
@@ -387,7 +391,9 @@ export async function loadCompositionResources(
               assetUrl,
               images,
               pngImages,
+              sceneFrames,
             ),
+            sceneFrames,
           }
         : {}),
       pngImages,
@@ -701,6 +707,7 @@ function prepareCompositionPreviewOnCanvas(
     images: {
       images: resources.images,
       ...(resources.pngImages ? { pngImages: resources.pngImages } : {}),
+      ...(resources.sceneFrames ? { sceneFrames: resources.sceneFrames } : {}),
       sizes: new Map([
         ...composition.assets.flatMap((a) =>
           a.type === "image"

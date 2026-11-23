@@ -71,7 +71,7 @@ import {
   type ColorLookSpace,
 } from "./composition-color-look-models.ts";
 import { prepareCompositionLuts } from "./composition-luts.ts";
-import { effectDefaults } from "./composition-color-engine.ts";
+import { paramsWithDefaults } from "./composition-color-engine.ts";
 import { bakeGradeOps, gradeCdlText } from "./composition-grade-interchange.ts";
 import { roundTo } from "./composition-color-round.ts";
 
@@ -735,7 +735,7 @@ export function exportColorLook(
       { path: "cdl" },
     );
   const { text, notes } = gradeCdlText(
-    [{ id: only.id, params: effectDefaults(only) }],
+    [{ id: only.id, params: paramsWithDefaults(only) }],
     options.format,
   );
   return {

@@ -5,17 +5,16 @@
  * that does the same job, so the whole correction is one unclamped run,
  * quantized once on exit:
  *
- * - `color.white-balance` (linear-light channel gains) → by default
- *   `grade.curves` red/green/blue curves that apply the same gains (within one
- *   code value), because solver 2 must match CGA's renders before changes
- *   that move the look land (owner decision 2, 2026-11-23). The `adaptation`
- *   model maps it to `grade.white-balance` (Bradford) instead: the illuminant
- *   is the white the gains neutralize, so neutrals match and saturated colors
- *   differ (up to 28 codes on the synthetic green at the solver's limit).
+ * - `color.white-balance` (linear-light channel gains) → `grade.curves`
+ *   red/green/blue curves that apply the same gains (within one code value),
+ *   because solver 2 must match CGA's renders before changes that move the
+ *   look land (owner decision 2, 2026-11-23). Bradford adaptation
+ *   (`grade.white-balance`) moves saturated colors and is A4 work.
  * - `color.levels` (input black/white, gamma) → `grade.cdl` (unclamped): the
  *   same curve inside 0–1, without clipping outside it.
- * - `color.curves` (the S-curve) → `grade.curves` master, a smooth monotone
- *   (PCHIP) curve through the same points instead of straight segments.
+ * - `color.curves` (the S-curve) → `grade.curves` master through the same
+ *   points plus guard points around each kink (`piecewiseCurve`), so the
+ *   monotone spline (PCHIP) keeps CGA's straight segments within one code.
  * - `color.vibrance` → `grade.primary` `colorBoost` (the same low-saturation
  *   weighting) behind a `grade.key` that holds skin hues back. Vibrance's
  *   factor 1 + v·(1 − sat)·(1 − protect·skin) is exactly a mix of the boosted
@@ -30,12 +29,7 @@
  * - `color.matrix` (a look) → `grade.rgb-mixer` (the same parameters and
  *   design formula in float).
  */
-import {
-  rgbToXyzMatrix,
-  applyMatrix,
-  temperatureTintForWhite,
-  type Rgb,
-} from "@still-shift/color-science";
+import { mixKeyed, type Rgb } from "@still-shift/color-science";
 import {
   compositionEffectDefinition,
   isFloatGradeEffect,
@@ -43,66 +37,31 @@ import {
 } from "@still-shift/scene-contract";
 import {
   floatGradeOp,
+  floatGradeSegments,
   quantizeGrade,
   type FloatGradeOp,
+  type FloatGradeSegment,
 } from "../../renderer-core/src/composition/render/float-grade.ts";
+import { evaluateKey } from "../../renderer-core/src/composition/render/float-grade-keys.ts";
 import {
-  evaluateKey,
-  keyIsNeutral,
-  keySpec,
-  type KeySpec,
-} from "../../renderer-core/src/composition/render/float-grade-keys.ts";
+  EFFECT_LUTS,
+  type PreparedLut,
+} from "../../renderer-core/src/composition/render/luts.ts";
 import {
   linearToSrgb,
   srgbToLinear,
   whiteBalanceGains,
 } from "../../renderer-core/src/composition/render/grade-effects.ts";
 import { roundTo } from "./composition-color-round.ts";
+import type { ColorCorrectionEffect } from "./composition-color-solve.ts";
 
 export const COLOR_ENGINES = ["grade", "legacy"] as const;
 export type ColorEngine = (typeof COLOR_ENGINES)[number];
 /** The default for new runs until CGA2's A6 switch (owner decision 1). */
 export const DEFAULT_COLOR_ENGINE: ColorEngine = "legacy";
 
-/** An effect as the solver and the composition carry it. */
-export type EngineEffect = {
-  id: string;
-  effect: string;
-  params: Record<string, number | number[][]>;
-  /** A `grade.lut`'s asset slot; its prepared table rides under EFFECT_LUTS. */
-  assets?: Record<string, string>;
-};
-
 const round = (value: number, digits = 6) => roundTo(value, digits);
-
-/**
- * `color.white-balance` gains → `grade.white-balance`: a grey lit by the
- * illuminant whose linear RGB is 1/gains becomes neutral under the gains, so
- * that illuminant (as xy) is the one Bradford adapts to D65.
- */
-export function gradeWhiteBalance(temperature: number, tint: number) {
-  const gains = whiteBalanceGains(temperature, tint);
-  const xyz = applyMatrix(
-    rgbToXyzMatrix("bt709"),
-    gains.map((g) => 1 / g) as unknown as Rgb,
-  );
-  const sum = xyz[0] + xyz[1] + xyz[2];
-  const solved = temperatureTintForWhite([xyz[0] / sum, xyz[1] / sum]);
-  return {
-    temperature: round(solved.temperature, 2),
-    tint: round(solved.tint, 3),
-    reached: solved.reached,
-  };
-}
-
-/**
- * How the grade engine expresses a white balance: `gains` keeps CGA's
- * linear-light channel gains (per-channel curves), `adaptation` uses Bradford
- * adaptation (`grade.white-balance`).
- */
-export const WHITE_BALANCE_MODELS = ["gains", "adaptation"] as const;
-export type WhiteBalanceModel = (typeof WHITE_BALANCE_MODELS)[number];
-export type EngineOptions = { whiteBalance?: WhiteBalanceModel | undefined };
+type EffectLuts = Readonly<Record<string, PreparedLut>>;
 
 /**
  * A `grade.curves` channel curve (at most 16 points, y in 0–1) that applies a
@@ -110,12 +69,14 @@ export type EngineOptions = { whiteBalance?: WhiteBalanceModel | undefined };
  * tables are: 14 points from 0 to the clip knee, spaced more densely toward
  * black (exponent 1.2), a guard point just below the knee so the monotone
  * spline bends only there, and (1, 1). Within one code value of the CGA table
- * for every input (71 of 27,648 values off by one over 36 settings).
+ * for every input (71 of 27,648 values off by one over 36 settings). A gain
+ * so close to 1 that its knee rounds to 1 is treated as not clipping, so the
+ * knee never repeats the end point (x must increase strictly).
  */
 export function gainCurve(gain: number): number[][] {
   const encode = (x: number) =>
     linearToSrgb(Math.min(1, srgbToLinear(x) * gain));
-  const clips = gain > 1;
+  const clips = gain > 1 && round(linearToSrgb(1 / gain)) < 1;
   const knee = clips ? linearToSrgb(1 / gain) : 1;
   const count = clips ? 14 : 16;
   const xs = Array.from(
@@ -196,35 +157,21 @@ export function skinProtectionKey(protect: number) {
 
 /** One CGA correction (or look) as the grade engine's operators. */
 export function gradeEngineEffects(
-  effect: EngineEffect,
-  options: EngineOptions = {},
-): EngineEffect[] {
+  effect: ColorCorrectionEffect,
+): ColorCorrectionEffect[] {
   const p = effect.params as Record<string, number>;
   switch (effect.effect) {
     case "color.white-balance": {
-      if ((options.whiteBalance ?? "gains") === "gains") {
-        const gains = whiteBalanceGains(p.temperature ?? 0, p.tint ?? 0);
-        return [
-          {
-            id: effect.id,
-            effect: "grade.curves",
-            params: {
-              red: gainCurve(gains[0]),
-              green: gainCurve(gains[1]),
-              blue: gainCurve(gains[2]),
-            },
-          },
-        ];
-      }
-      const { temperature, tint } = gradeWhiteBalance(
-        p.temperature ?? 0,
-        p.tint ?? 0,
-      );
+      const gains = whiteBalanceGains(p.temperature ?? 0, p.tint ?? 0);
       return [
         {
           id: effect.id,
-          effect: "grade.white-balance",
-          params: { temperature, tint },
+          effect: "grade.curves",
+          params: {
+            red: gainCurve(gains[0]),
+            green: gainCurve(gains[1]),
+            blue: gainCurve(gains[2]),
+          },
         },
       ];
     }
@@ -264,11 +211,12 @@ export function gradeEngineEffects(
           "comp-auto-color: the grade engine maps vibrance without a uniform saturation only",
         );
       const boost = round((p.vibrance ?? 0) / 100, 4);
-      const key = boost > 0 ? skinProtectionKey(p.protectSkin ?? 0.7) : null;
+      const key = boost !== 0 ? skinProtectionKey(p.protectSkin ?? 0.7) : null;
+      const skin: ColorCorrectionEffect[] = key
+        ? [{ id: `${effect.id}-skin`, effect: "grade.key", params: key }]
+        : [];
       return [
-        ...(key
-          ? [{ id: `${effect.id}-skin`, effect: "grade.key", params: key }]
-          : []),
+        ...skin,
         {
           id: effect.id,
           effect: "grade.primary",
@@ -295,15 +243,12 @@ export function gradeEngineEffects(
 /** Effects for an engine: unchanged for legacy, translated for grade. */
 export const engineEffects = (
   engine: ColorEngine,
-  effects: readonly EngineEffect[],
-  options: EngineOptions = {},
-): EngineEffect[] =>
-  engine === "grade"
-    ? effects.flatMap((effect) => gradeEngineEffects(effect, options))
-    : [...effects];
+  effects: readonly ColorCorrectionEffect[],
+): ColorCorrectionEffect[] =>
+  engine === "grade" ? effects.flatMap(gradeEngineEffects) : [...effects];
 
 /** Parameters with the effect definition's defaults filled in. */
-export function effectDefaults(effect: EngineEffect) {
+export function paramsWithDefaults(effect: ColorCorrectionEffect) {
   const definition = compositionEffectDefinition(effect.effect);
   if (!definition)
     throw Error(
@@ -319,44 +264,64 @@ export function effectDefaults(effect: EngineEffect) {
 }
 
 /** The float ops of a run of `grade.*` operators (neutral ones dropped). */
-export function gradeRunOps(effects: readonly EngineEffect[]): FloatGradeOp[] {
+export function gradeRunOps(
+  effects: readonly ColorCorrectionEffect[],
+): FloatGradeOp[] {
   return effects.flatMap((effect) => {
     // A look's grade.lut carries its prepared table (EFFECT_LUTS).
     const op = floatGradeOp(
       effect.effect as FloatGradeEffectId,
-      effectDefaults(effect),
+      paramsWithDefaults(effect),
       effect as never,
     );
     return op ? [op] : [];
   });
 }
 
-type Segment = { key: KeySpec | null; ops: FloatGradeOp[] };
-/** A run's keyed segments, as the renderer builds them (`segmentsOf`). */
-function gradeRunSegments(effects: readonly EngineEffect[]): Segment[] {
-  const all: Segment[] = [{ key: null, ops: [] }];
+/**
+ * A run's keyed segments, built by the renderer itself
+ * (`floatGradeSegments`). The prediction evaluates keys per color, so every
+ * key must be pointwise: a qualifier only, no window, gradient, matte,
+ * finesse or view.
+ *
+ * The prediction models a legacy composition (`legacy-srgb`): CGA2 measures
+ * and writes compositions without `colorManagement` (`autoColorComposition`).
+ * In a color-managed one the renderer grades in the working space and runs a
+ * video layer's leading run in the CG7 source stage on 16-bit frames, which
+ * 8-bit frames cannot predict, so effects that carry a working space (render
+ * effects of such a composition) are refused rather than predicted wrongly.
+ */
+function gradeRunSegments(
+  effects: readonly ColorCorrectionEffect[],
+): FloatGradeSegment[] {
   for (const effect of effects) {
-    if (effect.effect === "grade.key") {
-      const spec = keySpec({
-        id: effect.id,
-        params: effectDefaults(effect),
-      } as never);
-      if (
-        spec.spatial ||
-        spec.window ||
-        spec.gradient ||
-        spec.matte ||
-        spec.view
-      )
-        throw Error(
-          `comp-auto-color: grade.key "${effect.id}" is not pointwise; the prediction reads qualifiers only`,
-        );
-      all.push({ key: keyIsNeutral(spec) ? null : spec, ops: [] });
-      continue;
-    }
-    all.at(-1)!.ops.push(...gradeRunOps([effect]));
+    const space = (effect as { workingSpace?: string }).workingSpace;
+    if (space !== undefined && space !== "legacy-srgb")
+      throw Error(
+        `comp-auto-color: "${effect.id}" is graded in ${space}; the prediction models legacy-srgb compositions only`,
+      );
   }
-  return all.filter((segment) => segment.ops.length);
+  const segments = floatGradeSegments(
+    effects.map((effect) => {
+      // A look's grade.lut carries its prepared table (EFFECT_LUTS).
+      const luts = (effect as { [EFFECT_LUTS]?: EffectLuts })[EFFECT_LUTS];
+      return {
+        effect: effect.effect,
+        id: effect.id,
+        params: paramsWithDefaults(effect),
+        ...(luts ? { [EFFECT_LUTS]: luts } : {}),
+      };
+    }),
+  );
+  for (const { key } of segments)
+    if (
+      key &&
+      (key.spatial || key.window || key.gradient || key.matte || key.view)
+    )
+      throw Error(
+        `comp-auto-color: grade.key "${key.id}" is not pointwise; the prediction reads qualifiers only`,
+      );
+  return segments;
 }
 
 /**
@@ -366,7 +331,7 @@ function gradeRunSegments(effects: readonly EngineEffect[]): Segment[] {
  * value entering it), one quantization. Evaluated once per distinct color.
  */
 export function applyGradeRun(
-  effects: readonly EngineEffect[],
+  effects: readonly ColorCorrectionEffect[],
   rgba: Uint8Array,
 ) {
   const segments = gradeRunSegments(effects);
@@ -398,8 +363,7 @@ export function applyGradeRun(
       const a: Rgb = [value[i * 3]!, value[i * 3 + 1]!, value[i * 3 + 2]!];
       let b = a;
       for (const op of segment.ops) b = op.apply(b);
-      for (let c = 0; c < 3; c++)
-        value[i * 3 + c] = k >= 1 ? b[c]! : a[c]! + (b[c]! - a[c]!) * k;
+      value.set(mixKeyed(a, b, k), i * 3);
     }
   }
   const packed = colors.map(
