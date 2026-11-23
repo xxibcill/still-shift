@@ -56,8 +56,10 @@ still hold before relying on them.
   PR #80: report 2 (`engine`, `solver`, CG3 `scopes` before and predicted after, skin-line deviation,
   hue histogram) for every grade report and for legacy with `--scopes true`; legacy reports stay
   report 1 byte for byte (checked against A1 on six fixtures); `AutoColorReportSchema` validates
-  both; `--diff <folder>` writes `comp grade diff`'s still and sheet per clip. **Next:** A3 (look 2),
-  after PR #80 and the A2 PR are reviewed. Open owner decisions: look bound (block means or pixels),
+  both; `--diff <folder>` writes `comp grade diff`'s still and sheet per clip. In review as
+  [PR #82](https://github.com/xxibcill/still-shift/pull/82); its three review findings are fixed on the
+  branch. `codex/cga2-a3` was cut before those fixes and needs a rebase onto the new A2 head.
+  **Next:** A3 (look 2), after PR #80 and PR #82 are reviewed. Open owner decisions: look bound (block means or pixels),
   LUT looks (A3), CGA visual review (A6 sheets).
 
 - **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32, merged as [PR #76](https://github.com/xxibcill/still-shift/pull/76) (`main` 51ffe62a).
@@ -144,6 +146,14 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-23 — CGA2 A2 PR #82 review and fixes
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a2` (worktree `.claude/worktrees/cga2-a2-619a77`). The owner asked for one inline comment per finding, then one commit per fix and a push at the end.
+- **Review:** three findings posted inline on [PR #82](https://github.com/xxibcill/still-shift/pull/82#pullrequestreview-6024752038).
+- **Fixed (one commit each):** a `--diff` path that cannot be a folder (an existing file) is refused before any work; before, the render was published first and the run then failed with no report, and a retry was refused because the output existed. The diff images are now built before publish. `AutoColorReport` is now a union that follows `AutoColorReportSchema` (report 1 cannot carry `engine`, `solver` or `scopes`), checked against the schema with `satisfies`. `cga2-reports.ts` gives its usage message for an option without a value.
+- **Results:** on Node 22.23.1, `pnpm toolchain:check` and `pnpm check:fast` pass (483 files, 4,994 tests). The color integration and unit suites pass (70/70, one new test), and so does `test:browser:color-grading-cga2` (Canvas and WebGL2: 0 channels off). `cga2-reports.ts` writes all 12 fixture reports byte-identical before and after the type refactor. The new `--diff` test fails without the fix.
+- **Open / next:** rebase `codex/cga2-a3` onto the new A2 head. Not run: `pnpm check`, full `pnpm test`, other browser groups, owner clips. No person has looked at the `--diff` images.
 
 ### 2026-11-23 — CGA2 A2: auto-color reports and measurement on scopes
 
