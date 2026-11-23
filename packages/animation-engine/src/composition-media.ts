@@ -1,5 +1,6 @@
 import { resolve } from "node:path";
 import {
+  COMPOSITION_MEDIA_SCENE_DECODER_VERSION,
   CompositionPreparedMediaSchema,
   type Composition,
   type CompositionPreparedMedia,
@@ -89,7 +90,11 @@ export async function prepareCompositionMedia(
   const mappingHash = compositionMediaMappingIdentity(composition);
   const prepared: CompositionPreparedMedia = {
     schemaVersion: "composition-prepared-media-1",
-    decoderVersion: COMPOSITION_MEDIA_DECODER_VERSION,
+    // CG7: a color-managed composition's videos are 16-bit scene frames
+    // (its sequences stay RGBA8).
+    decoderVersion: composition.colorManagement
+      ? COMPOSITION_MEDIA_SCENE_DECODER_VERSION
+      : COMPOSITION_MEDIA_DECODER_VERSION,
     ffmpegIdentities: [],
     frames: [],
   };
@@ -103,6 +108,9 @@ export async function prepareCompositionMedia(
       ordinals: [...(required.get(asset.id) ?? [])],
       mappingHash,
       ...(composition.mediaLimits ? { limits: composition.mediaLimits } : {}),
+      ...(composition.colorManagement && asset.type === "video"
+        ? { scene: true }
+        : {}),
       signal: options.signal,
     });
     sourceAssetPaths[asset.id] = {

@@ -1,4 +1,10 @@
 import { compositionSequenceFramePath } from "./composition-media-sequence.ts";
+import {
+  encodeScenePng,
+  sceneFrameRgb,
+  sceneRawFormat,
+  sceneRawFrameBytes,
+} from "./composition-media-scene.ts";
 import { createHash, randomUUID } from "node:crypto";
 import {
   lstat,
@@ -16,6 +22,7 @@ import {
   resolveCompositionMediaLimits,
   type CompositionMediaLimits,
   type CompositionVisualMediaAsset,
+  COMPOSITION_MEDIA_SCENE_DECODER_VERSION,
 } from "@still-shift/scene-contract";
 import { runProcess } from "@still-shift/execution-runtime/subprocess";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
@@ -70,7 +77,11 @@ export type PreparedCompositionVisualMedia = {
   asset: string;
   sourceHash: string;
   key: string;
-  decoderVersion: typeof COMPOSITION_MEDIA_DECODER_VERSION;
+  decoderVersion:
+    | typeof COMPOSITION_MEDIA_DECODER_VERSION
+    | typeof COMPOSITION_MEDIA_SCENE_DECODER_VERSION;
+  /** CG7: 16-bit encoded frames for a color-managed composition's source stage. */
+  scene?: true;
   ffmpegIdentity: string;
   cacheHit: boolean;
   cacheBytes: number;
@@ -87,13 +98,21 @@ type Options = {
   mappingHash?: string;
   limits?: CompositionMediaLimits;
   signal?: AbortSignal | undefined;
+  /**
+   * CG7: prepare for a color-managed composition's source stage: 16-bit
+   * encoded RGBA frames (COMPOSITION_MEDIA_SCENE_DECODER_VERSION).
+   */
+  scene?: boolean;
 };
 const canonicalColor = (asset: CompositionVisualMediaAsset) => ({
   primaries: asset.color.primaries,
   transfer: asset.color.transfer,
   matrix: asset.color.matrix,
   range: asset.color.range,
+  ...(asset.color.encoding ? { encoding: asset.color.encoding } : {}),
 });
+/** Bytes per decoded pixel: RGBA8, or RGBA16 for the CG7 source stage. */
+const pixelBytes = (scene: boolean | undefined) => (scene ? 8 : 4);
 async function decodeFrames(args: string[], signal?: AbortSignal) {
   try {
     await runProcess("ffmpeg", args, { signal, maxBuffer: 1024 * 1024 });
@@ -152,6 +171,7 @@ async function sourceIdentity(options: Options) {
   if (asset.type === "video") {
     const probe = await probeCompositionVideo(source, {
       expected: asset,
+      ...(options.scene ? { colorManaged: true } : {}),
       ...(options.limits ? { limits: options.limits } : {}),
       signal,
     });
@@ -256,6 +276,7 @@ async function readCachedFrames(
   manifest: CacheManifest,
   ordinals: number[],
   asset: CompositionVisualMediaAsset,
+  scene?: boolean,
 ) {
   if (
     manifest.frames.length !== ordinals.length ||
@@ -270,7 +291,9 @@ async function readCachedFrames(
     const path = join(directory, frameName(frame.ordinal));
     const png = await boundedFile(
       path,
-      asset.width * asset.height * 4 + asset.height + 1024 * 1024,
+      asset.width * asset.height * pixelBytes(scene) +
+        asset.height +
+        1024 * 1024,
     );
     if (png.length !== frame.byteLength || hash(png) !== frame.sha256)
       passageError("comp-media-checksum", "Prepared frame cache was modified", {
@@ -280,13 +303,15 @@ async function readCachedFrames(
     if (
       info.width !== asset.width ||
       info.height !== asset.height ||
-      info.bitDepth !== 8 ||
+      info.bitDepth !== (scene ? 16 : 8) ||
       info.colorType !== 6 ||
-      info.colorAuthority !== "sRGB"
+      info.colorAuthority !== (scene ? "authored-untagged-srgb" : "sRGB")
     )
       passageError(
         "comp-media-provenance",
-        "Prepared cache must contain canonical sRGB RGBA8 frames",
+        scene
+          ? "Prepared cache must contain untagged RGBA16 frames"
+          : "Prepared cache must contain canonical sRGB RGBA8 frames",
         { path },
       );
   }
@@ -297,6 +322,12 @@ export async function prepareCompositionVisualMedia(
   options: Options,
 ): Promise<PreparedCompositionVisualMedia> {
   const { asset, signal } = options;
+  if (options.scene && asset.type !== "video")
+    passageError(
+      "comp-media-format",
+      "Only video sources take the color-managed source stage",
+      { path: asset.id },
+    );
   signal?.throwIfAborted();
   const ordinals = [...new Set(options.ordinals)].sort((a, b) => a - b);
   if (ordinals.length > 262144)
@@ -326,12 +357,13 @@ export async function prepareCompositionVisualMedia(
       { path: asset.id },
     );
   const limits = resolveCompositionMediaLimits(options.limits);
-  const rawBytes = asset.height * (asset.width * 4 + 1);
+  const bpp = pixelBytes(options.scene);
+  const rawBytes = asset.height * (asset.width * bpp + 1);
   const worstFrameBytes = rawBytes + Math.ceil(rawBytes / 65535) * 32 + 65536;
   if (
     (ordinals.length > 0 &&
-      asset.width * asset.height * 4 > limits.decodedFrameBytes) ||
-    ordinals.length * (asset.width * asset.height * 4 + asset.height + 1024) >
+      asset.width * asset.height * bpp > limits.decodedFrameBytes) ||
+    ordinals.length * (asset.width * asset.height * bpp + asset.height + 1024) >
       limits.decodedCacheBytes
   )
     passageError(
@@ -346,11 +378,15 @@ export async function prepareCompositionVisualMedia(
   });
   const ffmpegIdentity = hash(runtime.stdout);
   const identity = compositionMediaCacheIdentity({
-    decoderVersion: COMPOSITION_MEDIA_DECODER_VERSION,
+    decoderVersion: options.scene
+      ? COMPOSITION_MEDIA_SCENE_DECODER_VERSION
+      : COMPOSITION_MEDIA_DECODER_VERSION,
     ffmpegIdentity,
     source: inspected.provenance,
     color: canonicalColor(asset),
-    pixelFormat: "rgba8-srgb-straight",
+    pixelFormat: options.scene
+      ? "rgba16-encoded-straight"
+      : "rgba8-srgb-straight",
     ordinals,
     mappingHash: options.mappingHash ?? null,
   });
@@ -409,7 +445,13 @@ export async function prepareCompositionVisualMedia(
           "Media cache provenance differs from requested source mapping",
           { path: directory },
         );
-      await readCachedFrames(directory, manifest, ordinals, asset);
+      await readCachedFrames(
+        directory,
+        manifest,
+        ordinals,
+        asset,
+        options.scene,
+      );
       cacheHit = true;
     } else {
       // Reserve a conservative maximum before FFmpeg can write any decoded frames.
@@ -435,7 +477,78 @@ export async function prepareCompositionVisualMedia(
       await mkdir(stage);
       const frames: CacheManifest["frames"] = [];
       // Bounded select expressions retain FFmpeg's original presentation ordinal n.
-      if (asset.type === "video") {
+      if (asset.type === "video" && options.scene) {
+        // CG7: 4:4:4 planes at the source depth, then the matrix in float64.
+        const pixelFormat = String(
+          (inspected.provenance as { pixelFormat?: string }).pixelFormat,
+        );
+        const raw = sceneRawFormat(pixelFormat, asset.color);
+        const frameBytes = sceneRawFrameBytes(
+          asset.width,
+          asset.height,
+          raw.depth,
+        );
+        for (let start = 0; start < ordinals.length; start += 16) {
+          const selected = ordinals.slice(start, start + 16);
+          const output = join(stage, "decoded.raw");
+          await decodeFrames(
+            [
+              "-v",
+              "error",
+              "-nostdin",
+              "-noautorotate",
+              "-threads",
+              "1",
+              "-i",
+              inspected.source,
+              "-map",
+              "0:v:0",
+              "-an",
+              "-sn",
+              "-dn",
+              "-vf",
+              `select='${selected.map((frame) => `eq(n,${frame})`).join("+")}',scale=flags=accurate_rnd+bitexact,format=${raw.format}`,
+              "-fps_mode",
+              "passthrough",
+              "-frames:v",
+              String(selected.length),
+              "-filter_threads",
+              "1",
+              "-f",
+              "rawvideo",
+              output,
+            ],
+            signal,
+          );
+          const decoded = await boundedFile(
+            output,
+            frameBytes * selected.length,
+          );
+          if (decoded.length !== frameBytes * selected.length)
+            passageError(
+              "comp-media-format",
+              "Pinned decoder returned a different number of frames",
+              { path: asset.id },
+            );
+          await rm(output);
+          for (const [index, ordinal] of selected.entries()) {
+            signal?.throwIfAborted();
+            const png = encodeScenePng(
+              sceneFrameRgb(
+                decoded.subarray(index * frameBytes, (index + 1) * frameBytes),
+                asset.width,
+                asset.height,
+                raw.depth,
+                asset.color,
+              ),
+              asset.width,
+              asset.height,
+            );
+            await writeFile(join(stage, frameName(ordinal)), png);
+            frames.push({ ordinal, sha256: hash(png), byteLength: png.length });
+          }
+        }
+      } else if (asset.type === "video") {
         for (let start = 0; start < ordinals.length; start += 256) {
           const selected = ordinals.slice(start, start + 256);
           const filter = `select='${selected.map((frame) => `eq(n,${frame})`).join("+")}',${compositionMediaColorFilter(asset.color)}`;
@@ -539,7 +652,7 @@ export async function prepareCompositionVisualMedia(
         join(stage, "manifest.json"),
         JSON.stringify(manifest) + "\n",
       );
-      await readCachedFrames(stage, manifest, ordinals, asset);
+      await readCachedFrames(stage, manifest, ordinals, asset, options.scene);
       await inspected.verify();
       signal?.throwIfAborted();
       if (
@@ -567,7 +680,10 @@ export async function prepareCompositionVisualMedia(
       asset: asset.id,
       sourceHash: asset.sha256,
       key,
-      decoderVersion: COMPOSITION_MEDIA_DECODER_VERSION,
+      decoderVersion: options.scene
+        ? COMPOSITION_MEDIA_SCENE_DECODER_VERSION
+        : COMPOSITION_MEDIA_DECODER_VERSION,
+      ...(options.scene ? { scene: true as const } : {}),
       ffmpegIdentity,
       sourceProvenance: inspected.provenance,
       cacheHit,

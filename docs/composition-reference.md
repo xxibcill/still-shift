@@ -34,35 +34,36 @@ pnpm still-shift comp render --input program.ts --output clip.mp4
 
 ## Generated root contract
 
-| Field           | Required | JSON form               |
-| --------------- | -------- | ----------------------- |
-| `schemaVersion` | yes      | `composition-1`         |
-| `id`            | yes      | string                  |
-| `name`          | no       | string                  |
-| `width`         | yes      | integer                 |
-| `height`        | yes      | integer                 |
-| `frameCount`    | yes      | integer                 |
-| `background`    | no       | string or null          |
-| `layers`        | yes      | array                   |
-| `markers`       | no       | array                   |
-| `constraints`   | no       | array                   |
-| `textAnimators` | no       | array                   |
-| `fps`           | yes      | integer                 |
-| `format`        | no       | `landscape`, `vertical` |
-| `colorSpace`    | no       | `srgb`, `linear-srgb`   |
-| `mediaLimits`   | no       | object                  |
-| `motionBlur`    | no       | object                  |
-| `assets`        | yes      | array                   |
-| `precomps`      | no       | array                   |
-| `textStyles`    | no       | object                  |
-| `signals`       | no       | array                   |
-| `drivers`       | no       | array                   |
-| `periodic`      | no       | array                   |
-| `expressions`   | no       | object                  |
-| `behaviours`    | no       | array                   |
-| `camera2d`      | no       | object                  |
-| `fontCoverage`  | no       | `legacy`, `strict`      |
-| `metadata`      | no       | object                  |
+| Field             | Required | JSON form               |
+| ----------------- | -------- | ----------------------- |
+| `schemaVersion`   | yes      | `composition-1`         |
+| `id`              | yes      | string                  |
+| `name`            | no       | string                  |
+| `width`           | yes      | integer                 |
+| `height`          | yes      | integer                 |
+| `frameCount`      | yes      | integer                 |
+| `background`      | no       | string or null          |
+| `layers`          | yes      | array                   |
+| `markers`         | no       | array                   |
+| `constraints`     | no       | array                   |
+| `textAnimators`   | no       | array                   |
+| `fps`             | yes      | integer                 |
+| `format`          | no       | `landscape`, `vertical` |
+| `colorSpace`      | no       | `srgb`, `linear-srgb`   |
+| `colorManagement` | no       | object                  |
+| `mediaLimits`     | no       | object                  |
+| `motionBlur`      | no       | object                  |
+| `assets`          | yes      | array                   |
+| `precomps`        | no       | array                   |
+| `textStyles`      | no       | object                  |
+| `signals`         | no       | array                   |
+| `drivers`         | no       | array                   |
+| `periodic`        | no       | array                   |
+| `expressions`     | no       | object                  |
+| `behaviours`      | no       | array                   |
+| `camera2d`        | no       | object                  |
+| `fontCoverage`    | no       | `legacy`, `strict`      |
+| `metadata`        | no       | object                  |
 
 See [the generated JSON Schema](../packages/scene-contract/schemas/composition-1.schema.json) for full nested bounds and structural unions. Run semantic validation for references, paths and cycles. All listed layer types are implemented; the implementation notes' availability section records backend requirements, operating guides and deferred follow-ups.
 
@@ -1056,6 +1057,8 @@ Identifiers: `time`, `frame`, `value`, `index`, `layerCount`, `fps`. Components:
 | `grade.key`                    | `gain`               | scalar | `1`                         | 0–4                                          |
 | `grade.key`                    | `offset`             | scalar | `0`                         | -1–1                                         |
 | `grade.key`                    | `view`               | scalar | `0`                         | 0–3 (integer)                                |
+| `grade.color-space-transform`  | `from`               | scalar | `0`                         | 0–6 (integer)                                |
+| `grade.color-space-transform`  | `to`                 | scalar | `0`                         | 0–6 (integer)                                |
 | `transition.linear-wipe`       | `progress`           | scalar | `0`                         | 0–1                                          |
 | `transition.linear-wipe`       | `softness`           | scalar | `0`                         | 0–1                                          |
 | `transition.linear-wipe`       | `angle`              | scalar | `0`                         | -36000–36000                                 |

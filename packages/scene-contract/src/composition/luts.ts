@@ -1,15 +1,20 @@
 import { z } from "zod";
+import { COMPOSITION_CONVERSION_SPACES } from "./color-management.ts";
 import { compositionId, sha256 } from "./primitives.ts";
 
 /**
- * CG5: color spaces a LUT asset can declare for its input and output. Today
- * the only working space is the legacy display-referred one (encoded sRGB,
- * BT.709 primaries; BT.709 video is display-equivalent on decode, D-colour),
- * so it is the only value: a LUT made for another space (a camera log or
- * ACES input) cannot be applied correctly until CG7 adds working spaces and
- * extends this list.
+ * Color spaces a LUT asset can declare for its input and output. CG5's
+ * `legacy-srgb` is the legacy working space (encoded sRGB, BT.709 primaries;
+ * BT.709 video is display-equivalent on decode, D-colour). CG7 adds the
+ * conversion spaces: `grade.lut` converts the working space to `inputSpace`
+ * before the table and `outputSpace` back after it; a space equal to the
+ * working space (`legacy-srgb` and `srgb` are the legacy one) converts
+ * nothing, so CG5 renders are unchanged.
  */
-export const LUT_COLOR_SPACES = ["legacy-srgb"] as const;
+export const LUT_COLOR_SPACES = [
+  "legacy-srgb",
+  ...COMPOSITION_CONVERSION_SPACES,
+] as const;
 export type LutColorSpace = (typeof LUT_COLOR_SPACES)[number];
 
 /**

@@ -96,14 +96,15 @@ In a color-managed composition:
   exit working → display (the inverse, **clipped to 0–1** before the sRGB
   encode), then quantizes once. A run whose operators are all neutral stays an
   exact copy. Legacy compositions run no conversion.
-- **Scene-referred media** — a declared camera `encoding`, a PQ/HLG or
-  BT.2020/P3 source, or any source above 8 bits — take the **source stage**:
-  16-bit decoded frame → input transform → working → the layer's **leading
-  pointwise grade run** → working → display → RGBA8 frame, which the layer then
-  draws normally. Pointwise means every `grade.*` except a `grade.key` with a
-  window, a matte or matte finesse (neighbourhood); the stage stops before the
-  first such key, and that key, the rest of the run and every later effect run
-  after the draw on display-referred values.
+- **Video layers** take the **source stage**: every video source in a
+  color-managed composition, whatever its metadata (an 8-bit SDR clip
+  round-trips exactly). 16-bit decoded frame → input transform → working → the
+  layer's **leading pointwise grade run** → working → display → RGBA8 frame,
+  which the layer then draws normally. Pointwise means every `grade.*` except
+  a `grade.key` with a window, a matte or matte finesse (neighbourhood); the
+  stage stops before the first such key, and that key, the rest of the run and
+  every later effect run after the draw on display-referred values. Sequences
+  are sRGB PNGs by contract and stay display-referred (8-bit, as today).
 - **Input transforms** (all to linear AP1): camera encodings by their validated
   transform (curve, gamut, CAT02 or Bradford to ACES2065-1, then AP0 → AP1);
   display transfers (`bt709`, `iec61966-2-1`) by the sRGB decode (D-colour:
@@ -132,11 +133,17 @@ when layers mix; an adjustment-layer grade sees the clipped composite.
 
 ## 5. Cache format and memory budgets
 
-- **Prepared frames.** Scene-referred media prepare 16-bit RGBA PNGs holding
-  full-range **encoded** source RGB (range and matrix applied, transfer and
-  gamut not), opaque alpha, under a separate decoder identity
-  `composition-media-decoder-scene-1`. Legacy frames, their decoder version and
-  cache keys are unchanged.
+- **Prepared frames.** Video in a color-managed composition prepares
+  canonical 16-bit RGBA PNGs (row filter 0, no color chunks, opaque) of
+  **encoded** source RGB under a separate decoder identity
+  `composition-media-decoder-scene-1`; legacy frames, their decoder version and
+  cache keys are unchanged. FFmpeg only lays the source out as 4:4:4 planes at
+  its own depth (chroma upsampled, luma untouched); the Y′CbCr → RGB matrix and
+  range run in float64 from the published equations. FFmpeg's own RGB64
+  output was rejected: it widens 10-bit codes by a shift (1023 → 65472), so
+  codes above 512 come back one low. Samples are stored over [−0.25, 1.25]
+  (step 2.3e-5, under half a 12-bit code) so matrix results outside 0–1
+  survive.
 - **Disk.** Counted in `decodedCacheBytes` by actual bytes, as today.
 - **Live frames.** A 16-bit frame is held as `Uint16Array` RGBA: 8 bytes per
   pixel, counted in `decodedFrameBytes`. A 4K UHD frame is 63.3 MiB; the
