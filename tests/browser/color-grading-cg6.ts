@@ -940,6 +940,70 @@ try {
         );
       }
 
+      // R18: a keyed run before a mesh warp on a layer that overhangs the
+      // viewport (the mesh capture is larger than it, so the operators run in
+      // an effect window): the key, its gradient included, still applies.
+      {
+        const still = byId.get("hue-sweep")!;
+        const inset = 16;
+        const keyParams = {
+          qualifier: 1,
+          hueCenter: 30,
+          hueWidth: 120,
+          hueSoftness: 10,
+          gradient: 1,
+          gradientStart: [0, 0],
+          gradientEnd: [still.width, 0],
+        };
+        const mesh: Effect = {
+          effect: "distort.mesh-warp",
+          params: { size: [still.width, still.height] },
+        };
+        const key: Effect = { effect: "grade.key", params: keyParams };
+        const at = (effects: Effect[], backend: Backend) =>
+          renderComp(
+            still,
+            [
+              image("image", still, {
+                transform: { anchor: [0, 0], position: [-inset, -inset] },
+                effects: effects.map((e, i) => ({
+                  id: `g${i}`,
+                  effect: e.effect,
+                  params: (e.params ?? {}) as never,
+                })),
+              }),
+            ],
+            [still],
+            backend,
+          );
+        const differing = (a: ArrayLike<number>, b: ArrayLike<number>) => {
+          let n = 0;
+          for (let i = 0; i < a.length; i += 4)
+            if (a[i] !== b[i] || a[i + 1] !== b[i + 1] || a[i + 2] !== b[i + 2])
+              n++;
+          return n;
+        };
+        report.windowedKey = Object.fromEntries(
+          (["canvas2d", "webgl2"] as const).map((backend) => {
+            const keyed = at([key, GRADE, mesh], backend);
+            return [
+              backend,
+              {
+                // Pixels where the key holds the grade back (0 if dropped).
+                vsUnkeyed: differing(keyed, at([GRADE, mesh], backend)),
+                // The keyed run with and without the (identity) warp, against
+                // the warp's own effect on an unkeyed grade.
+                vsUnwarped: diff(keyed, at([key, GRADE], backend)).max,
+                warpAlone: diff(
+                  at([GRADE, mesh], backend),
+                  at([GRADE], backend),
+                ).max,
+              },
+            ];
+          }),
+        );
+      }
+
       // 6. Matte stability on the moving clip: flicker of the gray key view
       // between consecutive frames, excluding a 3 px band around the disc edge
       // in either frame (true motion), raw and with finesse.
@@ -1089,6 +1153,15 @@ try {
       `second key ${b}`,
     );
   }
+  for (const [b, w] of Object.entries(
+    r.windowedKey as Record<string, Record<string, number>>,
+  )) {
+    check(w.vsUnkeyed! > 0, `windowed key applies ${b}`);
+    check(
+      w.vsUnwarped! <= w.warpAlone!,
+      `windowed key matches unwarped ${b} ${JSON.stringify(w)}`,
+    );
+  }
   const st = r.stability as Record<string, { stableMeanChange: number }>;
   for (const b of ["canvas2d", "webgl2"])
     check(
@@ -1100,6 +1173,7 @@ try {
       {
         sweeps: (r.sweeps as unknown[]).length,
         windows: r.windows,
+        windowedKey: r.windowedKey,
         externalMatte: r.externalMatte,
         stability: Object.fromEntries(
           Object.entries(st).map(([k, v]) => [

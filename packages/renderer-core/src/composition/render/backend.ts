@@ -1,4 +1,4 @@
-import { applyWindowEffect } from "./effect-window.ts";
+import { applyWindowEffect, applyWindowEffects } from "./effect-window.ts";
 import {
   renderMembers,
   type CompositionRenderStatistics,
@@ -8,7 +8,7 @@ import {
   compositionEffectDefinition,
   isFloatGradeEffect,
 } from "@still-shift/scene-contract";
-import { keyLayerSlot } from "./float-grade-keys.ts";
+import { GRADE_KEY, keyLayerSlot } from "./float-grade-keys.ts";
 import { requireSpatialCapabilities } from "./spatial-capabilities.ts";
 import type { FlatLighting } from "./flat-lighting.ts";
 import {
@@ -357,6 +357,44 @@ export function executeGraph<S extends Surface>(
     try {
       for (let index = 0; index < effects.length; index++) {
         const effect = effects[index]!;
+        // A keyed grade run under an effect window (a mesh capture larger
+        // than the viewport): the operators carry the window but grade.key
+        // (layer space) does not, so the run is applied whole, inside the
+        // window, rather than split into an orphaned key and unkeyed ops.
+        if (
+          isFloatGradeEffect(effect.effect) &&
+          (index === 0 || !isFloatGradeEffect(effects[index - 1]!.effect))
+        ) {
+          let end = index;
+          while (
+            end < effects.length &&
+            isFloatGradeEffect(effects[end]!.effect)
+          )
+            end++;
+          const members = effects.slice(index, end);
+          const window = members.find((member) => member.window)?.window;
+          if (window && members.some((member) => member.effect === GRADE_KEY)) {
+            flush(index);
+            start = end;
+            const inputs = new Map<string, S>();
+            try {
+              for (const member of members)
+                for (const [slot, ops] of Object.entries(
+                  member.layerInputs ?? {},
+                ))
+                  inputs.set(
+                    keyLayerSlot(member.id, slot),
+                    isolated(ops, target),
+                  );
+              applyWindowEffects(backend, target, window, members, inputs);
+            } finally {
+              for (const source of inputs.values())
+                backend.releaseSurface(source);
+            }
+            index = end - 1;
+            continue;
+          }
+        }
         if (!effect.layerInputs && !effect.window) continue;
         if (!effect.window && isFloatGradeEffect(effect.effect)) {
           for (const [slot, ops] of Object.entries(effect.layerInputs ?? {}))
