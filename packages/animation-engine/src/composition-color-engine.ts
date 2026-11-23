@@ -276,10 +276,24 @@ export function gradeRunOps(
  * (`floatGradeSegments`). The prediction evaluates keys per color, so every
  * key must be pointwise: a qualifier only, no window, gradient, matte,
  * finesse or view.
+ *
+ * The prediction models a legacy composition (`legacy-srgb`): CGA2 measures
+ * and writes compositions without `colorManagement` (`autoColorComposition`).
+ * In a color-managed one the renderer grades in the working space and runs a
+ * video layer's leading run in the CG7 source stage on 16-bit frames, which
+ * 8-bit frames cannot predict, so effects that carry a working space (render
+ * effects of such a composition) are refused rather than predicted wrongly.
  */
 function gradeRunSegments(
   effects: readonly ColorCorrectionEffect[],
 ): FloatGradeSegment[] {
+  for (const effect of effects) {
+    const space = (effect as { workingSpace?: string }).workingSpace;
+    if (space !== undefined && space !== "legacy-srgb")
+      throw Error(
+        `comp-auto-color: "${effect.id}" is graded in ${space}; the prediction models legacy-srgb compositions only`,
+      );
+  }
   const segments = floatGradeSegments(
     effects.map((effect) => ({
       effect: effect.effect,
