@@ -2,6 +2,8 @@
  * CGA2: CGA's corrections translated to the grade engine (solver 2) match
  * their 8-bit counterparts, and their predictions equal the float64 run.
  */
+import { readFileSync } from "node:fs";
+import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
   applyColorEffects,
@@ -15,6 +17,8 @@ import {
   type ColorCorrectionEffect,
 } from "@still-shift/animation-engine";
 import { effectCurveIssue } from "@still-shift/scene-contract";
+import { CGA_LOOK_MATRIX } from "../../benchmarks/fixtures/color/cga-synthetic.ts";
+import { decodeCompositionRgbaPng } from "../../packages/animation-engine/src/composition-media-color.ts";
 import { whiteBalanceGains } from "../../packages/renderer-core/src/composition/render/grade-effects.ts";
 import { floatGradeBytes } from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 
@@ -193,6 +197,101 @@ describe("CGA2 grade-engine mappings", () => {
       });
     }
   });
+});
+
+/** The CG0 stills A0 measures each mapping on (all opaque). */
+const CG0 = join(import.meta.dirname, "../../benchmarks/fixtures/color/cg0");
+const CG0_STILLS = [
+  "chart-24",
+  "gray-ramp-256",
+  "gray-steps-16",
+  "rgb-ramps",
+  "hue-sweep",
+  "saturation-sweep",
+  "skin-tones",
+].map((id) => ({
+  id,
+  ...decodeCompositionRgbaPng(readFileSync(join(CG0, `stills/${id}.png`))),
+}));
+/** Each solver effect at settings the solver reaches, and its bound. */
+const SOLVER_EFFECTS: [ColorCorrectionEffect, number][] = [
+  [
+    {
+      id: "wb",
+      effect: "color.white-balance",
+      params: { temperature: -35, tint: 12 },
+    },
+    1,
+  ],
+  [
+    {
+      id: "wb",
+      effect: "color.white-balance",
+      params: { temperature: 20, tint: -25 },
+    },
+    1,
+  ],
+  [
+    {
+      id: "levels",
+      effect: "color.levels",
+      params: { inputBlack: 0.06, inputWhite: 0.86, gamma: 0.9 },
+    },
+    1,
+  ],
+  [
+    {
+      id: "curve",
+      effect: "color.curves",
+      params: {
+        curve: [
+          [0, 0],
+          [0.24, 0.2088],
+          [0.48, 0.48],
+          [0.74, 0.7738],
+          [1, 1],
+        ],
+      },
+    },
+    1,
+  ],
+  [
+    {
+      id: "vivid",
+      effect: "color.vibrance",
+      params: { vibrance: 80, saturation: 0, protectSkin: 0.7 },
+    },
+    3,
+  ],
+  [
+    {
+      id: "look",
+      effect: "color.matrix",
+      params: { ...CGA_LOOK_MATRIX, strength: 0.6 },
+    },
+    1,
+  ],
+];
+
+describe("CGA2 mappings on the CG0 chart and ramps (A0)", () => {
+  it.each(SOLVER_EFFECTS.map(([e, bound]) => [e.effect, e, bound] as const))(
+    "%s: every CG0 still within its bound",
+    (_, effect, bound) => {
+      for (const still of CG0_STILLS) {
+        expect(still.rgba.every((v, i) => i % 4 !== 3 || v === 255)).toBe(true);
+        const legacy = applyColorEffects([effect], still.rgba);
+        const grade = applyColorEffects(
+          engineEffects("grade", [effect]),
+          still.rgba,
+        );
+        const d = colorDifference([legacy], [grade], still.width);
+        expect(d.max, `${effect.effect} on ${still.id}`).toBeLessThanOrEqual(
+          bound,
+        );
+        expect(d.blockRms).toBeLessThanOrEqual(1);
+      }
+    },
+  );
 });
 
 describe("CGA2 equivalence metric", () => {

@@ -16,30 +16,38 @@
   },
   "mappings": [
     {
+      "cg0Stills": "chart-24, gray-ramp-256, gray-steps-16, rgb-ramps, hue-sweep, saturation-sweep and skin-tones from benchmarks/fixtures/color/cg0; each mapping's `cg0` is max/p99/block RMS of 255 against solver 1 (tests/unit/composition-color-engine.test.ts, A0)"
+    },
+    {
       "solver1": "color.white-balance",
       "solver2": "grade.curves red/green/blue (gainCurve)",
       "difference": "max 1 code over a color cube and the neutral ramp for 18 temperature/tint settings; 71 of 27,648 table values off by 1 over 36 settings",
-      "note": "grade.white-balance (Bradford) was prototyped as an opt-in adaptation model at 2413125c: neutrals within 1, saturated colors up to 28 codes on the synthetic green. It was removed from this PR (review F3) and returns in A4 from that commit"
+      "note": "grade.white-balance (Bradford) was prototyped as an opt-in adaptation model at 2413125c: neutrals within 1, saturated colors up to 28 codes on the synthetic green. It was removed from this PR (review F3) and returns in A4 from that commit",
+      "cg0": "max 0 at temperature/tint −35/12 and 20/−25"
     },
     {
       "solver1": "color.levels",
       "solver2": "grade.cdl (clamp 0)",
-      "difference": "max 1 code in range; values outside 0–1 are kept instead of clipped"
+      "difference": "max 1 code in range; values outside 0–1 are kept instead of clipped",
+      "cg0": "max 0 (black 0.06, white 0.86, gamma 0.9)"
     },
     {
       "solver1": "color.curves (S-curve)",
       "solver2": "grade.curves master with kink guard points (piecewiseCurve), lumaMix 0",
-      "difference": "max 1 code (0 on the owner clip that exposed the unguarded spline, which had been 3)"
+      "difference": "max 1 code (0 on the owner clip that exposed the unguarded spline, which had been 3)",
+      "cg0": "max 1, p99 0, block RMS ≤ 0.031 (gray ramp and RGB ramps; 0 elsewhere)"
     },
     {
       "solver1": "color.vibrance",
       "solver2": "grade.key (HSL hue 25° ± 25° smoothstep, inverted, gain protectSkin, offset 1 − protectSkin) + grade.primary colorBoost",
-      "difference": "max 3, p99 ≤ 1 over the color cube for protectSkin 0, 0.7, 1; a saturated orange unchanged"
+      "difference": "max 3, p99 ≤ 1 over the color cube for protectSkin 0, 0.7, 1; a saturated orange unchanged",
+      "cg0": "max 1, p99 ≤ 1, block RMS ≤ 0.183 (vibrance 80, protectSkin 0.7; chart, hue and saturation sweeps; 0 on ramps and skin tones)"
     },
     {
       "solver1": "color.matrix (look)",
       "solver2": "grade.rgb-mixer",
-      "difference": "max 1 code in range (as CG2 measured)"
+      "difference": "max 1 code in range (as CG2 measured)",
+      "cg0": "max 1, p99 ≤ 1, block RMS ≤ 0.144 (CGA_LOOK_MATRIX at 0.6; 0 on the chart and skin tones)"
     }
   ],
   "checks": [
