@@ -3,6 +3,7 @@ import { stat } from "node:fs/promises";
 import { resolve } from "node:path";
 import {
   AnimationEngineError,
+  type Composition,
   type CompositionDiagnostic,
 } from "@still-shift/scene-contract";
 import type { CompositionMediaPreparationOptions } from "./composition-media.ts";
@@ -113,6 +114,37 @@ export type CompositionRenderResult = {
   metrics: ExportMetrics;
 };
 
+/**
+ * CG6: paths of enabled `grade.key` effects whose `view` (gray key,
+ * highlight, high contrast) is set. A view replaces the graded pixels with
+ * the matte, so export refuses one rather than deliver it.
+ */
+export function keyMatteViews(composition: Composition) {
+  const paths: string[] = [];
+  const scopes = [
+    { path: "", layers: composition.layers },
+    ...(composition.precomps ?? []).map((p, i) => ({
+      path: `precomps.${i}.`,
+      layers: p.layers,
+    })),
+  ];
+  for (const scope of scopes)
+    scope.layers.forEach((layer, i) => {
+      if (layer.enabled === false) return;
+      (layer.effects ?? []).forEach((effect, k) => {
+        const view = effect.params?.view;
+        if (
+          effect.effect === "grade.key" &&
+          effect.enabled !== false &&
+          view !== undefined &&
+          view !== 0
+        )
+          paths.push(`${scope.path}layers.${i}.effects.${k}.params.view`);
+      });
+    });
+  return paths;
+}
+
 /** Export through the pinned browser; explicit profiles support editor and social delivery. */
 export async function renderComposition(request: {
   compositionPath: string;
@@ -161,6 +193,12 @@ export async function renderComposition(request: {
         ...(request.fontCoverage ? { fontCoverage: request.fontCoverage } : {}),
       },
     );
+    const views = keyMatteViews(loaded.composition);
+    if (views.length)
+      throw new AnimationEngineError(
+        "SCENE_INVALID",
+        `A grade.key matte view is for preview and comp grade key, not export: set view to 0 at ${views.join(", ")}`,
+      );
     const { width, height } = loaded.scene.canvas;
     const nativeObservation = await createNativeObservationRequestVersions(
       loaded,

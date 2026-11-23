@@ -13,6 +13,7 @@ import {
   floatGradeOp,
 } from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 import type { RenderEffect } from "../../packages/renderer-core/src/composition/render/graph.ts";
+import { keyMatteViews } from "../../packages/animation-engine/src/composition-render.ts";
 
 const comp = (effect: Record<string, unknown>): Composition =>
   ({
@@ -91,6 +92,26 @@ describe("grade.key contract", () => {
       offset: 0,
       view: 0,
     });
+  });
+});
+
+describe("grade.key matte views at export", () => {
+  it("finds enabled keys whose view is set, in the root and precomps", () => {
+    expect(keyMatteViews(comp({ params: { view: 0 } }))).toEqual([]);
+    expect(keyMatteViews(comp({ params: { view: 2 } }))).toEqual([
+      "layers.1.effects.0.params.view",
+    ]);
+    expect(
+      keyMatteViews(comp({ enabled: false, params: { view: 1 } })),
+    ).toEqual([]);
+    const root = comp({});
+    const nested = {
+      ...root,
+      precomps: [{ ...comp({ params: { view: 3 } }), id: "inner" }],
+    } as unknown as Composition;
+    expect(keyMatteViews(nested)).toEqual([
+      "precomps.0.layers.1.effects.0.params.view",
+    ]);
   });
 });
 

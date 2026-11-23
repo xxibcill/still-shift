@@ -377,7 +377,9 @@ input of the operations it scopes, never their output.
   layer works as a source.
 - `view` shows the key instead of the grade: 1 gray key, 2 highlight (the
   result where keyed over mid gray), 3 high contrast (white wherever the key
-  is above 0). A view ends the run's processing.
+  is above 0). A view ends the run's processing. Views are for preview and
+  `comp grade key`: export (`comp render`) refuses an enabled `grade.key`
+  whose `view` is not 0, so a matte never reaches delivered frames.
 - Precision: the float64 reference in `@still-shift/color-science` is
   authoritative; Canvas runs it, WebGL2 is within one code value. Finesse
   runs as GPU passes on float32 bits in RGBA8 textures. One grade run reads
