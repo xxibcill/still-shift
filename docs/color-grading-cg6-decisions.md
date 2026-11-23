@@ -94,8 +94,9 @@ sampleSoftness`, measured as Euclidean distance in OKLab (perceptual).
   `requiresLayers`). `matteMode` 0 reads alpha, 1 reads BT.709 luma of the
   layer over black, that is of its premultiplied color, so a translucent
   pixel counts in proportion to its alpha (a depth image, a luma matte or a
-  matte sequence; opaque sources read their own luma), then a range with softness (`matteLow`, `matteHigh`, `matteSoftness`) and
-  `matteInvert`.
+  matte sequence; opaque sources read their own luma), then levels
+  `matteLow` → `matteHigh` (the softness is the distance between them; low
+  above high reverses) and `matteInvert`.
 
 ## Matte finesse
 
