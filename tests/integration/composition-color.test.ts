@@ -19,6 +19,7 @@ import { join } from "node:path";
 import {
   applyColorEffects,
   autoColorClip,
+  CGA2_EQUIVALENCE_BOUND,
   colorSampleOrdinals,
   compareClipAudio,
   COLOR_SOLVER_LIMITS,
@@ -29,8 +30,10 @@ import {
   parseColorLook,
   readColorFrames,
   solveColorCorrection,
+  solverEquivalence,
   type ColorFrame,
 } from "@still-shift/animation-engine";
+import { validateComposition } from "@still-shift/scene-contract";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import {
   CGA_SYNTHETIC,
@@ -708,4 +711,130 @@ describe("CGA one-command correction", () => {
       expect(passageDiagnostics(error)[0]!.code).toBe("comp-auto-color-rate");
     }
   });
+});
+
+describe("CGA2 solver 2 (grade engine)", () => {
+  const solve2 = (frames: ColorFrame[]) =>
+    solveColorCorrection(colorSolverFrames(frames), { engine: "grade" });
+  const flat: CgaDegradation[] = [
+    { kind: "contrast", black: 0.12, white: 0.8 },
+    { kind: "saturation", scale: 0.5 },
+    { kind: "white-balance", temperature: 20, tint: 6 },
+  ];
+  const cases: [string, CgaDegradation[], number][] = [
+    ["balanced", [], 1e-9],
+    ["exposure", [{ kind: "exposure", stops: -0.6 }], 3],
+    ["contrast", [{ kind: "contrast", black: 0.1, white: 0.88 }], 2.5],
+    [
+      "white balance",
+      [{ kind: "white-balance", temperature: 30, tint: -12 }],
+      1,
+    ],
+    ["desaturation", [{ kind: "saturation", scale: 0.4 }], Infinity],
+    ["flat combined", flat, Infinity],
+  ];
+  it.each(cases)(
+    "%s: matches solver 1 within the A0 bound and keeps CGA's residuals",
+    async (name, changes, residual) => {
+      let frames = reference;
+      for (const change of changes) frames = cgaDegrade(frames, change);
+      const { read } = await clipFrames(
+        `cga2-${name.replace(" ", "-")}`,
+        frames,
+      );
+      const set = { width: W, frames: read };
+      const result = solverEquivalence(colorSolverFrames(read), set);
+      expect(result.grade.version).toBe("still-shift-color-solver-2");
+      expect(result.difference.blockRms).toBeLessThanOrEqual(
+        CGA2_EQUIVALENCE_BOUND.blockRms,
+      );
+      expect(result.difference.p99).toBeLessThanOrEqual(
+        CGA2_EQUIVALENCE_BOUND.p99,
+      );
+      // Only float grade operators, in one run.
+      for (const effect of result.grade.effects)
+        expect(effect.effect.startsWith("grade.")).toBe(true);
+      if (!changes.length) expect(result.grade.effects).toEqual([]);
+      const fixed = read.map((frame) =>
+        applyColorEffects(result.grade.effects, frame.rgba),
+      );
+      const original = read.map((frame) => reference[frame.ordinal]!);
+      if (Number.isFinite(residual))
+        expect(rms(fixed, original)).toBeLessThan(residual);
+      // Clipping budget and the banding bound, as solver 1.
+      const source = measureColorFrames({ frames: read, width: W });
+      expect(
+        result.grade.predicted.clippedFraction - source.clippedFraction,
+      ).toBeLessThanOrEqual(COLOR_SOLVER_LIMITS.clippedBudget);
+      const ramp = Array.from({ length: 256 }, (_, v) => [v, v, v, 255]).flat();
+      const mapped = applyColorEffects(
+        result.grade.effects,
+        new Uint8Array(ramp),
+      );
+      for (let v = 1; v < 256; v++)
+        expect(mapped[v * 4]! - mapped[(v - 1) * 4]!).toBeLessThanOrEqual(2);
+    },
+    60_000,
+  );
+  it("is byte-identical on rerun and protects skin with a pointwise key", async () => {
+    const degraded = cgaDegrade(reference, { kind: "saturation", scale: 0.4 });
+    const { read } = await clipFrames("cga2-rerun", degraded);
+    const first = solve2(read);
+    expect(JSON.stringify(solve2(read))).toBe(JSON.stringify(first));
+    expect(first.effects.map((effect) => effect.effect)).toEqual([
+      "grade.key",
+      "grade.primary",
+    ]);
+  });
+  it("auto-color --engine grade writes a valid grade.* composition and says so", async () => {
+    let frames = reference;
+    for (const change of flat) frames = cgaDegrade(frames, change);
+    const input = join(root, "cga2-compose-input.mkv");
+    await writeCgaClip(input, frames);
+    const path = join(root, "cga2-compose", "clip.composition.json");
+    const report = await autoColorClip({
+      input,
+      writeComposition: path,
+      engine: "grade",
+      cacheDirectory: cache(),
+    });
+    expect(report.engine).toBe("grade");
+    expect(report.solver).toBe("still-shift-color-solver-2");
+    const composition = JSON.parse(await readFile(path, "utf8"));
+    const effects = composition.layers[0].effects.map(
+      (effect: { effect: string }) => effect.effect,
+    );
+    expect(effects.length).toBeGreaterThan(2);
+    for (const effect of effects) expect(effect).toMatch(/^grade\./);
+    const validation = validateComposition(composition);
+    expect(
+      validation.diagnostics.filter((d) => d.severity === "error"),
+    ).toEqual([]);
+    expect(validation.ok).toBe(true);
+    // The legacy default keeps CGA's report shape (no engine fields).
+    const legacy = await autoColorClip({
+      input,
+      writeComposition: join(root, "cga2-legacy", "clip.composition.json"),
+      cacheDirectory: cache(),
+    });
+    expect("engine" in legacy).toBe(false);
+    expect(legacy.effects.every((e) => e.effect.startsWith("color."))).toBe(
+      true,
+    );
+  });
+  it("renders the grade engine's correction close to its prediction", async () => {
+    let frames = reference;
+    for (const change of flat) frames = cgaDegrade(frames, change);
+    const input = join(root, "cga2-render-input.mkv");
+    await writeCgaClip(input, frames);
+    const report = await autoColorClip({
+      input,
+      output: join(root, "cga2-render.mp4"),
+      engine: "grade",
+      cacheDirectory: cache(),
+    });
+    expect(report.output!.frameCount).toBe(CGA_SYNTHETIC.frameCount);
+    // H.264 loss only; the same bound the CGA effects' renders meet.
+    expect(report.output!.predictedRms).toBeLessThan(3);
+  }, 120_000);
 });

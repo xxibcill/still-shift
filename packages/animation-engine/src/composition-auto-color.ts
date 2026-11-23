@@ -39,8 +39,14 @@ import {
   type ColorLook,
 } from "./composition-color-look.ts";
 import {
+  DEFAULT_COLOR_ENGINE,
+  engineEffects,
+  type ColorEngine,
+} from "./composition-color-engine.ts";
+import {
   applyColorEffects,
   colorSolverFrames,
+  colorSolverVersion,
   solveColorCorrection,
   type ColorCorrectionEffect,
   type ColorSolveDecision,
@@ -65,6 +71,11 @@ export type AutoColorRequest = ColorFrameOptions & {
   adaptive?: boolean | undefined;
   /** Per correction: true/false switches it, a 0–1 number scales it. */
   toggles?: ColorSolveSettings | undefined;
+  /**
+   * CGA2: `legacy` writes CGA's 8-bit `color.*` effects (solver 1), `grade`
+   * the float `grade.*` run (solver 2). Default: `legacy` until A6.
+   */
+  engine?: ColorEngine | undefined;
   /** Save the editable composition here (asset paths relative to it). */
   writeComposition?: string | undefined;
   /** Report path (default: beside the output or composition). */
@@ -79,6 +90,9 @@ export type AutoColorReport = {
   statisticsVersion: typeof COLOR_STATISTICS_VERSION;
   input: { name: string; sha256: string; frameCount: number; fps: number };
   look?: { sha256s: string[]; strength: number } | undefined;
+  /** CGA2: present for the grade engine only (legacy reports are unchanged). */
+  engine?: "grade" | undefined;
+  solver?: string | undefined;
   adaptive: boolean;
   strength: number;
   effects: ColorCorrectionEffect[];
@@ -381,19 +395,25 @@ export async function autoColorClip(
     frames: frames,
     width: clip.probe.width,
   });
+  const engine = request.engine ?? DEFAULT_COLOR_ENGINE;
   const effects: ColorCorrectionEffect[] = [];
   if (request.look)
-    effects.push({
-      id: "look",
-      effect: "color.matrix",
-      params: colorLookEffectParams(request.look, lookStrength),
-    });
+    effects.push(
+      ...(engineEffects(engine, [
+        {
+          id: "look",
+          effect: "color.matrix",
+          params: colorLookEffectParams(request.look, lookStrength),
+        },
+      ]) as ColorCorrectionEffect[]),
+    );
   let decisions: ColorSolveDecision[] = [];
   if (adaptive) {
     const small = colorSolverFrames(frames);
     const solution = solveColorCorrection(small, {
       ...request.toggles,
       strength,
+      engine,
       prefix: effects,
       // A look measured from a graded edit supplies the solver's targets.
       ...(request.look?.targets ? { targets: request.look.targets } : {}),
@@ -432,6 +452,9 @@ export async function autoColorClip(
             strength: lookStrength,
           },
         }
+      : {}),
+    ...(engine === "grade"
+      ? { engine: "grade" as const, solver: colorSolverVersion("grade") }
       : {}),
     adaptive,
     strength,

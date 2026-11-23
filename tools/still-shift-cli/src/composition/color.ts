@@ -102,6 +102,18 @@ export const backend = (values: Map<string, string>) => {
     );
   return value;
 };
+/** `--engine grade|legacy` (CGA2); absent leaves the request's default. */
+const engine = (values: Map<string, string>) => {
+  const value = values.get("engine");
+  if (value === undefined) return {};
+  if (value !== "grade" && value !== "legacy")
+    programError(
+      "comp-program-option",
+      "--engine must be grade or legacy",
+      "engine",
+    );
+  return { engine: value as "grade" | "legacy" };
+};
 async function loadLook(
   path: string | undefined,
 ): Promise<ColorLook | undefined> {
@@ -336,6 +348,7 @@ export async function runColorCommand(
       "write-composition",
       "report",
       "backend",
+      "engine",
     ]);
     const look = await loadLook(requireArgument(values, "look"));
     return runClips(
@@ -349,6 +362,7 @@ export async function runColorCommand(
         lookStrength: unit(values, "strength"),
         report: values.get("report"),
         backend: backend(values),
+        ...engine(values),
       },
     );
   }
@@ -368,6 +382,7 @@ export async function runColorCommand(
       "report",
       "frames",
       "backend",
+      "engine",
     ]);
     const look = await loadLook(values.get("look"));
     const toggles = {
@@ -406,6 +421,7 @@ export async function runColorCommand(
         report: values.get("report"),
         sampleFrames: count(values, "frames", 10_000),
         backend: backend(values),
+        ...engine(values),
       },
     );
   }

@@ -1,6 +1,6 @@
 # CGA2: automatic color on the grade engine
 
-Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status: **approved (owner: "start implement", 2026-11-23);
+Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status: **A0 and A1 built on `codex/cga2-engine` (2026-11-23); approved (owner: "start implement", 2026-11-23);
 owner decided the default engine, the equivalence gate and skin protection;
 three decisions remain.** No package source changed and nothing was rendered for
 this plan.
@@ -74,6 +74,16 @@ portable `grade.*` stack that can be baked to `.cube` or written as CDL.
 **Checks:** the baseline reruns byte-identically. Every solver effect has a
 recorded engine mapping and a measured difference on the CG0 chart and ramps.
 
+_As built (2026-11-23):_ the bound was stated before the first measurement:
+per clip, 4×4 block-mean RMS ≤ 1 and per-pixel 99th percentile ≤ 3, of 255
+(`CGA2_EQUIVALENCE_BOUND`). Both are reported; which one is the look bound
+stays open (decision 4). `scripts/color/cga2-equivalence.ts` compares the two
+solvers' exact predictions on the synthetic fixtures and a local folder of
+clips (auto, look at 60%, look plus auto) and writes `dist/cga2/equivalence.json`.
+Each mapping's difference over a color cube and the neutral ramp is a unit
+test (`tests/unit/composition-color-engine.test.ts`). Numbers are in the
+[CGA2 results](./color-grading-cga2-results.json).
+
 ### A1: Solver 2 emits a `grade.*` run (2–3 days)
 
 Map each stage to the engine and keep the stage order and limits:
@@ -98,8 +108,43 @@ solver 1 met: exposure ≤ 3, contrast ≤ 2.5, white balance ≤ 1, near-identi
 on balanced clips, rerun byte-identical, clipping budget, banding bound. On the
 owner clips, solver 2 against solver 1 stays within the A0 metric, or each
 difference is listed with its cause. Prediction equals the Canvas render
-exactly, and WebGL2 is within the CG2 parity bound. A tungsten-cast fixture that
-solver 1 cannot reach is corrected.
+exactly, and WebGL2 is within the CG2 parity bound. ~~A tungsten-cast fixture
+that solver 1 cannot reach is corrected~~ (moved to A4 with Bradford, below).
+
+_As built (2026-11-23), two deviations from the table above, both forced by
+the equivalence gate (decision 2):_
+
+- **White balance stays CGA's linear-light gains**, as `grade.curves`
+  red/green/blue curves (`gainCurve`: 16 points with a guard point below the
+  clip knee), within one code of `color.white-balance` on every input.
+  `grade.white-balance` (Bradford) keeps neutrals within one code but moves
+  saturated colors by up to 28 codes on the synthetic green at the solver's
+  limit, which the gate does not allow before review. It is built as the
+  `adaptation` white-balance model (reported by the A0 script, not yet a CLI
+  option) and moves to A4.
+- **Skin protection is a `grade.key`, not a hue curve** (revisits decision 3).
+  A hue-vs-saturation curve applies one chroma factor per hue, so it also
+  desaturated fully saturated skin-hued colors that vibrance leaves alone
+  (26 codes on a saturated orange). Vibrance's factor
+  1 + v·(1 − s)·(1 − p·skin) is exactly a mix of the boosted and unboosted
+  pixel by 1 − p·skin, and `grade.key`'s HSL hue range (centre 25°, width 0,
+  softness 25°, inverted, gain p, offset 1 − p) is that weight exactly. The
+  key reads only the pixel's own value (no window, matte or finesse), so it is
+  pointwise and cannot flicker. Within 3 codes of `color.vibrance` (p99 ≤ 1)
+  over the color cube; a saturated orange is unchanged.
+- **The S-curve keeps its straight segments.** `grade.curves` is a smooth
+  spline, which rounded `color.curves`' kinks by up to 3 codes and, through
+  the predicted clipping, made solver 2 scale every correction back on one
+  owner clip. `piecewiseCurve` adds a guard point 0.004 on each side of every
+  kink, so the spline follows the segments within one code (0 on that clip).
+  It uses `lumaMix` 0 (each channel, as `color.curves`); a smooth curve and
+  `lumaMix` 1 are A4 candidates.
+- `--engine grade|legacy` on `comp auto-color` and `comp look apply`; the
+  default stays `legacy` until A6. The report adds `engine` and `solver` for
+  the grade engine only. The prediction mirrors the Canvas keyed run (segments
+  in float64, keys from the value entering them, one quantization), and
+  `test:browser:color-grading-cga2` confirms it on a lossless render: Canvas
+  and WebGL2 both 0 codes off on all 12 frames.
 
 ### A2: Reports and measurement on scopes (1 day)
 
@@ -148,9 +193,11 @@ An exported `.cube` round-trips through `grade.lut` within the CG5 bound.
 - **Highlight protection:** use the `grade.tonal` high soft clip with a knee,
   instead of scaling every correction down until the clipping budget fits.
   Record how much correction this restores on the fixtures.
-- **Skin protection:** a `grade.hue-curves` `hueVsSat` dip around the skin hue,
-  measured with the scopes' skin-line deviation. Recommended over a `grade.key`
-  because it is pointwise, needs no matte and stays one editable curve.
+- **Bradford white balance (moved from A1):** the `adaptation` model as a CLI
+  option (`--white-balance-model adaptation`), with a tungsten-cast fixture
+  that CGA's gains cannot reach, and the per-clip difference on the owner
+  clips recorded for review. Skin protection moved to A1 (as a key).
+- **Contrast without saturation change:** the S-curve with `lumaMix` 1.
 - **Key preservation:** zone exposure (`grade.tonal`) moves midtones without
   touching the high-key highlights.
 - **Neutral from a region:** `--neutral-region x,y,w,h` takes its white
@@ -205,13 +252,16 @@ Answered 2026-11-23:
 2. **Equivalence gate: decided, required** (owner: "yes"). Solver 2 must match
    the CGA renders within the A0 metric (or list each difference with its cause)
    before any A3–A5 change that moves the look lands.
-3. **Skin protection: decided, hue curve** (owner deferred to the
-   recommendation). A `grade.hue-curves` `hueVsSat` dip around the skin hue is
-   pointwise, needs no matte, cannot chatter between frames, and stays one
-   editable curve. It protects by hue, as `color.vibrance` already does, so
-   beige and cream near the skin hue are protected too, which the owner's
-   tuning wanted ("cream stays beige"). A `grade.key` is the later option for a
-   clip where a skin-hued object must still be boosted.
+3. **Skin protection: hue-based, as a pointwise key** (owner deferred to the
+   recommendation; the hue-curve recommendation was revised during A1). The
+   first recommendation was a `grade.hue-curves` dip. Building it showed that
+   a curve cannot depend on saturation, so it desaturated strong skin-hued
+   colors (26 codes on a saturated orange) that vibrance leaves alone. A
+   `grade.key` with only an HSL hue qualifier reproduces vibrance exactly and
+   keeps what made the curve attractive: it reads only each pixel's own value
+   (no matte, window or finesse), so it cannot flicker, and it is one editable
+   effect. It still protects by hue, so beige and cream near the skin hue stay
+   protected ("cream stays beige").
 
 Still open:
 

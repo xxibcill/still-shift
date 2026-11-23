@@ -75,7 +75,10 @@ export {
   rgbMixer,
   srgbDecodeMirrored,
   srgbEncodeMirrored,
+  temperatureTintForWhite,
   temperatureTintWhite,
+  WHITE_BALANCE_TEMPERATURE_RANGE,
+  WHITE_BALANCE_TINT_RANGE,
   whiteBalanceMatrix,
 } from "./grade.ts";
 export type { GradePrimary, GradePrimaryControls, RgbMixer } from "./grade.ts";

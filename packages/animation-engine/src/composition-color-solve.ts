@@ -4,6 +4,11 @@
  * `color.levels`, `color.curves`, `color.vibrance`). It solves in stages on
  * the measured frames — white balance, then tone, then saturation — and
  * re-measures the exact predicted result after each stage.
+ *
+ * CGA2: with the grade engine (solver 2) the same stages run, and each
+ * correction is translated to its float `grade.*` operator
+ * (`composition-color-engine.ts`) before it is measured, so every later stage
+ * sees what the engine renders.
  */
 import { roundTo } from "./composition-color-round.ts";
 import {
@@ -12,9 +17,17 @@ import {
   isGradeEffect,
 } from "@still-shift/renderer-core";
 import {
+  FLOAT_GRADE_EFFECT_IDS,
   GRADE_EFFECT_IDS,
-  compositionEffectDefinition,
+  isFloatGradeEffect,
 } from "@still-shift/scene-contract";
+import {
+  applyGradeRun,
+  effectDefaults,
+  engineEffects,
+  type ColorEngine,
+  type WhiteBalanceModel,
+} from "./composition-color-engine.ts";
 import { colorEffectPixel } from "../../renderer-core/src/composition/render/color-effects.ts";
 import {
   measureColorFrames,
@@ -24,15 +37,21 @@ import {
 } from "./composition-color-measure.ts";
 
 export const COLOR_SOLVER_VERSION = "still-shift-color-solver-1";
+/** CGA2: the same stages on the grade engine. */
+export const COLOR_SOLVER_2_VERSION = "still-shift-color-solver-2";
+export const colorSolverVersion = (engine: ColorEngine) =>
+  engine === "grade" ? COLOR_SOLVER_2_VERSION : COLOR_SOLVER_VERSION;
 /**
- * Effects the solver emits and its measurement reference applies: the grade
- * effects exactly, and the per-channel `color.levels` and `color.curves` as
- * byte tables.
+ * Effects the solver emits and its measurement reference applies: the CGA
+ * grade effects exactly, the per-channel `color.levels` and `color.curves` as
+ * byte tables, and runs of float `grade.*` operators as the Canvas backend
+ * evaluates them (CGA2).
  */
 export const COLOR_CORRECTION_EFFECTS = [
   "color.levels",
   "color.curves",
   ...GRADE_EFFECT_IDS,
+  ...FLOAT_GRADE_EFFECT_IDS.filter((id) => id !== "grade.lut"),
 ] as const;
 export type ColorCorrectionEffectId = (typeof COLOR_CORRECTION_EFFECTS)[number];
 export type ColorCorrectionEffect = {
@@ -62,6 +81,10 @@ export type ColorSolveOptions = ColorSolveSettings & {
   /** Scales every correction, 0–1 (default 1). */
   strength?: number;
   targets?: ColorSolveTargets | undefined;
+  /** Effects to emit: CGA's 8-bit `color.*` (default) or `grade.*` (CGA2). */
+  engine?: ColorEngine | undefined;
+  /** Grade engine only: white balance as CGA's gains (default) or Bradford. */
+  whiteBalanceModel?: WhiteBalanceModel | undefined;
 };
 type SolverTargets = {
   midtoneRange: readonly [number, number];
@@ -76,7 +99,7 @@ export type ColorSolveDecision = {
   values?: Record<string, number>;
 };
 export type ColorSolution = {
-  version: typeof COLOR_SOLVER_VERSION;
+  version: typeof COLOR_SOLVER_VERSION | typeof COLOR_SOLVER_2_VERSION;
   strength: number;
   effects: ColorCorrectionEffect[];
   decisions: ColorSolveDecision[];
@@ -517,12 +540,20 @@ export function solveColorCorrection(
   };
   const targets = solverTargets(options.targets);
   const prefix = options.prefix ?? [];
+  const engine = options.engine ?? "legacy";
+  const forEngine = (effects: readonly ColorCorrectionEffect[]) =>
+    engineEffects(engine, effects, {
+      whiteBalance: options.whiteBalanceModel,
+    }) as ColorCorrectionEffect[];
   const measure = (effects: readonly ColorCorrectionEffect[]) =>
     measureColorFrames(
       {
         frames: frames.map((frame) => ({
           ordinal: frame.ordinal,
-          rgba: applyColorEffects([...prefix, ...effects], frame.rgba),
+          rgba: applyColorEffects(
+            [...prefix, ...forEngine(effects)],
+            frame.rgba,
+          ),
         })),
         width: width,
       },
@@ -550,8 +581,9 @@ export function solveColorCorrection(
       toggles.saturation,
       targets,
     );
-    const effects = [...balance, ...tone, ...vivid];
-    const predicted = measure(effects);
+    const solved = [...balance, ...tone, ...vivid];
+    const predicted = measure(solved);
+    const effects = forEngine(solved);
     const added = predicted.clippedFraction - source.clippedFraction;
     const over = added > COLOR_SOLVER_LIMITS.clippedBudget && effects.length;
     if (over && attempt < 4) {
@@ -571,7 +603,7 @@ export function solveColorCorrection(
         values: { addedClipped: round(added, 6), scale: round(scale, 4) },
       });
     return {
-      version: COLOR_SOLVER_VERSION,
+      version: colorSolverVersion(engine),
       strength,
       effects,
       decisions: [
@@ -587,16 +619,31 @@ export function solveColorCorrection(
 
 /**
  * Apply an effect stack to straight opaque RGBA8 exactly as the Canvas
- * backend does: grade effects through their integer reference, per-channel
- * corrections through the color-effect reference as byte tables.
+ * backend does: CGA grade effects through their integer reference, per-channel
+ * corrections through the color-effect reference as byte tables, and each run
+ * of consecutive float `grade.*` operators in float64 with one quantization.
  */
 export function applyColorEffects(
   effects: readonly ColorCorrectionEffect[],
   rgba: Uint8Array,
 ): Uint8Array {
   const out = new Uint8Array(rgba);
+  let run: ColorCorrectionEffect[] = [];
+  const flush = () => {
+    applyGradeRun(run, out);
+    run = [];
+  };
   for (const effect of effects) {
-    const params = effectParams(effect);
+    if (!MEASURABLE_EFFECTS.has(effect.effect))
+      throw Error(
+        `comp-auto-color: no measurement reference for ${effect.effect}`,
+      );
+    if (isFloatGradeEffect(effect.effect)) {
+      run.push(effect);
+      continue;
+    }
+    flush();
+    const params = effectDefaults(effect);
     if (isGradeEffect(effect.effect)) {
       applyGradeToRgba(gradeControls(effect.effect, params), out);
       continue;
@@ -618,25 +665,9 @@ export function applyColorEffects(
       out[i + 2] = table[out[i + 2]!]!;
     }
   }
+  flush();
   return out;
 }
 const MEASURABLE_EFFECTS: ReadonlySet<string> = new Set(
   COLOR_CORRECTION_EFFECTS,
 );
-/** Parameters with the effect definition's defaults filled in. */
-function effectParams(effect: ColorCorrectionEffect) {
-  const definition = MEASURABLE_EFFECTS.has(effect.effect)
-    ? compositionEffectDefinition(effect.effect)
-    : undefined;
-  if (!definition)
-    throw Error(
-      `comp-auto-color: no measurement reference for ${effect.effect}`,
-    );
-  const defaults = Object.fromEntries(
-    Object.entries(definition.properties).map(([name, property]) => [
-      name,
-      property.default,
-    ]),
-  );
-  return { ...defaults, ...effect.params } as Record<string, never>;
-}

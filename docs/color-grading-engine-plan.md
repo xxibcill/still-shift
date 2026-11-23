@@ -246,7 +246,7 @@ These are recommendations to confirm at CG1, each with a fallback.
 | ID   | Milestone                                               | Depends on                     | Estimate (active days) | Status          |
 | ---- | ------------------------------------------------------- | ------------------------------ | ---------------------- | --------------- |
 | CGA  | Auto exposure, contrast, saturation, white balance      | owner: review                  | 5–8                    | Merged (PR #70) |
-| CGA2 | [CGA on the grade engine](./color-grading-cga2-plan.md) | CG2–CG6, owner: approval       | 10–16 (12–19 with A5)  | Approved        |
+| CGA2 | [CGA on the grade engine](./color-grading-cga2-plan.md) | CG2–CG6, owner: approval       | 10–16 (12–19 with A5)  | A0–A1 done      |
 | CG0  | Fixtures, reference vectors and baseline                | owner: approval (given)        | 2–3                    | Done (branch)   |
 | CG1  | Color-science core and contract design                  | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
 | CG2  | Float grade stage and primary corrections               | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
