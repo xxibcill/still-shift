@@ -1,6 +1,6 @@
 # CGA2: automatic color on the grade engine
 
-Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status: **A0 and A1 built on `codex/cga2-engine` (2026-11-23); approved (owner: "start implement", 2026-11-23);
+Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status: **A0 and A1 built on `codex/cga2-engine` (2026-11-23), A2 on `codex/cga2-a2` (stacked on it, 2026-11-23); approved (owner: "start implement", 2026-11-23);
 owner decided the default engine, the equivalence gate and skin protection;
 three decisions remain.** No package source changed and nothing was rendered for
 this plan.
@@ -157,6 +157,48 @@ the equivalence gate (decision 2):_
 
 **Checks:** reports validate against the schema and rerun byte-identically.
 Statistics fields that already existed are unchanged on the fixtures.
+
+_As built (2026-11-23):_
+
+- **Legacy reports: versioned, not silent.** Report 1
+  (`still-shift-auto-color-report-1`) stays CGA's report byte for byte: an
+  `--engine legacy` run (the default until A6) without `--scopes` writes it.
+  Report 2 (`still-shift-auto-color-report-2`) is report 1 plus `engine`,
+  `solver` and `scopes`. Every `--engine grade` report is report 2 (A1's
+  grade reports said report 1 with `engine` and `solver`; they were never
+  released). A legacy run writes report 2 only with `--scopes true`, so
+  solver 1 can be measured the same way for the A6 sheets. `--scopes false`
+  with `--engine grade` is an error (`comp-auto-color-scopes`). At A6 the
+  default engine, and so the default report, becomes report 2.
+- **Scopes block.** `scopes.before` and `scopes.predicted` are CG3's
+  `ColorScopesMeasurement` (`measureColorScopeFrames`, the code `comp
+scopes` runs): channel black/white points, the 10° hue histogram, the skin
+  line with its deviation and spread, false-color shares and exposure zones,
+  of the same sampled frames (every pixel). `scopes.change` adds
+  `absoluteSkinDeviation` (|after| − |before|, degrees) and the chromatic
+  share's change. The existing `before`, `predicted`, `change` and `output`
+  statistics are untouched.
+- **Schema.** `AutoColorReportSchema` (zod, strict, discriminated on
+  `schemaVersion`) validates both versions before anything is published; a
+  report 1 with a scopes block or a report 2 without one is rejected. It
+  builds on a new strict `ColorStatisticsSchema` that describes the existing
+  fields without changing them.
+- **`--diff <folder>`** on `comp auto-color` and `comp look apply` writes
+  `<stem>.still.png` and `<stem>.sheet.png` per clip through
+  `colorGradeDiffImages`, the split still and contact sheet code that `comp
+grade diff` now shares. After is the rendered output when there is one
+  (byte-identical to `comp grade diff` on input and output), otherwise the
+  exact prediction (composition-only runs). Existing files are refused before
+  any decoding, with the other outputs. `scripts/color/cga-owner-evaluation.ts`
+  stays for legacy runs.
+- **Evidence.** `scripts/color/cga2-reports.ts` writes legacy and grade
+  reports on six synthetic cases. On the same input clips, all six legacy
+  reports (one rendered, with audio) are byte-identical to A1's, and every
+  grade report equals A1's except the version and the added block. On the
+  synthetic reference the skin pixels sit 13.0° off the skin line, so
+  corrections that restore the reference grow the absolute deviation (up to
+  6.1° on contrast); A4's "skin-line deviation does not grow" check has to
+  allow for a source whose skin is off the line by design.
 
 **Stopping point after A0–A2:** auto-color grades on the engine, matches CGA's
 look within the A0 metric, reaches stronger white-balance corrections, and

@@ -4,6 +4,7 @@
  * `readColorFrames` (the engine's media path) or from a predicted correction.
  */
 import { roundTo } from "./composition-color-round.ts";
+import { z } from "zod";
 import { GRADE_LUMA_WEIGHTS, srgbToLinear } from "@still-shift/renderer-core";
 
 export const COLOR_STATISTICS_VERSION = "still-shift-color-statistics-1";
@@ -64,6 +65,65 @@ export type ColorStatistics = {
   frames: { ordinal: number; medianLuma: number }[];
   medianLumaContinuity: number;
 };
+
+const unitNumber = z.number().min(0).max(1);
+/**
+ * `ColorStatistics` as a strict schema (CGA2 A2), so reports that embed the
+ * statistics can be validated. It describes the existing fields; it does not
+ * change them.
+ */
+export const ColorStatisticsSchema = z
+  .object({
+    pixels: z.number().int().nonnegative(),
+    luma: z
+      .object({
+        mean: unitNumber,
+        stdev: z.number().nonnegative(),
+        p005: unitNumber,
+        p01: unitNumber,
+        p05: unitNumber,
+        p25: unitNumber,
+        p50: unitNumber,
+        p75: unitNumber,
+        p95: unitNumber,
+        p99: unitNumber,
+        p995: unitNumber,
+      })
+      .strict(),
+    clippedFraction: unitNumber,
+    crushedFraction: unitNumber,
+    saturation: z
+      .object({
+        mean: unitNumber,
+        p10: unitNumber,
+        p50: unitNumber,
+        p90: unitNumber,
+        p99: unitNumber,
+        strongFraction: unitNumber,
+      })
+      .strict(),
+    neutral: z
+      .object({
+        pixels: z.number().int().nonnegative(),
+        fraction: unitNumber,
+        linearMean: z.tuple([z.number(), z.number(), z.number()]),
+        temperature: z.number(),
+        tint: z.number(),
+        temperatureSpread: z.number().nonnegative(),
+        tintSpread: z.number().nonnegative(),
+      })
+      .strict(),
+    frames: z.array(
+      z
+        .object({
+          ordinal: z.number().int().nonnegative(),
+          medianLuma: unitNumber,
+        })
+        .strict(),
+    ),
+    medianLumaContinuity: z.number().nonnegative(),
+  })
+  .strict();
 
 const round = (value: number, digits = 6) => roundTo(value, digits);
 function percentile(histogram: Float64Array, total: number, q: number) {

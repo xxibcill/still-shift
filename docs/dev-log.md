@@ -51,9 +51,14 @@ still hold before relying on them.
   not the recommended hue curve, which damaged strong oranges). A0: 43/44 gated rows within the
   stated bound (block RMS ≤ 1, p99 ≤ 3 of 255) on the synthetic fixtures and 12 local owner clips;
   the one outside (a look+auto row, p99 4) is listed with its cause (headroom). Canvas and WebGL2
-  renders equal the prediction exactly. Bradford white balance moved to A4. Committed on the branch;
-  not pushed. **Next:** A2 (scopes in the report). Open owner decisions: look bound (block means or
-  pixels), LUT looks (A3), CGA visual review (A6 sheets).
+  renders equal the prediction exactly. Bradford white balance moved to A4. In review as
+  [PR #80](https://github.com/xxibcill/still-shift/pull/80). **A2 done on `codex/cga2-a2`**, stacked on
+  PR #80: report 2 (`engine`, `solver`, CG3 `scopes` before and predicted after, skin-line deviation,
+  hue histogram) for every grade report and for legacy with `--scopes true`; legacy reports stay
+  report 1 byte for byte (checked against A1 on six fixtures); `AutoColorReportSchema` validates
+  both; `--diff <folder>` writes `comp grade diff`'s still and sheet per clip. **Next:** A3 (look 2),
+  after PR #80 and the A2 PR are reviewed. Open owner decisions: look bound (block means or pixels),
+  LUT looks (A3), CGA visual review (A6 sheets).
 
 - **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32, merged as [PR #76](https://github.com/xxibcill/still-shift/pull/76) (`main` 51ffe62a).
   - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
@@ -139,6 +144,29 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-23 — CGA2 A2: auto-color reports and measurement on scopes
+
+- **Agent / branch:** Claude Code on `codex/cga2-a2` (from `codex/cga2-engine` 2413125c, PR #80, not merged)
+- **Scope:** CGA2 A2: the CG3 scope measurement in the auto-color report, and `--diff`.
+- **Done:** report 2 (`still-shift-auto-color-report-2`) = report 1 + `engine`, `solver`, `scopes`
+  (`ColorScopesMeasurement` of the sampled frames before and predicted after, plus
+  `absoluteSkinDeviation`); every `--engine grade` report is report 2, legacy only with
+  `--scopes true`. `AutoColorReportSchema` (strict, both versions) on a new `ColorStatisticsSchema`.
+  `--diff <folder>` on `comp auto-color` and `comp look apply` (`<stem>.still.png`,
+  `<stem>.sheet.png`, after = render or exact prediction), through `colorGradeDiffImages`, which
+  `comp grade diff` now shares. `scripts/color/cga2-reports.ts` writes fixture reports to compare commits.
+- **Results:** 6/6 legacy reports byte-identical to A1 (same input clips; one rendered with audio);
+  grade reports equal A1's except the version and the new block. `--diff` on a render is
+  byte-identical to `comp grade diff`. The synthetic reference's skin sits 13.0° off the skin line,
+  so restoring corrections grow the absolute deviation (up to 6.1°): A4's "does not grow" check
+  must allow for that. Toolchain, `check:fast`, color integration (incl. scopes, interchange) and
+  `test:browser:color-grading-cga2` pass. Not run: owner clips, `pnpm check`, full `pnpm test`,
+  other browser groups, release checks, and no person looked at the `--diff` images.
+- **Rejected / do not repeat:** none.
+- **Open / next:** A3 after review. Owner decisions unchanged (look bound, LUT looks, CGA visual review).
+- **Records:** [plan A2](./color-grading-cga2-plan.md#a2-reports-and-measurement-on-scopes-1-day),
+  [results `a2`](./color-grading-cga2-results.json).
 
 ### 2026-11-23 — CGA2 A0–A1: equivalence harness and solver 2 on the grade engine
 
