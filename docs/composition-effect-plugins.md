@@ -380,7 +380,10 @@ input of the operations it scopes, never their output.
   result where keyed over mid gray), 3 high contrast (white wherever the key
   is above 0). A view ends the run's processing. Views are for preview and
   `comp grade key`: export (`comp render`) refuses an enabled `grade.key`
-  whose `view` is not 0, so a matte never reaches delivered frames.
+  whose `view` is not 0 in any frame, so a matte never reaches delivered
+  frames. An authored view is refused at once; a keyframed view, or any in a
+  composition with drivers, periodic motion, expressions or behaviours, is
+  evaluated frame by frame and the first offending frame is named.
 - Precision: the float64 reference in `@still-shift/color-science` is
   authoritative; Canvas runs it, WebGL2 is within one code value. Finesse
   runs as GPU passes on float32 bits in RGBA8 textures. One grade run reads

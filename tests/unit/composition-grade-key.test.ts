@@ -13,7 +13,10 @@ import {
   floatGradeOp,
 } from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 import type { RenderEffect } from "../../packages/renderer-core/src/composition/render/graph.ts";
-import { keyMatteViews } from "../../packages/animation-engine/src/composition-render.ts";
+import {
+  keyMatteViewFrames,
+  keyMatteViews,
+} from "../../packages/animation-engine/src/composition-render.ts";
 
 const comp = (effect: Record<string, unknown>): Composition =>
   ({
@@ -128,6 +131,48 @@ describe("grade.key matte views at export", () => {
     } as unknown as Composition;
     expect(keyMatteViews(nested)).toEqual([
       "precomps.0.layers.1.effects.0.params.view",
+    ]);
+  });
+  // R20: keyframed and driven views are decided on the evaluated frames.
+  it("evaluates keyframed and driven views per frame", () => {
+    const keyed = (values: number[]) =>
+      comp({
+        params: {
+          view: {
+            keys: values.map((value, frame) => ({
+              frame,
+              value,
+              easing: "linear",
+            })),
+          },
+        },
+      });
+    for (const doc of [keyed([0, 0, 0, 0]), keyed([0, 0, 0, 1])])
+      expect(validateComposition(doc).ok).toBe(true);
+    // Keyframed views that stay 0 pass; the authored check alone refused them.
+    expect(keyMatteViewFrames(keyed([0, 0, 0, 0]))).toEqual([]);
+    expect(keyMatteViewFrames(keyed([0, 0, 0, 1]))).toEqual([
+      "plate.effects[key].view at frame 3",
+    ]);
+    // A view set by an expression is refused although its authored value is 0.
+    const driven = {
+      ...comp({ params: { view: 0 } }),
+      expressions: { "plate.effects[key].view": { source: "2" } },
+    } as unknown as Composition;
+    expect(validateComposition(driven).ok).toBe(true);
+    expect(keyMatteViews(driven)).toEqual([]);
+    expect(keyMatteViewFrames(driven)).toEqual([
+      "plate.effects[key].view at frame 0",
+    ]);
+    // A disabled key, or one on a disabled layer, is not exported.
+    const off = {
+      ...comp({ enabled: false, params: { view: 0 } }),
+      expressions: { "plate.effects[key].view": { source: "2" } },
+    } as unknown as Composition;
+    expect(keyMatteViewFrames(off)).toEqual([]);
+    // Authored nonzero views are reported without evaluating.
+    expect(keyMatteViewFrames(comp({ params: { view: 1 } }))).toEqual([
+      "layers.1.effects.0.params.view",
     ]);
   });
 });
