@@ -1,7 +1,6 @@
 import { compositionSequenceFramePath } from "./composition-media-sequence.ts";
 import {
-  encodeScenePng,
-  sceneFrameRgb,
+  sceneFramePng,
   sceneRawFormat,
   sceneRawFrameBytes,
 } from "./composition-media-scene.ts";
@@ -9,6 +8,7 @@ import { createHash, randomUUID } from "node:crypto";
 import {
   lstat,
   mkdir,
+  open,
   readFile,
   rename,
   rm,
@@ -113,6 +113,11 @@ const canonicalColor = (asset: CompositionVisualMediaAsset) => ({
 });
 /** Bytes per decoded pixel: RGBA8, or RGBA16 for the CG7 source stage. */
 const pixelBytes = (scene: boolean | undefined) => (scene ? 8 : 4);
+/**
+ * CG7: frames per FFmpeg call in scene preparation. The raw batch is a file
+ * in the stage (reserved in the cache budget) read back one frame at a time.
+ */
+const SCENE_DECODE_BATCH = 16;
 async function decodeFrames(args: string[], signal?: AbortSignal) {
   try {
     await runProcess("ffmpeg", args, { signal, maxBuffer: 1024 * 1024 });
@@ -454,7 +459,26 @@ export async function prepareCompositionVisualMedia(
       );
       cacheHit = true;
     } else {
-      // Reserve a conservative maximum before FFmpeg can write any decoded frames.
+      // CG7: scene frames are decoded as raw 4:4:4 planes at the source depth.
+      const scene =
+        asset.type === "video" && options.scene
+          ? (() => {
+              const pixelFormat = String(
+                (inspected.provenance as { pixelFormat?: string }).pixelFormat,
+              );
+              const raw = sceneRawFormat(pixelFormat, asset.color);
+              return {
+                raw,
+                frameBytes: sceneRawFrameBytes(
+                  asset.width,
+                  asset.height,
+                  raw.depth,
+                ),
+              };
+            })()
+          : undefined;
+      // Reserve a conservative maximum before FFmpeg can write any decoded
+      // frames (for scene frames, also the raw batch file in the stage).
       const manifestBudget =
         Buffer.byteLength(identity) + ordinals.length * 256 + 1024;
       if (
@@ -465,7 +489,11 @@ export async function prepareCompositionVisualMedia(
             ? 0
             : asset.type === "sequence"
               ? asset.width * asset.height * 8 + 1024 * 1024 + worstFrameBytes
-              : worstFrameBytes) >
+              : scene
+                ? worstFrameBytes +
+                  Math.min(SCENE_DECODE_BATCH, ordinals.length) *
+                    scene.frameBytes
+                : worstFrameBytes) >
         limits.decodedCacheBytes
       )
         passageError(
@@ -477,19 +505,17 @@ export async function prepareCompositionVisualMedia(
       await mkdir(stage);
       const frames: CacheManifest["frames"] = [];
       // Bounded select expressions retain FFmpeg's original presentation ordinal n.
-      if (asset.type === "video" && options.scene) {
-        // CG7: 4:4:4 planes at the source depth, then the matrix in float64.
-        const pixelFormat = String(
-          (inspected.provenance as { pixelFormat?: string }).pixelFormat,
-        );
-        const raw = sceneRawFormat(pixelFormat, asset.color);
-        const frameBytes = sceneRawFrameBytes(
-          asset.width,
-          asset.height,
-          raw.depth,
-        );
-        for (let start = 0; start < ordinals.length; start += 16) {
-          const selected = ordinals.slice(start, start + 16);
+      if (asset.type === "video" && scene) {
+        // CG7: 4:4:4 planes at the source depth, then the matrix in float64,
+        // one frame in memory at a time.
+        const { raw, frameBytes } = scene;
+        const rawFrame = Buffer.alloc(frameBytes);
+        for (
+          let start = 0;
+          start < ordinals.length;
+          start += SCENE_DECODE_BATCH
+        ) {
+          const selected = ordinals.slice(start, start + SCENE_DECODE_BATCH);
           const output = join(stage, "decoded.raw");
           await decodeFrames(
             [
@@ -520,33 +546,49 @@ export async function prepareCompositionVisualMedia(
             ],
             signal,
           );
-          const decoded = await boundedFile(
-            output,
-            frameBytes * selected.length,
-          );
-          if (decoded.length !== frameBytes * selected.length)
+          const file = await lstat(output).catch(() => undefined);
+          if (!file?.isFile() || file.size !== frameBytes * selected.length)
             passageError(
               "comp-media-format",
               "Pinned decoder returned a different number of frames",
               { path: asset.id },
             );
-          await rm(output);
-          for (const [index, ordinal] of selected.entries()) {
-            signal?.throwIfAborted();
-            const png = encodeScenePng(
-              sceneFrameRgb(
-                decoded.subarray(index * frameBytes, (index + 1) * frameBytes),
+          const handle = await open(output, "r");
+          try {
+            for (const [index, ordinal] of selected.entries()) {
+              signal?.throwIfAborted();
+              const { bytesRead } = await handle.read(
+                rawFrame,
+                0,
+                frameBytes,
+                index * frameBytes,
+              );
+              if (bytesRead !== frameBytes)
+                passageError(
+                  "comp-media-checksum",
+                  "Media changed during reading",
+                  {
+                    path: output,
+                  },
+                );
+              const png = sceneFramePng(
+                rawFrame,
                 asset.width,
                 asset.height,
                 raw.depth,
                 asset.color,
-              ),
-              asset.width,
-              asset.height,
-            );
-            await writeFile(join(stage, frameName(ordinal)), png);
-            frames.push({ ordinal, sha256: hash(png), byteLength: png.length });
+              );
+              await writeFile(join(stage, frameName(ordinal)), png);
+              frames.push({
+                ordinal,
+                sha256: hash(png),
+                byteLength: png.length,
+              });
+            }
+          } finally {
+            await handle.close();
           }
+          await rm(output);
         }
       } else if (asset.type === "video") {
         for (let start = 0; start < ordinals.length; start += 256) {

@@ -23,7 +23,13 @@ import {
   compositionMediaChecksum,
   probeCompositionVideo,
 } from "../../packages/animation-engine/src/composition-media-probe.ts";
-import { decodeScenePng } from "../../packages/animation-engine/src/composition-media-scene.ts";
+import {
+  decodeScenePng,
+  encodeScenePng,
+  sceneFramePng,
+  sceneFrameRgb,
+  sceneRawFrameBytes,
+} from "../../packages/animation-engine/src/composition-media-scene.ts";
 
 const root = join(import.meta.dirname, "../../benchmarks/fixtures/color/cg0");
 const manifest = JSON.parse(
@@ -156,6 +162,60 @@ describe("CG7 10-bit ramps through the 16-bit scene cache", () => {
     await expect(
       readFile(join(work, "budget")).catch((e) => e.code),
     ).resolves.toBe("ENOENT");
+  });
+  it("the cache reservation counts the raw decode batch", async () => {
+    const video = await asset(
+      "ramps/sony-slog3-10bit.mkv",
+      "sony-slog3-sgamut3",
+    );
+    const prepare = (cacheBytes: number, cache: string) =>
+      prepareCompositionVisualMedia({
+        asset: video,
+        sourceDirectory: root,
+        cacheDirectory: join(work, cache),
+        ordinals: [0],
+        scene: true,
+        limits: { decodedCacheBytes: cacheBytes },
+      });
+    // Two worst-case RGBA16 PNGs (~393 KB) fit; adding the 98,304-byte raw
+    // 10-bit 4:4:4 frame staged for FFmpeg does not.
+    await expect(prepare(450_000, "raw-budget")).rejects.toMatchObject({
+      diagnostics: [{ code: "comp-media-limit" }],
+    });
+    await expect(prepare(600_000, "raw-budget-ok")).resolves.toMatchObject({
+      scene: true,
+    });
+  });
+  it("direct PNG preparation matches the float64 frame path", () => {
+    const [width, height] = [37, 5];
+    let seed = 7;
+    const next = () => (seed = (seed * 1103515245 + 12345) % 2 ** 31);
+    for (const depth of [8, 10, 12])
+      for (const color of [
+        { matrix: "bt709", range: "tv" },
+        { matrix: "bt2020nc", range: "pc" },
+        { matrix: "gbr", range: "pc" },
+      ] as const) {
+        const raw = new Uint8Array(sceneRawFrameBytes(width, height, depth));
+        const view = new DataView(raw.buffer);
+        for (let i = 0; i < width * height * 3; i++)
+          if (depth > 8) view.setUint16(i * 2, next() % 2 ** depth, true);
+          else raw[i] = next() % 256;
+        const descriptor = {
+          primaries: "bt2020",
+          transfer: "smpte2084",
+          ...color,
+        } as CompositionMediaColor;
+        expect(
+          sceneFramePng(raw, width, height, depth, descriptor).equals(
+            encodeScenePng(
+              sceneFrameRgb(raw, width, height, depth, descriptor),
+              width,
+              height,
+            ),
+          ),
+        ).toBe(true);
+      }
   });
   afterAll(() => {
     // Recorded in docs/color-grading-cg7-results.json.

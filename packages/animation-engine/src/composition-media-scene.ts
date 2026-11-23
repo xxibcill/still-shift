@@ -44,18 +44,19 @@ const KR_KB: Record<string, readonly [number, number]> = {
 };
 
 /**
- * One raw planar frame → encoded RGB (float64, unclamped). Limited range:
- * Y′ = (D − 16·2^(n−8)) / (219·2^(n−8)), C = (D − 2^(n−1)) / (224·2^(n−8));
- * full range: Y′ = D / (2^n − 1), C = (D − 2^(n−1)) / (2^n − 1) (ITU-R
- * BT.709-6, BT.2020-2, BT.2100-2 Table 9). A camera encoding uses full range.
+ * One raw planar frame → a reader of its encoded RGB (float64, unclamped).
+ * Limited range: Y′ = (D − 16·2^(n−8)) / (219·2^(n−8)),
+ * C = (D − 2^(n−1)) / (224·2^(n−8)); full range: Y′ = D / (2^n − 1),
+ * C = (D − 2^(n−1)) / (2^n − 1) (ITU-R BT.709-6, BT.2020-2, BT.2100-2
+ * Table 9). A camera encoding uses full range.
  */
-export function sceneFrameRgb(
+function scenePixels(
   raw: Uint8Array,
   width: number,
   height: number,
   depth: number,
   color: CompositionMediaColor,
-): Float64Array {
+): (i: number, out: [number, number, number]) => void {
   const count = width * height;
   const wide = depth > 8;
   if (raw.length !== sceneRawFrameBytes(width, height, depth))
@@ -68,16 +69,13 @@ export function sceneFrameRgb(
       ? view.getUint16((plane * count + i) * 2, true)
       : raw[plane * count + i]!;
   const max = 2 ** depth - 1;
-  const rgb = new Float64Array(count * 3);
-  if (color.matrix === "gbr") {
+  if (color.matrix === "gbr")
     // gbrp planes: G, B, R.
-    for (let i = 0; i < count; i++) {
-      rgb[i * 3] = sample(2, i) / max;
-      rgb[i * 3 + 1] = sample(0, i) / max;
-      rgb[i * 3 + 2] = sample(1, i) / max;
-    }
-    return rgb;
-  }
+    return (i, out) => {
+      out[0] = sample(2, i) / max;
+      out[1] = sample(0, i) / max;
+      out[2] = sample(1, i) / max;
+    };
   const [kr, kb] = KR_KB[color.matrix]!;
   const kg = 1 - kr - kb;
   const full = color.encoding !== undefined || color.range === "pc";
@@ -86,15 +84,35 @@ export function sceneFrameRgb(
     yScale = full ? max : 219 * unit,
     cOffset = 2 ** (depth - 1),
     cScale = full ? max : 224 * unit;
-  for (let i = 0; i < count; i++) {
+  return (i, out) => {
     const y = (sample(0, i) - yOffset) / yScale;
     const cb = (sample(1, i) - cOffset) / cScale;
     const cr = (sample(2, i) - cOffset) / cScale;
     const r = y + 2 * (1 - kr) * cr;
     const b = y + 2 * (1 - kb) * cb;
-    rgb[i * 3] = r;
-    rgb[i * 3 + 1] = (y - kr * r - kb * b) / kg;
-    rgb[i * 3 + 2] = b;
+    out[0] = r;
+    out[1] = (y - kr * r - kb * b) / kg;
+    out[2] = b;
+  };
+}
+
+/** One raw planar frame → encoded RGB (float64, unclamped); see scenePixels. */
+export function sceneFrameRgb(
+  raw: Uint8Array,
+  width: number,
+  height: number,
+  depth: number,
+  color: CompositionMediaColor,
+): Float64Array {
+  const pixel = scenePixels(raw, width, height, depth, color);
+  const count = width * height;
+  const rgb = new Float64Array(count * 3);
+  const v: [number, number, number] = [0, 0, 0];
+  for (let i = 0; i < count; i++) {
+    pixel(i, v);
+    rgb[i * 3] = v[0];
+    rgb[i * 3 + 1] = v[1];
+    rgb[i * 3 + 2] = v[2];
   }
   return rgb;
 }
@@ -123,21 +141,22 @@ function chunk(type: string, data: Buffer) {
   return bytes;
 }
 
-/** Encoded RGB → canonical scene PNG: RGBA16, opaque, row filter 0. */
-export function encodeScenePng(
-  rgb: Float64Array,
+/** Pixels in row order → canonical scene PNG: RGBA16, opaque, row filter 0. */
+function scenePng(
   width: number,
   height: number,
+  pixel: (i: number, out: [number, number, number]) => void,
 ): Buffer {
   const stride = width * 8 + 1;
   const rows = Buffer.alloc(stride * height);
+  const v: [number, number, number] = [0, 0, 0];
   for (let y = 0; y < height; y++) {
     let at = y * stride + 1;
     for (let x = 0; x < width; x++) {
-      const i = (y * width + x) * 3;
-      rows.writeUInt16BE(sceneSampleWord(rgb[i]!), at);
-      rows.writeUInt16BE(sceneSampleWord(rgb[i + 1]!), at + 2);
-      rows.writeUInt16BE(sceneSampleWord(rgb[i + 2]!), at + 4);
+      pixel(y * width + x, v);
+      rows.writeUInt16BE(sceneSampleWord(v[0]), at);
+      rows.writeUInt16BE(sceneSampleWord(v[1]), at + 2);
+      rows.writeUInt16BE(sceneSampleWord(v[2]), at + 4);
       rows.writeUInt16BE(65535, at + 6);
       at += 8;
     }
@@ -153,6 +172,34 @@ export function encodeScenePng(
     chunk("IDAT", deflateSync(rows, { level: 3 })),
     chunk("IEND", Buffer.alloc(0)),
   ]);
+}
+
+/** Encoded RGB → canonical scene PNG: RGBA16, opaque, row filter 0. */
+export function encodeScenePng(
+  rgb: Float64Array,
+  width: number,
+  height: number,
+): Buffer {
+  return scenePng(width, height, (i, out) => {
+    out[0] = rgb[i * 3]!;
+    out[1] = rgb[i * 3 + 1]!;
+    out[2] = rgb[i * 3 + 2]!;
+  });
+}
+
+/**
+ * One raw planar frame → its canonical scene PNG, without a whole-frame
+ * float buffer: the same bytes as `encodeScenePng(sceneFrameRgb(...))`, with
+ * a working set of the raw frame and the PNG rows (CG7 preparation).
+ */
+export function sceneFramePng(
+  raw: Uint8Array,
+  width: number,
+  height: number,
+  depth: number,
+  color: CompositionMediaColor,
+): Buffer {
+  return scenePng(width, height, scenePixels(raw, width, height, depth, color));
 }
 
 /** A canonical scene PNG → its 16-bit RGBA samples (Node; tests and tools). */
