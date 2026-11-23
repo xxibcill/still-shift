@@ -6,7 +6,9 @@
 import { readFileSync } from "node:fs";
 import { describe, expect, it } from "vitest";
 import {
+  bakeCubeLut,
   COLOR_SPACE_TRANSFORM_SPACES,
+  sampleLut,
   INPUT_TRANSFORMS,
   spaceConversion,
   WORKING_SPACES,
@@ -32,6 +34,10 @@ import {
   floatGradeRun,
 } from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 import type { RenderEffect } from "../../packages/renderer-core/src/composition/render/graph.ts";
+import {
+  EFFECT_LUTS,
+  preparedLut,
+} from "../../packages/renderer-core/src/composition/render/luts.ts";
 
 const fixture = (): Composition =>
   CompositionSchema.parse(
@@ -259,5 +265,45 @@ describe("grade runs in a working space", () => {
   it("legacy and same-space conversions are absent", () => {
     expect(conversionOp("legacy-srgb", "srgb")).toBeNull();
     expect(conversionOp("acescct", "acescct")).toBeNull();
+  });
+});
+
+describe("grade.lut declared spaces", () => {
+  const lut = bakeCubeLut(
+    ([r, g, b]) => [0.9 * r + 0.05, g * g, 0.2 + 0.7 * b],
+    17,
+  );
+  const prepared = { lut: preparedLut(`sha256:${"c".repeat(64)}`, lut) };
+  const op = (source: object) =>
+    floatGradeOp(
+      "grade.lut",
+      { intensity: 0.75, interpolation: 0 },
+      { [EFFECT_LUTS]: prepared, ...source },
+    )!;
+  const v: Rgb = [0.31, 0.47, 0.62];
+  it("converts working → input space → table → output space → working", () => {
+    const got = op({
+      workingSpace: "acescct",
+      lutSpaces: { lut: { input: "srgb", output: "linear-bt709" } },
+    }).apply(v);
+    const x = spaceConversion("acescct", "srgb").apply(v);
+    const t = sampleLut(lut, x, "tetrahedral");
+    const o = spaceConversion("linear-bt709", "acescct").apply(t);
+    got.forEach((g, c) =>
+      expect(Math.abs(g - (v[c]! + 0.75 * (o[c]! - v[c]!)))).toBeLessThan(
+        1e-12,
+      ),
+    );
+  });
+  it("legacy LUTs and spaces equal to the working space convert nothing", () => {
+    const legacy = op({}).apply(v);
+    const t = sampleLut(lut, v, "tetrahedral");
+    legacy.forEach((g, c) => expect(g).toBe(v[c]! + 0.75 * (t[c]! - v[c]!)));
+    expect(
+      op({
+        workingSpace: "acescct",
+        lutSpaces: { lut: { input: "acescct", output: "acescct" } },
+      }).apply(v),
+    ).toEqual(legacy);
   });
 });

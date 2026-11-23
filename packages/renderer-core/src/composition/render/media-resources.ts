@@ -137,9 +137,8 @@ export function createCompositionMediaResources(
   };
   const forget = (id: string) => {
     const bitmap = resident.get(id)!;
-    if (bitmap instanceof ImageBitmap)
-      releaseRenderStorage(bitmap, (value) => value.close());
-    else releaseRenderStorage(bitmap, () => {});
+    if ("samples" in bitmap) releaseRenderStorage(bitmap, () => {});
+    else releaseRenderStorage(bitmap, (value) => value.close());
     resident.delete(id);
     images.delete(id);
     sceneFrames?.delete(id);

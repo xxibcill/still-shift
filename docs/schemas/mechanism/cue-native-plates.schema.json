@@ -102,6 +102,8 @@
               "enum": [
                 "bt709",
                 "iec61966-2-1",
+                "bt2020-10",
+                "bt2020-12",
                 "smpte2084",
                 "arib-std-b67",
                 "unspecified"

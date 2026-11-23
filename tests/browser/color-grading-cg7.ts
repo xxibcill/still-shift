@@ -14,7 +14,14 @@
  * Results go to research/color-grading-cg7/browser-results.json.
  */
 import assert from "node:assert/strict";
-import { mkdir, mkdtemp, readFile, rm, writeFile } from "node:fs/promises";
+import {
+  copyFile,
+  mkdir,
+  mkdtemp,
+  readFile,
+  rm,
+  writeFile,
+} from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import {
@@ -38,6 +45,8 @@ import {
   probeCompositionVideo,
 } from "../../packages/animation-engine/src/composition-media-probe.ts";
 import { decodeScenePng } from "../../packages/animation-engine/src/composition-media-scene.ts";
+import { decodeCompositionRgbaPng } from "../../packages/animation-engine/src/composition-media-color.ts";
+import { renderComposition } from "../../packages/animation-engine/src/composition-render.ts";
 import {
   conversionOp,
   floatGradeOp,
@@ -518,6 +527,67 @@ try {
     assert.equal(r.plainVsLegacy.max, 0, `${id} plain`);
   }
   assert.equal((result.compositing as D).max, 0, "compositing rule");
+
+  // --- Export: a color-managed composition through the 8-bit sRGB output --
+  const ramp = ramps[0]!;
+  const exportDir = join(work, "export");
+  await mkdir(exportDir, { recursive: true });
+  await copyFile(
+    join(cg0, `ramps/${ramp.name}-10bit.mkv`),
+    join(exportDir, ramp.asset.path),
+  );
+  const exported = {
+    schemaVersion: "composition-1",
+    id: "cg7-export",
+    width: ramp.asset.width,
+    height: ramp.asset.height,
+    fps: 24,
+    frameCount: 1,
+    background: "#000000",
+    colorManagement: { workingSpace: "acescct" },
+    assets: [ramp.asset],
+    layers: [
+      {
+        id: "clip",
+        type: "video",
+        asset: "ramp",
+        size: [ramp.asset.width, ramp.asset.height],
+        fit: "stretch",
+        transform: { anchor: [0, 0], position: [0, 0] },
+        effects: [{ id: "g", effect: "grade.primary", params: GRADE }],
+      },
+    ],
+  };
+  const exportPath = join(exportDir, "managed.json");
+  await writeFile(exportPath, JSON.stringify(exported));
+  const exports: Record<string, { max: number; count: number }> = {};
+  for (const backend of ["canvas2d", "webgl2"] as const) {
+    const outputPath = join(exportDir, `${backend}.%06d.png`);
+    await renderComposition({
+      compositionPath: exportPath,
+      outputPath,
+      backend,
+      cacheDirectory: join(work, "export-cache"),
+      format: "png8",
+    });
+    const frame = decodeCompositionRgbaPng(
+      await readFile(outputPath.replace("%06d", "000000")),
+    );
+    let max = 0,
+      count = 0;
+    frame.rgba.forEach((v, i) => {
+      const d = Math.abs(v - ramp.expected.graded[i]!);
+      if (d) count++;
+      max = Math.max(max, d);
+    });
+    exports[backend] = { max, count };
+  }
+  await writeFile(
+    join(root, "research/color-grading-cg7/browser-results.json"),
+    JSON.stringify({ ...result, export: exports }, null, 2) + "\n",
+  );
+  assert.equal(exports.canvas2d!.max, 0, "canvas export");
+  assert.equal(exports.webgl2!.max, 0, "webgl export");
   console.log("CG7 browser group passed");
 } finally {
   await close();

@@ -1,0 +1,53 @@
+{
+  "fixture": {
+    "generator": "ffmpeg lavfi testsrc2=size=3840x2160:rate=24, 3 frames, yuv422p10le, FFV1, tagged bt709 matrix / tv range, no transfer; declared sony-slog3-sgamut3",
+    "width": 3840,
+    "height": 2160
+  },
+  "node": {
+    "prepareMs": 1429,
+    "cacheFrameBytes": [2688644, 2692408],
+    "cacheBytes": 5382578
+  },
+  "canvas2d": {
+    "ok": true,
+    "stats": {
+      "decodedBytes": 132710400,
+      "encodedBytes": 0,
+      "peakDecodedBytes": 132710400,
+      "peakEncodedBytes": 2692408,
+      "decodedFrames": 2,
+      "hits": 0,
+      "evictions": 0
+    },
+    "prepareMs": 138,
+    "renderMs": 2476,
+    "sha256": "f2f817585598429a8f321f182aee1131081a4a7948954465c6e090e0bd4c7104"
+  },
+  "webgl2": {
+    "ok": true,
+    "stats": {
+      "decodedBytes": 132710400,
+      "encodedBytes": 0,
+      "peakDecodedBytes": 132710400,
+      "peakEncodedBytes": 2692408,
+      "decodedFrames": 2,
+      "hits": 0,
+      "evictions": 0
+    },
+    "prepareMs": 153,
+    "renderMs": 2087,
+    "sha256": "f2f817585598429a8f321f182aee1131081a4a7948954465c6e090e0bd4c7104"
+  },
+  "overBudget": {
+    "ok": false,
+    "error": "comp-media-limit",
+    "framesFetched": 0
+  },
+  "limits": {
+    "decodedFrameBytes": 134217728,
+    "livePairBytes": 132710400,
+    "decodedTextureBytes": 134217728,
+    "rasterBytes": 33177600
+  }
+}

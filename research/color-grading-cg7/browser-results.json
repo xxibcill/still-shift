@@ -274,5 +274,15 @@
   "compositing": {
     "max": 0,
     "count": 0
+  },
+  "export": {
+    "canvas2d": {
+      "max": 0,
+      "count": 0
+    },
+    "webgl2": {
+      "max": 0,
+      "count": 0
+    }
   }
 }
