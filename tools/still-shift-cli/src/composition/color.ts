@@ -12,6 +12,7 @@ import {
 } from "node:fs/promises";
 import { basename, dirname, extname, join, resolve } from "node:path";
 import {
+  COLOR_ENGINES,
   autoColorClip,
   colorSampleOrdinals,
   fitColorLook,
@@ -20,6 +21,7 @@ import {
   parseColorLook,
   readColorFrames,
   type AutoColorRequest,
+  type ColorEngine,
   type ColorLook,
 } from "@still-shift/animation-engine";
 import { passageDiagnostics } from "@still-shift/renderer-core";
@@ -106,13 +108,13 @@ export const backend = (values: Map<string, string>) => {
 const engine = (values: Map<string, string>) => {
   const value = values.get("engine");
   if (value === undefined) return {};
-  if (value !== "grade" && value !== "legacy")
+  if (!(COLOR_ENGINES as readonly string[]).includes(value))
     programError(
       "comp-program-option",
-      "--engine must be grade or legacy",
+      `--engine must be ${COLOR_ENGINES.join(" or ")}`,
       "engine",
     );
-  return { engine: value as "grade" | "legacy" };
+  return { engine: value as ColorEngine };
 };
 async function loadLook(
   path: string | undefined,

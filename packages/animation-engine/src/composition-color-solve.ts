@@ -22,6 +22,7 @@ import {
   isFloatGradeEffect,
 } from "@still-shift/scene-contract";
 import {
+  DEFAULT_COLOR_ENGINE,
   applyGradeRun,
   effectDefaults,
   engineEffects,
@@ -80,7 +81,7 @@ export type ColorSolveOptions = ColorSolveSettings & {
   /** Scales every correction, 0–1 (default 1). */
   strength?: number;
   targets?: ColorSolveTargets | undefined;
-  /** Effects to emit: CGA's 8-bit `color.*` (default) or `grade.*` (CGA2). */
+  /** Effects to emit: CGA's 8-bit `color.*` or `grade.*` (CGA2); default `DEFAULT_COLOR_ENGINE`. */
   engine?: ColorEngine | undefined;
 };
 type SolverTargets = {
@@ -537,7 +538,7 @@ export function solveColorCorrection(
   };
   const targets = solverTargets(options.targets);
   const prefix = options.prefix ?? [];
-  const engine = options.engine ?? "legacy";
+  const engine = options.engine ?? DEFAULT_COLOR_ENGINE;
   const forEngine = (effects: readonly ColorCorrectionEffect[]) =>
     engineEffects(engine, effects) as ColorCorrectionEffect[];
   const measure = (effects: readonly ColorCorrectionEffect[]) =>
