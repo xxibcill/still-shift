@@ -19,7 +19,7 @@ import {
   type PassageDiagnostic,
 } from "@still-shift/renderer-core";
 import type { Composition } from "@still-shift/scene-contract";
-import { matteFlicker } from "@still-shift/color-science";
+import { KEY_VIEWS, matteFlicker } from "@still-shift/color-science";
 import { passageError } from "../../renderer-core/src/passage-diagnostics.ts";
 import { withRendererPage } from "./composition-browser-page.ts";
 import { roundTo } from "./composition-color-round.ts";
@@ -31,7 +31,7 @@ import {
 
 export const GRADE_KEY_REPORT_VERSION = "still-shift-grade-key-1";
 /** `grade.key` `view` values by name. */
-export const GRADE_KEY_VIEWS = { key: 1, highlight: 2, contrast: 3 } as const;
+export const GRADE_KEY_VIEWS = KEY_VIEWS;
 /** The most frames one report renders. */
 export const MAX_GRADE_KEY_FRAMES = 10_000;
 

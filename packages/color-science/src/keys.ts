@@ -14,8 +14,16 @@ import { transferFunction } from "./transfer.ts";
 
 // --- Qualifiers ----------------------------------------------------------------
 
-/** `grade.key` `qualifier`: 0 none, 1 HSL, 2 RGB, 3 luma, 4 sampled 3D. */
-export const KEY_QUALIFIER_MODES = ["none", "hsl", "rgb", "luma", "sampled"];
+/** `grade.key` `qualifier` values: none, HSL, RGB, luma, sampled 3D (OKLab). */
+export const KEY_QUALIFIERS = {
+  none: 0,
+  hsl: 1,
+  rgb: 2,
+  luma: 3,
+  sampled: 4,
+} as const;
+/** `grade.key` `view` values: gray key, highlight, high contrast (0 shows the grade). */
+export const KEY_VIEWS = { key: 1, highlight: 2, contrast: 3 } as const;
 
 /** Names follow `comp probe`'s qualifier suggestion (chroma-node `HslQualifier`). */
 export type HslRanges = {
@@ -212,13 +220,13 @@ export function qualify(v: Rgb, q: KeyQualifier) {
   if (!q.qualifier) return 1;
   const c: Rgb = [clamp01(v[0]), clamp01(v[1]), clamp01(v[2])];
   switch (q.qualifier) {
-    case 1:
+    case KEY_QUALIFIERS.hsl:
       return hslQualifier(c, q);
-    case 2:
+    case KEY_QUALIFIERS.rgb:
       return rgbQualifier(c, q);
-    case 3:
+    case KEY_QUALIFIERS.luma:
       return lumaQualifier(c, q);
-    case 4:
+    case KEY_QUALIFIERS.sampled:
       return sampledQualifier(c, q);
   }
   throw new ColorScienceError(`Unknown qualifier mode ${q.qualifier}`);
@@ -448,10 +456,10 @@ export function mixKeyed(a: Rgb, b: Rgb, k: number): Rgb {
 
 /** Mid gray behind a highlight view. */
 export const KEY_VIEW_GRAY = 0.5;
-/** `view` 1 gray key, 2 highlight (the scoped result over mid gray), 3 high contrast. */
+/** KEY_VIEWS: gray key, highlight (the scoped result over mid gray), high contrast. */
 export function keyView(view: number, k: number, scoped: Rgb): Rgb {
-  if (view === 1) return [k, k, k];
-  if (view === 2)
+  if (view === KEY_VIEWS.key) return [k, k, k];
+  if (view === KEY_VIEWS.highlight)
     return mixKeyed([KEY_VIEW_GRAY, KEY_VIEW_GRAY, KEY_VIEW_GRAY], scoped, k);
   const c = k > 0 ? 1 : 0;
   return [c, c, c];

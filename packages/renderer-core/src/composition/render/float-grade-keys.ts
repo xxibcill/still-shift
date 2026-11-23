@@ -4,7 +4,9 @@ import {
   encodedToOklab,
   finesseIsSpatial,
   gradientWindow,
+  KEY_QUALIFIERS,
   KEY_VIEW_GRAY,
+  KEY_VIEWS,
   matteRange,
   NEUTRAL_KEY_QUALIFIER,
   qualify,
@@ -276,8 +278,8 @@ float kClip(float v,vec2 c){return (c.x==0.0&&c.y==1.0)?v:clamp((v-c.x)/(c.y-c.x
 float kByte(vec4 t,int c){return floor(t[c]*255.0+0.5);}
 vec4 kPack(float f){uint u=floatBitsToUint(f);return vec4(float(u&255u),float((u>>8u)&255u),float((u>>16u)&255u),float(u>>24u))/255.0;}
 vec3 kView(float view,float k,vec3 scoped){
-  if(view==1.0)return vec3(k);
-  if(view==2.0)return k<=0.0?vec3(${KEY_VIEW_GRAY.toFixed(1)}):k>=1.0?scoped:${KEY_VIEW_GRAY.toFixed(1)}+(scoped-${KEY_VIEW_GRAY.toFixed(1)})*k;
+  if(view==${KEY_VIEWS.key.toFixed(1)})return vec3(k);
+  if(view==${KEY_VIEWS.highlight.toFixed(1)})return k<=0.0?vec3(${KEY_VIEW_GRAY.toFixed(1)}):k>=1.0?scoped:${KEY_VIEW_GRAY.toFixed(1)}+(scoped-${KEY_VIEW_GRAY.toFixed(1)})*k;
   return vec3(k>0.0?1.0:0.0);
 }`;
 
@@ -305,12 +307,12 @@ export function keyGlsl(j: number, k: KeySpec, textures: KeyTextures) {
     uniforms[u(name)] = value;
   };
   let qual = "1.0";
-  if (q.qualifier === 1) {
+  if (q.qualifier === KEY_QUALIFIERS.hsl) {
     add("H", "vec4", [0, q.hueCenter, q.hueWidth, q.hueSoftness]);
     add("S", "vec3", [q.saturationMin, q.saturationMax, q.saturationSoftness]);
     add("L", "vec3", [q.luminanceMin, q.luminanceMax, q.luminanceSoftness]);
     qual = `kHsl(c,${u("H")},${u("S")},${u("L")})`;
-  } else if (q.qualifier === 2) {
+  } else if (q.qualifier === KEY_QUALIFIERS.rgb) {
     add("Lo", "vec3", [q.redMin, q.greenMin, q.blueMin]);
     add("Hi", "vec3", [q.redMax, q.greenMax, q.blueMax]);
     add("Soft", "float", q.rgbSoftness);
@@ -319,10 +321,10 @@ export function keyGlsl(j: number, k: KeySpec, textures: KeyTextures) {
         (c) => `kLin(c[${c}],${u("Lo")}[${c}],${u("Hi")}[${c}],${u("Soft")})`,
       )
       .join("*");
-  } else if (q.qualifier === 3) {
+  } else if (q.qualifier === KEY_QUALIFIERS.luma) {
     add("L", "vec3", [q.luminanceMin, q.luminanceMax, q.luminanceSoftness]);
     qual = `kLin(dot(c,LUMA),${u("L")}.x,${u("L")}.y,${u("L")}.z)`;
-  } else if (q.qualifier === 4) {
+  } else if (q.qualifier === KEY_QUALIFIERS.sampled) {
     add("RS", "vec2", [q.sampleRadius, q.sampleSoftness]);
     samples.forEach((s, i) => add(`s${i}`, "vec3", [...s]));
     qual = samples.length
@@ -337,7 +339,8 @@ export function keyGlsl(j: number, k: KeySpec, textures: KeyTextures) {
   const lines = [`float ${u("Q")}(vec3 a){`];
   if (q.qualifier) {
     lines.push(`  vec3 c=clamp(a,0.0,1.0);`);
-    if (q.qualifier === 4) lines.push(`  vec3 lab=kOklab(c);`);
+    if (q.qualifier === KEY_QUALIFIERS.sampled)
+      lines.push(`  vec3 lab=kOklab(c);`);
     lines.push(`  return kClip(${qual},${u("Clip")});`);
   } else lines.push(`  return 1.0;`);
   lines.push(`}`, `float ${u("")}(vec3 a){`);

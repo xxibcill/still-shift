@@ -22,6 +22,7 @@ import {
 } from "@still-shift/renderer-core";
 import type { Composition } from "@still-shift/scene-contract";
 import {
+  KEY_QUALIFIERS,
   pixelCoordinates,
   suggestQualifier,
   suggestSampledKey,
@@ -247,7 +248,7 @@ export async function probeCompositionFile(
       // sampled at this stage.
       suggestionStage: stageName(sampled),
       gradeKey: {
-        qualifier: 1,
+        qualifier: KEY_QUALIFIERS.hsl,
         hueCenter: round(qualifier.hue?.center ?? 0),
         hueWidth: round(Math.min(360, qualifier.hue?.width ?? 360)),
         hueSoftness: round(Math.min(180, qualifier.hue?.softness ?? 0)),
@@ -259,7 +260,7 @@ export async function probeCompositionFile(
         luminanceSoftness: round(Math.min(1, qualifier.luminance.softness)),
       },
       gradeKeySampled: {
-        qualifier: 4,
+        qualifier: KEY_QUALIFIERS.sampled,
         sampleCount: samples.samples.length,
         ...Object.fromEntries(
           samples.samples.map((hex, i) => [`sample${i + 1}`, hex]),
