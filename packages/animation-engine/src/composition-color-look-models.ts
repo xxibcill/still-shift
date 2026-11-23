@@ -828,6 +828,8 @@ function tetrahedron(
  * values, plus a correction fitted to the residual block means: least squares
  * through the tetrahedral weights with a Laplacian smoothness term (conjugate
  * gradients). Nodes no sample touches keep model 3 exactly and are counted.
+ * The look is `encoded-srgb` whichever space model 3 used: the table has no
+ * linear stage of its own.
  */
 export function fitColorLookLut(
   sets: readonly ColorBlockSet[],
@@ -946,7 +948,8 @@ export function fitColorLookLut(
   for (let i = 0; i < total; i++) if (!free[i]) filled++;
   return {
     model: "lut",
-    space: base.space,
+    // The table maps encoded values (model 3's wrapper is baked into it).
+    space: "encoded-srgb",
     parameters: 3 * total,
     effects: [
       {

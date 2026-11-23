@@ -638,6 +638,14 @@ describe("exporting look 2", () => {
     expect(roundTrip(look, luts)).toBeLessThanOrEqual(1);
   });
 
+  it("a LUT look maps encoded values whichever space its base used", () => {
+    const sets = blockPairs(curved);
+    const base = fitColorLookModel(sets, "matrix-curves", "linear-gamma-2.2");
+    const fit = fitColorLookLut(sets, base);
+    expect(fit.space).toBe("encoded-srgb");
+    expect(fit.effects.map((effect) => effect.effect)).toEqual(["grade.lut"]);
+  });
+
   it("a .cube at a partial strength is that mix of the look", () => {
     const look = curvesLook();
     const { text } = exportColorLook(look, new Map(), {
