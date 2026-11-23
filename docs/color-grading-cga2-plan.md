@@ -76,8 +76,8 @@ recorded engine mapping and a measured difference on the CG0 chart and ramps.
 
 _As built (2026-11-23):_ the bound was stated before the first measurement:
 per clip, 4×4 block-mean RMS ≤ 1 and per-pixel 99th percentile ≤ 3, of 255
-(`CGA2_EQUIVALENCE_BOUND`). Both are reported; which one is the look bound
-stays open (decision 4). `scripts/color/cga2-equivalence.ts` compares the two
+(`CGA2_EQUIVALENCE_BOUND`). Both are reported and both gate; which one is
+the look bound stays open (decision 4, carried to A3). `scripts/color/cga2-equivalence.ts` compares the two
 solvers' exact predictions on the synthetic fixtures and a local folder of
 clips (auto, look at 60%, look plus auto) and writes `dist/cga2/equivalence.json`.
 Each mapping's difference over a color cube and the neutral ramp is a unit
@@ -279,7 +279,10 @@ Answered 2026-11-23:
 Still open:
 
 4. **The look bound.** Is 4×4 block-mean RMS of 255 the right bound (open since
-   CGA), or should the bound be per pixel? Needed at A0.
+   CGA), or should the bound be per pixel? Asked at A0 and not yet answered.
+   A0 shipped without it: the equivalence gate requires both metrics (block
+   RMS ≤ 1 and per-pixel p99 ≤ 3), the stricter reading, so A1–A2 do not
+   wait on it. Needed by A3, whose look-2 acceptance bound depends on it.
 5. **LUT looks.** Opt-in only (recommended), or chosen automatically when they
    win the held-out residual. Needed at A3.
 6. **CGA visual review.** Still pending. It can be done on the A6 sheets so
