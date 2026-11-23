@@ -17,6 +17,7 @@ import {
   skinProtectionKey,
   type ColorCorrectionEffect,
 } from "@still-shift/animation-engine";
+import { effectCurveIssue } from "@still-shift/scene-contract";
 import { whiteBalanceGains } from "../../packages/renderer-core/src/composition/render/grade-effects.ts";
 import { floatGradeBytes } from "../../packages/renderer-core/src/composition/render/float-grade.ts";
 
@@ -75,6 +76,20 @@ describe("CGA2 grade-engine mappings", () => {
       expect(points.length).toBeLessThanOrEqual(16);
       expect(points.at(-1)).toEqual([1, gain > 1 ? 1 : points.at(-1)![1]]);
     }
+  });
+  it("white balance gains: a gain just above 1 never repeats the end point", () => {
+    // Green's gain here is 1 + 6e-7: its clip knee rounds to x = 1.
+    const [mapped] = gradeEngineEffects({
+      id: "wb",
+      effect: "color.white-balance",
+      params: { temperature: -34.99, tint: 15.58 },
+    });
+    for (const channel of ["red", "green", "blue"])
+      expect(
+        effectCurveIssue(mapped!.params[channel] as number[][]),
+      ).toBeUndefined();
+    for (const gain of [1 + 1e-9, 1 + 6e-7, 1 + 1e-6, 1.0001])
+      expect(effectCurveIssue(gainCurve(gain))).toBeUndefined();
   });
   it("white balance adaptation: Bradford keeps neutrals within one code", () => {
     const effect: ColorCorrectionEffect = {

@@ -108,12 +108,14 @@ export type EngineOptions = { whiteBalance?: WhiteBalanceModel | undefined };
  * tables are: 14 points from 0 to the clip knee, spaced more densely toward
  * black (exponent 1.2), a guard point just below the knee so the monotone
  * spline bends only there, and (1, 1). Within one code value of the CGA table
- * for every input (71 of 27,648 values off by one over 36 settings).
+ * for every input (71 of 27,648 values off by one over 36 settings). A gain
+ * so close to 1 that its knee rounds to 1 is treated as not clipping, so the
+ * knee never repeats the end point (x must increase strictly).
  */
 export function gainCurve(gain: number): number[][] {
   const encode = (x: number) =>
     linearToSrgb(Math.min(1, srgbToLinear(x) * gain));
-  const clips = gain > 1;
+  const clips = gain > 1 && round(linearToSrgb(1 / gain)) < 1;
   const knee = clips ? linearToSrgb(1 / gain) : 1;
   const count = clips ? 14 : 16;
   const xs = Array.from(
