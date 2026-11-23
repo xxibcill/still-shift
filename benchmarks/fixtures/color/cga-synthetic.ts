@@ -99,6 +99,26 @@ export type CgaDegradation =
   | { kind: "white-balance"; temperature: number; tint: number }
   | { kind: "matrix"; params: Record<string, number> };
 
+/**
+ * CGA2's combined flat clip: lifted blacks, half saturation and a warm cast
+ * (white balance, levels and a skin-keyed vibrance boost to correct).
+ */
+export const CGA_FLAT_COMBINED: readonly CgaDegradation[] = [
+  { kind: "contrast", black: 0.12, white: 0.8 },
+  { kind: "saturation", scale: 0.5 },
+  { kind: "white-balance", temperature: 20, tint: 6 },
+];
+
+/** Apply known changes to straight RGBA8 frames, in order. */
+export const cgaDegradeAll = (
+  frames: readonly Uint8Array[],
+  changes: readonly CgaDegradation[],
+): Uint8Array[] =>
+  changes.reduce<Uint8Array[]>(
+    (out, change) => cgaDegrade(out, change),
+    [...frames],
+  );
+
 /** Apply a known change to straight RGBA8 frames. */
 export function cgaDegrade(
   frames: readonly Uint8Array[],

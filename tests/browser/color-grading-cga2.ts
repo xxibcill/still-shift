@@ -22,8 +22,9 @@ import {
 } from "@still-shift/animation-engine";
 import { decodeCompositionRgbaPng } from "../../packages/animation-engine/src/composition-media-color.ts";
 import {
+  CGA_FLAT_COMBINED,
   CGA_SYNTHETIC,
-  cgaDegrade,
+  cgaDegradeAll,
   cgaReferenceFrames,
   writeCgaClip,
   type CgaDegradation,
@@ -33,11 +34,7 @@ const root = resolve(import.meta.dirname, "../..");
 const FIXTURES = {
   // A warm, desaturated clip with lifted blacks: white balance, levels and a
   // skin-keyed vibrance boost.
-  flat: [
-    { kind: "contrast", black: 0.12, white: 0.8 },
-    { kind: "saturation", scale: 0.5 },
-    { kind: "white-balance", temperature: 20, tint: 6 },
-  ],
+  flat: CGA_FLAT_COMBINED,
   // A narrow tonal range: levels and the kink-guarded S-curve as well.
   narrow: [{ kind: "contrast", black: 0.2, white: 0.75 }],
 } as const satisfies Record<string, readonly CgaDegradation[]>;
@@ -52,8 +49,7 @@ try {
 }
 
 async function renderParity(name: string, changes: readonly CgaDegradation[]) {
-  let frames = cgaReferenceFrames();
-  for (const change of changes) frames = cgaDegrade(frames, change);
+  const frames = cgaDegradeAll(cgaReferenceFrames(), changes);
   const input = join(work, `${name}.mkv`);
   await writeCgaClip(input, frames);
   const cacheDirectory = join(work, "media-cache");

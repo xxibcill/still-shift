@@ -34,7 +34,7 @@ import {
   type ColorStatistics,
 } from "./composition-color-measure.ts";
 import {
-  colorLookEffectParams,
+  colorLookEffect,
   readColorCodeValueFrames,
   type ColorLook,
 } from "./composition-color-look.ts";
@@ -399,13 +399,7 @@ export async function autoColorClip(
   const effects: ColorCorrectionEffect[] = [];
   if (request.look)
     effects.push(
-      ...engineEffects(engine, [
-        {
-          id: "look",
-          effect: "color.matrix",
-          params: colorLookEffectParams(request.look, lookStrength),
-        },
-      ]),
+      ...engineEffects(engine, [colorLookEffect(request.look, lookStrength)]),
     );
   let decisions: ColorSolveDecision[] = [];
   if (adaptive) {

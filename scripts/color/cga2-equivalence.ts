@@ -17,7 +17,7 @@ import { join, resolve } from "node:path";
 import {
   AUTO_COLOR_LOOK_STRENGTH,
   CGA2_EQUIVALENCE_BOUND,
-  colorLookEffectParams,
+  colorLookEffect,
   colorSampleOrdinals,
   colorSolverFrames,
   openColorClip,
@@ -29,8 +29,9 @@ import {
   type ColorLook,
 } from "@still-shift/animation-engine";
 import {
+  CGA_FLAT_COMBINED,
   CGA_SYNTHETIC,
-  cgaDegrade,
+  cgaDegradeAll,
   cgaReferenceFrames,
   type CgaDegradation,
 } from "../../benchmarks/fixtures/color/cga-synthetic.ts";
@@ -63,13 +64,7 @@ function compare(
     frames.frames.map((frame) => ({ ...frame, width: frames.width })),
   );
   const prefix: ColorCorrectionEffect[] = look
-    ? [
-        {
-          id: "look",
-          effect: "color.matrix",
-          params: colorLookEffectParams(look, AUTO_COLOR_LOOK_STRENGTH),
-        },
-      ]
+    ? [colorLookEffect(look, AUTO_COLOR_LOOK_STRENGTH)]
     : [];
   const modes: [Row["mode"], boolean][] = look
     ? [
@@ -107,7 +102,7 @@ function compare(
 
 // Synthetic fixtures: the reference, each known degradation and a combined one.
 const reference = cgaReferenceFrames();
-const synthetic: [string, CgaDegradation[]][] = [
+const synthetic: [string, readonly CgaDegradation[]][] = [
   ["balanced", []],
   ["exposure-0.6", [{ kind: "exposure", stops: -0.6 }]],
   ["exposure+0.5", [{ kind: "exposure", stops: 0.5 }]],
@@ -118,18 +113,10 @@ const synthetic: [string, CgaDegradation[]][] = [
     "white-balance-limit",
     [{ kind: "white-balance", temperature: 40, tint: 10 }],
   ],
-  [
-    "flat-combined",
-    [
-      { kind: "contrast", black: 0.12, white: 0.8 },
-      { kind: "saturation", scale: 0.5 },
-      { kind: "white-balance", temperature: 20, tint: 6 },
-    ],
-  ],
+  ["flat-combined", CGA_FLAT_COMBINED],
 ];
 for (const [name, changes] of synthetic) {
-  let frames = reference;
-  for (const change of changes) frames = cgaDegrade(frames, change);
+  const frames = cgaDegradeAll(reference, changes);
   compare(
     `synthetic/${name}`,
     {
