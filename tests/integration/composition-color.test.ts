@@ -855,11 +855,7 @@ describe("CGA2 solver 2 (grade engine)", () => {
 });
 
 describe("CGA2 A2 reports on scopes and --diff", () => {
-  const flat: CgaDegradation[] = [
-    { kind: "contrast", black: 0.12, white: 0.8 },
-    { kind: "saturation", scale: 0.5 },
-    { kind: "white-balance", temperature: 20, tint: 6 },
-  ];
+  const flat = CGA_FLAT_COMBINED;
   let input: string;
   beforeAll(async () => {
     let frames = reference;

@@ -17,6 +17,7 @@ import { copyFile, mkdir, rm } from "node:fs/promises";
 import { join, resolve } from "node:path";
 import { autoColorClip } from "@still-shift/animation-engine";
 import {
+  CGA_FLAT_COMBINED,
   cgaDegrade,
   cgaReferenceFrames,
   writeCgaClip,
@@ -39,20 +40,13 @@ const inputs = option("--inputs");
 await mkdir(output, { recursive: false });
 const work = join(output, "work");
 const reference = cgaReferenceFrames();
-const cases: [string, CgaDegradation[]][] = [
+const cases: [string, readonly CgaDegradation[]][] = [
   ["balanced", []],
   ["exposure", [{ kind: "exposure", stops: -0.6 }]],
   ["contrast", [{ kind: "contrast", black: 0.1, white: 0.88 }]],
   ["white-balance", [{ kind: "white-balance", temperature: 30, tint: -12 }]],
   ["desaturation", [{ kind: "saturation", scale: 0.4 }]],
-  [
-    "flat",
-    [
-      { kind: "contrast", black: 0.12, white: 0.8 },
-      { kind: "saturation", scale: 0.5 },
-      { kind: "white-balance", temperature: 20, tint: 6 },
-    ],
-  ],
+  ["flat", CGA_FLAT_COMBINED],
 ];
 for (const [name, changes] of cases) {
   let frames = reference;
