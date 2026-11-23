@@ -49,16 +49,12 @@ const percentile = (
   return histogram.length - 1;
 };
 
-/**
- * Difference between two sets of straight RGBA8 frames of one width, over
- * RGB channel values: per pixel (RMS, 99th percentile, max) and over 4×4 block
- * means (RMS, 99th percentile in 1/100 code steps).
- */
-export function colorDifference(
+/** The difference unrounded, and how many 4×4 blocks it covered. */
+function measureDifference(
   a: readonly Uint8Array[],
   b: readonly Uint8Array[],
   width: number,
-): ColorDifference {
+): ColorDifference & { blocks: number } {
   const histogram = new Float64Array(256);
   const blockHistogram = new Float64Array(25601);
   let squares = 0,
@@ -95,13 +91,35 @@ export function colorDifference(
   }
   return {
     pixels: count / 3,
-    rms: roundTo(Math.sqrt(squares / Math.max(1, count)), 4),
+    rms: Math.sqrt(squares / Math.max(1, count)),
     p99: percentile(histogram, count, 0.99),
     max,
-    blockRms: roundTo(Math.sqrt(blockSquares / Math.max(1, blocks)), 4),
+    blockRms: Math.sqrt(blockSquares / Math.max(1, blocks)),
     blockP99: percentile(blockHistogram, blocks, 0.99) / 100,
+    blocks,
   };
 }
+
+const rounded = ({
+  blocks: _blocks,
+  ...d
+}: ColorDifference & { blocks: number }): ColorDifference => ({
+  ...d,
+  rms: roundTo(d.rms, 4),
+  blockRms: roundTo(d.blockRms, 4),
+});
+
+/**
+ * Difference between two sets of straight RGBA8 frames of one width, over
+ * RGB channel values: per pixel (RMS, 99th percentile, max) and over 4×4 block
+ * means (RMS, 99th percentile in 1/100 code steps; 0 when the frames are smaller
+ * than one block). RMS values are rounded to 4 decimals for reports.
+ */
+export const colorDifference = (
+  a: readonly Uint8Array[],
+  b: readonly Uint8Array[],
+  width: number,
+): ColorDifference => rounded(measureDifference(a, b, width));
 
 export type SolverEquivalence = {
   legacy: ColorSolution;
@@ -136,17 +154,23 @@ export function solverEquivalence(
   });
   const render = (effects: readonly ColorCorrectionEffect[]) =>
     frames.frames.map((frame) => applyColorEffects(effects, frame.rgba));
-  const difference = colorDifference(
+  const exact = measureDifference(
     render([...prefix, ...legacy.effects]),
     render([...gradePrefix, ...grade.effects]),
     frames.width,
   );
+  // An empty block metric would pass any bound.
+  if (!exact.blocks)
+    throw Error(
+      `comp-auto-color: frames of width ${frames.width} have no ${BLOCK}×${BLOCK} block to compare`,
+    );
   return {
     legacy,
     grade,
-    difference,
+    difference: rounded(exact),
+    // The bound is checked on the unrounded values.
     withinBound:
-      difference.blockRms <= CGA2_EQUIVALENCE_BOUND.blockRms &&
-      difference.p99 <= CGA2_EQUIVALENCE_BOUND.p99,
+      exact.blockRms <= CGA2_EQUIVALENCE_BOUND.blockRms &&
+      exact.p99 <= CGA2_EQUIVALENCE_BOUND.p99,
   };
 }

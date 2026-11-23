@@ -11,6 +11,7 @@ import {
   gradeEngineEffects,
   gradeRunOps,
   skinProtectionKey,
+  solverEquivalence,
   type ColorCorrectionEffect,
 } from "@still-shift/animation-engine";
 import { effectCurveIssue } from "@still-shift/scene-contract";
@@ -197,6 +198,16 @@ describe("CGA2 grade-engine mappings", () => {
         if (i) expect(x).toBeGreaterThan(points[i - 1]![0]!);
       });
     }
+  });
+});
+
+describe("CGA2 equivalence metric", () => {
+  it("refuses frames without a 4×4 block instead of passing them", () => {
+    const tiny = {
+      width: 3,
+      frames: [{ ordinal: 0, rgba: new Uint8Array(3 * 3 * 4).fill(200) }],
+    };
+    expect(() => solverEquivalence(tiny, tiny)).toThrow(/no 4×4 block/);
   });
 });
 
