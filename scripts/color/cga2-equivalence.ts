@@ -4,8 +4,8 @@
  * synthetic fixtures and, optionally, a folder of locally supplied clips
  * (never committed).
  *
- *   node --import tsx scripts/color/cga2-equivalence.ts \
- *     [--clips <folder>] [--look <look.json>] [--output dist/cga2]
+ *   pnpm color:cga2-equivalence [--clips <folder>] [--look <look.json>] \
+ *     [--output dist/cga2]
  *
  * For every clip: the adaptive correction (auto) and, with --look, the look
  * at the default 60% (look). Both engines solve the same sampled frames
