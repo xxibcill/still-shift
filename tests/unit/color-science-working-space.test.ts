@@ -162,6 +162,20 @@ describe("media input transforms", () => {
     expect(Math.abs(linear("pq", 0.38) - 0.26) / 0.26).toBeLessThan(0.05);
     expect(Math.abs(linear("hlg", 0.38) - 0.26) / 0.26).toBeLessThan(0.05);
   });
+  it("HLG keeps the sign of sub-black codes, as its encode does", () => {
+    const hlg = transferFunction("hlg");
+    for (const v of [0.01, 0.1, 0.25, 0.5]) {
+      expect(hlg.decode(-v)).toBe(-hlg.decode(v));
+      expect(Math.abs(hlg.encode(hlg.decode(-v)) + v)).toBeLessThan(1e-12);
+    }
+    // A saturated near-black sample the Y′CbCr matrix puts below 0.
+    const t = sourceTransform(
+      { kind: "display", primaries: "bt2020", transfer: "hlg" },
+      "acescct",
+    );
+    const v: [number, number, number] = [-0.05, 0.3, 0.2];
+    expect(close(t.fromWorking(t.toWorking(v)), v, 1e-9)).toBe(true);
+  });
   for (const transfer of ["srgb", "pq", "hlg"] as const)
     for (const primaries of ["bt709", "bt2020", "p3-d65"] as const)
       it(`${primaries} ${transfer}: round-trips through every working space`, () => {
