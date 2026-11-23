@@ -231,6 +231,6 @@
       "pnpm check, the full pnpm test, the runtime and depth tiers and the release checks.",
       "No human visual or matte review."
     ],
-    "ownerDecision": "R4 was resolved by documenting the implemented luma-over-black (premultiplied) matte. Reading straight color instead would change translucent mattes and needs the owner's choice."
+    "ownerDecision": "R4: the owner chose \"Keep premultiplied\" (2026-11-23). Luma mattes read luma over black (premultiplied color), as implemented and now documented; straight color was not adopted."
   }
 }
