@@ -232,5 +232,51 @@
       "No human visual or matte review."
     ],
     "ownerDecision": "R4: the owner chose \"Keep premultiplied\" (2026-11-23). Luma mattes read luma over black (premultiplied color), as implemented and now documented; straight color was not adopted."
+  },
+  "secondReview": {
+    "date": "2026-11-23",
+    "review": "https://github.com/xxibcill/still-shift/pull/79#pullrequestreview-6019247532",
+    "summary": "Correctness pass on the head after R1-R17 (99966c3c). Three findings posted inline as R18-R20 and fixed on the branch, one commit each.",
+    "fixes": [
+      {
+        "id": "R18",
+        "finding": "on a layer whose puppet or mesh-warp capture is larger than the viewport, grade.* operators carry the effect window but grade.key does not, so the key ran alone and was dropped and the operators graded the whole layer",
+        "fix": "a run of grade.* effects holding a key and a window is applied whole inside the window (key inputs cropped with it, placements moved into the crop); unkeyed windowed runs unchanged",
+        "evidence": "CG6 browser group: keyed run with a gradient before an identity mesh warp on an overhanging image held back 0 pixels before the fix (both backends) and 16,432 after; matches the same run without the warp exactly on Canvas and WebGL2",
+        "commit": "c80d2992"
+      },
+      {
+        "id": "R19",
+        "finding": "comp probe's qualifier, gradeKey and gradeKeySampled came from the composited frame (layer opacity, blend, background)",
+        "fix": "suggestions from one extra render of the key's input alone (keyInputComposition: layer and parents opaque, normal blend, no background, preserveAlpha) over the pixels the layer covers; null when the layer covers none of the region. Found while fixing: previews are opaque unless preserveAlpha, so comp grade key (R2) also counted pixels outside the layer as key 0; fixed in the same commit",
+        "evidence": "composition-scopes: opacity 0.5 + screen blend + #336699 background leave the suggestions identical; half-size layer reports layerPixels 192x128; the CG3 region test now counts 32x48 paint pixels, not 64x48",
+        "commit": "0d997258"
+      },
+      {
+        "id": "R20",
+        "finding": "the export guard read only authored view values: a driven view passed; a keyframed all-zero view was refused",
+        "fix": "keyMatteViewFrames: authored nonzero views refused at once; when a view is keyframed or the composition has drivers, periodic motion, expressions or behaviours, each frame is evaluated and the first offending frame named",
+        "evidence": "unit tests: expression view 2 over authored 0 refused at frame 0; keyframed 0 passes; keyframed to 1 refused at frame 3; disabled key ignored",
+        "commit": "c321325a"
+      }
+    ],
+    "verification": {
+      "checkFast": "passed: 482 test files, 4,984 tests (Node 22.23.1)",
+      "integration": "composition-scopes and composition-grade-interchange: 18 passed (Node 22.23.1)",
+      "browser": {
+        "color-grading-cg6": "passed (windowed key row; Node 22.23.1)",
+        "color-grading-cg5": "passed (windowed grade.lut unchanged)"
+      },
+      "native3dIdentity": "passed"
+    },
+    "failedRunsAndReruns": [
+      "R18: the new CG6 row was first run with the renderer fix reverted and failed on both backends (vsUnkeyed 0, vsUnwarped 255), as intended; with the fix it passes.",
+      "R19: the new probe assertions were first run against the old probe and failed (suggestion moved with opacity/blend/background). The first fixed run then failed two existing tests: a probe outside the layer refused (changed to null suggestions) and the CG3 region test counted background pixels (expectation updated to layer pixels only). A debug run showed background null alone still rendered opaque black (preview needs preserveAlpha).",
+      "check:fast was first run on Node 24.16.0 (not the pinned toolchain): one failure, comp bake 'bakes the CE9 acceptance demo exactly', which also fails on the PR head before these commits under Node 24. Rerun on the pinned Node 22.23.1: all 4,984 pass."
+    ],
+    "notRun": [
+      "pnpm check, the full pnpm test, composition-baselines, the runtime and depth tiers and the release checks.",
+      "No human visual or matte review."
+    ]
   }
 }
