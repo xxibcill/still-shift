@@ -186,6 +186,22 @@ describe("CGA2 grade-engine mappings", () => {
     expect(sat(grade(0.7, skin))).toBeLessThan(sat(grade(0, skin)));
     expect(skinProtectionKey(0)).toBeNull();
   });
+  it("vibrance: a negative boost keeps its skin protection", () => {
+    for (const amount of [-40, -80]) {
+      const effect: ColorCorrectionEffect = {
+        id: "vivid",
+        effect: "color.vibrance",
+        params: { vibrance: amount, saturation: 0, protectSkin: 0.7 },
+      };
+      expect(gradeEngineEffects(effect).map((e) => e.effect)).toEqual([
+        "grade.key",
+        "grade.primary",
+      ]);
+      const d = both(effect);
+      expect(d.max).toBeLessThanOrEqual(3);
+      expect(d.p99).toBeLessThanOrEqual(1);
+    }
+  });
   it("mapped curves stay within the curve contract (≤ 16 points, 0–1, increasing x)", () => {
     const effects = engineEffects("grade", [
       {

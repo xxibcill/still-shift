@@ -264,7 +264,8 @@ export function gradeEngineEffects(
           "comp-auto-color: the grade engine maps vibrance without a uniform saturation only",
         );
       const boost = round((p.vibrance ?? 0) / 100, 4);
-      const key = boost > 0 ? skinProtectionKey(p.protectSkin ?? 0.7) : null;
+      const key =
+        boost !== 0 ? skinProtectionKey(p.protectSkin ?? 0.7) : null;
       return [
         ...(key
           ? [{ id: `${effect.id}-skin`, effect: "grade.key", params: key }]
