@@ -43,6 +43,17 @@ still hold before relying on them.
 
 ## Current state
 
+- **CGA2 A0–A1 in review: [PR #80](https://github.com/xxibcill/still-shift/pull/80) on `codex/cga2-engine` (2026-11-23):**
+  [plan](./color-grading-cga2-plan.md), [results](./color-grading-cga2-results.json). `comp auto-color` and
+  `comp look apply` take `--engine grade` (solver 2: one float `grade.*` run); the default stays `legacy`
+  (CGA unchanged) until A6. Review findings F1–F25 fixed one commit each and pushed. The Bradford
+  `adaptation` prototype was removed (A4 restores it from `2413125c`). A0 rerun with a per-pixel p99:
+  42/44 rows within the bound (block RMS ≤ 1, p99 ≤ 3 of 255); two look+auto rows outside, listed with
+  measured causes (clip 3: headroom; clip 9: a fourth clipping scale-back). Solver 1's baseline reruns
+  44/44 byte-identical. Canvas and WebGL2 equal the prediction on four fixtures, look+auto included.
+  **Next:** owner review of PR #80, then A2. Open owner decisions: look bound (needed by A3), LUT looks
+  (A3), CGA visual review (A6 sheets).
+
 - **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32, merged as [PR #76](https://github.com/xxibcill/still-shift/pull/76) (`main` 51ffe62a).
   - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
   - **Owner gate D-level (done 2026-11-20):** after the local-only variant sheets, the owner answered "Confirm 1.5:1": display text needs 1.5:1 at the median edge (lowest accepted candidate 1.63; untreated or hairline-outlined display text 1.23).
@@ -127,6 +138,57 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-23 — PR #80 review: 25 findings fixed (CGA2 A0–A1)
+
+- **Agent / branch:** Claude Code on `codex/cga2-engine` (from `2413125c`), pushed to [PR #80](https://github.com/xxibcill/still-shift/pull/80)
+- **Scope:** two-axis review (standards, spec) plus a correctness pass; 25 inline comments (F1–F25), one fix commit each.
+- **Done:** `gainCurve` no longer repeats its end point when a gain is about 1 (F1); negative vibrance keeps
+  its skin key (F2); Bradford `adaptation` model and `temperatureTintForWhite` removed from this PR (F3); gate
+  checks unrounded values, refuses block-less frames and takes the p99 per pixel (F5, F6); prediction uses
+  the renderer's `floatGradeSegments` (F7); types, names, defaults and fixtures deduplicated (F8–F11);
+  `look apply` reports no solver (F12); CG0 chart/ramp measurements (F15); look and look+auto render
+  parity (F16); A0 baseline recording and outside-row diagnostics (F17, F18); README, plan, results and
+  this log reconciled (F4, F13, F14, F19–F25).
+- **Results:** A0 rerun 42/44 within the bound (was 43/44 with the per-channel p99: clip 9 look+auto is
+  now p99 4, cause the clipping budget); baseline 44/44 identical on rerun; four-fixture render parity 0
+  channels off. `check:fast` 483 files / 5,002 tests; `check:runtime` passed on the third run (run 1: an
+  unrelated 5 s timeout; run 2: no soundtrack runtime in this worktree, fixed with
+  `STILL_SHIFT_SOUNDTRACK_PYTHON`); nine color/grade/effect browser groups pass. Not run: `pnpm check`,
+  release checks.
+- **Rejected / do not repeat:** shipping the Bradford prototype ahead of A4 (scope; it also clamped
+  silently); checking the bound on rounded values or a per-channel p99.
+- **Open / next:** owner review of PR #80 and the reconciled plan; A2.
+- **Records:** [results `reviewRerun`, `verification.reviewFixes`](./color-grading-cga2-results.json),
+  [plan](./color-grading-cga2-plan.md), local logs `dist/cga2-review-1`, `-2`, `dist/cga2-review-checks/`.
+
+### 2026-11-23 — CGA2 A0–A1: equivalence harness and solver 2 on the grade engine
+
+- **Agent / branch:** Claude Code on `codex/cga2-engine` (from the plan commit 7b4aefd5 on `main` a47fa6d0)
+- **Scope:** CGA2 slices A0 (equivalence harness) and A1 (solver 2 emits a `grade.*` run).
+- **Done:** `composition-color-engine.ts` (mappings, keyed-run prediction), `composition-color-equivalence.ts`
+  and `scripts/color/cga2-equivalence.ts` (A0), `temperatureTintForWhite` in color-science, `--engine` on
+  `auto-color` and `look apply`, unit/integration tests and `test:browser:color-grading-cga2`.
+- **Results:** synthetic fixtures 0–0.80 block RMS; owner clips auto 0.47–0.82 (p99 1–2), look 0.08–0.13
+  (max 1), look+auto 0.56–1.00 (one row p99 4, listed). Render parity: Canvas and WebGL2 0 channels off.
+  Node 22.23.1; first exploratory runs used Node 24 by mistake and were rerun.
+- **Rejected / do not repeat:** Bradford as solver 2's white balance (fails the gate on saturated colors;
+  moved to A4); a hue-vs-saturation skin dip (desaturates strong skin-hued colors, 26 codes); an unguarded
+  spline through `color.curves` points (3 codes, and a ×0.75 scale-back on one clip).
+- **Open / next:** A2; owner decisions on the look bound, LUT looks and the CGA visual review.
+- **Records:** [plan](./color-grading-cga2-plan.md), [results](./color-grading-cga2-results.json).
+
+### 2026-11-23 — CGA2 plan: CGA on the grade engine
+
+- **Agent / branch:** Claude Code on `codex/cga-engine-upgrade-plan` (from `main` a47fa6d0)
+- **Scope:** plan to upgrade CGA (auto-color, looks, color-stats) to the CG0–CG6 engine.
+- **Done:** audited CGA source against the engine; wrote [CGA2 plan](./color-grading-cga2-plan.md);
+  added a CGA2 row to the [engine plan tracker](./color-grading-engine-plan.md#milestone-tracker).
+- **Results:** none measured; no source changed, nothing rendered. Mapping facts reused from CG2
+  (`grade.rgb-mixer` = `color.matrix` within 1 code; white-balance chart comparison).
+- **Owner decisions (same day):** default engine "yes" (solver 2), equivalence gate "yes";
+  skin protection: hue curve (owner deferred to the recommendation).
+- **Open / next:** look bound (before A0), LUT looks (A3), CGA visual review; then A0.
 
 ### 2026-11-23 — Color grading PR #79 second review and fixes (R18–R20)
 

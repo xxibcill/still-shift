@@ -414,6 +414,20 @@ pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition c
   (≤ 20–35) depending on how much the near-neutral pixels agree. When it cools
   a cast it cannot trust, it also lowers green slightly (magenta tint 0.4 × the
   cooling), so cream stays beige instead of turning yellow.
+- **`--engine grade`** (CGA2, both commands) writes the same correction as one
+  float `grade.*` run instead of 8-bit `color.*` effects, with one
+  quantization on exit: the white balance as `grade.curves` red/green/blue
+  curves holding the same linear-light gains, levels as an unclamped
+  `grade.cdl`, the S-curve as a `grade.curves` master curve that keeps its
+  straight segments, vibrance as `grade.primary` `colorBoost` behind a
+  pointwise `grade.key` (an HSL hue qualifier) that protects skin, and a look
+  as `grade.rgb-mixer`. The solver stages and
+  defaults are the same (solver 2 re-measures each stage through the grade
+  engine), and its renders stay within 1 of 255 (4×4 block-mean RMS) and 3
+  (99th percentile per pixel) of `--engine legacy` on the CGA fixtures. The
+  report adds `engine`, and `solver` when the solver ran (not for
+  `look apply`). `--engine legacy` (the default for now)
+  is CGA unchanged.
 
 `auto-color` and `look apply` keep the source audio as a native audio layer and
 render H.264 with the Canvas backend by default (`--backend webgl2` gives the same

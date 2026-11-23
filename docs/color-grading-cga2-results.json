@@ -1,0 +1,481 @@
+{
+  "schema": "still-shift.milestone-results-1",
+  "milestone": "CGA2 A0–A1",
+  "title": "CGA on the grade engine: equivalence harness and solver 2",
+  "date": "2026-11-23",
+  "branch": "codex/cga2-engine",
+  "base": "main a47fa6d0 (plan commit 7b4aefd5)",
+  "plan": "docs/color-grading-cga2-plan.md",
+  "environment": "darwin-arm64; Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed). The first exploratory runs used Node 24.16.0 by mistake; their output was not retained, so nothing from them is recorded here, and every recorded check was rerun on 22.23.1. Retained local logs (not committed): dist/cga2/check-fast.log and check-fast-2.log (two passing check:fast runs, the second on the final 2413125c code) and dist/cga2/run.log (the A0 gate).",
+  "visualAcceptance": "none; software measurements only. The owner's CGA visual review is still pending and is planned on the A6 sheets.",
+  "equivalenceBound": {
+    "blockRms": 1,
+    "p99": 3,
+    "units": "of 255, per clip, solver 2 against solver 1 exact Canvas predictions at full resolution (12 sampled frames)",
+    "stated": "2026-11-23, before the first measurement; which metric is the look bound stays open (owner decision 4)"
+  },
+  "mappings": [
+    {
+      "cg0Stills": "chart-24, gray-ramp-256, gray-steps-16, rgb-ramps, hue-sweep, saturation-sweep and skin-tones from benchmarks/fixtures/color/cg0; each mapping's `cg0` is max/p99/block RMS of 255 against solver 1 (tests/unit/composition-color-engine.test.ts, A0)"
+    },
+    {
+      "solver1": "color.white-balance",
+      "solver2": "grade.curves red/green/blue (gainCurve)",
+      "difference": "max 1 code over a color cube and the neutral ramp for 18 temperature/tint settings; 71 of 27,648 table values off by 1 over 36 settings",
+      "note": "grade.white-balance (Bradford) was prototyped as an opt-in adaptation model at 2413125c: neutrals within 1, saturated colors up to 28 codes on the synthetic green. It was removed from this PR (review F3) and returns in A4 from that commit",
+      "cg0": "max 0 at temperature/tint −35/12 and 20/−25"
+    },
+    {
+      "solver1": "color.levels",
+      "solver2": "grade.cdl (clamp 0)",
+      "difference": "max 1 code in range; values outside 0–1 are kept instead of clipped",
+      "cg0": "max 0 (black 0.06, white 0.86, gamma 0.9)"
+    },
+    {
+      "solver1": "color.curves (S-curve)",
+      "solver2": "grade.curves master with kink guard points (piecewiseCurve), lumaMix 0",
+      "difference": "max 1 code (0 on the owner clip that exposed the unguarded spline, which had been 3)",
+      "cg0": "max 1, p99 0, block RMS ≤ 0.031 (gray ramp and RGB ramps; 0 elsewhere)"
+    },
+    {
+      "solver1": "color.vibrance",
+      "solver2": "grade.key (HSL hue 25° ± 25° smoothstep, inverted, gain protectSkin, offset 1 − protectSkin) + grade.primary colorBoost",
+      "difference": "max 3, p99 ≤ 1 over the color cube for protectSkin 0, 0.7, 1; a saturated orange unchanged",
+      "cg0": "max 1, p99 ≤ 1, block RMS ≤ 0.183 (vibrance 80, protectSkin 0.7; chart, hue and saturation sweeps; 0 on ramps and skin tones)"
+    },
+    {
+      "solver1": "color.matrix (look)",
+      "solver2": "grade.rgb-mixer",
+      "difference": "max 1 code in range (as CG2 measured)",
+      "cg0": "max 1, p99 ≤ 1, block RMS ≤ 0.144 (CGA_LOOK_MATRIX at 0.6; 0 on the chart and skin tones)"
+    }
+  ],
+  "checks": [
+    {
+      "check": "Synthetic fixtures: solver 2 meets solver 1's CGA bounds (exposure ≤ 3, contrast ≤ 2.5, white balance ≤ 1, balanced identity, clipping budget, banding bound) and the equivalence bound",
+      "status": "met",
+      "test": "tests/integration/composition-color.test.ts (CGA2 solver 2), media path, 6 cases"
+    },
+    {
+      "check": "Rerun byte-identical (solver 2 solution; solver 1 baseline)",
+      "status": "met",
+      "test": "integration: solver 2 solution JSON identical on rerun; A0 script --baseline: solver 1 baseline 44/44 rows identical (reviewRerun.baselineRerun)"
+    },
+    {
+      "check": "A0 baseline: solver 1's parameters, decisions, prediction statistics and frame hashes recorded",
+      "status": "met",
+      "evidence": "every row of the A0 script's equivalence.json carries `legacy` (effects) and `baseline` (solver, decisions, statistics, frameSha256); local output, not committed"
+    },
+    {
+      "check": "Owner clips: solver 2 within the equivalence bound, or each difference listed with its cause",
+      "status": "met (two listed)",
+      "evidence": "review rerun, per-pixel p99: 42 of 44 rows within the bound (auto 12/12, look 12/12, look+auto 10/12); both outside rows listed with measured causes. The first run at 2413125c counted 43/44 with the per-channel p99."
+    },
+    {
+      "check": "Prediction equals the Canvas render exactly; WebGL2 within the CG2 parity bound",
+      "status": "met",
+      "test": "pnpm test:browser:color-grading-cga2: four synthetic fixtures (flat with skin key; narrow range with the S-curve; a look alone; a look then the solver), 12 frames each, png8 renders: Canvas 0 and WebGL2 0 channels off on all four"
+    },
+    {
+      "check": "--engine legacy and the default are CGA unchanged",
+      "status": "met",
+      "evidence": "the existing 21 CGA integration tests pass unchanged; legacy reports carry no engine fields"
+    },
+    {
+      "check": "A tungsten-cast fixture that solver 1 cannot reach is corrected",
+      "status": "moved to A4",
+      "evidence": "Bradford white balance cannot pass the equivalence gate (decision 2), so it moved to A4 with this check"
+    },
+    {
+      "check": "pnpm check:fast",
+      "status": "met"
+    }
+  ],
+  "reviewRerun": {
+    "date": "2026-11-23",
+    "code": "codex/cga2-engine after review fixes F1–F17 plus the F18 script (A0 baseline recording)",
+    "metric": "per pixel: each pixel at its largest channel difference, then the 99th percentile over pixels (F6); block RMS ≤ 1 and p99 ≤ 3 checked on unrounded values (F5); gains white balance only (F3)",
+    "command": "pnpm color:cga2-equivalence --clips <12 owner clips> --look <CGA owner look> --output dist/cga2-review-1, then again into dist/cga2-review-2 with --baseline dist/cga2-review-1/equivalence.json (local, not committed)",
+    "summary": {
+      "rows": 44,
+      "withinBound": 42,
+      "worstBlockRms": 0.9987,
+      "worstP99": 4
+    },
+    "baselineRerun": {
+      "rows": 44,
+      "identical": 44,
+      "compared": "solver 1 effects, decisions, full-resolution prediction statistics and per-frame SHA-256 of every row"
+    },
+    "secondRunEqualsFirst": true,
+    "synthetic": {
+      "balanced": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "exposure-0.6": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "exposure+0.5": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "contrast": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "saturation-0.4": {
+        "blockRms": 0.1472,
+        "p99": 1,
+        "max": 1,
+        "withinBound": true
+      },
+      "white-balance": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "white-balance-limit": {
+        "blockRms": 0.0093,
+        "p99": 0,
+        "max": 1,
+        "withinBound": true
+      },
+      "flat-combined": {
+        "blockRms": 0.8009,
+        "p99": 3,
+        "max": 3,
+        "withinBound": true
+      }
+    },
+    "ownerClips": {
+      "count": 12,
+      "note": "local only, never committed; numbered in file-name order (as in firstRun); the look is the CGA owner look at the default 0.6",
+      "results": {
+        "auto": {
+          "rows": 12,
+          "withinBound": 12,
+          "blockRms": [0.471, 0.823],
+          "p99": [1, 3],
+          "max": 6
+        },
+        "look": {
+          "rows": 12,
+          "withinBound": 12,
+          "blockRms": [0.079, 0.1296],
+          "p99": [1, 1],
+          "max": 1
+        },
+        "look+auto": {
+          "rows": 12,
+          "withinBound": 10,
+          "blockRms": [0.5648, 0.9987],
+          "p99": [1, 4],
+          "max": 6
+        }
+      }
+    },
+    "outside": [
+      {
+        "clip": "owner clip 3",
+        "mode": "look+auto",
+        "blockRms": 0.9776,
+        "p99": 4,
+        "max": 6,
+        "diagnostics": {
+          "translatedSolver1": {
+            "blockRms": 0.9843,
+            "p99": 4,
+            "max": 6
+          },
+          "lookClippedFirst": {
+            "blockRms": 0.8319,
+            "p99": 2,
+            "max": 5
+          }
+        }
+      },
+      {
+        "clip": "owner clip 9",
+        "mode": "look+auto",
+        "blockRms": 0.9987,
+        "p99": 4,
+        "max": 6,
+        "diagnostics": {
+          "translatedSolver1": {
+            "blockRms": 0.6118,
+            "p99": 2,
+            "max": 3
+          },
+          "lookClippedFirst": {
+            "blockRms": 0.9361,
+            "p99": 3,
+            "max": 6
+          }
+        }
+      }
+    ]
+  },
+  "firstRun": {
+    "measuredAt": "2413125c",
+    "metric": "p99 over channel values (before review F6), bound checked on rounded block RMS (before F5); includes the Bradford adaptation prototype rows (removed by F3)",
+    "synthetic": {
+      "balanced": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "balanced (adaptation)": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "exposure-0.6": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "exposure-0.6 (adaptation)": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "exposure+0.5": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "exposure+0.5 (adaptation)": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "contrast": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "contrast (adaptation)": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "saturation-0.4": {
+        "blockRms": 0.1472,
+        "p99": 1,
+        "max": 1,
+        "withinBound": true
+      },
+      "saturation-0.4 (adaptation)": {
+        "blockRms": 0.1472,
+        "p99": 1,
+        "max": 1,
+        "withinBound": true
+      },
+      "white-balance": {
+        "blockRms": 0,
+        "p99": 0,
+        "max": 0,
+        "withinBound": true
+      },
+      "white-balance (adaptation)": {
+        "blockRms": 1.2307,
+        "p99": 8,
+        "max": 8,
+        "withinBound": false
+      },
+      "white-balance-limit": {
+        "blockRms": 0.0093,
+        "p99": 0,
+        "max": 1,
+        "withinBound": true
+      },
+      "white-balance-limit (adaptation)": {
+        "blockRms": 3.5126,
+        "p99": 28,
+        "max": 28,
+        "withinBound": false
+      },
+      "flat-combined": {
+        "blockRms": 0.8009,
+        "p99": 3,
+        "max": 3,
+        "withinBound": true
+      },
+      "flat-combined (adaptation)": {
+        "blockRms": 0.7701,
+        "p99": 3,
+        "max": 3,
+        "withinBound": true
+      }
+    },
+    "ownerClips": {
+      "count": 12,
+      "note": "local only, never committed; the look is the CGA owner look at the default 0.6. look+auto is not a default mode (it needs --adaptive true).",
+      "results": {
+        "auto gains": {
+          "rows": 12,
+          "withinBound": 12,
+          "blockRms": [0.471, 0.823],
+          "p99": [1, 2],
+          "max": 6
+        },
+        "auto adaptation": {
+          "rows": 12,
+          "withinBound": 12,
+          "blockRms": [0.4419, 0.8413],
+          "p99": [1, 3],
+          "max": 6
+        },
+        "look gains": {
+          "rows": 12,
+          "withinBound": 12,
+          "blockRms": [0.079, 0.1296],
+          "p99": [1, 1],
+          "max": 1
+        },
+        "look+auto gains": {
+          "rows": 12,
+          "withinBound": 11,
+          "blockRms": [0.5648, 0.9987],
+          "p99": [1, 4],
+          "max": 6
+        },
+        "look+auto adaptation": {
+          "rows": 12,
+          "withinBound": 9,
+          "blockRms": [0.5791, 1.1633],
+          "p99": [1, 4],
+          "max": 7
+        }
+      }
+    },
+    "outside": [
+      {
+        "clip": "synthetic/white-balance",
+        "mode": "auto",
+        "whiteBalance": "adaptation",
+        "blockRms": 1.2307,
+        "p99": 8,
+        "max": 8
+      },
+      {
+        "clip": "synthetic/white-balance-limit",
+        "mode": "auto",
+        "whiteBalance": "adaptation",
+        "blockRms": 3.5126,
+        "p99": 28,
+        "max": 28
+      },
+      {
+        "clip": "owner clip 3",
+        "mode": "look+auto",
+        "whiteBalance": "gains",
+        "blockRms": 0.9776,
+        "p99": 4,
+        "max": 6
+      },
+      {
+        "clip": "owner clip 3",
+        "mode": "look+auto",
+        "whiteBalance": "adaptation",
+        "blockRms": 1.1633,
+        "p99": 4,
+        "max": 6
+      },
+      {
+        "clip": "owner clip 9",
+        "mode": "look+auto",
+        "whiteBalance": "adaptation",
+        "blockRms": 1.0228,
+        "p99": 3,
+        "max": 6
+      },
+      {
+        "clip": "owner clip 11",
+        "mode": "look+auto",
+        "whiteBalance": "adaptation",
+        "blockRms": 1.0665,
+        "p99": 3,
+        "max": 7
+      }
+    ]
+  },
+  "listedDifferences": [
+    {
+      "case": "owner clip 3, look+auto",
+      "difference": "block RMS 0.9776 (within), per-pixel p99 4 (bound 3), max 6",
+      "cause": "headroom and rounding, not the mapping (measured, reviewRerun.outside diagnostics): both solvers choose the same parameters (temperature −21.52 vs −21.55, vibrance 71.19 both); solver 1's own corrections rendered through the grade engine give p99 4; applying the look in 8 bits first, as CGA does, gives p99 2. CGA clips and rounds the look's output before its corrections; the grade run keeps the look's out-of-range values"
+    },
+    {
+      "case": "owner clip 9, look+auto (outside only with the per-pixel p99 of F6)",
+      "difference": "block RMS 0.9987 (within), per-pixel p99 4 (bound 3), max 6; per-channel p99 was 3",
+      "cause": "the clipping budget, not the mapping: solver 1's own corrections rendered through the grade engine give p99 2. Both solvers scale every correction ×0.75 three times; solver 2's prediction then still adds 0.32% clipped pixels (budget 0.3%) and takes a fourth step, so its vibrance is 21.64 against solver 1's 30.85. Applying the look in 8 bits first gives p99 3: the look's headroom changes what counts as clipped. A4's highlight protection replaces this scale-back"
+    },
+    {
+      "case": "adaptation rows (Bradford)",
+      "difference": "synthetic casts p99 8 and 28; three owner look+auto rows block RMS 1.02–1.16",
+      "cause": "Bradford adaptation moves saturated colors differently from channel gains; reported only, not gated, and moved to A4. The (adaptation) rows were measured at 2413125c with the prototype that review F3 removed from this PR"
+    }
+  ],
+  "rejected": [
+    {
+      "experiment": "grade.white-balance (Bradford) as solver 2's white balance",
+      "reason": "fails the equivalence gate on saturated colors (synthetic p99 8 and 28); prototyped as an opt-in adaptation model at 2413125c, removed from this PR (review F3), for A4"
+    },
+    {
+      "experiment": "grade.hue-curves hueVsSat skin dip (decision 3's first recommendation)",
+      "reason": "one chroma factor per hue also desaturates strong skin-hued colors that vibrance leaves alone: up to 26 codes on a saturated orange, p99 12 over the color cube"
+    },
+    {
+      "experiment": "grade.curves through color.curves' own points (unguarded spline)",
+      "reason": "rounds the kinks by up to 3 codes and, through the predicted clipping, made solver 2 scale every correction back ×0.75 on one owner clip (block RMS 1.58, p99 5)"
+    },
+    {
+      "experiment": "gain curves with uniform spacing and no knee guard",
+      "reason": "PCHIP flattened the segment before the clip knee: up to 3 codes"
+    }
+  ],
+  "verification": {
+    "firstRun": {
+      "at": "2413125c",
+      "toolchain": "pnpm toolchain:check passed (Node 22.23.1)",
+      "unit": "tests/unit/composition-color-engine.test.ts 10/10",
+      "integration": "composition-color, composition-color-cli, color-science-grade, color-engine: 65/65",
+      "browser": "pnpm test:browser:color-grading-cga2 passed",
+      "checkFast": "passed on the final code (schema, boundaries, format, lint, build, package types, 483 files / 4,994 tests)",
+      "notRun": "pnpm check, the full pnpm test, other browser groups and the release checks"
+    },
+    "reviewFixes": {
+      "at": "1e1bde1a (review fixes F1–F18), Node 22.23.1, pnpm 10.29.3; logs kept locally in dist/cga2-review-checks/ (not committed)",
+      "tier": "CONTRIBUTING: exports changed (comp auto-color, comp look apply) → pnpm check:runtime and the relevant browser/render checks, plus pnpm check:fast for the TypeScript",
+      "checkFast": "passed: 483 files / 5,002 tests (on the tree before the F18 results commit; F18 changed only the A0 script and records)",
+      "checkRuntime": [
+        "run 1 failed: test:runtime, tests/runtime/mechanism-cue-authoring.test.ts timed out at 5 s in one test (unrelated to color; it passes alone in 2.2 s); integration, depth and smoke did not run",
+        "run 2 failed: runtime 376/376 passed; test:integration 39 of 399 failed in 5 files: 36 audio tests (soundtrack 31, soundtrack-api 2, passage-native-audio 2, passage-audio 1) because this worktree has no soundtrack Python runtime (\"run pnpm soundtrack:setup or set STILL_SHIFT_SOUNDTRACK_PYTHON\"), and 3 depth-worker protocol tests timed out at 5 s (they pass in run 3)",
+        "run 3 passed with STILL_SHIFT_SOUNDTRACK_PYTHON set to the existing local soundtrack runtime: toolchain:check, test:runtime 376/376, test:integration 66 files / 399 tests, test:depth, test:browser:smoke"
+      ],
+      "browser": "passed: color-grading-cg0, -cg2, -cg4, -cg5, -cg6, -cga2 (four fixtures, Canvas and WebGL2 0 channels off), composition-grade-effects, composition-effects, composition-colour-accuracy",
+      "a0Gate": "pnpm color:cga2-equivalence run twice on the fixtures and 12 owner clips: 42/44 within the bound, solver 1 baseline 44/44 identical (reviewRerun)",
+      "notRun": "pnpm check (full pnpm test including composition-baselines and the other browser groups) and the release checks"
+    }
+  }
+}

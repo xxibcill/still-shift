@@ -669,6 +669,7 @@ const stored = (value: number, alpha: number) =>
  * the run.
  */
 type Segment = { key: KeySpec | null; ops: FloatGradeOp[] };
+export type FloatGradeSegment = Segment;
 type RunMember = {
   effect: string;
   id: string;
@@ -677,7 +678,7 @@ type RunMember = {
   inputs?: Readonly<Record<string, string>> | undefined;
 } & OpSource;
 
-function segmentsOf(members: readonly RunMember[]): Segment[] {
+export function floatGradeSegments(members: readonly RunMember[]): Segment[] {
   const all: Segment[] = [{ key: null, ops: [] }];
   for (const member of members) {
     if (member.effect === GRADE_KEY) {
@@ -1046,7 +1047,9 @@ export function floatGradeKernel(
     single.set(
       id,
       (kernel = Object.freeze(
-        runPlugin(id, (params) => segmentsOf([{ effect: id, id, params }])),
+        runPlugin(id, (params) =>
+          floatGradeSegments([{ effect: id, id, params }]),
+        ),
       )),
     );
   return kernel;
@@ -1101,7 +1104,7 @@ export function floatGradeRun(
     plugin: Object.freeze(
       runPlugin(
         first.effect,
-        () => segmentsOf(members as unknown as RunMember[]),
+        () => floatGradeSegments(members as unknown as RunMember[]),
         slots,
       ),
     ),
