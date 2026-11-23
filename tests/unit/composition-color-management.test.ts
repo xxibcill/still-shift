@@ -306,4 +306,22 @@ describe("grade.lut declared spaces", () => {
       }).apply(v),
     ).toEqual(legacy);
   });
+  it("wraps a legacy-srgb LUT in a color-managed composition as sRGB", () => {
+    // No lutSpaces: the asset declares legacy-srgb, which is encoded sRGB.
+    const got = op({ workingSpace: "acescct" }).apply(v);
+    const declared = op({
+      workingSpace: "acescct",
+      lutSpaces: { lut: { input: "srgb", output: "srgb" } },
+    }).apply(v);
+    expect(got).toEqual(declared);
+    const x = spaceConversion("acescct", "srgb").apply(v);
+    const o = spaceConversion("srgb", "acescct").apply(
+      sampleLut(lut, x, "tetrahedral"),
+    );
+    got.forEach((g, c) =>
+      expect(Math.abs(g - (v[c]! + 0.75 * (o[c]! - v[c]!)))).toBeLessThan(
+        1e-12,
+      ),
+    );
+  });
 });

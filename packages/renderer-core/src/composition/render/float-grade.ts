@@ -460,12 +460,17 @@ const OPERATORS: Readonly<
     const trilinear = n(p, "interpolation") >= 0.5;
     const interpolation = trilinear ? "trilinear" : "tetrahedral";
     // CG7: working → the LUT's input space, the table, its output space →
-    // working; the mix with `intensity` stays in the working space. Legacy
-    // LUTs in legacy compositions convert nothing (CG5 unchanged).
+    // working; the mix with `intensity` stays in the working space. An asset
+    // without declared spaces is `legacy-srgb` (encoded sRGB): it converts
+    // nothing in a legacy composition (CG5 unchanged) and is wrapped
+    // working → sRGB → table → working in a color-managed one.
     const working = source?.workingSpace ?? "legacy-srgb";
-    const spaces = source?.lutSpaces?.lut;
-    const into = spaces ? conversionOp(working, spaces.input) : null;
-    const back = spaces ? conversionOp(spaces.output, working) : null;
+    const spaces = source?.lutSpaces?.lut ?? {
+      input: "legacy-srgb",
+      output: "legacy-srgb",
+    };
+    const into = conversionOp(working, spaces.input);
+    const back = conversionOp(spaces.output, working);
     const converted = into !== null || back !== null;
     return {
       id: "grade.lut",
