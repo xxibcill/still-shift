@@ -92,6 +92,7 @@ export type AutoColorReport = {
   look?: { sha256s: string[]; strength: number } | undefined;
   /** CGA2: present for the grade engine only (legacy reports are unchanged). */
   engine?: "grade" | undefined;
+  /** CGA2: the grade engine's solver, when the run was adaptive. */
   solver?: string | undefined;
   adaptive: boolean;
   strength: number;
@@ -447,8 +448,12 @@ export async function autoColorClip(
           },
         }
       : {}),
+    // The solver is named only when one ran (`look apply` runs none).
     ...(engine === "grade"
-      ? { engine: "grade" as const, solver: colorSolverVersion("grade") }
+      ? {
+          engine: "grade" as const,
+          ...(adaptive ? { solver: colorSolverVersion("grade") } : {}),
+        }
       : {}),
     adaptive,
     strength,

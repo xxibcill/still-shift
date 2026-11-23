@@ -40,6 +40,7 @@ import {
   CGA_FLAT_COMBINED,
   cgaDegrade,
   cgaDegradeAll,
+  cgaLookDocument,
   cgaReferenceFrames,
   writeCgaClip,
   type CgaDegradation,
@@ -796,6 +797,17 @@ describe("CGA2 solver 2 (grade engine)", () => {
     });
     expect(report.engine).toBe("grade");
     expect(report.solver).toBe("still-shift-color-solver-2");
+    // look apply runs no solver, so the report names none.
+    const applied = await autoColorClip({
+      input,
+      look: parseColorLook(cgaLookDocument()),
+      writeComposition: join(root, "cga2-look", "clip.composition.json"),
+      engine: "grade",
+      cacheDirectory: cache(),
+    });
+    expect(applied.adaptive).toBe(false);
+    expect(applied.engine).toBe("grade");
+    expect(applied.solver).toBeUndefined();
     const composition = JSON.parse(await readFile(path, "utf8"));
     const effects = composition.layers[0].effects.map(
       (effect: { effect: string }) => effect.effect,

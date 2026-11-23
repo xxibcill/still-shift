@@ -109,6 +109,67 @@ export const CGA_FLAT_COMBINED: readonly CgaDegradation[] = [
   { kind: "white-balance", temperature: 20, tint: 6 },
 ];
 
+/**
+ * A strong look as `color.matrix` parameters at strength 1 (warm, with a blue
+ * boost that leaves 0–1 on saturated blues, so it exercises headroom).
+ */
+export const CGA_LOOK_MATRIX = {
+  rr: 1.12,
+  rg: -0.035,
+  rb: -0.147,
+  gr: -0.194,
+  gg: 1.113,
+  gb: 0.028,
+  br: -0.119,
+  bg: -0.554,
+  bb: 1.694,
+  ro: 0.008,
+  go: 0.007,
+  bo: 0.007,
+} as const;
+
+/**
+ * A `still-shift-look-1` document holding only a matrix (no fit evidence),
+ * for tests that apply a look without fitting one. Parse it with
+ * `parseColorLook`.
+ */
+export const cgaLookDocument = (
+  params: Readonly<Record<string, number>> = CGA_LOOK_MATRIX,
+) => {
+  const residual = {
+    pixels: 0,
+    rms: 0,
+    p95: 0,
+    p99: 0,
+    max: 0,
+    blockRms: 0,
+    blockP95: 0,
+    blockP99: 0,
+  };
+  return {
+    schemaVersion: "still-shift-look-1",
+    kind: "color-matrix",
+    space: "encoded-srgb",
+    params: { ...params },
+    summary: { neutralGains: [1, 1, 1], lumaChange: 0, saturationScale: 1 },
+    fit: {
+      method: "synthetic",
+      afterInterpretation: "media-path",
+      afterTransfer: "srgb",
+      pairs: 1,
+      pixels: 1,
+      residual,
+      heldOut: null,
+      shots: [],
+      unmatchedShots: [],
+    },
+    sources: {
+      before: [{ name: "synthetic", sha256: "0".repeat(64) }],
+      after: { name: "synthetic", sha256: "0".repeat(64) },
+    },
+  };
+};
+
 /** Apply known changes to straight RGBA8 frames, in order. */
 export const cgaDegradeAll = (
   frames: readonly Uint8Array[],
