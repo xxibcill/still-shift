@@ -9,6 +9,7 @@ import {
   KEY_VIEWS,
   matteRange,
   NEUTRAL_KEY_QUALIFIER,
+  NEUTRAL_MATTE_FINESSE,
   qualify,
   refineMatte,
   type KeyQualifier,
@@ -114,17 +115,9 @@ export function keySpec(effect: KeyEffect): KeySpec {
       encodedToOklab(sampleRgb(p[`sample${i + 1}`])),
     ),
   };
-  const finesse: MatteFinesse = {
-    clipBlack: num(p, "clipBlack"),
-    clipWhite: num(p, "clipWhite"),
-    denoise: num(p, "denoise"),
-    cleanBlack: num(p, "cleanBlack"),
-    cleanWhite: num(p, "cleanWhite"),
-    shrinkGrow: num(p, "shrinkGrow"),
-    blur: num(p, "blur"),
-    inOutRatio: num(p, "inOutRatio"),
-    invert: num(p, "invert"),
-  };
+  const finesse = Object.fromEntries(
+    Object.keys(NEUTRAL_MATTE_FINESSE).map((key) => [key, num(p, key)]),
+  ) as MatteFinesse;
   const spatial = qualifier.qualifier > 0 && finesseIsSpatial(finesse);
   return {
     id: effect.id,
