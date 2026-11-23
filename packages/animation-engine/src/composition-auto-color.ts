@@ -244,16 +244,16 @@ export const AutoColorReportSchema = z.discriminatedUnion("schemaVersion", [
     })
     .strict(),
 ]);
-export type AutoColorReport = {
-  schemaVersion:
-    | typeof AUTO_COLOR_REPORT_VERSION
-    | typeof AUTO_COLOR_REPORT_2_VERSION;
+/**
+ * The report's fields shared by both versions. The two members of
+ * `AutoColorReport` follow `AutoColorReportSchema`'s two branches (checked
+ * against the schema where the report is validated), so a report 1 cannot
+ * carry `engine`, `solver` or `scopes`.
+ */
+type AutoColorReportFields = {
   statisticsVersion: typeof COLOR_STATISTICS_VERSION;
   input: { name: string; sha256: string; frameCount: number; fps: number };
   look?: { sha256s: string[]; strength: number } | undefined;
-  /** CGA2: report 2 only (report 1 is CGA's shape, unchanged). */
-  engine?: ColorEngine | undefined;
-  solver?: string | undefined;
   adaptive: boolean;
   strength: number;
   effects: ColorCorrectionEffect[];
@@ -269,8 +269,6 @@ export type AutoColorReport = {
     clippedFraction: number;
     crushedFraction: number;
   };
-  /** CGA2 A2: report 2 only. */
-  scopes?: AutoColorScopes | undefined;
   composition?: string | undefined;
   output?:
     | {
@@ -285,6 +283,21 @@ export type AutoColorReport = {
       }
     | undefined;
 };
+export type AutoColorReport =
+  /** Report 1: CGA's shape, unchanged. */
+  | ({
+      schemaVersion: typeof AUTO_COLOR_REPORT_VERSION;
+      engine?: undefined;
+      solver?: undefined;
+      scopes?: undefined;
+    } & AutoColorReportFields)
+  /** Report 2 (CGA2 A2): adds the engine, the solver and the scopes block. */
+  | ({
+      schemaVersion: typeof AUTO_COLOR_REPORT_2_VERSION;
+      engine: ColorEngine;
+      solver: string;
+      scopes: AutoColorScopes;
+    } & AutoColorReportFields);
 
 /** `--diff` file names for one clip: `<stem>.still.png`, `<stem>.sheet.png`. */
 export function autoColorDiffPaths(directory: string, input: string) {
@@ -637,10 +650,13 @@ export async function autoColorClip(
   const compositionPath = request.writeComposition
     ? resolve(request.writeComposition)
     : undefined;
-  const report: AutoColorReport = {
-    schemaVersion: scoped
-      ? AUTO_COLOR_REPORT_2_VERSION
-      : AUTO_COLOR_REPORT_VERSION,
+  // Key order is the report's byte order: report 2 adds `engine` and
+  // `solver` after `look` and `scopes` after `change`, so a legacy report 1
+  // stays byte-identical.
+  const head: Pick<
+    AutoColorReportFields,
+    "statisticsVersion" | "input" | "look"
+  > = {
     statisticsVersion: COLOR_STATISTICS_VERSION,
     input: {
       name: clip.name,
@@ -659,7 +675,11 @@ export async function autoColorClip(
           },
         }
       : {}),
-    ...(scoped ? { engine, solver: colorSolverVersion(engine) } : {}),
+  };
+  const body: Omit<
+    AutoColorReportFields,
+    "statisticsVersion" | "input" | "look" | "composition" | "output"
+  > = {
     adaptive,
     strength,
     effects,
@@ -684,16 +704,25 @@ export async function autoColorClip(
       ),
     },
   };
+  let report: AutoColorReport;
   if (scoped) {
     const scopesBefore = measureColorScopeFrames(frames),
       scopesPredicted = measureColorScopeFrames(predictedFrames);
-    report.scopes = {
-      schema: COLOR_SCOPES_VERSION,
-      before: scopesBefore,
-      predicted: scopesPredicted,
-      change: scopesChange(scopesBefore, scopesPredicted),
+    report = {
+      schemaVersion: AUTO_COLOR_REPORT_2_VERSION,
+      ...head,
+      engine,
+      solver: colorSolverVersion(engine),
+      ...body,
+      scopes: {
+        schema: COLOR_SCOPES_VERSION,
+        before: scopesBefore,
+        predicted: scopesPredicted,
+        change: scopesChange(scopesBefore, scopesPredicted),
+      },
     };
-  }
+  } else
+    report = { schemaVersion: AUTO_COLOR_REPORT_VERSION, ...head, ...body };
   // `--diff`'s after frames: the rendered output's, else the prediction.
   let diffAfter: readonly ColorFrame[] = predictedFrames;
   // Render and verify into a staged file first; publish the output, the
@@ -770,7 +799,9 @@ export async function autoColorClip(
     request.signal?.throwIfAborted();
     // Check the report's shape and build the `--diff` images before anything
     // is published, so neither can fail a run whose output already exists.
-    AutoColorReportSchema.parse(report);
+    AutoColorReportSchema.parse(
+      report satisfies z.input<typeof AutoColorReportSchema>,
+    );
     if (diffPaths) diffImages = colorGradeDiffImages(frames, diffAfter);
     await publish?.();
   } finally {

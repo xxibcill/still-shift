@@ -37,6 +37,7 @@ import {
   readColorFrames,
   solveColorCorrection,
   solverEquivalence,
+  type AutoColorReport,
   type ColorFrame,
 } from "@still-shift/animation-engine";
 import { validateComposition } from "@still-shift/scene-contract";
@@ -957,6 +958,14 @@ describe("CGA2 A2 reports on scopes and --diff", () => {
     expect(
       AutoColorReportSchema.safeParse(omit(scoped, "scopes")).success,
     ).toBe(false);
+    // The exported type agrees with the schema: report 1 has no scopes.
+    // @ts-expect-error report 1 cannot carry a scopes block
+    const mixed: AutoColorReport = {
+      ...legacy,
+      schemaVersion: "still-shift-auto-color-report-1",
+      scopes: scoped.scopes,
+    };
+    expect(AutoColorReportSchema.safeParse(mixed).success).toBe(false);
     try {
       await run("grade-unscoped", { input, engine: "grade", scopes: false });
       expect.fail("must reject");
