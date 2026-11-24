@@ -1,10 +1,11 @@
 # Color grading engine: port and upgrade plan
 
-Date: 2026-11-16; re-checked against `main` 894c9d32 on 2026-11-20. Status:
-**CGA merged on `main` (PR #70); the owner asked to continue the whole upgrade
-(2026-11-20); CG0–CG2 done on `codex/color-grading-cg0-cg2` (PR #77); the owner
-said "Yes, continue to CG3", then "Continue to CG4 and CG5"; CG3–CG5 done on
-`codex/color-grading-cg3-cg5`, in review as PR #78 (targets `main`; PR #77 is merged).** The
+Date: 2026-11-16; re-checked against `main` 894c9d32 on 2026-11-20. Status
+(2026-11-24): **CGA merged on `main` (PR #70); the owner asked to continue the
+whole upgrade (2026-11-20); CG0–CG7 merged on `main`: CG0–CG2 as PR #77
+(d165aae1), CG3–CG5 as PR #78 (c3553e60), CG6 as PR #79 (a47fa6d0), CG7 as
+PR #81 (3fd7b207). CGA2 (CGA on the grade engine) A0–A3 merged as PRs #80,
+#82 and #83 (f25220fa). Next: CG8, and CGA2 A4–A6.** The
 owner's stated
 minimum need was the [fast track (CGA)](#fast-track-the-minimum-need); CG0–CG15
 are the long-range upgrade, re-scoped in
@@ -246,15 +247,15 @@ These are recommendations to confirm at CG1, each with a fallback.
 | ID   | Milestone                                               | Depends on                     | Estimate (active days) | Status          |
 | ---- | ------------------------------------------------------- | ------------------------------ | ---------------------- | --------------- |
 | CGA  | Auto exposure, contrast, saturation, white balance      | owner: review                  | 5–8                    | Merged (PR #70) |
-| CGA2 | [CGA on the grade engine](./color-grading-cga2-plan.md) | CG2–CG6, owner: approval       | 10–16 (12–19 with A5)  | A0–A1 done      |
-| CG0  | Fixtures, reference vectors and baseline                | owner: approval (given)        | 2–3                    | Done (branch)   |
-| CG1  | Color-science core and contract design                  | CG0, owner: decided 2026-11-20 | 4–6                    | Done (branch)   |
-| CG2  | Float grade stage and primary corrections               | CG1                            | 5–8 (WB, mixer seeded) | Done (branch)   |
-| CG3  | Scopes, probes and machine-readable measurement         | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Done (branch)   |
-| CG4  | Curves and tonal-range tools                            | CG2                            | 4–6                    | Done (branch)   |
-| CG5  | LUT and CDL interchange                                 | CG2                            | 3–5                    | Done (branch)   |
-| CG6  | Keys: qualifiers, windows and matte finesse             | CG2, CG3                       | 6–9                    | Done (branch)   |
-| CG7  | Scene-referred input and working space                  | CG2, owner: decided 2026-11-23 | 6–10 (BT.601 done)     | Done (branch)   |
+| CGA2 | [CGA on the grade engine](./color-grading-cga2-plan.md) | CG2–CG6, owner: approval       | 10–16 (12–19 with A5)  | A0–A3 merged    |
+| CG0  | Fixtures, reference vectors and baseline                | owner: approval (given)        | 2–3                    | Merged (PR #77) |
+| CG1  | Color-science core and contract design                  | CG0, owner: decided 2026-11-20 | 4–6                    | Merged (PR #77) |
+| CG2  | Float grade stage and primary corrections               | CG1                            | 5–8 (WB, mixer seeded) | Merged (PR #77) |
+| CG3  | Scopes, probes and machine-readable measurement         | CG1 (ET2 merged)               | 3–5 (stats seeded)     | Merged (PR #78) |
+| CG4  | Curves and tonal-range tools                            | CG2                            | 4–6                    | Merged (PR #78) |
+| CG5  | LUT and CDL interchange                                 | CG2                            | 3–5                    | Merged (PR #78) |
+| CG6  | Keys: qualifiers, windows and matte finesse             | CG2, CG3                       | 6–9                    | Merged (PR #79) |
+| CG7  | Scene-referred input and working space                  | CG2, owner: decided 2026-11-23 | 6–10 (BT.601 done)     | Merged (PR #81) |
 | CG8  | Output transforms and 10-bit delivery                   | CG7                            | 5–8                    | Proposed        |
 | CG9  | Node graph and reusable looks                           | CG4–CG6                        | 6–10                   | Proposed        |
 | CG10 | Grade lint and solvers                                  | CG3, CG6                       | 4–6 (solvers seeded)   | Proposed        |

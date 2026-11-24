@@ -1,10 +1,13 @@
 # CGA2: automatic color on the grade engine
 
-Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status: **A0 and A1 built on `codex/cga2-engine` (2026-11-23), A2 on `codex/cga2-a2` (stacked on it, 2026-11-23), A3 on `codex/cga2-a3` (stacked on A2, 2026-11-23); approved (owner: "start implement", 2026-11-23);
-owner decided the default engine, the equivalence gate and skin protection;
-three decisions remain.** The plan itself (commit `7b4aefd5`) changed no package
-source and rendered nothing; the as-built notes under each slice record what
-A0 and A1 built, measured and rendered.
+Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status
+(2026-11-24): **A0–A3 merged on `main`**: A0–A1 as PR #80 (1d52bc5e), A2 as
+PR #82 (b99b5d22), A3 as PR #83 (f25220fa). `--engine grade` is opt-in; the
+default stays `legacy` until A6. A4–A6 are not started. Approved (owner: "start
+implement", 2026-11-23); the owner decided the default engine, the equivalence
+gate and skin protection; three decisions remain. The plan itself (commit
+`7b4aefd5`) changed no package source and rendered nothing; the as-built notes
+under each slice record what each slice built, measured and rendered.
 
 Parent plan: [color grading engine](./color-grading-engine-plan.md). CGA results:
 [color-grading-cga-results.json](./color-grading-cga-results.json).
@@ -36,7 +39,12 @@ portable `grade.*` stack that can be baked to `.cube` or written as CDL.
 
 ## Constraints
 
-- **Working space stays legacy display-referred sRGB.** CG7 is not built.
+- **Working space stays legacy display-referred sRGB.** CG7 was not built when
+  this plan was written; it has since merged (PR #81, 3fd7b207), and CGA2 still
+  grades only in the legacy space: `auto-color` writes compositions without
+  `colorManagement`, its prediction refuses effects that carry a CG7 working
+  space, and look 2 accepts only `legacy-srgb` and `srgb` LUTs. Running the
+  solver in a CG7 working space is not scheduled in A4–A6.
   The solver works on decoded 8-bit SDR in encoded sRGB, and each operator applies its
   own documented math (Bradford adaptation is in linear light). The working space is a solver parameter from the
   start, so CG7 can later run the same solver in a linear or log space. This
