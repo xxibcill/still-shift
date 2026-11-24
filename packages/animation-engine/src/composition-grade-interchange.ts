@@ -161,16 +161,7 @@ export async function bakeCompositionGrade(
       `Layer "${options.layer}" has no enabled, non-neutral grade.* effect at frame ${frame}`,
       { path: `layers.${index}.effects` },
     );
-  const lut = bakeCubeLut(
-    (v) => {
-      let value: Rgb = v;
-      for (const op of ops) value = op.apply(value);
-      return value;
-    },
-    size,
-    options.title === undefined ? {} : { title: options.title },
-  );
-  const cube = writeCubeLut(lut);
+  const { cube, sha256 } = bakeGradeOps(ops, size, options.title);
   return {
     cube,
     report: {
@@ -185,8 +176,33 @@ export async function bakeCompositionGrade(
       effects: baked,
       skipped,
       domain: [0, 1],
-      cubeSha256: `sha256:${createHash("sha256").update(cube).digest("hex")}`,
+      cubeSha256: sha256,
     },
+  };
+}
+
+/**
+ * CG5's bake of a pointwise run of float ops to `.cube` text over 0–1, and
+ * the text's SHA-256 (`sha256:<hex>`).
+ */
+export function bakeGradeOps(
+  ops: readonly { apply: (v: Rgb) => Rgb }[],
+  size: number,
+  title?: string,
+) {
+  const lut = bakeCubeLut(
+    (v) => {
+      let value: Rgb = v;
+      for (const op of ops) value = op.apply(value);
+      return value;
+    },
+    size,
+    title === undefined ? {} : { title },
+  );
+  const cube = writeCubeLut(lut);
+  return {
+    cube,
+    sha256: `sha256:${createHash("sha256").update(cube).digest("hex")}`,
   };
 }
 
@@ -243,31 +259,47 @@ export async function exportCompositionCdl(
       `A .cc holds one correction; layer "${options.layer}" has ${chosen.length} grade.cdl effects (use .ccc or .cdl, or --effect)`,
       { path: "output" },
     );
-  const corrections: CdlCorrection[] = chosen.map((e) => ({
+  const { text, corrections, notes } = gradeCdlText(chosen, options.kind);
+  return {
+    text,
+    report: {
+      schema: "still-shift.cdl-export-1",
+      kind: options.kind,
+      layer: options.layer,
+      frame,
+      corrections,
+      notes,
+    },
+  };
+}
+
+/**
+ * `grade.cdl` effects (parameters with defaults filled in) as ASC CDL text,
+ * with each correction's style and a note for every unclamped one.
+ */
+export function gradeCdlText(
+  effects: readonly { id: string; params: Record<string, unknown> }[],
+  kind: CdlFileKind,
+) {
+  const corrections: CdlCorrection[] = effects.map((e) => ({
     id: e.id,
     cdl: cdlOf(e.params),
   }));
-  const styles = chosen.map((e) => ({
+  const styles = effects.map((e) => ({
     id: e.id,
     style: ((e.params.clamp as number) >= 0.5 ? "asc" : "no-clamp") as
       | "asc"
       | "no-clamp",
   }));
   return {
-    text: writeCdlXml({ kind: options.kind, corrections }),
-    report: {
-      schema: "still-shift.cdl-export-1",
-      kind: options.kind,
-      layer: options.layer,
-      frame,
-      corrections: styles,
-      notes: styles
-        .filter((s) => s.style === "no-clamp")
-        .map(
-          (s) =>
-            `"${s.id}" uses the unclamped style (clamp 0); ASC readers apply Release 1.2, which clamps to 0–1`,
-        ),
-    },
+    text: writeCdlXml({ kind, corrections }),
+    corrections: styles,
+    notes: styles
+      .filter((s) => s.style === "no-clamp")
+      .map(
+        (s) =>
+          `"${s.id}" uses the unclamped style (clamp 0); ASC readers apply Release 1.2, which clamps to 0–1`,
+      ),
   };
 }
 

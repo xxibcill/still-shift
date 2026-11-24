@@ -567,5 +567,201 @@
       "pnpm check, the full pnpm test, other browser groups and the release checks",
       "visual review of the --diff images"
     ]
+  },
+  "a3": {
+    "milestone": "CGA2 A3",
+    "title": "Look 2",
+    "date": "2026-11-23",
+    "branch": "codex/cga2-a3",
+    "base": "codex/cga2-a2 bcb9734c (A2, PR #82, stacked on PR #80; neither merged)",
+    "environment": "darwin-arm64; Node 22.23.1, pnpm 10.29.3, Playwright 1.62.1/Chromium 1234, FFmpeg 8.0.1 (pnpm toolchain:check passed)",
+    "visualAcceptance": "none; software measurements only. No look-2 render of the owner clips was looked at by a person; the owner's CGA visual review is still planned on the A6 sheets.",
+    "selectionRule": {
+      "stated": "2026-11-23, before the first measurement",
+      "rule": "score = mean leave-one-shot-out per-pixel RMS (of 255; in-sample with one shot) + 0.002 per free parameter; lowest score among the requested models in either space",
+      "parameters": {
+        "matrix": 12,
+        "cdl": 10,
+        "matrix-curves": 60,
+        "lut": 107811
+      },
+      "lut": "fitted only with --model lut (owner decision 5 open; recommendation followed)"
+    },
+    "spaces": {
+      "encoded-srgb": "the working space's code values",
+      "linear-gamma-2.2": "a pure 2.2 power as an unclamped grade.cdl before the model and its inverse after (renders and exports exactly); least squares in linear values"
+    },
+    "ownerPair": {
+      "note": "12 raw Flow clips and the owner's graded edit, local only, never committed; 11 shots matched (0 unmatched), 44 pairs, 22,809,600 pixels; per-pixel residuals through the renderer's float ops; heldOut = mean over shots of the leave-one-shot-out per-pixel RMS (block RMS in brackets), of 255",
+      "cgaLook1": {
+        "heldOutRms": 2.2965,
+        "heldOutBlockRms": 1.8206,
+        "path": "color.matrix integer path (CGA's owner look)"
+      },
+      "candidates": [
+        {
+          "model": "matrix",
+          "space": "encoded-srgb",
+          "inSampleRms": 2.2771,
+          "heldOutRms": 2.2852,
+          "heldOutBlockRms": 1.8142,
+          "heldOutRmsMax": 2.6564,
+          "score": 2.3092
+        },
+        {
+          "model": "matrix",
+          "space": "linear-gamma-2.2",
+          "inSampleRms": 3.4433,
+          "heldOutRms": 3.3425,
+          "heldOutBlockRms": 2.9119,
+          "heldOutRmsMax": 5.1634,
+          "score": 3.3665
+        },
+        {
+          "model": "cdl",
+          "space": "encoded-srgb",
+          "inSampleRms": 2.1245,
+          "heldOutRms": 2.1285,
+          "heldOutBlockRms": 1.6429,
+          "heldOutRmsMax": 2.4953,
+          "score": 2.1485
+        },
+        {
+          "model": "cdl",
+          "space": "linear-gamma-2.2",
+          "inSampleRms": 3.0581,
+          "heldOutRms": 2.9846,
+          "heldOutBlockRms": 2.5364,
+          "heldOutRmsMax": 4.5675,
+          "score": 3.0046
+        },
+        {
+          "model": "matrix-curves",
+          "space": "encoded-srgb",
+          "inSampleRms": 1.8129,
+          "heldOutRms": 1.8362,
+          "heldOutBlockRms": 1.2442,
+          "heldOutRmsMax": 2.1878,
+          "score": 1.9562,
+          "selected": true
+        },
+        {
+          "model": "matrix-curves",
+          "space": "linear-gamma-2.2",
+          "inSampleRms": 2.7068,
+          "heldOutRms": 2.5706,
+          "heldOutBlockRms": 2.0709,
+          "heldOutRmsMax": 4.1357,
+          "score": 2.6906
+        }
+      ],
+      "selected": {
+        "model": "matrix-curves",
+        "space": "encoded-srgb",
+        "heldOutRms": 1.8362,
+        "heldOutRmsMax": 2.1878,
+        "heldOutP99Max": 8,
+        "heldOutBlockRms": 1.2442,
+        "inSample": {
+          "rms": 1.8129,
+          "p99": 7,
+          "max": 51,
+          "blockRms": 1.2083
+        }
+      },
+      "lut": {
+        "requested": "--model lut (opt-in)",
+        "base": "matrix-curves, encoded-srgb",
+        "inSample": {
+          "rms": 1.5373,
+          "p99": 5,
+          "max": 52,
+          "blockRms": 0.7612
+        },
+        "heldOutRms": 1.5641,
+        "heldOutRmsMax": 1.9875,
+        "heldOutP99Max": 8,
+        "heldOutBlockRms": 0.8239,
+        "score": 217.1861,
+        "nodes": 35937,
+        "filledFromModel3": 33637,
+        "reading": "the table beats model 3 held out (1.56 against 1.84) only on the 6% of nodes the pair's colors reach; the other 94% are model 3. Opt-in stays the recommendation; the choice is owner decision 5"
+      },
+      "runtime": "comp look fit --engine grade: 3 min 44 s (decode and match about 25 s; six candidates with 11 held-out refits each)",
+      "export": {
+        "cube33": {
+          "maxCodes": 2,
+          "colors": 140864
+        },
+        "cube65": {
+          "maxCodes": 1,
+          "colors": 140864
+        },
+        "cube33Strength0.6": {
+          "maxCodes": 1,
+          "colors": 140864
+        },
+        "cgaLook1Cube33": {
+          "maxCodes": 0,
+          "colors": 140864
+        },
+        "cdl": "refused (comp-look-export): the selected look is matrix-curves, not one grade.cdl"
+      }
+    },
+    "checks": [
+      {
+        "check": "On the owner's pair, the selected model's held-out per-pixel RMS ≤ 2 of 255 (CGA: 2.30)",
+        "status": "met",
+        "evidence": "matrix-curves (encoded) 1.836 mean, 2.188 worst shot; ownerPair"
+      },
+      {
+        "check": "A look-1 file applied through look 2 matches color.matrix within the CG2 parity bound",
+        "status": "met",
+        "test": "tests/unit/composition-color-look2.test.ts: the same effect as A1's mapping, and ≤ 1 code over a color cube and the neutral ramp at strengths 0.6 and 1; owner clips: A0 'look gains' rows (see a0Rerun)"
+      },
+      {
+        "check": "An exported .cube round-trips through grade.lut within the CG5 bound (33³ ≤ 2, 65³ ≤ 1)",
+        "status": "met",
+        "evidence": "unit: matrix-curves and look-1 looks 33³ ≤ 2 and 65³ ≤ 1, a LUT look's own table ≤ 1, a 60% bake equals the keyed apply within 2; owner look 33³ 2, 65³ 1. A linear-light CDL look can exceed it near black; the export reports its own round trip and notes it"
+      },
+      {
+        "check": "Existing look-1 tests, the CGA tests and the A0 equivalence results unchanged",
+        "status": "met",
+        "evidence": "the existing 35 composition-color and 6 CLI integration tests pass unchanged (look-1 fits keep their output; fitColorLook now shares matchColorLookPairs); scripts/color/cga2-equivalence.ts rerun on the synthetic fixtures and the 12 owner clips with CGA's owner look writes an equivalence.json byte-identical to the A0 run's (local); comp look fit (look 1, the default) on the owner pair writes a byte-identical look file on this branch and on the A2 base bcb9734c (local)"
+      },
+      {
+        "check": "Look 2 renders equal the prediction (Canvas exact, WebGL2 ≤ 1)",
+        "status": "met",
+        "test": "pnpm test:browser:color-grading-cga2: matrix-curves look at 60% (grade.key, grade.rgb-mixer, grade.curves) and a LUT look (lut asset): Canvas 0 and WebGL2 0 channels off on 12 frames each; A1's two fixtures unchanged (0, 0)"
+      }
+    ],
+    "decisions": [
+      {
+        "decision": "Owner decision 5 (LUT looks)",
+        "status": "open; A3 follows the recommendation: --model lut only"
+      },
+      {
+        "decision": "comp look fit default",
+        "status": "look 1 unless --engine grade (no silent output change before A6)"
+      },
+      {
+        "decision": "Strength of a multi-operator look",
+        "status": "a constant grade.key (gain = strength) over the look, closed by a neutral key when adaptive corrections follow; exact mix, renders on both backends"
+      }
+    ],
+    "rejected": [],
+    "verification": {
+      "toolchain": "pnpm toolchain:check passed (Node 22.23.1)",
+      "unit": "tests/unit/composition-color-look2.test.ts 14/14 (new); composition-color-engine 10/10",
+      "integration": "composition-color (37, 2 new), composition-color-cli (8, 2 new), composition-grade-interchange (8), composition-scopes (10), color-science-interchange and composition-grade-lut: 111/111",
+      "browser": "pnpm test:browser:color-grading-cga2 passed: A1's two fixtures and the two new look-2 fixtures, Canvas 0 and WebGL2 0 channels off",
+      "checkFast": "passed on the final code (schema, boundaries, format, lint, build, package types, 484 files / 5,008 tests); the first package-types run failed (TS2742: colorLookStackOps' inferred type named renderer-core's float-grade module), fixed with explicit return types and rerun",
+      "ownerPair": "comp look fit --engine grade (auto) and --model lut on the owner pair; comp look export --cube at 33, 65 and 60%, and --cdl (refused); A0 equivalence rerun"
+    },
+    "notRun": [
+      "pnpm check, the full pnpm test, other browser groups and the release checks",
+      "rendering the owner clips with look 2 (the selected look's render equals its prediction on the synthetic fixtures, Canvas and WebGL2)",
+      "visual review of any look-2 result"
+    ]
   }
 }

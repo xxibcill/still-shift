@@ -22,7 +22,7 @@ provides composition authoring instructions.
 | One image                                   | `animate`                                                                               | A supplied still and chosen preset                  |
 | Prepared illustration/story/cinematic scene | `animate-scene`                                                                         | Verified scene, layers and assets                   |
 | Commerce                                    | `prepare-commerce`, `animate-scene`                                                     | Brief, product imagery, copy and sources            |
-| Color correction of flat SDR clips          | `comp color-stats`, `look fit`, `look apply`, `auto-color`                              | MP4/MOV clips or a folder; optional graded example  |
+| Color correction of flat SDR clips          | `comp color-stats`, `look fit`, `look apply`, `look export`, `auto-color`               | MP4/MOV clips or a folder; optional graded example  |
 | Color measurement                           | `comp scopes`, `probe`, `grade diff`                                                    | Clips, or a composition and one layer               |
 | Multiple independent images                 | `batch`                                                                                 | JSONL manifest                                      |
 | Passage timing and portrait checks          | `passage import-narration`, `passage lint`                                              | Passage plan and measured word/SRT timing           |
@@ -369,6 +369,8 @@ sources decode correctly.
 pnpm --silent still-shift comp color-stats --input clip.mp4 --frames 12
 pnpm --silent still-shift comp look fit --before raw-clips/ --after graded-edit.mp4 --output my.look.json
 pnpm --silent still-shift comp look apply --look my.look.json --input raw-clips/ --output fixed/ --strength 0.8
+pnpm --silent still-shift comp look fit --engine grade --before raw-clips/ --after graded-edit.mp4 --output my.look2.json
+pnpm --silent still-shift comp look export --look my.look2.json --cube my-look.cube
 pnpm --silent still-shift comp auto-color --input clip.mp4 --output fixed.mp4
 pnpm --silent still-shift comp auto-color --input clip.mp4 --write-composition clip.composition.json --white-balance false
 pnpm --silent still-shift comp auto-color --input raw-clips/ --output fixed/ --engine grade --diff review/
@@ -389,9 +391,43 @@ pnpm --silent still-shift comp auto-color --input raw-clips/ --output fixed/ --e
   as `comp render` writes it); `--after-interpretation media-path` reads it
   through the composition media path instead, which since decoder 3 (D-colour)
   gives the same code values for BT.709 and sRGB transfer.
+  With `--engine grade` (CGA2 A3) it writes a `still-shift-look-2` file
+  instead (below).
 - **`look apply`** applies a look through `color.matrix`. `--strength`
   defaults to 0.6 (a learned look at full strength is usually heavy); use
-  `--strength 1` for the full transform.
+  `--strength 1` for the full transform. With `--engine grade` a look applies
+  as `grade.*` operators (look 1 as one `grade.rgb-mixer`).
+- **Look 2** (`look fit --engine grade`, CGA2 A3) is an ordered list of float
+  `grade.*` operators (a serial node list) with its fit report, targets,
+  sources and any LUT asset pinned by SHA-256. `look fit` fits three models,
+  each in encoded sRGB and in linear light (a 2.2 power applied by an
+  unclamped `grade.cdl` before the model and inverted after): `matrix`
+  (3×3 + offset → `grade.rgb-mixer`, look 1's fit), `cdl` (slope, offset,
+  power and saturation → `grade.cdl`) and `matrix-curves` (3×3 + offset, then
+  a 16-point monotone curve per channel → `grade.rgb-mixer` + `grade.curves`).
+  Each is measured per pixel through the renderer's own float ops, in sample
+  and with each shot held out, and the lowest score wins: the mean held-out
+  RMS (of 255) plus 0.002 per free parameter (12, 10 and 60). Every
+  candidate's figures are in `fit.candidates`. `--model matrix|cdl|matrix-curves`
+  forces a model (its better space); `--model lut` also fits a 33³
+  `grade.lut` as a smoothed correction of `matrix-curves` and writes the table
+  beside the look as `<output stem>.cube` (refused if it exists). Table nodes
+  no sample reaches keep `matrix-curves` and are counted in `fit.lut`
+  (`filledFromModel3`); a pair rarely covers the gamut, so LUT looks are only
+  fitted on request. `--model` needs `--engine grade`. Applying a look-2 file
+  other than one encoded `grade.rgb-mixer` needs `--engine grade`
+  (`comp-look-engine` otherwise); its LUT is read relative to the look file
+  and checked against its pin (`comp-lut-checksum`). Below full strength, a
+  one-operator look mixes by its own parameter (`strength`, `intensity`); a
+  longer look sits behind a constant `grade.key` (`gain` = strength), closed
+  by a neutral key when adaptive corrections follow.
+- **`look export`** writes a look (either version) for other grading
+  applications: `--cube <new.cube>` through `comp grade bake`'s bake (default
+  33 points, `--size`, `--title`, `--strength` bakes that mix), reporting the
+  written table's round trip through `grade.lut` against the look
+  (`roundTrip.maxCodes` over 8-bit colors, with a note when it exceeds CG5's
+  2-code bound); `--cdl <new.cc|.ccc|.cdl>` through `comp grade cdl-export`
+  when the look is one encoded `grade.cdl` (otherwise `comp-look-export`).
 - **`auto-color`** solves one static correction per clip from its statistics:
   white balance (`color.white-balance`, removing part of the near-neutral cast),
   exposure and contrast (`color.levels`: white and black points, plus a gamma

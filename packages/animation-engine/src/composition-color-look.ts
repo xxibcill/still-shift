@@ -37,7 +37,7 @@ import {
 export const COLOR_LOOK_VERSION = "still-shift-look-1";
 const round = (value: number, digits = 6) => roundTo(value, digits);
 
-const Residual = z
+export const ColorLookResidualSchema = z
   .object({
     pixels: z.number().int().min(0),
     /** Per-pixel code-value error (0–255 scale). */
@@ -51,7 +51,8 @@ const Residual = z
     blockP99: z.number(),
   })
   .strict();
-export type ColorLookResidual = z.infer<typeof Residual>;
+export type ColorLookResidual = z.infer<typeof ColorLookResidualSchema>;
+const Residual = ColorLookResidualSchema;
 const MatrixParams = z
   .object(
     Object.fromEntries(
@@ -225,15 +226,35 @@ export type ColorLookFitOptions = ColorFrameOptions & {
   progress?: (message: string) => void;
 };
 
+/** Shots of a graded edit matched to before clips, read as 4×4 block pairs. */
+export type ColorLookPairs = {
+  after: ColorClip;
+  befores: ColorClip[];
+  matches: {
+    shot: [number, number];
+    clip: number;
+    correlation: number;
+    pairs: [number, number, number][];
+  }[];
+  unmatched: [number, number][];
+  /** Block pairs per matched frame pair; `shot` indexes `matches`. */
+  sets: ColorBlockSet[];
+  /** Every fourth pixel and row of the graded frames, for the look's targets. */
+  graded: { ordinal: number; rgba: Uint8Array }[];
+  gradedWidth: number;
+  afterInterpretation: "code-values" | "media-path";
+};
+
 /**
- * Fit a look from raw `before` clips and one graded `after` edit, which may be
- * a concatenation of shots cut from those clips (same framing).
+ * Align a graded `after` edit (possibly a concatenation of shots cut from the
+ * before clips, same framing) with its raw clips and read the matched frame
+ * pairs as 4×4 block pairs.
  */
-export async function fitColorLook(
+export async function matchColorLookPairs(
   beforePaths: readonly string[],
   afterPath: string,
   options: ColorLookFitOptions = {},
-): Promise<ColorLook> {
+): Promise<ColorLookPairs> {
   const progress = options.progress ?? (() => undefined);
   const pairsPerShot = options.pairsPerShot ?? 4,
     step = options.step ?? 8,
@@ -392,6 +413,107 @@ export async function fitColorLook(
         ),
       );
   }
+  return {
+    after,
+    befores,
+    matches,
+    unmatched,
+    sets,
+    graded,
+    gradedWidth,
+    afterInterpretation,
+  };
+}
+
+/** Targets for the adaptive solver: statistics of the graded frames. */
+export function colorLookTargets(pairs: ColorLookPairs) {
+  const stats = measureColorFrames(
+    { frames: pairs.graded, width: pairs.gradedWidth },
+    { step: 1 },
+  );
+  return {
+    medianLuma: stats.luma.p50,
+    saturation: stats.saturation.p50,
+    strongSaturation: stats.saturation.p90,
+  };
+}
+
+/** Pinned names and hashes of a look's before clips and graded edit. */
+export const colorLookSources = (pairs: ColorLookPairs) => ({
+  before: pairs.befores.map((clip) => ({
+    name: clip.name,
+    sha256: clip.probe.sourceHash,
+  })),
+  after: { name: pairs.after.name, sha256: pairs.after.probe.sourceHash },
+});
+
+/** How the graded edit was read, as the fit records it. */
+export const colorLookAfterInterpretation = (pairs: ColorLookPairs) =>
+  pairs.after.probe.color.transfer === "iec61966-2-1"
+    ? "media-path"
+    : pairs.afterInterpretation;
+
+/**
+ * What a look does to the matched pairs' data: the luma change and the
+ * median chroma ratio of the after and before blocks (model-independent).
+ */
+export function colorLookDataSummary(sets: readonly ColorBlockSet[]) {
+  let lumaBefore = 0,
+    lumaAfter = 0;
+  const ratios: number[] = [];
+  for (const set of sets)
+    for (let i = 0; i < set.count * COLOR_BLOCK_BYTES; i += 3) {
+      const b = set.before,
+        a = set.after;
+      lumaBefore += 0.2126 * b[i]! + 0.7152 * b[i + 1]! + 0.0722 * b[i + 2]!;
+      lumaAfter += 0.2126 * a[i]! + 0.7152 * a[i + 1]! + 0.0722 * a[i + 2]!;
+      const cb =
+        Math.max(b[i]!, b[i + 1]!, b[i + 2]!) -
+        Math.min(b[i]!, b[i + 1]!, b[i + 2]!);
+      const ca =
+        Math.max(a[i]!, a[i + 1]!, a[i + 2]!) -
+        Math.min(a[i]!, a[i + 1]!, a[i + 2]!);
+      if (cb >= 12 && i % 48 === 0) ratios.push(ca / cb);
+    }
+  ratios.sort((a, b) => a - b);
+  return {
+    lumaChange: round(lumaAfter / lumaBefore - 1, 4),
+    saturationScale: round(ratios.length ? ratios[ratios.length >> 1]! : 1, 4),
+  };
+}
+
+/** Mean of leave-one-shot-out residuals, or null without any. */
+export function colorLookHeldOutSummary(heldOut: readonly ColorLookResidual[]) {
+  return heldOut.length
+    ? {
+        rmsMean: round(
+          heldOut.reduce((sum, value) => sum + value.rms, 0) / heldOut.length,
+          4,
+        ),
+        rmsMax: Math.max(...heldOut.map((value) => value.rms)),
+        p99Max: Math.max(...heldOut.map((value) => value.p99)),
+        blockRmsMean: round(
+          heldOut.reduce((sum, value) => sum + value.blockRms, 0) /
+            heldOut.length,
+          4,
+        ),
+        blockRmsMax: Math.max(...heldOut.map((value) => value.blockRms)),
+      }
+    : null;
+}
+
+/**
+ * Fit a look from raw `before` clips and one graded `after` edit, which may be
+ * a concatenation of shots cut from those clips (same framing).
+ */
+export async function fitColorLook(
+  beforePaths: readonly string[],
+  afterPath: string,
+  options: ColorLookFitOptions = {},
+): Promise<ColorLook> {
+  const progress = options.progress ?? (() => undefined);
+  const pairs = await matchColorLookPairs(beforePaths, afterPath, options);
+  const { matches, sets, befores } = pairs;
   progress(
     `fitting ${sets.reduce((sum, set) => sum + set.count, 0)} 4×4 blocks`,
   );
@@ -426,43 +548,15 @@ export async function fitColorLook(
     const [r, g, b, o] = row(c);
     return round(r! + g! + b! + o! / 0.5, 4);
   }) as [number, number, number];
-  let lumaBefore = 0,
-    lumaAfter = 0;
-  const ratios: number[] = [];
-  for (const set of sets)
-    for (let i = 0; i < set.count * COLOR_BLOCK_BYTES; i += 3) {
-      const b = set.before,
-        a = set.after;
-      lumaBefore += 0.2126 * b[i]! + 0.7152 * b[i + 1]! + 0.0722 * b[i + 2]!;
-      lumaAfter += 0.2126 * a[i]! + 0.7152 * a[i + 1]! + 0.0722 * a[i + 2]!;
-      const cb =
-        Math.max(b[i]!, b[i + 1]!, b[i + 2]!) -
-        Math.min(b[i]!, b[i + 1]!, b[i + 2]!);
-      const ca =
-        Math.max(a[i]!, a[i + 1]!, a[i + 2]!) -
-        Math.min(a[i]!, a[i + 1]!, a[i + 2]!);
-      if (cb >= 12 && i % 48 === 0) ratios.push(ca / cb);
-    }
-  ratios.sort((a, b) => a - b);
   return parseColorLook({
     schemaVersion: COLOR_LOOK_VERSION,
     kind: "color-matrix",
     space: "encoded-srgb",
     params,
-    summary: {
-      neutralGains,
-      lumaChange: round(lumaAfter / lumaBefore - 1, 4),
-      saturationScale: round(
-        ratios.length ? ratios[ratios.length >> 1]! : 1,
-        4,
-      ),
-    },
+    summary: { neutralGains, ...colorLookDataSummary(sets) },
     fit: {
-      afterInterpretation:
-        after.probe.color.transfer === "iec61966-2-1"
-          ? "media-path"
-          : afterInterpretation,
-      afterTransfer: after.probe.color.transfer,
+      afterInterpretation: colorLookAfterInterpretation(pairs),
+      afterTransfer: pairs.after.probe.color.transfer,
       method:
         "trimmed least squares (95%, 2 passes) on 4x4 block means of encoded-sRGB code values; residuals through the color.matrix integer path",
       pairs: matches.reduce((count, match) => count + match.pairs.length, 0),
@@ -471,56 +565,30 @@ export async function fitColorLook(
         0,
       ),
       residual: colorLookResidual(params, sets),
-      heldOut: heldOut.length
-        ? {
-            rmsMean: round(
-              heldOut.reduce((sum, value) => sum + value.rms, 0) /
-                heldOut.length,
-              4,
-            ),
-            rmsMax: Math.max(...heldOut.map((value) => value.rms)),
-            p99Max: Math.max(...heldOut.map((value) => value.p99)),
-            blockRmsMean: round(
-              heldOut.reduce((sum, value) => sum + value.blockRms, 0) /
-                heldOut.length,
-              4,
-            ),
-            blockRmsMax: Math.max(...heldOut.map((value) => value.blockRms)),
-          }
-        : null,
+      heldOut: colorLookHeldOutSummary(heldOut),
       shots: shotsReport,
-      unmatchedShots: unmatched,
+      unmatchedShots: pairs.unmatched,
     },
-    targets: (() => {
-      const stats = measureColorFrames(
-        { frames: graded, width: gradedWidth },
-        { step: 1 },
-      );
-      return {
-        medianLuma: stats.luma.p50,
-        saturation: stats.saturation.p50,
-        strongSaturation: stats.saturation.p90,
-      };
-    })(),
-    sources: {
-      before: befores.map((clip) => ({
-        name: clip.name,
-        sha256: clip.probe.sourceHash,
-      })),
-      after: { name: after.name, sha256: after.probe.sourceHash },
-    },
+    targets: colorLookTargets(pairs),
+    sources: colorLookSources(pairs),
   });
 }
 
 /** A look as the `color.matrix` effect CGA applies first (id `look`). */
-export const colorLookEffect = (look: ColorLook, strength = 1) => ({
+export const colorLookEffect = (
+  look: Pick<ColorLook, "params">,
+  strength = 1,
+) => ({
   id: "look",
   effect: "color.matrix" as const,
   params: colorLookEffectParams(look, strength),
 });
 
 /** `color.matrix` effect parameters for a look at a 0–1 strength. */
-export function colorLookEffectParams(look: ColorLook, strength = 1) {
+export function colorLookEffectParams(
+  look: Pick<ColorLook, "params">,
+  strength = 1,
+) {
   return {
     ...look.params,
     strength: round(Math.max(0, Math.min(1, strength))),

@@ -1,11 +1,12 @@
 /**
- * CGA commands: `comp color-stats`, `comp look fit|apply` and
+ * CGA commands: `comp color-stats`, `comp look fit|apply|export` and
  * `comp auto-color`. Folders are processed clip by clip with a summary.
  */
 import {
   access,
   readdir,
   readFile,
+  rm,
   stat,
   writeFile,
   mkdir,
@@ -15,15 +16,22 @@ import {
   COLOR_ENGINES,
   autoColorClip,
   autoColorDiffPaths,
+  cdlFileKind,
+  COLOR_LOOK_MODELS,
   colorSampleOrdinals,
+  exportColorLook,
   fitColorLook,
+  fitColorLook2,
+  loadColorLookLuts,
   measureColorFrames,
   openColorClip,
-  parseColorLook,
+  parseAnyColorLook,
   readColorFrames,
+  type AnyColorLook,
   type AutoColorRequest,
   type ColorEngine,
-  type ColorLook,
+  type ColorLookLut,
+  type ColorLookModel,
 } from "@still-shift/animation-engine";
 import { passageDiagnostics } from "@still-shift/renderer-core";
 import { parseNamedArguments, requireArgument } from "../named-options.ts";
@@ -129,17 +137,21 @@ const reportOptions = (values: Map<string, string>) => {
     ...(diff === undefined ? {} : { diff }),
   };
 };
-async function loadLook(
-  path: string | undefined,
-): Promise<ColorLook | undefined> {
-  if (path === undefined) return undefined;
+/** A look-1 or look-2 file and its verified LUT assets. */
+async function loadLook(path: string | undefined): Promise<{
+  look?: AnyColorLook;
+  lookLuts?: Map<string, ColorLookLut>;
+}> {
+  if (path === undefined) return {};
   let value: unknown;
   try {
     value = JSON.parse(await readFile(resolve(path), "utf8"));
   } catch {
     programError("comp-look-format", "Look file is not readable JSON", "look");
   }
-  return parseColorLook(value);
+  const look = parseAnyColorLook(value);
+  const lookLuts = await loadColorLookLuts(look, path);
+  return { look, ...(lookLuts.size ? { lookLuts } : {}) };
 }
 /** Outputs are never overwritten: resolve a path that must not exist yet. */
 export async function newOutput(path: string, option: string): Promise<string> {
@@ -326,7 +338,27 @@ export async function runColorCommand(
       "output",
       "pairs-per-shot",
       "after-interpretation",
+      "engine",
+      "model",
     ]);
+    const lookEngine = engine(values).engine ?? "legacy";
+    const model = values.get("model");
+    if (
+      model !== undefined &&
+      model !== "auto" &&
+      !(COLOR_LOOK_MODELS as readonly string[]).includes(model)
+    )
+      programError(
+        "comp-program-option",
+        `--model must be auto, ${COLOR_LOOK_MODELS.join(", ")}`,
+        "model",
+      );
+    if (model !== undefined && lookEngine !== "grade")
+      programError(
+        "comp-program-option",
+        "--model chooses a look-2 model; it needs --engine grade",
+        "model",
+      );
     const interpretation = values.get("after-interpretation");
     if (
       interpretation !== undefined &&
@@ -338,12 +370,26 @@ export async function runColorCommand(
         "--after-interpretation must be code-values or media-path",
         "after-interpretation",
       );
-    // Check the output before decoding and fitting (minutes on real clips).
+    // Check the outputs before decoding and fitting (minutes on real clips).
     const output = await newOutput(requireArgument(values, "output"), "output");
+    // A LUT look's table is written beside it: <output stem>.cube.
+    const cubePath =
+      model === "lut"
+        ? await newOutput(
+            join(dirname(output), `${basename(output, extname(output))}.cube`),
+            "output",
+          )
+        : undefined;
+    if (cubePath === output)
+      programError(
+        "comp-program-option",
+        "A LUT look's table is written as <output stem>.cube; give the look a .json name",
+        "output",
+      );
     const before: string[] = [];
     for (const entry of requireArgument(values, "before").split(","))
       before.push(...(await videos(entry)));
-    const look = await fitColorLook(before, requireArgument(values, "after"), {
+    const fitOptions = {
       ...(values.has("pairs-per-shot")
         ? { pairsPerShot: count(values, "pairs-per-shot", 64)! }
         : {}),
@@ -353,7 +399,55 @@ export async function runColorCommand(
           }
         : {}),
       progress: progress(io),
-    });
+    };
+    if (lookEngine === "grade") {
+      const { look, cube } = await fitColorLook2(
+        before,
+        requireArgument(values, "after"),
+        {
+          ...fitOptions,
+          model: (model ?? "auto") as "auto" | ColorLookModel,
+          ...(cubePath ? { lutPath: basename(cubePath) } : {}),
+        },
+      );
+      const table = cubePath && cube !== undefined ? cubePath : undefined;
+      if (table) await writeNew(table, cube!, "output");
+      try {
+        await writeNew(output, JSON.stringify(look, null, 2) + "\n", "output");
+      } catch (error) {
+        // A table without its look would only block the retry.
+        if (table) await rm(table, { force: true });
+        throw error;
+      }
+      io.stdout(
+        json({
+          status: "fitted",
+          output,
+          ...(cubePath ? { lut: cubePath } : {}),
+          schemaVersion: look.schemaVersion,
+          model: look.model,
+          space: look.space,
+          shots: look.fit.shots.length,
+          unmatchedShots: look.fit.unmatchedShots.length,
+          residual: look.fit.residual,
+          heldOut: look.fit.heldOut,
+          candidates: look.fit.candidates.map((candidate) => ({
+            model: candidate.model,
+            space: candidate.space,
+            score: candidate.score,
+            heldOutRms: candidate.heldOut?.rmsMean ?? null,
+            selected: candidate.selected,
+          })),
+          summary: look.summary,
+        }),
+      );
+      return 0;
+    }
+    const look = await fitColorLook(
+      before,
+      requireArgument(values, "after"),
+      fitOptions,
+    );
     await writeNew(output, JSON.stringify(look, null, 2) + "\n", "output");
     io.stdout(
       json({
@@ -388,7 +482,7 @@ export async function runColorCommand(
       values.get("output"),
       values.get("write-composition"),
       {
-        look,
+        ...look,
         adaptive: false,
         lookStrength: unit(values, "strength"),
         report: values.get("report"),
@@ -418,7 +512,7 @@ export async function runColorCommand(
       "scopes",
       "diff",
     ]);
-    const look = await loadLook(values.get("look"));
+    const { look, lookLuts } = await loadLook(values.get("look"));
     const toggles = {
       exposure: correction(values, "exposure"),
       contrast: correction(values, "contrast"),
@@ -436,6 +530,7 @@ export async function runColorCommand(
       values.get("write-composition"),
       {
         look,
+        ...(lookLuts ? { lookLuts } : {}),
         // With a look, adaptive corrections run only when asked for.
         adaptive: flag(values, "adaptive") ?? (look ? explicitToggle : true),
         toggles: Object.fromEntries(
@@ -459,6 +554,56 @@ export async function runColorCommand(
         ...reportOptions(values),
       },
     );
+  }
+  if (command === "look" && args[1] === "export") {
+    const values = parseNamedArguments(args.slice(2), [
+      "look",
+      "cube",
+      "cdl",
+      "size",
+      "title",
+      "strength",
+    ]);
+    const cube = values.get("cube"),
+      cdl = values.get("cdl");
+    if ((cube === undefined) === (cdl === undefined))
+      programError(
+        "comp-program-option",
+        "Give exactly one of --cube <new.cube> or --cdl <new.cc|.ccc|.cdl>",
+        "cube",
+      );
+    const kind = cdl === undefined ? undefined : cdlFileKind(cdl);
+    if (cdl !== undefined && !kind)
+      programError(
+        "comp-program-option",
+        "--cdl must end in .cc, .ccc or .cdl",
+        "cdl",
+      );
+    if (cdl !== undefined)
+      for (const name of ["size", "title", "strength"])
+        if (values.has(name))
+          programError(
+            "comp-program-option",
+            `--${name} applies to --cube only`,
+            name,
+          );
+    const output = await newOutput((cube ?? cdl)!, cube ? "cube" : "cdl");
+    const { look, lookLuts } = await loadLook(requireArgument(values, "look"));
+    const { text, report } = exportColorLook(
+      look!,
+      lookLuts ?? new Map(),
+      kind
+        ? { format: kind }
+        : {
+            format: "cube",
+            size: count(values, "size", 129),
+            title: values.get("title"),
+            strength: unit(values, "strength"),
+          },
+    );
+    await writeNew(output, text, cube ? "cube" : "cdl");
+    io.stdout(json({ status: "exported", output, ...report }));
+    return 0;
   }
   programError(
     "comp-program-command",

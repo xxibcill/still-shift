@@ -32,8 +32,11 @@ import {
   COLOR_SOLVER_LIMITS,
   colorSolverFrames,
   fitColorLook,
+  fitColorLook2,
+  loadColorLookLuts,
   measureColorFrames,
   openColorClip,
+  parseAnyColorLook,
   parseColorLook,
   readColorFrames,
   solveColorCorrection,
@@ -42,6 +45,7 @@ import {
   type ColorFrame,
 } from "@still-shift/animation-engine";
 import { validateComposition } from "@still-shift/scene-contract";
+import { pchip } from "@still-shift/color-science";
 import { passageDiagnostics } from "../../packages/renderer-core/src/passage-diagnostics.ts";
 import {
   CGA_SYNTHETIC,
@@ -1099,4 +1103,179 @@ describe("CGA2 A2 reports on scopes and --diff", () => {
     expect(await readFile(paths.still)).toEqual(await readFile(still));
     expect(await readFile(paths.sheet)).toEqual(await readFile(sheet));
   }, 120_000);
+});
+
+describe("CGA2 A3 look 2", () => {
+  /** A matrix, then a soft S-curve per channel: tone that look 1 cannot fit. */
+  const tone = [0.9, 1, 1.1].map((k) =>
+    pchip([
+      [0, 0],
+      [0.25, 0.2 * k],
+      [0.5, 0.5],
+      [0.75, 1 - 0.2 / k],
+      [1, 1],
+    ]),
+  );
+  const graded = (frames: readonly Uint8Array[]) =>
+    frames.map((frame) => {
+      const out = new Uint8Array(frame);
+      for (let i = 0; i < out.length; i += 4) {
+        const [r, g, b] = [out[i]! / 255, out[i + 1]! / 255, out[i + 2]! / 255];
+        const m = [
+          1.06 * r - 0.04 * g - 0.01 * b,
+          -0.02 * r + 1.03 * g - 0.01 * b + 0.01,
+          -0.03 * r - 0.06 * g + 1.1 * b + 0.01,
+        ];
+        for (let c = 0; c < 3; c++) {
+          const v = tone[c]!(Math.min(1, Math.max(0, m[c]!)));
+          out[i + c] = Math.min(255, Math.max(0, Math.round(v * 255)));
+        }
+      }
+      return out;
+    });
+  let before: string[];
+  let after: string;
+  beforeAll(async () => {
+    const second = cgaReferenceFrames(1);
+    before = [join(root, "l2-before-a.mkv"), join(root, "l2-before-b.mkv")];
+    await writeCgaClip(before[0]!, reference);
+    await writeCgaClip(before[1]!, second);
+    after = join(root, "l2-after.mkv");
+    await writeCgaClip(
+      after,
+      graded([...second.slice(5, 12), ...reference.slice(0, 8)]),
+    );
+  });
+
+  it("fits every model in both spaces and keeps the best held-out score", async () => {
+    const { look, cube } = await fitColorLook2(before, after, {
+      cacheDirectory: cache(),
+      step: 4,
+    });
+    expect(cube).toBeUndefined();
+    expect(look.schemaVersion).toBe("still-shift-look-2");
+    expect(look.fit.selection).toMatchObject({
+      requested: "auto",
+      basis: "held-out",
+      penaltyPerParameter: 0.002,
+    });
+    expect(look.fit.candidates.map((c) => `${c.model}/${c.space}`)).toEqual([
+      "matrix/encoded-srgb",
+      "matrix/linear-gamma-2.2",
+      "cdl/encoded-srgb",
+      "cdl/linear-gamma-2.2",
+      "matrix-curves/encoded-srgb",
+      "matrix-curves/linear-gamma-2.2",
+    ]);
+    const selected = look.fit.candidates.find((c) => c.selected)!;
+    expect(selected.score).toBe(
+      Math.min(...look.fit.candidates.map((c) => c.score)),
+    );
+    // Tone needs curves: model 3 wins and beats look 1's model held out.
+    expect(look.model).toBe("matrix-curves");
+    const matrixHeldOut = look.fit.candidates.find(
+      (c) => c.model === "matrix" && c.space === "encoded-srgb",
+    )!.heldOut!.rmsMean;
+    expect(look.fit.heldOut!.rmsMean).toBeLessThan(matrixHeldOut);
+    expect(look.fit.shots).toHaveLength(2);
+    expect(look.targets).toBeDefined();
+    expect(look.sources.before.map((s) => s.name)).toEqual([
+      "l2-before-a.mkv",
+      "l2-before-b.mkv",
+    ]);
+    expect(parseAnyColorLook(JSON.parse(JSON.stringify(look)))).toEqual(look);
+    // The grade engine applies it at the default 60% behind a strength key;
+    // the composition validates; the legacy engine refuses it.
+    const path = join(root, "l2-apply", "clip.composition.json");
+    const report = await autoColorClip({
+      input: before[0]!,
+      look,
+      engine: "grade",
+      writeComposition: path,
+      cacheDirectory: cache(),
+    });
+    expect(report.effects.map((e) => e.effect)).toEqual([
+      "grade.key",
+      "grade.rgb-mixer",
+      "grade.curves",
+    ]);
+    expect(report.effects[0]!.params).toEqual({ gain: 0.6 });
+    const composition = JSON.parse(await readFile(path, "utf8"));
+    expect(validateComposition(composition).ok).toBe(true);
+    await expect(
+      autoColorClip({
+        input: before[0]!,
+        look,
+        writeComposition: join(root, "l2-legacy", "clip.composition.json"),
+        cacheDirectory: cache(),
+      }),
+    ).rejects.toMatchObject({
+      diagnostics: [expect.objectContaining({ code: "comp-look-engine" })],
+    });
+  }, 300_000);
+
+  it("a LUT look pins its table, verifies it, and carries it into the composition", async () => {
+    const folder = join(root, "l2-lut");
+    await mkdir(folder, { recursive: true });
+    const { look, cube } = await fitColorLook2(before, after, {
+      cacheDirectory: cache(),
+      step: 4,
+      model: "lut",
+      lutPath: "graded.cube",
+    });
+    expect(look.model).toBe("lut");
+    expect(look.fit.selection.requested).toBe("lut");
+    expect(look.fit.lut!.nodes).toBe(33 ** 3);
+    // A pair this small leaves most of the table to model 3.
+    expect(look.fit.lut!.filledFromModel3).toBeGreaterThan(33 ** 3 / 2);
+    expect(look.effects).toEqual([
+      {
+        id: "look-lut",
+        effect: "grade.lut",
+        params: {},
+        assets: { lut: "look-lut" },
+      },
+    ]);
+    expect(look.assets[0]!.path).toBe("graded.cube");
+    const lookPath = join(folder, "graded.look.json");
+    await writeFile(join(folder, "graded.cube"), cube!);
+    await writeFile(lookPath, JSON.stringify(look));
+    const luts = await loadColorLookLuts(look, lookPath);
+    expect(luts.get("look-lut")!.path).toBe(join(folder, "graded.cube"));
+    const path = join(root, "l2-lut-apply", "clip.composition.json");
+    const report = await autoColorClip({
+      input: before[0]!,
+      look,
+      lookLuts: luts,
+      engine: "grade",
+      lookStrength: 1,
+      writeComposition: path,
+      cacheDirectory: cache(),
+    });
+    // The prepared table rides on the effect under a symbol, never serialized.
+    expect(JSON.parse(JSON.stringify(report.effects))).toEqual([
+      {
+        id: "look-lut",
+        effect: "grade.lut",
+        params: { intensity: 1 },
+        assets: { lut: "look-lut" },
+      },
+    ]);
+    const composition = JSON.parse(await readFile(path, "utf8"));
+    expect(composition.assets[1]).toMatchObject({
+      id: "look-lut",
+      type: "lut",
+      path: join("..", "l2-lut", "graded.cube"),
+      sha256: look.assets[0]!.sha256,
+    });
+    expect(composition.layers[0].effects[0].assets).toEqual({
+      lut: "look-lut",
+    });
+    expect(validateComposition(composition).ok).toBe(true);
+    // A changed table no longer matches its pin.
+    await writeFile(join(folder, "graded.cube"), cube!.replace(/\n$/, "\n\n"));
+    await expect(loadColorLookLuts(look, lookPath)).rejects.toMatchObject({
+      diagnostics: [expect.objectContaining({ code: "comp-lut-checksum" })],
+    });
+  }, 300_000);
 });

@@ -45,12 +45,16 @@ import {
 import {
   colorLookEffect,
   readColorCodeValueFrames,
-  type ColorLook,
 } from "./composition-color-look.ts";
+import {
+  colorLookApplyEffects,
+  colorLookLegacyParams,
+  type AnyColorLook,
+  type ColorLookLut,
+} from "./composition-color-look2.ts";
 import {
   COLOR_ENGINES,
   DEFAULT_COLOR_ENGINE,
-  engineEffects,
   type ColorEngine,
 } from "./composition-color-engine.ts";
 import {
@@ -79,7 +83,10 @@ export type AutoColorRequest = ColorFrameOptions & {
   input: string;
   /** Rendered MP4. Optional when only `writeComposition` is requested. */
   output?: string | undefined;
-  look?: ColorLook | undefined;
+  /** A look-1 or look-2 document (look 2 other than one mixer needs `grade`). */
+  look?: AnyColorLook | undefined;
+  /** A look-2 file's LUT assets, read and verified (`loadColorLookLuts`). */
+  lookLuts?: ReadonlyMap<string, ColorLookLut> | undefined;
   /** Scales the adaptive corrections, 0–1 (default 1). */
   strength?: number | undefined;
   /** Scales the look, 0–1 (default 0.6; the learned look at 1 is strong). */
@@ -175,6 +182,8 @@ const reportFields = {
         id: z.string(),
         effect: z.string(),
         params: z.record(z.string(), z.unknown()),
+        /** A look's grade.lut asset slot (CGA2 A3). */
+        assets: z.record(z.string(), z.string()).optional(),
       })
       .strict(),
   ),
@@ -407,11 +416,21 @@ async function clipAudio(
   };
 }
 
+/** A look's LUT assets with absolute paths (the effects bind them by id). */
+function lookLutAssets(request: AutoColorRequest): CompositionAsset[] {
+  return [...(request.lookLuts?.values() ?? [])].map((entry) => ({
+    ...entry.asset,
+    path: entry.path,
+  }));
+}
+
 export function autoColorComposition(
   clip: ColorClip,
   audio: ClipAudio | undefined,
   effects: readonly ColorCorrectionEffect[],
   compositionDirectory: string | undefined,
+  /** LUT assets the effects bind, with absolute paths. */
+  luts: readonly CompositionAsset[] = [],
 ): Composition {
   const fps = clip.probe.frameRate;
   if (fps.denominator !== 1 || fps.numerator > 60)
@@ -423,7 +442,21 @@ export function autoColorComposition(
   const path = compositionDirectory
     ? relative(compositionDirectory, clip.path)
     : clip.path;
-  const assets: CompositionAsset[] = [{ ...clip.asset, path }];
+  const assets: CompositionAsset[] = [
+    { ...clip.asset, path },
+    ...luts
+      .filter((asset) =>
+        effects.some((effect) =>
+          Object.values(effect.assets ?? {}).includes(asset.id),
+        ),
+      )
+      .map((asset) => ({
+        ...asset,
+        path: compositionDirectory
+          ? relative(compositionDirectory, asset.path)
+          : asset.path,
+      })),
+  ];
   const video: Extract<CompositionLayer, { type: "video" }> = {
     id: "clip",
     type: "video",
@@ -435,6 +468,7 @@ export function autoColorComposition(
       id: effect.id,
       effect: effect.effect,
       params: effect.params,
+      ...(effect.assets ? { assets: effect.assets } : {}),
     })),
   };
   const layers: CompositionLayer[] = [video];
@@ -615,9 +649,20 @@ export async function autoColorClip(
     width: clip.probe.width,
   });
   const effects: ColorCorrectionEffect[] = [];
-  if (request.look)
+  const lookLuts = lookLutAssets(request);
+  if (request.look && engine === "legacy")
     effects.push(
-      ...engineEffects(engine, [colorLookEffect(request.look, lookStrength)]),
+      colorLookEffect(
+        { params: colorLookLegacyParams(request.look) },
+        lookStrength,
+      ),
+    );
+  // Look 1 reads as a one-entry grade.rgb-mixer look (A1's mapping).
+  else if (request.look)
+    effects.push(
+      ...(colorLookApplyEffects(request.look, lookStrength, request.lookLuts, {
+        closed: adaptive,
+      }) as ColorCorrectionEffect[]),
     );
   let decisions: ColorSolveDecision[] = [];
   if (adaptive) {
@@ -750,7 +795,9 @@ export async function autoColorClip(
         const path = join(work, "composition.json");
         await writeFile(
           path,
-          JSON.stringify(autoColorComposition(clip, audio, effects, undefined)),
+          JSON.stringify(
+            autoColorComposition(clip, audio, effects, undefined, lookLuts),
+          ),
         );
         progress(`rendering ${basename(output)}`);
         await renderComposition({
@@ -861,6 +908,7 @@ export async function autoColorClip(
         audio,
         effects,
         dirname(compositionPath),
+        lookLuts,
       );
       await writeFile(
         compositionPath,

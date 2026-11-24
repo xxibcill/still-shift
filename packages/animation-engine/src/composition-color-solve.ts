@@ -51,13 +51,16 @@ export const COLOR_CORRECTION_EFFECTS = [
   "color.levels",
   "color.curves",
   ...GRADE_EFFECT_IDS,
-  ...FLOAT_GRADE_EFFECT_IDS.filter((id) => id !== "grade.lut"),
+  // grade.lut is a look-2 LUT; its effect carries the prepared table.
+  ...FLOAT_GRADE_EFFECT_IDS,
 ] as const;
 export type ColorCorrectionEffectId = (typeof COLOR_CORRECTION_EFFECTS)[number];
 export type ColorCorrectionEffect = {
   id: string;
   effect: ColorCorrectionEffectId;
   params: Record<string, number | number[][]>;
+  /** A look's `grade.lut` asset slot (CGA2 A3). */
+  assets?: Record<string, string>;
 };
 export type ColorSolveToggles = {
   exposure: boolean;

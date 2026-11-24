@@ -44,6 +44,10 @@ import {
 } from "../../renderer-core/src/composition/render/float-grade.ts";
 import { evaluateKey } from "../../renderer-core/src/composition/render/float-grade-keys.ts";
 import {
+  EFFECT_LUTS,
+  type PreparedLut,
+} from "../../renderer-core/src/composition/render/luts.ts";
+import {
   linearToSrgb,
   srgbToLinear,
   whiteBalanceGains,
@@ -57,6 +61,7 @@ export type ColorEngine = (typeof COLOR_ENGINES)[number];
 export const DEFAULT_COLOR_ENGINE: ColorEngine = "legacy";
 
 const round = (value: number, digits = 6) => roundTo(value, digits);
+type EffectLuts = Readonly<Record<string, PreparedLut>>;
 
 /**
  * A `grade.curves` channel curve (at most 16 points, y in 0–1) that applies a
@@ -263,9 +268,11 @@ export function gradeRunOps(
   effects: readonly ColorCorrectionEffect[],
 ): FloatGradeOp[] {
   return effects.flatMap((effect) => {
+    // A look's grade.lut carries its prepared table (EFFECT_LUTS).
     const op = floatGradeOp(
       effect.effect as FloatGradeEffectId,
       paramsWithDefaults(effect),
+      effect as never,
     );
     return op ? [op] : [];
   });
@@ -295,11 +302,16 @@ function gradeRunSegments(
       );
   }
   const segments = floatGradeSegments(
-    effects.map((effect) => ({
-      effect: effect.effect,
-      id: effect.id,
-      params: paramsWithDefaults(effect),
-    })),
+    effects.map((effect) => {
+      // A look's grade.lut carries its prepared table (EFFECT_LUTS).
+      const luts = (effect as { [EFFECT_LUTS]?: EffectLuts })[EFFECT_LUTS];
+      return {
+        effect: effect.effect,
+        id: effect.id,
+        params: paramsWithDefaults(effect),
+        ...(luts ? { [EFFECT_LUTS]: luts } : {}),
+      };
+    }),
   );
   for (const { key } of segments)
     if (

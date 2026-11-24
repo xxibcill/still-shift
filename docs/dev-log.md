@@ -44,17 +44,20 @@ still hold before relying on them.
 ## Current state
 
 - **CGA2 (2026-11-24):** [plan](./color-grading-cga2-plan.md), [results](./color-grading-cga2-results.json).
-  A0–A1 merged to `main` as [PR #80](https://github.com/xxibcill/still-shift/pull/80) (1d52bc5e): `comp auto-color` and
-  `comp look apply` take `--engine grade` (solver 2: one float `grade.*` run); the default stays `legacy`
-  (CGA unchanged) until A6. A0: 42/44 rows within the bound (block RMS ≤ 1, p99 ≤ 3 of 255), two look+auto
-  rows outside with measured causes; Canvas and WebGL2 equal the prediction. **A2 in review as
-  [PR #82](https://github.com/xxibcill/still-shift/pull/82)** on `codex/cga2-a2`, now with `main` merged in and
-  retargeted to `main`: report 2 (`engine`, `solver` when one ran, CG3 `scopes` before and predicted after) for
-  every grade report and for legacy with `--scopes true`; legacy reports stay report 1 byte for byte;
-  `AutoColorReportSchema` validates both; `--diff <folder>` writes `comp grade diff`'s still and sheet per clip.
-  `codex/cga2-a3` was cut before the A2 review fixes and needs a rebase onto the new A2 head.
-  **Next:** owner review of PR #82, then A3 (look 2). Open owner decisions: look bound (needed by A3), LUT looks
-  (A3), CGA visual review (A6 sheets).
+  A0–A1 merged to `main` as [PR #80](https://github.com/xxibcill/still-shift/pull/80) (1d52bc5e) and A2 as
+  [PR #82](https://github.com/xxibcill/still-shift/pull/82) (b99b5d22): `comp auto-color` and `comp look apply` take
+  `--engine grade` (solver 2: one float `grade.*` run); the default stays `legacy` (CGA unchanged) until A6.
+  A0: 42/44 rows within the bound (block RMS ≤ 1, p99 ≤ 3 of 255), two look+auto rows outside with measured
+  causes; Canvas and WebGL2 equal the prediction. A2: report 2 (`engine`, `solver` when one ran, CG3 `scopes`
+  before and predicted after); legacy reports stay report 1 byte for byte; `--diff <folder>` per clip.
+  **A3 in review as [PR #83](https://github.com/xxibcill/still-shift/pull/83)** on `codex/cga2-a3`, now with
+  `main` (A2's review fixes) merged in and review F1–F5 fixed: `comp look fit --engine grade` writes look 2 (`still-shift-look-2`, an
+  ordered `grade.*` list), choosing among matrix, CDL and matrix+curves in encoded and linear light by held-out
+  residual plus 0.002 per parameter; on the owner's pair matrix+curves (encoded) is selected at **1.84 of 255
+  held out** (look 1: 2.30), meeting ≤ 2. LUT looks are opt-in (`--model lut`; 1.56 but 94% of nodes filled
+  from model 3). `comp look export --cube|--cdl`. Without `--engine grade` look fit still writes look 1.
+  **Next:** owner review of PR #83, then A4. Open owner decisions: look bound (block means or pixels), LUT
+  looks (A3 followed the opt-in recommendation), CGA visual review (A6 sheets).
 
 - **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32, merged as [PR #76](https://github.com/xxibcill/still-shift/pull/76) (`main` 51ffe62a).
   - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
@@ -141,6 +144,26 @@ still hold before relying on them.
 
 ## Entries
 
+### 2026-11-24 — PR #83: review F1–F5 fixed
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a3`, after the `main` merge b16da504. The owner asked for one inline comment per finding, then one commit per fix and a single push.
+- **Review:** five findings posted inline on [PR #83](https://github.com/xxibcill/still-shift/pull/83#pullrequestreview-6028445924).
+- **Fixed (one commit each):**
+  - F1 (4d5bb3f1): look 2 accepted CG7 LUT spaces (e.g. `acescct`) that its prediction, fit and export ignore. It now accepts `legacy-srgb` and `srgb` only.
+  - F2 (6eac2f5b): a LUT look was recorded in model 3's space. Its table maps encoded sRGB, so it is now `encoded-srgb`.
+  - F3 (4e3e02a2): `look fit --model lut` left its `.cube` behind when the look write failed, which blocked the retry. The table is now removed; a new race test fails without the fix.
+  - F4 (7826f260): residuals allocated a 64 MB cache per call (about 160 calls per owner-pair fit). A Map of the colors present gives identical residuals (5.8 → 2.7 ms on 2,000 blocks, 97 → 89 ms on 100,000 random blocks).
+  - F5 (049b6e67): the A0 gate now builds the grade look with `colorLookApplyEffects`, as `look apply` does (`solverEquivalence` takes `gradePrefix`).
+- **Results (Node 22.23.1):** `check:fast` 486 files / 5,085 tests; color integration 55/55; `test:browser:color-grading-cga2` six fixtures, Canvas and WebGL2 0 channels off. A0 rerun (8 synthetic fixtures + 12 owner clips, owner look; local `dist/pr83-before`, `dist/pr83-after`): 42/44 within the bound before and after, every row byte-identical, solver 1 baseline 44/44 identical.
+- **Open / next:** owner review of PR #83 (it still targets the merged `codex/cga2-a2`; `main` has the same tree). Not run: `pnpm check`, full `pnpm test`, other browser groups, renders of owner clips with look 2. No visual acceptance.
+
+### 2026-11-24 — PR #83: main merged in (A2 review fixes)
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a3`, merging `main` b99b5d22 (PR #82 merged, with its review fixes). PR #83 still targets `codex/cga2-a2`, which `main` now contains.
+- **Merge:** conflicts in `composition-auto-color.ts`, `composition-color-engine.ts`, the CLI's `color.ts`, `tests/browser/color-grading-cga2.ts` and this log. A3 now uses main's APIs: `ColorCorrectionEffect` (A3's `assets` slot) instead of `EngineEffect`, `paramsWithDefaults` instead of `effectDefaults`, and the renderer's `floatGradeSegments`, with a look's prepared LUT (`EFFECT_LUTS`) kept on each member. `colorLookEffect` takes look parameters, so `--engine legacy` uses it for look 1. Main's staged `--diff` publication keeps A3's LUT assets in the composition it writes. The browser test keeps main's four fixtures and adds A3's look-2 parity.
+- **Results (Node 22.23.1):** `toolchain:check`; `check:fast` 486 files / 5,083 tests; color integration (composition-color, -color-cli, grade-interchange) 55/55; look-2 and color-engine unit tests 34/34; `test:browser:color-grading-cga2`: six fixtures (four from main, A3's matrix-curves and LUT looks), Canvas and WebGL2 0 channels off.
+- **Open / next:** the PR #83 review findings; owner review of PR #83. Not run: `pnpm check`, full `pnpm test`, other browser groups, owner clips.
+
 ### 2026-11-24 — PR #82: post-merge review F1–F2 fixed
 
 - **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-a2`, after the `main` merge d181a653. The owner asked for one inline comment per finding, then one commit per fix and a push at the end.
@@ -170,7 +193,30 @@ still hold before relying on them.
 - **Review:** three findings posted inline on [PR #82](https://github.com/xxibcill/still-shift/pull/82#pullrequestreview-6024752038).
 - **Fixed (one commit each):** a `--diff` path that cannot be a folder (an existing file) is refused before any work; before, the render was published first and the run then failed with no report, and a retry was refused because the output existed. The diff images are now built before publish. `AutoColorReport` is now a union that follows `AutoColorReportSchema` (report 1 cannot carry `engine`, `solver` or `scopes`), checked against the schema with `satisfies`. `cga2-reports.ts` gives its usage message for an option without a value.
 - **Results:** on Node 22.23.1, `pnpm toolchain:check` and `pnpm check:fast` pass (483 files, 4,994 tests). The color integration and unit suites pass (70/70, one new test), and so does `test:browser:color-grading-cga2` (Canvas and WebGL2: 0 channels off). `cga2-reports.ts` writes all 12 fixture reports byte-identical before and after the type refactor. The new `--diff` test fails without the fix.
-- **Open / next:** rebase `codex/cga2-a3` onto the new A2 head. Not run: `pnpm check`, full `pnpm test`, other browser groups, owner clips. No person has looked at the `--diff` images.
+- **Open / next:** `codex/cga2-a3` rebased onto this head (A3 entry below). Not run: `pnpm check`, full `pnpm test`, other browser groups, owner clips. No person has looked at the `--diff` images.
+
+### 2026-11-23 — CGA2 A3: look 2
+
+- **Agent / branch:** Claude Code on `codex/cga2-a3` (from `codex/cga2-a2` bcb9734c, PR #82, not merged; rebased onto the reviewed A2 head 4f2b4d4d)
+- **Scope:** CGA2 A3: look 2 (several look models, `still-shift-look-2`, `comp look export`).
+- **Done:** `composition-color-look-models.ts` (matrix, CDL by Levenberg–Marquardt, matrix + 16-point
+  monotone PCHIP curves, 33³ LUT as a smoothed correction of model 3; encoded and gamma-2.2 linear
+  spaces; residuals through the renderer's float ops), `composition-color-look2.ts` (schema, look-1
+  reading, selection, strength, legacy mapping, export), `matchColorLookPairs` shared with look 1, CG5's
+  bake and CDL writer factored for reuse (`bakeGradeOps`, `gradeCdlText`), `--engine`/`--model` on
+  `comp look fit`, `comp look export`, LUT assets carried into auto-color compositions.
+- **Results:** owner pair (local only) held out per pixel: matrix 2.285, CDL 2.13, **matrix-curves
+  1.836 (selected; worst shot 2.19)**; every linear-light fit worse (2.57–3.34); LUT 1.56 with 33,637 of
+  35,937 nodes filled from model 3. Owner look's `.cube` round trip 2 codes at 33³, 1 at 65³. Look-2
+  renders equal the prediction on Canvas and WebGL2 (0 codes). A0 equivalence rerun byte-identical;
+  existing CGA tests unchanged. Not run: owner-clip renders with look 2, `pnpm check`, full `pnpm test`,
+  other browser groups, release checks; nobody looked at a look-2 result.
+- **Rejected / do not repeat:** none tried and dropped. Linear light as the exact sRGB curve has no
+  exact `grade.*` form, so linear light is a 2.2 power; a 33³ bake of a linear-light look can exceed
+  CG5's 2-code bound near black (the export reports its round trip).
+- **Open / next:** A4 after review. Decision 5 still the owner's (A3 follows opt-in).
+- **Records:** [plan A3](./color-grading-cga2-plan.md#a3-look-2-35-days),
+  [results `a3`](./color-grading-cga2-results.json).
 
 ### 2026-11-23 — CGA2 A2: auto-color reports and measurement on scopes
 

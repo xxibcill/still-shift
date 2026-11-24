@@ -56,12 +56,21 @@ export function colorBlocks(
         }
   return set;
 }
-type BlockMeans = {
+/**
+ * 4×4 block means of before/after values (0–1), in encoded code values or
+ * through `decode` (a 256-entry table, e.g. to linear light), with the blocks
+ * that hold no near-clipped pixel marked usable.
+ */
+export type ColorBlockMeans = {
   before: Float64Array;
   after: Float64Array;
   usable: Uint8Array;
 };
-function blockMeans(sets: readonly ColorBlockSet[]): BlockMeans {
+type BlockMeans = ColorBlockMeans;
+export function colorBlockMeans(
+  sets: readonly ColorBlockSet[],
+  decode?: Float64Array,
+): ColorBlockMeans {
   const total = sets.reduce((sum, set) => sum + set.count, 0);
   const means: BlockMeans = {
     before: new Float64Array(total * 3),
@@ -77,14 +86,20 @@ function blockMeans(sets: readonly ColorBlockSet[]): BlockMeans {
           const i = b * BLOCK_BYTES + p * 3 + c;
           const x = set.before[i]!,
             y = set.after[i]!;
-          means.before[block * 3 + c]! += x / (BLOCK * BLOCK * 255);
-          means.after[block * 3 + c]! += y / (BLOCK * BLOCK * 255);
+          if (decode) {
+            means.before[block * 3 + c]! += decode[x]! / (BLOCK * BLOCK);
+            means.after[block * 3 + c]! += decode[y]! / (BLOCK * BLOCK);
+          } else {
+            means.before[block * 3 + c]! += x / (BLOCK * BLOCK * 255);
+            means.after[block * 3 + c]! += y / (BLOCK * BLOCK * 255);
+          }
           if (x >= 250 || y >= 250 || x <= 4 || y <= 4) usable = 0;
         }
       means.usable[block] = usable;
     }
   return means;
 }
+const blockMeans = (sets: readonly ColorBlockSet[]) => colorBlockMeans(sets);
 /** 4-parameter least squares per output channel over selected blocks. */
 function fitMatrix(means: BlockMeans, selected: ArrayLike<number>) {
   const rows: number[][] = [];
@@ -145,7 +160,13 @@ export function colorMatrixParams(rows: number[][]): Record<string, number> {
  * blocks, drop the worst 5% by residual, refit twice.
  */
 export function fitColorMatrix(sets: readonly ColorBlockSet[]) {
-  const means = blockMeans(sets);
+  return colorMatrixParams(fitColorMatrixRows(blockMeans(sets)));
+}
+/**
+ * The trimmed fit on block means (any space): rows of [r, g, b, offset] per
+ * output channel, and the blocks kept by the last trim.
+ */
+export function fitColorMatrixRows(means: ColorBlockMeans): number[][] {
   const total = means.usable.length;
   let selected: number[] = [];
   for (let block = 0; block < total; block++)
@@ -174,7 +195,7 @@ export function fitColorMatrix(sets: readonly ColorBlockSet[]) {
       .map(([block]) => block);
     rows = fitMatrix(means, selected);
   }
-  return colorMatrixParams(rows);
+  return rows;
 }
 /**
  * Residuals of `color.matrix` (strength 1) through its exact integer path:

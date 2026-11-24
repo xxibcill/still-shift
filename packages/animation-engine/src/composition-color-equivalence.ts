@@ -136,24 +136,27 @@ export type SolverEquivalence = {
 /**
  * Solve `solverFrames` (the solver's quarter-resolution frames) with both engines
  * and compare their predictions on `frames` (full resolution, one width).
- * `prefix` is a look in CGA form; the grade engine applies its translation.
+ * `prefix` is a look in CGA form; the grade engine applies `gradePrefix`,
+ * by default its translation (`look apply` passes `colorLookApplyEffects`).
  */
 export function solverEquivalence(
   solverFrames: ColorFrameSet,
   frames: ColorFrameSet,
   options: ColorSolveOptions & {
     prefix?: readonly ColorCorrectionEffect[];
+    gradePrefix?: readonly ColorCorrectionEffect[];
   } = {},
 ): SolverEquivalence {
+  const { gradePrefix: given, ...solve } = options;
   const prefix = options.prefix ?? [];
   const legacy = solveColorCorrection(solverFrames, {
-    ...options,
+    ...solve,
     engine: "legacy",
     prefix,
   });
-  const gradePrefix = engineEffects("grade", prefix);
+  const gradePrefix = given ?? engineEffects("grade", prefix);
   const grade = solveColorCorrection(solverFrames, {
-    ...options,
+    ...solve,
     engine: "grade",
     prefix: gradePrefix,
   });

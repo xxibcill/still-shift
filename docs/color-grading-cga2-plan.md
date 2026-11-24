@@ -1,6 +1,6 @@
 # CGA2: automatic color on the grade engine
 
-Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status: **A0 and A1 built on `codex/cga2-engine` (2026-11-23), A2 on `codex/cga2-a2` (stacked on it, 2026-11-23); approved (owner: "start implement", 2026-11-23);
+Date: 2026-11-23, against `main` a47fa6d0 (CG0–CG6 merged). Status: **A0 and A1 built on `codex/cga2-engine` (2026-11-23), A2 on `codex/cga2-a2` (stacked on it, 2026-11-23), A3 on `codex/cga2-a3` (stacked on A2, 2026-11-23); approved (owner: "start implement", 2026-11-23);
 owner decided the default engine, the equivalence gate and skin protection;
 three decisions remain.** The plan itself (commit `7b4aefd5`) changed no package
 source and rendered nothing; the as-built notes under each slice record what
@@ -253,6 +253,54 @@ moved to A4.
 file applied through look 2 matches `color.matrix` within the CG2 parity bound.
 An exported `.cube` round-trips through `grade.lut` within the CG5 bound.
 
+_As built (2026-11-23):_
+
+- **Selection rule, stated before measuring:** score = mean leave-one-shot-out
+  per-pixel RMS (of 255) + 0.002 per free parameter (matrix 12, CDL 10,
+  matrix-curves 60, so model 3 must beat model 1 by about 0.1 code); lowest
+  wins. With one matched shot the in-sample RMS stands in (`selection.basis`).
+  Every model is fitted on 4×4 block means and measured per pixel through the
+  renderer's own float ops (one quantization), so the figures are what Canvas
+  renders. `comp look fit --engine grade` writes look 2; without it look fit
+  still writes look 1 byte for byte (no silent change before A6).
+- **Spaces:** "linear light" is a pure 2.2 power, applied by an unclamped
+  `grade.cdl` power before the model and its inverse after, so it renders and
+  exports exactly (the sRGB curve itself has no exact `grade.*` form).
+  Linear-light fits are least squares in linear values and are worse on the
+  owner's pair for every model; both are recorded in `fit.candidates`.
+- **Owner's pair** (12 Flow clips, the owner's graded edit; 11 shots, 44
+  pairs, 22.8 M pixels; local only), held-out mean per-pixel RMS (block):
+  matrix 2.285 (1.81) encoded / 3.34 linear, CDL 2.13 (1.64) / 2.98,
+  **matrix-curves 1.836 (1.24)** / 2.57, so model 3 in encoded sRGB is
+  selected (score 1.956 against 2.309), **meeting ≤ 2** (worst shot 2.19).
+  The matrix model reproduces look 1 (2.30 through `color.matrix`'s integer
+  path; 2.285 through the float mixer). The opt-in LUT reaches 1.56 (block
+  0.82), but 33,637 of its 35,937 nodes (94%) have no sample nearby and keep
+  model 3, which is why it stays opt-in (decision 5, recommendation followed).
+- **Strength:** a one-operator look mixes by its own parameter
+  (`grade.rgb-mixer` `strength`, `grade.lut` `intensity`), so look 1 applies
+  exactly as A1 mapped it. A longer look sits behind a constant `grade.key`
+  (`gain` = strength: the mix of the whole look's output with its input),
+  closed by a neutral key when adaptive corrections follow.
+- **Legacy:** `--engine legacy` applies a look-1 file (or a look-2 file that
+  is exactly one encoded `grade.rgb-mixer`) through `color.matrix`
+  unchanged; any other look-2 file is refused (`comp-look-engine`).
+- **LUT asset:** `--model lut` writes `<output stem>.cube` beside the look,
+  pinned by SHA-256 with a path relative to the look; it is verified when the
+  look loads (CG5's `comp-lut-*` checks) and carried into the composition as a
+  `lut` asset.
+- **Export:** `comp look export --cube` bakes through CG5's bake
+  (`bakeGradeOps`, shared with `comp grade bake`) and reports the written
+  table's round trip through `grade.lut` against the look over 8-bit colors;
+  `--cdl` writes through CG5's CDL writer (`gradeCdlText`, shared with
+  `comp grade cdl-export`) and only for a look that is one encoded
+  `grade.cdl`. A linear-light look can bend sharply near black (the 2.2
+  encode's vertical tangent where a channel crosses zero), so a 33³ bake of
+  one can exceed the bound; the report says so instead of hiding it.
+- **CG9:** look 2 is a flat, ordered list of `{id, effect, params, assets}`
+  operators at strength 1 with assets beside it, the shape of a serial node
+  list.
+
 ### A4: Engine-only solver improvements (2–4 days)
 
 - **Highlight protection:** use the `grade.tonal` high soft clip with a knee,
@@ -337,7 +385,10 @@ Still open:
    RMS ≤ 1 and per-pixel p99 ≤ 3), the stricter reading, so A1–A2 do not
    wait on it. Needed by A3, whose look-2 acceptance bound depends on it.
 5. **LUT looks.** Opt-in only (recommended), or chosen automatically when they
-   win the held-out residual. Needed at A3.
+   win the held-out residual. Needed at A3. A3 follows the recommendation
+   (`--model lut` only); on the owner's pair the LUT wins held out (1.56
+   against 1.84) but 94% of its nodes are filled from model 3, so the
+   decision stays the owner's.
 6. **CGA visual review.** Still pending. It can be done on the A6 sheets so
    both solvers are judged together.
 
