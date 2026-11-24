@@ -50,14 +50,19 @@ still hold before relying on them.
   A0: 42/44 rows within the bound (block RMS ≤ 1, p99 ≤ 3 of 255), two look+auto rows outside with measured
   causes; Canvas and WebGL2 equal the prediction. A2: report 2 (`engine`, `solver` when one ran, CG3 `scopes`
   before and predicted after); legacy reports stay report 1 byte for byte; `--diff <folder>` per clip.
-  **A3 in review as [PR #83](https://github.com/xxibcill/still-shift/pull/83)** on `codex/cga2-a3`, now with
-  `main` (A2's review fixes) merged in and review F1–F5 fixed: `comp look fit --engine grade` writes look 2 (`still-shift-look-2`, an
+  A3 merged as [PR #83](https://github.com/xxibcill/still-shift/pull/83) (f25220fa), with review F1–F5
+  fixed: `comp look fit --engine grade` writes look 2 (`still-shift-look-2`, an
   ordered `grade.*` list), choosing among matrix, CDL and matrix+curves in encoded and linear light by held-out
   residual plus 0.002 per parameter; on the owner's pair matrix+curves (encoded) is selected at **1.84 of 255
   held out** (look 1: 2.30), meeting ≤ 2. LUT looks are opt-in (`--model lut`; 1.56 but 94% of nodes filled
   from model 3). `comp look export --cube|--cdl`. Without `--engine grade` look fit still writes look 1.
-  **Next:** owner review of PR #83, then A4. Open owner decisions: look bound (block means or pixels), LUT
-  looks (A3 followed the opt-in recommendation), CGA visual review (A6 sheets).
+  Re-checked on `main` f25220fa (2026-11-24, Node 22.23.1): `check:fast` 486 files / 5,085 tests, color
+  tests 156/156, `test:browser:color-grading-cga2` 0 codes off on six fixtures, A0 gate 42/44 as recorded,
+  and `auto-color --engine grade --diff`, `look fit --engine grade` (matrix+curves, 1.84 held out),
+  `look apply` and `look export --cube` on owner clips (local only). CGA2 grades in the legacy working
+  space only (CG7 is merged; color-managed compositions are refused, not predicted).
+  **Next:** A4. Open owner decisions: look bound (block means or pixels), LUT looks (A3 followed the
+  opt-in recommendation), CGA visual review (A6 sheets).
 
 - **Editorial titles Phase 2 (2026-11-20):** on `codex/editorial-titles-phase2` from `main` 894c9d32, merged as [PR #76](https://github.com/xxibcill/still-shift/pull/76) (`main` 51ffe62a).
   - **ET6b:** the opt-in `editorial-title` lint profile (`--profile editorial-title` or a saved `readingPolicy.profile`). D-read reading motion (≤ 1 letter-height/s, ≤ 2 of travel, one direction). Treated-edge contrast credits outlines, halos, shadows and hollow outlines; text layers stacked above are left out. Size split: small text keeps 4.5:1, display text (≥ 24 px at 360 px) is measured at the median edge. All 16 ET7a candidates pass with no waivers; proof T1–T3 holds now count as reading time; default lint byte-identical to `main`.
@@ -79,7 +84,23 @@ still hold before relying on them.
 
 - **Composition colour accuracy (2026-11-16):** owner decision D-colour ("Match players") merged on `main` via [PR #72](https://github.com/xxibcill/still-shift/pull/72): exports keep authored sRGB on every path (`composition-output-2`) and BT.709 footage decodes without the inverse OETF (`composition-media-decoder-3`). Footage-dependent lint numbers and renders over BT.709 footage changed ([results](./composition-colour-accuracy-results.json)); composition baselines did not. The ET7a candidates are re-rendered over corrected footage in editorial titles Phase 1 (below).
 
-- **Color grading engine (2026-11-20):** CGA merged on `main` (PR #70). The owner asked to continue CG0–CG15 and approved decisions 2 (GPL-3.0 port) and 3 (float parity bound). **CG0**, **CG1** and **CG2** are done on `codex/color-grading-cg0-cg2` (fixtures and vectors; `@still-shift/color-science`; the float grade stage with `grade.primary`, `grade.white-balance`, `grade.cdl`, `grade.rgb-mixer`), every CG0–CG2 milestone check met with local tiers only (`check:fast` and the CG0, CG2, effect and composition-baseline browser groups; `pnpm check`, the full `pnpm test`, the runtime and integration tiers and the release checks were not run), in review as [PR #77](https://github.com/xxibcill/still-shift/pull/77); the findings of both reviews are fixed on the branch, one commit each (second review: 16, 2026-11-21); `main` 51ffe62a merged in, and the third review's finding fixed: `grade.white-balance` now adapts to D65 (owner: "Adapt to D65"). **Blocker before the next npm release:** without the local pnpm store, `test:package`'s npm audit step fails on high advisories for the locked `vite` and `zod` (the lock is unchanged by this branch); the owner decides between upgrading and accepting them. The owner said "Yes, continue to CG3" (2026-11-21), then "Continue to CG4 and CG5": **CG3** (`comp scopes`, `comp probe`, `comp grade diff`), **CG4** (curves, hue curves, tonal ranges) and **CG5** (`lut` assets, `grade.lut`, `comp grade bake`, ASC CDL import/export) are done on `codex/color-grading-cg3-cg5`, in review as [PR #78](https://github.com/xxibcill/still-shift/pull/78) (was stacked on PR #77, now merged); every check met with local tiers only. The [PR #78 review](https://github.com/xxibcill/still-shift/pull/78#pullrequestreview-6005437775)'s findings F1–F17 are addressed on the branch, one commit each (F1 was a false alarm: windowed `grade.lut` works; coverage added). A [second review](https://github.com/xxibcill/still-shift/pull/78#pullrequestreview-6005963068) (2026-11-21) found S1–S8, fixed on the branch, one commit each: two `comp probe` defects (default isolation emptied group layers; a large region ran out of memory) and five minor ones. PR #77 is merged, so PR #78 now targets `main`. PR #78 is merged (`main` c3553e60). **CG6** (keys: `grade.key` with qualifiers, layer-mask windows, gradient, external matte, matte finesse and views; `comp grade key`) is done on `codex/color-grading-cg6`, every check met with local tiers only, in review as [PR #79](https://github.com/xxibcill/still-shift/pull/79). Its [review](https://github.com/xxibcill/still-shift/pull/79#pullrequestreview-6018494363) (2026-11-23) found R1–R17, fixed on the branch, one commit each (export refuses matte views; `comp grade key` measures the matte; `comp probe --for-key`; finesse without a qualifier rejected; docs and cleanups). Owner decision from that review (2026-11-23, "Keep premultiplied"): luma mattes keep reading premultiplied color (luma over black), as documented (R4). A [second review](https://github.com/xxibcill/still-shift/pull/79#pullrequestreview-6019247532) (2026-11-23) found R18–R20, fixed on the branch, one commit each (keys under a mesh-warp effect window; `comp probe` suggestions from the layer's straight value; export checks evaluated views). The owner then approved CG7 (2026-11-23: ACEScct default working space, opt-in per composition; no camera priority). **CG7** (color-managed compositions: working spaces, extended media color and declared camera encodings, 16-bit scene decode, source stage, `grade.color-space-transform`, LUT spaces) is done on `codex/color-grading-cg7`, every check met with local tiers only, in review as [PR #81](https://github.com/xxibcill/still-shift/pull/81) (`main` 1d52bc5e, with CGA2 A0–A1, merged in; review findings F1–F4 fixed on the branch, one commit each). **Next: owner review of PR #81**, then CG8 (output transforms; log footage clips above display white until then). Owner decisions from the review: more tonal zones or per-zone falloff (F3), and keeping CDL number spelling rather than canonical decimals (F5). Later owner decisions: lab panel scope (CG14), log/10-bit footage and reference renders (CG15). Still open from CGA: whether block-mean RMS is the right look bound. Results: [CG7](./color-grading-cg7-results.json), [CG6](./color-grading-cg6-results.json), [CG0](./color-grading-cg0-results.json), [CG1](./color-grading-cg1-results.json), [CG2](./color-grading-cg2-results.json), [CG3](./color-grading-cg3-results.json), [CG4](./color-grading-cg4-results.json), [CG5](./color-grading-cg5-results.json).
+- **Color grading engine (2026-11-24):** CGA merged on `main` (PR #70); the owner asked to continue CG0–CG15
+  and approved decisions 2 (GPL-3.0 port) and 3 (float parity bound). **CG0–CG7 are merged on `main`**:
+  CG0–CG2 as [PR #77](https://github.com/xxibcill/still-shift/pull/77) (d165aae1), CG3–CG5 as
+  [PR #78](https://github.com/xxibcill/still-shift/pull/78) (c3553e60), CG6 as
+  [PR #79](https://github.com/xxibcill/still-shift/pull/79) (a47fa6d0), CG7 as
+  [PR #81](https://github.com/xxibcill/still-shift/pull/81) (3fd7b207). Each milestone was verified with local
+  tiers only (see its results file). Owner decisions recorded along the way: `grade.white-balance` adapts to
+  D65; luma mattes read premultiplied color (R4); CG7's default working space is ACEScct, opt-in per
+  composition, with no camera priority. **Blocker before the next npm release:** without the local pnpm
+  store, `test:package`'s npm audit step fails on high advisories for the locked `vite` and `zod`; the owner
+  decides between upgrading and accepting them. **Next:** CG8 (output transforms; log footage clips above
+  display white until then). Open owner decisions: more tonal zones or per-zone falloff (F3), CDL number
+  spelling (F5), lab panel scope (CG14), log/10-bit footage and reference renders (CG15). Results:
+  [CG0](./color-grading-cg0-results.json), [CG1](./color-grading-cg1-results.json),
+  [CG2](./color-grading-cg2-results.json), [CG3](./color-grading-cg3-results.json),
+  [CG4](./color-grading-cg4-results.json), [CG5](./color-grading-cg5-results.json),
+  [CG6](./color-grading-cg6-results.json), [CG7](./color-grading-cg7-results.json).
 
 - **WOFF/WOFF2 composition fonts (2026-11-15):** rejected with a located `font-format` error before any browser work. In review as [PR #64](https://github.com/xxibcill/still-shift/pull/64) on `codex/woff-font-support`; the first review's five findings (R1–R5) are fixed on the branch, one commit each, and owner review is pending. This also turns non-font bytes, which legacy `validate` only warned about, into an error. Supporting WOFF instead would need a WOFF2 decoder dependency; that is an owner choice for later.
 
@@ -143,6 +164,18 @@ still hold before relying on them.
   [Delivery165](./mechanism-shorts-ms3-delivery165-results.json).
 
 ## Entries
+
+### 2026-11-24 — Color grading status reconciled with `main`
+
+- **Agent / branch:** Claude Code (Opus 5.5) on `codex/cga2-docs-status` (from `main` f25220fa)
+- **Scope:** docs only: the color plans and this log still described merged work as in review.
+- **Done:** CGA2 plan status and its CG7 constraint, the engine plan's status and tracker (CG0–CG7 and
+  CGA2 A0–A3 merged, with merge commits), and both **Current state** items.
+- **Results:** `main` f25220fa re-checked before this edit (Node 22.23.1): `check:fast` passed (486 files,
+  5,085 tests); color tests 156/156; `test:browser:color-grading-cga2` 0 codes off on six fixtures; A0 gate
+  42/44 as recorded; CGA2 CLI runs on owner clips (local only) succeeded. Not run: `pnpm check`, the full
+  `pnpm test`, other browser groups, release checks. No visual review.
+- **Open / next:** CGA2 A4; CG8.
 
 ### 2026-11-24 — PR #83: review F1–F5 fixed
 
